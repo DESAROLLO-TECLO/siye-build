@@ -1,0 +1,14 @@
+/* CONTENEDOR PRINCIPAL DEL FOOTER */
+.tema-tecloLightDark .main-footer {
+	box-shadow: 1px -1px 3px rgba(150, 149, 151, .2);
+	background-color: #fff;
+	color: #969597;
+}
+
+/* Enlaces del footer */
+.tema-tecloLightDark .main-footer a {
+	color: #cf0a2c;
+}
+.tema-tecloLightDark .main-footer a:hover {
+	color: #55565a;
+}

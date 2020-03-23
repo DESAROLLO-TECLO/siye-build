@@ -1,0 +1,77 @@
+/* CONTENEDOR PRINCIPAL WEBUI-POPOVER */
+.tema-tecloLightDark .webui-popover {
+	background-color: #fff;
+	color: #55565a;
+	border: 1px solid transparent;
+	box-shadow: 1px 1px 10px rgba(0,0,0,.3);
+}
+
+/* Item de cerrar webui-popover */
+.tema-tecloLightDark div.webui-popover-inner a.close {
+	background-color: #cc4865 !important;
+	color: #fff !important;
+	box-shadow: 1px 1px 3px rgba(0,0,0,.5);
+}
+.tema-tecloLightDark div.webui-popover-inner a.close:hover {
+	background-color: #cf0a2c !important;
+	color: #fff;
+}
+
+/* Título del webui-popover */
+.tema-tecloLightDark .webui-popover-title {
+	background-color: #cf0a2c;
+	color: #ecf0f1;
+	border-bottom: 1px solid #cc4865;
+}
+
+/* Caret del webui-popover */
+.tema-tecloLightDark .webui-popover.top > .webui-arrow,
+.tema-tecloLightDark .webui-popover.top-right > .webui-arrow,
+.tema-tecloLightDark .webui-popover.top-left > .webui-arrow {
+	border-top-color: rgba(0, 0, 0, 0.1);
+}
+.tema-tecloLightDark .webui-popover.top > .webui-arrow:after,
+.tema-tecloLightDark .webui-popover.top-right > .webui-arrow:after,
+.tema-tecloLightDark .webui-popover.top-left > .webui-arrow:after {
+	border-top-color: #fff;
+}
+
+.tema-tecloLightDark .webui-popover.right>.webui-arrow,
+.tema-tecloLightDark .webui-popover.right-top>.webui-arrow,
+.tema-tecloLightDark .webui-popover.right-bottom>.webui-arrow {
+	border-right-color: rgba(0, 0, 0, 0.25);
+}
+.tema-tecloLightDark .webui-popover.right>.webui-arrow:after,
+.tema-tecloLightDark .webui-popover.right-top>.webui-arrow:after,
+.tema-tecloLightDark .webui-popover.right-bottom>.webui-arrow:after {
+	border-right-color: #fff;
+}
+
+.tema-tecloLightDark .webui-popover.bottom>.webui-arrow,
+.tema-tecloLightDark .webui-popover.bottom-right>.webui-arrow,
+.tema-tecloLightDark .webui-popover.bottom-left>.webui-arrow {
+	border-bottom-color: rgba(0, 0, 0, 0.25);
+}
+.tema-tecloLightDark .webui-popover.bottom>.webui-arrow:after,
+.tema-tecloLightDark .webui-popover.bottom-right>.webui-arrow:after,
+.tema-tecloLightDark .webui-popover.bottom-left>.webui-arrow:after {
+	border-bottom-color: #cf0a2c;
+}
+
+.tema-tecloLightDark .webui-popover.left>.webui-arrow,
+.tema-tecloLightDark .webui-popover.left-top>.webui-arrow,
+.tema-tecloLightDark .webui-popover.left-bottom>.webui-arrow {
+	border-left-color: rgba(0, 0, 0, 0.25);
+}
+.tema-tecloLightDark .webui-popover.left>.webui-arrow:after,
+.tema-tecloLightDark .webui-popover.left-top>.webui-arrow:after,
+.tema-tecloLightDark .webui-popover.left-bottom>.webui-arrow:after {
+	border-left-color: #fff;
+}
+
+/* Mostrar malla al ser webui-popover con backdrop */
+.tema-tecloLightDark .webui-popover-backdrop {
+	background-color: rgba(0, 0, 0, 0.65);
+}
+
+

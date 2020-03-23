@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8">
+		<title>Configuración</title>
+	</head>
+	<body>
+		<section class="content-header">
+			<h1 ng-if="viewPlugins">Componentes web</h1>
+			<h1 ng-if="viewTools">Herramientas web</h1>
+			
+			<ol class="breadcrumb">
+				<li class="active">
+					<a ng-click="(viewPlugins = true) && (viewTools = false)">
+						<i class="fa fa-code"></i>Componentes web
+					</a>
+				</li>
+				<li>
+					<a ng-click="(viewTools = true) && (viewPlugins = false)">
+						<i class="fa fa-wrench"></i>Herramientas web
+					</a>
+				</li>
+			</ol>
+		</section>
+		
+		<section class="ngOnlyEnter" ng-if="viewTools == true">
+			<article class="content"
+				ng-include="'views/administracion/resources/toolsWeb.html'">
+			</article>
+		</section>
+		
+		<section class="content ngOnlyEnter" ng-if="viewPlugins == true">
+			<div class="row">
+				<div class="col-md-6">
+				<!-- EMPIEZA SELECCIONADORES -->
+					<div class="box box-danger">
+						<div class="box-header with-border text-center">
+							<h3 class="box-title">
+								{{'ADMINISTRACION.ComplementosWeb.seleccionadores.tituloBox' | translate}}
+							</h3>
+						</div>
+						<div class="box-body">
+							<div class="row">
+							<!--------------------------------------------------------------------------------------------------------
+							_______ SELECT2 SIN BÚSQUEDA_________________________ -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											{{'ADMINISTRACION.ComplementosWeb.seleccionadores.sinBusqueda.label' | translate}}
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-list-ul"></i>
+											</div>
+											<select class="form-control" select2
+												data-minimum-results-for-search="Infinity"
+												idioma-s2="{{currentLanguage}}"
+												ng-model="selectWithoutSearch"
+												ng-options="swos as swos.nbOpcion for swos in selectList track by swos.idOpcion">
+												
+												<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								
+							<!--------------------------------------------------------------------------------------------------------
+							_______ SELECT2 CON BÚSQUEDA _________________________ -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											{{'ADMINISTRACION.ComplementosWeb.seleccionadores.conBusqueda.label' | translate}}
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-list-ul"></i>
+											</div>
+											<select class="form-control" select2
+												idioma-s2="{{currentLanguage}}"
+												ng-model="selectWithSearch"
+												ng-options="sws as sws.nbOpcion for sws in selectList track by sws.idOpcion">
+												
+												<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+											</select>
+										</div>
+									</div>
+								</div>
+							
+							<!--------------------------------------------------------------------------------------------------------
+							_______ SELECT2 MULTIPLE_________________________ -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											{{'ADMINISTRACION.ComplementosWeb.seleccionadores.multipleOpcion1.label' | translate}}
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-list-ul"></i>
+											</div>
+											<select class="form-control" select2
+												multiple="multiple"
+												data-allow-clear="true"
+												idioma-s2="{{currentLanguage}}"
+												ng-model="selectWithSearch"
+												ng-options="sm.nbOpcion group by sm.nbGroup for sm in selectList">
+												
+											</select>
+										</div>
+									</div>
+								</div>
+							
+							<!--------------------------------------------------------------------------------------------------------
+							_______ SELECTPICKER MULTIPLE _________________________ -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											{{'ADMINISTRACION.ComplementosWeb.seleccionadores.multipleOpcion2.label' | translate}}
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-list-alt"></i>
+											</div>
+											
+											<select class="form-control"
+												select-picker multiple
+												idioma-sp="{{currentLanguage}}"
+												data-actions-box="true"
+												data-selected-text-format="count > 2"
+												data-max-options="3"
+												ng-model="selectMultiplePicker"
+												ng-options="sp as sp.nbOpcion for sp in selectList">
+												
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- TERMINA SELECCIONADORES -->
+				</div>
+				
+				<div class="col-md-6">
+					<!-- EMPIEZA FECHAS -->
+					<div class="box box-danger">
+						<div class="box-header with-border text-center">
+							<h3 class="box-title">
+								{{'ADMINISTRACION.ComplementosWeb.fechas.tituloBox' | translate}}
+							</h3>
+						</div>
+						<div class="box-body">
+							<div class="row">
+							<!--------------------------------------------------------------------------------------------------------
+							_______ DATEPICKER _________________________ -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											{{'ADMINISTRACION.ComplementosWeb.fechas.calendario.label' | translate}}
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-calendar"></i>
+											</div>
+											<input class="form-control inputFecha" id="fechaPicker"
+												date-picker
+												idioma-dp="{{currentLanguage}}"
+												mindate="'29/01/2018'"
+												maxdate="'09/02/2018'"
+												elemento="'fechaPicker'"
+												ng-model="fechaPicker"
+												readonly />
+										</div>
+									</div>
+								</div>
+								
+							<!--------------------------------------------------------------------------------------------------------
+							_______ TIMEPICKER _________________________ -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											{{'ADMINISTRACION.ComplementosWeb.fechas.tiempo.label' | translate}}
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-clock-o"></i>
+											</div>
+											
+											<input class="form-control inputFecha"
+												time-picker
+												tp-options="opcionesTimepicker"
+												ng-model="timePicker"
+												readonly />
+										</div>
+									</div>
+								</div>
+							
+							<!--------------------------------------------------------------------------------------------------------
+							_______ DATETIMEPICKER _________________________ -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											{{'ADMINISTRACION.ComplementosWeb.fechas.calendarioTiempo.label' | translate}}
+										</label>
+										<div class="input-group" datetime-picker
+											idioma-dtp="{{currentLanguage}}"
+											options="dateTimePickerOptions"
+											ng-model="dateTimePicker">
+											
+											<div class="input-group-addon labelCheck">
+												<i class="fa fa-calendar-plus-o"></i>
+											</div>
+											<input class="form-control inputFecha" readonly />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- TERMINA FECHAS -->
+				</div>
+			</div> <!-- TERMINA ROW 1 -->
+			
+			<div class="row">
+				<div class="col-md-6">
+					<!-- EMPIEZA COMPLEMENTOS DE INFORMACIÓN -->
+					<div class="box box-danger">
+						<div class="box-header with-border text-center">
+							<h3 class="box-title">
+								{{'ADMINISTRACION.ComplementosWeb.complementosInformacion.tituloBox' | translate}}
+							</h3>
+						</div>
+						<div class="box-body">
+							<div class="row">
+							<!--------------------------------------------------------------------------------------------------------
+							_______ TOOLTIP _________________________ -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											{{'ADMINISTRACION.ComplementosWeb.complementosInformacion.informacionComplementaria.label' | translate}}
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-commenting"></i>
+											</div>											
+											<button class="btn btn-default fullWidth " 
+												tooltip="{{'ADMINISTRACION.ComplementosWeb.complementosInformacion.informacionComplementaria.ejemplo' | translate}}"
+												tooltip-placement="right">
+												Tooltip
+											</button>
+										</div>
+									</div>
+								</div>
+								
+							<!--------------------------------------------------------------------------------------------------------
+							_______ POPOVER BOOTSTRAP _________________________ -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											{{'ADMINISTRACION.ComplementosWeb.complementosInformacion.detalleInformacionOpcion1.label' | translate}}
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-comment"></i>
+											</div>
+											
+											<popover id="popoverBootstrap" class="btn btn-default fullWidth"
+												idioma-pb="{{currentLanguage}}"
+												options="opcionesPopover"
+												placement="right"
+												title="{{'ADMINISTRACION.ComplementosWeb.complementosInformacion.detalleInformacionOpcion1.label' | translate}}"
+												content="{{'ADMINISTRACION.ComplementosWeb.complementosInformacion.detalleInformacionOpcion2.ejemplo' | translate}}">
+												
+												Popover Bootstrap
+												
+											</popover>
+										</div>
+									</div>
+								</div>
+							
+							<!--------------------------------------------------------------------------------------------------------
+							_______ WEBUI-POPOVER _________________________ -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											{{'ADMINISTRACION.ComplementosWeb.complementosInformacion.detalleInformacionOpcion2.label' | translate}}
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-comment"></i>
+											</div>
+												
+											<webuipopover class="btn btn-default fullWidth"
+												idioma-wup="{{currentLanguage}}"
+												webui-title="{{'ADMINISTRACION.ComplementosWeb.complementosInformacion.detalleInformacionOpcion2.label' | translate}}"
+												webui-options="opcionesWebuipopover"
+												webui-placement="bottom"
+												selector-content="miContenido">
+												
+												Webui-popover
+											
+											</webuipopover>
+											
+											<div id="miContenido">
+												<h1>{{'ADMINISTRACION.ComplementosWeb.complementosInformacion.detalleInformacionOpcion2.ejemplo' | translate}}</h1>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- TERMINA COMPLEMENTOS DE INFORMACIÓN -->
+				</div>
+				
+				<div class="col-md-6">
+					<!-- EMPIEZA INTERRUPTORES -->
+					<div class="box box-danger">
+						<div class="box-header with-border text-center">
+							<h3 class="box-title">
+								{{'ADMINISTRACION.ComplementosWeb.interruptores.tituloBox' | translate}}
+							</h3>
+						</div>
+						<div class="box-body">
+							<div class="row">
+							<!--------------------------------------------------------------------------------------------------------
+							_______ SWITCHER _________________________ -->
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label for="checkTest1" class="labelCheck noneSelectedUser">
+											{{'ADMINISTRACION.ComplementosWeb.interruptores.interruptor1.label' | translate}}
+										</label>
+										<switcher class="swTeclo pull-right"
+											id-check="checkTest1"
+											ng-disabled="isDisabled"
+											true-label="{{'APP.Base.estatus.activo' | translate}}"
+											true-value="'active'"
+											false-label="{{'APP.Base.estatus.inactivo' | translate}}"
+											false-value="'inactive'"
+											ng-change="checkVal(newValue, oldValue)"
+											ng-model="switchTest1">
+										</switcher>
+									</div>
+								</div>
+								
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label for="checkTest2" class="labelCheck noneSelectedUser">
+											{{'ADMINISTRACION.ComplementosWeb.interruptores.interruptor2.label' | translate}}
+										</label>
+										<switcher class="swTeclo pull-right"
+											id-check="checkTest2"
+											ng-model="switchTest2"
+											ng-disabled="isDisabled"
+											ng-change="onChange(newValue, oldValue)"
+											true-value="true"
+											false-value="false">
+										</switcher>
+									</div>
+								</div>
+								
+								<div class="col-sm-6">
+									<div class="form-group">
+										<label for="checkTest3" class="labelCheck noneSelectedUser">
+											{{'ADMINISTRACION.ComplementosWeb.interruptores.interruptor3.label' | translate}}
+										</label>
+										<div class="input-group">
+											<switcher class="swTeclo"
+												id-check="checkTest3"
+												ng-model="switchTest3"
+												ng-disabled="isDisabled"
+												ng-change="onChange(newValue, oldValue)"
+												true-label="<i class='fa fa-check-circle'></i>"
+												true-value="'✓'"
+												false-label="<i class='fa fa-times-circle'></i>"
+												false-value="'X'">
+											</switcher>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12 text-center">
+									<span class="label label-default">{{switchTest1}}</span>
+									<span class="label label-default">{{switchTest2}}</span>
+									<span class="label label-default">{{switchTest3}}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- TERMINA CHECKBOX -->
+				</div>
+			</div> <!-- TERMINA ROW 2 -->
+			
+			
+			<div class="row">
+				<div class="col-md-6">
+					<!-- EMPIEZA VENTANAS EMERGENTES -->
+					<div class="box box-danger">
+						<div class="box-header with-border text-center">
+							<h3 class="box-title">
+								Ventanas emergentes
+							</h3>
+						</div>
+						<div class="box-body">
+							<div class="row">
+							<!--------------------------------------------------------------------------------------------------------
+							_______ SHOW AVISO _________________________ -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-commenting"></i>
+											</div>											
+											<button class="btn btn-danger fullWidth" ng-click="alertas('info')">
+												Aviso
+											</button>
+										</div>
+									</div>
+								</div>
+							<!--------------------------------------------------------------------------------------------------------
+							_______ SHOW ERROR _________________________ -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-commenting"></i>
+											</div>											
+											<button class="btn btn-danger fullWidth" ng-click="alertas('error')">
+												Error
+											</button>
+										</div>
+									</div>
+								</div>
+							<!--------------------------------------------------------------------------------------------------------
+							_______ SHOW CONFIRMATION _________________________ -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-commenting"></i>
+											</div>											
+											<button class="btn btn-danger fullWidth" ng-click="alertas('confirmation')">
+												Confirmación
+											</button>
+										</div>
+									</div>
+								</div>
+							<!--------------------------------------------------------------------------------------------------------
+							_______ MODAL CON CONTENIDO _________________________ -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-commenting"></i>
+											</div>											
+<!-- 											<button class="btn btn-danger fullWidth" data-toggle="modal" data-target="#modalContent"> -->
+<!-- 												Ventana emergente con contenido -->
+<!-- 											</button> -->
+											
+											<button class="btn btn-danger fullWidth" ng-click="showModal = true;">
+												Contenido
+											</button>
+											
+											<button class="btn btn-danger fullWidth" open-modal="modalDirective">
+												Contenido de include
+											</button>
+										</div>
+									</div>
+								</div>
+							
+							</div>
+						</div>
+					</div>
+					<!-- TERMINA VENTANAS EMERGENTES -->
+				</div>
+				
+				<div class="col-md-6">
+					<!-- EMPIEZA NOTIFICACIONES -->
+					<div class="box box-danger">
+						<div class="box-header with-border text-center">
+							<h3 class="box-title">
+								Notificaciones
+							</h3>
+						</div>
+						<div class="box-body">
+							<div class="row">
+							<!--------------------------------------------------------------------------------------------------------
+							_______ ÉXITO _________________________ -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-commenting"></i>
+											</div>											
+											<button class="btn btn-danger fullWidth" ng-click="notificacion('exito')">
+												Éxito
+											</button>
+										</div>
+									</div>
+								</div>
+							<!--------------------------------------------------------------------------------------------------------
+							_______ ADVERTENCIA _________________________ -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-commenting"></i>
+											</div>											
+											<button class="btn btn-danger fullWidth" ng-click="notificacion('advertencia')">
+												Advertencia
+											</button>
+										</div>
+									</div>
+								</div>
+							<!--------------------------------------------------------------------------------------------------------
+							_______ ERROR _________________________ -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-commenting"></i>
+											</div>											
+											<button class="btn btn-danger fullWidth" ng-click="notificacion('error')">
+												Error
+											</button>
+										</div>
+									</div>
+								</div>
+								
+							<!--------------------------------------------------------------------------------------------------------
+							_______ INFORMACION _________________________ -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-commenting"></i>
+											</div>											
+											<button class="btn btn-danger fullWidth" ng-click="notificacion('informacion')">
+												Información: {{msgInfo}}
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- TERMINA NOTIFICACIONES -->
+				</div>
+			</div> <!-- TERMINA ROW 3 -->
+			
+			<div class="row">
+				<div class="col-md-12">
+					<!-- EMPIEZA ASISTENTE DE PASOS ANGULAR-WIZARD -->
+					<div class="box box-danger">
+						<div class="box-header with-border text-center">
+							<h3 class="box-title">
+								Asistente de pasos Angular-wizard
+							</h3>
+						</div>
+						<div class="box-body">
+							<wizard name="wizardExample"
+									indicators-position="top"
+									on-finish="saveWizard()"
+									on-cancel="cancelWizard()">
+									
+							    <wz-step wz-title="Crear cuenta" wz-icon="fa-user">
+							        
+							        <div ng-include="'views/templatePasosWizard/pasoUno.html'">
+							        	<!-- Contenido del paso 1 -->
+							        </div>
+							        
+							    </wz-step>
+							    
+							    <wz-step wz-title="Información usuario" wz-icon="fa-info">
+							        
+							        <div ng-include="'views/templatePasosWizard/pasoDos.html'">
+							        	<!-- Contenido del paso 2 -->
+							        </div>
+							        
+							    </wz-step>
+							    
+							    <wz-step wz-title="Información de contacto" wz-icon="fa-phone">
+							        
+							        <div ng-include="'views/templatePasosWizard/pasoTres.html'">
+							        	<!-- Contenido del paso 3 -->
+							        </div>
+							       	
+							    </wz-step>
+							</wizard>
+						</div>
+					</div>
+					<!-- TERMINA ASISTENTE DE PASOS ANGULAR-WIZARD-->
+				</div>
+			</div> <!-- TERMINA ROW 4 -->
+			
+			<div class="row">
+				<div class="col-md-12">
+					<!-- EMPIEZA ARRASTRAR Y SOLTAR -->
+					<div class="box box-danger">
+						<div class="box-header with-border text-center">
+							<div class="box-title">
+								<h3>Lista múltiple (Arrastrar y soltar)</h3>
+							</div>
+						</div>
+						
+						<div class="box-body">
+							<dnd-lists
+								col="col-md-5"
+								max-height="25vh"
+								model="miLista"
+								nb-list="miNombreLista"
+								nb-item="miItem"
+								nb-texts="Nombre:, Código:, Descripción:"
+								nb-labels="nbItem, cdItem, txtItem"
+								flag-success="flag"
+								model-aux="miReset"
+								required-list="true"
+								img-cursor="static/dist/img/smile.png">
+							</dnd-lists>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<!-- Modal Directive -->
+	        <div ng-include="'views/templatemodal/templateModalInclude.html'"></div>
+			<modal visible="showModal" size-modal="md" noescape modalstatic>
+	            <modal-header title="TÍTULO DEL MODAL"></modal-header>
+	            <modal-body>
+	                <h2>CONTENIDO DEL MODAL</h2>
+	            </modal-body>
+	            <modal-footer btn-close="Cerrar">
+	                <button class="btn btn-danger" ng-click="saveModal()">
+						{{'APP.Base.boton.guardar' | translate}}
+					</button>
+	            </modal-footer>
+	        </modal>
+		</section>
+	</body>
+</html>

@@ -1,0 +1,90 @@
+.scrollable-content {
+	overflow: auto;
+/* 	max-height: 25vh; */
+}
+/**
+			 * The dnd-list should always have a min-height,
+			 * otherwise you can't drop into it once it's empty
+			 */
+.multiSelectItem ul[dnd-list] {
+	min-height: 42px;
+	padding-left: 0px;
+}
+
+/**
+			 * An element with .dndPlaceholder class will be
+			 * added to the dnd-list while the user is dragging
+			 * over it.
+			 */
+.multiSelectItem ul[dnd-list] .dndPlaceholder {
+	background-color: #ddd;
+	display: block;
+	min-height: 42px;
+}
+
+.multiSelectItem ul[dnd-list] li {
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-top-right-radius: 4px;
+	border-top-left-radius: 4px;
+	display: block;
+	margin-bottom: -1px;
+	padding: 5px 10px;
+	transition: all .2s ease-out;
+}
+
+.multiSelectItem ul[dnd-list] li:nth-child(even) {
+	background-color: #f4f4f4;
+}
+
+.multiSelectItem ul[dnd-list] li:hover {
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, .5);
+}
+
+/**
+			 * Show selected elements in green
+			 */
+.multiSelectItem ul[dnd-list] li.selected {
+	background-color: #dff0d8;
+	color: #3c763d;
+}
+
+.centerRowList {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+.orderFirst {
+	order: 1;
+}
+
+.orderMiddle {
+	order: 2;
+}
+
+.orderLast {
+	order: 3;
+}
+
+.middleButtons {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+.badge-dndList {
+	background-color: #55565a;
+    color: #fff;
+    padding: 0 5px;
+    border-radius: 6px;
+    font-size: .9rem;
+}
+
+.listRequired {
+	border-color: red !important;
+}
+.txtRequired {
+	color: red;
+}

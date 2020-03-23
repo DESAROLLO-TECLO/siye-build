@@ -1,0 +1,397 @@
+.fixed {
+	position: fixed;
+	width: 100%;
+}
+
+.content-header {
+	padding-bottom: 0.7143rem;
+}
+
+.main-header {
+	height: 3.571rem !important;
+}
+
+.sidebar-toggle {
+	line-height: 1.286rem;
+}
+
+.bannertitle {
+	line-height: 3.5rem;
+	font-size: 1.8rem;
+}
+
+.sidebar-toggle {
+	font-size: 1.429rem;
+}
+
+.user-menu {
+	line-height: 3.5rem;
+	fnt-family: 'Open Sans', 'trebuchet ms', arial, sans-serif;
+	font-weight: 600;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.user-menuMovil {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+
+.user-menu .nbUsuario {
+	padding: 1.071rem 0.7143rem;
+	transition: all .1s ease-out;
+}
+
+.config {
+	line-height: 3.5rem;
+	padding: 0 1.071rem;
+	z-index: 19909090 !important;
+	cursor: pointer;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.opc {
+	list-style: none;
+	width: 13.57rem;
+	padding-left: 0;
+	position: absolute;
+	margin-top: -0.3571rem;
+	right: 0;
+	text-align: center;
+	transition: all .2s ease-out;
+}
+
+.opc li {
+	padding: 0.5714rem;
+	transition: all .1s ease-out;
+}
+
+.menuopc:hover .opc {
+	right: 0;
+}
+
+.tecloMini {
+	width: calc(100% - 6.786rem);
+	height: 3.571rem;
+	position: absolute;
+	text-align: center;
+	left: 3.571rem;
+}
+
+.iconProfile {
+	font-size: 0.9286rem;
+	border-radius: 50%;
+	padding: 0.2143rem 0.3571rem;
+	cursor: default;
+}
+
+/* 		Tooltip personalizado para mostrar la informaci�n del usuario */
+.cont-infoUser {
+	width: 18.57rem;
+	position: absolute;
+	top: 3.6rem;
+	right: -3rem;
+	transition: all .3s ease-out;
+	cursor: default;
+}
+
+.cont-infoUser .fechaActual {
+	margin: 0;
+	width: 100%;
+	text-align: center;
+	padding: 1.071rem 0;
+	font-weight: 600;
+}
+
+.infoUser {
+	margin: 0 !important;
+	text-align: left;
+	line-height: 1 !important;
+}
+
+.infoUserTxt {
+	margin: 0 !important;
+	padding-top: 1.071rem !important;
+	padding-bottom: 1.071rem !important;
+	padding-left: 1.429rem !important;
+}
+
+.actionUser {
+	text-align: center !important;
+}
+
+.actionUser a {
+	padding: 0.7143rem 0.3571rem !important;
+	margin: 0 !important;
+}
+
+/* LOGOS */
+.logoTeclo_lg {
+	width: 9.3rem;
+	margin: 0.2rem 0 0 2.4rem;
+	display: block;
+}
+
+.logoTeclo_mini {
+	width: 2.923rem;
+	height: 2.923rem;
+	margin-top: 0.3rem;
+	margin-left: -0.8571rem;
+	margin-bottom: 1rem;
+}
+
+.logoMovil {
+	width: 9.286rem;
+	margin-top: 0.13rem;
+}
+
+.logoApp {
+	margin-top: -0.3rem;
+	width: 3.1rem;
+}
+
+/* MENU HAMBURGUER */
+.main-nav {
+	float: left;
+	background-color: transparent;
+	background-image: none;
+	padding: 1.071rem 0;
+	cursor: pointer;
+}
+
+.menu-bar {
+	width: 1.786rem;
+	margin: 0 0.3571rem 0 0.7143rem;
+}
+
+.uno, .dos, .tres {
+	width: 100%;
+	height: 0.2143rem;
+	transition: all 0.5s ease-in;
+}
+
+.dos {
+	margin: 0.2857rem 0;
+}
+/*animacion*/
+.mostrar {
+	position: relative;
+}
+
+.mostrar .uno, .mostrar .tres {
+	width: 50%;
+	position: absolute;
+	right: 0;
+}
+
+.mostrar  .uno {
+	top: -0.2857rem;
+	transform: rotate(405deg);
+}
+
+.mostrar .dos {
+	margin: 0.5714rem 0;
+	width: 85%;
+	transform: rotate(360deg);
+}
+
+.mostrar .tres {
+	bottom: -0.2857rem;
+	transform: rotate(-405deg);
+}
+
+
+
+ /******************************/
+/* FUNCIONALIDADES FAVORITAS */
+.header__titleApp,
+.header__wishFunctions {
+	display: inline-block;
+}
+.bannertitle .header__iconPref {
+	display: none;
+	cursor: pointer;
+	margin-left: 0.5rem;
+	font-size: 1.5rem;
+	color: #cf0a2c;
+}
+.bannertitle:hover .header__iconPref {
+	display: inline-block;
+}
+
+.header__wishFunctions-title {
+	font-size: 1.5rem;
+	font-style: italic;
+}
+
+.header__wishFunctions {
+	position: relative;
+}
+
+.header__wishFunctions-combo {
+	position: absolute;
+	width: 16.3rem;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+}
+.header__wishFunctions-combo ul {
+	list-style: none;
+    padding: 0;
+    background-color: #fff;
+    max-height: 20rem;
+	margin-bottom: 0;
+}
+.header__wishFunctions-combo ul li {
+	line-height: 1.2;
+}
+.header__wishFunctions-combo ul li label {
+	padding: 0 1rem;
+	font-size: 1.3rem;
+}
+
+.header__wishFunctions-combo ul li ul {
+	list-style: none;
+	padding: 0;
+}
+.header__wishFunctions-combo ul li ul li {
+	position: relative;
+	line-height: 1.7;
+	font-size: 1rem;
+	cursor: pointer;
+	padding: 0 2.5rem;
+	transition: all .1s ease-out;
+}
+.header__wishFunctions-combo ul li ul li i {
+	position: absolute;
+	left: 1.2rem;
+    line-height: 1.7;
+    color: #cf0a2c;
+}
+.header__wishFunctions-combo ul li ul li:hover {
+	background-color: #ecf0f1;
+	padding: 0 2.7rem;
+	font-weight: 600;
+}
+
+.header__wishFunctions-combo ul li ul li.active {
+	background-color: #ecf0f1;
+	color: #969597;
+	padding: 0 2.7rem;
+}
+
+
+.header__wishFunctions-access {
+	display: flex;
+	list-style: none;
+	padding: 0 0.5rem;
+	margin-left: 0.2rem;
+	border-left: 1px solid #c6c6c6;
+	border-right: 1px solid #c6c6c6;
+	margin-bottom: 0;
+}
+.header__wishFunctions-access li {
+	margin: 0 0.2rem;
+	font-size: 1.5rem;
+	cursor: pointer;
+}
+
+.filterBtn {
+	color: #cf0a2c;
+	transition: all .1s ease-out;
+}
+.filterBtn:hover {
+	background-color: #cf0a2c;
+	color: #fff;
+}
+/***************************************
+****************************************/
+
+
+
+@media only screen and (max-width: 60em) {
+	.cont-infoUser {
+		right: 0;
+	}
+	.bannertitle {
+		font-size: 1.143rem;
+	}
+	.cd, .mx {
+		font-size: 1.143rem;
+	}
+}
+
+@media only screen and (max-width: 73em) {
+	.bannertitle, .cd, .mx {
+		font-size: 1.7rem;
+	}
+}
+
+@media only screen and (max-width: 767px) {
+	.dos {
+		margin: 0.2857rem 0;
+	}
+	/*animacion*/
+	.mostrar {
+		position: relative;
+	}
+	.mostrar .uno, .mostrar .tres {
+		width: 50%;
+		position: absolute;
+		right: 0;
+	}
+	.mostrar  .uno {
+		top: -0.2857rem;
+		transform: rotate(-225deg);
+		left: -0.1429rem;
+	}
+	.mostrar .dos {
+		margin: 0.5714rem 0;
+		width: 85%;
+		transform: rotate(180deg);
+	}
+	.mostrar .tres {
+		bottom: -0.2857rem;
+		transform: rotate(225deg);
+		left: -0.1429rem;
+	}
+}
+
+.selectResolucion {
+	padding: 5px 0px 5px 14px;
+	border-color: transparent !important;
+	cursor: pointer;
+}
+
+/* HEADER NO FIJO */
+.header-noFijo {
+	margin-top: 0 !important;
+}
+
+.headerFijo {
+	margin-top: 3.571rem !important;
+}
+
+/* FULLSCREEN */
+.fullScreen-iconIn {
+	position: absolute;
+	top: .9rem;
+	right: 1rem;
+	cursor: pointer;
+}
+
+.fullScreen-iconIn i {
+	font-size: 1.7rem;
+	transition: all .2s ease-out;
+}
+
+@media only screen and (max-width: 991px) {
+	.fullScreen-iconIn {
+		right: 15rem;
+	}
+}

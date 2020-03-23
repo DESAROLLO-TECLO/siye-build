@@ -1,0 +1,45 @@
+<head>
+	<meta charset="utf-8">
+</head>
+
+<footer class="main-footer" ng-controller="footerController">
+	<div class="pull-right hidden-xs">
+		<strong>{{'APP.Footer.version' | translate}}</strong> 
+		<span>{{versionApp}}</span>
+	</div>
+	<strong>
+		{{'APP.Footer.derechosAutor' | translate}} &copy;
+		<span>{{yearCurrent}}</span>
+		<a href="http://teclomexicana.mx/" target="_blank">
+			{{'APP.Footer.tecloMexicana' | translate}}
+		</a>.
+		<span>
+			{{'APP.Footer.derechosReservados' | translate}}.
+		</span>
+	</strong>
+	
+<!-- 	<div class="cont-selectFooter pull-right ngOnlyEnter" ng-if="currentLanguage=='es_ES'"> -->
+<!-- 		<select id="selectTranslate" -->
+<!-- 			select2 -->
+<!-- 			data-minimum-results-for-search="Infinity" -->
+<!-- 			idioma-s2="{{currentLanguage}}" -->
+<!-- 	    	class="form-control" -->
+<!-- 			ng-change="changeLanguage(idiomaLang.codIdioma)" -->
+<!-- 			ng-model="idiomaLang" -->
+<!-- 			ng-options="id as id.txIdiomaEs for id in catIdiomas track by id.idIdioma"> -->
+			
+<!-- 		</select> -->
+<!-- 	</div> -->
+<!-- 	<div class="cont-selectFooter pull-right ngOnlyEnter" ng-if="currentLanguage=='en_US'"> -->
+<!-- 		<select id="selectTranslate" -->
+<!-- 			select2 -->
+<!-- 			data-minimum-results-for-search="Infinity" -->
+<!-- 			idioma-s2="{{currentLanguage}}" -->
+<!-- 	    	class="form-control" -->
+<!-- 			ng-change="changeLanguage(idiomaLang.codIdioma)" -->
+<!-- 			ng-model="idiomaLang" -->
+<!-- 			ng-options="id as id.txIdiomaEn for id in catIdiomas track by id.idIdioma"> -->
+			
+<!-- 		</select> -->
+<!-- 	</div> -->
+</footer>

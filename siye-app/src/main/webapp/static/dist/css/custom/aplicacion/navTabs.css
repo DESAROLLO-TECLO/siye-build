@@ -1,0 +1,34 @@
+.nav-tabs {
+	margin-left: 5px;
+}
+
+.nav-tabs>li.active {
+	z-index: 100;
+}
+
+.nav-tabs>li.tabBox {
+	margin-bottom: -0.35rem;
+}
+
+.nav-tabs>li.border-box a {
+	border-left: .25rem solid #cf0a2c;
+	border-top: .25rem solid #cf0a2c;
+	border-right: .25rem solid #cf0a2c;
+	border-radius: .5rem .5rem 0 0;
+}
+
+.nav-tabs>li.border-box a:hover {
+	border-left: .25rem solid #cf0a2c;
+	border-top: .25rem solid #cf0a2c;
+	border-right: .25rem solid #cf0a2c;
+}
+
+.nav-tabs>li a {
+	color: #ababab;
+	background: #f7f7f7;
+	border-color: #eeeeee #eeeeee #ddd;
+}
+
+.nav-tabs>li a:hover {
+	background-color: #fff;
+}

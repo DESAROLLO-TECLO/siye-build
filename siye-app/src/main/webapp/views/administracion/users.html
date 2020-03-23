@@ -1,0 +1,448 @@
+<section class="content-header">
+    <h1>{{breadCrumbs.servicio}}
+        <span ng-if="flags.isGridMode && gridOptions.data.length !== 0">
+            : {{ (gridOptions.data | filter : filter.user).length }}
+        </span>
+    </h1>
+    <ol class="breadcrumb">
+        <li>
+            <a><i class="{{breadCrumbs.icono}}"></i>{{breadCrumbs.modulo}} </a>
+        </li>
+        <li class="active">{{breadCrumbs.servicio}}</li>
+    </ol>
+</section>
+
+<form role="form" name="formUsers" enctype="multipart/form-data" novalidate>
+    
+    <section class="modaluser" ng-if="flags.isModalUsers"
+        ng-include="'views/administracion/user-templates/user-modal.html'">
+    </section>
+
+    <section class="content" ng-if="flags.isPromise"
+        ng-include="'views/administracion/user-templates/users-charge.html'">
+    </section>
+
+    <section class="content" ng-if="!flags.isFirstModal && !flags.isPromise">
+        <div class="row">
+            <article class="col-xs-12">
+                <div class="form-group">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-filter"></i>
+                        </div>
+                        <input type="text" class="form-control"
+                            placeholder="Filtrar usuarios por: nombre(s), apellido(s), usuario o perfil"
+                            ng-change="filterRefresh(filter.user)"
+                            ng-model="filter.user" />
+                        <div class="input-group-btn">
+                            <button class="btn btn-danger" tooltip="Buscar usuarios" ng-click="toggleModal('search')">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            <button class="btn btn-danger" tooltip="Nuevo usuario" ng-click="toggleModal('new')">
+                                <i class="fa fa-user-plus"></i>
+                            </button>
+                            <button class="btn btn-danger"
+                                tooltip-placement="left"
+                                tooltip="{{flags.isGridMode ? 'LISTA' : 'MOSAICO'}}"
+                                ng-click="toggleModeView(flags.isGridMode ? 'list' : 'grid')"
+                                ng-disabled="!flags.isButtonMode">
+                                <i class="fa" ng-class="{'fa-list': flags.isGridMode, 'fa-th': flags.isListMode}"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- INTERFAZ DEL USUARIO -->
+            <article class="col-xs-12">
+                <!-- MODO MOSAICO -->
+                <div class="row" ng-if="flags.isGridMode">
+                    <div grid-data id='gridMode' grid-options="gridOptions" grid-actions="gridActions">
+                        <div >
+                            <div class="col-sm-6 col-md-4"
+                                ng-repeat="user in gridOptions.data | startFrom:(paginationOptions.currentPage-1)*paginationOptions.itemsPerPage 
+                                | limitTo:paginationOptions.itemsPerPage
+                                | filter:filter.user track by $index">
+                                <div class="flip" ng-style="{'opacity' : (user.stActivo == 0) ? '0.7' : '1'}">
+                                    <div class="flip-container cardsAnimateIn">
+                                        <div class="flip-container__front">
+                                            <div class="box" ng-class="{'box-danger': user.stActivo === 1}">
+                                                <div class="box-header with-border">
+                                                    <div class="row">
+                                                        <div class="col-xs-8 vh-center">
+                                                            <i class="fa fa-user stUser" ng-class="{'isActive':user.stActivo === 1}"
+                                                            tooltip="{{user.stActivo === 1 ? 'Habilitado':'Inhabilitado'}}"
+                                                            tooltip-placement="right"></i>
+                                                            <span class="lbUser text-truncate" tooltip-placement="bottom"
+                                                                tooltip="{{user.nbUsuario}} {{user.nbApaterno}} {{user.nbAmaterno}}"
+                                                                ng-if="(user.nbUsuario+user.nbApaterno+user.nbAmaterno).length > 28">
+                                                                {{user.nbUsuario}} {{user.nbApaterno}} {{user.nbAmaterno}}
+                                                            </span>
+                                                            <span class="lbUser text-truncate"
+                                                                ng-if="(user.nbUsuario+user.nbApaterno+user.nbAmaterno).length <= 28">
+                                                                {{user.nbUsuario}} {{user.nbApaterno}} {{user.nbAmaterno}}
+                                                            </span>&nbsp;&nbsp;
+                                                            <span class="currentusericon fa fa-check-circle"
+                                                                ng-if="user.isCurrentUser"
+                                                                tooltip-placement="bottom"
+                                                                tooltip="Usuario logueado">
+                                                            </span>
+                                                        </div>
+                                                        <div class="col-xs-4 text-right">
+                                                            <button class="btn btnUsers btn-rounded btn-xs"
+                                                                tooltip="Administrar usuario" tooltip-placement="left"
+                                                                ng-click="toggleUserCard($event,'open')">
+                                                                <i class="fa fa-cog"></i>
+                                                            </button>
+                                                            <button class="btn btnUsers btn-rounded btn-xs"
+                                                                tooltip="Editar usuario" tooltip-placement="left"
+                                                                ng-click="editUser(user)">
+                                                                <i class="fa fa-pencil"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="box-body">
+                                                    <div class="user-grid height-grid">
+                                                        <div class="user-grid__media">
+                                                            <div class="text-center">
+                                                                <img class="img-circle" ng-if="user.lbFoto"
+                                                                    ng-src="data:image/png;base64,{{user.lbFoto}}" />
+                                                                <img class="img-circle" ng-if="!user.lbFoto"
+                                                                    ng-src="static/dist/img/user-circle.svg" />
+                                                            </div>
+                                                            <div class="text-center " ng-if="user.perfil.nbPerfil.length > 13"
+                                                                tooltip="{{user.perfil.nbPerfil}}" tooltip-placement="top">
+                                                                <strong ng-class="{'isActiveUsr': user.stActivo == 1,'isInactiveUsr': user.stActivo == 0}">
+                                                                    {{user.perfil.nbPerfil.substr(0,13)}}
+                                                                </strong>
+                                                            </div>
+                                                            <div class="text-center" ng-if="user.perfil.nbPerfil.length <= 13">
+                                                                <strong ng-class="{'isActiveUsr': user.stActivo == 1,'isInactiveUsr': user.stActivo == 0}">
+                                                                    {{user.perfil.nbPerfil}}
+                                                                </strong>
+                                                            </div>
+                                                        </div>
+                                                        <div class="user-grid__info">
+                                                            <div class="row">
+                                                                <div class="col-xs-5 text-right pr-0 text-truncate">
+                                                                    <strong class="opcty">Usuario:</strong>
+                                                                </div>
+                                                                <div class="col-xs-7 pl-2 text-truncate">
+                                                                    <strong>{{user.cdUsuario}}</strong>
+                                                                </div>
+
+                                                                <div class="col-xs-5 text-right pr-0 text-truncate">
+                                                                    <strong class="opcty">Creado:</strong>
+                                                                </div>
+                                                                <div class="col-xs-7 pl-2 text-truncate">
+                                                                    <strong>{{user.fhCreacion !== '' ? user.fhCreacion : 'Sin fecha' | date:'dd-MM-yyyy HH:mm:ss'}}</strong>
+                                                                </div>
+
+                                                                <div class="col-xs-5 text-right pr-0 text-truncate">
+                                                                    <strong class="opcty">Modificado:</strong>
+                                                                </div>
+                                                                <div class="col-xs-7 pl-2 text-truncate">
+                                                                    <strong>{{user.fhModificacion !== '' ? user.fhModificacion : 'Sin fecha' | date:'dd-MM-yyyy HH:mm:ss'}}</strong>
+                                                                </div>
+
+                                                                <div class="col-xs-5 text-right pr-0 text-truncate">
+                                                                    <strong class="opcty">Correo:</strong>
+                                                                </div>
+                                                                <div class="col-xs-7 pl-2 text-truncate">
+                                                                    <strong>{{user.nbEmail !== '' ? user.nbEmail : 'Si correo'}}</strong>
+                                                                </div>
+
+                                                                <div class="col-xs-5 text-right pr-0 text-truncate">
+                                                                    <strong class="opcty">Teléfono:</strong>
+                                                                </div>
+                                                                <div class="col-xs-7 pl-2 text-truncate">
+                                                                    <strong>{{user.nuTelefono !== '' ? user.nuTelefono : 'Sin teléfono' | tel}}</strong>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flip-container__back">
+                                            <div class="box" ng-class="{'box-danger': user.stActivo === 1}">
+                                                <div class="box-header with-border">
+                                                    <div class="row">
+                                                        <div class="col-xs-8 vh-center">
+                                                            <i class="fa fa-user stUser" ng-class="{'isActive':user.stActivo === 1}"></i>
+                                                            <span class="lbUser text-truncate" tooltip-placement="bottom"
+                                                                tooltip="{{user.nbUsuario}} {{user.nbApaterno}} {{user.nbAmaterno}}"
+                                                                ng-if="(user.nbUsuario+user.nbApaterno+user.nbAmaterno).length > 28">
+                                                                {{user.nbUsuario}} {{user.nbApaterno}} {{user.nbAmaterno}}
+                                                            </span>
+                                                            <span class="lbUser text-truncate"
+                                                                ng-if="(user.nbUsuario+user.nbApaterno+user.nbAmaterno).length <= 28">
+                                                                {{user.nbUsuario}} {{user.nbApaterno}} {{user.nbAmaterno}}
+                                                            </span>
+                                                            <span class="currentusericon fa fa-check-circle"
+                                                                ng-if="user.isCurrentUser"
+                                                                tooltip-placement="bottom"
+                                                                tooltip="Usuario logueado">
+                                                            </span>
+                                                        </div>
+                                                        <div class="col-xs-4 text-right">
+                                                            <button class="btn btnUsers btn-rounded btn-xs"
+                                                                ng-click="toggleUserCard($event,'close')">
+                                                                <i class="fa fa-times"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="box-body">
+                                                    <div class="height-grid__back">
+                                                        <div class="row">
+                                                            <div class="col-xs-12">
+                                                                <div class="form-group">
+                                                                    <label>Perfil:</label>
+                                                                    <div class="input-group">
+                                                                        <div class="input-group-addon">
+                                                                            <i class="fa fa-list"></i>
+                                                                        </div>
+                                                                        <select name="userProfile" id="userProfile{{user.idUsuario}}" class="form-control" select2
+                                                                            data-minimum-results-for-search="Infinity"
+                                                                            idioma-s2="{{currentLanguage}}"
+                                                                            ng-model="user.perfil"
+                                                                            ng-disabled="user.isCurrentUser"
+                                                                            ng-change="changeProfilebyUser(user, 'userProfile'+user.idUsuario)"
+                                                                            ng-options="p as p.nbPerfil disable when p.stActivo == 0 for p in searchVO.profiles track by p.idPerfil">
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-xs-12">
+                                                                <div class="form-group text-center">
+                                                                    <switcher class="swTeclo"
+                                                                        id-check="stUser-{{user.idUsuario}}"
+                                                                        ng-model="user.stActivo"
+                                                                        ng-disabled="user.isCurrentUser"
+                                                                        ng-change="changeStatusUser(newValue, oldValue, user)"
+                                                                        true-label="Habilitado"
+                                                                        false-label="Inhabilitado"
+                                                                        true-value="1"
+                                                                        false-value="0">
+                                                                    </switcher>
+                                                                </div>
+                                                            </div>
+                                                            <div class="text-center reset-password"
+                                                                tooltip="Reestablecer contraseÃ±a"
+                                                                tooltip-placement="left">
+                                                                <button class="btn btn-box-tool" ng-class="{'btn-danger': user.stActivo === 1}"
+                                                                    ng-disabled="user.isCurrentUser"
+                                                                    ng-click="restorePassword(user)">
+                                                                    <i class="fa fa-key"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 text-center" ng-if="(gridOptions.data | filter:filter.user).length < 1">
+                                <h3 class="cardsAnimateIn">No se encontraron coincidencias</h3>
+                            </div>
+                        </div>
+                        <div class="col-xs-12" ng-if="paginationOptions.totalItems > 6">
+                            <div class="centerRow pagination-user paginationAnimateIn">
+                                <div class="pagination-detail">
+                                    <span class="pagination-info">
+                                        <span>Mostrar </span>
+                                        <span class="page-list">
+                                            <span class="btn-group dropup" style="min-width: 50px;">
+                                                <select select2 id="itemsOnPageSelect2"
+                                                    data-minimum-results-for-search="Infinity"
+                                                    class="form-control"
+                                                    ng-init="paginationOptions.itemsPerPage = '6'"
+                                                    ng-model="paginationOptions.itemsPerPage"
+                                                    ng-change="reloadGrid()">
+                                                    <option>6</option>
+                                                    <option ng-if="gridOptions.data.length > 24">24</option>
+                                                    <option ng-if="gridOptions.data.length > 60">60</option>
+                                                    <option ng-if="gridOptions.data.length > 120">120</option>
+                                                    <option>Todos</option>
+                                                </select>
+                                            </span>
+                                        </span>
+                                        <span> registros</span>
+                                    </span>
+                                </div>
+                                <div class="form-group">
+                                    <grid-pagination max-size="5" boundary-links="true"
+                                        total-items="paginationOptions.totalItems"
+                                        ng-model="paginationOptions.currentPage"
+                                        ng-change="reloadGrid()"
+                                        items-per-page="paginationOptions.itemsPerPage">
+                                    </grid-pagination>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MODO LISTA -->
+                <div class="row" ng-if="flags.isListMode">
+                    <div class="col-xs-12">
+                        <div class="box box-danger cardsAnimateIn">
+                            <div class="box-header with-border">
+                                <div class="row center-title_vertical">
+                                    <div class="col-xs-8">
+                                        <h3 class="box-title">
+                                            Registros encontrados: {{ (gridOptions.data | filter : filter.user).length }}
+                                        </h3>
+                                    </div>
+                                    <!-- <div class="col-xs-4 text-right">
+                                        <img class="cursor_pointer" src="static/dist/img/excel.png">
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div grid-data id='listMode' grid-options="gridOptions" grid-actions="gridActions">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover header-fixed"
+                                            st-table="gridOptions.data" st-safe-src="searchVO.arrayUsers">
+                                            <thead>
+                                                <tr>
+                                                    <th><a st-sort="1">FOTO</a></th>
+                                                    <th><a st-sort="2">NOMBRE</a></th>
+                                                    <th><a st-sort="3">USUARIO</a></th>
+                                                    <th><a st-sort="4">PERFIL</a></th>
+                                                    <th><a st-sort="5">CREADO</a></th>
+                                                    <th><a st-sort="6">MODIFICADO</a></th>
+                                                    <th><a st-sort="7">ESTATUS</a></th>
+                                                    <th><a st-sort="8">ACCIÓN</a></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-style="{'opacity' : (user.stActivo == 0) ? '0.7' : '1', 'background-color' : (user.isCurrentUser) ? '#ffeff1' : ''}"
+                                                    ng-repeat="user in gridOptions.data 
+                                                    | startFrom:(paginationOptions.currentPage-1)*paginationOptions.itemsPerPage 
+                                                    | limitTo:paginationOptions.itemsPerPage 
+                                                    | filter:{nuTelefono:filter.user} track by $index">
+                                                    <td class="center alignMiddle tableAnimateIn" style="position:relative;">
+                                                        <span class="currentusericon-table fa fa-check-circle"
+                                                            ng-if="user.isCurrentUser"
+                                                            tooltip-placement="right"
+                                                            tooltip="Usuario logueado">
+                                                        </span>
+                                                        <img class="imgUserTable img-circle"
+                                                            ng-if="user.lbFoto"
+                                                            ng-src="data:image/png;base64,{{user.lbFoto}}" />
+                                                        <img class="imgUserTable img-circle"
+                                                            ng-if="!user.lbFoto"
+                                                            ng-src="static/dist/img/user-circle.svg" />
+                                                    </td>
+                                                    <td class="text-truncate alignMiddle tableAnimateIn">
+                                                        <span tooltip="{{user.nbUsuario}} {{user.nbApaterno}} {{user.nbAmaterno}}">
+                                                            {{user.nbUsuario}} {{user.nbApaterno}} {{user.nbAmaterno}}
+                                                        </span>
+                                                    </td>
+                                                    <td class="text-center alignMiddle tableAnimateIn"><a>{{user.cdUsuario}}</a></td>
+                                                    <td class="tableAnimateIn">
+                                                        <!-- <select name="userProfile" id="userProfileT{{user.idUsuario}}" class="form-control" select2
+                                                            data-minimum-results-for-search="Infinity"
+                                                            idioma-s2="{{currentLanguage}}"
+                                                            ng-model="user.perfil"
+                                                            ng-disabled="user.isCurrentUser"
+                                                            ng-change="changeProfilebyUser(user, 'userProfileT'+user.idUsuario)"
+                                                            ng-options="p as p.nbPerfil for p in searchVO.profiles track by p.idPerfil">
+                                                        </select> -->
+                                                        <select name="userProfile" id="userProfileT{{user.idUsuario}}" class="form-control userProfileT"
+                                                            ng-model="user.perfil"  select2 data-minimum-results-for-search="Infinity" 
+                                                            ng-disabled="user.isCurrentUser"
+                                                            ng-change="changeProfilebyUser(user, 'userProfileT'+user.idUsuario)"
+                                                            ng-options="p as p.nbPerfil disable when p.stActivo == 0 for p in searchVO.profiles track by p.idPerfil">
+
+                                                        </select>
+                                                    </td>
+                                                    <td class="text-center alignMiddle text-truncate tableAnimateIn">{{user.fhCreacion !== '' ? user.fhCreacion : 'Sin fecha' | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+                                                    <td class="text-center alignMiddle text-truncate tableAnimateIn">{{user.fhModificacion !== '' ? user.fhModificacion : 'Sin fecha' | date:'dd-MM-yyyy HH:mm:ss'}}</td>
+                                                    <td class="text-center tableAnimateIn">
+                                                        <switcher class="swTeclo"
+                                                            id-check="stUserT-{{user.idUsuario}}"
+                                                            ng-model="user.stActivo"
+                                                            ng-disabled="user.isCurrentUser"
+                                                            ng-change="changeStatusUser(newValue, oldValue, user)"
+                                                            true-label="<i class='fa fa-check'></i>"
+                                                            false-label="<i class='fa fa-times'></i>"
+                                                            true-value="1"
+                                                            false-value="0">
+                                                        </switcher>
+                                                    </td>
+                                                    <td class="text-center tableAnimateIn">
+                                                        <button class="btn btn-box-tool btn-sm" ng-class="{'btn-danger': user.stActivo === 1}"
+                                                            ng-disabled="user.isCurrentUser"
+                                                            ng-click="restorePassword(user)"
+                                                            tooltip-placement="left"
+                                                            tooltip="Reestablecer contraseña">
+                                                            <i class="fa fa-key"></i>
+                                                        </button>
+                                                        <button class="btn btn-danger btn-box-tool btn-sm"
+                                                            ng-click="editUser(user)"
+                                                            tooltip-placement="left"
+                                                            tooltip="Editar usuario">
+                                                            <i class="fa fa-pencil"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-if="(gridOptions.data | filter:filter.user).length < 1">
+                                                    <td colspan="5" class="text-center tableAnimateIn">
+                                                        <h3>No se encontraron coincidencias</h3>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="centerRow paginationAnimateIn" style="align-items:center;">
+                                        <div class="pagination-detail">
+                                            <span class="pagination-info">
+                                                <span>Mostrar </span>
+                                                <span class="page-list">
+                                                    <span class="btn-group dropup" style="width: 50px;">
+                                                        <select select2 id="itemsOnPageSelect2"
+                                                            data-minimum-results-for-search="Infinity"
+                                                            class="form-control"
+                                                            ng-init="paginationOptions.itemsPerPage = '5'"
+                                                            ng-model="paginationOptions.itemsPerPage"
+                                                            ng-change="reloadGrid()">
+
+                                                            <option ng-if="gridOptions.data.length < 5">{{gridOptions.data.length}}</option>
+                                                            <option ng-if="gridOptions.data.length >= 5">5</option>
+                                                            <option ng-if="gridOptions.data.length > 10">10</option>
+                                                            <option ng-if="gridOptions.data.length > 50">50</option>
+                                                            <option ng-if="gridOptions.data.length > 100">100</option>
+                                                            <option ng-if="gridOptions.data.length > 5">Todos</option>
+                                                        </select>
+                                                    </span>
+                                                </span>
+                                                <span> registros</span>
+                                            </span>
+                                        </div>
+                                        <div class="form-group">
+                                            <grid-pagination max-size="5" boundary-links="true"
+                                                total-items="paginationOptions.totalItems"
+                                                ng-model="paginationOptions.currentPage"
+                                                ng-change="reloadGrid()"
+                                                items-per-page="paginationOptions.itemsPerPage">
+                                            </grid-pagination>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </article>
+        </div>
+    </section>
+</form>

@@ -1,0 +1,69 @@
+.menufixed{
+	position: fixed !important;
+	overflow: hidden;
+}
+.sidebar-menu{
+	height: calc(100vh - 3.571rem) !important;
+	position: relative !important;
+}
+.menuItem,
+.submenuItem {
+	transition: all .2s ease-out !important;
+}
+.active-m {
+	font-weight: 800;
+}
+
+.submenuItem:hover{
+	font-weight: 800 !important;
+}
+
+.active-subm{
+	font-weight: 800 !important;
+}
+
+.title-menu{
+	width: 16.43rem !important;
+	margin-bottom: 0.7143rem !important;
+	position: fixed !important;
+	z-index: 1000 !important;
+	transition: all .28s linear !important;
+}
+.cont-empty{
+	margin: 0 !important;
+	height: 2.9rem;
+}
+
+/* Menu NO fijo */
+.title-menu-noFijo {
+	margin-bottom: 0 !important;
+	position: relative !important;
+	box-shadown: none !important;
+}
+.sidebar-menu.sidebar-menu-noFijo {
+	height: auto !important;
+}
+.sidebar-menu.sidebar-menuHeaderFijo {
+	height: 100vh !important;
+}
+
+/* Carga de menu */
+li.searchMenu {
+	position: absolute;
+    top: 5rem;
+    width: 100%;
+}
+li.searchMenu img {
+    width: 40%;
+}
+li.searchMenu p {
+	margin-top: .5rem;
+	font-size: 1rem;
+	font-weight: bold;
+}
+li.searchMenu.ng-enter {
+	animation: ngAnimateIn .5s;
+}
+li.searchMenu.ng-leave{
+	animation: fadeOut .5s;
+}

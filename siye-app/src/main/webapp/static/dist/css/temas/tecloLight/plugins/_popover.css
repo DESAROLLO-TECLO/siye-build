@@ -1,0 +1,43 @@
+/* POPOVER CONTENEDOR PRINCIPAL */
+.tema-tecloLight .popover {
+	background-color: #fff;
+	color: #55565a;
+	border: 1px solid #fff;
+	box-shadow: 1px 1px 10px rgba(150, 149, 151, .7);
+}
+
+/* Título del popover */
+.tema-tecloLight .popover-title {
+	background-color: #cf0a2c;
+	color: #fff;
+	border-bottom: 1px solid #cc4865;
+}
+
+/* Caret del popover */
+.tema-tecloLight .popover.top > .arrow {
+	border-top-color: rgba(0, 0, 0, 0.1);
+}
+.tema-tecloLight .popover.top > .arrow:after {
+	border-top-color: #fff;
+}
+
+.tema-tecloLight .popover.right > .arrow {
+	border-right-color: rgba(0, 0, 0, 0.1);
+}
+.tema-tecloLight .popover.right > .arrow:after {
+	border-right-color: #fff;
+}
+
+.tema-tecloLight .popover.bottom > .arrow {
+	border-bottom-color: rgba(0, 0, 0, 0.1);
+}
+.tema-tecloLight .popover.bottom > .arrow:after {
+	border-bottom-color: #cf0a2c;
+}
+
+.tema-tecloLight .popover.left > .arrow {
+	border-left-color: rgba(0, 0, 0, 0.1);
+}
+.tema-tecloLight .popover.left > .arrow:after {
+	border-left-color: #fff;
+}

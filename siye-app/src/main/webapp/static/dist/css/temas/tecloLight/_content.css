@@ -1,0 +1,90 @@
+/* Color por defecto para todos los enlaces */
+.tema-tecloLight a {
+	color: #55565a;
+}
+.tema-tecloLight a:hover {
+	color: #cf0a2c;
+}
+
+/* CONTENT-WRAPPER */
+/* Color de fondo del contenido */
+.tema-tecloLight .content-wrapper {
+	background-color: #ecf0f5;
+}
+
+/* Color de texto del submódulo */
+.tema-tecloLight .content-header {
+	color: #55565a;
+}
+/* BREADCRUMBS */
+/* Color del breacrumbs con enlace */
+.tema-tecloLight .content-header>.breadcrumb>li>a {
+	color: #55565a;
+}
+.tema-tecloLight .content-header>.breadcrumb>li>a:hover {
+	color: #cc4865;
+}
+/* Color del breadcrumbs activado */
+.tema-tecloLight .breadcrumb > .active {
+	color: #969597;
+}
+/* Color del separador ">" */
+.tema-tecloLight .breadcrumb > li + li:before {
+	color: #cf0a2c;
+}
+
+/* BOX */
+/* Sombra de los box */
+.tema-tecloLight .box {
+	background-color: #fff;
+	transition: all .2s ease-out;
+	box-shadow: 0 1px 0.3571rem rgba(150, 149, 151, .4);
+	color: rgba(85, 86, 90, .9);
+}
+.tema-tecloLight .box:hover {
+	box-shadow: 0 2px 1.071rem rgba(150, 149, 151, .5);
+}
+/* Borde de los box-danger */
+.tema-tecloLight .box.box-danger {
+	border-top-color: #cf0a2c;
+}
+
+/* Color del título de los box */
+.tema-tecloLight .box-title {
+	color: #55565a;
+}
+/* Color de componentes de los box */
+.tema-tecloLight .box input,
+.tema-tecloLight .box textarea,
+.tema-tecloLight .box select {
+	color: #55565a;
+}
+
+/* MODAL */
+/* Color de franja de los showAviso, showError y showConfirmacion */
+.tema-tecloLight .bg-red-active {
+	background-color: #cf0a2c; /*También aplica para los botones*/
+}
+
+/* BOTONES */
+/* Color de fondo de los botones btn-danger, btn-primary */
+.tema-tecloLight .btn-danger,
+.tema-tecloLight .btn-primary {
+	color: #fff;
+	background-color: #cf0a2c;
+	border-color: #cf0a2c;
+	box-shadow: 0px 1px 5px rgba(0, 0, 0, .4);
+	transition: all .1s ease-out;
+}
+.tema-tecloLight .btn-danger:hover,
+.tema-tecloLight .btn-primary:hover {
+	color: #fff;
+	background-color: #cf0a2c;
+	border-color: #cf0a2c;
+	box-shadow: 1px 2px 15px rgba(0, 0, 0, .5);
+}
+
+.tema-tecloLight .btn-danger:active,
+.tema-tecloLight .btn-primary:active {
+	box-shadow: inherit;
+}

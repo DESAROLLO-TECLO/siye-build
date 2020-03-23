@@ -1,0 +1,350 @@
+<div id="modalValidacionCer" class="modal fade" role="dialog"
+	data-keyboard="false" data-backdrop="static">
+	<meta charset="utf-8" />
+	<style>
+		fieldset{
+			padding: 0.3rem 0 0 1rem;
+			margin:0;
+		}
+		.modal-lg{
+			width: 90%;
+		}
+		.labelBusqueda{
+			vertical-align: middle;
+			line-height: 2.4rem;
+		}
+		.etiquetaCancelado {
+			display: inline-block;
+			min-width: 0.7143rem;
+			padding: 0.2143rem 0.0rem;
+			font-size: 0.8857rem;
+			font-weight: 600;
+			line-height: 1;
+			vertical-align: baseline;
+			white-space: nowrap;
+			text-align: center;
+			border-radius: 0.7143rem;
+		}
+		.hr2{
+    		margin-bottom: .429rem;
+    		margin-top: 0;
+    		border-top: 1px solid #d7d7d7;
+    	}
+		.subTituloDI{
+    		color: rgba(155, 155, 155, 0.9);
+    	}
+    	.botonDescargaPDFM {
+				display: inline-block;
+				min-width: 0.7143rem;
+				padding: 0.2143rem 0.0rem;
+				font-size: 0.8857rem;
+				font-weight: 600;
+				line-height: 1;
+				vertical-align: baseline;
+				white-space: nowrap;
+				text-align: center;
+				border-radius: 0.7143rem;
+				border: 3px solid rgba(85, 86, 90, .9);
+				background: rgba(210, 210, 210, 0.9);
+			}
+	</style>
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header bg-red-active">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close" ng-click="updateFront()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title center" id="myModalLabel">Intentos</h4>
+			</div>
+			
+			<div class="modal-body">
+				<form name="formVCertSAT" novalidate>
+					<div class="row">
+						<div class="col-md-offset-1 col-md-10">
+							<div class="box box-danger">
+								<div class="box-header with-border text-center">
+									<div class="col-md-12 center">
+										<h3 class="box-title">Evaluación</h3>
+									</div>
+								</div>
+								<div class="row center">
+									<div class="col-md-12">
+										<div class="row">
+											<div class="col-md-12">
+												<div class="form-group" style="margin-bottom: 0 !important;">
+													<div class="thumbnail">
+												      <div class="caption">
+												        <h3>
+											        		{{consultaEvaData[0].cdEncuesta}} - {{consultaEvaData[0].nbEncuesta}}
+											        	</h3>
+												      </div>
+												    </div>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group" style="margin-bottom: 0 !important;">
+													<div class="thumbnail">
+												      <div class="caption">
+												        <h5>
+												        	<i class="fa fa-user"></i>
+															<label>Tipo: </label>
+															<label class="text-16">
+												        		{{consultaEvaData[0].tipoEncuesta.nbTipoEncuesta}}
+												        	</label>
+														</h5>
+												        
+												      </div>
+												    </div>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group" style="margin-bottom: 0 !important;">
+													<div class="thumbnail">
+												      <div class="caption">
+												        <h5>
+												        	<i class="fa fa-exchange"></i>
+															<label>Secciones: </label>
+															<label class="text-16">
+												        		{{consultaEvaData[0].nuSecciones==null?0:consultaEvaData[0].nuSecciones}}
+												        	</label>
+														</h5>
+												      </div>
+												    </div>
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<div class="thumbnail">
+												      <div class="caption">
+												        <h5>
+												        	<i class="fa fa-exchange"></i>
+															<label>Preguntas: </label>
+															<label class="text-16">
+												        		{{consultaEvaData[0].nuPreguntas}}
+												        	</label>
+														</h5>
+												        
+												      </div>
+												    </div>
+												</div>
+											</div>
+<!-- 											Porcentaje para aprobar -->
+											<div class="col-md-3">
+												<div class="form-group">
+													<div class="thumbnail">
+												      <div class="caption">
+												        <h5>
+												        	<i class="fa fa-cloud-download"></i>
+															<label>Descargar: </label>
+															<a ng-click="descargaPDFRecibida(consultaEvaData[0].nbEncuestaOrigen)" class="text-16">
+																<img src="static/dist/img/pdf_logo.png" width="25px;" class="text-16">
+															</a>
+														</h5>
+												      </div>
+												    </div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-md-12">
+							<div class="box box-danger">
+								<div class="box-header row">
+									<div class="col-md-6 col-xs-12">
+										<h3 class="box-title">
+											Registros Encontrados:  {{ (consultaEvaIntentos.usuarioEncuestaIntentos | filter:view.searchSomethingInt).length | number:0 }}
+										</h3>
+									</div>
+									<div class="col-md-offset-3 col-md-3 col-xs-10">
+		      						 	<div class="input-group">
+							        		<input id="searchSomethingInt" type="text" class="form-control" placeholder="Buscar por filtro" ng-model="view.searchSomethingInt">
+											<span class="input-group-addon"><i class="fa fa-search"></i></span>
+											<a class="img-rounded" title="Genera Reporte {{parametrosConsulta.tipoBusqueda}}" ng-click="descargarExcelInt()">
+												<span class="pull-right">
+													<img src="static/dist/img/excel.png" width="25px;">
+												</span>
+											</a>
+										</div>
+							 		</div>
+								</div>
+								<div class="box-body table-responsive">
+									<div class="col-md-12">
+										<div class="row">
+											<table id="tabla_informacion_Int" class="table table-striped table-hover header-fixed">
+												<thead>
+													<tr>
+														<th style="width:10px">
+															<span data-toggle="tooltip" data-placement="top" data-html="true" data-original-title="{{generales.txMarcaTodos}}">
+																<label class="containerCheck">
+																	<input type="checkbox" ng-checked="flags.todos" ng-false-value="false" ng-true-value="true"
+																		ng-change="marcarTodos(flags.todos)" ng-model="flags.todos">
+																	<span class="checkmark"></span>
+																</label>
+															</span>
+														</th>
+														<th sort order="'fhInicio'" 			by="order" reverse="reverse" class="text-center" style="width: 45px;">FECHA APLICACIÓN</th>
+														<th sort order="'nuPreguntasCorrectas'" by="order" reverse="reverse" class="text-center" style="width: 45px;">CORRECTAS</th>
+														<th sort order="'nuPreguntasIncorr'" 	by="order" reverse="reverse" class="text-center" style="width: 45px;">INCORRECTAS</th>
+														<th sort order="'nuPreguntasVacias'"	by="order" reverse="reverse" class="text-center" style="width: 45px;">NO RESPONDIDAS</th>
+														<th sort order="'nuCalificacion'" 		by="order" reverse="reverse" class="text-center" style="width: 45px;">CALIFICACIÓN</th>
+														<th sort order="'idStCalificacion'"		by="order" reverse="reverse" class="text-center" style="width: 50px;">RESULTADO</th>
+														<th sort order="'duracion'" 			by="order" reverse="reverse" class="text-center" style="width: 60px;">DURACIÓN</th>
+						                                <th sort order="''"						by="order" reverse="reverse" class="text-center" style="width: 45px;">COMPROBANTE</th>
+						                                <th sort order="''"						by="order" reverse="reverse" class="text-center" style="width: 45px;">CONSTANCIA</th>
+						                                <th sort order="''"						by="order" reverse="reverse" class="text-center" style="width: 45px;">DETALLE</th>
+													</tr>
+												</thead>
+<!-- 												<tbody style="overflow-x: hidden !important;overflow-y: hidden !important;"> -->
+													<tbody style="display: block;overflow: auto;max-height: 200px;">
+													<tr ng-if="(consultaEvaIntentos.usuarioEncuestaIntentos | filter:view.searchSomethingInt).length < 1">
+														<td colspan="8" class="text-center">
+															<h4>No se encontraron coincidencias</h4>
+														</td>
+													</tr>
+													<tr dir-paginate="ecuestaIntento in consultaEvaIntentos.usuarioEncuestaIntentos | filter:view.searchSomethingInt  | orderBy:order:reverse | itemsPerPage: view.rowsPerPageInt" pagination-id="tabla1">
+														<td class="center" style="width:10px">
+															<span data-toggle="tooltip" data-placement="top" data-html="true" data-original-title="{{intento.txAgregar}}">
+																<label class="containerCheck">
+																	<input type="checkbox" ng-checked="ecuestaIntento.checked" ng-false-value="false" ng-true-value="true"
+																		ng-model="ecuestaIntento.checked" ng-click="checkManual(ecuestaIntento, ecuestaIntento.checked)">
+<!-- 																		ng-disabled="ecuestaIntento.stCalificacion.cdStCalificacion != 'A' || ecuestaIntento.nuPreguntasVacias > 0"> -->
+																	<span class="checkmark"></span>
+																</label>
+															</span>
+														</td>
+														<td class="text-center" style="width: 45px;">
+															{{ecuestaIntento.fhInicio}}
+														</td>
+														<td class="text-center" style="width: 45px;">
+															{{ecuestaIntento.nuPreguntasCorrectas | number}}
+														</td>
+														<td class="text-center" style="width: 45px;">
+															{{ecuestaIntento.nuPreguntasIncorr | number}}
+														</td>
+														<td class="text-center" style="width: 45px;">
+															{{ecuestaIntento.nuPreguntasVacias | number}}
+														</td>
+														<td class="text-center" style="width: 45px;">
+															{{ecuestaIntento.nuCalificacion}} 
+														</td>
+														<td class="text-center" style="width: 50px;">
+															{{ecuestaIntento.stCalificacion.nbStCalificacion}} 
+														</td>
+														<td class="text-center" style="width: 60px;">
+															<div class="col-md-10" ng-if="ecuestaIntento.duracionColor != -1"> 
+						                						<span class="etiquetaCancelado" 
+																	style="width:100%; background-color: {{ecuestaIntento.duracionColor}};">
+																	{{ecuestaIntento.duracion}}
+																</span>
+															</div>
+															<div class="col-md-10" ng-if="ecuestaIntento.duracionColor == -1"> 
+						                						{{ecuestaIntento.duracion}}
+															</div>
+														</td>
+														<td class="text-center" style="width: 45px;">
+															<a ng-click="mostrarPDF(consultaEvaIntentos.usuario.idUsuario, ecuestaIntento.idUsuEncuIntento, consultaEvaIntentos.idUsuarioEncuesta,'COM')"
+																ng-if="ecuestaIntento != null && ecuestaIntento.stCalificacion != null && ecuestaIntento.stCalificacion.cdStCalificacion == 'A'"
+																data-toggle="tooltip" data-placement="left" data-html="true" data-original-title="Descargar Comprobante">
+																<img src="static/dist/img/pdf_logo.png" width="25px;">
+															</a>
+														</td>
+														<td class="text-center" style="width: 45px;">
+															<a ng-click="mostrarPDF(consultaEvaIntentos.usuario.idUsuario, ecuestaIntento.idUsuEncuIntento, consultaEvaIntentos.idUsuarioEncuesta,'C')"
+																ng-if="ecuestaIntento != null && ecuestaIntento.stCalificacion != null && ecuestaIntento.stCalificacion.cdStCalificacion == 'A'"
+																data-toggle="tooltip" data-placement="left" data-html="true" data-original-title="Descargar Constancia">
+																<img src="static/dist/img/pdf_logo.png" width="25px;">
+															</a>
+														</td>
+														<td class="text-center" style="width: 45px;">
+															<a ng-click="mostrarPDF(consultaEvaIntentos.usuario.idUsuario, ecuestaIntento.idUsuEncuIntento, consultaEvaIntentos.idUsuarioEncuesta,'P')"
+																ng-if="ecuestaIntento.stEncuesta.idStEncuesta < 3"
+																data-toggle="tooltip" data-placement="left" data-html="true" data-original-title="Descargar Detalle de Preguntas">
+																<img src="static/dist/img/pdf_logo.png" width="25px;">
+															</a>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										
+										<div class="row">
+										<div class="col-md-2 center">
+											<span ng-click="descargarPDFMasivoInt('C')" ng-show="contadorCheck>0" class="botonDescargaPDFM fullWidth" 
+												data-toggle="tooltip" data-placement="top" data-html="true" data-original-title="Descargar Constancias">
+												<img src="static/dist/img/pdf_logo.png" width="25px;">
+												<b>Descargar Constancias</b>
+											</span>
+										</div>
+										<div class="col-md-2 center">
+											<span ng-click="descargarPDFMasivoInt('P')" ng-show="contadorCheck>0" class="botonDescargaPDFM fullWidth" 
+												data-toggle="tooltip" data-placement="top" data-html="true" data-original-title="Descargar Detalle Preguntas">
+												<img src="static/dist/img/pdf_logo.png" width="25px;">
+												<b>Descargar Detalle</b>
+											</span>
+										</div>
+									</div>
+										
+										
+									</div>
+								</div>
+								<div class="container-fluid">
+									<div class="fixed-table-pagination" style="display:block;">
+										<rows-per-page rows="view.searchSomethingInt).length" filtro="view.searchSomethingInt" array="consultaEvaIntentos.usuarioEncuestaIntentos"></rows-per-page>
+										<dir-pagination-controls class="pull-right pagination-detail" pagination-id="tabla1"></dir-pagination-controls>
+									</div>
+								</div>
+							</div>
+						</div>
+<!-- 						<div class="col-md-3" ng-if="contadorCheck>0"> -->
+<!-- 							<div class="table-responsive"> -->
+<!--                                     <fieldset class="scheduler-border"> -->
+<!--                                         <legend class="scheduler-border">Descarga de archivos</legend> -->
+<!--                                         <table class="table tblsnborder"> -->
+<!--                                             <tr> -->
+<!--                                                 <td> -->
+<!--                                                 	<span data-toggle="tooltip" data-placement="top" data-html="true" data-original-title="Descargar todos los comprobantes"> -->
+<!-- 														<a ng-click="descargarPDFMasivo('C')"> -->
+<!-- 															<img src="static/dist/img/pdf_logo.png" width="25px;"> -->
+<!-- 														</a> -->
+<!-- 													</span> -->
+<!-- 												</td> -->
+<!--                                                 <td> -->
+<!--                                                 	<span data-toggle="tooltip" data-placement="top" data-html="true" data-original-title="Descargar todos los detalles"> -->
+<!-- 														<a ng-click="descargarPDFMasivo('P')"> -->
+<!-- 															<img src="static/dist/img/pdf_logo.png" width="25px;"> -->
+<!-- 														</a> -->
+<!-- 													</span> -->
+<!--                                                 </td> -->
+<!--                                             </tr> -->
+<!--                                         </table> -->
+<!--                                     </fieldset> -->
+<!--                                 </div> -->
+<!-- 							<div class="row"> -->
+<!-- 								<div class="col-md-1" class="center"> -->
+<!-- 									<span data-toggle="tooltip" data-placement="top" data-html="true" data-original-title="Descargar todos los comprobantes"> -->
+<!-- 										<a ng-click="descargarPDFMasivo('C')"> -->
+<!-- 											<img src="static/dist/img/pdf_logo.png" width="25px;"> -->
+<!-- 										</a> -->
+<!-- 									</span> -->
+<!-- 								</div> -->
+<!-- 								<div class="col-md-1" class="center"> -->
+<!-- 									<span data-toggle="tooltip" data-placement="top" data-html="true" data-original-title="Descargar todos los detalles"> -->
+<!-- 										<a ng-click="descargarPDFMasivo('P')"> -->
+<!-- 											<img src="static/dist/img/pdf_logo.png" width="25px;"> -->
+<!-- 										</a> -->
+<!-- 									</span> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

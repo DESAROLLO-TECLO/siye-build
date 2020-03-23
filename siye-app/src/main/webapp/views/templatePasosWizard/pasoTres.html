@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Paso 1</title>
+	</head>
+	
+	<body>
+		<div class="row" ng-controller="pasoTresController">
+			<form name="formStepThree" novalidate>
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group"
+								ng-class="{'has-error': (formStepThree.nbCellPhone.$invalid && formStepThree.nbCellPhone.$dirty) }">
+								<label>Número celular:</label>
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-mobile"></i>
+									</div>											
+									<input type="text" class="form-control" name="nbCellPhone"
+										ng-required="true"
+										ng-model="informationContactVO.nbCellPhone" />
+									
+								</div>
+								
+								<div ng-show="formStepThree.nbCellPhone.$error.required && formStepThree.nbCellPhone.$dirty">
+									<span ng-style="{color:'red'}">
+										El número celular es requerido
+									</span>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-md-4">
+							<div class="form-group"
+								ng-class="{'has-error': (formStepThree.nbCountry.$invalid && formStepThree.nbCountry.$dirty) }">
+								<label>País:</label>
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-globe"></i>
+									</div>											
+									<input type="text" class="form-control" name="nbCountry"
+										ng-required="true"
+										ng-model="informationContactVO.nbCountry" />
+									
+								</div>
+								
+								<div ng-show="formStepThree.nbCountry.$error.required && formStepThree.nbCountry.$dirty">
+									<span ng-style="{color:'red'}">
+										El país es requerido
+									</span>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-md-4">
+							<div class="form-group"
+								ng-class="{'has-error': (formStepThree.nbState.$invalid && formStepThree.nbState.$dirty) }">
+								<label>Estado:</label>
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-university"></i>
+									</div>											
+									<input type="text" class="form-control" name="nbState"
+										ng-required="true"
+										ng-model="informationContactVO.nbState" />
+									
+								</div>
+								
+								<div ng-show="formStepThree.nbState.$error.required && formStepThree.nbState.$dirty">
+									<span ng-style="{color:'red'}">
+										El estado es requerido
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row centerCol">
+						<div class="col-xs-12 col-md-2">
+							<div class="centerRow">
+						        <button class="btn btn-danger" wz-previous>
+						        	<i class="fa fa-arrow-left"></i>
+						        </button>
+						        <button class="btn btn-default" wz-reset>
+						        	<i class="fa fa-refresh"></i>
+						        </button>
+						        <button class="btn btn-danger" ng-click="saveStepThree()">
+						        	Guardar
+						        </button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>

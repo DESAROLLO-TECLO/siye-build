@@ -1,0 +1,86 @@
+/* Contenedor principal del HEADER */
+.tema-tecloLightDark .main-header {
+	background-color: #fff;
+}
+.tema-tecloDark .main-header img {
+/* 	-moz-filter: grayscale(1) brightness(4) contrast(1); */
+/* 	-ms-filter: grayscale(1) brightness(4) contrast(1); */
+/* 	-o-filter: grayscale(1) brightness(4) contrast(1); */
+/* 	-webkit-filter: grayscale(1) brightness(4) contrast(1); */
+/*     filter: grayscale(1) brightness(4) contrast(1); */
+/*     filter: gray; */
+}
+.tema-tecloLightDark .main-header .logo,
+.tema-tecloLightDark .navbar {
+	box-shadow: 1px 1px 2px rgba(150, 149, 151, .2);
+}
+.tema-tecloLightDark .main-header .logo {
+	background-color: #fff;
+}
+
+/* Ícono de Menú hamburguesa */
+.tema-tecloLightDark .uno,
+.tema-tecloLightDark .dos,
+.tema-tecloLightDark .tres {
+	background-color: #55565a;
+}
+
+/* Título del Header (Nombre de la aplicación) */
+.tema-tecloLightDark .bannertitle{
+	color: #55565a;
+}
+
+/* Ícono de Pantalla completa */
+.tema-tecloLightDark .fullScreen-iconIn i {
+	color: #969597;
+}
+.tema-tecloLightDark .fullScreen-iconIn i:hover {
+	color: #cc4865;
+}
+
+/* Ícono de Perfil de usuario, y nombre de usuario */
+.tema-tecloLightDark .iconProfile {
+	border: .1em solid #969597;
+}
+.tema-tecloLightDark .user-menu .nbUsuario {
+	color: #969597;
+}
+.tema-tecloLightDark .user-menu .nbUsuario:hover .iconProfile {
+	border: .1em solid #cc4865;
+}
+.tema-tecloLightDark .user-menu .nbUsuario:hover {
+	color: #cc4865;
+}
+/* Información del usuario */
+.tema-tecloLightDark .cont-infoUser {
+	background-color: #fff;
+	color: #55565a;
+	box-shadow: 1px 1px 10px rgba(150, 149, 151, .7);
+}
+.tema-tecloLightDark .cont-infoUser .fechaActual,
+.tema-tecloLightDark .cont-infoUser .infoUser {
+	box-shadow: 0 -1px rgba(150, 149, 151, .1) inset;
+}
+
+/* Ícono de configuración */
+.tema-tecloLightDark .config{
+	color: #969597;
+}
+.tema-tecloLightDark .config:hover{
+	color: #cc4865;
+}
+/* Información de configuración */
+.tema-tecloLightDark .opc {
+	background-color: #fff;
+	box-shadow: 1px 1px 10px rgba(150, 149, 151, .7);
+}
+.tema-tecloLightDark .opc a {
+	color: #55565a;
+}
+.tema-tecloLightDark .opc li {
+	box-shadow: 0 1px rgba(150, 149, 151, .1) inset;
+}
+.tema-tecloLightDark .opc li:hover {
+	background-color: #cf0a2c;
+	color: #fff;
+}

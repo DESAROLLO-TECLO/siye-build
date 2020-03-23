@@ -1,0 +1,32 @@
+/* Caret del contenedor del timepicker */
+.tema-tecloLightDark .bootstrap-timepicker-widget.dropdown-menu:before {
+	border-bottom: 0.5rem solid rgba(0, 0, 0, 0.2);
+}
+.tema-tecloLightDark .bootstrap-timepicker-widget.dropdown-menu:after {
+	border-bottom: 0.4286rem solid #fff;
+}
+
+/* Íconos de arriba abajo del timepicker */
+.tema-tecloLightDark .bootstrap-timepicker-widget table td a {
+	background-color: #fff;
+	color: #cc4865;
+	box-shadow: 1px 1px 5px rgba(0,0,0,.2);
+}
+.tema-tecloLightDark .bootstrap-timepicker-widget table td a:hover {
+	background-color: rgba(233,45,61, .1);
+	color: #cf0a2c;
+}
+
+/* Input de hora minuto segundos */
+.tema-tecloLightDark .bootstrap-timepicker-hour,
+.tema-tecloLightDark .bootstrap-timepicker-minute,
+.tema-tecloLightDark .bootstrap-timepicker-second {
+	background-color: #fff;
+	color: #55565a;
+	border: none;
+}
+.tema-tecloLightDark .bootstrap-timepicker-hour:focus,
+.tema-tecloLightDark .bootstrap-timepicker-minute:focus,
+.tema-tecloLightDark .bootstrap-timepicker-second:focus {
+	border: 1px solid #cc4865;
+}

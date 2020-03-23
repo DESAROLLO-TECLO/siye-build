@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Login</title>
+<style>
+    body {
+    	margin: 110px 0;
+    	background-image: none;
+    	background: linear-gradient(141deg, #55565a 0%, #333 59%, #333 20%);
+	}
+</style>
+</head>
+
+<body>
+	<form name="formLogin">
+		<div id="login-container">
+			<div id="logo">
+				<img class="iconLogo" src="static/dist/img/iconTeclo_blanco.png" alt="Logo" />
+			</div>
+			<div id="login">
+				<h3 class="titleApp">
+					<label><b>{{'APP.Login.nombreAplicacion' | translate}}</b></label>
+				</h3>
+
+				<p class="clienteTitle">{{'APP.Login.nombreCliente' | translate}}</p>
+				
+				<div ng-if="error" class="alert alert-teclo ngIfAnimate">
+    				<strong>{{error.message}}</strong>
+				</div>
+				<div class="form-group formGroup-login" align="left" ng-class="{'has-error': formLogin.username.$invalid && formLogin.username.$dirty}">
+					<div class="input-group">
+						<span class="input-group-addon inputGroupAddon-login">
+							<i class="fa fa-user"></i>
+						</span>
+						<input type="text" id="login-username"
+							class="form-control formControl-login"
+							name="username"
+							placeholder="{{'APP.Login.usuario.placeholder' | translate}}"
+							ng-required="true"
+							ng-model="user.username" />
+					</div>
+					<div ng-show="formLogin.username.$error.required && formLogin.username.$dirty">
+						<span ng-style="{color:'red'}">
+							{{'APP.Login.usuario.validacion' | translate}}
+						</span>
+					</div>
+				</div>
+
+				<div class="form-group formGroup-login" align="left" ng-class="{'has-error': formLogin.password.$invalid && formLogin.password.$dirty}">
+					<div class="input-group">
+						<div class="input-group-addon inputGroupAddon-login">
+							<i class="fa fa-asterisk"></i>
+						</div>
+						
+						<input type="{{inputType}}" id="login-password"
+							class="form-control formControl-login"
+							name="password"
+							placeholder="{{'APP.Login.clave.placeholder' | translate}}"
+							ng-required="true"
+							ng-model="user.password" />
+						<div class="hideShowPassword noneSelectedUser"
+							ng-mouseover="showClave()"
+							ng-mouseleave="hideClave()">
+							
+							<i ng-if="!b_hidePassword" class="fa fa-eye"></i>
+							<i ng-if="b_hidePassword" class="fa fa-eye-slash"></i>
+						</div>
+					</div>
+					<div ng-show="formLogin.password.$error.required && formLogin.password.$dirty">
+						<span ng-style="{color:'red'}">
+							{{'APP.Login.clave.validacion' | translate}}
+						</span>
+					</div>
+				</div>
+				<div class="form-group formGroup-login">
+					<button id="login-btn"
+						class="btn btn-primary btn-block"
+						ng-disabled="formLogin.$invalid"
+						ng-click="login()">
+						
+						<span>
+							{{'APP.Base.boton.entrar' | translate}} &nbsp;
+							<i class="fa fa-play iconBtnLogin"></i>
+						</span>
+					</button>
+				</div>			
+			
+				<div class="footerLogin">
+					<strong>
+						{{'APP.Footer.derechosAutor' | translate}} &copy; 
+						<a href="http://teclomexicana.mx/" target="_blank">
+							{{'APP.Footer.tecloMexicana' | translate}}
+						</a>
+					</strong>
+					<span class="versionApp">
+						{{'APP.Footer.version' | translate}} {{versionApp}}
+					</span>
+				</div>
+				
+				<div class="blinkAbtBsL" ng-if="currentPath() === '/' && _viewIndicator">
+					<div class="blinkL" ng-style="{'opacity':opacityBlink}">
+						<div class="toBlink"
+							ng-style="{'background-color':amb.color, 'border-color':amb.border}">
+						</div>
+					</div>
+					<div class="infoAbtBs">
+						<div class="abtBs">
+							<p><strong>Ambiente: </strong><span>{{amb.ambiente}}</span></p>
+							<p><strong>Base: </strong><span>{{amb.base}}</span></p>
+							<i class="iconRefresh fa fa-refresh" ng-click="refreshAll()"></i>
+						</div>
+						<hr />
+						<div class="blinkConfig">
+							<div>
+								<label>Intensidad del indicador</label>
+								<input type="range" min="0.3" max="1" step=".1"
+									ng-model="opacityBlink" />
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /#login -->
+		
+		<!-- /#login-container -->
+		</div>
+	</form>
+</body>
+</html>

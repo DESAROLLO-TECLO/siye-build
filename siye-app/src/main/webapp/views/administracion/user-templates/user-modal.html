@@ -1,0 +1,440 @@
+<article class="modaluser__mesh meshAnimate"
+    ng-show="flags.isModalUsers">
+</article>
+<article class="row centerCol modaluser__form modalAnimateIn" ng-if="flags.isModalUsers">
+    <div class="col-xs-11 col-md-6">
+        <div class="box box-danger">
+            <div class="box-header with-border text-center">
+                <div class="row">
+                    <div class="cursor_pointer"
+                        ng-class="{'col-xs-12': !flags.isFirstModal && flags.isSearchTab,
+                                    'col-xs-6 modaluser-tabSearch': flags.isFirstModal}"
+                        ng-hide="!flags.isFirstModal && !flags.isSearchTab">
+                        <h3 class="box-title" ng-class="{'isActive border-box':flags.isSearchTab}"
+                            ng-click="toggleTabUser('search')">
+                            Búsqueda
+                        </h3>
+                    </div>
+                    <div class="cursor_pointer"
+                        ng-class="{'col-xs-12': !flags.isFirstModal && flags.isNewTab,
+                                    'col-xs-6 modaluser-tabNew': flags.isFirstModal}"
+                        ng-hide="!flags.isFirstModal && !flags.isNewTab">
+                        <h3 class="box-title" ng-class="{'isActive border-box':flags.isNewTab}"
+                            ng-click="toggleTabUser('new')">
+                            <span ng-if="!flags.isModalUsersEdit">
+                                Nuevo
+                            </span>
+                            <span ng-if="flags.isNewTab && flags.isModalUsersEdit">
+                                Modificación
+                            </span>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="box-body">
+                <!-- BÚSQUEDA DE USUARIOS -->
+                <div class="row" ng-if="flags.isSearchTab">
+                    <br />
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label>Tipo de búsqueda:</label>
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-list"></i>
+                                </span>
+                                <select class="form-control" name="typeSearch" select2
+                                    id="typeSearch"
+                                    data-minimum-results-for-search="Infinity"
+                                    idioma-s2="{{currentLanguage}}"
+                                    ng-model="searchVO.typeSearch"
+                                    ng-change="changeTypeSearch(searchVO.typeSearch)"
+                                    ng-options="ts as ts.descripcion for ts in searchVO.options track by ts.codigo">
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group"
+                            ng-class="{'has-error': formUsers.searchValue.$invalid && !formUsers.searchValue.$pristine}">
+                            <label>Valor:</label>
+                            <!-- SI ES POR LAS OPCIONES NOMBRES O APELLIDOS -->
+                            <div class="input-group" ng-if="!flags.isTypeSearchProfile && !flags.isTypeSearchAll">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-pencil"></i>
+                                </span>
+                                <input type="text" class="form-control" name="searchValue"
+                                    ng-disabled="searchVO.typeSearch.codigo === 1"
+                                    ng-required="searchVO.typeSearch.codigo !== 1"
+                                    ng-model="searchVO.searchInput" />
+                            </div>
+                            <!-- SI ES POR LA OPCIÓN TODOS -->
+                            <div class="input-group" ng-if="flags.isTypeSearchAll">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-list"></i>
+                                </span>
+                                <select class="form-control" name="searchAll" select2
+                                    id="searchAll"
+                                    data-minimum-results-for-search="Infinity"
+                                    idioma-s2="{{currentLanguage}}"
+                                    ng-model="searchVO.searchAll" required
+                                    ng-options="ao as ao.descripcion for ao in searchVO.optionsForAll track by ao.codigo">
+                                </select>
+                            </div>
+                            <!-- SI ES POR LA OPCIÓN PERFIL -->
+                            <div class="input-group" ng-if="flags.isTypeSearchProfile">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-list"></i>
+                                </span>
+                                <select class="form-control" name="searchValue" select2
+                                    id="profile"
+                                    data-minimum-results-for-search="Infinity"
+                                    idioma-s2="{{currentLanguage}}"
+                                    ng-model="searchVO.profile" required
+                                    ng-options="p as p.nbPerfil for p in searchVO.profilesCat track by p.idPerfil">
+                                </select>
+                            </div>
+                            <div ng-if="formUsers.searchValue.$invalid && !formUsers.searchValue.$pristine"
+                                class="help-block">El valor es requerido</div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 centerCol" ng-if="flags.isFirstModal">
+                        <switcher class="swTeclo"
+                            id-check="typeFind"
+                            true-label="MOSAICO"
+                            true-value="1"
+                            false-label="LISTA"
+                            false-value="0"
+                            ng-change="toggleModeView(searchVO.typeFind == 1 ? 'list' : 'grid')"
+                            ng-model="searchVO.typeFind">
+                        </switcher>
+                    </div>
+                </div>
+
+                <!-- NUEVO USUARIO -->
+                <div class="row adduser" ng-if="flags.isNewTab">
+                    <br />
+                    <div class="col-xs-3">
+                         <div class="addUser-media">
+                                <input type="file" class="form-control hidden" id="lbFoto"
+                                    accept="image/png, image/jpeg, image/gif"
+                                    fileread="userVO.foto.lbFoto" />
+
+                                <label for="lbFoto" class="cursor_pointer noneSelectedUser"
+                                    file-dnd="image/png, image/jpeg, image/gif"
+                                    file="userVO.foto.lbFoto" file-name="userVO.foto.nbFoto" data-max-file-size="1">
+                                    
+                                    <div class="addUser-media__tools">
+                                        <button class="btn btn-danger btn-box-tool ngIfAnimate" ng-if="userVO.foto.lbFoto"
+                                            ng-click="deletePhoto()"
+                                            tooltip="Eliminar foto" tooltip-placement="top">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
+                                
+                                    <span ng-if="!userVO.foto.lbFoto">Arrastre o de clic</span>
+                                    <i class="fa fa-user" ng-if="!userVO.foto.lbFoto"></i>
+                                    <img ng-src="{{userVO.foto.lbFoto}}" ng-if="userVO.foto.lbFoto"/>
+
+                                </label>
+
+                                <div class="addUser-media__avatars">
+                                    <img ng-repeat="avatar in arrayAvatars"
+                                        ng-class="{'isActive':avatar.isSelected}"
+                                        ng-click="toggleAvatar(avatar)"
+                                        ng-src="{{avatar.srcAvatar}}" />
+                                </div>
+                            </div>
+                        <div class="addUser-tabs">
+                            <ul>
+                                <li class="centerCol" 
+                                    ng-class="{'isActive': flags.isDataPersonal, 'isRequired': flags.isRequiredPersonal}"
+                                    ng-click="toggleDataNew('personal')">
+
+                                    <i class="fa fa-address-card"></i>
+                                    <label>Datos personales</label>
+                                </li>
+                                <li class="centerCol"
+                                    ng-class="{'isActive': flags.isDataUser, 'isRequired': flags.isRequiredUser}"
+                                    ng-click="toggleDataNew('user')">
+
+                                    <i class="fa fa-male"></i>
+                                    <label>Datos del usuario</label>
+                                </li>
+                                <li class="centerCol"
+                                    ng-class="{'isActive': flags.isDataContact, 'isRequired': flags.isRequiredContact}"
+                                    ng-click="toggleDataNew('contact')">
+
+                                    <i class="fa fa-phone"></i>
+                                    <label>Datos de contacto</label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xs-9 box-data">
+                        <!-- DATOS PERSONALES -->
+                        <div class="row" ng-show="flags.isDataPersonal">
+                            <div class="col-xs-12">
+                                <div class="form-group"
+                                    ng-class="{'has-error': formUsers.nbUsuario.$invalid && !formUsers.nbUsuario.$pristine}">
+                                    <label>*Nombre(s)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-user"></i>
+                                        </span>
+                                        <input name="nbUsuario" type="text" class="form-control"
+                                            maxlength="100" capitalize
+                                            ng-model="userVO.nbUsuario" required />
+                                    </div>
+                                    <div ng-if="formUsers.nbUsuario.$invalid && !formUsers.nbUsuario.$pristine"
+                                        class="help-block">El Nombre(s) es requerido
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="form-group"
+                                    ng-class="{'has-error': formUsers.nbApaterno.$invalid && !formUsers.nbApaterno.$pristine}">
+                                    <label>*Apellido paterno</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-user"></i>
+                                        </span>
+                                        <input name="nbApaterno" type="text" class="form-control"
+                                            maxlength="100" capitalize
+                                            ng-model="userVO.nbApaterno" required />
+                                    </div>
+                                    <div ng-if="formUsers.nbApaterno.$invalid && !formUsers.nbApaterno.$pristine"
+                                        class="help-block">El Apellido paterno es requerido
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="form-group"
+                                    ng-class="{'has-error': formUsers.nbAmaterno.$invalid && !formUsers.nbAmaterno.$pristine}">
+                                    <label>*Apellido materno</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-user"></i>
+                                        </span>
+                                        <input name="nbAmaterno" type="text" class="form-control"
+                                            maxlength="100" capitalize
+                                            ng-model="userVO.nbAmaterno" required />
+                                    </div>
+                                    <div ng-if="formUsers.nbAmaterno.$invalid && !formUsers.nbAmaterno.$pristine"
+                                        class="help-block">El Apellido materno es requerido
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- DATOS DEL USUARIO -->
+                        <div class="row" ng-show="flags.isDataUser">
+                            <!-- USUARIO -->
+                            <div class="col-sm-6">
+                                <div class="form-group"
+                                    ng-class="{'has-error': formUsers.cdUsuario.$invalid && !formUsers.cdUsuario.$pristine}">
+                                    <label>*Usuario</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-user"></i>
+                                        </span>
+                                        <input name="cdUsuario" type="text" class="form-control"
+                                            maxlength="100" onlyalphabets
+                                            ng-disabled="flags.isModalUsersEdit"
+                                            ng-model="userVO.cdUsuario" required />
+                                    </div>
+                                    <div ng-if="formUsers.cdUsuario.$invalid && !formUsers.cdUsuario.$pristine"
+                                        class="help-block">El Usuario es requerido
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- CONTRASEÑA -->
+                            <div class="col-sm-6">
+                                <div class="form-group"
+                                    ng-class="{'has-error': formUsers.nbContrasenia.$invalid && !formUsers.nbContrasenia.$pristine && flags.isPassword}">
+                                    <label ng-if="!flags.isModalUsersEdit">
+                                        *Contraseña ({{ flags.isPassword==true ? 'Personalizada' : 'Predeterminada' }})
+                                    </label>
+                                    <label ng-if="flags.isModalUsersEdit">
+                                        *Contraseña
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-lock"></i>
+                                        </span>
+                                        <input name="nbContrasenia" class="form-control"
+                                            type="{{userVO.isCurrentUser && flags.isModalUsersEdit ? typeInputPasswordCU : 'password'}}"
+                                            max-length="100"
+                                            ng-model="userVO.nbContrasenia" required ng-disabled="!flags.isPassword" />
+
+                                        <div class="input-group-btn" ng-if="!flags.isModalUsersEdit">
+                                            <button class="btn btn-danger"
+                                                tooltip="{{ flags.isPassword==true ? 'Predeterminado' : 'Personalizar' }}"
+                                                tooltip-placement="top"
+                                                ng-click="customPassword()">
+                                                <i class="fa" ng-class="{'fa-edit':!flags.isPassword,'fa-key':flags.isPassword}"></i>
+                                            </button>
+                                        </div>
+                                        <div class="input-group-btn" ng-if="flags.isModalUsersEdit && userVO.isCurrentUser">
+                                            <button class="btn btn-danger"
+                                                tooltip="{{ typeInputPasswordCU == 'text' ? 'Ocultar contraseña' : 'Mostrar contraseña'}}"
+                                                tooltip-placement="top"
+                                                ng-click="toggleViewPassword()">
+                                                <i class="fa fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div ng-if="formUsers.nbContrasenia.$invalid && !formUsers.nbContrasenia.$pristine && flags.isPassword"
+                                        class="help-block">La contraseña es requerida
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- PERFIL -->
+                            <div class="col-xs-12">
+                                <div class="form-group"
+                                    ng-class="{'has-error': formUsers.perfils.$invalid && !formUsers.perfils.$pristine}">
+                                    <label>*Perfil</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-users"></i>
+                                        </span>
+                                        <select class="form-control" name="perfils" select2
+                                            ng-if="!flags.isModalUsersEdit"
+                                            id="profileNew"
+                                            idioma-s2="{{currentLanguage}}"
+                                            data-minimum-results-for-search="Infinity"
+                                            ng-model="userVO.perfil"
+                                            ng-required="!userVO.perfil"
+                                            ng-disabled="userVO.isCurrentUser"
+                                            ng-options="p as p.nbPerfil for p in searchVO.profilesCat track by p.idPerfil">
+                                            <!-- ng-change="getMenusbyProfile(userVO.perfil.cdPerfil)" -->
+                                        </select>
+                                        <select class="form-control" name="perfils" select2
+                                            ng-if="flags.isModalUsersEdit"
+                                            id="profileEdit"
+                                            idioma-s2="{{currentLanguage}}"
+                                            data-minimum-results-for-search="Infinity"
+                                            ng-model="userVO.perfil"
+                                            ng-required="!userVO.perfil"
+                                            ng-disabled="userVO.isCurrentUser"
+                                            ng-options="p as p.nbPerfil disable when p.stActivo == 0 for p in searchVO.profiles track by p.idPerfil">
+                                            <!-- ng-change="getMenusbyProfile(userVO.perfil.cdPerfil)" -->
+                                        </select>
+                                    </div>
+                                    <div ng-if="formUsers.perfils.$invalid && !formUsers.perfils.$pristine"
+                                        class="help-block">El Perfil es requerido
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- TEMPORALMENTE FUERA DE USO -->
+                            <!-- <div class="col-xs-12" ng-if="searchVO.menus.length !== 0">
+                                <h4>FUNCIONALIDADES</h4>
+                                <ul class="menuprofile">
+                                    <li ng-repeat="menu in searchVO.menus">
+                                        {{menu.nbMenu}}
+                                        <ul>
+                                            <li ng-repeat="submenu in menu.submenus">
+                                                {{submenu.nbMenu}}
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div> -->
+                            <div class="col-xs-12">
+                                <div class="form-group text-center">
+                                    <switcher class="swTeclo"
+                                        id-check="stActiveUser"
+                                        ng-disabled="userVO.isCurrentUser"
+                                        true-label="Habilitado"
+                                        true-value="1"
+                                        false-label="Inhabilitado"
+                                        false-value="0"
+                                        ng-model="userVO.stActivo">
+                                    </switcher>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- DATOS DE CONTACTO -->
+                        <div class="row" ng-show="flags.isDataContact">
+                            <div class="col-xs-12">
+                                <div class="form-group"
+                                    ng-class="{'has-error': formUsers.nbEmail.$invalid && !formUsers.nbEmail.$pristine}">
+                                    <label>*Correo</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-user"></i>
+                                        </span>
+                                        <input name="nbEmail" type="email" class="form-control"
+                                            maxlength="100" ng-pattern="userVO.patternEmail"
+                                            ng-model="userVO.nbEmail" required />
+                                    </div>
+                                    <div ng-if="formUsers.nbEmail.$invalid && !formUsers.nbEmail.$pristine && !formUsers.nbEmail.$error.pattern"
+                                        class="help-block">El Correo es requerido
+                                    </div>
+                                    <div ng-if="formUsers.nbEmail.$error.pattern"
+                                        class="help-block">El Correo es incorrecto
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12">
+                                <div class="form-group"
+                                    ng-class="{'has-error': formUsers.nuTelefono.$invalid && !formUsers.nuTelefono.$pristine}">
+                                    <label>*Teléfono</label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-user"></i>
+                                        </span>
+                                        <input name="nuTelefono" type="text" class="form-control"
+                                            maxlength="10" minlength="7" integer-number
+                                            ng-model="userVO.nuTelefono" required />
+                                    </div>
+                                    <div ng-if="formUsers.nuTelefono.$invalid && !formUsers.nuTelefono.$pristine"
+                                        class="help-block">El Teléfono es requerido (Longitud mínima: 7)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="box-footer centerCol">
+                <div ng-if="flags.isSearchTab" class="box-footer__space"
+                    ng-class="{'centerCol': flags.isFirstModal, 'center': !flags.isFirstModal}">
+
+                    <a class="btn" ng-if="!flags.isFirstModal"
+                        ng-click="toggleCloseSaveUser('new')">
+                        <i class="fa fa-times"></i> Cerrar
+                    </a>
+                    <button class="btn btn-danger" ng-click="searchUsers()">
+                        Buscar
+                    </button>
+
+                </div>
+
+                <div ng-if="flags.isNewTab" class="box-footer__space"
+                    ng-class="{'centerCol': flags.isFirstModal, 'center': !flags.isFirstModal}">
+
+                    <a class="btn" ng-if="!flags.isFirstModal && !flags.isModalUsersEdit"
+                        ng-click="toggleCloseSaveUser('new')">
+                        <i class="fa fa-times"></i> Cerrar
+                    </a>
+                    <a class="btn" ng-if="!flags.isFirstModal && flags.isModalUsersEdit"
+                        ng-click="toggleCloseSaveUser('edit')">
+                        <i class="fa fa-times"></i> Cancelar
+                    </a>
+
+                    <button class="btn btn-danger" ng-if="!flags.isModalUsersEdit"
+                        ng-click="saveOrUpdateUser(userVO, 'new')">
+                        Guardar
+                    </button>
+                    <button class="btn btn-danger" ng-if="!flags.isFirstModal && flags.isModalUsersEdit"
+                        ng-click="saveOrUpdateUser(userVO, 'edit')">
+                        Modificar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>

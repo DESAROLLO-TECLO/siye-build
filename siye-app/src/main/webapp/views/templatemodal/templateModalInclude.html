@@ -1,0 +1,74 @@
+<meta charset="UTF-8">
+
+<div ng-controller="pluginsWebController">
+    <form name="formTemplateModal" novalidate>
+        <modal open="modalDirective" size-modal="md" noescape modalstatic>
+            <modal-header title="TÍTULO DEL MODAL"></modal-header>
+            <modal-body>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{'has-error': (formTemplateModal.nbUser.$invalid && formTemplateModal.nbUser.$dirty) }">
+                            <label>Nombre de usuario:</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-user"></i>
+                                </div>
+                                <input type="text" class="form-control" name="nbUser" ng-required="true" ng-model="templateModalVO.nbUser" />
+
+                            </div>
+
+                            <div ng-show="formTemplateModal.nbUser.$error.required && formTemplateModal.nbUser.$dirty">
+                                <span ng-style="{color:'red'}">
+									El nombre de usuario es requerido
+								</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{'has-error': (formTemplateModal.nbEmail.$invalid && formTemplateModal.nbEmail.$dirty) }">
+                            <label>Correo electrónico:</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-at"></i>
+                                </div>
+                                <input type="text" class="form-control" name="nbEmail" ng-required="true" ng-model="templateModalVO.nbEmail" />
+
+                            </div>
+
+                            <div ng-show="formTemplateModal.nbEmail.$error.required && formTemplateModal.nbEmail.$dirty">
+                                <span ng-style="{color:'red'}">
+									El correo electrónico es requerido
+								</span>
+                            </div>
+                        </div>
+                        password </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group" ng-class="{'has-error': (formTemplateModal.nbPassword.$invalid && formTemplateModal.nbPassword.$dirty) }">
+                            <label>Contraseña:</label>
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-asterisk"></i>
+                                </div>
+                                <input type="password" class="form-control" name="nbPassword" ng-required="true" ng-model="templateModalVO.nbPassword" />
+
+                            </div>
+
+                            <div ng-show="formTemplateModal.nbPassword.$error.required && formTemplateModal.nbPassword.$dirty">
+                                <span ng-style="{color:'red'}">
+									La contraseña es requerida
+								</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </modal-body>
+            <modal-footer btn-close="Cerrar">
+                <button class="btn btn-danger" ng-click="saveModalInculde()">
+					{{'APP.Base.boton.guardar' | translate}}
+				</button>
+            </modal-footer>
+        </modal>
+    </form>
+</div>

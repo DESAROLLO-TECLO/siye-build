@@ -1,0 +1,66 @@
+<div class="centerRowList">
+	<div ng-if="list.items != null" class="{{col}} dvMain" ng-repeat="list in listModel track by $index" ng-class="{'orderFirst':$index == 0,'orderLast':$index == 1}">
+		<fieldset class="scheduler-border" ng-class="{'listRequired':list.items.length == 0 && requiredList}">
+			<legend class="scheduler-border">
+				<span>
+					<span ng-class="{'txtRequired':list.items.length == 0 && requiredList}">
+						{{list.listName}}
+						<span class="badge-dndList">{{list.items.length}}</span>
+					</span>
+					<span>
+						<span>
+							{{(filtered.length !== list.items.length || item.label.length > 0 ? ('('+filtered.length +
+							(filtered.length !== 1 ? ' registros filtrados' : ' registro filtrado') + ')') : '')}}
+						</span>
+					</span>
+				</span>
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="fa fa-search"></i>
+					</span>
+					<input type="text" class="form-control" ng-model="list.label" placeholder="Filtrar por..." />
+				</div>
+			</legend>
+			<div class="panel-body multiSelectItem scrollable-content" style="max-height:{{maxHeight}};">
+				<ul dnd-list dnd-drop="onDrop(list, item, index)">
+				    <li class="liRepeat ngIfAnimate"
+				    	ng-repeat="item in list.items | filter: list.label as filtered"
+				        dnd-draggable="getSelectedItemsIncluding(list, item)"
+				        dnd-dragstart="onDragstart(list, event)"
+				        dnd-moved="onMoved(list)"
+				        dnd-dragend="list.dragging = false"
+				        dnd-selected="item.selected = !item.selected"
+				        ng-class="{'selected': item.selected}"
+				        ng-hide="list.dragging && item.selected">
+				        <p><strong>{{txs[0]}} </strong><span>{{item.label0}}</span></p>
+				        <p ng-if="lbs.length > 1"><strong>{{txs[1]}} </strong><span>{{item.label1}}</span></p>
+				        <p ng-if="lbs.length > 2"><strong>{{txs[2]}} </strong><span>{{item.label2}}</span></p>
+				    </li>
+					<li ng-if="filtered == 0 && list.items.length !== 0" class="text-center ngOnlyEnter">
+						No se encontraron coincidencias
+					</li>
+					<li ng-if="list.items.length == 0 && !requiredList" class="text-center ngOnlyEnter">
+						Arrastre elementos a la lista
+					</li>
+					<li ng-if="list.items.length == 0 && requiredList" class="text-center listRequired txtRequired ngIfAnimate">
+						La lista {{list.listName}} no puede estar vacia
+					</li>
+				</ul>
+			</div>
+		</fieldset>
+	</div>
+	<div class="col-md-1 col-lg-2 orderMiddle middleButtons" ng-if="listModel[1] != null">
+		<button class="btn btn-md btn-danger" tooltip="Enviar todo a la derecha" tooltip-placement="left"
+			 ng-click="transferItems('ltr')" ng-if="listModel.length == 2">
+			<i class="fa fa-angle-double-right"></i>
+		</button>
+		<button class="btn btn-md btn-danger" tooltip="Reestablecer" tooltip-placement="top"
+			ng-if="btnReset && listModel.length == 2" ng-click="resetModel()">
+			<i class="fa fa-refresh"></i>
+		</button>
+		<button class="btn btn-md btn-danger" tooltip="Enviar todo a la izquierda" tooltip-placement="right"
+			ng-click="transferItems('rtl')" ng-if="listModel.length == 2">
+			<i class="fa fa-angle-double-left"></i>
+		</button>
+	</div>
+</div>

@@ -1,0 +1,42 @@
+.title-exception {
+/* 	color: #D35780; */
+	color: #E92D3D;
+	font-size: 2.857rem;
+	text-align: center;
+}
+
+.description-exception {
+	margin: 1em 0;
+	font-size: 1.429rem;
+	color: #777;
+	font-weight: 600;
+	text-align: center;
+}
+
+.pb{
+	height: calc(100vh - 3.571rem) !important;
+	
+	display: flex;
+	flex-direction: column;
+	alignitems: center;
+	justify-content: center;
+}
+.cont-error{
+	height: 60%;
+	min-height: 21.43rem;
+	padding: 1.429rem;
+/* 	border: 3px solid #c1c1c1; */
+	box-shadow: 1px 0.1429rem 0.2143rem #c1c1c1;
+	border-radius: 0.3571rem;
+	margin: 7.143rem auto;
+	background-color: #fff;
+	
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.errorT{
+/* 	color: #D35780; */
+	color: #E92D3D;
+}

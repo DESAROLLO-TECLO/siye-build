@@ -1,0 +1,335 @@
+{
+    "APP": {
+        "Base": {
+            "boton": {
+                "nuevo": "New",
+                "buscar": "Search",
+                "guardar": "Save",
+                "aceptar": "Accept",
+                "registrarProspecto": "Prospect registry",
+                "actualizar": "Update",
+                "modificar": "Modify",
+                "restaurar": "Restore",
+                "regresar": "To return",
+                "reasignar": "Assign again",
+                "cancelar": "Cancel",
+                "iniciar": "Start",
+                "entrar": "Enter",
+                "iniciarSesion": "Log in",
+                "salir": "Leave",
+                "cerrarSesion": "Log out",
+                "verDetalle": "View detail",
+                "consultar": "See",
+                "nuevaActividad": "New activity",
+                "continuar": "Continue",
+                "terminar": "End up"
+            },
+            "mensaje": {
+                "formularioIncompleto": "Incomplete application form",
+                "registroGuardado": "Registration saved correctly",
+                "registroActualizado": "Registration updated correctly",
+                "registroEliminado": "Registration deleted correctly",
+                "errorServidor": "An error ocurred on the server",
+                "errorComunicacion": "Communication error",
+                "credencialesIncorrectas": "Bad credentials",
+                "datosIncorrectos": "The information entered is incorrect",
+                "noRegistros": "No records found",
+                "pantallaCompleta": "Full screen",
+                "salirPantallaCompleta": "Exit full screen",
+                "sinEspecificar": "Unspecified",
+                "todos": "All",
+                "seleccioneOpcion": "Choose an option",
+                "alerta": "ALERT",
+                "sesionExpira": "The session will expire in",
+                "segundos": "seconds",
+                "mostrarTodos": "Show all",
+                "si": "Yes",
+                "no": "No",
+                "accesoDenegado": {
+                    "title": "Access denied",
+                    "descripcion": "The current profile does not have access to the requested resource"
+                },
+                "error": {
+                    "title": "It seems that something went wrong",
+                    "descripcion": "Try again. If the problem persists, report it to the administrator"
+                }
+            },
+            "estatus": {
+                "cancelado": "Cancel",
+                "habilitado": "Enabled",
+                "inhabilitado": "Disabled",
+                "activo": "Active",
+                "inactivo": "Inactive",
+                "procesado": "Indicted",
+                "pendiente": "Pending",
+                "finalizado": "Terminated"
+            },
+            "boxBusqueda": {
+                "tituloBox": "Search",
+                "tipoBusqueda": {
+                    "label": "Type of search",
+                    "validacion": "The type of search is required"
+                },
+                "valorBusqueda": {
+                    "label": "Search value",
+                    "validacion": "The search value is required"
+                },
+                "mostrarResultado": "Show results",
+                "fechaInicial": {
+                    "label": "Initial date",
+                    "validacion": "The initial date is required"
+                },
+                "fechaFinal": {
+                    "label": "Final date",
+                    "validacion": "The final date is required"
+                }
+            },
+            "tablaResultados": {
+                "registrosEncontrados": "Records found",
+                "filtrarPor": "Filter by...",
+                "descargarReporte": "Download report",
+                "paginacion": {
+                    "mostrar": "Show",
+                    "registros": "Records"
+                }
+            }
+        },
+
+        "Login": {
+            "nombreAplicacion": "Sistema de Inspección y Evaluaciones",
+            "nombreCliente": "SSC",
+            "usuario": {
+                "label": "User",
+                "placeholder": "User",
+                "validacion": "The user is required"
+            },
+            "clave": {
+                "label": "Password",
+                "placeholder": "Password",
+                "validacion": "The password is required"
+            }
+        },
+
+        "Header": {
+            "fechaActual": "Date...",
+            "perfil": "Profile",
+            "cambiarClave": "Change password",
+            "resolucion": {
+                "pq": "Small",
+                "md": "Medium",
+                "gd": "Big"
+            },
+            "breadCrumbs": {
+                "inicio": "Home"
+            }
+        },
+
+        "Menu": {
+            "tituloMenu": "NAVIGATION MENU"
+        },
+
+        "Footer": {
+            "derechosAutor": "Copyright",
+            "derechosReservados": "All right reserved",
+            "tecloMexicana": "Teclo Mexican",
+            "version": "Version",
+            "idioma": {
+                "label": "Language",
+                "es": "Spanish",
+                "en": "English"
+            }
+        }
+    },
+
+    "ADMINISTRACION": {
+        "ComplementosWeb": {
+            "tituloServicio": "Web Plugin's",
+            "seleccionadores": {
+                "tituloBox": "Classifiers",
+                "sinBusqueda": {
+                    "label": "Without search",
+                    "validacion": "The classifiers without search is required"
+                },
+                "conBusqueda": {
+                    "label": "With search",
+                    "validacion": "The classifiers with search is required"
+                },
+                "multipleOpcion1": {
+                    "label": "Multiple (Option 1)",
+                    "validacion": "The multiple (option 1) is required"
+                },
+                "multipleOpcion2": {
+                    "label": "Multiple (Option 1)",
+                    "validacion": "The multiple (option 2) is required"
+                }
+            },
+            "fechas": {
+                "tituloBox": "Dates",
+                "calendario": {
+                    "label": "Calendar",
+                    "validacion": "The calendar is required"
+                },
+                "tiempo": {
+                    "label": "Time",
+                    "validacion": "The time is required"
+                },
+                "calendarioTiempo": {
+                    "label": "Calendar with time",
+                    "validacion": "The calendar with time is required"
+                }
+            },
+            "complementosInformacion": {
+                "tituloBox": "Information plugin's",
+                "informacionComplementaria": {
+                    "label": "Additional information",
+                    "ejemplo": "This is an example of complementary information",
+                    "validacion": "The additional information in required"
+                },
+                "color": {
+                    "label": "Color",
+                    "validacion": "The color is required"
+                },
+                "detalleInformacionOpcion1": {
+                    "label": "Information detail (Option 1)",
+                    "validacion": "The information detail is required"
+                },
+                "detalleInformacionOpcion2": {
+                    "label": "Information detail (Option 2)",
+                    "ejemplo": "Content detail information",
+                    "validacion": "The information detail is required"
+                }
+            },
+            "interruptores": {
+                "tituloBox": "Switch's",
+                "interruptor1": {
+                    "label": "Switch 1",
+                    "validacion": "The switch 1 is required"
+                },
+                "interruptor2": {
+                    "label": "Switch 2",
+                    "validacion": "The switch 2 is required"
+                },
+                "interruptor3": {
+                    "label": "Switch 3",
+                    "validacion": "The switch 3 is required"
+                }
+            }
+        },
+
+        "CambiarContrasena": {
+            "tituloServicio": "Change Password",
+            "cambioAcceso": {
+                "tituloBox": "Change of access",
+                "contrasenaActual": {
+                    "label": "Current password",
+                    "validacion": "The current password is required"
+                },
+                "nuevaContrasena": {
+                    "label": "New password",
+                    "validacion": "The new password is required"
+                },
+                "repetirNuevaContrasena": {
+                    "label": "Repeat the new password",
+                    "validacion": "Repeat the new password is required"
+                }
+            }
+        },
+
+        "ConfigurarAplicacion": {
+            "tituloServicio": "Configure Application",
+            "personalizacion": {
+                "tituloBox": "Customize",
+                "tema": {
+                    "label": "Theme",
+                    "validacion": "The theme is required"
+                },
+                "resolucion": {
+                    "label": "Resolution",
+                    "validacion": "The resolution is required"
+                },
+                "menuFijo": {
+                    "label": "Fixed menu",
+                    "validacion": "The fixed menu is required"
+                },
+                "menuDesplegado": {
+                    "label": "Collapsed menu",
+                    "validacion": "The collapsed menu is required"
+                },
+                "cabeceraFija": {
+                    "label": "Fixed header",
+                    "validacion": "The fixed header is required"
+                }
+            },
+
+            "aplicacion": {
+                "tituloBox": "Application",
+                "nombreAplicacion": {
+                    "label": "Application name",
+                    "validacion": "The application name is required"
+                },
+                "codigoAplicacion": {
+                    "label": "Application code",
+                    "validacion": "The application code is required"
+                },
+                "descripcion": {
+                    "label": "Description",
+                    "validacion": "The description is required"
+                }
+            },
+
+            "logos": {
+                "tituloBox": "Logos",
+
+                "logoPrincipal": {
+                    "label": "Main logo",
+                    "descripcion": {
+                        "texto_1": "This logo will be shown in the upper left corner, between the header and the menu (Preferably a logo)",
+                        "texto_2": "The picture must have transparent background with PNG format",
+                        "texto_3": "The picture must have a resolution of 145x40px"
+                    },
+                    "validacion": "The main logo is required"
+                },
+
+                "logoSecundario": {
+                    "label": "Secondary logo",
+                    "descripcion": {
+                        "texto_1": "This logo will be shown in the upper left corner, between the header and the menu, when the menu collapsed (Preferably an isotype)",
+                        "texto_2": "The picture must have transparent background with PNG format",
+                        "texto_3": "The picture must have a resolution of 38x38px"
+                    },
+                    "validacion": "The secondary logo is required"
+                },
+
+                "logoAplicacion": {
+                    "label": "Application logo",
+                    "descripcion": {
+                        "texto_1": "This Logo will be shown  in the header on the left side of the application name (Preferably an isotype)",
+                        "texto_2": "The picture must have transparent background with PNG format",
+                        "texto_3": "The picture must have a resolution of 38x36px"
+                    },
+                    "validacion": "The application logo is required"
+                },
+
+                "imagenPresentacion": {
+                    "label": "Presentation picture",
+                    "descripcion": {
+                        "texto_1": "This picture will be view in the main page that will be shown when accessing the system",
+                        "texto_2": "The picture can be in PNG or JPG format",
+                        "texto_3": "The image may have a resolution greater than 980x720px or less than 1080x860px"
+                    },
+                    "validacion": "The presentation picture is required"
+                },
+
+                "popover": {
+                    "tituloPopover": "Recomendations",
+                    "label": "Description"
+                },
+                "mensaje": {
+                    "cambiarLogo": "Change logo",
+                    "cargarLogo": "Upload logo",
+                    "imagenCargada": "IMAGE LOADED"
+                }
+            }
+        }
+    }
+}

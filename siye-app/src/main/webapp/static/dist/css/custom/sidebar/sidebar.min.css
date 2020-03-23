@@ -1,0 +1,103 @@
+@charset "UTF-8";
+.theme-config {
+    position: absolute;
+    top: 90px;
+    right: 0;
+    z-index: 1001
+}
+
+.theme-config .theme-config-toggle {
+    position: absolute;
+    right: 0;
+    height: 38px;
+    width: 38px;
+    background-color: #5c6bc0;
+    -webkit-border-bottom-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    -webkit-border-top-left-radius: 4px;
+    border-top-left-radius: 4px;
+    text-align: center;
+    cursor: pointer
+}
+
+.theme-config .theme-config-toggle .theme-config-show {
+    font-size: 22px;
+    color: #fff;
+    line-height: 38px;
+    -webkit-animation: fa-spin 3s infinite linear;
+    animation: fa-spin 3s infinite linear
+}
+
+.theme-config .theme-config-toggle .theme-config-close {
+    display: none;
+    font-size: 18px;
+    line-height: 38px
+}
+
+.theme-config .theme-config-box {
+    display: none;
+    padding: 10px 20px 20px;
+    background-color: #fff;
+    -webkit-box-shadow: 0 0 9px rgba(191, 191, 191, .36);
+    box-shadow: 0 0 9px rgba(191, 191, 191, .36);
+    overflow: hidden
+}
+
+.theme-config .theme-config-box .ui-checkbox+.ui-checkbox {
+    margin-top: 15px
+}
+
+.theme-config.shined .theme-config-box {
+    display: block;
+    width: 400px
+}
+
+.theme-config.shined .theme-config-toggle {
+    background: 0 0
+}
+
+.theme-config.shined .theme-config-toggle .theme-config-show {
+    display: none
+}
+
+.theme-config.shined .theme-config-toggle .theme-config-close {
+    display: block
+}
+
+.theme-config.shined .theme-config-toggle .close-btn {
+    display: block
+}
+
+.theme-config .color-skin-box {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    margin-right: 10px;
+    height: 40px
+}
+
+.theme-config .color-skin-box .color-check-icon {
+    position: absolute;
+    left: 13px;
+    top: 10px;
+    opacity: 0;
+    color: #fff;
+    font-size: 16px
+}
+
+.theme-config .color-skin-box label {
+    display: block;
+    cursor: pointer;
+    position: relative;
+    height: 100%
+}
+
+.theme-config .color-skin-box input {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden
+}
+
+.theme-config .color-skin-box input:checked+.color-check-icon {
+    opacity: 1
+}

@@ -1,0 +1,156 @@
+.content-wizardSteps {
+    position: relative;
+    height: 5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* border: solid; */
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+}
+
+.wizard__progress {
+    height: 0.3rem;
+    margin: 0;
+}
+.wizard__progress .progress-bar {
+    background-color: #cf0a2c;
+}
+
+.wizard__steps {
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+.wizard__steps .steps {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+}
+.wizard__steps .steps li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.wizard__steps .steps li .step-icon,
+.wizard__steps .steps li .step-title {
+    cursor: pointer;
+}
+.wizard__steps .steps li .step-icon {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    border: 3px solid #f5f5f5;
+    background-color: #fff;
+    color: #969597;
+    font-size: 1.5rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s ease-in;
+
+    position: relative;
+}
+.wizard__steps .steps li .step-icon i {
+    z-index: 1000;
+}
+.wizard__steps .steps li .step-icon:after {
+    content: "";
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    position: absolute;
+    background-color: #cf0a2c;
+    transform: scale(0);
+    transition: 0.2s all linear;
+
+    top: -3px;
+    left: -3px;
+}
+
+.wizard__steps .steps li .step-title {
+    font-size: 1.2rem;
+    color: #969597;
+    font-weight: 800;
+    margin-top: 0.5rem;
+    text-align: center;
+    transition: 0.2s ease-in;
+}
+
+/* CUANDO ESTÁ ACTIVO EL PASO */
+.wizard__steps .steps li.active .step-icon,
+.wizard__steps .steps li.active .step-title {
+    cursor: default;
+}
+.wizard__steps .steps li.active .step-icon:after {
+    transform: scale(1);
+    transition: 0.2s all linear;
+}
+.wizard__steps .steps li.active .step-icon {
+    color: #fff;
+    box-shadow: 1px 2px 3px rgba(0,0,0,0.3);
+    font-size: 2rem;
+    transition: 0.2s ease-in;
+}
+.wizard__steps .steps li.active .step-title {
+    color: #cf0a2c;
+    transition: 0.2s ease-in;
+}
+
+.wizard__steps .steps li.deploy .step-icon {
+    border-color: #cf0a2c;
+}
+
+..wizard__steps .steps li.deploy .step-icon {
+    
+}
+
+/* BOTONES DEL WIZARD */
+.wizard__footer {
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.wizard__footer .btn-wizard {
+    outline: none;
+    border: 2px solid;
+    font-size: 1.3rem;
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+    border-radius: 2.5rem;
+    background-color: transparent;
+    transition: all 0.1s ease-in;
+}
+.wizard__footer .btn-wizard:hover {
+    box-shadow: 1px 2px 3px rgba(0,0,0,0.3);
+}
+
+.wizard__footer .btn-previous {
+    border-color: #55565a;
+    color: #55565a;
+}
+.wizard__footer .btn-previous:hover {
+    background-color: #55565a;
+    color: #fff;
+}
+.wizard__footer .btn-next {
+    border-color: #cf0a2c;
+    color: #cf0a2c;
+}
+.wizard__footer .btn-next:hover {
+    background-color: #cf0a2c;
+    border-color: #cf0a2c;
+    color: #fff;
+}
+
+.wizard__footer .btnwizard-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+.wizard__footer .btnwizard-disabled:hover {
+    background-color: transparent;
+    color: #55565a;
+}

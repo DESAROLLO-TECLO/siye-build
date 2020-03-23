@@ -1,0 +1,41 @@
+<div class="modal fade" id="aviso" tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			<div class="modal-header"></div>
+			<div class="modal-body">
+				<div class="container">
+					<div class="icono">						
+						<i ng-if="typeModal=='aviso'" class="fa fa-info-circle faAviso"></i>
+						<i ng-if="typeModal=='error'" class="fa fa-exclamation-circle faError"></i>
+						<i ng-if="typeModal=='confirmacion'" class="fa fa-exclamation-triangle faConfirmacion"></i>
+					</div>
+					<div class="mensaje">
+						<label>{{message}}</label>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="container">
+					<button type="button" class="btn btn-danger"
+						ng-if="typeModal=='aviso' || typeModal=='error'"
+						ng-click="success()"
+						data-dismiss="modal">
+						Aceptar
+					</button>
+					<span ng-if="typeModal=='confirmacion'">
+						<button type="button" class="btn btn-danger btnMargin"
+							ng-click="success()"
+							data-dismiss="modal">
+							Aceptar
+						</button>
+						<button type="button" class="btn btn-danger btnMargin"
+							ng-click="cancel()"
+							data-dismiss="modal">
+							Cancelar
+						</button>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

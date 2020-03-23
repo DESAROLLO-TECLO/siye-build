@@ -1,0 +1,172 @@
+<div class="modal fade" id="lotecancelacion" role="dialog" data-keyboard="false" data-backdrop="static">
+<meta charset="utf-8" />
+  
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header bg-red-active">
+        	<a ng-if="!optionsview.resume" class="close" data-dismiss="modal" aria-label="Close" ng-click="closeAfter()"><span style="color:#FFF !important;" aria-hidden="true">&times;</span></a>
+        	<h4 class="modal-title">{{optionsview.titleprocess}}</h4>
+        </div>
+        <div class="modal-body">
+	  		<form name="form" novalidate>
+	  			<div class="row" ng-if="!optionsview.resume">
+			  		<div class="col-md-12">
+			  			<div class="form-group" ng-class="{'has-error': form.motivo.$invalid && form.motivo.$dirty}">
+							<label for="motivo">Ingrese motivo de cancelación:</label>
+							<textarea id="motivo" name="motivo" ng-model="params.motivo" class="form-control" rows="5" autocomplete="off" maxlength="500" ng-required="true"></textarea>
+						</div>
+			  		</div>
+			  		
+			  		<div class="col-md-12">
+			  			<button ng-click="cancelacionArchivoComplementado()" class="btn btn-danger center-block">Guardar</button>
+		  			</div>
+	  			</div>
+	  			
+	  			<div class="row" ng-if="optionsview.resume">
+	  				<div class="col-md-12">
+		  				<fieldset>
+							<legend>Datos Generales</legend>
+								<div class="table-responsive">   
+		                       		<table class="table tblsnborder">
+		                               <tr>
+		                                   <td><label>Total Registros:</label></td>
+		                                   <td>{{resumenVO.archivoTotal}}</td>
+		                                   
+		                                   <td><label>Estatus:</label></td>
+		                                   <td>{{resumenVO.estatusProceso}}</td>
+		                               </tr>
+		                            	<tr>
+		                                   <td><label>Fecha Emisión:</label></td>
+		                                   <td>{{resumenVO.fechaEmision}}</td>
+		                                   
+		                                   <td><label>ID:</label></td>
+		                                   <td>{{resumenVO.archivoId}}</td>
+		                               	</tr>
+		                       		</table>
+	                          	</div>
+				  		</fieldset>
+				  		
+				  		<fieldset ng-if="resumenVO.archivoComplementado">
+							<legend>Complementación</legend>
+								<div class="table-responsive">   
+		                       		<table class="table tblsnborder">
+		                               	<tr>
+		                                   <td><label>Válidas:</label></td>
+		                                   <td>{{resumenVO.complementadasValidasTotal}}</td>
+		                               		
+		                                   <td colspan="2">
+	                                   			<button ng-if="resumenVO.complementadasAccion == '1'" class="btn btn-danger" 
+	                                   					ng-click="onlyDownload(resumenVO.archivoId, resumenVO.zipEstatus)">
+	                                   				Descargar Archivo
+	                                   			</button>
+		       									
+		       									<span ng-if="resumenVO.complementadasAccion == '2'" class="label label-danger">
+		       										No hay Detecciones Complementadas
+		       									</span>
+		       									
+		       									<span ng-if="resumenVO.complementadasAccion == '3'" class="label label-info">
+		       										Se esta generando el archivo
+		       										<!-- refresh 60 -->
+		       									</span>
+		       									
+		       									<button ng-if="resumenVO.complementadasAccion == '0'" class="btn btn-danger" 
+	                                   					ng-click="generarArchivoZIP(resumenVO.archivoId, resumenVO.zipEstatus)">
+	                                   				Generar Archivo
+	                                   			</button>
+		                                   </td>
+                               			</tr>
+                               			
+	                               		<tr>
+		                                   <td><label>Rechazadas:</label></td>
+		                                   <td>{{resumenVO.complementadasInvalidasTotal}}</td>
+		                               		
+		                                   <td colspan="2">
+		                                   		<button ng-if="resumenVO.rechazadasAccion == '1'" class="btn btn-danger" 
+	                                   					ng-click="onlyDownload(resumenVO.archivoId, resumenVO.zipEstatus)">
+	                                   				Descargar Archivo
+	                                   			</button>
+		       									
+		       									<span ng-if="resumenVO.rechazadasAccion == '2'" class="label label-danger">
+		       										No hay Detecciones Rechazadas
+		       									</span>
+		       									
+		       									<span ng-if="resumenVO.rechazadasAccion == '3'" class="label label-info">
+		       										Se esta generando el archivo
+		       										<!-- refresh 60-->
+		       									</span>
+		       									
+		       									<button ng-if="resumenVO.rechazadasAccion == '0'" class="btn btn-danger" 
+	                                   					ng-click="generarArchivoZIP(resumenVO.archivoId, resumenVO.zipEstatus)">
+	                                   				Generar Archivo
+	                                   			</button>
+		                                   </td>
+		                               	</tr>
+		                               	<tr>
+		                                   <td><label>Fecha:</label></td>
+		                                   <td>{{resumenVO.fechaComplementacion}}</td>
+		                               	</tr>
+		                       		</table>
+	                          	</div>
+				  		</fieldset>
+				  		
+				  		<fieldset ng-if="resumenVO.archivoComplementado">
+							<legend>Liberación</legend>
+								<div class="table-responsive">   
+		                       		<table class="table tblsnborder">
+		                               <tr ng-if="resumenVO.archivoLiberado">
+		                                   <td><label>Total:</label></td>
+		                                   <td>{{resumenVO.liberadasTotal}}</td>
+		                                   
+		                                   <td><label>Rango Folios:</label></td>
+		                                   <td>{{resumenVO.liberadasFolios}}</td>
+		                               </tr>
+		                            	<tr ng-if="resumenVO.archivoLiberado">
+		                                   <td><label>Fecha:</label></td>
+		                                   <td>{{resumenVO.fechaLiberacion}}</td>
+		                               	</tr>
+		                               	
+		                               	<tr ng-if="resumenVO.archivoEnLiberacion">
+		                               		<td class="text-center" colspan="4">
+		                               			<span class="label label-danger center-block">
+		                               				Liberando Infracciones
+		                               			</span>
+		                               		</td>
+		                               	</tr>
+		                               	
+		                               	<tr ng-if="!resumenVO.archivoLiberado && !resumenVO.archivoEnLiberacion">
+		                               		<td class="text-center" colspan="4">
+		                               			<span ng-if="resumenVO.liberadasAccion == '0'" class="label center-block">
+		                               				No hay Detecciones Complementadas
+		                               			</span>
+		                               			
+		                               			<button ng-if="resumenVO.liberadasAccion == '1'" class="btn btn-danger"
+		                               					ng-click="confirmaLiberacionInfrac(resumenVO.archivoId)">
+		                               				Liberar
+	                               				</button>
+		                               		</td>
+		                               	</tr>
+		                       		</table>
+	                          	</div>
+				  		</fieldset>
+				  		
+				  		<div ng-if="resumenVO.mostrarCancelacion" class="col-md-6">
+                      		<button  class="btn btn-danger center-block">Cancelar</button>       			
+			  			</div>
+			  			
+			  			<div ng-class="'col-md-6': resumenVO.mostrarCancelacion, 'col-xs-12': !resumenVO.mostrarCancelacion">
+			  				<button class="btn btn-danger center-block" ng-click="closeModal()" data-dismiss="modal">Cerrar</button>
+			  			</div>
+				  		
+			  		</div>
+	  			</div>
+  			</form>
+        </div>
+        <div class="modal-footer">
+        	<span ng-show="error" class="alert alert-warning">{{error.message}}</span>
+        </div>
+    </div>
+  </div>
+  
+</div>
+
+

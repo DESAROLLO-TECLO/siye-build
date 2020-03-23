@@ -1,0 +1,53 @@
+/* FONDO DEL MENU DE NAVEGACIÓN */
+.tema-tecloLight .main-sidebar {
+	background-color: #fff;
+}
+/* Menu fijo */
+.tema-tecloLight .menufixed {
+	box-shadow: 1px 1px 2px rgba(150, 149, 151, .2);
+}
+/* Título del menu */
+.tema-tecloLight .title-menu,
+.tema-tecloLight .title-menu-noFijo {
+	background-color: #cf0a2c;
+	color: #ecf0f1;
+}
+.tema-tecloLight .title-menu {
+	box-shadow: 1px 1px 2px rgba(150, 149, 151, .3);
+}
+.tema-tecloLight .title-menu-noFijo {
+	box-shadow: inherit;
+}
+
+/* Módulos del menú */
+.tema-tecloLight .menuItem,
+.tema-tecloLight .submenuItem {
+	color: #55565a;
+}
+.tema-tecloLight a.menuItem:hover{
+	box-shadow: 0 -4rem rgba(150, 149, 151, .2) inset;
+	color: #cf0a2c;
+}
+/* Al tener el módulo activo en el menú */
+.tema-tecloLight .active-m{
+	background-color: rgba(150, 149, 151, .3);
+	color: #cf0a2c;
+}
+
+/* Submódulos del menú */
+.tema-tecloLight .treeview-menu {
+	background-color: rgba(150, 149, 151, .1);
+}
+.tema-tecloLight a.submenuItem:hover {
+	color: #55565a;
+}
+
+/* Al tener el submenú activo en el menú */
+.tema-tecloLight .active-subm {
+	color: #55565a;
+}
+
+/* Color de la imagen y el texto de configurando menu */
+.tema-tecloLight li.searchMenu p {
+	color: #55565a;
+}

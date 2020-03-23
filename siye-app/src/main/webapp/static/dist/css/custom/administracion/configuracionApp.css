@@ -1,0 +1,70 @@
+/* Cuando se introducen imagenes en el popover, tamaño base */
+.imgPopover {
+	width: 100%;
+	max-width: 25rem;
+	min-width: 10.71rem;
+}
+
+@media (max-width: 766px) {
+	.webui-popover{
+		max-width: 17.86rem;
+	}
+	.cont-imgInfoPopover img {
+		display: none
+	}
+}
+
+/* Enlistar la lista de los popover de imágen para describir recomendaciones */
+.cont-imgInfoPopover {
+	display: flex
+}
+.cont-imgInfoPopover img,
+.cont-temasPopover img {
+	width: 100%;
+	max-width: 12.14rem;
+}
+
+.cont-temasPopover img {
+	width: 100%;
+	max-width: 20rem;
+}
+
+h3.webui-popover-title::before {
+	font-family: FontAwesome;
+	content: "\f05a";
+	margin-right: 0.3571rem
+	
+}
+.popoverInfo-lista {
+	max-width: 21.43rem;
+	list-style: none;
+	padding: 0.3571rem;
+	margin: 0 0 0 0.2143rem
+}
+
+.popoverInfo-lista li {
+	font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	padding: 0.3571rem 0.7143rem;
+	margin-bottom: 0.2143rem;
+	font-weight: 600;
+	text-align: justify;
+	box-shadow: 2px 0 #999 inset,
+				 0 -100px rgba(189, 195, 199,0.1) inset;
+	transition: all .2s ease-out
+}
+.popoverInfo-lista li.descripcion {
+	padding-left: 0;
+	box-shadow: none;
+}
+
+textarea.textAreaConfigDescripcion {
+	resize: none;;
+	height:2.769rem
+}
+
+/* Malla de Temas */
+div.mallaTemas {
+	position: absolute;
+	z-index: 1031;
+/* 	background-color: rgba(0,0,0,.1); */
+}

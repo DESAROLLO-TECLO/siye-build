@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Paso 1</title>
+	</head>
+	
+	<body>
+		<div class="row" ng-controller="pasoDosController">
+			<form name="formStepTwo" novalidate>
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group"
+								ng-class="{'has-error': (formStepTwo.nbName.$invalid && formStepTwo.nbName.$dirty) }">
+								<label>Nombre(s):</label>
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-user"></i>
+									</div>											
+									<input type="text" class="form-control" name="nbName"
+										ng-required="true"
+										ng-model="informationUserVO.nbName" />
+									
+								</div>
+								
+								<div ng-show="formStepTwo.nbName.$error.required && formStepTwo.nbName.$dirty">
+									<span ng-style="{color:'red'}">
+										El nombre es requerido
+									</span>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-md-4">
+							<div class="form-group"
+								ng-class="{'has-error': (formStepTwo.nbLastName.$invalid && formStepTwo.nbLastName.$dirty) }">
+								<label>Apellidos:</label>
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-user"></i>
+									</div>											
+									<input type="text" class="form-control" name="nbLastName"
+										ng-required="true"
+										ng-model="informationUserVO.nbLastName" />
+									
+								</div>
+								
+								<div ng-show="formStepTwo.nbLastName.$error.required && formStepTwo.nbLastName.$dirty">
+									<span ng-style="{color:'red'}">
+										Los apellidos son requeridos
+									</span>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-md-4">
+							<div class="form-group"
+								ng-class="{'has-error': (formStepTwo.nbSex.$invalid && formStepTwo.nbSex.$dirty) }">
+								<label>Sexo:</label>
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-transgender"></i>
+									</div>											
+									<input type="text" class="form-control" name="nbSex"
+										ng-required="true"
+										ng-model="informationUserVO.nbSex" />
+									
+								</div>
+								
+								<div ng-show="formStepTwo.nbSex.$error.required && formStepTwo.nbSex.$dirty">
+									<span ng-style="{color:'red'}">
+										El sexo es requerido
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row centerCol">
+						<div class="col-xs-12 col-md-2">
+							<div class="centerRow">
+						        <button class="btn btn-danger" wz-previous>
+					        	<i class="fa fa-arrow-left"></i>
+						        </button>
+						        <button class="btn btn-default" wz-reset>
+						        	<i class="fa fa-refresh"></i>
+						        </button>
+						        <button class="btn btn-danger" ng-click="saveStepTwo()">
+						        	<i class="fa fa-arrow-right"></i>
+						        </button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>

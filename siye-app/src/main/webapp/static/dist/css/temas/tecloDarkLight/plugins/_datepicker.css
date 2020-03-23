@@ -1,0 +1,189 @@
+/* Caret superior e inferior del componente */
+.tema-tecloDarkLight .datepicker-dropdown:before,
+.tema-tecloDarkLight .datepicker-dropdown.datepicker-orient-bottom:before {
+	border-bottom-color: rgba(0, 0, 0, 0.2);
+	border-top-color: rgba(0, 0, 0, 0.2);
+}
+.tema-tecloDarkLight .datepicker-dropdown:after,
+.tema-tecloDarkLight .datepicker-dropdown.datepicker-orient-bottom:after {
+	border-bottom-color: #455A64;
+	border-top-color: #455A64;
+}
+
+/* Títulos del componente */
+.tema-tecloDarkLight .datepicker table tr th {
+	color: #fff;
+}
+.tema-tecloDarkLight .datepicker thead tr:first-child th:hover,
+.tema-tecloDarkLight .datepicker tfoot tr th:hover {
+	background: #cc4865;
+	color: #ecf0f1;
+}
+
+
+/* Texto del componente */
+.tema-tecloDarkLight .datepicker table tr td {
+	color: rgba(236,240,241,.6);
+}
+
+/* Item (día) del componente */
+.tema-tecloDarkLight .datepicker table tr td.day:hover,
+.tema-tecloDarkLight .datepicker table tr td.day.focused {
+	background-color: rgba(150, 149, 151, .2);
+	box-shadow: 2px 1px #ecf0f1 inset,
+  			 -2px -1px #ecf0f1 inset;
+	border-radius: 50%;
+	color: #ecf0f1;
+}
+
+/* Item (días) del mes anterior y el mes posterior*/
+.tema-tecloDarkLight .datepicker table tr td.old,
+.tema-tecloDarkLight .datepicker table tr td.new {
+	color: rgba(236,240,241,.6);
+}
+
+/* Item (días) deshabilitados */
+.tema-tecloDarkLight .datepicker table tr td.disabled,
+.tema-tecloDarkLight .datepicker table tr td.disabled:hover {
+	color: #c1c1c1;
+}
+
+/* Item (día) actual */
+.tema-tecloDarkLight .datepicker table tr td.today,
+.tema-tecloDarkLight .datepicker table tr td.today:hover,
+.tema-tecloDarkLight .datepicker table tr td.today.disabled,
+.tema-tecloDarkLight .datepicker table tr td.today.disabled:hover {
+	background-color: rgba(150, 149, 151, .2);
+	color: #ecf0f1;
+}
+
+/* Item (Día) activo */
+.tema-tecloDarkLight .datepicker table tr td.active:hover,
+.tema-tecloDarkLight .datepicker table tr td.active:hover:hover,
+.tema-tecloDarkLight .datepicker table tr td.active.disabled:hover,
+.tema-tecloDarkLight .datepicker table tr td.active.disabled:hover:hover,
+.tema-tecloDarkLight .datepicker table tr td.active:focus,
+.tema-tecloDarkLight .datepicker table tr td.active:hover:focus,
+.tema-tecloDarkLight .datepicker table tr td.active.disabled:focus,
+.tema-tecloDarkLight .datepicker table tr td.active.disabled:hover:focus,
+.tema-tecloDarkLight .datepicker table tr td.active:active,
+.tema-tecloDarkLight .datepicker table tr td.active:hover:active,
+.tema-tecloDarkLight .datepicker table tr td.active.disabled:active,
+.tema-tecloDarkLight .datepicker table tr td.active.disabled:hover:active,
+.tema-tecloDarkLight .datepicker table tr td.active.active,
+.tema-tecloDarkLight .datepicker table tr td.active:hover.active,
+.tema-tecloDarkLight .datepicker table tr td.active.disabled.active,
+.tema-tecloDarkLight .datepicker table tr td.active.disabled:hover.active,
+.tema-tecloDarkLight .open .dropdown-toggle.datepicker table tr td.active,
+.tema-tecloDarkLight .open .dropdown-toggle.datepicker table tr td.active:hover,
+.tema-tecloDarkLight .open .dropdown-toggle.datepicker table tr td.active.disabled,
+.tema-tecloDarkLight .open .dropdown-toggle.datepicker table tr td.active.disabled:hover {
+	color: #ecf0f1;
+ 	background-color: #cc4865;
+	box-shadow: 1px 2px #cf0a2c inset,
+  			 -1px -2px #cf0a2c inset;
+}
+
+/* Item (Meses) */
+.tema-tecloDarkLight .datepicker table tr td span:hover {
+	background-color: rgba(150, 149, 151, .2);
+	color: #ecf0f1;
+	box-shadow: 1px 2px #ecf0f1 inset,
+				-1px -2px #ecf0f1 inset;
+}
+
+/* Item (Mes) desactivado */
+.tema-tecloDarkLight .datepicker table tr td span.disabled,
+.tema-tecloDarkLight .datepicker table tr td span.disabled:hover {
+	color: #c1c1c1;
+}
+
+/* Item (Mes) activo */
+.tema-tecloDarkLight .datepicker table tr td span.active:hover,
+.tema-tecloDarkLight .datepicker table tr td span.active:hover:hover,
+.tema-tecloDarkLight .datepicker table tr td span.active.disabled:hover,
+.tema-tecloDarkLight .datepicker table tr td span.active.disabled:hover:hover,
+.tema-tecloDarkLight .datepicker table tr td span.active:focus,
+.tema-tecloDarkLight .datepicker table tr td span.active:hover:focus,
+.tema-tecloDarkLight .datepicker table tr td span.active.disabled:focus,
+.tema-tecloDarkLight .datepicker table tr td span.active.disabled:hover:focus,
+.tema-tecloDarkLight .datepicker table tr td span.active:active,
+.tema-tecloDarkLight .datepicker table tr td span.active:hover:active,
+.tema-tecloDarkLight .datepicker table tr td span.active.disabled:active,
+.tema-tecloDarkLight .datepicker table tr td span.active.disabled:hover:active,
+.tema-tecloDarkLight .datepicker table tr td span.active.active,
+.tema-tecloDarkLight .datepicker table tr td span.active:hover.active,
+.tema-tecloDarkLight .datepicker table tr td span.active.disabled.active,
+.tema-tecloDarkLight .datepicker table tr td span.active.disabled:hover.active,
+.tema-tecloDarkLight .open .dropdown-toggle.datepicker table tr td span.active,
+.tema-tecloDarkLight .open .dropdown-toggle.datepicker table tr td span.active:hover,
+.tema-tecloDarkLight .open .dropdown-toggle.datepicker table tr td span.active.disabled,
+.tema-tecloDarkLight .open .dropdown-toggle.datepicker table tr td span.active.disabled:hover {
+	color: #ecf0f1;
+	background-color: #cc4865;
+}
+
+/* Selector before de la fecha hoy */
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget table td.today:before {
+	border-bottom-color: #ecf0f1;
+}
+
+
+/* DATETIMEPICKER */
+
+/* Al pasar el puntero sobre el componente */
+.tema-tecloDarkLight .collapse:hover {
+	background-color: rgba(150, 149, 151, .1);
+}
+.tema-tecloDarkLight .picker-switch:hover {
+	background-color: rgba(150, 149, 151, .1);
+}
+
+/* Caret del componente datetimpicker */
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget.dropdown-menu.bottom:before {
+	border-bottom-color: rgba(0, 0, 0, 0.2);
+}
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget.dropdown-menu.bottom:after {
+	border-bottom: 6px solid #455A64;
+}
+
+/* Contenedores de horas minutos segundos */
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget .timepicker-hour,
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget .timepicker-minute,
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget .timepicker-second {
+	background-color: #455A64;
+	border: 1px solid rgba(236,240,241,.1);
+	color: #ecf0f1;
+}
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget .timepicker-hour:hover,
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget .timepicker-minute:hover,
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget .timepicker-second:hover {
+	background-color: rgba(150, 149, 151, .2);
+	color: #fff;
+}
+
+/* Carets de arriba abajo en las horas minutos segundos */
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget table td span {
+	background-color: #455A64;
+	color: #ecf0f1;
+	box-shadow: 1px 1px 5px rgba(0,0,0,.3);
+}
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget table td span:hover {
+	background-color: #222d32;
+	color: #fff;
+}
+
+/* Selector de horas minutos segundos */
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget table td.day,
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget table td.hour,
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget table td.minute,
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget table td.second {
+	color: rgba(236,240,241,.6);
+}
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget table td.day:hover,
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget table td.hour:hover,
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget table td.minute:hover,
+.tema-tecloDarkLight .bootstrap-datetimepicker-widget table td.second:hover {
+	background-color: rgba(150, 149, 151, .2);
+	color: #ecf0f1;
+}

@@ -1,0 +1,75 @@
+/* ------------------------------------------------- */
+/* ----- ESTILOS GENERALES DE LA APLICACION -------- */
+/* ------------------------------------------------- */
+
+/* App */
+@import url('custom/aplicacion/app.css');
+
+/* Modales */
+@import url('custom/aplicacion/alertas.css');
+
+/* Login */
+@import url('custom/aplicacion/login.css');
+
+/* Menu */
+@import url('custom/aplicacion/menu.css');
+
+/* Header */
+@import url('custom/aplicacion/header.css');
+
+/* Index */
+@import url('custom/aplicacion/index.css');
+
+/* Footer */
+@import url('custom/aplicacion/footer.css');
+
+/* ErrorMessage */
+@import url("custom/aplicacion/errorMessage.css");
+
+/* Animaciones de entrada y salida */
+@import url('custom/aplicacion/animate.css');
+@import url('custom/aplicacion/animacionAngular.css');
+
+/* Tablas */
+@import url('custom/aplicacion/tablas.css');
+
+/* NavTabs */
+
+@import url('custom/aplicacion/navTabs.css');
+
+/* Bot�n ir arriba */
+@import url('custom/aplicacion/btnScrollUp.css');
+
+/* SwitchCheck -- CSS para los checbox activo e inactivo */
+@import url('custom/aplicacion/switchCheck.css');
+@import url('custom/aplicacion/checkSwitch.css');
+
+/* Switcher */
+@import url('custom/aplicacion/switcher.css');
+
+/* Angular Wizard */
+@import url('custom/aplicacion/angularWizard.css');
+
+/* Angular drag and drop lists */
+@import url('custom/aplicacion/dnd-lists.css');
+
+/* Ambiente base */
+@import url('custom/aplicacion/ambienteBase.css');
+
+/* Flipped */
+
+@import url('custom/aplicacion/flipped.css');
+
+/* -------------------------------------------- */
+/* --------- M�DULO: ADMINISTRACI�N ---------- */
+@import url('custom/administracion/configuracionApp.css');
+@import url('custom/administracion/users.css');
+@import url('custom/administracion/cambioContrasenia.css');
+
+/* _____________________________________________ */
+/* ------------ TEMAS APLICACI�N ---------------*/
+
+@import url('temas/temas.css');
+
+@import url('custom/aplicacion/corte.css');
+@import url('custom/aplicacion/gridOptionsStyle.css');

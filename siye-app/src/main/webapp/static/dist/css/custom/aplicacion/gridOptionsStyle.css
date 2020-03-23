@@ -1,0 +1,37 @@
+.st-sort-ascent:after, .st-sort-descent:after {
+	font-family: FontAwesome;
+	font-size: 0.8rem;
+	margin-left: 0.5rem;
+}
+
+.st-sort-ascent:after {
+	content: '\f160';
+}
+
+.st-sort-descent:after {
+	content: '\f161';
+}
+
+.dropdown-menu[role="listbox"] {
+	max-height: 200.219px !important;
+}
+
+.pagination {
+	display: inherit;
+	margin: 0;
+}
+
+.grupoPag {
+	width: 50px !important;
+}
+
+.styled[type="checkbox"] {
+	margin-left: 0rem !important;
+}
+
+.gridOptionsTable{
+	overflow-x: auto; 
+}
+.gridOptionsTable table {
+	min-width: 2800px;
+}

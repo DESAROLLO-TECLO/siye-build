@@ -1,0 +1,33 @@
+/* Color del texto o elemento cuando es falso */
+.tema-tecloDark .switcher-label.false {
+	color: #cf0a2c;
+}
+
+/* Color de la línea central cuando es delgada */
+.tema-tecloDark .switcher-line:before {
+	background: #8ca0ad;
+	background-image: -webkit-linear-gradient(#8ca0ad, #cad6de);
+	background-image: linear-gradient(#8ca0ad, #cad6de);
+}
+
+/* Color del puntito */
+.tema-tecloDark .switcher-line:after {
+	background-color: #fff;
+	border: 1px solid #fff;
+	box-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+
+/* Color del elemento activo */
+.tema-tecloDark .switcher.active .switcher-label.true {
+	color: #cf0a2c;
+}
+
+/* Color del label false */
+.tema-tecloDark .swTeclo .switcher-line:before {
+	background: rgba(85,86,90,.3);
+}
+/* Color del label true */
+.tema-tecloDark .swTeclo .active .switcher-line:before {
+	background: #cf0a2c;
+}
+

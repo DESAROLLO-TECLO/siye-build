@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8">
+		<title>Configuración</title>
+	</head>
+	<body>
+		<section class="content-header">
+			<h1>{{breadCrumbs.servicio}}</h1>
+			<ol class="breadcrumb">
+				<li>
+					<a>
+						<i class="{{breadCrumbs.icono}}"></i>{{breadCrumbs.modulo}}
+					</a>
+				</li>
+				<li class="active">{{breadCrumbs.servicio}}</li>
+			</ol>
+		</section>
+		
+		<section  class="content">
+			<form role="form" name="formConfigApp" enctype="multipart/form-data" novalidate>
+				<div class="row">
+					<div class="col-xs-12 col-md-6">
+						<div class="box box-danger">
+							<div class="box-header with-border text-center">
+								<h3 class="box-title">
+									{{'ADMINISTRACION.ConfigurarAplicacion.personalizacion.tituloBox' | translate}}
+								</h3>
+							</div>
+							<div class="box-body">
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label class="popoverTemas labelCheck" ng-click="mallaTemas()">
+												<a>
+													{{'ADMINISTRACION.ConfigurarAplicacion.personalizacion.tema.label' | translate}} 
+													<i class="fa fa-cog"></i>
+												</a>
+											</label>
+
+											<!-- INICIA: CONTENIDO DE TEMAS -->
+											
+											<div class="webui-popover-content">
+												<div class="cont-temasPopover">
+													<div class="row">
+														<div ng-repeat="temas in tema"
+															ng-class="{'col-md-12':tema.length == 1 ,
+ 																	'col-md-6':tema.length == 2 ,
+ 																	'col-md-4':tema.length == 3 ,
+																	'col-md-3':tema.length == 4 ,
+																	'col-md-2':tema.length >= 5 }">
+															<a 
+																ng-mouseover="liveTema(temas, 'mouseover', 'config')" 
+																ng-mouseleave="liveTema(temaTMP, 'mouseleave', 'config')"
+																ng-click="liveTema(temas, 'click', 'config')">
+																<div class="box text-center">
+																	<div class="box-body">
+																		<img style="width:100%;" ng-if="temas.cdTema == 'tema-tecloLight'"
+																			 src="static/dist/img/ejemploTemas/Temas_TecloLight.png" />
+																			 
+																		<img style="width:100%;" ng-if="temas.cdTema == 'tema-tecloDark'"
+																			 src="static/dist/img/ejemploTemas/Temas_TecloDark.png" />
+																			 
+																		<img style="width:100%;" ng-if="temas.cdTema == 'tema-tecloLightDark'"
+																			 src="static/dist/img/ejemploTemas/Temas_TecloLightDark.png" />
+																			 
+																		<img style="width:100%;" ng-if="temas.cdTema == 'tema-tecloDarkLight'"
+																			 src="static/dist/img/ejemploTemas/Temas_TecloDarkLight.png" />
+																	</div>
+																	<div class="box-footer">
+																		<h4 ng-if="tema.length <= 4">{{temas.nbTema}}</h4>
+																		<h5 ng-if="tema.length >= 5">{{temas.nbTema}}</h5>
+																	</div>
+																</div>
+															</a>
+														</div>
+													</div>
+												</div>
+												
+											</div>
+											
+											<!-- TERMINA: CONTENIDO DE TEMAS -->
+											
+											<div class="input-group">
+												<div class="input-group-addon">
+													<i class="fa fa-window-maximize"></i>
+												</div>
+												<select class="form-control" name="temaApp" id="temasApp" disabled
+													select2
+													data-minimum-results-for-search="Infinity"
+													idioma-s2="{{currentLanguage}}"
+													ng-model="configuracionVO.tema"
+													ng-options="tm as tm.nbTema for tm in tema track by tm.idTema">
+												</select>
+											</div>
+										</div>
+									</div> <!-- TERMINA: col Tema -->
+									
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label>
+												{{'ADMINISTRACION.ConfigurarAplicacion.personalizacion.resolucion.label' | translate}}
+											</label>
+											<div class="input-group">
+												<div class="input-group-addon">
+													<i class="fa fa-window-restore"></i>
+												</div>
+												<select class="form-control" name="resolucion" id="resolucionesApp"
+													select2
+													data-minimum-results-for-search="Infinity"
+													idioma-s2="{{currentLanguage}}"
+													ng-model="configuracionVO.resolucion"
+													ng-change="liveResolucion(configuracionVO.resolucion.cdResolucion, configuracionVO.resolucion.nuPixelesBase)"
+													ng-options="rs as rs.txResolucion for rs in resolucion track by rs.idResolucion">
+												</select>
+											</div>
+										</div>
+									</div> <!-- TERMINA: col Resolución -->
+								</div> <!-- TERMINA: row 1 -->
+								
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label for="stMenuFijo" class="labelCheck">
+												{{'ADMINISTRACION.ConfigurarAplicacion.personalizacion.menuFijo.label' | translate}}
+											</label>
+											
+											<switcher class="swTeclo pull-right"
+												id-check="stMenuFijo"
+												ng-model="configuracionVO.stMenuFijo"
+												ng-change="preLiveEstructureApp(newValue, oldValue, 'stMenuFijo')"
+												true-label="<i class='fa fa-check-circle'></i>"
+												true-value="1"
+												false-label="<i class='fa fa-times-circle'></i>"
+												false-value="0">
+											</switcher>
+										</div>
+									</div> <!-- TERMINA: col Menú Fijo -->
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label for="stMenuDesplegable" class="labelCheck">
+												{{'ADMINISTRACION.ConfigurarAplicacion.personalizacion.menuDesplegado.label' | translate}}
+											</label>
+											
+											<switcher class="swTeclo pull-right"
+												id-check="stMenuDesplegable"
+												ng-model="configuracionVO.stMenuDesplegable"
+												ng-change="preLiveEstructureApp(newValue, oldValue, 'stMenuDesplegable')"
+												true-label="<i class='fa fa-check-circle'></i>"
+												true-value="1"
+												false-label="<i class='fa fa-times-circle'></i>"
+												false-value="0">
+											</switcher>
+										</div>
+									</div> <!-- TERMINA: col Menú Desplegado -->
+								</div> <!-- TERMINA: row 2 -->
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="form-group">
+											<label for="stHeaderFijo" class="labelCheck">
+												{{'ADMINISTRACION.ConfigurarAplicacion.personalizacion.cabeceraFija.label' | translate}}
+											</label>
+											
+											<switcher class="swTeclo pull-right"
+												id-check="stHeaderFijo"
+												ng-model="configuracionVO.stHeaderFijo"
+												ng-change="preLiveEstructureApp(newValue, oldValue, 'stHeaderFijo')"
+												true-label="<i class='fa fa-check-circle'></i>"
+												true-value="1"
+												false-label="<i class='fa fa-times-circle'></i>"
+												false-value="0">
+											</switcher>
+										</div>
+									</div> <!-- TERMINA: col Cabecera Fija -->
+								</div> <!-- TERMINA: row 3 -->
+							</div> <!-- TERMINA: box-body PERSONALIZACIÓN -->
+						</div> <!-- TERMINA: box-danger PERSONALIZACIÓN -->
+					</div> <!-- TERMINA: col PERSONALIZACIÓN -->
+					
+					<div class="col-xs-12 col-md-6">
+						<div class="box box-danger">
+							<div class="box-header with-border text-center">
+								<h3 class="box-title">
+									{{'ADMINISTRACION.ConfigurarAplicacion.aplicacion.tituloBox' | translate}}
+								</h3>
+							</div>
+							<div class="box-body">
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group"
+											ng-class="{'has-error': (formConfigApp.nombreAplicacion.$invalid && formConfigApp.nombreAplicacion.$dirty) }">
+											<label>
+												{{'ADMINISTRACION.ConfigurarAplicacion.aplicacion.nombreAplicacion.label' | translate}}
+											</label>
+											<div class="input-group">
+												<div class="input-group-addon">
+													<i class="fa fa-desktop"></i>
+												</div>
+												<input type="text" class="form-control"
+													ng-change="cambiarNombreApp(configuracionVO.aplicacion.nombre)"
+													name="nombreAplicacion"
+													ng-required="true"
+													ng-model="configuracionVO.aplicacion.nombre" maxlength="50" />
+											</div>
+											
+											<div ng-show="formConfigApp.nombreAplicacion.$error.required && formConfigApp.nombreAplicacion.$dirty">
+												<span ng-style="{color:'red'}">
+													{{'ADMINISTRACION.ConfigurarAplicacion.aplicacion.nombreAplicacion.validacion' | translate}}
+												</span>
+											</div>
+										</div>
+									</div>
+									
+									<div class="col-md-6">
+										<div class="form-group"
+											ng-class="{'has-error': (formConfigApp.codigoAplicacion.$invalid && formConfigApp.codigoAplicacion.$dirty) }">
+											<label>
+												{{'ADMINISTRACION.ConfigurarAplicacion.aplicacion.codigoAplicacion.label' | translate}}
+											</label>
+											<div class="input-group">
+												<div class="input-group-addon">
+													<i class="fa fa-desktop"></i>
+												</div>
+												<input type="text" class="form-control"
+													name="codigoAplicacion"
+													ng-required="true"
+													ng-disabled="true"
+													ng-model="configuracionVO.aplicacion.codigo" capitalize maxlength="5" />
+											</div>
+											
+<!-- 											<div ng-show="formConfigApp.codigoAplicacion.$error.required && formConfigApp.codigoAplicacion.$dirty"> -->
+<!-- 												<span ng-style="{color:'red'}">El Código de la Aplicación es requerido</span> -->
+<!-- 											</div> -->
+										</div>
+									</div>
+									
+									<div class="col-xs-12">
+										<div class="form-group"
+											ng-class="{'has-error': (formConfigApp.descripcionAplicacion.$invalid && formConfigApp.descripcionAplicacion.$dirty) }">
+											<label>
+												{{'ADMINISTRACION.ConfigurarAplicacion.aplicacion.descripcion.label' | translate}}
+											</label>
+											<div class="input-group">
+												<div class="input-group-addon">
+													<i class="fa fa-desktop"></i>
+												</div>
+												<textarea class="form-control textAreaConfigDescripcion"
+													name="descripcionAplicacion"
+													ng-required="true"
+													ng-model="configuracionVO.aplicacion.descripcion" capitalize maxlength="100"></textarea>
+											</div>
+											
+											<div ng-show="formConfigApp.descripcionAplicacion.$error.required && formConfigApp.descripcionAplicacion.$dirty">
+												<span ng-style="{color:'red'}">
+													{{'ADMINISTRACION.ConfigurarAplicacion.aplicacion.descripcion.validacion' | translate}}
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="col-xs-12">
+						<div class="box box-danger">
+							<div class="box-header with-border text-center">
+								<h3 class="box-title">
+									{{'ADMINISTRACION.ConfigurarAplicacion.logos.tituloBox' | translate}}
+								</h3>
+							</div>
+							<div class="box-body">
+								<div class="row">
+									<div class="col-sm-6">
+										<div class="form-group"
+											ng-class="{'has-error': (formConfigApp.logoMenuPrincipal.$invalid && formConfigApp.logoMenuPrincipal.$dirty) }">
+											
+											<webuipopover idioma-wup="{{currentLanguage}}"
+												webui-title="{{'ADMINISTRACION.ConfigurarAplicacion.logos.popover.tituloPopover' | translate}}"
+												webui-placement="auto"
+												selector-content="contentPopoverLP">
+												
+												<a>
+													<label class="labelCheck">
+														{{'ADMINISTRACION.ConfigurarAplicacion.logos.logoPrincipal.label' | translate}}
+													</label>
+													<i class="fa fa-question-circle"></i>
+												</a>
+											
+											</webuipopover>
+											
+											<div id="contentPopoverLP"> <!-- Este div está oculto -->
+									 			<div class="cont-imgInfoPopover">
+									 				<img src="static/dist/img/ejemploLogos/logoPrincipal.png" />
+									 				<ul class="popoverInfo-lista">
+											 			<li class="descripcion">
+											 				<strong>{{'ADMINISTRACION.ConfigurarAplicacion.logos.popover.label' | translate}}</strong>
+											 				<span>{{'ADMINISTRACION.ConfigurarAplicacion.logos.logoPrincipal.descripcion.texto_1' | translate}}</span>
+											 			</li>
+											 			<li>{{'ADMINISTRACION.ConfigurarAplicacion.logos.logoPrincipal.descripcion.texto_2' | translate}}</li>
+											 			<li>{{'ADMINISTRACION.ConfigurarAplicacion.logos.logoPrincipal.descripcion.texto_3' | translate}}</li>
+											 		</ul>
+									 			</div>
+											</div>
+											
+											<div ng-if="!b_logoMenuPrincipal" class="ngOnlyEnter">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-file-image-o"></i>
+													</div>
+													<input type="text" class="form-control inputFile" name="logoMenuPrincipal" 
+														ng-required="true" 
+														ng-disabled="true"
+														ng-model="imgLogos[0].name" />
+													<input type="button" class="resetearInput" value="x" name="logoMenuPrincipal" onclick="angular.element(this).scope().resetFile(this);" />
+													<div class="input-group-btn">
+														<input type="file" style="display:none;" accept="image/png"
+															name="logoMenuPrincipal" 
+															id="logoMenuPrincipal" 
+															onchange="angular.element(this).scope().getFileLogos(this)" />
+														<label for="logoMenuPrincipal" class="btn btn-danger"
+															tooltip="{{'ADMINISTRACION.ConfigurarAplicacion.logos.mensaje.cargarLogo' | translate}}"
+															tooltip-placement="top">
+															<i class="fa fa-upload"></i>
+														</label>
+													</div>
+												</div>
+											</div>
+											
+											<div ng-if="b_logoMenuPrincipal" class="ngOnlyEnter">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-picture-o"></i>
+													</div>
+													<input type="text" class="form-control"
+														value="{{'ADMINISTRACION.ConfigurarAplicacion.logos.mensaje.imagenCargada' | translate}}"
+														disabled />
+													<div class="input-group-btn">
+														<button class="btn btn-danger" id="clickPopoverLP"
+															webuipopover
+															webui-placement="auto"
+															webui-options="opcionesImg"
+															selector-content="contentImgLP"
+															ng-click="mostrarPopover()">
+															<i class="fa fa-eye"></i>
+														</button>
+														
+														<div id="contentImgLP"> <!-- Este div está oculto -->
+													 		<img class="imgPopover isoLogos" ng-src="data:image/png;base64,{{configuracionVO.logoMenuPrincipal}}" />
+														</div>
+														<button class="btn btn-danger"
+															tooltip="{{'ADMINISTRACION.ConfigurarAplicacion.logos.mensaje.cambiarLogo' | translate}}"
+															tooltip-placement="top"
+															id="updLogoMenuPrincipal" 
+															onclick="angular.element(this).scope().actualizarImg(this);">
+															<i class="fa fa-refresh"></i>
+														</button>
+													</div>
+												</div>
+											</div>
+											
+											<div ng-show="formConfigApp.logoMenuPrincipal.$error.required && formConfigApp.logoMenuPrincipal.$dirty"
+												ng-style="{color:'red'}">
+												<span>
+													{{'ADMINISTRACION.ConfigurarAplicacion.logos.logoPrincipal.validacion' | translate}}
+												</span>
+											</div>
+										</div>
+									</div> <!-- TERMINA: col Logo Principal -->
+									
+									<div class="col-sm-6">
+										<div class="form-group"
+											ng-class="{'has-error': (formConfigApp.logoMenuSecundario.$invalid && formConfigApp.logoMenuSecundario.$dirty) }">
+											
+											<webuipopover idioma-wup="{{currentLanguage}}"
+												webui-title="{{'ADMINISTRACION.ConfigurarAplicacion.logos.popover.tituloPopover' | translate}}"
+												webui-placement="auto"
+												selector-content="contentPopoverLS">
+												
+												<a>
+													<label class="labelCheck">
+														{{'ADMINISTRACION.ConfigurarAplicacion.logos.logoSecundario.label' | translate}}
+													</label>
+													<i class="fa fa-question-circle"></i>
+												</a>
+											
+											</webuipopover>
+											
+											<div id="contentPopoverLS"> <!-- Este div está oculto -->
+										 		<div class="cont-imgInfoPopover">
+									 				<img src="static/dist/img/ejemploLogos/logoSecundario.png" />
+									 				<ul class="popoverInfo-lista">
+											 			<li class="descripcion">
+											 				<strong>{{'ADMINISTRACION.ConfigurarAplicacion.logos.popover.label' | translate}}</strong>
+											 				<span>{{'ADMINISTRACION.ConfigurarAplicacion.logos.logoSecundario.descripcion.texto_1' | translate}}</span>
+											 			</li>
+											 			<li>{{'ADMINISTRACION.ConfigurarAplicacion.logos.logoSecundario.descripcion.texto_2' | translate}}</li>
+										 				<li>{{'ADMINISTRACION.ConfigurarAplicacion.logos.logoSecundario.descripcion.texto_3' | translate}}</li>
+											 		</ul>
+									 			</div>
+											</div>
+											
+											<div ng-if="!b_logoMenuSecundario" class="ngOnlyEnter">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-file-image-o"></i>
+													</div>
+													<input type="text" class="form-control inputFile" name="logoMenuSecundario" 
+														ng-required="true"
+														ng-disabled="true" 
+														ng-model="imgLogos[1].name"/>
+													<input type="button" class="resetearInput" value="x" name="logoMenuSecundario" onclick="angular.element(this).scope().resetFile(this);" />
+													<div class="input-group-btn">
+														<input type="file" style="display:none;" accept="image/png"
+															name="logoMenuSecundario" 
+															id="logoMenuSecundario" 
+															onchange="angular.element(this).scope().getFileLogos(this)" />
+														<label for="logoMenuSecundario" class="btn btn-danger" 
+															tooltip="{{'ADMINISTRACION.ConfigurarAplicacion.logos.mensaje.cargarLogo' | translate}}"
+															tooltip-placement="top">
+															<i class="fa fa-upload"></i>
+														</label>
+													</div>
+												</div>
+											</div>
+											
+											<div ng-if="b_logoMenuSecundario" class="ngOnlyEnter">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-picture-o"></i>
+													</div>
+													<input type="text" class="form-control"
+														value="{{'ADMINISTRACION.ConfigurarAplicacion.logos.mensaje.imagenCargada' | translate}}"
+														disabled />
+													<div class="input-group-btn">
+														<button class="btn btn-danger" id="clickPopoverLS"
+															webuipopover
+															webui-placement="auto"
+															webui-options="opcionesImg"
+															selector-content="contentImgLS"
+															ng-click="mostrarPopover()">
+															<i class="fa fa-eye"></i>
+														</button>
+														
+														<div id="contentImgLS"> <!-- Este div está oculto -->
+													 		<img class="imgPopover isoLogos" ng-src="data:image/png;base64,{{configuracionVO.logoMenuSecundario}}" />
+														</div>
+														<button class="btn btn-danger" 
+															tooltip="{{'ADMINISTRACION.ConfigurarAplicacion.logos.mensaje.cambiarLogo' | translate}}"
+															tooltip-placement="top"
+															id="updLogoMenuSecundario" 
+															onclick="angular.element(this).scope().actualizarImg(this);">
+															<i class="fa fa-refresh"></i>
+														</button>
+													</div>
+												</div>
+											</div>
+											
+											<div ng-show="formConfigApp.logoMenuSecundario.$error.required && formConfigApp.logoMenuSecundario.$dirty"
+												ng-style="{color:'red'}">
+												<span>
+													{{'ADMINISTRACION.ConfigurarAplicacion.logos.logoSecundario.validacion' | translate}}
+												</span>
+											</div>
+										</div>
+									</div> <!-- TERMINA: col Logo Secundario -->
+								</div> <!-- TERMINA: row 1 -->
+								
+								<div class="row">
+									<div class="col-sm-6">
+<!-- 										<div class="form-group" -->
+<!-- 											ng-class="{'has-error': (formConfigApp.logoHeader.$invalid && formConfigApp.logoHeader.$dirty) }"> -->
+										<div class="form-group">
+
+											<webuipopover idioma-wup="{{currentLanguage}}"
+												webui-title="{{'ADMINISTRACION.ConfigurarAplicacion.logos.popover.tituloPopover' | translate}}"
+												webui-placement="auto"
+												selector-content="contentPopoverLA">
+												
+												<a>
+													<label class="labelCheck">
+														{{'ADMINISTRACION.ConfigurarAplicacion.logos.logoAplicacion.label' | translate}}
+													</label>
+													<i class="fa fa-question-circle"></i>
+												</a>
+											
+											</webuipopover>
+											
+											<div id="contentPopoverLA"> <!-- Este div está oculto -->
+										 		<div class="cont-imgInfoPopover">
+									 				<img src="static/dist/img/ejemploLogos/logoAplicacion.png" />
+									 				<ul class="popoverInfo-lista">
+											 			<li class="descripcion">
+											 				<strong>{{'ADMINISTRACION.ConfigurarAplicacion.logos.popover.label' | translate}}</strong>
+											 				<span>{{'ADMINISTRACION.ConfigurarAplicacion.logos.logoAplicacion.descripcion.texto_1' | translate}}</span>
+											 			</li>
+											 			<li>{{'ADMINISTRACION.ConfigurarAplicacion.logos.logoAplicacion.descripcion.texto_2' | translate}}</li>
+										 				<li>{{'ADMINISTRACION.ConfigurarAplicacion.logos.logoAplicacion.descripcion.texto_3' | translate}}</li>
+											 		</ul>
+									 			</div>
+											</div>
+											
+											<div ng-if="!b_logoHeader" class="ngOnlyEnter">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-file-image-o"></i>
+													</div>
+													<input type="text" class="form-control inputFile" name="logoHeader" 
+														ng-required="false" 
+														ng-disabled="true" 
+														ng-model="imgLogos[2].name" />
+													<input type="button" class="resetearInput" value="x" name="logoHeader" onclick="angular.element(this).scope().resetFile(this);" />
+													<div class="input-group-btn">
+														<input type="file" style="display:none;" accept="image/png" 
+															name="logoHeader" 
+															id="logoHeader" 
+															onchange="angular.element(this).scope().getFileLogos(this)" />
+														<label for="logoHeader" class="btn btn-danger" 
+															tooltip="{{'ADMINISTRACION.ConfigurarAplicacion.logos.mensaje.cargarLogo' | translate}}"
+															tooltip-placement="top">
+															<i class="fa fa-upload"></i>
+														</label>
+													</div>
+												</div>
+											</div>
+											
+											<div ng-if="b_logoHeader" class="ngOnlyEnter">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-picture-o"></i>
+													</div>
+													<input type="text" class="form-control"
+														value="{{'ADMINISTRACION.ConfigurarAplicacion.logos.mensaje.imagenCargada' | translate}}"
+														disabled />
+													<div class="input-group-btn">
+														<button class="btn btn-danger" id="clickPopoverLH"
+															webuipopover
+															webui-placement="auto"
+															webui-options="opcionesImg"
+															selector-content="contentImgLH"
+															ng-click="mostrarPopover()">
+															<i class="fa fa-eye"></i>
+														</button>
+														
+														<div id="contentImgLH"> <!-- Este div está oculto -->
+													 		<img class="imgPopover isoLogos" ng-src="data:image/png;base64,{{configuracionVO.logoHeader}}" />
+														</div>
+														<button class="btn btn-danger" 
+															tooltip="{{'ADMINISTRACION.ConfigurarAplicacion.logos.mensaje.cambiarLogo' | translate}}"
+															tooltip-placement="top"
+															id="updLogoHeader" 
+															onclick="angular.element(this).scope().actualizarImg(this);">
+															<i class="fa fa-refresh"></i>
+														</button>
+													</div>
+												</div>
+											</div>
+											
+<!-- 											<div ng-show="formConfigApp.logoHeader.$error.required && formConfigApp.logoHeader.$dirty" -->
+<!-- 												ng-style="{color:'red'}">El Logo Aplicación es requerido -->
+<!-- 											</div> -->
+										</div>
+									</div> <!-- TERMINA: col Logo Principal -->
+									
+									<div class="col-sm-6">
+										<div class="form-group"
+											ng-class="{'has-error': (formConfigApp.logoIndex.$invalid && formConfigApp.logoIndex.$dirty) }">
+																						
+											<webuipopover idioma-wup="{{currentLanguage}}"
+												webui-title="{{'ADMINISTRACION.ConfigurarAplicacion.logos.popover.tituloPopover' | translate}}"
+												webui-placement="auto"
+												selector-content="contentPopoverIP">
+												
+												<a>
+													<label class="labelCheck">
+														{{'ADMINISTRACION.ConfigurarAplicacion.logos.imagenPresentacion.label' | translate}}
+													</label>
+													<i class="fa fa-question-circle"></i>
+												</a>
+											
+											</webuipopover>
+											
+											<div id="contentPopoverIP"> <!-- Este div está oculto -->
+										 		<ul class="popoverInfo-lista">
+										 			<li class="descripcion">
+										 				<strong>{{'ADMINISTRACION.ConfigurarAplicacion.logos.popover.label' | translate}}</strong>
+										 				<span>{{'ADMINISTRACION.ConfigurarAplicacion.logos.imagenPresentacion.descripcion.texto_1' | translate}}</span>
+										 			</li>
+										 			<li>{{'ADMINISTRACION.ConfigurarAplicacion.logos.imagenPresentacion.descripcion.texto_2' | translate}}</li>
+										 			<li>{{'ADMINISTRACION.ConfigurarAplicacion.logos.imagenPresentacion.descripcion.texto_3' | translate}}</li>
+										 		</ul>
+											</div>
+											<div ng-if="!b_logoIndex" class="ngOnlyEnter">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-file-image-o"></i>
+													</div>
+													<input type="text" class="form-control inputFile" name="logoIndex" 
+														ng-required="true"
+														ng-disabled="true"
+														ng-model="imgLogos[3].name" />
+													<input type="button" class="resetearInput" value="x" name="logoIndex" onclick="angular.element(this).scope().resetFile(this);" />
+													<div class="input-group-btn">
+														<input type="file" style="display:none;" accept="image/png,image/jpeg"
+															name="logoIndex" 
+															id="logoIndex" 
+															onchange="angular.element(this).scope().getFileLogos(this)" />
+														<label for="logoIndex" class="btn btn-danger" 
+															tooltip="{{'ADMINISTRACION.ConfigurarAplicacion.logos.mensaje.cargarLogo' | translate}}"
+															tooltip-placement="top">
+															<i class="fa fa-upload"></i>
+														</label>
+													</div>
+												</div>
+											</div>	
+											
+											<div ng-if="b_logoIndex" class="ngOnlyEnter">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-picture-o"></i>
+													</div>
+													<input type="text" class="form-control"
+														value="{{'ADMINISTRACION.ConfigurarAplicacion.logos.mensaje.imagenCargada' | translate}}"
+														disabled />
+													<div class="input-group-btn">
+														<button class="btn btn-danger" id="clickPopoverLI"
+															webuipopover
+															webui-placement="auto"
+															webui-options="opcionesImg"
+															selector-content="contentImgLI"
+															ng-click="mostrarPopover()">
+															<i class="fa fa-eye"></i>
+														</button>
+														
+														<div id="contentImgLI"> <!-- Este div está oculto -->
+													 		<img class="imgPopover" ng-src="data:image/png;base64,{{configuracionVO.logoIndex}}" />
+														</div>
+														<button class="btn btn-danger" 
+															tooltip="{{'ADMINISTRACION.ConfigurarAplicacion.logos.mensaje.cambiarLogo' | translate}}"
+															tooltip-placement="top"
+															id="updLogoIndex" 
+															onclick="angular.element(this).scope().actualizarImg(this);">
+															<i class="fa fa-refresh"></i>
+														</button>
+													</div>
+												</div>
+											</div>
+												
+											<div ng-show="formConfigApp.logoIndex.$error.required && formConfigApp.logoIndex.$dirty"
+												ng-style="{color:'red'}">
+												<span>
+													{{'ADMINISTRACION.ConfigurarAplicacion.logos.imagenPresentacion.validacion' | translate}}
+												</span>
+											</div>
+										</div>
+									</div> <!-- TERMINA: col Logo Secundario -->
+								</div> <!-- TERMINA: row 2 -->
+							</div> <!-- TERMINA: box-body GESTIÓN -->
+						</div> <!-- TERMINA: box-danger GESTIÓN -->
+					</div> <!-- TERMINA: col GESTIÓN -->
+				</div> <!-- TERMINA: row principal -->
+				
+				<div class="row centerRow">
+					<button class="btn btn-danger" ng-click="restaurarConfiguracion()">
+						{{'APP.Base.boton.restaurar' | translate}}
+					</button>
+					<button class="btn btn-danger" ng-click="guardarConfiguracion()">
+						{{'APP.Base.boton.guardar' | translate}}
+					</button>
+				</div> <!-- TERMINA: row de los botones -->
+			</form> <!-- TERMINA: formConfigApp -->
+		</section>
+		
+		
+		<div class="mallaTemas mallaAnimate"
+			ng-if="b_malla"
+			ng-click="mallaTemas()"></div>
+		
+	</body>
+</html>

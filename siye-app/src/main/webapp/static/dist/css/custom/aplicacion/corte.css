@@ -1,0 +1,166 @@
+.corte {
+    color: #fff !important;
+    border: 0rem;
+    height: 3.0rem;
+    padding-top: 0.7rem;
+    margin-bottom: 0.3rem;
+    margin-left: 0.4rem;
+    width: 97%;
+}
+.corteBoveda {
+    color: #fff !important;
+    border: 0rem;
+    height: 3.3rem;
+    padding-top: 0.7rem;
+    margin-bottom: 0.5rem;
+    margin-left: 0.9rem;
+    width: 71rem;
+}
+
+.boveda {
+	margin-left: 0rem !important;
+    width: 100% !important;
+}
+.bovedaBtn {
+	padding: 0.1rem 0.5971rem;
+    font-size: 1.1rem;
+}
+.corte i {
+    padding-top: 0.3rem !important;
+}
+
+.iconoBus {
+    cursor: pointer;
+}
+
+.corte .elemento {
+    display: inline-block;
+    text-align: -webkit-left;
+}
+
+.maxBox {
+    max-height: calc(100vh - 18rem) !important;
+    overflow: auto;
+}
+
+.textAreaSize {
+    resize: none;
+}
+
+.observacionesIcon :hover {
+    color: #cf0a2c;
+    cursor: pointer;
+}
+
+
+/* Customize the label (the container) */
+
+.containerCheck {
+    /* display: block; */
+    position: relative;
+    padding-left: 15px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 22px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+/* Hide the browser's default checkbox */
+
+.containerCheck input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+
+/* Create a custom checkbox */
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 1.5rem;
+    width: 1.5rem;
+    background-color: #c1c1c1;
+}
+
+
+/* On mouse-over, add a grey background color */
+
+.containerCheck:hover input~.checkmark {
+    background-color: #c1c1c1;
+}
+
+
+/* When the checkbox is checked, add a RED background */
+
+.containerCheck input:checked~.checkmark {
+    background-color: #cf0a2c;
+}
+
+
+/* Create the checkmark/indicator (hidden when not checked) */
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+
+/* Show the checkmark when checked */
+
+.containerCheck input:checked~.checkmark:after {
+    display: block;
+}
+
+
+/* Style the checkmark/indicator */
+
+.containerCheck .checkmark:after {
+    left: 7px;
+    top: 3px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.etiquetaCancelado {
+	display: inline-block;
+	min-width: 0.7143rem;
+	padding: 0.2143rem 0.0rem;
+	font-size: 0.8857rem;
+	font-weight: 600;
+	color: #fff;
+	line-height: 1;
+	vertical-align: baseline;
+	white-space: nowrap;
+	text-align: center;
+	border-radius: 0.7143rem;
+}
+
+.btnEstatus{
+	background-color: #36df1e;
+	border-color: #cf0a2c;
+	font-size: 1rem;
+	width: 20px;
+	height: 20px;
+	text-align: center;
+	padding: 0px;
+	vertical-align: middle;
+	color: #fff;
+	
+	box-shadow: 0px 1px 5px rgba(0, 0, 0, .4);
+	transition: all .1s ease-out;
+}

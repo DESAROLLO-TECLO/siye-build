@@ -1,0 +1,46 @@
+/* Color al seleccionar texto */
+.tema-tecloLight *::selection {
+    background-color: rgba(207,10,44,.9);
+    color: #fff;
+}
+
+/* Firefox */
+.tema-tecloLight *::-moz-selection {
+    background-color: rgba(207,10,44,.9);
+    color: #fff;
+}
+
+.tema-tecloLight img.isoLogos {
+	filter: inherit;
+}
+
+/* MODALES CON HEADER-CONTENIDO-FOOTER */
+/* Contenedor principal */
+.tema-tecloLight .modal-content {
+	background-color: #fff;
+}
+/* Cabecera */
+.tema-tecloLight .modal-header {
+	background-color: #cf0a2c;
+	color: #fff;
+	border-bottom-color: #f4f4f4;
+}
+/* Body */
+.tema-tecloLight .modal-body {
+	background-color: #fff;
+	color: #55565a;
+}
+/* Footer */
+.tema-tecloLight .modal-footer {
+	background-color: #fff;
+	color: #55565a;
+	border-top-color: #f4f4f4;
+}
+/* Boton cerrar en la cabecera */
+.tema-tecloLight .close {
+	background-color: #ecf0f1;
+	color: #cc4865;
+}
+.tema-tecloLight .close:hover {
+	color: #cf0a2c;
+}

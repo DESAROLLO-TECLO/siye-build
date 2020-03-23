@@ -1,0 +1,13 @@
+/* Contenedor scrollUp */
+.tema-tecloDark .scrollup {
+	background-color: #455A64;
+	box-shadow: 1px 1px 10px rgba(0, 0, 0, .7);
+}
+.tema-tecloDark .scrollup:hover {
+	background-color: #55565a;
+}
+
+/* Ícono del scrollup */
+.tema-tecloDark .scrollup > i {
+	color: #fff;
+}

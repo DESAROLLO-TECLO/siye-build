@@ -1,0 +1,116 @@
+/* ESTILOS PARA COMPONER EL HEADER DE LAS TABLAS DE CONTENIDO CUANDO SE LES AGREGA */
+/* EL INPUT DE BUSQUEDA Y UNA IMAGEN DE EXCEL */
+.header-boxMod{
+	margin-top: 7px;
+	float: left;
+}
+
+/* Estilos para el componente de búsqueda */
+.cont-inputSearch{
+	width: 100% !important;
+	max-width: 350px !important;
+		display: -ms-flexbox;
+	display: flex;
+		-ms-flex-pack: end;
+	justify-content: flex-end !important;
+}
+.itemsFloat {
+		display: -ms-flexbox;
+	display: flex;
+	align-items: center;
+}
+.itemsFloat span {
+	margin-left: 10px;
+}
+
+.tableTitle {
+	margin-top : 0.7143rem !important;
+	font-size : 1.429rem !important;
+}
+
+.dropdown-menu {
+	padding: 0;
+	box-shadow: 1px 1px 0.2143rem #c1c1c1;
+}
+
+.dropdown-menu li{
+	padding: 0.2143rem 1.429rem;
+	margin: 0;
+}
+
+.dropdown-menu li:hover{
+	background-color : #eeeeee;
+	cursor: pointer;
+}
+
+.dropdown-menu li.active {
+    color: white;
+    background-color: #E92D3D;
+}
+
+table.table tbody tr td a {
+	font-weight: 700;
+}
+
+.table thead tr th {
+	text-align: center !important;
+	vertical-align: middle !important;
+}
+
+.header-fixed tbody {
+   display: block;
+   height: 100%;
+   max-height: 40.43rem;
+   overflow-y: auto;
+   overflow-x: hidden;
+}
+.header-fixed thead, 
+.header-fixed tbody tr {
+   display:table;
+   width: 100%;
+   table-layout:fixed;
+}
+
+.header-fixed thead {
+   width: calc( 100% - 1rem )
+}
+
+.header-fixed thead tr th,
+.header-fixed tbody tr td{
+	font-size: 1rem;
+}
+
+.center{
+	text-align: center !important;
+}
+
+.wrap-text{
+	white-space: pre-wrap !important;
+	overflow-wrap: break-word !important;
+}
+
+/* Aplicar centrado al paginador en tablas */
+.fixed-table-pagination{
+	display: flex !important;
+	flex-wrap: wrap !important;
+	justify-content: space-between;
+}
+
+@media only screen and (max-width: 591px){
+	.fixed-table-pagination{
+		justify-content: center;
+	}
+}
+
+@media only screen and (max-width: 801px){	
+	.header-fixed thead, 
+	.header-fixed tbody tr {
+   		display: table;
+   		width: 57.14rem;
+   		table-layout: fixed;
+	}
+	.header-fixed thead tr th,
+	.header-fixed tbody tr td{
+		font-size: .96rem;
+	}
+}

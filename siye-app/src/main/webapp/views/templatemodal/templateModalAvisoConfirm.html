@@ -1,0 +1,22 @@
+<div class="modal fade" id="aviso" data-keyboard="false" data-backdrop="static">
+  <div class="modal-dialog" >
+    <div class="modal-content">
+        <div class="modal-header bg-red-active"></div>
+        <div class="modal-body" id="modal-body">
+            <div class="container">
+                <div class="icono">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                </div>
+                <div class="mensaje">
+                    <label>{{message}}</label>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <div class="container">
+            <button class="btn bg-red-active" type="button" ng-click="close(true)" data-dismiss="modal">Aceptar</button>
+		  </div>
+        </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+
+/* COMPONENTE DE ROWSPERPAGE */
+/* Al pasar el puntero por cada elemento de la lista */
+.tema-tecloLightDark .pagination-info .dropdown-menu li {
+	color: #55565a;
+}
+.tema-tecloLightDark .pagination-info .dropdown-menu li:hover {
+	background-color: #cf0a2c;
+	color: #fff;
+}
+/* Elemento li activo */
+.tema-tecloLightDark .pagination-info .dropdown-menu li.active {
+	background-color: #ecf0f1;
+	color: #969597;
+}
+
+
+/* PAGINACIÓN DE TABLAS */
+
+.tema-tecloLightDark .pagination > li > a,
+.tema-tecloLightDark .pagination > li > span {
+	color: #cc4865;
+	background-color: #fff;
+	border-color: transparent;
+	box-shadow: 1px 1px 5px rgba(0,0,0,.2);
+}
+.tema-tecloLightDark .pagination > li > a:hover,
+.tema-tecloLightDark .pagination > li > span:hover,
+.tema-tecloLightDark .pagination > li > a:focus,
+.tema-tecloLightDark .pagination > li > span:focus {
+	color: #969597;
+	background-color: #ecf0f1;
+	border-color: transparent;
+	box-shadow: 1px 1px 5px rgba(0,0,0,.2);
+}
+.tema-tecloLightDark .pagination > .active > a,
+.tema-tecloLightDark .pagination > .active > span,
+.tema-tecloLightDark .pagination > .active > a:hover,
+.tema-tecloLightDark .pagination > .active > span:hover,
+.tema-tecloLightDark .pagination > .active > a:focus,
+.tema-tecloLightDark .pagination > .active > span:focus {
+	color: #fff;
+	background-color: #cf0a2c;
+	border-color: transparent;
+	box-shadow: 1px 1px 3px rgba(0,0,0,.1);
+}
+.tema-tecloLightDark .pagination > .disabled > span,
+.tema-tecloLightDark .pagination > .disabled > span:hover,
+.tema-tecloLightDark .pagination > .disabled > span:focus,
+.tema-tecloLightDark .pagination > .disabled > a,
+.tema-tecloLightDark .pagination > .disabled > a:hover,
+.tema-tecloLightDark .pagination > .disabled > a:focus {
+	color: #969597;
+	background-color: #fff;
+	border-color: #ecf0f1;
+	box-shadow: 1px 1px 5px rgba(0,0,0,.2);
+}

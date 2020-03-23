@@ -1,0 +1,335 @@
+{
+    "APP": {
+        "Base": {
+            "boton": {
+                "nuevo": "Nuevo",
+                "buscar": "Buscar",
+                "guardar": "Guardar",
+                "aceptar": "Aceptar",
+                "registrarProspecto": "Registrar propecto",
+                "actualizar": "Actualizar",
+                "modificar": "Modificar",
+                "restaurar": "Restaurar",
+                "regresar": "Regresar",
+                "reasignar": "Reasignar",
+                "cancelar": "Cancelar",
+                "iniciar": "Iniciar",
+                "entrar": "Entrar",
+                "iniciarSesion": "Iniciar sesión",
+                "salir": "Salir",
+                "cerrarSesion": "Cerrar sesión",
+                "verDetalle": "Ver detalle",
+                "consultar": "Consultar",
+                "nuevaActividad": "Nueva actividad",
+                "continuar": "Continuar",
+                "terminar": "Terminar"
+            },
+            "mensaje": {
+                "formularioIncompleto": "Formulario incompleto",
+                "registroGuardado": "Registro guardado",
+                "registroActualizado": "Registro actualizado",
+                "registroEliminado": "Registro eliminado",
+                "errorServidor": "Ocurrió un error en el servidor",
+                "errorComunicacion": "Error de comunicación",
+                "credencialesIncorrectas": "Credenciales incorrectas",
+                "datosIncorrectos": "Los datos ingresados son incorrectos",
+                "noRegistros": "No se encontraron registros",
+                "pantallaCompleta": "Pantalla completa",
+                "salirPantallaCompleta": "Salir de pantalla completa",
+                "sinEspecificar": "Sin especificar",
+                "todos": "Todos",
+                "seleccioneOpcion": "Seleccione una opción",
+                "alerta": "ALERTA",
+                "sesionExpira": "La sesión va a expirar en",
+                "segundos": "segundos",
+                "mostrarTodos": "Mostrar todos",
+                "si": "Si",
+                "no": "No",
+                "accesoDenegado": {
+                    "title": "Acceso denegado",
+                    "descripcion": "El perfil actual no tiene acceso al recurso solicitado"
+                },
+                "error": {
+                    "title": "Parece que algo ha salido mal",
+                    "descripcion": "Por favor vuelva a intentarlo. Si el problema persiste, repórtelo con el Administrador"
+                }
+            },
+            "estatus": {
+                "cancelado": "Cancelado",
+                "habilitado": "Habilitado",
+                "inhabilitado": "Inhabilitado",
+                "activo": "Activo",
+                "inactivo": "Inactivo",
+                "procesado": "Procesado",
+                "pendiente": "Pendiente",
+                "finalizado": "Finalizado"
+            },
+            "boxBusqueda": {
+                "tituloBox": "Búsqueda",
+                "tipoBusqueda": {
+                    "label": "Tipo de búsqueda",
+                    "validacion": "El tipo de búsqueda es requerido"
+                },
+                "valorBusqueda": {
+                    "label": "Valor de búsqueda",
+                    "validacion": "El valor de búsqueda es requerido"
+                },
+                "mostrarResultado": "Mostrar resultado",
+                "fechaInicial": {
+                    "label": "Fecha inicial",
+                    "validacion": "La fecha inicial es requerida"
+                },
+                "fechaFinal": {
+                    "label": "Fecha final",
+                    "validacion": "La fecha final es requerida"
+                }
+            },
+            "tablaResultados": {
+                "registrosEncontrados": "Registros encontrados",
+                "filtrarPor": "Filtrar por...",
+                "descargarReporte": "Descargar reporte",
+                "paginacion": {
+                    "mostrar": "Mostrar",
+                    "registros": "Registros"
+                }
+            }
+        },
+
+        "Login": {
+            "nombreAplicacion": "Sistema de Inspección y Evaluaciones",
+            "nombreCliente": "SSC CDMX",
+            "usuario": {
+                "label": "Usuario",
+                "placeholder": "Usuario",
+                "validacion": "El usuario es requerido"
+            },
+            "clave": {
+                "label": "Contraseña",
+                "placeholder": "Contraseña",
+                "validacion": "La contraseña es requerida"
+            }
+        },
+
+        "Header": {
+            "fechaActual": "Fecha...",
+            "perfil": "Perfil",
+            "cambiarClave": "Cambiar contraseña",
+            "resolucion": {
+                "pq": "Pequeño",
+                "md": "Mediano",
+                "gd": "Grande"
+            },
+            "breadCrumbs": {
+                "inicio": "Inicio"
+            }
+        },
+
+        "Menu": {
+            "tituloMenu": "MENÚ DE NAVEGACIÓN"
+        },
+
+        "Footer": {
+            "derechosAutor": "Derechos de autor",
+            "derechosReservados": "Todos los derechos reservados",
+            "tecloMexicana": "Teclo Mexicana",
+            "version": "Versión",
+            "idioma": {
+                "label": "Idioma",
+                "es": "Español",
+                "en": "Inglés"
+            }
+        }
+    },
+
+    "ADMINISTRACION": {
+        "ComplementosWeb": {
+            "tituloServicio": "Complementos Web",
+            "seleccionadores": {
+                "tituloBox": "Seleccionadores",
+                "sinBusqueda": {
+                    "label": "Sin búsqueda",
+                    "validacion": "El seleccionador sin búsqueda es requerido"
+                },
+                "conBusqueda": {
+                    "label": "Con búsqueda",
+                    "validacion": "El seleccionador con búsqueda es requerido"
+                },
+                "multipleOpcion1": {
+                    "label": "Múltiple (Opción 1)",
+                    "validacion": "El múltiple opción 1 es requerido"
+                },
+                "multipleOpcion2": {
+                    "label": "Múltiple (Opción 2)",
+                    "validacion": "El múltiple opción 2 es requerido"
+                }
+            },
+            "fechas": {
+                "tituloBox": "Fechas",
+                "calendario": {
+                    "label": "Calendario",
+                    "validacion": "El calendario es requerido"
+                },
+                "tiempo": {
+                    "label": "Tiempo",
+                    "validacion": "El tiempo es requerido"
+                },
+                "calendarioTiempo": {
+                    "label": "Calendario con tiempo",
+                    "validacion": "El calendario con tiempo es requerido"
+                }
+            },
+            "complementosInformacion": {
+                "tituloBox": "Complementos de información",
+                "informacionComplementaria": {
+                    "label": "Información complementaria",
+                    "ejemplo": "Esto es un ejemplo de información complementaria",
+                    "validacion": "La información complementaria es requerida"
+                },
+                "color": {
+                    "label": "Color",
+                    "validacion": "El color es requerido"
+                },
+                "detalleInformacionOpcion1": {
+                    "label": "Detalle de información (Opción 1)",
+                    "validacion": "El detalle de información es requerido"
+                },
+                "detalleInformacionOpcion2": {
+                    "label": "Detalle de información (Opción 2)",
+                    "ejemplo": "Contenido del detalle de la información",
+                    "validacion": "El detalle de información es requerido"
+                }
+            },
+            "interruptores": {
+                "tituloBox": "Interruptores",
+                "interruptor1": {
+                    "label": "Interruptor 1",
+                    "validacion": "El interruptor 1 es requerido"
+                },
+                "interruptor2": {
+                    "label": "Interruptor 2",
+                    "validacion": "El interruptor 2 es requerido"
+                },
+                "interruptor3": {
+                    "label": "Interruptor 3",
+                    "validacion": "El interruptor 3 es requerido"
+                }
+            }
+        },
+
+        "CambiarContrasena": {
+            "tituloServicio": "Cambiar Contraseña",
+            "cambioAcceso": {
+                "tituloBox": "Cambio de Contraseña",
+                "contrasenaActual": {
+                    "label": "Contraseña actual",
+                    "validacion": "La contraseña actual es requerida"
+                },
+                "nuevaContrasena": {
+                    "label": "Nueva contraseña",
+                    "validacion": "La nueva contraseña es requerida"
+                },
+                "repetirNuevaContrasena": {
+                    "label": "Repetir nueva contraseña",
+                    "validacion": "Repetir nueva contraseña es requerido"
+                }
+            }
+        },
+
+        "ConfigurarAplicacion": {
+            "tituloServicio": "Configurar Aplicación",
+            "personalizacion": {
+                "tituloBox": "Personalización",
+                "tema": {
+                    "label": "Tema",
+                    "validacion": "El tema es requerido"
+                },
+                "resolucion": {
+                    "label": "Resolución",
+                    "validacion": "La resolución es requerida"
+                },
+                "menuFijo": {
+                    "label": "Menú fijo",
+                    "validacion": "El menú fijo es requerido"
+                },
+                "menuDesplegado": {
+                    "label": "Menú desplegado",
+                    "validacion": "El menú desplegado es requerido"
+                },
+                "cabeceraFija": {
+                    "label": "Cabecera fija",
+                    "validacion": "La cabecera fija es requerida"
+                }
+            },
+
+            "aplicacion": {
+                "tituloBox": "Aplicación",
+                "nombreAplicacion": {
+                    "label": "Nombre de la aplicación",
+                    "validacion": "El nombre de la aplicación es requerido"
+                },
+                "codigoAplicacion": {
+                    "label": "Código de la aplicación",
+                    "validacion": "El código de la aplicación es requerido"
+                },
+                "descripcion": {
+                    "label": "Descripción",
+                    "validacion": "La descripción de la aplicación es requerida"
+                }
+            },
+
+            "logos": {
+                "tituloBox": "Logos",
+
+                "logoPrincipal": {
+                    "label": "Logo principal",
+                    "descripcion": {
+                        "texto_1": "Este logo será mostrado en la esquina superior izquierda, entre la cabecera y el menu (Preferiblemente un Logotipo)",
+                        "texto_2": "La imagen debe tener fondo transparente con formato PNG",
+                        "texto_3": "La imagen debe tener una resolución de 145x40px"
+                    },
+                    "validacion": "El logo principal es requerido"
+                },
+
+                "logoSecundario": {
+                    "label": "Logo secundario",
+                    "descripcion": {
+                        "texto_1": "Este logo se mostrará en la esquina superior izquierda entre la cabecera y el menu, cuando el menú está colapsado (Preferiblemente un Isotipo)",
+                        "texto_2": "La imagen debe tener fondo transparente con formato PNG",
+                        "texto_3": "La imagen debe tener una resolución de 38x38px"
+                    },
+                    "validacion": "El logo secundario es requerido"
+                },
+
+                "logoAplicacion": {
+                    "label": "Logo aplicación",
+                    "descripcion": {
+                        "texto_1": "Este logo se mostrará en la cabecera del lado izquierdo del nombre de la aplicación (Preferiblemente un Isotipo)",
+                        "texto_2": "La imagen debe tener fondo transparente con formato PNG",
+                        "texto_3": "La imagen debe tener una resolución de 38x36px"
+                    },
+                    "validacion": "El logo aplicación es requerido"
+                },
+
+                "imagenPresentacion": {
+                    "label": "Imagen de presentación",
+                    "descripcion": {
+                        "texto_1": "Esta imagen se visualizará en la página principal que se muestra al acceder al sistema",
+                        "texto_2": "La imagen puede ser en formato PNG o JPG|JPEG",
+                        "texto_3": "La imagen puede tener una resolución mayor a 980x720px o menor a 1080x860px"
+                    },
+                    "validacion": "La imagen de presentación es requerida"
+                },
+
+                "popover": {
+                    "tituloPopover": "Recomendaciones",
+                    "label": "Descripción"
+                },
+                "mensaje": {
+                    "cambiarLogo": "Cambiar logo",
+                    "cargarLogo": "Cargar logo",
+                    "imagenCargada": "IMAGEN CARGADA"
+                }
+            }
+        }
+    }
+}

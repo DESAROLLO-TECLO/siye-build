@@ -1,0 +1,36 @@
+<div class="modal fade" id="actualizacionToken" data-keyboard="true"
+	data-toggle="modal" data-backdrop="static">
+	<div class="modal-dialog">
+		<div class="modal-content text-center">
+			<div class="modal-header bg-red-active">
+				<b>ALERTA! La sesión va a expirar en {{contador}} segundos.</b>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+
+					<div class="col-md-1"></div>
+					<div class="col-md-10">
+						<div class="progress">
+							<div class="progress-bar progress-bar-danger"
+								id="progress-bar-token" value="test" role="progressbar"
+								progress-bar-watch="progress" progress-bar
+								aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100"
+								style="">{{contador}}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="boton">
+					<button class="btn bg-red-active" type="button"
+						ng-click="close(true)" data-dismiss="modal">Continuar</button>
+				 
+					<button class="btn bg-red-active" type="button"
+						ng-click="salir()" data-dismiss="modal">Terminar</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+

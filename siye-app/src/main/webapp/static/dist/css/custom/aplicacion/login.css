@@ -1,0 +1,155 @@
+#login-container {
+  position: relative;
+  width: 95%;
+  min-width: 250px;
+  max-width: 320px;
+  margin: 110px auto;
+  text-align: center;
+}
+#login-container .row > div {
+  margin-bottom: 14px;
+}
+#login-container .row > div:last-child {
+  margin-bottom: 0;
+}
+#login-container #logo {
+  position: absolute;
+  top: -40px;
+  left: 39%;
+  z-index: 100;
+  width: 75px;
+  height: 75px;
+/*   margin-left: -50px; */
+  background-color: #cf0a2c;
+  border-top-right-radius: 100px;
+  border-top-left-radius: 100px;
+  border-bottom-right-radius: 100px;
+  border-bottom-left-radius: 100px;
+}
+#login-container #logo:hover {
+  background-color: #e90c32;
+}
+
+#login-container .iconLogo{  
+    position: relative;
+	width: 78%;
+    margin-top: 11%;
+    margin-left: -2%;		
+/* 	-webkit-filter: grayscale(1) brightness(4) contrast(1.05); */
+/*     filter: grayscale(1) brightness(4) contrast(1.05); */
+}
+
+#login-container .iconLogo:hover {
+/*     -webkit-filter: grayscale(1) brightness(3.08) contrast(1.15); */
+/*     filter: grayscale(1) brightness(3.08) contrast(1.15); */
+}
+
+#login-container .logoLogin{
+	width: 120px;
+	margin-bottom: 20px;
+}
+	
+#login-container #signup-btn {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  color: #fff;
+  background-color: #55565a;
+  border: none;
+  border-radius: 5px;
+}
+#login-container #signup-btn:hover {
+  background-color: #5c5e63;
+  border-color: #181818;
+}
+#login {
+  position: relative;
+  padding: 55px 20px 15px 20px;
+  margin-bottom: 14px;
+  background-color: #FFF;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  -webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.65);
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.65);
+}
+#login #login-form {
+  padding: 0;
+  margin-top: 28px;
+  margin-bottom: 28px;
+  text-align: left;
+}
+#login #login-form label {
+  display: none;
+}
+#login #login-form .form-control {
+  height: 40px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+#login #login-btn {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  font-size: 18px;
+}
+
+.clienteTitle {
+	font-weight: 600;
+	font-size: 18px;
+}
+
+.iconBtnLogin{
+	font-size: 16px;
+}
+.versionApp{
+	font-weight: 600;
+	font-size: 12px;
+	color: #6F797A;
+}
+
+.footerLogin{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-content: center;
+	font-size: 12px;
+}
+
+.btnSinSombra {
+	box-shadow: 1px 1px 5px rgba(0,0,0,.5);
+}
+
+/* Estilos estáticos solo para el login */
+.titleApp {
+	font-size: 22px;
+}
+.formGroup-login {
+	margin-bottom: 14px;
+	font-size: 12px;
+}
+.inputGroupAddon-login {
+	padding: 4px 10px;
+	font-size: 12px;
+}
+.formControl-login {
+	height: 30px;
+	padding: 6px 10px;
+	font-size: 12px;
+}
+
+.hideShowPassword {
+	position: absolute;
+	right: 10px;
+	top: 4px;
+	font-size: 1.2rem;
+	cursor: pointer;
+	opacity: .7;
+	z-index: 10;
+}
+
+
+@media only screen and (max-width: 53em){
+	.footerLogin{
+		flex-direction: column;
+	}
+}

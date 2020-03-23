@@ -1,0 +1,22 @@
+.title-intro{
+	position: absolute;
+	width: calc(100% - 1.429rem);
+	text-align: center;
+	padding: 0.7143rem;
+	font-weight: 800;
+}
+
+.imgIntro{
+	width: 100%;
+	height: calc(100vh - 17rem) !important;
+/* 	max-height: 33.57rem; */
+}
+
+@media only screen and (max-width: 40em){
+	.title-intro{
+		position: relative;
+		font-size: 1.286rem;
+		width: 100%;
+		padding: 0.7143rem 0.3571rem;
+	}
+}

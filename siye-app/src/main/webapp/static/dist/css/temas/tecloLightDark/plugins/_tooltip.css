@@ -1,0 +1,23 @@
+/* Contenedor inner del tooltip */
+.tema-tecloLightDark .tooltip-inner {
+	background-color: rgba(207,10,44,.9);
+	color: #fff;
+}
+
+/* Caret de los tooltips */
+.tema-tecloLightDark .tooltip.top .tooltip-arrow,
+.tema-tecloLightDark .tooltip.top-left .tooltip-arrow,
+.tema-tecloLightDark .tooltip.top-right .tooltip-arrow {
+	border-top-color: rgba(207,10,44,.8);
+}
+.tema-tecloLightDark .tooltip.left .tooltip-arrow {
+	border-left-color: rgba(207,10,44,.8);
+}
+.tema-tecloLightDark .tooltip.right .tooltip-arrow {
+	border-right-color: rgba(207,10,44,.8);
+}
+.tema-tecloLightDark .tooltip.bottom .tooltip-arrow,
+.tema-tecloLightDark .tooltip.bottom-left .tooltip-arrow,
+.tema-tecloLightDark .tooltip.bottom-right .tooltip-arrow {
+	border-bottom-color: rgba(207,10,44,.8);
+}

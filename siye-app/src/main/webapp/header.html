@@ -1,0 +1,323 @@
+<head>
+    <meta charset="utf-8">
+</head>
+
+<header class="main-header fixed">
+    <div class="hidden-xs">
+        <a href="#/index" class="logo" ng-click="comprobarConfiguracion()">
+            <!-- LOGO PRINCIPAL Y SENCUNDARIO: Configuración original -->
+            <img class="logo-mini logoTeclo_mini ngOnlyEnter" ng-if="configuracionApp.logoMenuSecundario != null && configuracion == true" ng-src="data:image/png;base64,{{configuracionApp.logoMenuSecundario}}" />
+
+            <img class="logo-mini logoTeclo_mini ngOnlyEnter" ng-if="configuracionApp.logoMenuSecundario == null && configuracion == true" src="static/dist/img/ejemploLogos/medidaLMSecundario.png" />
+
+            <img class="logoTeclo_lg ngOnlyEnter" ng-if="configuracionApp.logoMenuPrincipal != null && configuracion == true" ng-src="data:image/png;base64,{{configuracionApp.logoMenuPrincipal}}" />
+
+            <img class="logoTeclo_lg ngOnlyEnter" ng-if="configuracionApp.logoMenuPrincipal == null && configuracion == true" src="static/dist/img/ejemploLogos/medidaLMPrincipal.png" />
+
+            <!-- LOGO PRINCIPAL Y SENCUNDARIO: Configuración temporal -->
+            <img class="logo-mini logoTeclo_mini ngOnlyEnter" ng-if="configuracionTMP.logoMenuSecundario != null && configuracion == false" ng-src="data:image/png;base64,{{configuracionTMP.logoMenuSecundario}}" />
+
+            <img class="logo-mini logoTeclo_mini ngOnlyEnter" ng-if="configuracionTMP.logoMenuSecundario == null && configuracion == false" src="static/dist/img/ejemploLogos/medidaLMSecundario.png" />
+
+            <img class="logoTeclo_lg ngOnlyEnter" ng-if="configuracionTMP.logoMenuPrincipal != null && configuracion == false" ng-src="data:image/png;base64,{{configuracionTMP.logoMenuPrincipal}}" />
+
+            <img class="logoTeclo_lg ngOnlyEnter" ng-if="configuracionTMP.logoMenuPrincipal == null && configuracion == false" src="static/dist/img/ejemploLogos/medidaLMPrincipal.png" />
+        </a>
+    </div>
+    <!-- Navbar Right Menu -->
+    <nav class="navbar" ng-controller="headerController">
+        <!-- Sidebar toggle button-->
+        <nav class="main-nav" data-toggle="offcanvas" ng-click="changeStatusMenu()">
+            <div class="menu-bar" id="menu">
+                <div class="uno"></div>
+                <div class="dos"></div>
+                <div class="tres"></div>
+            </div>
+        </nav>
+        <div class="col-sm-12 col-xs-8 visible-xs tecloMini">
+            <span class="ngOnlyEnter" ng-if="configuracion == true">
+				<!-- LOGO PRINCIPAL MOVIL: Configuración original -->
+					<a href="#/index"
+						ng-if="configuracionApp.logoMenuPrincipal != null"
+						ng-click="comprobarConfiguracion()">
+						
+						<img class="logo-lg logoMovil"
+							ng-src="data:image/png;base64,{{configuracionApp.logoMenuPrincipal}}" />
+					
+					</a>
+				
+				<!-- LOGO PRINCIPAL MOVIL: Configuración original -->
+					<a href="#/index"
+						ng-if="configuracionApp.logoMenuPrincipal == null"
+						ng-click="comprobarConfiguracion()">
+						
+						<img class="logo-lg logoMovil"
+							src="static/dist/img/ejemploLogos/medidaLMPrincipal.png" />
+					
+					</a>
+				</span>
+
+            <span class="ngOnlyEnter" ng-if="configuracion == false">
+				
+				<!-- LOGO PRINCIPAL MOVIL: Configuración temporal -->
+					<a href="#/index"
+						ng-if="configuracionTMP.logoMenuPrincipal != null"
+						ng-click="comprobarConfiguracion()">
+						
+						<img class="logo-lg logoMovil"
+							ng-src="data:image/png;base64,{{configuracionTMP.logoMenuPrincipal}}" />
+					
+					</a>
+					
+				<!-- LOGO PRINCIPAL MOVIL: Configuración temporal -->
+					<a href="#/index" 
+						ng-if="configuracionTMP.logoMenuPrincipal == null"
+						ng-click="comprobarConfiguracion()">
+						
+						<img class="logo-lg logoMovil"
+							src="static/dist/img/ejemploLogos/medidaLMPrincipal.png" />
+						
+					</a>
+				</span>
+
+            <div class="user user-menu user-menuMovil visible-xs">
+                <span class="nbUsuario" ng-click="mostrarDetalleUsuario(b_detalleUsuario)">
+						<i class="fa fa-user iconProfile"></i>
+					</span>
+            </div>
+        </div>
+
+        <div class="cont-banner col-xs-8 hidden-sm hidden-xs ngOnlyEnter" ng-if="configuracion == true">
+            <div class="bannertitle">
+                <!-- LOGO HEADER: Configuración original -->
+                <img class="logoApp hidden-xs" ng-if="configuracionApp.logoHeader != null" ng-src="data:image/png;base64, {{configuracionApp.logoHeader}}" />
+
+                <!-- 					<img class="logoApp hidden-md" -->
+                <!-- 						ng-if="configuracionApp.logoHeader == null"  -->
+                <!-- 						src="static/dist/img/ejemploLogos/medidaLHeader.png" /> -->
+                <span ng-if="configuracionApp.logoHeader == null"></span>
+
+                <!-- NOMBRE APLICACIÓN: Configuración original -->
+                <div class="header__titleApp" ng-show="!_wishFunctions">
+                    <span ng-if="configuracionApp.aplicacion.nombre != null">
+							{{configuracionApp.aplicacion.nombre}}
+						</span>
+                    <span ng-if="configuracionApp.aplicacion.nombre == null">
+							<i>"Nombre de aplicación indefinido"</i>
+						</span>
+                </div>
+
+                <!-- 					<div class="header__wishFunctions ngShowEnter" ng-show="_wishFunctions"> -->
+                <!-- 						<span class="header__wishFunctions-title" ng-if="listAccess.length === 0"> -->
+                <!-- 							Funcionalidades favoritas -->
+                <!-- 						</span> -->
+                <!-- 						<ul class="header__wishFunctions-access ngOnlyEnter" ng-if="listAccess.length >= 1"> -->
+                <!-- 							<li ng-repeat="wa in listAccess" class="ngIfAnimate" -->
+                <!-- 								tooltip="{{wa.nbAccess}}" tooltip-placement="bottom"> -->
+                <!-- 								<a href="#{{wa.uriAccess}}"> -->
+                <!-- 									<i ng-class="wa.iconAccess"></i> -->
+                <!-- 								</a> -->
+                <!-- 							</li> -->
+                <!-- 						</ul> -->
+                <!-- 						<div class="header__wishFunctions-combo ngShowAnimate" ng-show="_wishList"> -->
+                <!-- 							<div id="wishFilter" class="input-group"> -->
+                <!-- 								<span class="input-group-addon" -->
+                <!-- 									ng-class="{'filterBtn cursor_pointer':filterWish !== ''}" -->
+                <!-- 									ng-click="filterWish = ''"> -->
+                <!-- 									<i class="fa" ng-class="{'fa-times':filterWish !== '', -->
+                <!-- 											'fa-filter':filterWish == ''}"> -->
+                <!-- 									</i> -->
+                <!-- 								</span> -->
+                <!-- 								<input type="text" class="form-control" -->
+                <!-- 									placeholder="Filtrar por..." -->
+                <!-- 									ng-model="filterWish" /> -->
+                <!-- 								<span class="input-group-addon filterBtn cursor_pointer" -->
+                <!-- 									tooltip="Desmarcar favoritos" tooltip-placement="top" -->
+                <!-- 									ng-click="deselectWish(menuDinamico)"> -->
+                <!-- 									<i class="fa fa-clone"></i> -->
+                <!-- 								</span> -->
+                <!-- 							</div> -->
+                <!-- 							<ul id="wishList"> -->
+                <!-- 								<li ng-repeat="md in menuDinamico | filter:filterWish" class="ngOnlyEnter"> -->
+                <!-- 									<label ng-bind="md.menuNombre"></label> -->
+                <!-- 									<ul> -->
+                <!-- 										<li ng-repeat="sm in md.subMenus | filter:filterWish" class="ngOnlyEnter" -->
+                <!-- 											ng-class="{'active':sm.active}" -->
+                <!-- 											ng-click="toggleWishItem(md,sm)"> -->
+                <!-- 											<i class="fa fa-check-circle" ng-show="sm.active"></i> -->
+                <!-- 											<span>{{sm.subMenuNombre}}</span> -->
+                <!-- 										</li> -->
+                <!-- 									</ul> -->
+                <!-- 								</li> -->
+                <!-- 							</ul> -->
+                <!-- 						</div> -->
+                <!-- 					</div> -->
+
+                <!-- 					<i class="header__iconPref fa fa-star" id="wishIcon" -->
+                <!-- 						ng-show="_wishFunctions" -->
+                <!-- 						ng-click="showWishList()"> -->
+                <!-- 					</i> -->
+
+                <!-- 					<i class="header__iconPref fa" -->
+                <!-- 						ng-class="{'fa-times':_wishFunctions,'fa-star':!_wishFunctions}" -->
+                <!-- 						ng-click="_wishFunctions=!_wishFunctions;"> -->
+                <!-- 					</i> -->
+
+            </div>
+        </div>
+
+        <div class="cont-banner col-xs-8 hidden-sm hidden-xs ngOnlyEnter" ng-if="configuracion == false">
+            <div class="bannertitle">
+                <!-- LOGO HEADER: Configuración temporal -->
+                <img class="logoApp hidden-xs" ng-if="configuracionTMP.logoHeader != null" ng-src="data:image/png;base64, {{configuracionTMP.logoHeader}}" />
+
+                <!-- 					<img class="logoApp hidden-md" -->
+                <!-- 						ng-if="configuracionTMP.logoHeader == null"  -->
+                <!-- 						src="static/dist/img/ejemploLogos/medidaLHeader.png" /> -->
+                <span ng-if="configuracionTMP.logoHeader == null"></span>
+
+                <!-- NOMBRE APLICACIÓN: Configuración temporal -->
+                <div class="header__titleApp" ng-show="!_wishFunctions">
+                    <span ng-if="configuracionTMP.aplicacion.nombre != null">
+							{{configuracionTMP.aplicacion.nombre}}
+						</span>
+                    <span ng-if="configuracionTMP.aplicacion.nombre == null">
+							<i>"Nombre de aplicación indefinido"</i>
+						</span>
+                </div>
+
+                <div class="header__wishFunctions ngShowEnter" ng-show="_wishFunctions">
+                    <span class="header__wishFunctions-title" ng-if="listAccess.length === 0">
+							Funcionalidades favoritas
+						</span>
+                    <ul class="header__wishFunctions-access ngOnlyEnter" ng-if="listAccess.length >= 1">
+                        <li ng-repeat="wa in listAccess" class="ngIfAnimate" tooltip="{{wa.nbAccess}}" tooltip-placement="bottom">
+                            <a href="#{{wa.uriAccess}}">
+                                <i ng-class="wa.iconAccess"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="header__wishFunctions-combo ngShowAnimate" ng-show="_wishList">
+                        <div id="wishFilter" class="input-group">
+                            <span class="input-group-addon" ng-class="{'filterBtn cursor_pointer':filterWish !== ''}" ng-click="filterWish = ''">
+									<i class="fa" ng-class="{'fa-times':filterWish !== '',
+											'fa-filter':filterWish == ''}">
+									</i>
+								</span>
+                            <input type="text" class="form-control" placeholder="Filtrar por..." ng-model="filterWish" />
+                            <span class="input-group-addon filterBtn cursor_pointer" tooltip="Desmarcar favoritos" tooltip-placement="top" ng-click="deselectWish(menuDinamico)">
+									<i class="fa fa-clone"></i>
+								</span>
+                        </div>
+                        <ul id="wishList">
+                            <li ng-repeat="md in menuDinamico | filter:filterWish" class="ngOnlyEnter">
+                                <label ng-bind="md.menuNombre"></label>
+                                <ul>
+                                    <li ng-repeat="sm in md.subMenus | filter:filterWish" class="ngOnlyEnter" ng-class="{'active':sm.active}" ng-click="toggleWishItem(md,sm)">
+                                        <i class="fa fa-check-circle" ng-show="sm.active"></i>
+                                        <span>{{sm.subMenuNombre}}</span>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <i class="header__iconPref fa fa-star" id="wishIcon" ng-show="_wishFunctions" ng-click="showWishList()">
+					</i>
+
+                <i class="header__iconPref fa" ng-class="{'fa-times':_wishFunctions,'fa-star':!_wishFunctions}" ng-click="_wishFunctions=!_wishFunctions;">
+					</i>
+
+            </div>
+        </div>
+
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <div style="position:relative;">
+                    <div class="blinkAbtBs" ng-if="currentPath() !== '/' && _viewIndicator">
+                        <div class="blink" ng-style="{'opacity':opacityBlink}">
+                            <div class="toBlink" ng-style="{'background-color':amb.color, 'border-color':amb.border}">
+                            </div>
+                        </div>
+                        <div class="infoAbtBs">
+                            <div class="abtBs">
+                                <p><strong>Ambiente: </strong><span>{{amb.ambiente}}</span></p>
+                                <p><strong>Base: </strong><span>{{amb.base}}</span></p>
+                                <i class="iconRefresh fa fa-refresh" ng-click="refreshAll()"></i>
+                            </div>
+                            <hr />
+                            <div class="blinkConfig">
+                                <div>
+                                    <label>Intensidad del indicador</label>
+                                    <input type="range" min="0.3" max="1" step=".1" ng-model="opacityBlink" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <li class="contFullscreen hidden-xs">
+                    <div class="fullScreen-iconIn ngFullScreenAnimate" tooltip="{{'APP.Base.mensaje.pantallaCompleta' | translate}}" tooltip-placement="bottom" ng-show="!fullScreenActive" ng-click="goFullscreen()">
+
+                        <i class="fa fa-arrows-alt"></i>
+
+                    </div>
+                    <div class="fullScreen-iconIn ngFullScreenAnimate" tooltip="{{'APP.Base.mensaje.salirPantallaCompleta' | translate}}" tooltip-placement="left" ng-show="fullScreenActive" ng-click="goFullscreen()">
+
+                        <i class="fa fa-close"></i>
+
+                    </div>
+                </li>
+                ​
+                <li class="user user-menu">
+                    <span class="nbUsuario" ng-click="mostrarDetalleUsuario(b_detalleUsuario)">
+							<i class="fa fa-user iconProfile hidden-xs"></i>
+							<span class="hidden-xs">
+								<i class="fa fa-angle-right"></i>
+								<span>{{nombreUsuario}}</span>
+                    </span>
+                    </span>
+                    <div class="cont-infoUser animacionMenus" ng-if="b_detalleUsuario">
+                        <h5 class="fechaActual">{{fechaActual}}</h5>
+                        <div class="infoUser">
+                            <p class="infoUserTxt">
+                                {{'APP.Header.perfil' | translate}}:
+                                <span>{{perfilUsuario}}</span>
+                            </p>
+                        </div>
+                        <select class="form-control" ng-if="currentLanguage == 'es_ES' && configuracion" select2 idioma-s2="{{currentLanguage}}" data-minimum-results-for-search="Infinity" ng-change="liveResolucion(configuracionApp.resolucion.cdResolucion, configuracionApp.resolucion.nuPixelesBase)"
+                            ng-model="configuracionApp.resolucion" ng-options="rs as rs.txResolucionEs for rs in resolucionesApp track by rs.idResolucion">
+								
+							</select>
+                        <select class="form-control" ng-if="currentLanguage == 'en_US' && configuracion" select2 idioma-s2="{{currentLanguage}}" data-minimum-results-for-search="Infinity" ng-change="liveResolucion(configuracionApp.resolucion.cdResolucion, configuracionApp.resolucion.nuPixelesBase)"
+                            ng-model="configuracionApp.resolucion" ng-options="rs as rs.txResolucionEn for rs in resolucionesApp track by rs.idResolucion">
+								
+							</select>
+                    </div>
+                </li>
+                <!-- Control Sidebar Toggle Button -->
+                <li class="menuopc">
+                    <label for="config" class="config" ng-click="mostrarConfigUsuario(b_configUsuario)">
+							
+							<i class="fa fa-gears"></i>
+						
+						</label>
+                    <ul class="opc animacionMenus" ng-if="b_configUsuario" ">
+							<a href="#/administracionModificaClave " class="offi " ng-if="changePwd ">
+								<li ng-click="comprobarConfiguracion() ">
+									{{'APP.Header.cambiarClave' | translate}} 
+									<i class="fa fa-refresh "></i>
+								</li>
+							</a>
+							<a ng-click="logout() ">
+								<li>
+									{{'APP.Base.boton.cerrarSesion' | translate}}
+									<i class="fa fa-power-off "></i>
+								</li>
+							</a>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</nav>
+</header>

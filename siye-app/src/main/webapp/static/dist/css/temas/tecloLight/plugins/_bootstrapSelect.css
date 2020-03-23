@@ -1,0 +1,65 @@
+/* CONTENEDOR DROPDWONS MENU */
+.tema-tecloLight .dropdown-menu {
+	background-color: #fff;
+	box-shadow: 1px 1px 15px rgba(150, 149, 151, .7);
+}
+
+/* Componente que se reemplaza por el select */
+.tema-tecloLight .dropdown-toggle {
+	background-color: #fff;
+}
+.tema-tecloLight .dropdown-toggle:hover {
+	background-color: #fafafa;
+	border: 1px solid #d2d6de;
+}
+
+/* Placeholder del componente que se reemplaza por el select multiple */
+.tema-tecloLight .bootstrap-select>.dropdown-toggle.bs-placeholder,
+.tema-tecloLight .bootstrap-select>.dropdown-toggle.bs-placeholder:active,
+.tema-tecloLight .bootstrap-select>.dropdown-toggle.bs-placeholder:focus,
+.tema-tecloLight .bootstrap-select>.dropdown-toggle.bs-placeholder:hover {
+	color: #999;
+}
+
+/* Cuando el componente se marca como error */
+.tema-tecloLight .error .bootstrap-select .dropdown-toggle,
+.tema-tecloLight .has-error .bootstrap-select .dropdown-toggle {
+	border-color: #b94a48;
+}
+
+/* Notificación de selección máxima de items */
+.tema-tecloLight .bootstrap-select.btn-group .dropdown-menu .notify {
+	background-color: rgba(207,10,44,.8);
+	color: #ecf0f1;
+	box-shadow: 1px 1px 5px rgba(0,0,0,.3);
+}
+
+/* Opciones li del dropdown */
+.tema-tecloLight .dropdown-menu li a {
+	color: #55565a;
+}
+.tema-tecloLight .dropdown-menu li a:hover {
+	background-color: #cf0a2c;
+	color: #fff;
+}
+
+/* Marca palomita al seleccionar una opción */
+.tema-tecloLight .bootstrap-select.btn-group.show-tick .dropdown-menu li.selected a span.check-mark {
+	color: #cf0a2c;
+}
+.tema-tecloLight .bootstrap-select.btn-group.show-tick .dropdown-menu li a:hover span.check-mark {
+	color: #fff;
+}
+
+/* Botones de acción del componente */
+.tema-tecloLight .actions-btn {
+	background-color: #ecf0f1;
+	color: #55565a;
+	box-shadow: 1px 1px 5px rgba(0,0,0,.5);
+}
+
+.tema-tecloLight .actions-btn:hover,
+.tema-tecloLight .actions-btn:focus {
+	background-color: #cf0a2c;
+	color: #fff;
+}

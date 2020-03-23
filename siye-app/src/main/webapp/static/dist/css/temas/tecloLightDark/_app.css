@@ -1,0 +1,46 @@
+/* Color al seleccionar texto */
+.tema-tecloLightDark *::selection {
+    background-color: rgba(207,10,44,.9);
+    color: #fff;
+}
+
+/* Firefox */
+.tema-tecloLightDark *::-moz-selection {
+    background-color: rgba(207,10,44,.9);
+    color: #fff;
+}
+
+.tema-tecloLightDark img.isoLogos {
+	filter: inherit;
+}
+
+/* MODALES CON HEADER-CONTENIDO-FOOTER */
+/* Contenedor principal */
+.tema-tecloLightDark .modal-content {
+	background-color: #fff;
+}
+/* Cabecera */
+.tema-tecloLightDark .modal-header {
+	background-color: #cf0a2c;
+	color: #fff;
+	border-bottom-color: #f4f4f4;
+}
+/* Body */
+.tema-tecloLightDark .modal-body {
+	background-color: #fff;
+	color: #55565a;
+}
+/* Footer */
+.tema-tecloLightDark .modal-footer {
+	background-color: #fff;
+	color: #55565a;
+	border-top-color: #f4f4f4;
+}
+/* Boton cerrar en la cabecera */
+.tema-tecloLightDark .close {
+	background-color: #ecf0f1;
+	color: #cc4865;
+}
+.tema-tecloLightDark .close:hover {
+	color: #cf0a2c;
+}

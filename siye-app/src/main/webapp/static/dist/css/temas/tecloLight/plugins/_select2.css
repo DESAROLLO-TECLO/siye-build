@@ -1,0 +1,158 @@
+/* FONDO Y BORDE DEL CONTENEDOR PRINCIPAL DEL SELECT */
+.tema-tecloLight .select2-dropdown {
+	background-color: #fff;
+	box-shadow: 1px 1px 10px rgba(150, 149, 151, .7);
+	border: transparent;
+}
+
+/* Mascara de cerrar */
+.tema-tecloLight .select2-close-mask {
+	background-color: #fff;
+}
+
+/* Componente que se reemplaza por el select */
+.tema-tecloLight .select2-container--default .select2-selection--single {
+	background-color: #fff;
+	border: 1px solid #d2d6de;
+}
+/* footer | header*/
+.tema-tecloLight .main-footer .select2-container--default .select2-selection--single {
+	background-color: #fff;
+	border: inherit;
+}
+.tema-tecloLight .main-header .select2-container--default .select2-selection--single {
+	background-color: #fff;
+	border: inherit;
+}
+
+/* Texto del componente que se reemplaza por el select */
+.tema-tecloLight .select2-container--default .select2-selection--single .select2-selection__rendered {
+	color: #55565a;
+}
+/* footer | header */
+.tema-tecloLight .main-footer .select2-container--default .select2-selection--single .select2-selection__rendered {
+	color: #55565a;
+}
+.tema-tecloLight .main-header .select2-container--default .select2-selection--single .select2-selection__rendered {
+	color: #55565a;
+}
+
+/* Placheholder del componente que se reemplaza por el select */
+.tema-tecloLight .select2-container--default .select2-selection--single .select2-selection__placeholder {
+	color: #999;
+}
+/* footer | header */
+.tema-tecloLight .main-footer .select2-container--default .select2-selection--single .select2-selection__placeholder {
+	color: #999;
+}
+.tema-tecloLight .main-header .select2-container--default .select2-selection--single .select2-selection__placeholder {
+	color: #999;
+}
+
+/* Caret del componente que se reemplaza por el select */
+.tema-tecloLight .select2-container--default .select2-selection--single .select2-selection__arrow {
+	background-color: #fff;
+}
+.tema-tecloLight .select2-container--default .select2-selection--single .select2-selection__arrow b {
+	border-color: #969597 transparent transparent transparent;
+}
+.tema-tecloLight .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+	border-color: transparent transparent #969597 transparent;
+}
+/* footer | header */
+.tema-tecloLight .main-footer .select2-container--default .select2-selection--single .select2-selection__arrow b {
+	border-color: #969597 transparent transparent transparent;
+}
+.tema-tecloLight .main-footer .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+	border-color: transparent transparent #969597 transparent;
+}
+.tema-tecloLight .main-header .select2-container--default .select2-selection--single .select2-selection__arrow b {
+	border-color: #969597 transparent transparent transparent;
+}
+.tema-tecloLight .main-header .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
+	border-color: #969597 transparent transparent transparent;
+}
+
+/* Componente deshabilitado */
+.tema-tecloLight .select2-container--default.select2-container--disabled .select2-selection--single,
+.tema-tecloLight .select2-container--default.select2-container--disabled .select2-selection--single .select2-selection__arrow {
+	background-color: #eee;
+}
+/* footer | header */
+.tema-tecloLight .main-footer .select2-container--default.select2-container--disabled .select2-selection--single {
+	background-color: #eee;
+}
+.tema-tecloLight .main-header .select2-container--default.select2-container--disabled .select2-selection--single {
+	background-color: #eee;
+}
+
+/* Input de búsqueda del componente */
+.tema-tecloLight .select2-container--default .select2-search--dropdown .select2-search__field {
+	color: #55565a;
+	border: 1px solid #fff;
+	box-shadow: 0 -1px #d2d6de inset;
+}
+
+/* Color de las opciones del componente */
+.tema-tecloLight .select2-container--default .select2-results__option {
+	color: #55565a;
+}
+
+/* Opción del componente deshabilitada */
+.tema-tecloLight .select2-container--default .select2-results__option[aria-disabled=true] {
+	color: #999;
+}
+
+/* Opción seleccionada del componente */
+.tema-tecloLight .select2-container--default .select2-results__option[aria-selected=true] {
+	background-color: #ddd;
+	color: #969597;
+}
+
+/* Al pasar el puntero sobre una opción del coponente */
+.tema-tecloLight .select2-container--default .select2-results__option--highlighted[aria-selected] {
+	background-color: #cf0a2c;
+	color: #fff;
+}
+
+/* SELECT MULTIPLE */
+/* Componente que se reemplaza por el select */
+.tema-tecloLight .select2-container--default .select2-selection--multiple {
+	background-color: #fff;
+	border: 1px solid #d2d6de;
+}
+
+/* Placheholder del componente */
+.tema-tecloLight .select2-container--default .select2-selection--multiple .select2-selection__placeholder {
+	color: #999;
+}
+
+/* Ícono de limpiar todos los items seleccionados del componente */
+.tema-tecloLight .select2-container--default .select2-selection--multiple .select2-selection__clear {
+	color: #969597;
+}
+
+/* Item seleccionado mostrado en el input */
+.tema-tecloLight .select2-container--default .select2-selection--multiple .select2-selection__choice {
+	background-color: #fff;
+	border: 1px solid #cf0a2c;
+	color: #cf0a2c;
+}
+.tema-tecloLight .select2-container--default .select2-selection--multiple .select2-selection__choice:hover {
+	background-color: #cf0a2c;
+	border: 1px solid #fff;
+	color: #fff;
+}
+
+/* Ícono de remover item */
+.tema-tecloLight .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+	color: #cf0a2c;
+}
+.tema-tecloLight .select2-container--default .select2-selection--multiple .select2-selection__choice:hover .select2-selection__choice__remove {
+	color: #fff;
+}
+
+/* Componente select multiple desabilitado */
+.tema-tecloLight .select2-container--default.select2-container--disabled .select2-selection--multiple {
+	background-color: #eee;
+}

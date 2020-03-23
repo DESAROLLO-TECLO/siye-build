@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8">
+		<title>REM CALCULATOR</title>
+	</head>
+	<body>
+		<form>		
+		<div class="row" ng-controller="toolsWebController">
+			<div class="col-xs-6">
+				<div class="box box-danger">
+					<div class="box-header with-border text-center">
+						<h2 class="box-title">
+							Calcular rem
+						</h2>
+					</div>
+					<div class="box-body">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>
+										Base
+									</label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-user"></i>
+										</div>
+										<input type="number" class="form-control"
+											ng-model="CG.basePixel" />
+									</div>
+								</div>
+							</div>
+							
+							<div class="col-md-6">
+								<div class="form-group">
+									<label>
+										Base
+									</label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-user"></i>
+										</div>
+										<input type="text" class="form-control" ng-keyup="validateField(CG.pixels)"
+											ng-model="CG.pixels" />
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="row centerCol">
+							<button class="btn btn-danger" ng-click="convertPixels()">
+								Calcular
+							</button>
+						</div>
+						
+						<div class="row">
+							<div class="col-md-12">
+								<table class="table table-hover header-fixed">
+									<thead>
+										<tr>
+											<th>PIXEL</th>
+											<th>REM</th>
+											<th>COPIAR</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr dir-paginate="pxs in pixelsConvertVO | itemsPerPage: view.rowsPerpage">
+											<td class="wrap-text center">{{pxs.pixels}}</td>
+											<td class="wrap-text center">{{pxs.rems}}</td>
+											<td class="center">
+												<a class="fa fa-copy" tooltip="Copiar" tooltip-placement="top"
+													ng-click="copyRem(pxs.rems)"></a>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		</form>
+	</body>
+</html>

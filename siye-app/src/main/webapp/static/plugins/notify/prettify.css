@@ -1,0 +1,69 @@
+pre {
+	padding: 0 0.2143rem 0.1429rem;
+	font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+	color: #333;
+	display: block;
+	padding: 0.6429rem;
+	margin: 0 0 2.143rem 0 !important;
+	font-size: 0.9286rem;
+	line-height: 1.429rem;
+	word-break: break-all;
+	word-wrap: break-word;
+	white-space: pre;
+	white-space: pre-wrap;
+	border: 1px solid #ccc;
+	border: 1px solid rgba(0, 0, 0, 0.15);
+	-webkit-border-radius: 0.2857rem;
+	        border-radius: 0.2857rem;
+}
+pre.prettyprint {
+	margin-bottom: 1.429rem;
+}
+.pre-scrollable {
+	max-height: 24.29rem;
+	overflow-y: scroll;
+}
+.com {
+	color: #999;
+}
+.lit {
+	color: #195f91;
+}
+.pun, .opn, .clo {
+	color: #93a1a1;
+}
+.fun {
+	color: #dc322f;
+}
+.str, .atv {
+	color: #D44950;
+}
+.kwd, .prettyprint .tag {
+	color: #2F6F9F;
+}
+.typ, .atn, .dec, .var {
+	/*color: teal;*/
+	color: #4F9FCF;
+}
+.pln {
+	color: #333;
+}
+.prettyprint {
+	padding: 0.7143rem 1.071rem;
+	background-color: #FFF;
+	border: 1px solid #e1e1e8;
+}
+.prettyprint.linenums {
+	-webkit-box-shadow: inset 2.857rem 0 0 #fbfbfc, inset 2.929rem 0 0 #ececf0;
+	        box-shadow: inset 2.857rem 0 0 #fbfbfc, inset 2.929rem 0 0 #ececf0;
+}
+/* Specify class=linenums on a pre to get line numbering */
+ol.linenums {
+	margin: 0 0 0 -0.8571rem;
+}
+ol.linenums li {
+	padding-left: 0.8571rem;
+	color: #bebec5;
+	line-height: 1.429rem;
+	list-style: decimal;
+}

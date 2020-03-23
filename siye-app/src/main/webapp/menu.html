@@ -1,0 +1,56 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+	</head>
+	<body>
+		<aside class="main-sidebar menufixed clearfix" ng-controller="menuController">
+			
+			<section class="sidebar clearfix">
+				<ul class="sidebar-menu" id="menuScroll">
+					<li id="titleMenuNavegacion"
+						class="header text-center title-menu ngOnlyEnter"
+						ng-if="menuDinamico">
+						
+						<span>{{ 'APP.Menu.tituloMenu' | translate}}</span>
+					
+					</li>
+					<li class="header cont-empty"></li>
+					<li ng-if="loadedMenu" class="center searchMenu">
+						<img src="static/dist/img/cargandoMenu.gif" />
+						<p>Configurando menú</p>
+					</li>
+					<li class='treeview ngOnlyEnter' ng-repeat="menu in menuDinamico">
+						<a class="menuItem desplegar" title="{{menu.menuNombre}}" id="{{menu.id}}"
+							ng-click="menuActive(menu.id)">
+							<i class='{{menu.menuIcono}} tool' title="{{menu.menuNombre}}"></i>
+							<span>{{menu.menuNombre}}</span>
+							<i class='fa fa-angle-left pull-right'></i>
+						</a>
+						<ul class='treeview-menu'>
+							<li ng-repeat="subMenu in menu.subMenus">
+								<a href='#{{subMenu.menuUri}}' id="{{subMenu.id}}"
+									class="submenuItem desplegarsub"
+									ng-click="comprobarConfiguracion(menu, subMenu)">
+									
+									<i class='fa fa-circle-o'></i>{{subMenu.subMenuNombre}}
+								
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</section>
+		</aside>
+	</body>
+	<script type="text/javascript">
+
+		$(document).ready(function(){
+			//	Condicional para reducir el menu al dar clic en un submenu en modo móvil
+			if ($(window).width() < 768){
+				$('.desplegarsub').attr('data-toggle','offcanvas');
+			}else{
+				$('.desplegarsub').removeAttr('data-toggle','offcanvas');
+			}
+		});
+	</script>
+</html>

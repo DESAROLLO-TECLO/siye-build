@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Paso 1</title>
+	</head>
+	
+	<body>
+		<div class="row" ng-controller="pasoUnoController">
+			<form name="formStepOne" novalidate>
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group"
+								ng-class="{'has-error': (formStepOne.nbUser.$invalid && formStepOne.nbUser.$dirty) }">
+								<label>Nombre de usuario:</label>
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-user"></i>
+									</div>											
+									<input type="text" class="form-control" name="nbUser"
+										ng-required="true"
+										ng-model="createAccountVO.nbUser" />
+									
+								</div>
+								
+								<div ng-show="formStepOne.nbUser.$error.required && formStepOne.nbUser.$dirty">
+									<span ng-style="{color:'red'}">
+										El nombre de usuario es requerido
+									</span>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-md-4">
+							<div class="form-group"
+								ng-class="{'has-error': (formStepOne.nbEmail.$invalid && formStepOne.nbEmail.$dirty) }">
+								<label>Correo electrónico:</label>
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-at"></i>
+									</div>											
+									<input type="text" class="form-control" name="nbEmail"
+										ng-required="true"
+										ng-model="createAccountVO.nbEmail" />
+									
+								</div>
+								
+								<div ng-show="formStepOne.nbEmail.$error.required && formStepOne.nbEmail.$dirty">
+									<span ng-style="{color:'red'}">
+										El correo electrónico es requerido
+									</span>
+								</div>
+							</div>
+						</div>
+						
+						<div class="col-md-4">
+							<div class="form-group"
+								ng-class="{'has-error': (formStepOne.nbPassword.$invalid && formStepOne.nbPassword.$dirty) }">
+								<label>Contraseña:</label>
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-asterisk"></i>
+									</div>											
+									<input type="password" class="form-control" name="nbPassword"
+										ng-required="true"
+										ng-model="createAccountVO.nbPassword" />
+									
+								</div>
+								
+								<div ng-show="formStepOne.nbPassword.$error.required && formStepOne.nbPassword.$dirty">
+									<span ng-style="{color:'red'}">
+										La contraseña es requerida
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="row centerCol">
+						<div class="col-xs-1">
+							<div class="centerRow center">
+						        <button class="btn btn-danger" ng-click="saveStepOne()">
+						        	<i class="fa fa-arrow-right"></i>
+						        </button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>

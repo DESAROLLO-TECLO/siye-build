@@ -1,0 +1,177 @@
+.text-16{
+	font-size: 16px;
+	display:block;
+	/* color: #cf0a2c; */
+	color: #444444;
+}
+
+.text-15{
+	font-size: 15px;
+	display:block;
+	color: #444444;
+}
+
+.text-15-res{
+	font-size: 15px;
+	display:block;
+	color: #444444;
+}
+
+.text-18{
+	font-size: 18px;
+	display:block;
+	color: #880219;
+}
+
+.text-20{
+	font-size: 20px;
+	display:block;
+	color: #880219;
+	font-weight: bold;
+}
+
+.text-25{
+	font-size: 25px;
+	display:block;
+	color: #880219;
+	font-weight: bold;
+}
+
+.text-30{
+	font-size: 20px;
+	display:block;
+	color: #880219;
+}
+
+.instruc-text-list{
+	display:flex;
+}
+
+
+.content-input input,
+.content-select select{
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+}
+ 
+.content-input input{
+	visibility: hidden;
+	position: absolute;
+	right: 0;
+}
+
+.content-input{
+	position: relative;
+	/*margin-bottom: 30px;*/
+	padding:1px 0 1px 60px; /* Damos un padding de 60px para posicionar el elemento <i> en este espacio*/
+	display: block;
+}
+ 
+/* Estas reglas se aplicar�n a todos las elementos i despu�s de cualquier input*/
+.content-input input + i{
+ background: #f0f0f0;
+ border:1px solid rgba(0,0,0,0.2);
+ position: absolute; 
+ left: 0;
+ top: 0;
+}
+ 
+/* Estas reglas se aplicar�n a todos los i despues de un input de tipo radio*/
+.content-input input[type=radio] + i{
+ height: 25px;
+ width: 25px;
+ border-radius: 50%;
+ left: 30px;
+}
+
+.content-input input[type=radio] + i:before{
+	content: '';
+	display: block;
+	height: 15px;
+	width: 15px;
+	background: #cf0a2c;
+	border-radius: 50%;
+	position: absolute;
+	z-index: 1;
+	top: 4px;
+	left: 4px;
+	transition: all 0.25s ease; /* Todas las propiedades | tiempo | tipo movimiento */
+	transform: scale(0) /* Lo reducimos a 0*/ ;
+	opacity: 0; /* Lo ocultamos*/
+}
+
+.content-input input[type=radio]:checked + i:before{
+	transform: scale(1);
+	opacity: 1;
+}
+
+.content-input:hover input[type=radio]:not(:checked) + i{
+	/* background: #cf0a2c;*/
+	border: 1px solid #cf0a2c;
+}
+
+
+.center-vert{
+	line-height: 30px;
+	height: 515px;
+}
+
+.center-vert-content{
+	vertical-align: middle;
+}
+
+.w-100{
+	width: 100%;
+}
+
+.mt-2{
+	margin-top: 2%;
+}
+
+.mh-0{
+	min-height: 0 !important;
+}
+
+.mb-0{
+	margin-bottom: 0 !important;
+}
+
+.mb-2{
+	margin-bottom: 2%;
+}
+
+.p-0{
+	padding: 0 !important;
+}
+
+.titulo-resp{
+	font-size: 18px;
+    color: rgb(207, 10, 44);
+    text-align: center;
+	display: inline-block;
+}
+
+
+.sin-seleccionar{
+    background: oldlace !important;
+    margin-top: 1%;
+}
+.seleccionado{
+	margin-top: 1%;
+	background: #e9fde9 !important;
+}
+
+.toolTipInfo{
+	display: block;
+	color: rgb(207, 10, 44);
+}
+.toolTipInfo:hover{
+	color: #880219;
+	background: none;
+}
+
+.toolTipInfo-btn{
+	display: block;
+	color: #fff;
+}

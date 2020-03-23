@@ -1,0 +1,6 @@
+.tema-tecloDark .title-intro {
+	color: #fff;
+	background-color: rgba(150, 149, 151,.2);
+	box-shadow: 1px 1px 5px rgba(0,0,0,.6);
+	text-shadow: 1px 1px 5px rgba(0,0,0,.6);
+}
