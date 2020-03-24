@@ -15,17 +15,21 @@ import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaDetalleVO;
 @RestController
 @RequestMapping("/encuesta")
 public class EncuestaRestController {
+	/*
 	@Autowired
 	private EncuentaService encuentaService;
-	
+	*/
 	@RequestMapping(value="/detalle", method = RequestMethod.GET)
 	public ResponseEntity<UsuarioEncuestaDetalleVO> encuestaDetalle (
+			
 			@RequestParam(value="idEncuesta") Long idEncuesta, 
 			@RequestParam(value="idUsuarioEncuesta") Long idUsuarioEncuesta) throws NotFoundException{
-		UsuarioEncuestaDetalleVO encuesta = encuentaService.encuestaDetalle(idEncuesta, idUsuarioEncuesta); 
-		return new ResponseEntity<UsuarioEncuestaDetalleVO>(encuesta, HttpStatus.OK);
-		
-		
+		/*
+		UsuarioEncuestaDetalleVO encuesta = encuentaService.encuestaDetalle(idEncuesta, idUsuarioEncuesta);
+	
+		return new ResponseEntity<UsuarioEncuestaDetalleVO>(encuesta, HttpStatus.OK);	
+			*/
+		return null;
 	}
 
 }
