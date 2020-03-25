@@ -1,7 +1,7 @@
 /**
  * 
  */
-package mx.com.teclo.siye.negocio.service.ods;
+package mx.com.teclo.siye.negocio.service.async;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.siye.persistencia.vo.ods.ArchivoLoteVO;
@@ -12,7 +12,7 @@ import mx.com.teclo.siye.persistencia.vo.ods.ArchivoLoteVO;
  * @author beatriz.orosio@unitis.com.mx
  *
  */
-public interface ArchivoLoteService {
+public interface ArchivoLoteAsyncService {
 
 	/**
 	 * Despu&eacute;s de determinar si el nombre y tamanio del archivo es correcto o
