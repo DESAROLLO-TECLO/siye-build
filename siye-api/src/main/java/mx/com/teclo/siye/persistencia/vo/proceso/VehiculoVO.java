@@ -1,13 +1,11 @@
 package mx.com.teclo.siye.persistencia.vo.proceso;
 
-import java.util.Date;
+import java.io.Serializable;
 
-/**
- * 
- * @author beatriz.orosio@unitis.com.mx
- *
- */
-public class VehiculoVO {
+public class VehiculoVO implements Serializable{
+	
+	private static final long serialVersionUID = 5026799603021950531L;
+	
 	private Long idVehiculo;
 	private String cdPlacaVehiculo;
 	private String cdVin;
@@ -17,11 +15,8 @@ public class VehiculoVO {
 	private String nbSubMarca;
 	private String cdModelo;
 	private Boolean stActivo;
-	private Long idUsrCreacion;
-	private Date fhCreacion;
-	private Long idUsrModifica;
-	private Date fhModificacion;
 	private Long idConcesion;
+	
 	public Long getIdVehiculo() {
 		return idVehiculo;
 	}
@@ -75,30 +70,6 @@ public class VehiculoVO {
 	}
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
-	}
-	public Long getIdUsrCreacion() {
-		return idUsrCreacion;
-	}
-	public void setIdUsrCreacion(Long idUsrCreacion) {
-		this.idUsrCreacion = idUsrCreacion;
-	}
-	public Date getFhCreacion() {
-		return fhCreacion;
-	}
-	public void setFhCreacion(Date fhCreacion) {
-		this.fhCreacion = fhCreacion;
-	}
-	public Long getIdUsrModifica() {
-		return idUsrModifica;
-	}
-	public void setIdUsrModifica(Long idUsrModifica) {
-		this.idUsrModifica = idUsrModifica;
-	}
-	public Date getFhModificacion() {
-		return fhModificacion;
-	}
-	public void setFhModificacion(Date fhModificacion) {
-		this.fhModificacion = fhModificacion;
 	}
 	public Long getIdConcesion() {
 		return idConcesion;

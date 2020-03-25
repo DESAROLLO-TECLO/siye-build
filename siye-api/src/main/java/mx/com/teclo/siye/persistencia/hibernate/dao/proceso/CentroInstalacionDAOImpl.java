@@ -1,5 +1,9 @@
 package mx.com.teclo.siye.persistencia.hibernate.dao.proceso;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
@@ -13,6 +17,14 @@ public class CentroInstalacionDAOImpl extends BaseDaoHibernate<CentroInstalacion
 	public CentroInstalacionVO obtenerCentroInstalacion(Long idCentroInstalacion) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CentroInstalacionDTO> obtenerCentroInstalacion() {
+		Criteria c = getCurrentSession().createCriteria(CentroInstalacionDTO.class);
+		c.add(Restrictions.eq("stActivo", true));
+		return (List<CentroInstalacionDTO>) c.list();
 	}
 
 }
