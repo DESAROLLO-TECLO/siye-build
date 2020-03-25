@@ -7,8 +7,7 @@ package mx.com.teclo.siye.persistencia.hibernate.dto.encuesta;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-	
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,7 +15,6 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -67,8 +65,8 @@ public class UsuarioEncuestaDTO implements Serializable {
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private EncuestasDTO encuesta;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuarioEncuesta")
-	private List<UsuarioEncuestaIntentosDTO> usuarioEncuestaIntentos;
+	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuarioEncuesta")
+	private List<UsuarioEncuestaIntentosDTO> usuarioEncuestaIntentos;*/
 
 	public Long getIdUsuarioEncuesta() {
 		return idUsuarioEncuesta;
@@ -149,19 +147,14 @@ public class UsuarioEncuestaDTO implements Serializable {
 	public void setEncuesta(EncuestasDTO encuesta) {
 		this.encuesta = encuesta;
 	}
-
-	/**
-	 * @return the usuarioEncuestaIntentos
-	 */
+/*
+	
 	public List<UsuarioEncuestaIntentosDTO> getUsuarioEncuestaIntentos() {
 		return usuarioEncuestaIntentos;
 	}
 
-	/**
-	 * @param usuarioEncuestaIntentos the usuarioEncuestaIntentos to set
-	 */
 	public void setUsuarioEncuestaIntentos(List<UsuarioEncuestaIntentosDTO> usuarioEncuestaIntentos) {
 		this.usuarioEncuestaIntentos = usuarioEncuestaIntentos;
-	}
+	}*/
 
 }

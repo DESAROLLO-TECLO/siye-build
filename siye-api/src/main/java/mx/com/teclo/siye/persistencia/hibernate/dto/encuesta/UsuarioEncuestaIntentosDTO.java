@@ -94,9 +94,10 @@ public class UsuarioEncuestaIntentosDTO implements Serializable {
 	@Column(name = "FH_MODIFICACION", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fhModificacion;
-	@JoinColumn(name = "ID_USUARIO_ENCUESTA", referencedColumnName = "ID_USUARIO_ENCUESTA", nullable = false)
+	
+	/*@JoinColumn(name = "ID_ODS_ENCUESTA", referencedColumnName = "ID_ODS_ENCUESTA", nullable = false)
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	private UsuarioEncuestaDTO usuarioEncuesta;
+	private UsuarioEncuestaDTO usuarioEncuesta;*/
 
 	@Column(name = "NU_MIN_CONSUMIDOS", nullable = false, precision = 4, scale = 0)
 	private Integer nuMinConsumidos;
@@ -215,13 +216,13 @@ public class UsuarioEncuestaIntentosDTO implements Serializable {
 		this.fhModificacion = fhModificacion;
 	}
 
-	public UsuarioEncuestaDTO getUsuarioEncuesta() {
+	/*public UsuarioEncuestaDTO getUsuarioEncuesta() {
 		return usuarioEncuesta;
 	}
 
 	public void setUsuarioEncuesta(UsuarioEncuestaDTO usuarioEncuesta) {
 		this.usuarioEncuesta = usuarioEncuesta;
-	}
+	}*/
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
