@@ -19,7 +19,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import mx.com.teclo.siye.persistencia.hibernate.dto.usuario.UsuarioDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 
 /**	
  *
@@ -34,9 +34,9 @@ public class UsuarioEncuestaDetalleDTO implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID_ODS_ENCUESTA", nullable = false)
     private Long idUsuarioEncuesta;
-    @JoinColumn(name = "ID_ODS_SERVICIO", referencedColumnName = "ID_USUARIO", nullable = false)
+    @JoinColumn(name = "ID_ORDEN_SERVICIO", referencedColumnName = "ID_ORDEN_SERVICIO", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private UsuarioDTO usuario;
+    private OrdenServicioDTO ordenServicio;
     @Basic(optional = false)
     @Column(name = "NU_INTENTOS", nullable = false)
     private Integer nuIntentos;
@@ -64,7 +64,23 @@ public class UsuarioEncuestaDetalleDTO implements Serializable {
     private EncuestaDetalleDTO encuesta;
     
 
-    public UsuarioEncuestaDetalleDTO() {
+    public OrdenServicioDTO getUsuario() {
+		return ordenServicio;
+	}
+
+	public void setUsuario(OrdenServicioDTO usuario) {
+		this.ordenServicio = ordenServicio;
+	}
+
+	public Integer getNuIntentos() {
+		return nuIntentos;
+	}
+
+	public void setNuIntentos(Integer nuIntentos) {
+		this.nuIntentos = nuIntentos;
+	}
+
+	public UsuarioEncuestaDetalleDTO() {
     }
 
     public UsuarioEncuestaDetalleDTO(Long idUsuarioEncuesta) {
@@ -145,13 +161,6 @@ public class UsuarioEncuestaDetalleDTO implements Serializable {
         this.fhModificacion = fhModificacion;
     }
 
-	public UsuarioDTO getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(UsuarioDTO usuario) {
-		this.usuario = usuario;
-	}
 
 	public EncuestaDetalleDTO getEncuesta() {
 		return encuesta;

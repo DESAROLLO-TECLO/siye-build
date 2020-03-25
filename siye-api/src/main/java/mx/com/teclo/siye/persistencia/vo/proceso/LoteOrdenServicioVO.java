@@ -18,7 +18,6 @@ public class LoteOrdenServicioVO implements Serializable {
 	private Long nuOdsPendientes;
 	private Long nuOdsIncidencia;
 	private String txtLoteOds;
-	private Long stActivo;
 	
 	public Long getIdLoteOds() {
 		return idLoteOds;
@@ -80,12 +79,4 @@ public class LoteOrdenServicioVO implements Serializable {
 	public void setTxtLoteOds(String txtLoteOds) {
 		this.txtLoteOds = txtLoteOds;
 	}
-	public Long getStActivo() {
-		return stActivo;
-	}
-	public void setStActivo(Long stActivo) {
-		this.stActivo = stActivo;
-	}
-	
-	
 }
