@@ -64,7 +64,7 @@ public class OrdenServicioDTO implements Serializable {
 	@Column(name = "FH_CREACION")	
 	private Date fhCreacion;
 	
-	@Column(name = "ID_USR_MODIFICACION")
+	@Column(name = "ID_USR_MODIFICA")
 	private Long idUsrModifica;
 	
 	@Column(name = "FH_MODIFICACION")	
