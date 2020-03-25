@@ -51,8 +51,9 @@ public class OrdenServicioDTO implements Serializable {
 	@JoinColumn(name="ID_PLAN", referencedColumnName="ID_PLAN", insertable=false, updatable=false)
 	private PlanDTO plan;
 	
-	@Column(name = "ID_ST_SEGUIMIENTO")
-	private StSeguimientoDTO idStSeguimiento;
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name="ID_ST_SEGUIMIENTO", referencedColumnName="ID_ST_SEGUIMIENTO", insertable=false, updatable=false)
+	private StSeguimientoDTO stSeguimiento;
 	
 	@Column(name = "ST_ACTIVO")
 	private Boolean stActivo;
@@ -125,11 +126,11 @@ public class OrdenServicioDTO implements Serializable {
 	public void setPlan(PlanDTO plan) {
 		this.plan = plan;
 	}
-	public StSeguimientoDTO getIdStSeguimiento() {
-		return idStSeguimiento;
+	public StSeguimientoDTO getStSeguimiento() {
+		return stSeguimiento;
 	}
-	public void setIdStSeguimiento(StSeguimientoDTO idStSeguimiento) {
-		this.idStSeguimiento = idStSeguimiento;
+	public void setStSeguimiento(StSeguimientoDTO stSeguimiento) {
+		this.stSeguimiento = stSeguimiento;
 	}
 	public Boolean getStActivo() {
 		return stActivo;
