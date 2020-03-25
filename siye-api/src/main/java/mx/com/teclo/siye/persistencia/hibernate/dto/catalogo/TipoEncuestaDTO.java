@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TIE034C_IE_PLAN")
+@Table(name = "TIE014C_EE_TIPO_ENCUESTAS")
 public class TipoEncuestaDTO implements Serializable {
 
 	/**
@@ -18,17 +18,17 @@ public class TipoEncuestaDTO implements Serializable {
 	private static final long serialVersionUID = -8058271907510016963L;
 
 	@Id
-	@Column(name = "ID_PLAN", unique = true, nullable = false, precision = 11, scale = 0)
-	private Long idPlan;
+	@Column(name = "ID_TIPO_ENCUESTA", unique = true, nullable = false, precision = 11, scale = 0)
+	private Long idTipoEncuesta;
 
-	@Column(name = "CD_PLAN")
-	private String cdPlan;
+	@Column(name = "CD_TIPO_ENCUESTA", nullable = false, length = 15)
+	private String cdTipoEncuesta;
 
-	@Column(name = "NB_PLAN")
-	private String nbPlan;
-	
-	@Column(name = "TX_PLAN")
-	private String txPlan;
+	@Column(name = "NB_TIPO_ENCUESTA", nullable = false, length = 100)
+	private String nbTipoEncuesta;
+
+	@Column(name = "NU_ORDEN", nullable = false, precision = 11, scale = 0)
+	private Integer nuOrden;
 
 	@Column(name = "ST_ACTIVO", nullable = false, precision = 1, scale = 0)
 	private Integer stActivo;
@@ -45,7 +45,61 @@ public class TipoEncuestaDTO implements Serializable {
 	@Column(name = "FH_MODIFICACION", nullable = false, length = 7)
 	private Date fhModificacion;
 
+	/**
+	 * @return the idTipoEncuesta
+	 */
+	public Long getIdTipoEncuesta() {
+		return idTipoEncuesta;
+	}
 
+	/**
+	 * @param idTipoEncuesta the idTipoEncuesta to set
+	 */
+	public void setIdTipoEncuesta(Long idTipoEncuesta) {
+		this.idTipoEncuesta = idTipoEncuesta;
+	}
+
+	/**
+	 * @return the cdTipoEncuesta
+	 */
+	public String getCdTipoEncuesta() {
+		return cdTipoEncuesta;
+	}
+
+	/**
+	 * @param cdTipoEncuesta the cdTipoEncuesta to set
+	 */
+	public void setCdTipoEncuesta(String cdTipoEncuesta) {
+		this.cdTipoEncuesta = cdTipoEncuesta;
+	}
+
+	/**
+	 * @return the nbTipoEncuesta
+	 */
+	public String getNbTipoEncuesta() {
+		return nbTipoEncuesta;
+	}
+
+	/**
+	 * @param nbTipoEncuesta the nbTipoEncuesta to set
+	 */
+	public void setNbTipoEncuesta(String nbTipoEncuesta) {
+		this.nbTipoEncuesta = nbTipoEncuesta;
+	}
+
+	/**
+	 * @return the nuOrden
+	 */
+	public Integer getNuOrden() {
+		return nuOrden;
+	}
+
+	/**
+	 * @param nuOrden the nuOrden to set
+	 */
+	public void setNuOrden(Integer nuOrden) {
+		this.nuOrden = nuOrden;
+	}
 
 	/**
 	 * @return the stActivo
