@@ -65,10 +65,11 @@
                                     </div>
                                 </div>
                             </div>
+                            <br><br>
                             <div class="row">
                                 <hr>
                                 <div class="col-sm-6 col-md-3">
-                                    <a href="#">
+                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Cuestionario" >
                                         <div class="dash-info color-fondo">
                                             <div class="dash-img">
                                                 <img class="dash-img-img" 
@@ -83,10 +84,11 @@
                                     
                                 </div>
                                 <div class="col-sm-6 col-md-3">
-                                    <a href="#">
-                                        <div class="dash-info color-fondo">
+                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Cuestionario"
+                                    style="pointer-events: none;">
+                                        <div class="dash-info color-fondo-desactivado">
                                             <div class="dash-img">
-                                                <img class="dash-img-img" 
+                                                <img class="dash-img-img-desactivado" 
                                                     src="static/dist/img/etapas/004-registration.png">
                                             </div>
                                             
@@ -98,10 +100,11 @@
                                     
                                 </div>
                                 <div class="col-sm-6 col-md-3">
-                                    <a href="#">
-                                        <div class="dash-info color-fondo">
+                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Cuestionario"
+                                    style="pointer-events: none;">
+                                        <div class="dash-info color-fondo-desactivado">
                                             <div class="dash-img">
-                                                <img class="dash-img-img" 
+                                                <img class="dash-img-img-desactivado" 
                                                     src="static/dist/img/etapas/004-registration.png">
                                             </div>
                                             
@@ -113,18 +116,27 @@
                                     
                                 </div>
                                 <div class="col-sm-6 col-md-3">
-                                    <a href="#">
-                                        <div class="dash-info color-fondo">
-                                            <div class="dash-img">
-                                                <img class="dash-img-img" 
-                                                    src="static/dist/img/etapas/004-registration.png">
-                                            </div>
-                                            
-                                            <div class="marcador" value="1" to="1" duration="2500" effect="swing">
-                                                Cuestionario
-                                            </div>
+                                    
+                                    <div class="dash-info color-fondo">
+                                        <div class="dash-img">
+                                            <img class="dash-img-img" 
+                                                src="static/dist/img/etapas/004-registration.png">
                                         </div>
-                                    </a>
+                                        <div style="text-align: center;">
+                                            <switcher class="swTeclo switcherEncTransp"
+                                            id-check="stEncuestaTransportista"
+                                            true-label="<i class='fa fa-check-circle'></i>"
+                                            true-value="1"
+                                            false-label="<i class='fa fa-times-circle'></i>"
+                                            false-value="0"
+                                            data-placement="top" title="Activar Encuesta">
+                                        </switcher>
+                                        </div>
+                                        <label for="stEncuestaTransportista" class="marcador" 
+                                        data-toggle="tooltip" data-placement="top" title="Activar Encuesta">
+                                            Activar Encuesta
+                                        </label>
+                                    </div>
                                     
                                 </div>
                             </div>

@@ -27,20 +27,21 @@
 						<div class="box-body">
 							<div class="row">
 								<div class="col-md-offset-3 col-md-6">
-								     <div class="form-group" ng-class="{'has-error': altaInfraccion.DGFecha.$invalid && altaInfraccion.DGFecha.$dirty}">
-
-                                            <label for="example1">*Fecha de Infracción:</label>
-                                            <div class="input-group date" datetimepicker options="dateTimePickerOptions" ng-required="true"  name="DGFecha" ng-model="DG.fecha" on-hide="updateFIFecha()" show-button-bar="true">
-
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
-                                                </div>
-                                                <input type="text" class="form-control inputFecha input-append"  name = "txtDGFecha" readonly />
-                                            </div>
-
-                                            <div ng-show="altaInfraccion.DGFecha.$error.required && altaInfraccion.DGFecha.$dirty" ng-style="{color:'red'}">La fecha de infracción es requerida
-                                            </div>
-                                        </div>
+								     
+								   	<div class="form-group">
+										<label for="">Tipo de Vehiculo:</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-cubes" aria-hidden="true"></i>
+											</div>
+											<select class="form-control inputs"
+												ng-options="tpVehiculo.idTipoVehiculo as tpVehiculo.nbTipoVehiculo for tpVehiculo in catalogoTipoVehiculo"
+												ng-model="consulta.perfilId"
+												style="width:100%">
+												<option value="">Seleccione</option>
+											</select>
+										</div>
+									</div>
 								
 								</div>
 							</div>
