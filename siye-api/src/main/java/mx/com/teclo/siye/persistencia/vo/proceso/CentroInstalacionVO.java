@@ -10,103 +10,167 @@ import java.util.Date;
  *
  */
 public class CentroInstalacionVO {
-	private Long idVehiculo;
-	private String cdPlacaVehiculo;
-	private String cdVin;
-	private String cdTarjetaCirculacion;
-	private Long idTipoVehiculo;
-	private String nbMarca;
-	private String nbSubMarca;
-	private String cdModelo;
+	private Long idCentroInstalacion;
+	private String cdCentroInstalacion;
+	private String nbCentroInstalacion;
+	private String nbCalle;
+	private String nuExterior;
+	private String nbEntreCalle;
+	private String nbYCalle;
+	private String nbColonia;
+	private String nbAlcaldia;
+	private String nbDiasAtencion;
+	private Date hrAtencionIni;
+	private Date hrAtencionFin;
+	private Long nuOrden;
 	private Boolean stActivo;
 	private Long idUsrCreacion;
 	private Date fhCreacion;
-	private String idUsrModifica;
+	private Long idUsrModifica;
 	private Date fhModificacion;
-	private Long idConcesion;
-	public Long getIdVehiculo() {
-		return idVehiculo;
+
+	public Long getIdCentroInstalacion() {
+		return idCentroInstalacion;
 	}
-	public void setIdVehiculo(Long idVehiculo) {
-		this.idVehiculo = idVehiculo;
+
+	public void setIdCentroInstalacion(Long idCentroInstalacion) {
+		this.idCentroInstalacion = idCentroInstalacion;
 	}
-	public String getCdPlacaVehiculo() {
-		return cdPlacaVehiculo;
+
+	public String getCdCentroInstalacion() {
+		return cdCentroInstalacion;
 	}
-	public void setCdPlacaVehiculo(String cdPlacaVehiculo) {
-		this.cdPlacaVehiculo = cdPlacaVehiculo;
+
+	public void setCdCentroInstalacion(String cdCentroInstalacion) {
+		this.cdCentroInstalacion = cdCentroInstalacion;
 	}
-	public String getCdVin() {
-		return cdVin;
+
+	public String getNbCentroInstalacion() {
+		return nbCentroInstalacion;
 	}
-	public void setCdVin(String cdVin) {
-		this.cdVin = cdVin;
+
+	public void setNbCentroInstalacion(String nbCentroInstalacion) {
+		this.nbCentroInstalacion = nbCentroInstalacion;
 	}
-	public String getCdTarjetaCirculacion() {
-		return cdTarjetaCirculacion;
+
+	public String getNbCalle() {
+		return nbCalle;
 	}
-	public void setCdTarjetaCirculacion(String cdTarjetaCirculacion) {
-		this.cdTarjetaCirculacion = cdTarjetaCirculacion;
+
+	public void setNbCalle(String nbCalle) {
+		this.nbCalle = nbCalle;
 	}
-	public Long getIdTipoVehiculo() {
-		return idTipoVehiculo;
+
+	public String getNuExterior() {
+		return nuExterior;
 	}
-	public void setIdTipoVehiculo(Long idTipoVehiculo) {
-		this.idTipoVehiculo = idTipoVehiculo;
+
+	public void setNuExterior(String nuExterior) {
+		this.nuExterior = nuExterior;
 	}
-	public String getNbMarca() {
-		return nbMarca;
+
+	public String getNbEntreCalle() {
+		return nbEntreCalle;
 	}
-	public void setNbMarca(String nbMarca) {
-		this.nbMarca = nbMarca;
+
+	public void setNbEntreCalle(String nbEntreCalle) {
+		this.nbEntreCalle = nbEntreCalle;
 	}
-	public String getNbSubMarca() {
-		return nbSubMarca;
+
+	public String getNbYCalle() {
+		return nbYCalle;
 	}
-	public void setNbSubMarca(String nbSubMarca) {
-		this.nbSubMarca = nbSubMarca;
+
+	public void setNbYCalle(String nbYCalle) {
+		this.nbYCalle = nbYCalle;
 	}
-	public String getCdModelo() {
-		return cdModelo;
+
+	public String getNbColonia() {
+		return nbColonia;
 	}
-	public void setCdModelo(String cdModelo) {
-		this.cdModelo = cdModelo;
+
+	public void setNbColonia(String nbColonia) {
+		this.nbColonia = nbColonia;
 	}
+
+	public String getNbAlcaldia() {
+		return nbAlcaldia;
+	}
+
+	public void setNbAlcaldia(String nbAlcaldia) {
+		this.nbAlcaldia = nbAlcaldia;
+	}
+
+	public String getNbDiasAtencion() {
+		return nbDiasAtencion;
+	}
+
+	public void setNbDiasAtencion(String nbDiasAtencion) {
+		this.nbDiasAtencion = nbDiasAtencion;
+	}
+
+	public Date getHrAtencionIni() {
+		return hrAtencionIni;
+	}
+
+	public void setHrAtencionIni(Date hrAtencionIni) {
+		this.hrAtencionIni = hrAtencionIni;
+	}
+
+	public Date getHrAtencionFin() {
+		return hrAtencionFin;
+	}
+
+	public void setHrAtencionFin(Date hrAtencionFin) {
+		this.hrAtencionFin = hrAtencionFin;
+	}
+
+	public Long getNuOrden() {
+		return nuOrden;
+	}
+
+	public void setNuOrden(Long nuOrden) {
+		this.nuOrden = nuOrden;
+	}
+
 	public Boolean getStActivo() {
 		return stActivo;
 	}
+
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
 	}
+
 	public Long getIdUsrCreacion() {
 		return idUsrCreacion;
 	}
+
 	public void setIdUsrCreacion(Long idUsrCreacion) {
 		this.idUsrCreacion = idUsrCreacion;
 	}
+
 	public Date getFhCreacion() {
 		return fhCreacion;
 	}
+
 	public void setFhCreacion(Date fhCreacion) {
 		this.fhCreacion = fhCreacion;
 	}
-	public String getIdUsrModifica() {
+
+	public Long getIdUsrModifica() {
 		return idUsrModifica;
 	}
-	public void setIdUsrModifica(String idUsrModifica) {
+
+	public void setIdUsrModifica(Long idUsrModifica) {
 		this.idUsrModifica = idUsrModifica;
 	}
+
 	public Date getFhModificacion() {
 		return fhModificacion;
 	}
+
 	public void setFhModificacion(Date fhModificacion) {
 		this.fhModificacion = fhModificacion;
 	}
-	public Long getIdConcesion() {
-		return idConcesion;
-	}
-	public void setIdConcesion(Long idConcesion) {
-		this.idConcesion = idConcesion;
-	}
-	
+
 }
