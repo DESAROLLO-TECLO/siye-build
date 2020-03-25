@@ -115,6 +115,7 @@ public class CatalogoServiceImpl implements CatalogoService{
 	
 		List<PlanVO> pVO = ResponseConverter.converterLista(new ArrayList<>(), pDTO, PlanVO.class);		
 		
+		List<TipoVehiculoVO> tvVO = this.tipoVehiculo();
 		
 		// Centros de Instalacion
 		copVO.setCentrosInstalacion(ciVO);
@@ -122,6 +123,8 @@ public class CatalogoServiceImpl implements CatalogoService{
 		copVO.setKitInstalacion(kiVO);
 		// Plan
 		copVO.setPlan(pVO);
+		// tipo Vehiculo
+		copVO.setTipoVehiculo(tvVO);
 		
 		return copVO;
 	}
