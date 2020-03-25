@@ -1,0 +1,53 @@
+<head>
+	<meta charset="UTF-8">
+</head>
+<body>
+	<section class="content-header">
+		<h1>{{breadCrumbs.servicio}}</h1>
+		<ol class="breadcrumb">
+			<li>
+				<a>
+					<i class="{{breadCrumbs.icono}}"></i>{{breadCrumbs.modulo}}
+				</a>
+			</li>
+			<li class="active">{{breadCrumbs.servicio}}</li>
+		</ol>
+	</section>
+	
+	<section class="content">
+		<form role="form" name="formAltaServicio" novalidate>
+			<div class="row">
+				<div class="col-xs-12 col-md-offset-3 col-md-6">
+					<div class="box box-danger">
+						<div class="box-header with-border text-center">
+							<h3 class="box-title">
+								
+							</h3>
+						</div>
+						<div class="box-body">
+							<div class="row">
+								<div class="col-md-offset-3 col-md-6">
+								     <div class="form-group" ng-class="{'has-error': altaInfraccion.DGFecha.$invalid && altaInfraccion.DGFecha.$dirty}">
+
+                                            <label for="example1">*Fecha de Infracción:</label>
+                                            <div class="input-group date" datetimepicker options="dateTimePickerOptions" ng-required="true"  name="DGFecha" ng-model="DG.fecha" on-hide="updateFIFecha()" show-button-bar="true">
+
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                                <input type="text" class="form-control inputFecha input-append"  name = "txtDGFecha" readonly />
+                                            </div>
+
+                                            <div ng-show="altaInfraccion.DGFecha.$error.required && altaInfraccion.DGFecha.$dirty" ng-style="{color:'red'}">La fecha de infracción es requerida
+                                            </div>
+                                        </div>
+								
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</section>
+</body>

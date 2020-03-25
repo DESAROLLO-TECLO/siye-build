@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Etapas</title>
+    <link rel="stylesheet" href="static/dist/css/custom/etapa/etapa.css" />
+</head>
+<body>
+    <!-- breadCrumbs -->
+    <section class="content-header">
+        <h1>{{breadCrumbs.servicio}}</h1>
+        <ol class="breadcrumb">
+            <li><a> <i class="{{breadCrumbs.icono}}"></i>{{breadCrumbs.modulo}}
+            </a></li>
+            <li class="active">{{breadCrumbs.servicio}}</li>
+        </ol>
+    </section>
+
+    <!-- información gral de solicitud -->
+    <section class="content ng-scope">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 col-sm-12">
+                <div class="box box-danger">
+                    <div class="panel panel-default">
+                        <div class="panel-heading center">
+                            <h3>
+                                <span>
+                                    Orden de Solicitud
+                                </span>
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <form>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Número de Orden de Solicitud: </label>
+                                            <br>
+                                            <span>Número de Orden de Solicitud</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Fecha: </label>
+                                            <br>
+                                            <span>{{fechaHoy | date:"dd - MM - yy"}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Transportista: </label>
+                                            <br>
+                                            <span>
+                                                Transportista
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Tipo de Vehiculo: </label>
+                                            <br>
+                                            <span>Tipo de Vehiculo</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Placa: </label>
+                                            <br>
+                                            <span>Placa</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Nombre de Centro de Instalación: </label>
+                                            <br>
+                                            <span>Centro de Instalación</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                    
+                                    </div>
+                                    <div class="col-md-4">
+                                    
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label># Serie KIT: </label>
+                                            <br>
+                                            <span>
+                                                Número de Serie de KIT
+                                            </span>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="stValidar" class="labelCheck">
+                                                Solo validar intalación
+                                            </label>
+                                            <br>
+                                            <switcher class="swTeclo"
+                                                id-check="stValidar"
+                                                true-label="<i class='fa fa-check-circle'></i>"
+                                                true-value="1"
+                                                false-label="<i class='fa fa-times-circle'></i>"
+                                                false-value="0">
+                                            </switcher>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 col-sm-12">
+                <div class="box box-danger">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="dash-info color-fondo">
+                                        <div class="dash-img">
+                                            <img class="dash-img-img" 
+                                                src="https://image.flaticon.com/icons/svg/1995/1995450.svg">
+                                        </div>
+                                        
+                                        <div class="marcador" value="1" to="1" duration="2500" effect="swing">
+                                            Instalación
+                                        </div>
+                                        <div>
+                                            <a class="verDetalle" >
+                                                <strong>
+                                                    detalle
+                                                </strong>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="dash-info color-fondo">
+                                        <div class="dash-img">
+                                            <img class="dash-img-img" 
+                                                src="https://image.flaticon.com/icons/svg/977/977479.svg">
+                                        </div>
+                                        
+                                        <div class="marcador" value="1" to="1" duration="2500" effect="swing">
+                                            Plataforma
+                                        </div>
+                                        <div>
+                                            <a class="verDetalle" >
+                                                <strong>
+                                                    detalle
+                                                </strong>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="dash-info color-fondo">
+                                        <div class="dash-img">
+                                            <img class="dash-img-img" 
+                                                src="https://image.flaticon.com/icons/svg/2431/2431758.svg">
+                                        </div>
+                                        
+                                        <div class="marcador" value="1" to="1" duration="2500" effect="swing">
+                                            Holograma
+                                        </div>
+                                        <div>
+                                            <a class="verDetalle" >
+                                                <strong>
+                                                    detalle
+                                                </strong>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
+
