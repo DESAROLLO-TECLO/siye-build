@@ -5,9 +5,9 @@ angular.module(appTeclo).service('consultaServicioService',function($http,config
 	}
 	
 	this.buscarOrdenServicio = function (params) {
-		return $http.get(config.baseUrl + "/", {
+		return $http.get(config.baseUrl + "/ordenServicio/consultaOrden", {
 			params : {
-				"cdTipoBusqueda": params.cdTipoBusqueda,
+				"cdTipoBusqueda": params.tipoBusqueda.cdTipoBusqueda,
 				"valor": params.valor
 			}
 		});
