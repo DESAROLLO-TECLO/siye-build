@@ -1,6 +1,5 @@
 package mx.com.teclo.siye.negocio.service.proceso;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
@@ -15,6 +14,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.LoteOrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.SeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.VehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
@@ -47,9 +47,11 @@ public class ProcesoServiceImpl implements ProcesoService {
 	@Autowired
 	private OrdenServicioDAO ordenServicioDAO;
 
+	@Autowired
+	private SeguimientoDAO seguimientoDAO;
+
 	@Override
 	public OrdenServicioDTO getInfoBasicaOrdenServicio(Long idSolicitud) {
-		// TODO Auto-generated method stub
 		return ordenServicioDAO.obtenerOrdenServicio(idSolicitud);
 	}
 
@@ -89,7 +91,8 @@ public class ProcesoServiceImpl implements ProcesoService {
 				centroInstalacionDAO.findOne(ordenServicioVO.getCentroInstalacion().getIdCentroInstalacion()));
 		ordenServicioDTO.setKitInstalacion(kitDAO.findOne(ordenServicioVO.getKitInstalacion().getIdKitInstalacion()));
 		ordenServicioDTO.setPlan(planDAO.findOne(ordenServicioVO.getPlan().getIdPlan()));
-//		ordenServicioDTO.setStSeguimiento(BigDecimal.ONE.longValue());
+		ordenServicioDTO
+				.setIdStSeguimiento(seguimientoDAO.findOne(ordenServicioVO.getStSeguimiento().getIdStSeguimiento()));
 		ordenServicioDTO.setStActivo(Boolean.TRUE.booleanValue());
 		ordenServicioDTO.setIdUsrCreacion(contexto.getUsuarioFirmadoVO().getId());
 		ordenServicioDTO.setFhCreacion(new Date());
@@ -117,7 +120,8 @@ public class ProcesoServiceImpl implements ProcesoService {
 				if (ordenServicioVO.getCentroInstalacion() != null)
 					if (ordenServicioVO.getKitInstalacion() != null)
 						if (ordenServicioVO.getPlan() != null)
-							isConDatosRequeridos = true;
+							if (ordenServicioVO.getStSeguimiento() != null)
+								isConDatosRequeridos = true;
 		if (!isConDatosRequeridos) {
 			throw new BusinessException(MSG_ERROR_ORDEN_INCOMPLETA);
 		}
@@ -127,8 +131,9 @@ public class ProcesoServiceImpl implements ProcesoService {
 				if (ordenServicioVO.getVehiculo().getIdVehiculo() != null)
 					if (ordenServicioVO.getCentroInstalacion().getIdCentroInstalacion() != null)
 						if (ordenServicioVO.getKitInstalacion().getIdKitInstalacion() != null)
-							if (ordenServicioVO.getPlan() != null)
-								isConIDsRequeridas = true;
+							if (ordenServicioVO.getPlan().getIdPlan() != null)
+								if (ordenServicioVO.getStSeguimiento().getIdStSeguimiento() != null)
+									isConIDsRequeridas = true;
 
 		if (!isConIDsRequeridas) {
 			throw new BusinessException(MSG_ERROR_ORDEN_CON_REFERENCIAS_NULAS);
