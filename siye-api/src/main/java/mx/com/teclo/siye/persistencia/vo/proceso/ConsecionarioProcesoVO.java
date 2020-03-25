@@ -2,7 +2,7 @@ package mx.com.teclo.siye.persistencia.vo.proceso;
 
 
 
-public class ConsecionarioVO {
+public class ConsecionarioProcesoVO {
 	
 	
 	private Long idConsecion;

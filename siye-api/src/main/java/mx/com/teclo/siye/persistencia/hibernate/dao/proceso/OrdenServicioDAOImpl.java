@@ -46,4 +46,6 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		c.add(Restrictions.eq("stActivo", true));
 		return (List<OrdenServicioDTO>)c.list();
 	}
+
+
 }

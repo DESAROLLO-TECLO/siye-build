@@ -1,7 +1,7 @@
 package mx.com.teclo.siye.persistencia.vo.proceso;
 
 
-public class TipoVehiculoVO {
+public class TipoVehiculoProcesoVO {
 
 	
 	private Long idTipoVehiculo;
