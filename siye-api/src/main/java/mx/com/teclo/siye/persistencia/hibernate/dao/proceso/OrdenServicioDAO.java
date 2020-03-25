@@ -41,11 +41,11 @@ public interface OrdenServicioDAO extends BaseDao<OrdenServicioDTO>{
      * @param idOrdenServicio
      * @return OrdenServicioDTO
      * */
-<<<<<<< HEAD
+
 	public List<OrdenServicioDTO> consultaOrdenByVin(String valor);
-=======
-	public List<OrdenServicioDTO> consultaOrden();
+
+	
 	
 
->>>>>>> 7cc371c913aeab5f7ca6b3976e37be0fa402e4dd
+
 }
