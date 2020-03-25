@@ -64,6 +64,19 @@ public class OrdenServicioDTO implements Serializable {
 	@Column(name = "FH_MODIFICACION")	
 	private Date fhModificacion;
 	
+	@Column(name = "HR_CITA")
+	private String hrCita;
+	
+	@Column(name = "FH_ATENCION_INI")
+	private Date fhAtencionIni;
+	
+	@Column(name = "FH_ATENCION_FIN")
+	private Date fhAtencionFin;
+	
+	@Column(name = "ID_ORIGEN_ODS")
+	private Long idOrdenODS;
+	
+	
 	
 	public Long getIdOrdenServicio() {
 		return idOrdenServicio;
@@ -143,6 +156,33 @@ public class OrdenServicioDTO implements Serializable {
 	public void setFhModificacion(Date fhModificacion) {
 		this.fhModificacion = fhModificacion;
 	}
+	public String getHrCita() {
+		return hrCita;
+	}
+	public void setHrCita(String hrCita) {
+		this.hrCita = hrCita;
+	}
+	public Date getFhAtencionIni() {
+		return fhAtencionIni;
+	}
+	public void setFhAtencionIni(Date fhAtencionIni) {
+		this.fhAtencionIni = fhAtencionIni;
+	}
+	public Date getFhAtencionFin() {
+		return fhAtencionFin;
+	}
+	public void setFhAtencionFin(Date fhAtencionFin) {
+		this.fhAtencionFin = fhAtencionFin;
+	}
+	public Long getIdOrdenODS() {
+		return idOrdenODS;
+	}
+	public void setIdOrdenODS(Long idOrdenODS) {
+		this.idOrdenODS = idOrdenODS;
+	}
+	
+	
+	
 	
 	
 	
