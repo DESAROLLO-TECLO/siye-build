@@ -29,12 +29,14 @@ public class ProcesoRestController {
 
 	 @RequestMapping(value = "/consultaOrdenServicioProceso", method = RequestMethod.GET)
 	public ResponseEntity<List<OrdenServicioProcesoVO>> consultaOrdenParaProceso(
-			@RequestParam("folioSolicitud") String folioSolicitud) throws BusinessException, NotFoundException {
+			@RequestParam("idSolicitud") Long idSolicitud) throws BusinessException, NotFoundException {
         try
         {
-        	List<OrdenServicioDTO> ordenServicioDTO = new ArrayList<OrdenServicioDTO>();
-        	ordenServicioDTO = procesoService.getInfoBasicaOrdenServicio(folioSolicitud);
-    		List<OrdenServicioProcesoVO> ordenServicioProcesoVO = ResponseConverter.converterLista(new ArrayList<>(), ordenServicioDTO,
+        	List<OrdenServicioDTO> OrdenesServicio = new ArrayList<OrdenServicioDTO>();
+        	OrdenServicioDTO  ordenServicioDTO = new OrdenServicioDTO();
+        	ordenServicioDTO = procesoService.getInfoBasicaOrdenServicio(idSolicitud);
+        	OrdenesServicio.add(ordenServicioDTO);
+    		List<OrdenServicioProcesoVO> ordenServicioProcesoVO = ResponseConverter.converterLista(new ArrayList<>(), OrdenesServicio,
     				OrdenServicioProcesoVO.class);
     		return new ResponseEntity<List<OrdenServicioProcesoVO>>(ordenServicioProcesoVO, HttpStatus.OK);
 

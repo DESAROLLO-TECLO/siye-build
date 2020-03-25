@@ -14,6 +14,6 @@ public interface ProcesoService {
      * @return List<OrdenServicioDTO>
      * David Guerra
      */
-	List<OrdenServicioDTO> getInfoBasicaOrdenServicio(String folioSolictud);
+	OrdenServicioDTO getInfoBasicaOrdenServicio(Long idSolicitud);
 
 }

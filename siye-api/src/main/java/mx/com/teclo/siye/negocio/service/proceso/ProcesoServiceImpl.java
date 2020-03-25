@@ -17,9 +17,9 @@ public class ProcesoServiceImpl implements ProcesoService {
 	private OrdenServicioDAO ordenServicioDAO;	
 
 	@Override
-	public List<OrdenServicioDTO> getInfoBasicaOrdenServicio(String folioSolictud) {
+	public OrdenServicioDTO getInfoBasicaOrdenServicio(Long idSolicitud) {
 		// TODO Auto-generated method stub
-		return ordenServicioDAO.getInfoBasicaOrdenServicio(folioSolictud);
+		return ordenServicioDAO.obtenerOrdenServicio(idSolicitud);
 	}
 
 }
