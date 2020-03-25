@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.negocio.service.ordenServicio.OrdenServicioService;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
@@ -23,7 +22,7 @@ public class OrdenServicioRestController {
 	private OrdenServicioService ordenServicioService;
 
 	@RequestMapping(value = "/consultaOrden", method = RequestMethod.GET)
-	@PreAuthorize("hasAnyAuthority('')")
+	@PreAuthorize("hasAnyAuthority('CONSULTA_SOLICITUD')")
 	public ResponseEntity<List<OrdenServicioVO>> consultaOrden(@RequestParam(value="cdTipoBusqueda") String cdTipoBusqueda, @RequestParam(value="valor") String valor) throws NotFoundException {
 		List<OrdenServicioVO> listOrdenServicioVO = ordenServicioService.consultaOrden(cdTipoBusqueda, valor);
 		return new ResponseEntity<List<OrdenServicioVO>>(listOrdenServicioVO, HttpStatus.OK);

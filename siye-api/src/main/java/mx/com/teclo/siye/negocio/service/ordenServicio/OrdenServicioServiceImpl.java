@@ -2,12 +2,9 @@ package mx.com.teclo.siye.negocio.service.ordenServicio;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
@@ -24,8 +21,20 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	@Transactional
 	@Override
 	public List<OrdenServicioVO> consultaOrden(String cdTipoBusqueda, String valor) throws NotFoundException {
-		
-		List<OrdenServicioDTO> listOrdenServicioDTO = ordenServicioDAO.consultaOrden();
+		List<OrdenServicioDTO> listOrdenServicioDTO = new ArrayList<>(); 
+		switch(cdTipoBusqueda) {
+			case "PLACA":
+				listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByPlaca(valor);	
+				break;
+			
+			case "ORDEN_SERVICIO":
+				listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByOrdenServicio(valor);
+				break;
+			
+			case "VIN":
+				listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByVin(valor);
+				break;
+			}
 		if(listOrdenServicioDTO.isEmpty())
 			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
 		List<OrdenServicioVO> listOrdenServicioVO = ResponseConverter.converterLista(new ArrayList<>(), listOrdenServicioDTO, OrdenServicioVO.class);

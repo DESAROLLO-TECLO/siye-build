@@ -5,8 +5,10 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 
@@ -19,34 +21,47 @@ public class VehiculoDTO implements Serializable {
 	@Id
 	@Column(name = "ID_VEHICULO", unique = true, nullable = false)
 	private Long idVehiculo;
+	
 	@Column(name = "CD_PLACA_VEHICULO")
 	private String cdPlacaVehiculo;
+	
 	@Column(name = "CD_VIN")
 	private String cdVin;
+	
 	@Column(name = "CD_TARJETA_CIRCULACION")
 	private String cdTarjetaDeCirculacion;
+	
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_TIPO_VEHICULO", referencedColumnName="ID_TIPO_VEHICULO", insertable=false, updatable=false)
 	private TipoVehiculoDTO tipoVehiculo;
+	
 	@Column(name = "NB_MARCA")
 	private String nbMarca;
+	
 	@Column(name = "NB_SUB_MARCA")
 	private String nbSubMarc;
+	
 	@Column(name = "CD_MODELO")
 	private Long cdModelo;
+	
 	@Column(name = "ST_ACTIVO")
 	private Boolean stActivo;
+	
 	@Column(name = "ID_USR_CREACION")
 	private Long idUsrCreacion;
+	
 	@Column(name = "FH_CREACION")	
 	private Date fhCreacion;
+	
 	@Column(name = "ID_USR_MODIFICA")
 	private Long idUsrModifica;
+	
 	@Column(name = "FH_MODIFICACION")	
 	private Date fhModificacion;
+	
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_CONCESION", referencedColumnName="ID_CONCESION", insertable=false, updatable=false)
 	private ConsecionarioDTO consecionario;
-	
-	
 	
 	public ConsecionarioDTO getConsecionario() {
 		return consecionario;
