@@ -22,29 +22,45 @@ public class OrdenServicioDTO implements Serializable {
 	@Id
 	@Column(name = "ID_ORDEN_SERVICIO", unique = true, nullable = false)
 	private Long idOrdenServicio;
+	
 	@Column(name = "CD_ORDEN_SERVICIO")
 	private String cdOrdenServicio;
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_LOTE_ODS", referencedColumnName="ID_LOTE_ODS", insertable=false, updatable=false)
 	private LoteOrdenServicioDTO loteOrdenServicio;
+	
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_VEHICULO", referencedColumnName="ID_VEHICULO", insertable=false, updatable=false)
 	private VehiculoDTO vehiculo;
+	
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_CENTRO_INSTALACION", referencedColumnName="ID_CENTRO_INSTALACION", insertable=false, updatable=false)
 	private CentroInstalacionDTO centroInstalacion;
+	
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_KIT_INSTALACION", referencedColumnName="ID_KIT_INSTALACION", insertable=false, updatable=false)
 	private KitInstalacionDTO kitInstalacion;
+	
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_PLAN", referencedColumnName="ID_PLAN", insertable=false, updatable=false)
 	private PlanDTO plan;
+	
 	@Column(name = "ID_ST_SEGUIMIENTO")
 	private Long idStSeguimiento;
+	
 	@Column(name = "ST_ACTIVO")
 	private Boolean stActivo;
+	
 	@Column(name = "ID_USR_CREACION")
 	private Long idUsrCreacion;
+	
 	@Column(name = "FH_CREACION")	
 	private Date fhCreacion;
-	@Column(name = "ID_USR_MODIFICA")
+	
+	@Column(name = "ID_USR_MODIFICACION")
 	private Long idUsrModifica;
+	
 	@Column(name = "FH_MODIFICACION")	
 	private Date fhModificacion;
 	

@@ -1,0 +1,75 @@
+.btn-flotente-incidencia{
+    position: fixed;
+    display: block;
+    z-index: 1010;
+    right: 1%;
+    top: 15%;
+}
+
+.dash-info {
+    display: inline-block;
+    background: #fff;
+    width: 100%;
+    padding: 10% 5%;
+    margin-bottom: 5%;
+    position: relative;
+    overflow: hidden;
+}
+
+.color-fondo {
+    color: #fff;
+    background: rgba(255, 154, 82, 1);
+    background: -moz-linear-gradient(left, rgba(255, 154, 82, 1) 0%,
+        rgba(232, 66, 66, 1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255, 154, 82,
+        1)), color-stop(100%, rgba(232, 66, 66, 1)));
+    background: -webkit-linear-gradient(left, rgb(255, 154, 82) 0%, rgb(232, 66, 66) 100%);
+    background: -o-linear-gradient(left, rgb(255, 154, 82) 0%, rgb(232, 66, 66) 100%);
+    background: -ms-linear-gradient(left, rgb(255, 154, 82) 0%, rgb(232, 66, 66) 100%);
+    background: linear-gradient(to right, rgb(255, 154, 82) 0%, rgb(232, 66, 66) 100%);
+    
+    border-radius: 5px;
+}
+
+
+.dash-info-titulo {
+    font-weight: normal;
+    font-size: 2rem;
+    position: absolute;
+    bottom: 15px;
+    max-width: 60%;
+    max-height: 70%;
+
+}
+
+.dash-img {
+    position: absolute;
+    top: 0;
+    z-index: 0;
+    left: 0;
+}
+
+.dash-img-img {
+    width: 100px;
+    opacity: 0.5;
+}
+
+.marcador {
+    float: right;
+    font-size: 1.8rem;
+}
+
+.progress-bar-teclo{
+    color: #fff;
+    background: rgba(255, 154, 82, 1);
+    background: -moz-linear-gradient(left, rgba(255, 154, 82, 1) 0%,
+        rgba(232, 66, 66, 1) 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255, 154, 82,
+        1)), color-stop(100%, rgba(232, 66, 66, 1)));
+    background: -webkit-linear-gradient(left, rgb(255, 154, 82) 0%, rgb(232, 66, 66) 100%);
+    background: -o-linear-gradient(left, rgb(255, 154, 82) 0%, rgb(232, 66, 66) 100%);
+    background: -ms-linear-gradient(left, rgb(255, 154, 82) 0%, rgb(232, 66, 66) 100%);
+    background: linear-gradient(to right, rgb(255, 154, 82) 0%, rgb(232, 66, 66) 100%);
+    
+    border-radius: 5px;
+}

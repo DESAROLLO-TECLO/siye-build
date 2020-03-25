@@ -43,6 +43,17 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         controller: "pluginsWebController"
     });
 
+    //	Orden servicio
+    $routeProvider.when("/alta", {
+        templateUrl: "views/ordenServicio/altaServicio.html",
+        controller: "altaServicioController"
+    });
+
+    $routeProvider.when("/consulta", {
+        templateUrl: "views/ordenServicio/consultaServicio.html",
+        controller: "consultaServicioController"
+    });
+    
     //	Usuarios
     $routeProvider.when("/users", {
         templateUrl: "views/administracion/users.html",
@@ -73,4 +84,20 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
 
     /*___________________________________________________________
     ________** FIN -> ADMINISTRACIÓN CONTROLLERS ** ___________*/
+
+    /*________** INICIO -> ETAPA ** ________*/
+    $routeProvider.when("/etapas", {
+        templateUrl: "views/etapa/etapa.html",
+        controller: "etapaController"
+    });
+
+    $routeProvider.when("/etapas/proceso", {
+        templateUrl: "views/etapa/proceso/proceso.html",
+        controller: "procesoController"
+    });
+
+    $routeProvider.when("/etapas/proceso/encuesta", {
+        templateUrl: "views/etapa/proceso/encuesta/encuesta.html",
+        controller: "encuestaController"
+    });
 });

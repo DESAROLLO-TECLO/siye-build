@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TIE034C_IE_PLAN")
+@Table(name = "TIE030D_IE_KIT_INSTALACION")
 public class KitInstalacionDTO implements Serializable {
 
 	/**
