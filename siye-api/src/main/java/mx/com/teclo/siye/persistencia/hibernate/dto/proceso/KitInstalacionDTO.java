@@ -39,7 +39,37 @@ public class KitInstalacionDTO implements Serializable {
 	@Column(name = "FH_MODIFICACION", nullable = false, length = 7)
 	private Date fhModificacion;
 
-	
+	/**
+	 * @return the idKitInstalacion
+	 */
+	public Long getIdKitInstalacion() {
+		return idKitInstalacion;
+	}
+
+	/**
+	 * @param idKitInstalacion the idKitInstalacion to set
+	 */
+	public void setIdKitInstalacion(Long idKitInstalacion) {
+		this.idKitInstalacion = idKitInstalacion;
+	}
+
+	/**
+	 * @return the cdKitInstalacion
+	 */
+	public String getCdKitInstalacion() {
+		return cdKitInstalacion;
+	}
+
+	/**
+	 * @param cdKitInstalacion the cdKitInstalacion to set
+	 */
+	public void setCdKitInstalacion(String cdKitInstalacion) {
+		this.cdKitInstalacion = cdKitInstalacion;
+	}
+
+	/**
+	 * @return the stActivo
+	 */
 	public Boolean getStActivo() {
 		return stActivo;
 	}
@@ -106,5 +136,8 @@ public class KitInstalacionDTO implements Serializable {
 	public void setFhModificacion(Date fhModificacion) {
 		this.fhModificacion = fhModificacion;
 	}
+
+
+	
 
 }

@@ -26,7 +26,7 @@ public class PlanDTO implements Serializable {
 
 	@Column(name = "NB_PLAN", nullable = false, length = 100)
 	private String nbPlan;
-	
+
 	@Column(name = "TX_PLAN", nullable = false, length = 100)
 	private String txPlan;
 
@@ -45,8 +45,65 @@ public class PlanDTO implements Serializable {
 	@Column(name = "FH_MODIFICACION", nullable = false, length = 7)
 	private Date fhModificacion;
 
-	
-	
+	/**
+	 * @return the idPlan
+	 */
+	public Long getIdPlan() {
+		return idPlan;
+	}
+
+	/**
+	 * @param idPlan the idPlan to set
+	 */
+	public void setIdPlan(Long idPlan) {
+		this.idPlan = idPlan;
+	}
+
+	/**
+	 * @return the cdPlan
+	 */
+	public String getCdPlan() {
+		return cdPlan;
+	}
+
+	/**
+	 * @param cdPlan the cdPlan to set
+	 */
+	public void setCdPlan(String cdPlan) {
+		this.cdPlan = cdPlan;
+	}
+
+	/**
+	 * @return the nbPlan
+	 */
+	public String getNbPlan() {
+		return nbPlan;
+	}
+
+	/**
+	 * @param nbPlan the nbPlan to set
+	 */
+	public void setNbPlan(String nbPlan) {
+		this.nbPlan = nbPlan;
+	}
+
+	/**
+	 * @return the txPlan
+	 */
+	public String getTxPlan() {
+		return txPlan;
+	}
+
+	/**
+	 * @param txPlan the txPlan to set
+	 */
+	public void setTxPlan(String txPlan) {
+		this.txPlan = txPlan;
+	}
+
+	/**
+	 * @return the stActivo
+	 */
 	public Boolean getStActivo() {
 		return stActivo;
 	}
