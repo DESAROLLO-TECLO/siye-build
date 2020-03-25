@@ -36,7 +36,7 @@ public class ExpedientesImgDTO implements Serializable{
 	private String cdTipoArchivo;
 
 	@Column(name = "LB_EXPEDIENTE_ODS")
-	private byte[] lbExpedienteODS;
+	private Byte[] lbExpedienteODS;
 
 	@Column(name = "TX_RUTA_EXPEDIENTE_ODS")
 	private String txRutaExpedienteODS;
@@ -119,14 +119,14 @@ public class ExpedientesImgDTO implements Serializable{
 	/**
 	 * @return the lbExpedienteODS
 	 */
-	public byte[] getLbExpedienteODS() {
+	public Byte[] getLbExpedienteODS() {
 		return lbExpedienteODS;
 	}
 
 	/**
 	 * @param lbExpedienteODS the lbExpedienteODS to set
 	 */
-	public void setLbExpedienteODS(byte[] lbExpedienteODS) {
+	public void setLbExpedienteODS(Byte[] lbExpedienteODS) {
 		this.lbExpedienteODS = lbExpedienteODS;
 	}
 
