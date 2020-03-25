@@ -54,32 +54,32 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		if(osDTO == null)
 			throw new NotFoundException("El registro que intenta actualizar no existe");
 		
-		if(osVO.getIdLoteOds() != null) {
+		if(osVO.getLoteOrdenServicio() != null) {
 			LoteOrdenServicioDTO losDTO = new LoteOrdenServicioDTO();
-			losDTO.setIdLoteOds(osVO.getIdLoteOds().getIdLoteOds());
+			losDTO.setIdLoteOds(osVO.getLoteOrdenServicio().getIdLoteOds());
 			osDTO.setLoteOrdenServicio(losDTO);
 		}
-		if(osVO.getIdVehiculo() != null) {
+		if(osVO.getVehiculo() != null) {
 			VehiculoDTO vDTO = new VehiculoDTO();
-			vDTO.setIdVehiculo(osVO.getIdVehiculo().getIdVehiculo());
+			vDTO.setIdVehiculo(osVO.getVehiculo().getIdVehiculo());
 			osDTO.setVehiculo(vDTO);
 		}
 		
-		if(osVO.getIdCentroInstalacion() != null) {
+		if(osVO.getCentroInstalacion() != null) {
 			CentroInstalacionDTO ciDTO = new CentroInstalacionDTO();
 			ciDTO.setIdCentroInstalacion(ciDTO.getIdCentroInstalacion());
 			osDTO.setCentroInstalacion(ciDTO);
 		}
 		
-		if(osVO.getIdKitInstalacion() != null) {
+		if(osVO.getKitInstalacion() != null) {
 			KitInstalacionDTO kiDTO = new KitInstalacionDTO();
-			kiDTO.setIdKitInstalacion(osVO.getIdKitInstalacion().getIdKitInstalacion());
+			kiDTO.setIdKitInstalacion(osVO.getKitInstalacion().getIdKitInstalacion());
 			osDTO.setKitInstalacion(kiDTO);
 		}
 		
-		if(osVO.getIdPlan() != null) {
+		if(osVO.getPlan() != null) {
 			PlanDTO pDTO = new PlanDTO();
-			pDTO.setIdPlan(osVO.getIdPlan().getIdPlan());
+			pDTO.setIdPlan(osVO.getPlan().getIdPlan());
 			osDTO.setPlan(pDTO);
 		}
 		
