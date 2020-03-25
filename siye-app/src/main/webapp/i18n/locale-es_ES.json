@@ -331,5 +331,81 @@
                 }
             }
         }
+    },
+    
+    "ORDENSERVICIO": {
+        "AltaServicio": {
+            "tituloServicio": "Complementos Web",
+            "seleccionadores": {
+                "tituloBox": "Seleccionadores",
+                "tipoBusqueda": {
+                    "label": "Tipo búsqueda: ",
+                    "validacion": "Tipo búsqueda es requerido."
+                },
+                "valor": {
+                    "label": "Valor: ",
+                    "validacion": "El valor de la búsqueda es requerido."
+                },
+                "multipleOpcion1": {
+                    "label": "Múltiple (Opción 1)",
+                    "validacion": "El múltiple opción 1 es requerido"
+                },
+                "multipleOpcion2": {
+                    "label": "Múltiple (Opción 2)",
+                    "validacion": "El múltiple opción 2 es requerido"
+                }
+            },
+            "fechas": {
+                "tituloBox": "Fechas",
+                "calendario": {
+                    "label": "Calendario",
+                    "validacion": "El calendario es requerido"
+                },
+                "tiempo": {
+                    "label": "Tiempo",
+                    "validacion": "El tiempo es requerido"
+                },
+                "calendarioTiempo": {
+                    "label": "Calendario con tiempo",
+                    "validacion": "El calendario con tiempo es requerido"
+                }
+            },
+            "complementosInformacion": {
+                "tituloBox": "Complementos de información",
+                "informacionComplementaria": {
+                    "label": "Información complementaria",
+                    "ejemplo": "Esto es un ejemplo de información complementaria",
+                    "validacion": "La información complementaria es requerida"
+                },
+                "color": {
+                    "label": "Color",
+                    "validacion": "El color es requerido"
+                },
+                "detalleInformacionOpcion1": {
+                    "label": "Detalle de información (Opción 1)",
+                    "validacion": "El detalle de información es requerido"
+                },
+                "detalleInformacionOpcion2": {
+                    "label": "Detalle de información (Opción 2)",
+                    "ejemplo": "Contenido del detalle de la información",
+                    "validacion": "El detalle de información es requerido"
+                }
+            },
+            "interruptores": {
+                "tituloBox": "Interruptores",
+                "interruptor1": {
+                    "label": "Interruptor 1",
+                    "validacion": "El interruptor 1 es requerido"
+                },
+                "interruptor2": {
+                    "label": "Interruptor 2",
+                    "validacion": "El interruptor 2 es requerido"
+                },
+                "interruptor3": {
+                    "label": "Interruptor 3",
+                    "validacion": "El interruptor 3 es requerido"
+                }
+            }
+        }
     }
 }

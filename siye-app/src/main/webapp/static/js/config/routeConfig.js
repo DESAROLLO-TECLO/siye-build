@@ -84,4 +84,20 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
 
     /*___________________________________________________________
     ________** FIN -> ADMINISTRACIÓN CONTROLLERS ** ___________*/
+
+    /*________** INICIO -> ETAPA ** ________*/
+    $routeProvider.when("/etapas", {
+        templateUrl: "views/etapa/etapa.html",
+        controller: "etapaController"
+    });
+
+    $routeProvider.when("/etapas/proceso", {
+        templateUrl: "views/etapa/proceso/proceso.html",
+        controller: "procesoController"
+    });
+
+    $routeProvider.when("/etapas/proceso/encuesta", {
+        templateUrl: "views/etapa/proceso/encuesta/encuesta.html",
+        controller: "encuestaController"
+    });
 });
