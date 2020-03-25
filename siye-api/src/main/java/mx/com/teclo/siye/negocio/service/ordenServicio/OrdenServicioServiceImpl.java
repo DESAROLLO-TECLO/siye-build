@@ -87,7 +87,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		osDTO.setHrCita(osVO.getHrCita());
 		osDTO.setFhAtencionFin(osVO.getFhAtencionFin());
 		osDTO.setFhAtencionIni(osVO.getFhAtencionIni());
-		osDTO.setIdOrdenODS(1L);
+		osDTO.setIdOrigenOds(1L);
 	
 		ordenServicioDAO.update(osDTO);		
 		return true;

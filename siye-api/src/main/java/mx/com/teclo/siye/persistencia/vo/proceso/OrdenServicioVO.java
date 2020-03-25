@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class OrdenServicioVO implements Serializable {
+	
 	private static final long serialVersionUID = 3398117821017518569L;
 	
 	private Long idOrdenServicio;
@@ -19,10 +20,6 @@ public class OrdenServicioVO implements Serializable {
 	private Date fhAtencionFin;
 	private Long idOrigenOds;
 	private Boolean stActivo;
-	private Long idUsrCreacion;
-	private Date fhCreacion;
-	private Long idUsrModificacion;
-	private Date fhModificacion;
 	
 	public Long getIdOrdenServicio() {
 		return idOrdenServicio;
@@ -102,30 +99,5 @@ public class OrdenServicioVO implements Serializable {
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
 	}
-	public Long getIdUsrCreacion() {
-		return idUsrCreacion;
-	}
-	public void setIdUsrCreacion(Long idUsrCreacion) {
-		this.idUsrCreacion = idUsrCreacion;
-	}
-	public Date getFhCreacion() {
-		return fhCreacion;
-	}
-	public void setFhCreacion(Date fhCreacion) {
-		this.fhCreacion = fhCreacion;
-	}
-	public Long getIdUsrModificacion() {
-		return idUsrModificacion;
-	}
-	public void setIdUsrModificacion(Long idUsrModificacion) {
-		this.idUsrModificacion = idUsrModificacion;
-	}
-	public Date getFhModificacion() {
-		return fhModificacion;
-	}
-	public void setFhModificacion(Date fhModificacion) {
-		this.fhModificacion = fhModificacion;
-	}
-	
 	
 }
