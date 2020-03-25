@@ -6,9 +6,12 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -20,6 +23,8 @@ public class OrdenServicioDTO implements Serializable {
 	private static final long serialVersionUID = 4814258386727191940L;
 	
 	@Id
+	@SequenceGenerator(name = "sqOrdenServicio", sequenceName = "SQIE026D_IE_ORDEN_SER", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqOrdenServicio")
 	@Column(name = "ID_ORDEN_SERVICIO", unique = true, nullable = false)
 	private Long idOrdenServicio;
 	
@@ -47,7 +52,7 @@ public class OrdenServicioDTO implements Serializable {
 	private PlanDTO plan;
 	
 	@Column(name = "ID_ST_SEGUIMIENTO")
-	private Long idStSeguimiento;
+	private StSeguimientoDTO idStSeguimiento;
 	
 	@Column(name = "ST_ACTIVO")
 	private Boolean stActivo;
@@ -120,10 +125,10 @@ public class OrdenServicioDTO implements Serializable {
 	public void setPlan(PlanDTO plan) {
 		this.plan = plan;
 	}
-	public Long getIdStSeguimiento() {
+	public StSeguimientoDTO getIdStSeguimiento() {
 		return idStSeguimiento;
 	}
-	public void setIdStSeguimiento(Long idStSeguimiento) {
+	public void setIdStSeguimiento(StSeguimientoDTO idStSeguimiento) {
 		this.idStSeguimiento = idStSeguimiento;
 	}
 	public Boolean getStActivo() {
