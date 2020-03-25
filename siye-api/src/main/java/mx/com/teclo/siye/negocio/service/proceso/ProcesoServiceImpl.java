@@ -92,7 +92,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 		ordenServicioDTO.setKitInstalacion(kitDAO.findOne(ordenServicioVO.getKitInstalacion().getIdKitInstalacion()));
 		ordenServicioDTO.setPlan(planDAO.findOne(ordenServicioVO.getPlan().getIdPlan()));
 		ordenServicioDTO
-				.setIdStSeguimiento(seguimientoDAO.findOne(ordenServicioVO.getStSeguimiento().getIdStSeguimiento()));
+				.setStSeguimiento(seguimientoDAO.findOne(ordenServicioVO.getStSeguimiento().getIdStSeguimiento()));
 		ordenServicioDTO.setStActivo(Boolean.TRUE.booleanValue());
 		ordenServicioDTO.setIdUsrCreacion(contexto.getUsuarioFirmadoVO().getId());
 		ordenServicioDTO.setFhCreacion(new Date());
