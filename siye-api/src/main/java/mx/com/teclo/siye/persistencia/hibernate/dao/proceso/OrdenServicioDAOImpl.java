@@ -1,6 +1,9 @@
 package mx.com.teclo.siye.persistencia.hibernate.dao.proceso;
 
+import java.util.List;
+
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -18,4 +21,12 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		return (OrdenServicioDTO) c.uniqueResult();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrdenServicioDTO> consultaOrden() {
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		c.add(Restrictions.eq("stActivo", 1));
+		c.addOrder(Order.asc("nuOrden"));
+		return (List<OrdenServicioDTO>)c.list();
+	}
 }
