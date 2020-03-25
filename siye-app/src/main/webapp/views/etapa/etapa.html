@@ -17,8 +17,15 @@
         </ol>
     </section>
 
+    <!-- botón flotante para agregar incidencia -->
+    <div class="btn-flotente-incidencia">
+        <button type="button" class="btn btn-warning">
+            <span class="glyphicon glyphicon-open-file" aria-hidden="true"></span> Incidencia
+        </button>
+    </div>
+
     <!-- información gral de solicitud -->
-    <section class="content ng-scope">
+    <section class="content">
         <div class="row">
             <div class="col-md-10 col-md-offset-1 col-sm-12">
                 <div class="box box-danger">
@@ -33,15 +40,15 @@
                         <div class="panel-body">
                             <div class="row">
                                 <form>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-sm-6">
                                         <div class="form-group">
                                             <label>Número de Orden de Solicitud: </label>
                                             <br>
                                             <span>Número de Orden de Solicitud</span>
                                         </div>
                                     </div>
-                                    <div class="col-md-4"></div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-sm-6"></div>
+                                    <div class="col-md-4 col-sm-6">
                                         <div class="form-group">
                                             <label>Fecha: </label>
                                             <br>
@@ -49,7 +56,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-sm-6">
                                         <div class="form-group">
                                             <label>Transportista: </label>
                                             <br>
@@ -58,14 +65,14 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-sm-6">
                                         <div class="form-group">
                                             <label>Tipo de Vehiculo: </label>
                                             <br>
                                             <span>Tipo de Vehiculo</span>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-sm-6">
                                         <div class="form-group">
                                             <label>Placa: </label>
                                             <br>
@@ -73,21 +80,21 @@
                                         </div>
                                     </div>
                                     
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-sm-6">
                                         <div class="form-group">
                                             <label>Nombre de Centro de Instalación: </label>
                                             <br>
                                             <span>Centro de Instalación</span>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-sm-6">
                                     
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-sm-6">
                                     
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-sm-6">
                                         <div class="form-group">
                                             <label># Serie KIT: </label>
                                             <br>
@@ -97,8 +104,8 @@
                                             
                                         </div>
                                     </div>
-                                    <div class="col-md-4"></div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 col-sm-6"></div>
+                                    <div class="col-md-4 col-sm-6">
                                         <div class="form-group">
                                             <label for="stValidar" class="labelCheck">
                                                 Solo validar intalación
@@ -113,7 +120,6 @@
                                             </switcher>
                                         </div>
                                     </div>
-                                    <hr>
                                 </form>
                             </div>
                         </div>
@@ -128,62 +134,50 @@
                     <div class="panel panel-default">
                         <div class="panel-body">
                             <div class="row">
-                                <div class="col-md-4">
-                                    <div class="dash-info color-fondo">
-                                        <div class="dash-img">
-                                            <img class="dash-img-img" 
-                                                src="https://image.flaticon.com/icons/svg/1995/1995450.svg">
+                                <div class="col-sm-6 col-md-4">
+                                    <a href="#">
+                                        <div class="dash-info color-fondo">
+                                            <div class="dash-img">
+                                                <img class="dash-img-img" 
+                                                    src="static/dist/img/etapas/003-mechanic.png">
+                                            </div>
+                                            
+                                            <div class="marcador" value="1" to="1" duration="2500" effect="swing">
+                                                Instalación
+                                            </div>
                                         </div>
-                                        
-                                        <div class="marcador" value="1" to="1" duration="2500" effect="swing">
-                                            Instalación
-                                        </div>
-                                        <div>
-                                            <a class="verDetalle" >
-                                                <strong>
-                                                    detalle
-                                                </strong>
-                                            </a>
-                                        </div>
-                                    </div>
+                                    </a>
+                                    
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="dash-info color-fondo">
-                                        <div class="dash-img">
-                                            <img class="dash-img-img" 
-                                                src="https://image.flaticon.com/icons/svg/977/977479.svg">
+                                <div class="col-sm-6 col-md-4">
+                                    <a href="#">
+                                        <div class="dash-info color-fondo">
+                                            <div class="dash-img">
+                                                <img class="dash-img-img" 
+                                                    src="static/dist/img/etapas/002-null.png">
+                                            </div>
+                                            
+                                            <div class="marcador" value="1" to="1" duration="2500" effect="swing">
+                                                Plataforma
+                                            </div>
                                         </div>
-                                        
-                                        <div class="marcador" value="1" to="1" duration="2500" effect="swing">
-                                            Plataforma
-                                        </div>
-                                        <div>
-                                            <a class="verDetalle" >
-                                                <strong>
-                                                    detalle
-                                                </strong>
-                                            </a>
-                                        </div>
-                                    </div>
+                                    </a>
+                                    
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="dash-info color-fondo">
-                                        <div class="dash-img">
-                                            <img class="dash-img-img" 
-                                                src="https://image.flaticon.com/icons/svg/2431/2431758.svg">
+                                <div class="col-sm-6 col-md-4">
+                                    <a href="#">
+                                        <div class="dash-info color-fondo">
+                                            <div class="dash-img">
+                                                <img class="dash-img-img" 
+                                                    src="static/dist/img/etapas/001-qr-code.png">
+                                            </div>
+                                            
+                                            <div class="marcador" value="1" to="1" duration="2500" effect="swing">
+                                                Holograma
+                                            </div>
                                         </div>
-                                        
-                                        <div class="marcador" value="1" to="1" duration="2500" effect="swing">
-                                            Holograma
-                                        </div>
-                                        <div>
-                                            <a class="verDetalle" >
-                                                <strong>
-                                                    detalle
-                                                </strong>
-                                            </a>
-                                        </div>
-                                    </div>
+                                    </a>
+                                    
                                 </div>
                             </div>
                         </div>
