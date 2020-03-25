@@ -2,8 +2,7 @@
     display: inline-block;
     background: #fff;
     width: 100%;
-    padding: 10% 5%;
-    margin-bottom: 5%;
+    padding: 20% 5%;
     position: relative;
     overflow: hidden;
 }
@@ -23,17 +22,6 @@
     border-radius: 5px;
 }
 
-
-.dash-info-titulo {
-    font-weight: normal;
-    font-size: 2rem;
-    position: absolute;
-    bottom: 15px;
-    max-width: 60%;
-    max-height: 70%;
-
-}
-
 .dash-img {
     position: absolute;
     top: 0;
@@ -42,29 +30,16 @@
 }
 
 .dash-img-img {
-    width: 100px;
+    width:50%;
     opacity: 0.5;
 }
 
 
 .marcador {
-    float: right;
     font-size: 2.8rem;
-}
-
-.progress-bar-teclo{
-    color: #fff;
-    background: rgba(255, 154, 82, 1);
-    background: -moz-linear-gradient(left, rgba(255, 154, 82, 1) 0%,
-        rgba(232, 66, 66, 1) 100%);
-    background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255, 154, 82,
-        1)), color-stop(100%, rgba(232, 66, 66, 1)));
-    background: -webkit-linear-gradient(left, rgb(255, 154, 82) 0%, rgb(232, 66, 66) 100%);
-    background: -o-linear-gradient(left, rgb(255, 154, 82) 0%, rgb(232, 66, 66) 100%);
-    background: -ms-linear-gradient(left, rgb(255, 154, 82) 0%, rgb(232, 66, 66) 100%);
-    background: linear-gradient(to right, rgb(255, 154, 82) 0%, rgb(232, 66, 66) 100%);
-    
-    border-radius: 5px;
+    position: absolute;
+    right: 0;
+    padding-right: 5%;
 }
 
 .btn-flotente-incidencia{
@@ -76,18 +51,14 @@
 }
 
 @media screen and (max-width: 992px) {
-    .color-fondo {
-        color: #fff;
-        background: rgba(130, 66, 232, 1);
-        background: -moz-linear-gradient(left, rgba(130, 66, 232, 1) 0%,
-            rgba(130, 66, 232, 1) 100%);
-        background: -webkit-gradient(left top, right top, color-stop(0%, rgba(255, 154, 82,
-            1)), color-stop(100%, rgba(130, 66, 232, 1)));
-        background: -webkit-linear-gradient(left, rgb(255, 154, 82) 0%, rgb(130, 66, 232) 100%);
-        background: -o-linear-gradient(left, rgb(255, 154, 82) 0%, rgb(130, 66, 232) 100%);
-        background: -ms-linear-gradient(left, rgb(255, 154, 82) 0%, rgb(130, 66, 232) 100%);
-        background: linear-gradient(to right, rgb(255, 154, 82) 0%, rgb(130, 66, 232) 100%);
-        
-        border-radius: 5px;
+    .dash-img-img {
+        width:60%;
+        opacity: 0.5;
+    }
+  }
+  @media screen and (max-width: 766px) {
+    .dash-img-img {
+        width:100%;
+        opacity: 0.5;
     }
   }
