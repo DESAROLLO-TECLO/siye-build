@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.negocio.service.catalogo.CatalogoService;
+import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.InstaladorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 
@@ -35,5 +37,16 @@ public class CatalogoRestController {
 		List<TipoVehiculoVO> listTpVehiculoReturn = catalogoService.tipoVehiculo();
 		return new ResponseEntity<List<TipoVehiculoVO>>(listTpVehiculoReturn, HttpStatus.OK);
 	}
-
+	
+	@RequestMapping(value="/getTransportistas", method = RequestMethod.GET)
+	public ResponseEntity<List<ConductorVO>> getTransportistas() throws NotFoundException{
+		List<ConductorVO> listaConductorVO = catalogoService.getTransportistas();
+		return new ResponseEntity<List<ConductorVO>>(listaConductorVO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/getTecnicos", method = RequestMethod.GET)
+	public ResponseEntity<List<InstaladorVO>> getTecnicos() throws NotFoundException{
+		List<InstaladorVO> listaInstaladorVO = catalogoService.getTecnicos();
+		return new ResponseEntity<List<InstaladorVO>>(listaInstaladorVO, HttpStatus.OK);
+	}
 }
