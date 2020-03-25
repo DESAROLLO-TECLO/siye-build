@@ -43,6 +43,17 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         controller: "pluginsWebController"
     });
 
+    //	Orden servicio
+    $routeProvider.when("/alta", {
+        templateUrl: "views/ordenServicio/altaServicio.html",
+        controller: "altaServicioController"
+    });
+
+    $routeProvider.when("/consulta", {
+        templateUrl: "views/ordenServicio/consultaServicio.html",
+        controller: "consultaServicioController"
+    });
+    
     //	Usuarios
     $routeProvider.when("/users", {
         templateUrl: "views/administracion/users.html",
