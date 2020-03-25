@@ -1,3 +1,6 @@
+<head>
+    <meta charset="UTF-8">
+</head>
 <section class="content-header">
     <h1>{{breadCrumbs.servicio}}</h1>
     <ol class="breadcrumb">
@@ -99,20 +102,18 @@
                                 <tbody>
                                     <tr dir-paginate="servicio in listServicio | orderBy:tabla.order:tabla.reverse | filter:tabla.view.filterSearchVal | itemsPerPage:tabla.view.rowsPerPageVal">
 
-                                        <td class="center"><a href="#/consultaInfraccion/{{infraccion.infraccionNumero}}/{{infraccion.placa}}/{{parametroBusqueda.tipoFiltro.codigoString}}/{{parametroBusqueda.valor}}">{{infraccion.infraccionNumero}}</a></td>
+                                        <td class="center">{{servicio.stSeguimiento.nbStSeguimiento}}</td>
                                         <td class="center">
-                                            <span ng-show="servicio.documentoFolio == servicio.placaCorrecta">{{servicio.placa}}</span>
-                                            <span ng-show="servicio.documentoFolio != servicio.placaCorrecta" class="label" style="background-color: #33E0FF" data-toggle="tooltip" data-placement="top" data-html="true" data-original-title="Placa correcta: {{servicio.placaCorrecta}}">{{servicio.placa}}
-												</span>
+                                            <span>{{servicio.vehiculo.cdPlacaVehiculo}}</span>
                                         </td>
-                                        <td class="center">{{servicio.fecha | date:'dd/MM/yyyy'}}</td>
-                                        <td class="center">{{servicio.ubicacion}}</td>
-                                        <td class="center">{{servicio.articulo}}</td>
-                                        <td class="center">{{servicio.sancion}}</td>
-                                        <td class="center">{{servicio.pagada}}</td>
-                                        <td class="center" ng-show="!validaExpediente">
-                                            <a href="#/consultaExpediente/{{servicio.infraccionNumero}}/{{infraccion.placa}}/false/{{parametroBusqueda.tipoFiltro.codigoString}}/{{parametroBusqueda.valor}}" class="fa fa-folder-o fa-2x" data-toggle="tooltip" data-placement="left" title="Ver Expediente"></a>
+                                        <td class="center">
+                                        	<span ng-click="verIntentos($index)" class="etiquetaCancelado col-md-6 fullWidth" 
+                                                  	style="cursor: pointer; background-color: #868686; cursor_pointer" tooltip="Realizar servicio" tooltip-placement="top">
+			                                	{{servicio.cdOrdenServicio}}
+		                                	</span>
                                         </td>
+                                        <td class="center">{{servicio.fhAtencionIni | date:'dd/MM/yyyy'}}</td>
+                                        <td class="center">{{servicio.stSeguimiento.cdStSeguimiento}}</td>
                                         <td class="center"><a ng-click="mostrarModal(servicio)"><i class="fa fa-pencil fa-lg"></i> </a></td>
                                     </tr>
                                 </tbody>
