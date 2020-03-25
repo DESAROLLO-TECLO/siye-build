@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
-import mx.com.teclo.siye.negocio.service.encuesta.EncuentaService;
+//import mx.com.teclo.siye.negocio.service.encuesta.EncuentaService;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaDetalleVO;
 
 @RestController
