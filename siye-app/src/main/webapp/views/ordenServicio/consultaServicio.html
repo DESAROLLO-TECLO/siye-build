@@ -67,7 +67,8 @@
             </div>
         </div>
     </form>
-    <div class="row">
+    
+    <div class="row" ng-show="listServicio.length > 0">
         <div class="col-xs-12 col-md-offset-1 col-md-10">
             <div class="box box-danger">
                 <div class="box-header with-border">
@@ -109,7 +110,7 @@
                                         <td class="center">
                                         	<span ng-click="verIntentos($index)" class="etiquetaCancelado col-md-6 fullWidth" 
                                                   	style="cursor: pointer; background-color: #868686; cursor_pointer" tooltip="Realizar servicio" tooltip-placement="top">
-			                                	{{servicio.cdOrdenServicio}}
+			                                	<a href="#/etapas/{{servicio.idOrdenServicio}}"> {{servicio.cdOrdenServicio}} </a>
 		                                	</span>
                                         </td>
                                         <td class="center">{{servicio.fhAtencionIni | date:'dd/MM/yyyy'}}</td>
