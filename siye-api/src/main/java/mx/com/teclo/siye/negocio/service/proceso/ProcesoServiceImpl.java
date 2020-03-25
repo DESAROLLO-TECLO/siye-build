@@ -83,13 +83,13 @@ public class ProcesoServiceImpl implements ProcesoService {
 		validarOrdenServicio(ordenServicioVO);
 		OrdenServicioDTO ordenServicioDTO = new OrdenServicioDTO();
 		ordenServicioDTO.setCdOrdenServicio(ordenServicioVO.getCdOrdenServicio());
-		ordenServicioDTO.setLoteOrdenServicio(loteDAO.findOne(ordenServicioVO.getIdLoteOds().getIdLoteOds()));
-		ordenServicioDTO.setVehiculo(vehiculoDAO.findOne(ordenServicioVO.getIdVehiculo().getIdVehiculo()));
+		ordenServicioDTO.setLoteOrdenServicio(loteDAO.findOne(ordenServicioVO.getLoteOrdenServicio().getIdLoteOds()));
+		ordenServicioDTO.setVehiculo(vehiculoDAO.findOne(ordenServicioVO.getVehiculo().getIdVehiculo()));
 		ordenServicioDTO.setCentroInstalacion(
-				centroInstalacionDAO.findOne(ordenServicioVO.getIdCentroInstalacion().getIdCentroInstalacion()));
-		ordenServicioDTO.setKitInstalacion(kitDAO.findOne(ordenServicioVO.getIdKitInstalacion().getIdKitInstalacion()));
-		ordenServicioDTO.setPlan(planDAO.findOne(ordenServicioVO.getIdPlan().getIdPlan()));
-		ordenServicioDTO.setIdStSeguimiento(BigDecimal.ONE.longValue());
+				centroInstalacionDAO.findOne(ordenServicioVO.getCentroInstalacion().getIdCentroInstalacion()));
+		ordenServicioDTO.setKitInstalacion(kitDAO.findOne(ordenServicioVO.getKitInstalacion().getIdKitInstalacion()));
+		ordenServicioDTO.setPlan(planDAO.findOne(ordenServicioVO.getPlan().getIdPlan()));
+//		ordenServicioDTO.setStSeguimiento(BigDecimal.ONE.longValue());
 		ordenServicioDTO.setStActivo(Boolean.TRUE.booleanValue());
 		ordenServicioDTO.setIdUsrCreacion(contexto.getUsuarioFirmadoVO().getId());
 		ordenServicioDTO.setFhCreacion(new Date());
@@ -112,22 +112,22 @@ public class ProcesoServiceImpl implements ProcesoService {
 			throw new BusinessException(MSG_ERROR_ORDEN_NULA);
 		}
 
-		if (ordenServicioVO.getIdLoteOds() != null)
-			if (ordenServicioVO.getIdVehiculo() != null)
-				if (ordenServicioVO.getIdCentroInstalacion() != null)
-					if (ordenServicioVO.getIdKitInstalacion() != null)
-						if (ordenServicioVO.getIdPlan() != null)
+		if (ordenServicioVO.getLoteOrdenServicio() != null)
+			if (ordenServicioVO.getVehiculo() != null)
+				if (ordenServicioVO.getCentroInstalacion() != null)
+					if (ordenServicioVO.getKitInstalacion() != null)
+						if (ordenServicioVO.getPlan() != null)
 							isConDatosRequeridos = true;
 		if (!isConDatosRequeridos) {
 			throw new BusinessException(MSG_ERROR_ORDEN_INCOMPLETA);
 		}
 
 		if (!StringUtils.isBlank(ordenServicioVO.getCdOrdenServicio()))
-			if (ordenServicioVO.getIdLoteOds().getIdLoteOds() != null)
-				if (ordenServicioVO.getIdVehiculo().getIdVehiculo() != null)
-					if (ordenServicioVO.getIdCentroInstalacion().getIdCentroInstalacion() != null)
-						if (ordenServicioVO.getIdKitInstalacion().getIdKitInstalacion() != null)
-							if (ordenServicioVO.getIdPlan() != null)
+			if (ordenServicioVO.getLoteOrdenServicio().getIdLoteOds() != null)
+				if (ordenServicioVO.getVehiculo().getIdVehiculo() != null)
+					if (ordenServicioVO.getCentroInstalacion().getIdCentroInstalacion() != null)
+						if (ordenServicioVO.getKitInstalacion().getIdKitInstalacion() != null)
+							if (ordenServicioVO.getPlan() != null)
 								isConIDsRequeridas = true;
 
 		if (!isConIDsRequeridas) {
