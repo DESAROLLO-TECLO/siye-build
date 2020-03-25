@@ -7,9 +7,9 @@ public class OrdenServicioProcesoVO {
 	private Long idOrdenServicio;
     private String cdOrdenServicio;
     private String transportista;
-    private VehiculoVO vehiculo;
-    private CentroInstalacionVO centroInstalacion;
-    private KitInstalacionVO kitInstalacion;
+    private VehiculoProcesoVO vehiculo;
+    private CentroInstalacionProcesoVO centroInstalacion;
+    private KitInstalacionProcesoVO kitInstalacion;
     
 	public Long getIdOrdenServicio() {
 		return idOrdenServicio;
@@ -29,22 +29,22 @@ public class OrdenServicioProcesoVO {
 	public void setTransportista(String transportista) {
 		this.transportista = transportista;
 	}
-	public VehiculoVO getVehiculo() {
+	public VehiculoProcesoVO getVehiculo() {
 		return vehiculo;
 	}
-	public void setVehiculo(VehiculoVO vehiculo) {
+	public void setVehiculo(VehiculoProcesoVO vehiculo) {
 		this.vehiculo = vehiculo;
 	}
-	public CentroInstalacionVO getCentroInstalacion() {
+	public CentroInstalacionProcesoVO getCentroInstalacion() {
 		return centroInstalacion;
 	}
-	public void setCentroInstalacion(CentroInstalacionVO centroInstalacion) {
+	public void setCentroInstalacion(CentroInstalacionProcesoVO centroInstalacion) {
 		this.centroInstalacion = centroInstalacion;
 	}
-	public KitInstalacionVO getKitInstalacion() {
+	public KitInstalacionProcesoVO getKitInstalacion() {
 		return kitInstalacion;
 	}
-	public void setKitInstalacion(KitInstalacionVO kitInstalacion) {
+	public void setKitInstalacion(KitInstalacionProcesoVO kitInstalacion) {
 		this.kitInstalacion = kitInstalacion;
 	}
     
