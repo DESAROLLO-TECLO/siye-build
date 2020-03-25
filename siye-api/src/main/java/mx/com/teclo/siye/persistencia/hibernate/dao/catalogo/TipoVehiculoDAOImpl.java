@@ -17,7 +17,7 @@ public class TipoVehiculoDAOImpl extends BaseDaoHibernate<TipoVehiculoDTO> imple
 	@Override
 	public List<TipoVehiculoDTO> tipoVehiculo() {
 		Criteria criteria = getCurrentSession().createCriteria(TipoVehiculoDTO.class);
-		criteria.add(Restrictions.eq("stActivo", 1));
+		criteria.add(Restrictions.eq("stActivo", Boolean.TRUE));
 		criteria.addOrder(Order.asc("nuOrden"));
 		
 		return (List<TipoVehiculoDTO>)criteria.list();

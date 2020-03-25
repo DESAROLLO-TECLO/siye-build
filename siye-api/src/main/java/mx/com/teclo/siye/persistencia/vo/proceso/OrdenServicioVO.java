@@ -14,7 +14,7 @@ public class OrdenServicioVO implements Serializable {
 	private CentroInstalacionVO centroInstalacion;
 	private KitInstalacionVO kitInstalacion;
 	private PlanVO plan;
-	private StSeguimientoVO stSeguimiento;
+	private SeguimientoVO stSeguimiento;
 	private String hrCita;
 	private Date fhAtencionIni;
 	private Date fhAtencionFin;
@@ -63,10 +63,10 @@ public class OrdenServicioVO implements Serializable {
 	public void setPlan(PlanVO plan) {
 		this.plan = plan;
 	}
-	public StSeguimientoVO getStSeguimiento() {
+	public SeguimientoVO getStSeguimiento() {
 		return stSeguimiento;
 	}
-	public void setStSeguimiento(StSeguimientoVO stSeguimiento) {
+	public void setStSeguimiento(SeguimientoVO stSeguimiento) {
 		this.stSeguimiento = stSeguimiento;
 	}
 	public String getHrCita() {

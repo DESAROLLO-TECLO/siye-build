@@ -74,6 +74,9 @@ public class PreguntasDTO implements Serializable {
     private TipoPreguntaDTO idTipoPregunta;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPregunta", fetch = FetchType.LAZY)
     private List<OpcionesDTO> opciones;
+    
+    @Column(name = "NU_MAX_IMAGENES", nullable = false)
+    private Long nuMaxImagenes;
 	
     public PreguntasDTO() {
     }
@@ -195,5 +198,19 @@ public class PreguntasDTO implements Serializable {
 
 	public void setOpciones(List<OpcionesDTO> opciones) {
 		this.opciones = opciones;
+	}
+
+	/**
+	 * @return the nuMaxImagenes
+	 */
+	public Long getNuMaxImagenes() {
+		return nuMaxImagenes;
+	}
+
+	/**
+	 * @param nuMaxImagenes the nuMaxImagenes to set
+	 */
+	public void setNuMaxImagenes(Long nuMaxImagenes) {
+		this.nuMaxImagenes = nuMaxImagenes;
 	}
 }
