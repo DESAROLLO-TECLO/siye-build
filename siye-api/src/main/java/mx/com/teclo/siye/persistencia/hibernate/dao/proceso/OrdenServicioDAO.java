@@ -24,4 +24,6 @@ public interface OrdenServicioDAO extends BaseDao<OrdenServicioDTO>{
      * @return OrdenServicioDTO
      * */
 	public List<OrdenServicioDTO> consultaOrden();
+	
+
 }

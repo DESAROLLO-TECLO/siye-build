@@ -29,4 +29,6 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		c.addOrder(Order.asc("nuOrden"));
 		return (List<OrdenServicioDTO>)c.list();
 	}
+
+
 }

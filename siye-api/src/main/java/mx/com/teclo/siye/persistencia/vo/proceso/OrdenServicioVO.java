@@ -16,7 +16,7 @@ public class OrdenServicioVO {
 	private KitInstalacionVO idKitInstalacion;
 	private PlanVO idPlan;
 	private Long idStSeguimiento;
-	private Date hrCita;
+	private String hrCita;
 	private Date fhAtencionIni;
 	private Date fhAtencionFin;
 	private Long idOrigenOds;
@@ -90,11 +90,11 @@ public class OrdenServicioVO {
 		this.idStSeguimiento = idStSeguimiento;
 	}
 
-	public Date getHrCita() {
+	public String getHrCita() {
 		return hrCita;
 	}
 
-	public void setHrCita(Date hrCita) {
+	public void setHrCita(String hrCita) {
 		this.hrCita = hrCita;
 	}
 
