@@ -43,9 +43,17 @@ public class VehiculoDTO implements Serializable {
 	private Long idUsrModifica;
 	@Column(name = "FH_MODIFICACION")	
 	private Date fhModificacion;
+	@JoinColumn(name="ID_CONCESION", referencedColumnName="ID_CONCESION", insertable=false, updatable=false)
+	private ConsecionarioDTO consecionario;
 	
 	
 	
+	public ConsecionarioDTO getConsecionario() {
+		return consecionario;
+	}
+	public void setConsecionario(ConsecionarioDTO consecionario) {
+		this.consecionario = consecionario;
+	}
 	public Long getIdVehiculo() {
 		return idVehiculo;
 	}
