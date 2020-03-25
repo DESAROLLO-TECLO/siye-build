@@ -1,253 +1,429 @@
 /* Alinear texto a la izquierda */
+
 .align-left {
-  text-align: left;
-}
-/* Alinear texto a la derecha */
-.align-right {
-  text-align: right;
+    text-align: left;
 }
 
+
+/* Alinear texto a la derecha */
+
+.align-right {
+    text-align: right;
+}
+
+
 /* Mensaje del perfil no autorizado para ver una pantalla */
-.mensajeAutorizacion{
-	font-size: 1.2rem;
+
+.mensajeAutorizacion {
+    font-size: 1.2rem;
 }
 
 
 /* EN LAS TABLAS PARA CENTRAR VERTICALMENTE EL TEXTO O CONTENIDO */
-.alignMiddle{
-	vertical-align: middle !important;
+
+.alignMiddle {
+    vertical-align: middle !important;
 }
+
 
 /* Dimensioar el contenedor al 100 or ciento del contenedor padre */
-.fullWidth{
-	width:100%;
+
+.fullWidth {
+    width: 100%;
 }
 
+
 /* QUITAR BORDE DE ARRIBA DE LOS BOX */
-.boxBorder-none{
-	border-top: none !important;
+
+.boxBorder-none {
+    border-top: none !important;
 }
 
 
 /* PONER LA MANITA EN LOS LABEL QUE SE ASOCIEN CON LOS INPUT TIPO CHECKBOX */
-.labelCheck, .labelRadio{
-	cursor: pointer !important;
+
+.labelCheck,
+.labelRadio {
+    cursor: pointer !important;
 }
+
+
 /* Alinear al centro verticalmente los radio buttons */
-.labelRadio{
-	vertical-align: middle;
+
+.labelRadio {
+    vertical-align: middle;
 }
+
 
 /* Centrar col con medidas impares E.j. col-xs-7 */
-.centerBox{
-	display: flex;
-	justify-content: center;
+
+.centerBox {
+    display: flex;
+    justify-content: center;
 }
 
+
 /* CENTRAR COLUMNAS */
+
 .centerCol {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
+
 /* CENTRAR FILAS */
+
 .centerRow {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
+
 .middleRow {
-	display: flex;
+    display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 }
+
+
 /* Centrar cualquier contenedor vertical y horizontalmente */
-.verticalCenter{
-/* 	min-height: 145px; */
-	display: flex !important;
-	flex-direction: column !important;
+
+.verticalCenter {
+    /* 	min-height: 145px; */
+    display: flex !important;
+    flex-direction: column !important;
     justify-content: center !important;
     align-content: center !important;
 }
+
+
 /* Centrar verticalmente los elementos de un contenedor posicionados horizontalmente */
+
 .vh-center {
-	display: flex;
+    display: flex;
     align-items: center;
 }
+
+
 /* Fieldset personalizado*/
-.fieldset{
-	border-radius: 0.5rem;
-	border: 1px solid #ccc !important;
-	padding: 0 1.4rem 1.4rem 1.4rem !important;
-	margin: 0 0 1.5rem 0 !important;
+
+.fieldset {
+    border-radius: 0.5rem;
+    border: 1px solid #ccc !important;
+    padding: 0 1.4rem 1.4rem 1.4rem !important;
+    margin: 0 0 1.5rem 0 !important;
 }
+
 
 /* Fondo blanco y cursor de manita en inputs de fecha */
+
 .inputFecha {
-	background-color: #fff !important;
-	cursor: pointer !important;
+    background-color: #fff !important;
+    cursor: pointer !important;
 }
+
 
 /* Quitar cualquier borde */
+
 .borderNone {
-	border: inherit !important;
+    border: inherit !important;
 }
+
 
 /* Resetear los input */
-.resetearInput{
-	position: absolute;
-	top: 0.3571rem;
-	right: 3.214rem;
-	border: none;
-	outline: none;
-	background-color: #fff;
-	color: #cf0a2c;
-	font-weight: 700;
-	z-index: 1000;
+
+.resetearInput {
+    position: absolute;
+    top: 0.3571rem;
+    right: 3.214rem;
+    border: none;
+    outline: none;
+    background-color: #fff;
+    color: #cf0a2c;
+    font-weight: 700;
+    z-index: 1000;
 }
 
+
 /* Mostrar texto con la primer letra de cada palabra en may�scula */
+
 .upperFirst {
-	text-transform: capitalize !important;
+    text-transform: capitalize !important;
 }
+
+
 /* Mostrar texto en may�sculas */
+
 .uppercase {
-	text-transform: uppercase !important;
+    text-transform: uppercase !important;
 }
+
+
 /* Mostrar texto en min�sculas */
+
 .lowercase {
-	text-transform: lowercase !important;
+    text-transform: lowercase !important;
 }
 
 
 /* ENLACE DEL ORDENADOR DE LOS CAMPOS EN LAS TABLAS */
-.ordenCampos{
-	color: #55565a;
+
+.ordenCampos {
+    color: #55565a;
 }
-.ordenCampos:hover{
-	color: #cf0a2c;
+
+.ordenCampos:hover {
+    color: #cf0a2c;
 }
-.ordenCampos i{
-	font-size: .9rem;
+
+.ordenCampos i {
+    font-size: .9rem;
 }
+
 
 /* Reiniciar los espacios de cualquier contenedor */
-.sinEspacio{
-	margin: 0 !important;
-	padding: 0 !important;
+
+.sinEspacio {
+    margin: 0 !important;
+    padding: 0 !important;
 }
+
 
 /* BOX-TITLE RESALTADO */
+
 .box-title_resaltado {
-	font-size: 1.6rem
+    font-size: 1.6rem
 }
+
 
 /* Boton que se posiciona del lado superior derecho del contenedor */
-.btn-supRight{
-	position: absolute;
-	top: 0.5714rem;
-	right: 0.5714rem;
+
+.btn-supRight {
+    position: absolute;
+    top: 0.5714rem;
+    right: 0.5714rem;
 }
+
+
 /* Boton que se posiciona del lado superior izquierdo del contenedor */
-.btn-supLeft{
-	position: absolute;
-	top: 0.5714rem;
-	left: 0.5714rem;
+
+.btn-supLeft {
+    position: absolute;
+    top: 0.5714rem;
+    left: 0.5714rem;
 }
+
 
 /* Permitir salto de l�nea en los modales. Nota: en el javasript utilizar \n */
-.msgSaltoModal{
-	white-space: pre-wrap;
+
+.msgSaltoModal {
+    white-space: pre-wrap;
 }
+
 
 /* Estilos para los dropdown-toggle */
+
 .bootstrap-select .dropdown-toggle {
-	position: absolute;
+    position: absolute;
 }
+
 
 /* APLICAR FLITRO DESENFOQUE */
+
 .desenfoqueApp {
-	filter: blur(3px);
+    filter: blur(3px);
 }
+
 
 /* Bloquear selecci�n */
+
 .noneSelectedUser {
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
+
 
 /* Centrar bot�n */
-.btnCenter{
-	margin-top: 0.7143rem;
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: column;
-	align-items: center;
+
+.btnCenter {
+    margin-top: 0.7143rem;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
 }
+
 
 /* DAR ESTILOS A LOS INPUT DE TIPO FILE */
-.inputFile{
-	background-color: #fff !important;
-	cursor: default !important;
+
+.inputFile {
+    background-color: #fff !important;
+    cursor: default !important;
 }
 
+
 /* TRUNCAR TEXTO CUANDO SE EL CONTENEDOR SE HACE MÁS PEQUEÑO */
+
 .text-truncate {
-	overflow: hidden;
+    overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
+
+/* COLOR DE LOS CAMPOS REQUERIDOS */
+
+.asteriskReq {
+    color: #cf0a2c;
+}
+
+
 /* APLICAR PADDING A ELEMENTOS */
-.pl-0 {padding-left: 0;}
-.pt-0 {padding-top: 0;}
-.pr-0 {padding-right: 0;}
-.pb-0 {padding-bottom: 0;}
-.pl-1 {padding-left: 0.3rem;}
-.pt-1 {padding-top: 0.3rem;}
-.pr-1 {padding-right: 0.3rem;}
-.pb-1 {padding-bottom: 0.3rem;}
-.pl-2 {padding-left: 0.6rem;}
-.pt-2 {padding-top: 0.6rem;}
-.pr-2 {padding-right: 0.6rem;}
-.pb-2 {padding-bottom: 0.6rem;}
+
+.pl-0 {
+    padding-left: 0;
+}
+
+.pt-0 {
+    padding-top: 0;
+}
+
+.pr-0 {
+    padding-right: 0;
+}
+
+.pb-0 {
+    padding-bottom: 0;
+}
+
+.pl-1 {
+    padding-left: 0.3rem;
+}
+
+.pt-1 {
+    padding-top: 0.3rem;
+}
+
+.pr-1 {
+    padding-right: 0.3rem;
+}
+
+.pb-1 {
+    padding-bottom: 0.3rem;
+}
+
+.pl-2 {
+    padding-left: 0.6rem;
+}
+
+.pt-2 {
+    padding-top: 0.6rem;
+}
+
+.pr-2 {
+    padding-right: 0.6rem;
+}
+
+.pb-2 {
+    padding-bottom: 0.6rem;
+}
+
+
 /* DEFINIR EL TIPO DE CURSOR */
-.cursor_pointer {cursor: pointer;}
-.cursor_default {cursor: default;}
-.cursor_move {cursor: move;}
-.cursor_text {cursor: text;}
-.cursor_progress {cursor: progress;}
-.cursor_not-allowed {cursor: not-allowed;}
-.cursor_none {cursor: none;}
-.cursor_no-drop {cursor: no-drop;}
-.cursor_all-scroll {cursor: all-scroll;}
-.cursor_cell {cursor: cell;}
-.cursor_copy {cursor: copy;}
-.cursor_grab {cursor: grab;}
-.cursor_grabbing {cursor: grabbing;}
-.cursor_help {cursor: help;}
-.cursor_wait {cursor: wait;}
-.cursor_zoom-in {cursor: zoom-in;}
-.cursor_zoom-out {cursor: zoom-out;}
+
+.cursor_pointer {
+    cursor: pointer;
+}
+
+.cursor_default {
+    cursor: default;
+}
+
+.cursor_move {
+    cursor: move;
+}
+
+.cursor_text {
+    cursor: text;
+}
+
+.cursor_progress {
+    cursor: progress;
+}
+
+.cursor_not-allowed {
+    cursor: not-allowed;
+}
+
+.cursor_none {
+    cursor: none;
+}
+
+.cursor_no-drop {
+    cursor: no-drop;
+}
+
+.cursor_all-scroll {
+    cursor: all-scroll;
+}
+
+.cursor_cell {
+    cursor: cell;
+}
+
+.cursor_copy {
+    cursor: copy;
+}
+
+.cursor_grab {
+    cursor: grab;
+}
+
+.cursor_grabbing {
+    cursor: grabbing;
+}
+
+.cursor_help {
+    cursor: help;
+}
+
+.cursor_wait {
+    cursor: wait;
+}
+
+.cursor_zoom-in {
+    cursor: zoom-in;
+}
+
+.cursor_zoom-out {
+    cursor: zoom-out;
+}
+
+
 /* MODAL OF VIEW */
+
 .modal-of-view {
-	top: 3.571rem;
-	left: 16.43rem;
-	bottom: 3.55rem;
+    top: 3.571rem;
+    left: 16.43rem;
+    bottom: 3.55rem;
 }
+
 @media only screen and (max-width: 767px) {
-	.modal-of-view {
-		left: 0 !important;
-		padding-left: 0.5rem;
-		padding-right: 0.5rem;
-	}
+    .modal-of-view {
+        left: 0 !important;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
 }
-.tooltipPass{
-	cursor:pointer;
-	position: absolute;
-	bottom: 24px;
-	right: 35px;
+
+.tooltipPass {
+    cursor: pointer;
+    position: absolute;
+    bottom: 24px;
+    right: 35px;
 }
