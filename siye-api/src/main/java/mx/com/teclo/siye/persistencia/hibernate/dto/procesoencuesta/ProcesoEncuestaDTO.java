@@ -28,11 +28,12 @@ public class ProcesoEncuestaDTO implements Serializable{
 	@Column(name = "ID_PROCESO_ENCUESTA")
 	private Long idProcesoEncuesta;
 	
-	@Column(name = "ID_PROCESO")
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@JoinColumn(name="ID_PROCESO", referencedColumnName="ID_PROCESO", insertable=false, updatable=false)
 	private IEprocesosDTO idProceso;
 	
-	@JoinColumn(name = "ID_ENCUESTA")
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@JoinColumn(name="ID_ENCUESTA", referencedColumnName="ID_ENCUESTA", insertable=false, updatable=false)
 	private EncuestaDetalleDTO idEncuesta;
 	
 	@Column(name = "NU_ORDEN")
