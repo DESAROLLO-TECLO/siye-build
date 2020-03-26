@@ -70,8 +70,8 @@ public class OrdenServicioDTO implements Serializable {
 	@Column(name = "FH_MODIFICACION")	
 	private Date fhModificacion;
 	
-	@Column(name = "HR_CITA")
-	private String hrCita;
+	@Column(name = "FH_CITA")
+	private Date fhCita;
 	
 	@Column(name = "FH_ATENCION_INI")
 	private Date fhAtencionIni;
@@ -162,11 +162,13 @@ public class OrdenServicioDTO implements Serializable {
 	public void setFhModificacion(Date fhModificacion) {
 		this.fhModificacion = fhModificacion;
 	}
-	public String getHrCita() {
-		return hrCita;
+
+	
+	public Date getFhCita() {
+		return fhCita;
 	}
-	public void setHrCita(String hrCita) {
-		this.hrCita = hrCita;
+	public void setFhCita(Date fhCita) {
+		this.fhCita = fhCita;
 	}
 	public Date getFhAtencionIni() {
 		return fhAtencionIni;
