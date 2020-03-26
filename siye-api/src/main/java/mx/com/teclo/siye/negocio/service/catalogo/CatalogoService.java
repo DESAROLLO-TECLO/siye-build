@@ -7,6 +7,8 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.InstaladorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
+
 
 public interface CatalogoService {
 	
@@ -17,4 +19,8 @@ public interface CatalogoService {
 	public List<ConductorVO> getTransportistas() throws NotFoundException;
 	
 	public List<InstaladorVO> getTecnicos() throws NotFoundException;
+	
+	public CatalogosOrdenProcesoVO getCatalogosOrdenProceso() throws NotFoundException;
+	
+
 }

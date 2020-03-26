@@ -1,5 +1,8 @@
 package mx.com.teclo.siye.persistencia.hibernate.dao.proceso;
 
+
+import java.util.List;
+
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDao;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
@@ -21,4 +24,12 @@ public interface CentroInstalacionDAO extends BaseDao<CentroInstalacionDTO> {
 	 */
 	public CentroInstalacionVO obtenerCentroInstalacion(Long idCentroInstalacion);
 
+	
+	/**
+	 * Obtiene todos los centros de instalacion
+	 * 
+	 * @return List<CentroInstalacionDTO>
+	 */
+	public List<CentroInstalacionDTO> obtenerCentroInstalacion();
+	
 }

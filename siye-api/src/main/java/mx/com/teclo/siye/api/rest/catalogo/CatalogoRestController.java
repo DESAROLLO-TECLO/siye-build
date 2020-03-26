@@ -9,13 +9,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.negocio.service.catalogo.CatalogoService;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.InstaladorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
+
 
 @RestController
 @RequestMapping("/catalogo")
@@ -48,5 +49,12 @@ public class CatalogoRestController {
 	public ResponseEntity<List<InstaladorVO>> getTecnicos() throws NotFoundException{
 		List<InstaladorVO> listaInstaladorVO = catalogoService.getTecnicos();
 		return new ResponseEntity<List<InstaladorVO>>(listaInstaladorVO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/getCatOrdenProceso", method =  RequestMethod.GET)
+	@PreAuthorize("hasAnyAuthority('SERVICE_CAT_CENTRO_INSTA')")
+	public ResponseEntity<CatalogosOrdenProcesoVO> getCentroInstalacion()  throws NotFoundException {
+		CatalogosOrdenProcesoVO ciVO = catalogoService.getCatalogosOrdenProceso();
+		return new ResponseEntity<CatalogosOrdenProcesoVO>(ciVO, HttpStatus.OK);
 	}
 }

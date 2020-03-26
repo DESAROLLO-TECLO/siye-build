@@ -64,7 +64,7 @@ public class OrdenServicioDTO implements Serializable {
 	@Column(name = "FH_CREACION")	
 	private Date fhCreacion;
 	
-	@Column(name = "ID_USR_MODIFICACION")
+	@Column(name = "ID_USR_MODIFICA")
 	private Long idUsrModifica;
 	
 	@Column(name = "FH_MODIFICACION")	
@@ -80,7 +80,7 @@ public class OrdenServicioDTO implements Serializable {
 	private Date fhAtencionFin;
 	
 	@Column(name = "ID_ORIGEN_ODS")
-	private Long idOrdenODS;
+	private Long idOrigenOds;
 	
 	
 	
@@ -180,20 +180,11 @@ public class OrdenServicioDTO implements Serializable {
 	public void setFhAtencionFin(Date fhAtencionFin) {
 		this.fhAtencionFin = fhAtencionFin;
 	}
-	public Long getIdOrdenODS() {
-		return idOrdenODS;
+	public Long getIdOrigenOds() {
+		return idOrigenOds;
 	}
-	public void setIdOrdenODS(Long idOrdenODS) {
-		this.idOrdenODS = idOrdenODS;
+	public void setIdOrigenOds(Long idOrigenOds) {
+		this.idOrigenOds = idOrigenOds;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

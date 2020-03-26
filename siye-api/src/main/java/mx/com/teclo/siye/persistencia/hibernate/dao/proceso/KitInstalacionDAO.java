@@ -1,5 +1,8 @@
 package mx.com.teclo.siye.persistencia.hibernate.dao.proceso;
 
+import java.util.List;
+
+import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDao;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDTO;
 import mx.com.teclo.siye.persistencia.vo.proceso.KitInstalacionVO;
@@ -20,5 +23,13 @@ public interface KitInstalacionDAO extends BaseDao<KitInstalacionDTO> {
 	 * @return KitInstalacionVO
 	 */
 	public KitInstalacionVO obtenerKitInstalacion(Long idKitInstalacion);
+	
+	
+	/**
+	 * Obtiene todos los kit de instalacion
+	 * @return List<KitInstalacionV>
+	 */
+	
+	public List<KitInstalacionDTO> obtenerkitInstalacionAll()throws NotFoundException ;
 
 }

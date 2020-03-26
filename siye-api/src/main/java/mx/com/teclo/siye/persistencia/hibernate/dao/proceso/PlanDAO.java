@@ -1,5 +1,8 @@
 package mx.com.teclo.siye.persistencia.hibernate.dao.proceso;
 
+import java.util.List;
+
+import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDao;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanDTO;
 import mx.com.teclo.siye.persistencia.vo.proceso.PlanVO;
@@ -20,5 +23,16 @@ public interface PlanDAO extends BaseDao<PlanDTO> {
 	 * @return PlanVO
 	 */
 	public PlanVO obtenerKitInstalacion(Long idPlan);
+	
+	
+	/**
+	 * Obtiene todos los planes
+	 * 
+	 * @return List<PlanVO>
+	 */
+	public List<PlanDTO> getPlanAll() throws NotFoundException;
+	
+	
+	
 
 }

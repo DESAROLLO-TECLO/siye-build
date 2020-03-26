@@ -3,13 +3,16 @@
  */
 package mx.com.teclo.siye.persistencia.vo.proceso;
 
-import java.util.Date;
+import java.io.Serializable;
 
 /**
  * @author beatriz.orosio@unitis.com.mx
  *
  */
-public class CentroInstalacionVO {
+public class CentroInstalacionVO implements Serializable {
+	
+	private static final long serialVersionUID = 3679354838746125808L;
+	
 	private Long idCentroInstalacion;
 	private String cdCentroInstalacion;
 	private String nbCentroInstalacion;
@@ -20,14 +23,10 @@ public class CentroInstalacionVO {
 	private String nbColonia;
 	private String nbAlcaldia;
 	private String nbDiasAtencion;
-	private Date hrAtencionIni;
-	private Date hrAtencionFin;
+	private String hrAtencionIni;
+	private String hrAtencionFin;
 	private Long nuOrden;
 	private Boolean stActivo;
-	private Long idUsrCreacion;
-	private Date fhCreacion;
-	private Long idUsrModifica;
-	private Date fhModificacion;
 
 	public Long getIdCentroInstalacion() {
 		return idCentroInstalacion;
@@ -109,19 +108,19 @@ public class CentroInstalacionVO {
 		this.nbDiasAtencion = nbDiasAtencion;
 	}
 
-	public Date getHrAtencionIni() {
+	public String getHrAtencionIni() {
 		return hrAtencionIni;
 	}
 
-	public void setHrAtencionIni(Date hrAtencionIni) {
+	public void setHrAtencionIni(String hrAtencionIni) {
 		this.hrAtencionIni = hrAtencionIni;
 	}
 
-	public Date getHrAtencionFin() {
+	public String getHrAtencionFin() {
 		return hrAtencionFin;
 	}
 
-	public void setHrAtencionFin(Date hrAtencionFin) {
+	public void setHrAtencionFin(String hrAtencionFin) {
 		this.hrAtencionFin = hrAtencionFin;
 	}
 
@@ -139,38 +138,6 @@ public class CentroInstalacionVO {
 
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
-	}
-
-	public Long getIdUsrCreacion() {
-		return idUsrCreacion;
-	}
-
-	public void setIdUsrCreacion(Long idUsrCreacion) {
-		this.idUsrCreacion = idUsrCreacion;
-	}
-
-	public Date getFhCreacion() {
-		return fhCreacion;
-	}
-
-	public void setFhCreacion(Date fhCreacion) {
-		this.fhCreacion = fhCreacion;
-	}
-
-	public Long getIdUsrModifica() {
-		return idUsrModifica;
-	}
-
-	public void setIdUsrModifica(Long idUsrModifica) {
-		this.idUsrModifica = idUsrModifica;
-	}
-
-	public Date getFhModificacion() {
-		return fhModificacion;
-	}
-
-	public void setFhModificacion(Date fhModificacion) {
-		this.fhModificacion = fhModificacion;
 	}
 
 }
