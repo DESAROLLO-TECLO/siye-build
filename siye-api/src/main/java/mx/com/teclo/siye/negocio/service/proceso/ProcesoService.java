@@ -5,7 +5,7 @@ import java.util.List;
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
-import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.ProcesoEncuestaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
 
 

@@ -16,12 +16,11 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.LoteOrdenServicioDAO
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanProcesoDAO;
-import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.ProcesoEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.SeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.VehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
-import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.ProcesoEncuestaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
 
 @Service
@@ -58,8 +57,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 	@Autowired
 	private PlanProcesoDAO planProcesoDAO;
 	
-	@Autowired
-	private ProcesoEncuestaDAO procesoEncuestaDAO;
+
 	
 	
 
@@ -161,7 +159,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 	
 	@Override
 	public List<ProcesoEncuestaDTO> getEncuestasProceso(Long idProceso) {
-		return procesoEncuestaDAO.obtenerEncuestasProceso(idProceso);
+		return null;
 	}
 	
 	

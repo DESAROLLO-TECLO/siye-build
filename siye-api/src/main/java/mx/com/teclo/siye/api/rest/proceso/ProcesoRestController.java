@@ -17,7 +17,6 @@ import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.negocio.service.proceso.ProcesoService;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
-import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.ProcesoEncuestaDTO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.PlanProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.ProcesoEncuestaVO;
@@ -26,6 +25,7 @@ import mx.com.teclo.siye.persistencia.vo.proceso.ProcesoEncuestaVO;
 
 
 @RestController
+@RequestMapping("/proceso")
 public class ProcesoRestController {
 	
 	@Autowired
@@ -69,7 +69,7 @@ public class ProcesoRestController {
         }
 	}
 	 
-	 @RequestMapping(value = "/consultaEncuestasProceso", method = RequestMethod.GET)
+	 /*@RequestMapping(value = "/consultaEncuestasProceso", method = RequestMethod.GET)
 	public ResponseEntity<List<ProcesoEncuestaVO>> consultaEncuestasProceso(
 			@RequestParam("idProceso") Long idProceso) throws BusinessException, NotFoundException {
         try
@@ -85,5 +85,5 @@ public class ProcesoRestController {
         	e.printStackTrace();
     		throw new NotFoundException("Ha ocurrido un imprevisto!, por favor contacte al administrador.");
         }
-	}
+	}*/
 }
