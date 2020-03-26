@@ -1,5 +1,5 @@
 angular.module(appTeclo).controller('editarOrdenServicioController', function($scope, showAlert,
-    growl, consultaServicioService, ordenServicio, $timeout) {
+    growl, consultaServicioService, ordenServicio, $timeout, $location, $routeParams) {
     $scope.banderas = {
         modal: false
     };
@@ -33,7 +33,6 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
                         angular.copy(data, $scope.general.voModal);
                         angular.copy(data, $scope.general.voModalBackup);
                         growl.success('Orden de servicio actualizado correctamente', { ttl: 4000 });
-                        $scope.cerrar();
                     }
                 }).error(function(data) {
                     growl.error('Ocurrió un error al tratar de actualizar datos del servicio', { ttl: 4000 });
@@ -54,11 +53,19 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
             $timeout(function() {
                 angular.copy(ordenServicio.data, $scope.general.voModal);
                 angular.copy(ordenServicio.data, $scope.general.voModalBackup);
+                $("#select2-nbCentroInstalacion-container").text($scope.general.voModal.centroInstalacion.nbCentroInstalacion);
+                $("#select2-kit-container").text($scope.general.voModal.kitInstalacion.cdKitInstalacion);
+                $("#select2-plan-container").text($scope.general.voModal.plan.nbPlan);
+                $("#select2-idTipoVehiculo-container").text($scope.general.voModal.vehiculo.tipoVehiculo.nbTipoVehiculo);
             }, 200);
 
         }).error(function(data) {
             growl.error('Ocurrió un error al consultar los catálogos', { ttl: 4000 });
         });
+    };
+
+    $scope.regresar = function() {
+        $location.path("/consulta/" + $routeParams.opt + "/" + $routeParams.val);
     };
 
     catalogos();

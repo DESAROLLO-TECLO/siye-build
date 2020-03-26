@@ -51,8 +51,14 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
 
     $routeProvider.when("/consulta", {
         templateUrl: "views/ordenServicio/consultaServicio.html",
-        controller: "consultaServicioController"
+        controller: "consultaServicioController",
+        resolve: {
+            opciones: function() {
+                return null;
+            }
+        }
     });
+
 
     //	Usuarios
     $routeProvider.when("/users", {
@@ -101,7 +107,7 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         controller: "encuestaController"
     });
 
-    $routeProvider.when("/editar/:id", {
+    $routeProvider.when("/editar/:id/:opt/:val", {
         templateUrl: "views/ordenServicio/editar/editarOrdenServicio.html",
         controller: "editarOrdenServicioController",
         resolve: {
@@ -109,6 +115,11 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
                 return consultaServicioService.obtenerOrden($route.current.params.id);
             }
         }
+    });
+
+    $routeProvider.when("/consulta/:opt/:val", {
+        templateUrl: "views/ordenServicio/consultaServicio.html",
+        controller: "consultaServicioController"
     });
 
 });

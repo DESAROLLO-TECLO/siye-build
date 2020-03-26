@@ -1,4 +1,4 @@
-angular.module(appTeclo).controller('consultaServicioController', function($scope, showAlert, $location, growl, consultaServicioService) {
+angular.module(appTeclo).controller('consultaServicioController', function($scope, showAlert, $location, growl, consultaServicioService, $routeParams) {
     $scope.tabla = new Object({
         order: 'folio',
         reverse: false,
@@ -11,19 +11,50 @@ angular.module(appTeclo).controller('consultaServicioController', function($scop
         })
     });
 
+    $scope.parametroBusqueda = {
+        tipoBusqueda: {},
+        valor: null
+    };
+
+
+
+
     buscarTipoBusqueda = function() {
         $scope.listTipoBusqueda = [
             { idTipoBusqueda: "1", cdTipoBusqueda: "PLACA", nbTipoBusqueda: "PLACA", txTipoBusqueda: "PLACA" },
             { idTipoBusqueda: "2", cdTipoBusqueda: "ORDEN_SERVICIO", nbTipoBusqueda: "ORDEN DE SERVICIO", txTipoBusqueda: "ORDEN DE SERVICIO" },
             { idTipoBusqueda: "3", cdTipoBusqueda: "VIN", nbTipoBusqueda: "VIN", txTipoBusqueda: "VIN" }
         ];
-    }
-    $scope.buscarOrdenServicio = function() {
-        if ($scope.formConsultaServicio.$invalid) {
-            showAlert.requiredFields($scope.formConsultaServicio);
-            growl.warning("Formulario incompleto.", { ttl: 5000 });
-            return;
+
+        // CUANDO CARGUE TODO EL CONTROLLER VALIDAMOS EL OBJETO
+        if ($routeParams.opt != null && $routeParams.val != null) {
+            var opt = filtroBuscarTipoBusqueda($routeParams.opt);
+            if (filtroBuscarTipoBusqueda != null) {
+                $scope.parametroBusqueda.tipoBusqueda = opt;
+                $scope.parametroBusqueda.valor = $routeParams.val;
+                $scope.buscarOrdenServicio(false);
+            }
         }
+    };
+
+    function filtroBuscarTipoBusqueda(cd) {
+        for (let i = 0; i < $scope.listTipoBusqueda.length; i++) {
+            if (cd === $scope.listTipoBusqueda[i].cdTipoBusqueda) {
+                return $scope.listTipoBusqueda[i];
+            }
+        }
+        return null;
+    };
+
+
+
+    $scope.buscarOrdenServicio = function(ban) {
+        if (ban)
+            if ($scope.formConsultaServicio.$invalid) {
+                showAlert.requiredFields($scope.formConsultaServicio);
+                growl.warning("Formulario incompleto.", { ttl: 5000 });
+                return;
+            }
         consultaServicioService.buscarOrdenServicio($scope.parametroBusqueda).success(function(data) {
             if (data != null) {
                 $scope.listServicio = data;
@@ -39,7 +70,7 @@ angular.module(appTeclo).controller('consultaServicioController', function($scop
         showAlert.confirmacion("Se redireccionará a otra pantalla para la edición del servicio. ¿Desea continuar?",
             //Aceptar
             function() {
-                $location.path("/editar/" + vo.idOrdenServicio);
+                $location.path("/editar/" + vo.idOrdenServicio + "/" + $scope.parametroBusqueda.tipoBusqueda.cdTipoBusqueda + "/" + $scope.parametroBusqueda.valor);
                 $('.modal-backdrop').remove();
             },
             //Cancelar

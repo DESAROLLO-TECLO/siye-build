@@ -68,7 +68,9 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-clock-o"></i>
                                             </div>
-                                            <input class="form-control inputFecha" required name="hrCita" id="hrCita" time-picker tp-options="opcionesTimepicker" ng-model="general.voModal.hrCita" readonly />
+                                            <!-- <input class="form-control inputFecha" required name="hrCita" id="hrCita" 
+                                            time-picker tp-options="opcionesTimepicker" ng-model="general.voModal.hrCita" readonly /> -->
+                                            <input class="form-control inputFecha" ng-disabled="true" name="hrCita" id="hrCita" ng-model="general.voModal.fhCita" readonly />
                                         </div>
                                         <div ng-show="editarOS.hrCita.$invalid && editarOS.hrCita.$dirty">
                                             <span class="help-block">Es necesario especificar la hora</span>
@@ -229,15 +231,37 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="toast-footer">
+                            <!-- <div class="toast-footer">
                                 <div class="center">
-                                    <button class="btn btn-danger fadeInDown a-10ms" ng-click="cerrar()">
-                                  Cerrar
-                                </button>
                                     <button class="btn btn-danger fadeInDown a-10ms" ng-click="guardar(general.voModal, editarOS)">
-                                  Guardar
+                                    Guardar
                                 </button>
                                 </div>
+                            </div> -->
+                        </div>
+                        <div class="box-footer">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-danger" ng-click="regresar()" tooltip="Regresar" tooltip-placement="right">
+                                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div class="col-md-8 text-center">
+                                    <button class="btn btn-danger fadeInDown a-10ms" ng-click="guardar(general.voModal, editarOS)">
+                                        Guardar
+                                    </button>
+                                </div>
+
+                                <!-- <div class="col-md-12 text-center">
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-danger" ng-click="regresar()">Regresar</button>
+                                    </div>
+                                    <div class="col-md-8 col-md-offset-4 text-center">
+                                        <button class="btn btn-danger fadeInDown a-10ms" ng-click="guardar(general.voModal, editarOS)">
+                                            Guardar
+                                        </button>
+                                    </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
