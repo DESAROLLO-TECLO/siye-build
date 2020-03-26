@@ -121,10 +121,11 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	
 		ordenServicioDAO.update(osDTO);		
 		
-	OrdenServicioDTO osDto2 = ordenServicioDAO.obtenerOrdenServicio(osDTO.getIdOrdenServicio());
+
 	OrdenServicioVO osVO2 = new OrdenServicioVO();
-	ResponseConverter.copiarPropriedades(osVO2, osDto2);
-		return osVO2;
+	osVO2 = ResponseConverter.copiarPropiedadesFull(osDTO, OrdenServicioVO.class);
+
+	return osVO2;
 	}
 
 
