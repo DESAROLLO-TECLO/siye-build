@@ -21,4 +21,11 @@ angular.module(appTeclo).service('consultaServicioService', function($http, conf
         return $http.put(config.baseUrl + '/ordenServicio/updateOrden', data);
     };
 
+    this.obtenerOrden = function(id) {
+        return $http.get(config.baseUrl + '/ordenServicio/getOrdenServicio', {
+            params: {
+                idOrdenservicio: id
+            }
+        });
+    };
 });

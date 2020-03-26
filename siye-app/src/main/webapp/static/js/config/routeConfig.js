@@ -24,8 +24,8 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
 
     $routeProvider.otherwise({ redirectTo: "/index" });
 
- 		
-	/*________** INICIO -> ADMINISTRACIÓN CONTROLLERS ** ________*/
+
+    /*________** INICIO -> ADMINISTRACIÓN CONTROLLERS ** ________*/
     $routeProvider.when("/administracionModificaClave", {
         templateUrl: "views/administracion/administracionModificaClave.html",
         controller: "administracionModificaClaveController"
@@ -51,9 +51,15 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
 
     $routeProvider.when("/consulta", {
         templateUrl: "views/ordenServicio/consultaServicio.html",
-        controller: "consultaServicioController"
+        controller: "consultaServicioController",
+        resolve: {
+            opciones: function() {
+                return null;
+            }
+        }
     });
-    
+
+
     //	Usuarios
     $routeProvider.when("/users", {
         templateUrl: "views/administracion/users.html",
@@ -100,4 +106,20 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         templateUrl: "views/etapa/proceso/encuesta/encuesta.html",
         controller: "encuestaController"
     });
+
+    $routeProvider.when("/editar/:id/:opt/:val", {
+        templateUrl: "views/ordenServicio/editar/editarOrdenServicio.html",
+        controller: "editarOrdenServicioController",
+        resolve: {
+            ordenServicio: function(consultaServicioService, $route) {
+                return consultaServicioService.obtenerOrden($route.current.params.id);
+            }
+        }
+    });
+
+    $routeProvider.when("/consulta/:opt/:val", {
+        templateUrl: "views/ordenServicio/consultaServicio.html",
+        controller: "consultaServicioController"
+    });
+
 });
