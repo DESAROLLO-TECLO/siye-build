@@ -1,6 +1,7 @@
 package mx.com.teclo.siye.negocio.service.proceso;
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,13 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.LoteOrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanProcesoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.ProcesoEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.SeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.VehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.ProcesoEncuestaDTO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
 
 @Service
@@ -49,6 +54,14 @@ public class ProcesoServiceImpl implements ProcesoService {
 
 	@Autowired
 	private SeguimientoDAO seguimientoDAO;
+	
+	@Autowired
+	private PlanProcesoDAO planProcesoDAO;
+	
+	@Autowired
+	private ProcesoEncuestaDAO procesoEncuestaDAO;
+	
+	
 
 	@Override
 	public OrdenServicioDTO getInfoBasicaOrdenServicio(Long idSolicitud) {
@@ -140,5 +153,17 @@ public class ProcesoServiceImpl implements ProcesoService {
 		}
 
 	}
+	
+	@Override
+	public List<PlanProcesoDTO> getPlanOrdenServicio(Long idPlan) {
+		return planProcesoDAO.obtenerPorcesosPlan(idPlan);
+	}
+	
+	@Override
+	public List<ProcesoEncuestaDTO> getEncuestasProceso(Long idProceso) {
+		return procesoEncuestaDAO.obtenerEncuestasProceso(idProceso);
+	}
+	
+	
 
 }
