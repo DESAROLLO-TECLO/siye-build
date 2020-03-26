@@ -44,9 +44,9 @@ public class OrdenServicioRestController {
 		return new ResponseEntity<OrdenServicioVO>(osVOr,  HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/getOrdenServicio")
+	@RequestMapping(value = "/getOrdenServicio", method = RequestMethod.GET)
 	@PreAuthorize("hasAnyAuthority('ACTUALIZACION_ORDEN_SERVICIO')")
-	public ResponseEntity<OrdenServicioVO> getOrdenServicio(@RequestParam Long id) throws NotFoundException, BusinessException{
+	public ResponseEntity<OrdenServicioVO> getOrdenServicio(@RequestParam(value="idOrdenservicio", required=true) Long id) throws NotFoundException, BusinessException{
 		OrdenServicioVO osVO = ordenServicioService.findOrdenServicio(id);
 		
 		return new ResponseEntity<OrdenServicioVO>(osVO,HttpStatus.OK);

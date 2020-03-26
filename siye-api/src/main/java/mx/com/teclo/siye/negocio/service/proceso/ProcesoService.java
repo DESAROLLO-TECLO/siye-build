@@ -31,6 +31,7 @@ public interface ProcesoService {
 	 * @param Long idProceso
 	 * @return List<ProcesoEncuestaDTO> David Guerra
 	 */
+
 	List<ProcesoEncuestaDTO> getEncuestasProceso(Long idProceso);
 
 }
