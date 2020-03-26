@@ -5,11 +5,14 @@ import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
+@Entity
+@Table(name = "TIE035C_IE_PROCESOS")
 public class ProcesoDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
