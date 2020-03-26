@@ -3,6 +3,7 @@ package mx.com.teclo.siye.persistencia.hibernate.dto.proceso;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,28 +32,28 @@ public class OrdenServicioDTO implements Serializable {
 	@Column(name = "CD_ORDEN_SERVICIO")
 	private String cdOrdenServicio;
 	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name="ID_LOTE_ODS", referencedColumnName="ID_LOTE_ODS", insertable=false, updatable=false)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_LOTE_ODS")
 	private LoteOrdenServicioDTO loteOrdenServicio;
 	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name="ID_VEHICULO", referencedColumnName="ID_VEHICULO", insertable=false, updatable=false)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_VEHICULO")
 	private VehiculoDTO vehiculo;
 	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name="ID_CENTRO_INSTALACION", referencedColumnName="ID_CENTRO_INSTALACION", insertable=false, updatable=false)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_CENTRO_INSTALACION")
 	private CentroInstalacionDTO centroInstalacion;
 	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name="ID_KIT_INSTALACION", referencedColumnName="ID_KIT_INSTALACION", insertable=false, updatable=false)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_KIT_INSTALACION")
 	private KitInstalacionDTO kitInstalacion;
 	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name="ID_PLAN", referencedColumnName="ID_PLAN", insertable=false, updatable=false)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_PLAN")
 	private PlanDTO plan;
 	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name="ID_ST_SEGUIMIENTO", referencedColumnName="ID_ST_SEGUIMIENTO", insertable=false, updatable=false)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_ST_SEGUIMIENTO")
 	private StSeguimientoDTO stSeguimiento;
 	
 	@Column(name = "ST_ACTIVO")
@@ -70,8 +71,8 @@ public class OrdenServicioDTO implements Serializable {
 	@Column(name = "FH_MODIFICACION")	
 	private Date fhModificacion;
 	
-	@Column(name = "HR_CITA")
-	private String hrCita;
+	@Column(name = "FH_CITA")
+	private Date fhCita;
 	
 	@Column(name = "FH_ATENCION_INI")
 	private Date fhAtencionIni;
@@ -162,11 +163,13 @@ public class OrdenServicioDTO implements Serializable {
 	public void setFhModificacion(Date fhModificacion) {
 		this.fhModificacion = fhModificacion;
 	}
-	public String getHrCita() {
-		return hrCita;
+
+	
+	public Date getFhCita() {
+		return fhCita;
 	}
-	public void setHrCita(String hrCita) {
-		this.hrCita = hrCita;
+	public void setFhCita(Date fhCita) {
+		this.fhCita = fhCita;
 	}
 	public Date getFhAtencionIni() {
 		return fhAtencionIni;
