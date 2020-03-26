@@ -144,7 +144,8 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		}
 		
 		// Actualizacion de Campos
-		osDTO.setHrCita(osVO.getHrCita());
+		//osDTO.setHrCita(osVO.getHrCita());
+		osDTO.setFhCita(osVO.getFhCita());
 		osDTO.setFhAtencionFin(osVO.getFhAtencionFin());
 		osDTO.setFhAtencionIni(osVO.getFhAtencionIni());
 		osDTO.setIdOrigenOds(1L);
