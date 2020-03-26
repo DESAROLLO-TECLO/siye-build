@@ -36,7 +36,11 @@ public class OrdenServicioRestController {
 	@RequestMapping(value ="/updateOrden", method = RequestMethod.PUT)
 	@PreAuthorize("hasAnyAuthority('ACTUALIZACION_ORDEN_SERVICIO')")
 	public ResponseEntity<OrdenServicioVO> updateOrden(@RequestBody OrdenServicioVO osVO) throws NotFoundException, BusinessException{
-		OrdenServicioVO osVOr = ordenServicioService.actualizaOrdenServicio(osVO);
+		Boolean  status = ordenServicioService.actualizaOrdenServicio(osVO);
+		OrdenServicioVO osVOr = new OrdenServicioVO();
+		if (status) {
+			osVOr = ordenServicioService.findOrdenServicio(osVO.getIdOrdenServicio());
+		}
 		return new ResponseEntity<OrdenServicioVO>(osVOr,  HttpStatus.OK);
 	}
 

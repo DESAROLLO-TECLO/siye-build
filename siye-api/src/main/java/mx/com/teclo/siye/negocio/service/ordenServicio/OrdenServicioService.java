@@ -17,7 +17,9 @@ public interface OrdenServicioService {
      * @param OrdenServicioVO
      * @return Boolean
      * */
-	public OrdenServicioVO actualizaOrdenServicio(OrdenServicioVO osVO) throws NotFoundException, BusinessException;
+	public Boolean actualizaOrdenServicio(OrdenServicioVO osVO) throws NotFoundException, BusinessException;
+	
+	public OrdenServicioVO findOrdenServicio(Long idOrdenServico) throws NotFoundException, BusinessException;
 	
 	
 }
