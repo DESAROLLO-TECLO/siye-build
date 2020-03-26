@@ -1,0 +1,88 @@
+ <div class="modal fade" id="confirmacion" data-keyboard="false" data-backdrop="static">
+  	<div class="modal-dialog">
+   		<div class="modal-content">
+   		<form role="form" name="formObject">
+			<div class="modal-header bg-red-active"><h3 >Nuevo Registro</h3></div>
+			<div class="modal-body">
+				<div class="container">
+				
+						<div class="row">
+							<div class="col-md-10 col-md-offset-1">
+								<div class="col-md-12">
+									<div class="form-group"
+										ng-class="{'has-error': formObject.nombre.$invalid && formObject.nombre.$dirty}">
+										<label>
+											*Nombre </label>
+										<div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-user"></i></span>
+											<input type="text" class="form-control" name="nombre"
+												ng-model="objeto.nombre" ng-required="true"
+												maxlength="15">
+										</div>
+										<div
+											ng-show="formObject.nombre.$error.required && formObject.nombre.$dirty"
+											ng-style="{color:'red'}">
+											<span>
+												Campo Requerido </span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<div class="form-group"
+										ng-class="{'has-error': formObject.aPaterno.$invalid && formObject.aPaterno.$dirty}">
+										<label>
+											Apellido Paterno </label>
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="fa fa-user"></i></span> <input type="text"
+												name="aPaterno" class="form-control"
+												ng-model="objeto.aPaterno" ng-required="true"
+												maxlength="15">
+										</div>
+										<div
+											ng-show="formObject.aPaterno.$error.required && formObject.aPaterno.$dirty"
+											ng-style="{color:'red'}">
+											<span>
+												Campo Requerido </span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-12">
+									<div class="form-group"
+										ng-class="{'has-error': formObject.aMaterno.$invalid && formObject.aMaterno.$dirty}">
+										<label>
+											*Apellido Materno </label>
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="fa fa-user"></i></span> <input type="text"
+												name="aMaterno" class="form-control"
+												ng-model="objeto.aMaterno" ng-required="true"
+												maxlength="15">
+										</div>
+										<div
+											ng-show="formObject.aMaterno.$error.required && formObject.aMaterno.$dirty"
+											ng-style="{color:'red'}">
+											<span>
+												Campo Requerido</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<div class="container">
+					<div class="boton">
+						<button class="btn bg-red-active btnMargin" type="button" ng-click="operacion(true,objeto,formObject)">Guardar</button>
+					</div>
+					<div class="boton">
+						<button class="btn bg-red-active btnMargin" type="button" ng-click="operacion(false,objeto,formObject)" data-dismiss="modal">Cancelar</button>
+					</div>
+				</div>
+			</div>
+				</form>
+		</div>
+		
+  	</div>
+ </div>
