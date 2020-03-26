@@ -1,21 +1,4 @@
-angular.module(appTeclo).controller('consultaServicioController', function($scope, showAlert, growl, consultaServicioService) {
-
-    $scope.banderas = {
-        modal: false
-    };
-
-    $scope.general = {
-        voModal: {},
-        voModalBackup: {}
-    };
-
-    $scope.listas = {
-        centroInstalacion: [],
-        kitInstalacion: [],
-        planInstalacion: [],
-        tipoVehiculo: []
-    };
-
+angular.module(appTeclo).controller('consultaServicioController', function($scope, showAlert, $location, growl, consultaServicioService) {
     $scope.tabla = new Object({
         order: 'folio',
         reverse: false,
@@ -53,58 +36,18 @@ angular.module(appTeclo).controller('consultaServicioController', function($scop
 
 
     $scope.mostrarModal = function(vo) {
-        $scope.banderas.modal = true;
-        angular.copy(vo, $scope.general.voModal);
-        angular.copy(vo, $scope.general.voModalBackup);
-    };
-
-    $scope.cerrar = function() {
-        $scope.banderas.modal = false;
-        $scope.general.voModal = {};
-        $scope.general.voModalBackup = {};
-    };
-
-    $scope.guardar = function(vo, form) {
-        if (form.$invalid) {
-            showAlert.requiredFields(form);
-            growl.warning('Formulario incompleto', { ttl: 5000 });
-            return;
-        } else {
-            if (angular.equals(vo, $scope.general.voModalBackup)) {
-                growl.warning('No se han detectado cambios por guardar, favor de validar', { ttl: 4000 });
+        showAlert.confirmacion("Se redireccionará a otra pantalla para la edición del servicio. ¿Desea continuar?",
+            //Aceptar
+            function() {
+                $location.path("/editar/" + vo.idOrdenServicio);
+                $('.modal-backdrop').remove();
+            },
+            //Cancelar
+            function() {
                 return;
-            } else {
-                consultaServicioService.actualizarServicio(vo).success(function(data) {
-                    if (data) {
-                        // Cuando toda la petición sea correcta, debemos actualizar el objeto del array aztualizado
-                        for (let i = 0; i < $scope.listServicio.length; i++) {
-                            if (data.idOrdenServicio == $scope.listServicio[i].idOrdenServicio) {
-                                $scope.listServicio[i] = data; // aplicamos los cambios recibidos de front
-                                break;
-                            }
-                        }
-                        growl.success('Orden de servicio actualizado correctamente', { ttl: 4000 });
-                        $scope.cerrar();
-                    }
-                }).error(function(data) {
-                    growl.error('Ocurrió un error al tratar de actualizar datos del servicio', { ttl: 4000 });
-                    return;
-                });
             }
-        }
+        );
     };
 
-    function catalogos() {
-        consultaServicioService.catalogosOrdenServicio().success(function(data) {
-            angular.copy(data.centrosInstalacion, $scope.listas.centroInstalacion);
-            angular.copy(data.kitInstalacion, $scope.listas.kitInstalacion);
-            angular.copy(data.plan, $scope.listas.planInstalacion);
-            angular.copy(data.tipoVehiculo, $scope.listas.tipoVehiculo);
-        }).error(function(data) {
-            growl.error('Ocurrió un error al consultar los catálogos', { ttl: 4000 });
-        });
-    };
-
-    catalogos();
     buscarTipoBusqueda();
 });

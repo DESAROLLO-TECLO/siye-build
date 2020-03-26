@@ -1,12 +1,12 @@
 <head>
     <meta charset="UTF-8">
     <style type="text/css">
-    	.nbStatus {
-			display: block;
-			border-radius: .25em;
-			width: 10px;
-			height: 30px;
-		}
+        .nbStatus {
+            display: block;
+            border-radius: .25em;
+            width: 10px;
+            height: 30px;
+        }
     </style>
 </head>
 <section class="content-header">
@@ -113,10 +113,10 @@
                                 <tbody>
                                     <tr dir-paginate="servicio in listServicio | orderBy:tabla.order:tabla.reverse | filter:tabla.view.filterSearchVal | itemsPerPage:tabla.view.rowsPerPageVal">
                                         <td class="center" style="width: 8%">
-<!--                                         	{{servicio.stSeguimiento.nbStSeguimiento}} -->
-                                        	<a href="#" data-toggle="tooltip" data-placement="top" title="{{servicio.stSeguimiento.nbStSeguimiento}}">
-												<span class="nbStatus" style="background-color: {{servicio.stSeguimiento.cdColor}}"></span>
-											</a>
+                                            <!--                                         	{{servicio.stSeguimiento.nbStSeguimiento}} -->
+                                            <a href="#" data-toggle="tooltip" data-placement="top" title="{{servicio.stSeguimiento.nbStSeguimiento}}">
+                                                <span class="nbStatus" style="background-color: {{servicio.stSeguimiento.cdColor}}"></span>
+                                            </a>
                                         </td>
                                         <td class="center" style="width: 14%">
                                             <span ng-click="verIntentos($index)" class="etiquetaCancelado col-md-6 fullWidth" style="cursor: pointer; background-color: #868686;" tooltip="Realizar servicio" tooltip-placement="top">
@@ -153,228 +153,3 @@
         </div>
     </div>
 </section>
-
-
-
-<form role="form" name="editarOS" novalidate>
-    <toast is-toast="banderas.modal" icon-toast="fa fa-pencil" title-toast="orden servicio" hidden-close="false" backdrop-toast="false" uppercase-title="true" width-toast="80rem">
-        <toast-content>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label><span class="asteriskReq">*</span>Folio</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-barcode"></i>
-                            </div>
-                            <input type="text" class="form-control" name="cdOrdenServicio" id="cdOrdenServicio" ng-model="general.voModal.cdOrdenServicio" ng-disabled="true" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label><span class="asteriskReq">*</span>Lote</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-archive"></i>
-                            </div>
-                            <input type="text" class="form-control" name="nbLoteOds" id="nbLoteOds" ng-model="general.voModal.loteOrdenServicio.nbLoteOds" ng-disabled="true" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group" ng-class="{ 'has-error' : editarOS.nbCentroInstalacion.$invalid && editarOS.nbCentroInstalacion.$dirty}">
-                        <label><span class="asteriskReq">*</span>Centro Instalación</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-list-ul"></i>
-                            </div>
-                            <select id="nbCentroInstalacion" name="nbCentroInstalacion" class="form-control" required select2 idioma-s2="{{currentLanguage}}" ng-model="general.voModal.centroInstalacion" ng-options="m as m.nbCentroInstalacion for m in listas.centroInstalacion track by m.idCentroInstalacion">   
-                                <option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
-                            </select>
-                        </div>
-                        <div ng-show="editarOS.nbCentroInstalacion.$invalid && editarOS.nbCentroInstalacion.$dirty">
-                            <span class="help-block">Es necesario especificar el centro de atención</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group" ng-class="{ 'has-error' : editarOS.hrCita.$invalid && editarOS.hrCita.$dirty}">
-                        <label><span class="asteriskReq">*</span>Hora de Servicio</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-clock-o"></i>
-                            </div>
-                            <input class="form-control inputFecha" required name="hrCita" id="hrCita" time-picker tp-options="opcionesTimepicker" ng-model="general.voModal.hrCita" readonly />
-                        </div>
-                        <div ng-show="editarOS.hrCita.$invalid && editarOS.hrCita.$dirty">
-                            <span class="help-block">Es necesario especificar la hora</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Fecha de Inicio</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
-                            </div>
-                            <input class="form-control inputFecha" id="fhAtencionIni" date-picker idioma-dp="{{currentLanguage}}" mindate="'29/01/2018'" maxdate="'09/02/2018'" elemento="'fhAtencionIni'" ng-model="general.voModal.fhAtencionIni" readonly />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Fecha Fin</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-calendar"></i>
-                            </div>
-                            <input class="form-control inputFecha" id="fhAtencionFin" date-picker idioma-dp="{{currentLanguage}}" mindate="'29/01/2018'" maxdate="'09/02/2018'" elemento="'fhAtencionFin'" ng-model="general.voModal.fhAtencionFin" readonly />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label>Kit</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-list-ul"></i>
-                            </div>
-                            <select id="kit" name="kit" class="form-control" select2 idioma-s2="{{currentLanguage}}" ng-model="general.voModal.kitInstalacion" ng-options="m as m.cdKitInstalacion for m in listas.kitInstalacion track by m.idKitInstalacion">   
-                                <option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group" ng-class="{ 'has-error' : editarOS.plan.$invalid && editarOS.plan.$dirty}">
-                        <label><span class="asteriskReq">*</span>Plan</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-list-ul"></i>
-                            </div>
-                            <select id="plan" name="plan" class="form-control" required select2 idioma-s2="{{currentLanguage}}" ng-model="general.voModal.plan" ng-options="m as m.nbPlan for m in listas.planInstalacion track by m.idPlan">   
-                                <option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
-                            </select>
-                        </div>
-                        <div ng-show="editarOS.plan.$invalid && editarOS.plan.$dirty">
-                            <span class="help-block">Es necesario especificar el kit</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="box-header with-border text-center">
-                    <h3 class="box-title">Vehículo</h3>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group" ng-class="{ 'has-error' : editarOS.cdPlaca.$invalid && editarOS.cdPlaca.$dirty}">
-                        <label><span class="asteriskReq">*</span>Placa</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-barcode"></i>
-                            </div>
-                            <input type="text" class="form-control" name="cdPlaca" id="cdPlaca" capitalize ng-model="general.voModal.vehiculo.cdPlacaVehiculo" required/>
-                        </div>
-                        <div ng-show="editarOS.cdPlaca.$invalid && editarOS.cdPlaca.$dirty">
-                            <span class="help-block">La placa es requerida</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group" ng-class="{ 'has-error' : editarOS.cdVin.$invalid && editarOS.cdVin.$dirty}">
-                        <label><span class="asteriskReq">*</span>VIN</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-barcode"></i>
-                            </div>
-                            <input type="text" class="form-control" name="cdVin" id="cdVin" ng-model="general.voModal.vehiculo.cdVin" required/>
-                        </div>
-                        <div ng-show="editarOS.cdVin.$invalid && editarOS.cdVin.$dirty">
-                            <span class="help-block">El VIN del vehículo es requerido</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Tarjeta Circulación</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-barcode"></i>
-                            </div>
-                            <input type="text" class="form-control" name="cdTarjetaDeCirculacion" id="cdTarjetaDeCirculacion" ng-model="general.voModal.vehiculo.cdTarjetaDeCirculacion" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <label>Tipo Vehículo</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-list-ul"></i>
-                            </div>
-                            <select id="idTipoVehiculo" name="idTipoVehiculo" class="form-control" select2 idioma-s2="{{currentLanguage}}" ng-model="general.voModal.vehiculo.tipoVehiculo" ng-options="m as m.nbTipoVehiculo for m in listas.tipoVehiculo track by m.idTipoVehiculo">   
-                                    <option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
-                                </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label>Marca</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-barcode"></i>
-                            </div>
-                            <input type="text" class="form-control" name="nbMarca" id="nbMarca" ng-model="general.voModal.vehiculo.nbMarca" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label>Submarca</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-barcode"></i>
-                            </div>
-                            <input type="text" class="form-control" name="nbSubMarca" id="nbSubMarca" ng-model="general.voModal.vehiculo.nbSubMarca" />
-                        </div>
-
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label>Modelo</label>
-                        <div class="input-group">
-                            <div class="input-group-addon">
-                                <i class="fa fa-barcode"></i>
-                            </div>
-                            <input type="text" class="form-control" name="cdModelo" id="cdModelo" ng-model="general.voModal.vehiculo.cdModelo" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="toast-footer">
-                <div class="center">
-                    <button class="btn btn-danger fadeInDown a-10ms" ng-click="cerrar()">
-                        Cerrar
-					</button>
-                    <button class="btn btn-danger fadeInDown a-10ms" ng-click="guardar(general.voModal, editarOS)">
-                        Guardar
-                    </button>
-                </div>
-            </div>
-        </toast-content>
-    </toast>
-</form>
