@@ -19,5 +19,7 @@ public interface OrdenServicioService {
      * */
 	public Boolean actualizaOrdenServicio(OrdenServicioVO osVO) throws NotFoundException, BusinessException;
 	
+	public OrdenServicioVO findOrdenServicio(Long idOrdenServico) throws NotFoundException, BusinessException;
+	
 	
 }

@@ -9,4 +9,14 @@ angular.module(appTeclo).service('altaServicioService',function($http,config) {
 		return $http.get(config.baseUrl + "/catalogo/tipoVehiculo");
 	};
 	
+	this.buscarCentroInstalacion = function(){
+		return $http.get(config.baseUrl + "/catalogo/getCatOrdenProceso")
+	}
+	
+	this.buscarVehiculo = function (valor) {
+		return $http.get(config.baseUrl + "/falta", 
+				{params:{
+					"valor": valor}});
+	};
+	
 });
