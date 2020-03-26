@@ -67,7 +67,7 @@ angular.module(appTeclo).controller('consultaServicioController', function($scop
     $scope.guardar = function(vo, form) {
         if (form.$invalid) {
             showAlert.requiredFields(form);
-            growl.warning("Formulario incompleto.", { ttl: 5000 });
+            growl.warning('Formulario incompleto', { ttl: 5000 });
             return;
         } else {
             if (angular.equals(vo, $scope.general.voModalBackup)) {
@@ -76,11 +76,19 @@ angular.module(appTeclo).controller('consultaServicioController', function($scop
             } else {
                 consultaServicioService.actualizarServicio(vo).success(function(data) {
                     if (data) {
-                        growl.success('Servicio actualizado correctamente', { ttl: 4000 });
+                        // Cuando toda la petición sea correcta, debemos actualizar el objeto del array aztualizado
+                        for (let i = 0; i < $scope.listServicio.length; i++) {
+                            if (data.idOrdenServicio == $scope.listServicio[i].idOrdenServicio) {
+                                $scope.listServicio[i] = data; // aplicamos los cambios recibidos de front
+                                break;
+                            }
+                        }
+                        growl.success('Orden de servicio actualizado correctamente', { ttl: 4000 });
                         $scope.cerrar();
                     }
                 }).error(function(data) {
                     growl.error('Ocurrió un error al tratar de actualizar datos del servicio', { ttl: 4000 });
+                    return;
                 });
             }
         }
