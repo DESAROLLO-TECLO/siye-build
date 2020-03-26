@@ -58,7 +58,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 
 	@Transactional
 	@Override
-	public Boolean actualizaOrdenServicio(OrdenServicioVO osVO) throws NotFoundException, BusinessException{
+	public OrdenServicioVO actualizaOrdenServicio(OrdenServicioVO osVO) throws NotFoundException, BusinessException{
 		OrdenServicioDTO osDTO = ordenServicioDAO.obtenerOrdenServicio(osVO.getIdOrdenServicio());
 		if(osDTO == null)
 			throw new NotFoundException("El registro que intenta actualizar no existe");
@@ -120,7 +120,12 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		osDTO.setIdOrigenOds(1L);
 	
 		ordenServicioDAO.update(osDTO);		
-		return true;
+		
+	OrdenServicioDTO osDto2 = ordenServicioDAO.obtenerOrdenServicio(osDTO.getIdOrdenServicio());
+	OrdenServicioVO osVO2 = new OrdenServicioVO();
+	ResponseConverter.copiarPropriedades(osVO2, osDto2);
+		return osVO2;
 	}
+
 
 }
