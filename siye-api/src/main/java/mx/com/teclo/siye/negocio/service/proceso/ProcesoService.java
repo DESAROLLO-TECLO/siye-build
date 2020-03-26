@@ -6,34 +6,32 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
 
-
-
-
 public interface ProcesoService {
-	
-	/**
-     * Consulta la informacion general de la orden de servicio para iniciar el proceso. 
-     * @param Long folioSolictud
-     * @return OrdenServicioDTO
-     * David Guerra
-     */
-	OrdenServicioDTO getInfoBasicaOrdenServicio(Long idSolicitud);
-	
-	/**
-     * Consulta plan a seguir de acuerdo a la orden de servicio. 
-     * @param Long idPlan
-     * @return List<PlanProcesoDTO>
-     * David Guerra
-     */
-	List<PlanProcesoDTO> getPlanOrdenServicio(Long idPlan);
-	
-	/**
-     * Consulta las encuestas a llenar de acuerdo al proceso. 
-     * @param Long idProceso
-     * @return List<ProcesoEncuestaDTO>
-     * David Guerra
-     */
-	List<ProcesoEncuestaDTO> getEncuestasProceso(Long idProceso);
 
+	/**
+	 * Consulta la informacion general de la orden de servicio para iniciar el
+	 * proceso.
+	 * 
+	 * @param Long folioSolictud
+	 * @return OrdenServicioDTO David Guerra
+	 */
+	OrdenServicioDTO getInfoBasicaOrdenServicio(Long idSolicitud);
+
+	/**
+	 * Consulta plan a seguir de acuerdo a la orden de servicio.
+	 * 
+	 * @param Long idPlan
+	 * @return List<PlanProcesoDTO> David Guerra
+	 */
+	List<PlanProcesoDTO> getPlanOrdenServicio(Long idPlan);
+
+	/**
+	 * Consulta las encuestas a llenar de acuerdo al proceso.
+	 * 
+	 * @param Long idProceso
+	 * @return List<ProcesoEncuestaDTO> David Guerra
+	 */
+
+	List<ProcesoEncuestaDTO> getEncuestasProceso(Long idProceso);
 
 }

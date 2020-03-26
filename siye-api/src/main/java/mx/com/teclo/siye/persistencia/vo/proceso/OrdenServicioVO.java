@@ -17,7 +17,8 @@ public class OrdenServicioVO implements Serializable {
 	private KitInstalacionVO kitInstalacion;
 	private PlanVO plan;
 	private SeguimientoVO stSeguimiento;
-	private String hrCita;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm a z")
+	private Date fhCita;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date fhAtencionIni;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
@@ -73,11 +74,12 @@ public class OrdenServicioVO implements Serializable {
 	public void setStSeguimiento(SeguimientoVO stSeguimiento) {
 		this.stSeguimiento = stSeguimiento;
 	}
-	public String getHrCita() {
-		return hrCita;
+
+	public Date getFhCita() {
+		return fhCita;
 	}
-	public void setHrCita(String hrCita) {
-		this.hrCita = hrCita;
+	public void setFhCita(Date fhCita) {
+		this.fhCita = fhCita;
 	}
 	public Date getFhAtencionIni() {
 		return fhAtencionIni;
