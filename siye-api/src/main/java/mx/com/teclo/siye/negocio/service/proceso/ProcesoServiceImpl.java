@@ -1,7 +1,7 @@
 package mx.com.teclo.siye.negocio.service.proceso;
 
-import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +15,12 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.LoteOrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanProcesoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.SeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.VehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
 
 @Service
@@ -47,9 +51,18 @@ public class ProcesoServiceImpl implements ProcesoService {
 	@Autowired
 	private OrdenServicioDAO ordenServicioDAO;
 
+	@Autowired
+	private SeguimientoDAO seguimientoDAO;
+	
+	@Autowired
+	private PlanProcesoDAO planProcesoDAO;
+	
+
+	
+	
+
 	@Override
 	public OrdenServicioDTO getInfoBasicaOrdenServicio(Long idSolicitud) {
-		// TODO Auto-generated method stub
 		return ordenServicioDAO.obtenerOrdenServicio(idSolicitud);
 	}
 
@@ -83,13 +96,14 @@ public class ProcesoServiceImpl implements ProcesoService {
 		validarOrdenServicio(ordenServicioVO);
 		OrdenServicioDTO ordenServicioDTO = new OrdenServicioDTO();
 		ordenServicioDTO.setCdOrdenServicio(ordenServicioVO.getCdOrdenServicio());
-		ordenServicioDTO.setLoteOrdenServicio(loteDAO.findOne(ordenServicioVO.getIdLoteOds().getIdLoteOds()));
-		ordenServicioDTO.setVehiculo(vehiculoDAO.findOne(ordenServicioVO.getIdVehiculo().getIdVehiculo()));
+		ordenServicioDTO.setLoteOrdenServicio(loteDAO.findOne(ordenServicioVO.getLoteOrdenServicio().getIdLoteOds()));
+		ordenServicioDTO.setVehiculo(vehiculoDAO.findOne(ordenServicioVO.getVehiculo().getIdVehiculo()));
 		ordenServicioDTO.setCentroInstalacion(
-				centroInstalacionDAO.findOne(ordenServicioVO.getIdCentroInstalacion().getIdCentroInstalacion()));
-		ordenServicioDTO.setKitInstalacion(kitDAO.findOne(ordenServicioVO.getIdKitInstalacion().getIdKitInstalacion()));
-		ordenServicioDTO.setPlan(planDAO.findOne(ordenServicioVO.getIdPlan().getIdPlan()));
-		ordenServicioDTO.setIdStSeguimiento(BigDecimal.ONE.longValue());
+				centroInstalacionDAO.findOne(ordenServicioVO.getCentroInstalacion().getIdCentroInstalacion()));
+		ordenServicioDTO.setKitInstalacion(kitDAO.findOne(ordenServicioVO.getKitInstalacion().getIdKitInstalacion()));
+		ordenServicioDTO.setPlan(planDAO.findOne(ordenServicioVO.getPlan().getIdPlan()));
+		ordenServicioDTO
+				.setStSeguimiento(seguimientoDAO.findOne(ordenServicioVO.getStSeguimiento().getIdStSeguimiento()));
 		ordenServicioDTO.setStActivo(Boolean.TRUE.booleanValue());
 		ordenServicioDTO.setIdUsrCreacion(contexto.getUsuarioFirmadoVO().getId());
 		ordenServicioDTO.setFhCreacion(new Date());
@@ -112,28 +126,42 @@ public class ProcesoServiceImpl implements ProcesoService {
 			throw new BusinessException(MSG_ERROR_ORDEN_NULA);
 		}
 
-		if (ordenServicioVO.getIdLoteOds() != null)
-			if (ordenServicioVO.getIdVehiculo() != null)
-				if (ordenServicioVO.getIdCentroInstalacion() != null)
-					if (ordenServicioVO.getIdKitInstalacion() != null)
-						if (ordenServicioVO.getIdPlan() != null)
-							isConDatosRequeridos = true;
+		if (ordenServicioVO.getLoteOrdenServicio() != null)
+			if (ordenServicioVO.getVehiculo() != null)
+				if (ordenServicioVO.getCentroInstalacion() != null)
+					if (ordenServicioVO.getKitInstalacion() != null)
+						if (ordenServicioVO.getPlan() != null)
+							if (ordenServicioVO.getStSeguimiento() != null)
+								isConDatosRequeridos = true;
 		if (!isConDatosRequeridos) {
 			throw new BusinessException(MSG_ERROR_ORDEN_INCOMPLETA);
 		}
 
 		if (!StringUtils.isBlank(ordenServicioVO.getCdOrdenServicio()))
-			if (ordenServicioVO.getIdLoteOds().getIdLoteOds() != null)
-				if (ordenServicioVO.getIdVehiculo().getIdVehiculo() != null)
-					if (ordenServicioVO.getIdCentroInstalacion().getIdCentroInstalacion() != null)
-						if (ordenServicioVO.getIdKitInstalacion().getIdKitInstalacion() != null)
-							if (ordenServicioVO.getIdPlan() != null)
-								isConIDsRequeridas = true;
+			if (ordenServicioVO.getLoteOrdenServicio().getIdLoteOds() != null)
+				if (ordenServicioVO.getVehiculo().getIdVehiculo() != null)
+					if (ordenServicioVO.getCentroInstalacion().getIdCentroInstalacion() != null)
+						if (ordenServicioVO.getKitInstalacion().getIdKitInstalacion() != null)
+							if (ordenServicioVO.getPlan().getIdPlan() != null)
+								if (ordenServicioVO.getStSeguimiento().getIdStSeguimiento() != null)
+									isConIDsRequeridas = true;
 
 		if (!isConIDsRequeridas) {
 			throw new BusinessException(MSG_ERROR_ORDEN_CON_REFERENCIAS_NULAS);
 		}
 
 	}
+	
+	@Override
+	public List<PlanProcesoDTO> getPlanOrdenServicio(Long idPlan) {
+		return planProcesoDAO.obtenerPorcesosPlan(idPlan);
+	}
+	
+	@Override
+	public List<ProcesoEncuestaDTO> getEncuestasProceso(Long idProceso) {
+		return null;
+	}
+	
+	
 
 }

@@ -5,7 +5,10 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 /*
@@ -25,6 +28,8 @@ public class ConductorDTO implements Serializable{
 	private static final long serialVersionUID = 5101564973860399717L;
 	
 	@Id
+	@SequenceGenerator(name = "sqie044cIEConductor", sequenceName="SQIE044C_IE_CONDUCTOR", allocationSize=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqie044cIEConductor")
 	@Column(name = "ID_CONDUCTOR", unique = true, nullable = false, precision = 4, scale = 0)
 	private Integer idConductor;
 	
@@ -37,20 +42,20 @@ public class ConductorDTO implements Serializable{
 	@Column(name = "NB_APEMAT_CONDUCTOR", nullable = true, length = 50)
 	private String nbApematConductor;
 	
-	@Column(name = "NU_ORDEN", nullable = false, precision = 4, scale = 0)
+	@Column(name = "NU_ORDEN", nullable = true, precision = 4, scale = 0)
 	private Integer nuOrden;
 
 	@Column(name = "ST_ACTIVO", nullable = false, precision = 1, scale = 0)
-	private Integer stActivo;
+	private Boolean stActivo;
 
 	@Column(name = "ID_USR_CREACION", nullable = false, precision = 7, scale = 0)
-	private Integer idUsrCreacion;
+	private Long idUsrCreacion;
 
 	@Column(name = "FH_CREACION", nullable = false)
 	private Date fhCreacion;
 
 	@Column(name = "ID_USR_MODIFICA", nullable = false, precision = 7, scale = 0)
-	private Integer idUsrModifica;
+	private Long idUsrModifica;
 
 	@Column(name = "FH_MODIFICACION", nullable = false)
 	private Date fhModificacion;
@@ -95,19 +100,19 @@ public class ConductorDTO implements Serializable{
 		this.nuOrden = nuOrden;
 	}
 
-	public Integer getStActivo() {
+	public Boolean getStActivo() {
 		return stActivo;
 	}
 
-	public void setStActivo(Integer stActivo) {
+	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
 	}
 
-	public Integer getIdUsrCreacion() {
+	public Long getIdUsrCreacion() {
 		return idUsrCreacion;
 	}
 
-	public void setIdUsrCreacion(Integer idUsrCreacion) {
+	public void setIdUsrCreacion(Long idUsrCreacion) {
 		this.idUsrCreacion = idUsrCreacion;
 	}
 
@@ -119,11 +124,11 @@ public class ConductorDTO implements Serializable{
 		this.fhCreacion = fhCreacion;
 	}
 
-	public Integer getIdUsrModifica() {
+	public Long getIdUsrModifica() {
 		return idUsrModifica;
 	}
 
-	public void setIdUsrModifica(Integer idUsrModifica) {
+	public void setIdUsrModifica(Long idUsrModifica) {
 		this.idUsrModifica = idUsrModifica;
 	}
 

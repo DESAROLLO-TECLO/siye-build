@@ -1,22 +1,22 @@
 package mx.com.teclo.siye.persistencia.vo.proceso;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author beatriz.orosio@unitis.com.mx
  *
  */
-public class PlanVO {
+public class PlanVO implements Serializable {
+
+	private static final long serialVersionUID = -3272429691323282653L;
+	
 	private Long idPlan;
 	private String cdPlan;
 	private String nbPlan;
 	private String txPlan;
 	private Boolean stActivo;
-	private Long idUsrCreacion;
-	private Date fhCreacion;
-	private Long idUsrModifica;
-	private Date fhModificacion;
-
+	
 	public Long getIdPlan() {
 		return idPlan;
 	}
@@ -55,38 +55,6 @@ public class PlanVO {
 
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
-	}
-
-	public Long getIdUsrCreacion() {
-		return idUsrCreacion;
-	}
-
-	public void setIdUsrCreacion(Long idUsrCreacion) {
-		this.idUsrCreacion = idUsrCreacion;
-	}
-
-	public Date getFhCreacion() {
-		return fhCreacion;
-	}
-
-	public void setFhCreacion(Date fhCreacion) {
-		this.fhCreacion = fhCreacion;
-	}
-
-	public Long getIdUsrModifica() {
-		return idUsrModifica;
-	}
-
-	public void setIdUsrModifica(Long idUsrModifica) {
-		this.idUsrModifica = idUsrModifica;
-	}
-
-	public Date getFhModificacion() {
-		return fhModificacion;
-	}
-
-	public void setFhModificacion(Date fhModificacion) {
-		this.fhModificacion = fhModificacion;
 	}
 
 }

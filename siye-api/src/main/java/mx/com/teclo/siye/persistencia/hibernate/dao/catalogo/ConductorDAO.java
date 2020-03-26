@@ -8,4 +8,6 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConductorDTO;
 public interface ConductorDAO extends BaseDao<ConductorDTO>{
 	
 	public List<ConductorDTO> getTransportistas();
+	
+	public List<ConductorDTO> getConductorXNombre(String nombre, String aPaterno, String aMaterno);
 }

@@ -51,8 +51,9 @@ public class OrdenServicioDTO implements Serializable {
 	@JoinColumn(name="ID_PLAN", referencedColumnName="ID_PLAN", insertable=false, updatable=false)
 	private PlanDTO plan;
 	
-	@Column(name = "ID_ST_SEGUIMIENTO")
-	private StSeguimientoDTO idStSeguimiento;
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name="ID_ST_SEGUIMIENTO", referencedColumnName="ID_ST_SEGUIMIENTO", insertable=false, updatable=false)
+	private StSeguimientoDTO stSeguimiento;
 	
 	@Column(name = "ST_ACTIVO")
 	private Boolean stActivo;
@@ -63,7 +64,7 @@ public class OrdenServicioDTO implements Serializable {
 	@Column(name = "FH_CREACION")	
 	private Date fhCreacion;
 	
-	@Column(name = "ID_USR_MODIFICACION")
+	@Column(name = "ID_USR_MODIFICA")
 	private Long idUsrModifica;
 	
 	@Column(name = "FH_MODIFICACION")	
@@ -79,7 +80,7 @@ public class OrdenServicioDTO implements Serializable {
 	private Date fhAtencionFin;
 	
 	@Column(name = "ID_ORIGEN_ODS")
-	private Long idOrdenODS;
+	private Long idOrigenOds;
 	
 	
 	
@@ -125,11 +126,11 @@ public class OrdenServicioDTO implements Serializable {
 	public void setPlan(PlanDTO plan) {
 		this.plan = plan;
 	}
-	public StSeguimientoDTO getIdStSeguimiento() {
-		return idStSeguimiento;
+	public StSeguimientoDTO getStSeguimiento() {
+		return stSeguimiento;
 	}
-	public void setIdStSeguimiento(StSeguimientoDTO idStSeguimiento) {
-		this.idStSeguimiento = idStSeguimiento;
+	public void setStSeguimiento(StSeguimientoDTO stSeguimiento) {
+		this.stSeguimiento = stSeguimiento;
 	}
 	public Boolean getStActivo() {
 		return stActivo;
@@ -179,20 +180,11 @@ public class OrdenServicioDTO implements Serializable {
 	public void setFhAtencionFin(Date fhAtencionFin) {
 		this.fhAtencionFin = fhAtencionFin;
 	}
-	public Long getIdOrdenODS() {
-		return idOrdenODS;
+	public Long getIdOrigenOds() {
+		return idOrigenOds;
 	}
-	public void setIdOrdenODS(Long idOrdenODS) {
-		this.idOrdenODS = idOrdenODS;
+	public void setIdOrigenOds(Long idOrigenOds) {
+		this.idOrigenOds = idOrigenOds;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

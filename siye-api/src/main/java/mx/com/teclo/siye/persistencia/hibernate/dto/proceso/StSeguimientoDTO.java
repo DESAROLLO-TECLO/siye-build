@@ -11,13 +11,13 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TIE042C_IE_ST_SEGUIMIENTO")
+@Table(name = "TIE048C_IE_ST_SEGUIMIENTO")
 public class StSeguimientoDTO implements Serializable {
 	
 	private static final long serialVersionUID = 1666800297557578438L;
 
 	@Id
-	@SequenceGenerator(name = "sqStSeguimiento", sequenceName = "SQIE042C_IE_ST_SEGUIM", allocationSize = 1)
+	@SequenceGenerator(name = "sqStSeguimiento", sequenceName = "SQIE048C_IE_ST_SEGUIM", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqStSeguimiento")
 	@Column(name = "ID_ST_SEGUIMIENTO", unique = true, nullable = false)
 	private Long idStSeguimiento;
@@ -35,7 +35,7 @@ public class StSeguimientoDTO implements Serializable {
 	private Long nuOrden;
 	
 	@Column(name = "ST_ACTIVO")
-	private Long stActivo;
+	private Boolean stActivo;
 	
 	@Column(name = "ID_USR_CREACION")
 	private Long idUsrCreacion;
@@ -43,7 +43,7 @@ public class StSeguimientoDTO implements Serializable {
 	@Column(name = "FH_CREACION")	
 	private Date fhCreacion;
 	
-	@Column(name = "ID_USR_MODIFICACION")
+	@Column(name = "ID_USR_MODIFICA")
 	private Long idUsrModifica;
 	
 	@Column(name = "FH_MODIFICACION")	
@@ -89,11 +89,11 @@ public class StSeguimientoDTO implements Serializable {
 		this.nuOrden = nuOrden;
 	}
 
-	public Long getStActivo() {
+	public Boolean getStActivo() {
 		return stActivo;
 	}
 
-	public void setStActivo(Long stActivo) {
+	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
 	}
 

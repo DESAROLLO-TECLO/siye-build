@@ -4,10 +4,8 @@ import java.io.Serializable;
 
 public class LoteOrdenServicioVO implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 166525209015486035L;
+	
 	private Long idLoteOds;
 	private String cdLoteOds;
 	private String nbLoteOds;
@@ -18,6 +16,7 @@ public class LoteOrdenServicioVO implements Serializable {
 	private Long nuOdsPendientes;
 	private Long nuOdsIncidencia;
 	private String txtLoteOds;
+	private Boolean stActivo;
 	
 	public Long getIdLoteOds() {
 		return idLoteOds;
@@ -79,4 +78,11 @@ public class LoteOrdenServicioVO implements Serializable {
 	public void setTxtLoteOds(String txtLoteOds) {
 		this.txtLoteOds = txtLoteOds;
 	}
+	public Boolean getStActivo() {
+		return stActivo;
+	}
+	public void setStActivo(Boolean stActivo) {
+		this.stActivo = stActivo;
+	}
+	
 }

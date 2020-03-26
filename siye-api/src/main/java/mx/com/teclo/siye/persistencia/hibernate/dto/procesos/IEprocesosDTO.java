@@ -41,6 +41,24 @@ public class IEprocesosDTO implements Serializable{
 	
 	@Column(name = "FH_MODIFICACION")
 	private Date fhModifica;
+	
+	@Column(name = "NU_MAX_IMAGENES")
+	private Long nuMaxImagenes;
+	
+
+	/**
+	 * @return the nuMaxImagenes
+	 */
+	public Long getNuMaxImagenes() {
+		return nuMaxImagenes;
+	}
+
+	/**
+	 * @param nuMaxImagenes the nuMaxImagenes to set
+	 */
+	public void setNuMaxImagenes(Long nuMaxImagenes) {
+		this.nuMaxImagenes = nuMaxImagenes;
+	}
 
 	/**
 	 * @return the idProceso
