@@ -24,11 +24,11 @@ public class PlanProcesoDTO implements Serializable {
 	@Basic(optional = false)
 	@Column(name = "ID_PLAN_PROCESO", nullable = false)
 	private Long idPlanProceso;
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name = "ID_PLAN", referencedColumnName = "ID_PLAN", nullable = false)
 	private PlanDTO plan;
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name = "ID_PROCESO", referencedColumnName = "ID_PROCESO", nullable = false)
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private ProcesoDTO proceso;
 	@Column(name = "NU_ORDEN")
 	private Long nuorden;

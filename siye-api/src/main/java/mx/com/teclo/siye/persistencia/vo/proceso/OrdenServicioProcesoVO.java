@@ -10,6 +10,7 @@ public class OrdenServicioProcesoVO {
     private VehiculoProcesoVO vehiculo;
     private CentroInstalacionProcesoVO centroInstalacion;
     private KitInstalacionProcesoVO kitInstalacion;
+    private PlanVO plan;
     
 	public Long getIdOrdenServicio() {
 		return idOrdenServicio;
@@ -47,7 +48,14 @@ public class OrdenServicioProcesoVO {
 	public void setKitInstalacion(KitInstalacionProcesoVO kitInstalacion) {
 		this.kitInstalacion = kitInstalacion;
 	}
+	public PlanVO getPlan() {
+		return plan;
+	}
+	public void setPlan(PlanVO plan) {
+		this.plan = plan;
+	}
     
+	
     
     
     
