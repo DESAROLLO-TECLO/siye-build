@@ -18,17 +18,19 @@ public class ProcesoEncuestaVO {
 	public void setIdProcesoEncuesta(Long idProcesoEncuesta) {
 		this.idProcesoEncuesta = idProcesoEncuesta;
 	}
-	public ProcesoVO getProceso() {
+
+
+	public ProcesoVO getIdProceso() {
 		return idProceso;
 	}
-	public void setProceso(ProcesoVO proceso) {
-		this.idProceso = proceso;
+	public void setIdProceso(ProcesoVO idProceso) {
+		this.idProceso = idProceso;
 	}
-	public EncuestaDetalleVO getEncuesta() {
+	public EncuestaDetalleVO getIdEncuesta() {
 		return idEncuesta;
 	}
-	public void setEncuesta(EncuestaDetalleVO encuesta) {
-		this.idEncuesta = encuesta;
+	public void setIdEncuesta(EncuestaDetalleVO idEncuesta) {
+		this.idEncuesta = idEncuesta;
 	}
 	public Long getNuorden() {
 		return nuorden;
