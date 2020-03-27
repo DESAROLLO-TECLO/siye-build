@@ -1,5 +1,6 @@
 package mx.com.teclo.siye.persistencia.hibernate.dao.proceso;
 
+import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
@@ -20,18 +21,22 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<OrdenServicioDTO> consultaOrdenByPlaca(String valor) {
+	public List<OrdenServicioDTO> consultaOrdenByPlaca(String valor, Long idCentroInstalacion) {
 		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
 		c.createAlias("vehiculo", "vehiculo");
+		c.createAlias("centroInstalacion", "centroInstalacion");
 		c.add(Restrictions.eq("vehiculo.cdPlacaVehiculo", valor));
+		c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
 		c.add(Restrictions.eq("stActivo", true));
 		return (List<OrdenServicioDTO>)c.list();
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<OrdenServicioDTO> consultaOrdenByOrdenServicio(String valor) {
+	public List<OrdenServicioDTO> consultaOrdenByOrdenServicio(String valor, Long idCentroInstalacion) {
 		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		c.createAlias("centroInstalacion", "centroInstalacion");
+		c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
 		c.add(Restrictions.eq("cdOrdenServicio", valor));
 		c.add(Restrictions.eq("stActivo", true));
 		return (List<OrdenServicioDTO>)c.list();
@@ -39,10 +44,24 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<OrdenServicioDTO> consultaOrdenByVin(String valor) {
+	public List<OrdenServicioDTO> consultaOrdenByVin(String valor, Long idCentroInstalacion) {
 		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
 		c.createAlias("vehiculo", "vehiculo");
+		c.createAlias("centroInstalacion", "centroInstalacion");
 		c.add(Restrictions.eq("vehiculo.cdVin", valor));
+		c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
+		c.add(Restrictions.eq("stActivo", true));
+		return (List<OrdenServicioDTO>)c.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrdenServicioDTO> consultaOrdenByFhCita(Long idCentroInstalacion) {
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		c.createAlias("centroInstalacion", "centroInstalacion");
+//		c.add(Restrictions.eq("fhCita", new Date()));
+		c.add(Restrictions.sqlRestriction("trunc(FH_CITA) = trunc(?)", new Date(), org.hibernate.type.StandardBasicTypes.DATE));
+		c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
 		c.add(Restrictions.eq("stActivo", true));
 		return (List<OrdenServicioDTO>)c.list();
 	}

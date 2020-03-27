@@ -22,5 +22,7 @@ public interface CatalogoService {
 	
 	public CatalogosOrdenProcesoVO getCatalogosOrdenProceso() throws NotFoundException;
 	
+	
+	
 
 }

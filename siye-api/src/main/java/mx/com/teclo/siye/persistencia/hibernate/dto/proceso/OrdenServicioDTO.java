@@ -2,7 +2,6 @@ package mx.com.teclo.siye.persistencia.hibernate.dto.proceso;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,8 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-
 
 @Entity
 @Table(name = "TIE026D_IE_ORDEN_SERVICIOS")

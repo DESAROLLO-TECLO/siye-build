@@ -7,8 +7,8 @@ public class ProcesoEncuestaVO {
 	
 
 	private Long idProcesoEncuesta;
-	private ProcesoVO proceso;
-	private EncuestaDetalleVO encuesta;
+	private ProcesoVO idProceso;
+	private EncuestaDetalleVO idEncuesta;
 	private Long nuorden;
 	private Boolean stActivo;
 	
@@ -18,17 +18,19 @@ public class ProcesoEncuestaVO {
 	public void setIdProcesoEncuesta(Long idProcesoEncuesta) {
 		this.idProcesoEncuesta = idProcesoEncuesta;
 	}
-	public ProcesoVO getProceso() {
-		return proceso;
+
+
+	public ProcesoVO getIdProceso() {
+		return idProceso;
 	}
-	public void setProceso(ProcesoVO proceso) {
-		this.proceso = proceso;
+	public void setIdProceso(ProcesoVO idProceso) {
+		this.idProceso = idProceso;
 	}
-	public EncuestaDetalleVO getEncuesta() {
-		return encuesta;
+	public EncuestaDetalleVO getIdEncuesta() {
+		return idEncuesta;
 	}
-	public void setEncuesta(EncuestaDetalleVO encuesta) {
-		this.encuesta = encuesta;
+	public void setIdEncuesta(EncuestaDetalleVO idEncuesta) {
+		this.idEncuesta = idEncuesta;
 	}
 	public Long getNuorden() {
 		return nuorden;

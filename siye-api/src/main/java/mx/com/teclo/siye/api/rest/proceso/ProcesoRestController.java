@@ -17,6 +17,8 @@ import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.negocio.service.proceso.ProcesoService;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
+import mx.com.teclo.siye.persistencia.vo.proceso.DispositivosVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.PlanProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.ProcesoEncuestaVO;
@@ -30,8 +32,10 @@ public class ProcesoRestController {
 	
 	@Autowired
 	private ProcesoService procesoService;	
+	
+	
 
-	 @RequestMapping(value = "/consultaOrdenServicioProceso", method = RequestMethod.GET)
+	 @RequestMapping(value = "/ordenServicioProceso", method = RequestMethod.GET)
 	public ResponseEntity<List<OrdenServicioProcesoVO>> consultaOrdenParaProceso(
 			@RequestParam("idSolicitud") Long idSolicitud) throws BusinessException, NotFoundException {
         try
@@ -51,7 +55,7 @@ public class ProcesoRestController {
         }
 	}
 	 
-	 @RequestMapping(value = "/consultaPlan", method = RequestMethod.GET)
+	 @RequestMapping(value = "/plan", method = RequestMethod.GET)
 	public ResponseEntity<List<PlanProcesoVO>> consultaPlanOrdenServicio(
 			@RequestParam("idPlan") Long idPlan) throws BusinessException, NotFoundException {
         try
@@ -69,7 +73,7 @@ public class ProcesoRestController {
         }
 	}
 	 
-	 /*@RequestMapping(value = "/consultaEncuestasProceso", method = RequestMethod.GET)
+	 @RequestMapping(value = "/encuestasProceso", method = RequestMethod.GET)
 	public ResponseEntity<List<ProcesoEncuestaVO>> consultaEncuestasProceso(
 			@RequestParam("idProceso") Long idProceso) throws BusinessException, NotFoundException {
         try
@@ -85,5 +89,12 @@ public class ProcesoRestController {
         	e.printStackTrace();
     		throw new NotFoundException("Ha ocurrido un imprevisto!, por favor contacte al administrador.");
         }
-	}*/
+        
+       
+	}
+	 @RequestMapping(value ="/dipositivosPorKit", method=RequestMethod.GET)
+     public ResponseEntity<List<DispositivosVO>> consultaDispositivos(@RequestParam("idTipoKit") Long idTpKit)throws NotFoundException {
+     	List<DispositivosVO> listDispositivoVO = procesoService.getKitDispositivo(idTpKit);
+     	return new ResponseEntity<List<DispositivosVO>>(listDispositivoVO, HttpStatus.OK);
+     }
 }

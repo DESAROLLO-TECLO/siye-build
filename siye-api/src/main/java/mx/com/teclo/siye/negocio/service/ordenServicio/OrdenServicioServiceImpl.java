@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
+import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.CentroInstalacionDAO;
@@ -22,6 +23,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.SeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.VehiculoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.LoteOrdenServicioDTO;
@@ -29,6 +31,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.TipoVehiculoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.VehiculoDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.usuario.GerenteSupervisorDTO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
 import mx.com.teclo.siye.util.enumerados.RespuestaHttp;
 
@@ -62,24 +65,38 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 
 	@Autowired
 	private SeguimientoDAO seguimientoDAO;
+	
+	@Autowired
+	private UsuarioFirmadoService usuarioFirmadoService;
 
+	@Autowired
+	private GerenteSupervisorDAO gerenteSupervisorDAO;
+	
 	@Transactional
 	@Override
 	public List<OrdenServicioVO> consultaOrden(String cdTipoBusqueda, String valor) throws NotFoundException {
 		List<OrdenServicioDTO> listOrdenServicioDTO = new ArrayList<>(); 
+		UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
+		GerenteSupervisorDTO gerenteSupervisorDTO = gerenteSupervisorDAO.consultaGerenteSupervisorBySupervisor(usuario.getId());
+		if(listOrdenServicioDTO.isEmpty())
+			throw new NotFoundException("No se encontró el centro de instalación, favor de reportar al administrador del sistema.");
 		switch(cdTipoBusqueda) {
+			case "TODO":
+				listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByFhCita(gerenteSupervisorDTO.getCentroInstalacion().getIdCentroInstalacion());
+				break;
 			case "PLACA":
-				listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByPlaca(valor);	
+				listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByPlaca(valor, gerenteSupervisorDTO.getCentroInstalacion().getIdCentroInstalacion());
 				break;
 			
 			case "ORDEN_SERVICIO":
-				listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByOrdenServicio(valor);
+				listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByOrdenServicio(valor, gerenteSupervisorDTO.getCentroInstalacion().getIdCentroInstalacion());
 				break;
 			
 			case "VIN":
-				listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByVin(valor);
+				listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByVin(valor, gerenteSupervisorDTO.getCentroInstalacion().getIdCentroInstalacion());
 				break;
 			}
+		
 		if(listOrdenServicioDTO.isEmpty())
 			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
 		List<OrdenServicioVO> listOrdenServicioVO = ResponseConverter.converterLista(new ArrayList<>(), listOrdenServicioDTO, OrdenServicioVO.class);

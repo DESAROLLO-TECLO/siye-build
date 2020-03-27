@@ -22,7 +22,7 @@ public class ConductorDAOImpl extends BaseDaoHibernate<ConductorDTO> implements 
 		
 		return (List<ConductorDTO>)criteria.list();
 	}
-
+	
 	@Override
 	public List<ConductorDTO> getConductorXNombre(String nombre, String aPaterno, String aMaterno) {
 		Criteria criteria = getCurrentSession().createCriteria(ConductorDTO.class);
