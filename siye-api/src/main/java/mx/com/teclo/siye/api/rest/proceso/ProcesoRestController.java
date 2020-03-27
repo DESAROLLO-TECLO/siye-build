@@ -40,7 +40,7 @@ public class ProcesoRestController {
 	
 	
 
-	 @RequestMapping(value = "/consultaOrdenServicioProceso", method = RequestMethod.GET)
+	 @RequestMapping(value = "/ordenServicioProceso", method = RequestMethod.GET)
 	public ResponseEntity<List<OrdenServicioProcesoVO>> consultaOrdenParaProceso(
 			@RequestParam("idSolicitud") Long idSolicitud) throws BusinessException, NotFoundException {
         try
@@ -60,7 +60,7 @@ public class ProcesoRestController {
         }
 	}
 	 
-	 @RequestMapping(value = "/consultaPlan", method = RequestMethod.GET)
+	 @RequestMapping(value = "/plan", method = RequestMethod.GET)
 	public ResponseEntity<List<PlanProcesoVO>> consultaPlanOrdenServicio(
 			@RequestParam("idPlan") Long idPlan) throws BusinessException, NotFoundException {
         try
@@ -78,7 +78,7 @@ public class ProcesoRestController {
         }
 	}
 	 
-	 @RequestMapping(value = "/consultaEncuestasProceso", method = RequestMethod.GET)
+	 @RequestMapping(value = "/encuestasProceso", method = RequestMethod.GET)
 	public ResponseEntity<List<ProcesoEncuestaVO>> consultaEncuestasProceso(
 			@RequestParam("idProceso") Long idProceso) throws BusinessException, NotFoundException {
         try
