@@ -18,6 +18,7 @@ import mx.com.teclo.siye.negocio.service.proceso.ProcesoService;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
+import mx.com.teclo.siye.persistencia.vo.proceso.DispositivosVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.PlanProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.ProcesoEncuestaVO;
@@ -31,6 +32,8 @@ public class ProcesoRestController {
 	
 	@Autowired
 	private ProcesoService procesoService;	
+	
+	
 
 	 @RequestMapping(value = "/consultaOrdenServicioProceso", method = RequestMethod.GET)
 	public ResponseEntity<List<OrdenServicioProcesoVO>> consultaOrdenParaProceso(
@@ -86,5 +89,12 @@ public class ProcesoRestController {
         	e.printStackTrace();
     		throw new NotFoundException("Ha ocurrido un imprevisto!, por favor contacte al administrador.");
         }
+        
+       
 	}
+	 @RequestMapping(value ="/dipositivosPorKit", method=RequestMethod.GET)
+     public ResponseEntity<List<DispositivosVO>> consultaDispositivos(@RequestParam("idTipoKit") Long idTpKit)throws NotFoundException {
+     	List<DispositivosVO> listDispositivoVO = procesoService.getKitDispositivo(idTpKit);
+     	return new ResponseEntity<List<DispositivosVO>>(listDispositivoVO, HttpStatus.OK);
+     }
 }
