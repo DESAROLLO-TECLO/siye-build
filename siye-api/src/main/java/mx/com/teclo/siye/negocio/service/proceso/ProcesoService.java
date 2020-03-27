@@ -2,6 +2,7 @@ package mx.com.teclo.siye.negocio.service.proceso;
 
 import java.util.List;
 
+import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
@@ -36,6 +37,6 @@ public interface ProcesoService {
 
 	List<ProcesoEncuestaDTO> getEncuestasProceso(Long idProceso);
 	
-	List<DispositivosVO> getKitDispositivo( Long idTpKit) throws NotFoundException;
+	List<DispositivosVO> getKitDispositivo( Long idTpKit) throws BusinessException;
 
 }

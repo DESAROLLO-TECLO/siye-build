@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.VehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.VehiculoDTO;
@@ -33,8 +34,11 @@ public class VehiculoServiceImpl implements VehiculoService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public VehiculoVO bucarVehiculoPlaca(String placa)  {
+	public VehiculoVO bucarVehiculoPlaca(String placa) throws BusinessException  {
 		VehiculoDTO vehiculoDTO = vehiculoDAO.buscarVehiculoPorPlaca(placa);
+		
+		if(vehiculoDTO == null)
+			throw new BusinessException("No existe registro");
 		
 		VehiculoVO vehiVO = ResponseConverter.copiarPropiedadesFull(vehiculoDTO, VehiculoVO.class);
 				//converterLista(new ArrayList<>(), vehiculoDTO, VehiculoVO.class);
