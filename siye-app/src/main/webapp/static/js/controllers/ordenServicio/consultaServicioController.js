@@ -1,4 +1,5 @@
-angular.module(appTeclo).controller('consultaServicioController', function($scope, showAlert, $location, growl, consultaServicioService, opciones) {
+angular.module(appTeclo).controller('consultaServicioController', 
+function($scope, showAlert, $location, growl, consultaServicioService, opciones) {
     $scope.tabla = new Object({
         order: 'folio',
         reverse: false,
@@ -15,7 +16,6 @@ angular.module(appTeclo).controller('consultaServicioController', function($scop
         tipoBusqueda: {},
         valor: null
     };
-
 
 
 
