@@ -12,6 +12,7 @@ import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ConductorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.InstaladorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoKitDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoVehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.CentroInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstalacionDAO;
@@ -19,6 +20,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConductorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.InstaladorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.StEncuestaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.TipoKitDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanDTO;
@@ -26,6 +28,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.TipoVehiculoDTO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.InstaladorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.TipoKitVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
@@ -56,6 +59,9 @@ public class CatalogoServiceImpl implements CatalogoService{
 	
 	@Autowired
 	private PlanDAO planDAO;
+	
+	@Autowired
+	private TipoKitDAO tipoKitDAO;
 	
 	@Transactional
 	@Override
@@ -105,6 +111,7 @@ public class CatalogoServiceImpl implements CatalogoService{
 		List<CentroInstalacionDTO> ciDTO = centroInstalacionDAO.obtenerCentroInstalacion();
 		List<PlanDTO> pDTO = planDAO.getPlanAll();
 		List<KitInstalacionDTO> kiDTO = kitInstalacionDAO.obtenerkitInstalacionAll();
+		List<TipoKitDTO> tpKitDTO = tipoKitDAO.getTipoKit();
 
 		
 		
@@ -113,7 +120,9 @@ public class CatalogoServiceImpl implements CatalogoService{
 		
 		List<KitInstalacionVO> kiVO = ResponseConverter.converterLista(new ArrayList<>(), kiDTO, KitInstalacionVO.class);
 	
-		List<PlanVO> pVO = ResponseConverter.converterLista(new ArrayList<>(), pDTO, PlanVO.class);		
+		List<PlanVO> pVO = ResponseConverter.converterLista(new ArrayList<>(), pDTO, PlanVO.class);	
+		
+		List<TipoKitVO> tpKitVO= ResponseConverter.converterLista(new ArrayList<>(), tpKitDTO, TipoKitVO.class);
 		
 		List<TipoVehiculoVO> tvVO = this.tipoVehiculo();
 		
@@ -125,6 +134,8 @@ public class CatalogoServiceImpl implements CatalogoService{
 		copVO.setPlan(pVO);
 		// tipo Vehiculo
 		copVO.setTipoVehiculo(tvVO);
+		//tipo Kit
+		copVO.setTipoKit(tpKitVO);
 		
 		return copVO;
 	}

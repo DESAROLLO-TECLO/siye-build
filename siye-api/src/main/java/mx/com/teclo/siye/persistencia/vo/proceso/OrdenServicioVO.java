@@ -17,7 +17,7 @@ public class OrdenServicioVO implements Serializable {
 	private KitInstalacionVO kitInstalacion;
 	private PlanVO plan;
 	private SeguimientoVO stSeguimiento;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm a z")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
 	private Date fhCita;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date fhAtencionIni;

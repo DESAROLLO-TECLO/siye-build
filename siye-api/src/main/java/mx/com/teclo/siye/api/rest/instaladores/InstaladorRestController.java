@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
+import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.negocio.service.instalador.InstaladorService;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaGenericaVO;
 
@@ -22,8 +24,12 @@ public class InstaladorRestController {
 	//@PreAuthorize("hasAnyAuthority('SERVICE7_REP_USUARIO')")
 	public ResponseEntity<PersonaGenericaVO> nuevoInstalador (
 		@RequestBody PersonaGenericaVO personaGenericaVO
-	){ 
-		PersonaGenericaVO result = instaladorService.nuevoInstalador(personaGenericaVO);
+	)throws Exception, BusinessException, NotFoundException{
+		String mensajeErr = "";
+		PersonaGenericaVO result = instaladorService.nuevoInstalador(personaGenericaVO, mensajeErr);
+		if(personaGenericaVO.getExistia() == false) {
+			instaladorService.ordenarInstaladores(mensajeErr);
+		}
 		return new ResponseEntity<PersonaGenericaVO>(result, HttpStatus.OK);
 	}
 }

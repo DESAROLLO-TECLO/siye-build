@@ -3,26 +3,30 @@
  */
 package mx.com.teclo.siye.negocio.service.async;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
-import mx.com.teclo.siye.persistencia.vo.ods.ArchivoLoteVO;
+import mx.com.teclo.siye.persistencia.vo.async.ArchivoLoteVO;
 
 /**
- * Administra la carga masiva de ordenes de servicios desde un archivo lote
+ * Administra la carga masiva de &oacute;rdenes de servicios contenidos en un
+ * archivo lote
  * 
  * @author beatriz.orosio@unitis.com.mx
  *
  */
-public interface ArchivoLoteAsyncService {
+public interface AsyncArchivoLoteService {
 
 	/**
-	 * Despu&eacute;s de determinar si el nombre y tamanio del archivo es correcto o
-	 * incorrecto se registra el nombre en base de datos junto con la ruta temporal
-	 * donde se resguard&aacute; para ser validado.
+	 * Despu&eacute;s de determinar si el nombre y tama&ntilde;io del archivo es
+	 * correcto o incorrecto se registra el nombre en base de datos junto con la
+	 * ruta temporal donde se resguard&aacute; para ser validado.
 	 * 
+	 * @param MultipartFile Archivo lote
 	 * @return Long ID del lote
 	 * @throws BusinessException
 	 */
-	Long registrarArchivoLote() throws BusinessException;
+	Integer registrarArchivoLote(MultipartFile archivoLote) throws BusinessException;
 
 	/**
 	 * 
