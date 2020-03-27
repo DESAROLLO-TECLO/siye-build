@@ -18,7 +18,7 @@ public class TipoKitDTO implements Serializable{
 	private static final long serialVersionUID = 4308954777810003866L;
 
 	@Id
-	@Column(name="ID_TIPO_KIT" , unique = true, nullable = false, precision = 4, scale = 0)
+	@Column(name="ID_TIPO_KIT", unique = true, nullable = false)
 	private Long idTipoKit;
 	
 	@Column(name="CD_TIPO_KIT")
