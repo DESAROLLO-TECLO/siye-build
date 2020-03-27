@@ -90,19 +90,34 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
     ________** FIN -> ADMINISTRACIÓN CONTROLLERS ** ___________*/
 
     /*________** INICIO -> ETAPA ** ________*/
-    $routeProvider.when("/etapas", {
+    $routeProvider.when("/etapas/:id", {
         templateUrl: "views/etapa/etapa.html",
-        controller: "etapaController"
+        controller: "etapaController",
+        resolve: {
+            etapaInfo : function(etapaService, $route){
+                return etapaService.getInfoEtapa($route.current.params.id);
+            }
+        }
     });
 
     $routeProvider.when("/etapas/proceso", {
         templateUrl: "views/etapa/proceso/proceso.html",
-        controller: "procesoController"
+        controller: "procesoController",
+        resolve: {
+            procesoInfo : function(procesoService, $route){
+                return procesoService.getInfoProceso($route.current.params.id);
+            }
+        }
     });
 
     $routeProvider.when("/etapas/proceso/encuesta", {
         templateUrl: "views/etapa/proceso/encuesta/encuesta.html",
-        controller: "encuestaController"
+        controller: "encuestaController",
+        resolve: {
+            encuestaInfo : function(encuestaService, $route){
+                return encuestaService.getInfoEncuesta($route.current.params.id);
+            }
+        }
     });
 
     $routeProvider.when("/editar/:id/:opt/:val", {
