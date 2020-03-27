@@ -24,7 +24,6 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
 
     $routeProvider.otherwise({ redirectTo: "/index" });
 
-
     /*________** INICIO -> ADMINISTRACIÓN CONTROLLERS ** ________*/
     $routeProvider.when("/administracionModificaClave", {
         templateUrl: "views/administracion/administracionModificaClave.html",
@@ -53,13 +52,12 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         templateUrl: "views/ordenServicio/consultaServicio.html",
         controller: "consultaServicioController",
         resolve: {
-            opciones: function() {
-                return null;
+            opciones: function(){
+            	return {opt: null, val: null};
             }
         }
     });
-
-
+    
     //	Usuarios
     $routeProvider.when("/users", {
         templateUrl: "views/administracion/users.html",
@@ -119,7 +117,12 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
 
     $routeProvider.when("/consulta/:opt/:val", {
         templateUrl: "views/ordenServicio/consultaServicio.html",
-        controller: "consultaServicioController"
+        controller: "consultaServicioController",
+        resolve: {
+            opciones: function($route) {
+                return {opt: $route.current.params.opt, val: $route.current.params.val};
+            }
+        }
     });
 
 });
