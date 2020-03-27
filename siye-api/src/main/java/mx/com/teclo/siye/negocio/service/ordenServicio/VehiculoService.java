@@ -2,6 +2,7 @@ package mx.com.teclo.siye.negocio.service.ordenServicio;
 
 import java.util.List;
 
+import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.persistencia.vo.filtro.FiltroVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.VehiculoVO;
 
@@ -28,4 +29,6 @@ public interface VehiculoService {
 	 * @return List<VehiculoVO>
 	 */
 	List<VehiculoVO> buscarVehiculos(FiltroVehiculoVO filtro);
+	
+	VehiculoVO bucarVehiculoPlaca(String placa);
 }

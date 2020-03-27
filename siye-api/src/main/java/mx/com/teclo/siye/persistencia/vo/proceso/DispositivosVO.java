@@ -1,28 +1,28 @@
 package mx.com.teclo.siye.persistencia.vo.proceso;
 
 
-
-import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.TipoKitDTO;
-import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.DispositivosDTO;
-
 public class DispositivosVO  {
 	
 
-	private DispositivosDTO dispositivo;
-	private TipoKitDTO tipoKit;
+	private DispositivoVO dispositivo;
+	private TipoKitVO tipoKit;
 	
-	public DispositivosDTO getDispositivo() {
+	public DispositivoVO getDispositivo() {
 		return dispositivo;
 	}
-	public void setDispositivo(DispositivosDTO dispositivo) {
+	public void setDispositivo(DispositivoVO dispositivo) {
 		this.dispositivo = dispositivo;
 	}
-	public TipoKitDTO getTipoKit() {
+	public TipoKitVO getTipoKit() {
 		return tipoKit;
 	}
-	public void setTipoKit(TipoKitDTO tipoKit) {
+	public void setTipoKit(TipoKitVO tipoKit) {
 		this.tipoKit = tipoKit;
 	}
+	
+	
+	
+	
 	
 	
 	
