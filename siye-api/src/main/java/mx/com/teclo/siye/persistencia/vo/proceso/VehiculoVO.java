@@ -4,10 +4,10 @@ import java.io.Serializable;
 
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 
-public class VehiculoVO implements Serializable{
-	
+public class VehiculoVO implements Serializable {
+
 	private static final long serialVersionUID = 5026799603021950531L;
-	
+
 	private Long idVehiculo;
 	private String cdPlacaVehiculo;
 	private String cdVin;
@@ -18,21 +18,31 @@ public class VehiculoVO implements Serializable{
 	private Long cdModelo;
 	private Boolean stActivo;
 	private Long idConcesion;
+
+	private Long idTipoVehiculo;
+	private String cdTipoVehiculo;
+	private String nbTipoVehiculo;
+
 	public Long getIdVehiculo() {
 		return idVehiculo;
 	}
+
 	public void setIdVehiculo(Long idVehiculo) {
 		this.idVehiculo = idVehiculo;
 	}
+
 	public String getCdPlacaVehiculo() {
 		return cdPlacaVehiculo;
 	}
+
 	public void setCdPlacaVehiculo(String cdPlacaVehiculo) {
 		this.cdPlacaVehiculo = cdPlacaVehiculo;
 	}
+
 	public String getCdVin() {
 		return cdVin;
 	}
+
 	public void setCdVin(String cdVin) {
 		this.cdVin = cdVin;
 	}
@@ -40,18 +50,23 @@ public class VehiculoVO implements Serializable{
 	public TipoVehiculoVO getTipoVehiculo() {
 		return tipoVehiculo;
 	}
+
 	public void setTipoVehiculo(TipoVehiculoVO tipoVehiculo) {
 		this.tipoVehiculo = tipoVehiculo;
 	}
+
 	public String getNbMarca() {
 		return nbMarca;
 	}
+
 	public void setNbMarca(String nbMarca) {
 		this.nbMarca = nbMarca;
 	}
+
 	public String getNbSubMarca() {
 		return nbSubMarca;
 	}
+
 	public void setNbSubMarca(String nbSubMarca) {
 		this.nbSubMarca = nbSubMarca;
 	}
@@ -59,29 +74,58 @@ public class VehiculoVO implements Serializable{
 	public Boolean getStActivo() {
 		return stActivo;
 	}
+
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
 	}
+
 	public Long getIdConcesion() {
 		return idConcesion;
 	}
+
 	public void setIdConcesion(Long idConcesion) {
 		this.idConcesion = idConcesion;
 	}
+
 	public String getCdTarjetaDeCirculacion() {
 		return cdTarjetaDeCirculacion;
 	}
+
 	public void setCdTarjetaDeCirculacion(String cdTarjetaDeCirculacion) {
 		this.cdTarjetaDeCirculacion = cdTarjetaDeCirculacion;
 	}
+
 	public Long getCdModelo() {
 		return cdModelo;
 	}
+
 	public void setCdModelo(Long cdModelo) {
 		this.cdModelo = cdModelo;
 	}
 
-	
-	
+	public Long getIdTipoVehiculo() {
+		return idTipoVehiculo;
+	}
+
+	public void setIdTipoVehiculo(Long idTipoVehiculo) {
+		this.idTipoVehiculo = idTipoVehiculo;
+	}
+
+	public String getCdTipoVehiculo() {
+		return cdTipoVehiculo;
+	}
+
+	public void setCdTipoVehiculo(String cdTipoVehiculo) {
+		this.cdTipoVehiculo = cdTipoVehiculo;
+	}
+
+	public String getNbTipoVehiculo() {
+		return nbTipoVehiculo;
+	}
+
+	public void setNbTipoVehiculo(String nbTipoVehiculo) {
+		this.nbTipoVehiculo = nbTipoVehiculo;
+	}
+
 	
 }

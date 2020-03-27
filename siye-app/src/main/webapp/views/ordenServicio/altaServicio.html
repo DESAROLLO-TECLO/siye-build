@@ -17,7 +17,7 @@
 	<section class="content">
 		<form role="form" name="formAltaServicio" novalidate>
 			<div class="row">
-				<div class="col-xs-12 col-md-offset-3 col-md-6">
+				<div class="col-xs-12 col-md-offset-2 col-md-8">
 					<div class="box box-danger">
 						<div class="box-header with-border text-center">
 							<h3 class="box-title">
@@ -26,25 +26,205 @@
 						</div>
 						<div class="box-body">
 							<div class="row">
-								<div class="col-md-offset-3 col-md-6">
-								     
-								   	<div class="form-group">
-										<label for="">Tipo de Vehiculo:</label>
+<!-- 							CODIGO DE ORDEN SERVICIO -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="">Orden de Servicio:</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+											</div>
+											<input type="text" class="form-control inputs" 
+											ng-model="orden.cdOrden" placeholder="">
+										</div>
+									</div>
+								</div>
+
+<!-- 							FIN CODIGO ORDEN DE SERVICIO -->
+
+<!-- 								INICIA PLACA VEHICULAR  -->
+
+							<div class="col-md-6">
+                                <div class="form-group" ng-class="{'has-error': formConsultaServicio.valorBusqueda.$invalid && formConsultaServicio.valorBusqueda.$dirty}">
+                                    <label for="">*Placa Vehicular </label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"> <i class="fa fa-pencil"> </i> </span>
+                                        <input type="text" ng-model="orden.placa" name="valorBusqueda" ng-required="true" class="form-control" capitalize></input>
+                                        <span class="input-group-btn">
+						                      	<button type="button" ng-click="buscarOrdenServicio()" class="btn btn-danger btn-flat" >
+						                      		Buscar
+						                      	</button>
+					                     </span>
+                                    </div>
+                                    <div ng-show="formConsultaServicio.valorBusqueda.$invalid && formConsultaServicio.valorBusqueda.$dirty" ng-style="{color:'red'}">
+                                        <label> {{'ORDENSERVICIO.AltaServicio.seleccionadores.valor.validacion' | translate}} </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+<!--                             							<div class=row > -->
+
+								<div class="col-md-12">
+									<fieldset class="scheduler-border">
+										<legend class="scheduler-border text-center">Datos del vehículo</legend>
+										<div class="row">
+									<div class="col-md-4">
+										<div class="form-group">
+												<label for="">Placa Vehícular:</label>
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>								
+													</div>
+													<input maxlength="10" type="text" id="placaOficial" class="form-control"
+                                            				name="placaOficial" ng-model="orden.placa"
+                                            				autocomplete="off" ng-required="true">
+												</div>
+										</div>
+									</div>
+
+								<div class="col-md-4">
+									<div class="form-group">
+									<label for="">Codigo VIN:</label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-sort-numeric-asc" arian-hidden="true"></i>
+											
+										</div>
+										<input maxlength="10" type="text" id="placaOficial" class="form-control"
+                                          	name="placaOficial" ng-model="orden.cdVIN"
+                                          	autocomplete="off" ng-required="true">
+									</div>
+									</div>
+								</div>
+								
+								<div class="col-md-4">
+									<div class="form-group">
+												<label for="">Tarjeta de Circulación:</label>
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-sort-numeric-asc" irian-hidden="true"></i>
+													</div>
+													<input maxlength="10" type="text" id="placaOficial" class="form-control"
+                                            			name="placaOficial" ng-model="orden.tjtCirculacion"
+                                            				autocomplete="off" ng-required="true">
+												</div>
+									</div>
+								</div>
+
+										</div>
+										<!-- SEGUNDA FILA -->
+										<div class="row">
+											<div class="col-md-4">
+												<label for="">Tipo Vehiculo:</label>
+													<div class="input-group">
+														<div class="input-group-addon">
+															<i class="fa fa-list-ul"></i>
+															
+														</div>
+														<select class="form-control" select2 data-minimum-results-for-search="Infinity"
+															ng-options="tpVehiculo.idTipoVehiculo as tpVehiculo.nbTipoVehiculo for tpVehiculo in catalogoTipoVehiculo"
+															ng-model="orden.tpVehiculo"
+															style="width:100%">
+															<option value="">Seleccione</option>
+														</select>
+													</div>
+											</div>
+
+											
+								<div class="col-md-4">
+									<div class="form-group">
+										<label for="">Marca:</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+											</div>
+												<input maxlength="10" type="text" id="placaOficial" class="form-control"
+                                            				name="placaOficial" ng-model="orden.marca"
+                                            				autocomplete="off" ng-required="true">
+										</div>
+									</div>
+								</div>
+
+											<div class="col-md-3">
+												<div class="form-group">
+												<label form="">Sub Marca:</label>
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+														
+													</div>
+													<input maxlength="10" type="text" id="placaOficial" class="form-control"
+                                            				name="placaOficial" ng-model="orden.subMarca"
+                                            				autocomplete="off" ng-required="true">
+												</div>
+												</div>
+											</div>
+											
+										</div>
+									</fieldset>
+								</div>
+<!-- 							</div>	 -->
+										
+<!-- 								FIN PLACA VEHICULAR  -->
+
+
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Centro de Instalación</label>
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-cubes" aria-hidden="true"></i>
 											</div>
 											<select class="form-control inputs"
-												ng-options="tpVehiculo.idTipoVehiculo as tpVehiculo.nbTipoVehiculo for tpVehiculo in catalogoTipoVehiculo"
-												ng-model="consulta.perfilId"
-												style="width:100%">
-												<option value="">Seleccione</option>
+											ng-options="cntInstalacion.idCentroInstalacion as cntInstalacion.nbCentroInstalacion for cntInstalacion in catalogoProcesos.centrosInstalacion"
+											ng-model="orden.centroI">
+											<option value="">Seleccione</option>
 											</select>
+											
+										</div>
+									</div>
+								</div>
+								
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="">Serie de Kit:</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+											</div>
+											<input type="text" class="form-control inputs" ng-model="orden.cdKitIntalacion" placeholder="">
 										</div>
 									</div>
 								
 								</div>
+
+<!-- 									INICIO PLAN -->
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>Plan: </label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-cubes" aria-hidden="true"></i>
+											</div>
+											<select class="form-control inputs"
+											ng-options="plan.idPlan as plan.nbPlan for plan in catalogoProcesos.plan"
+											ng-model="orden.plan">
+											<option value="">Seleccione</option>
+											</select>
+											
+										</div>
+									</div>
+								</div>
+								{{orden}}
+<!-- 										FIN PLAN -->		
 							</div>
+							<div class="centerCol">
+							    <span class="input-group-btn">
+						              <button type="button" ng-click="guardarOrden(orden)" class="btn btn-danger btn-flat" >
+						                      		Guardar
+						              </button>
+					           </span>
+					       </div>
 						</div>
 					</div>
 				</div>

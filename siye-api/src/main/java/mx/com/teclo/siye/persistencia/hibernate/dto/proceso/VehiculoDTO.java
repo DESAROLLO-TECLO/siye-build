@@ -3,6 +3,7 @@ package mx.com.teclo.siye.persistencia.hibernate.dto.proceso;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -31,8 +32,8 @@ public class VehiculoDTO implements Serializable {
 	@Column(name = "CD_TARJETA_CIRCULACION")
 	private String cdTarjetaDeCirculacion;
 	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name="ID_TIPO_VEHICULO", referencedColumnName="ID_TIPO_VEHICULO")
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@JoinColumn(name="ID_TIPO_VEHICULO", referencedColumnName="ID_TIPO_VEHICULO", insertable=false, updatable=false)
 	private TipoVehiculoDTO tipoVehiculo;
 	
 	@Column(name = "NB_MARCA")
@@ -59,7 +60,7 @@ public class VehiculoDTO implements Serializable {
 	@Column(name = "FH_MODIFICACION")	
 	private Date fhModificacion;
 	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name="ID_CONCESION", referencedColumnName="ID_CONCESION", insertable=false, updatable=false)
 	private ConsecionarioDTO consecionario;
 

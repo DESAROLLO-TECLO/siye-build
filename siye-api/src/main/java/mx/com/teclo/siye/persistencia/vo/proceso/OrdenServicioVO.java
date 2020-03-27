@@ -3,6 +3,8 @@ package mx.com.teclo.siye.persistencia.vo.proceso;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class OrdenServicioVO implements Serializable {
 	
 	private static final long serialVersionUID = 3398117821017518569L;
@@ -15,8 +17,11 @@ public class OrdenServicioVO implements Serializable {
 	private KitInstalacionVO kitInstalacion;
 	private PlanVO plan;
 	private SeguimientoVO stSeguimiento;
-	private String hrCita;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
+	private Date fhCita;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date fhAtencionIni;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date fhAtencionFin;
 	private Long idOrigenOds;
 	private Boolean stActivo;
@@ -69,11 +74,12 @@ public class OrdenServicioVO implements Serializable {
 	public void setStSeguimiento(SeguimientoVO stSeguimiento) {
 		this.stSeguimiento = stSeguimiento;
 	}
-	public String getHrCita() {
-		return hrCita;
+
+	public Date getFhCita() {
+		return fhCita;
 	}
-	public void setHrCita(String hrCita) {
-		this.hrCita = hrCita;
+	public void setFhCita(Date fhCita) {
+		this.fhCita = fhCita;
 	}
 	public Date getFhAtencionIni() {
 		return fhAtencionIni;

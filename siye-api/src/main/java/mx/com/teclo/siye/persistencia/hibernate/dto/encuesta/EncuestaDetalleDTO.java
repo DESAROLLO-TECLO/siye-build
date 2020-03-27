@@ -74,14 +74,14 @@ public class EncuestaDetalleDTO implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fhModificacion;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "idEncuesta", fetch = FetchType.LAZY)
-	private List<SeccionDTO> secciones;
+	/*@OneToMany(cascade = CascadeType.ALL, mappedBy = "idEncuesta", fetch = FetchType.LAZY)
+	private List<SeccionDTO> secciones;*/
 	@JoinColumn(name = "ID_TIPO_ENCUESTA", referencedColumnName = "ID_TIPO_ENCUESTA", nullable = false)
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	private TipoEncuestaDTO tipoEncuesta;
 
-	@Column(name = "NU_TIEMPO", nullable = false, precision = 1, scale = 0)
-	private Integer nuTiempo;
+	/*(name = "NU_TIEMPO", nullable = false, precision = 1, scale = 0)
+	private Integer nuTiempo;*/
 
 	public EncuestaDetalleDTO() {
 	}
@@ -191,13 +191,13 @@ public class EncuestaDetalleDTO implements Serializable {
 		this.fhModificacion = fhModificacion;
 	}
 
-	public List<SeccionDTO> getSecciones() {
+	/*public List<SeccionDTO> getSecciones() {
 		return secciones;
 	}
 
 	public void setSecciones(List<SeccionDTO> secciones) {
 		this.secciones = secciones;
-	}
+	}*/
 
 	public TipoEncuestaDTO getIdTipoEncuesta() {
 		return tipoEncuesta;
@@ -246,15 +246,15 @@ public class EncuestaDetalleDTO implements Serializable {
 	/**
 	 * @return the nuTiempo
 	 */
-	public Integer getNuTiempo() {
+	/*public Integer getNuTiempo() {
 		return nuTiempo;
-	}
+	}*/
 
 	/**
 	 * @param nuTiempo the nuTiempo to set
 	 */
-	public void setNuTiempo(Integer nuTiempo) {
+	/*public void setNuTiempo(Integer nuTiempo) {
 		this.nuTiempo = nuTiempo;
-	}
+	}*/
 
 }
