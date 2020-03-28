@@ -73,3 +73,7 @@
 
 @import url('custom/aplicacion/corte.css');
 @import url('custom/aplicacion/gridOptionsStyle.css');
+
+/* ----------- MÓDULO: Encusta Satisfaccion ----------- */
+
+@import url('custom/encuesta/encuestaSatisfaccion.css');

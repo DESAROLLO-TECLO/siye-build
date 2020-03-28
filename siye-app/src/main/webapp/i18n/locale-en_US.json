@@ -141,6 +141,27 @@
         }
     },
 
+	"ENCUESTA" : {
+		"Consulta" : {
+			"tituloServicio" : "Satisfaction Survey ",
+			"paramBusqueda" : "Param Search",
+				"paramBusquedaForm":{
+					"tipoBusqueda":{
+						 "label": "Type of Search",
+		                 "validacion": "The Value is Required"
+					},
+					"valor":{
+						 "label": "Value",
+		                 "validacion": "The Value is Required"
+					},
+					"contrasena":{
+						 "label": "Pass",
+		                  "validacion": "The Pass Is Required"
+					}
+			}
+		}
+	},
+
     "ADMINISTRACION": {
         "ComplementosWeb": {
             "tituloServicio": "Web Plugin's",
