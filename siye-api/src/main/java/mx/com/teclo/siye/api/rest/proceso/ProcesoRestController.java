@@ -103,9 +103,15 @@ public class ProcesoRestController {
 	 @RequestMapping(value ="/dipositivosPorKit", method=RequestMethod.GET)
      public ResponseEntity<List<DispositivosVO>> consultaDispositivos(
     		 @RequestParam("idTipoKit") Long idTpKit)throws NotFoundException, BusinessException {
-
-			 List<DispositivosVO> listDispositivoVO = procesoService.getKitDispositivo(idTpKit);
-			 return new ResponseEntity<List<DispositivosVO>>(listDispositivoVO, HttpStatus.OK);
+		 try	
+		 {	
+			 List<DispositivosVO> listDispositivoVO = procesoService.getKitDispositivo(idTpKit);				 
+			 return new ResponseEntity<List<DispositivosVO>>(listDispositivoVO, HttpStatus.OK);				 
+		 }catch(Exception e)	
+		 {	
+			 e.printStackTrace();	
+			 throw new NotFoundException("Ha ocurrido un imprevisto!, por favor contacte al administrador.");	
+		 }
 
      }
 	 
@@ -113,8 +119,15 @@ public class ProcesoRestController {
 	 public ResponseEntity <VehiculoVO> consultaVehiculoPlaca(
 			 @RequestParam("placa") String placa) throws NotFoundException, BusinessException {
 
-		 VehiculoVO vehiculoVO = vehiculoService.bucarVehiculoPlaca(placa);
-		 return new ResponseEntity<VehiculoVO>(vehiculoVO,HttpStatus.OK);
+		 try	
+		 {	
+		 VehiculoVO vehiculoVO = vehiculoService.bucarVehiculoPlaca(placa);			
+		 return new ResponseEntity<VehiculoVO>(vehiculoVO,HttpStatus.OK);			
+		 }catch(Exception e)	
+		 {	
+			 e.printStackTrace();	
+			 throw new NotFoundException("Ha ocurrido un imprevisto!, por favor contacte al administrador.");	
+		 }
 
 		 
 	 }
