@@ -16,6 +16,7 @@ import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.negocio.service.ordenServicio.VehiculoService;
 import mx.com.teclo.siye.negocio.service.proceso.ProcesoService;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
@@ -62,14 +63,16 @@ public class ProcesoRestController {
 	 
 	 @RequestMapping(value = "/plan", method = RequestMethod.GET)
 	public ResponseEntity<List<PlanProcesoVO>> consultaPlanOrdenServicio(
-			@RequestParam("idPlan") Long idPlan) throws BusinessException, NotFoundException {
+			@RequestParam("idPlan") Long idPlan,@RequestParam("idOrden") Long idOrden) throws BusinessException, NotFoundException {
         try
         {
         	List<PlanProcesoDTO> planProcesoDTO = new ArrayList<PlanProcesoDTO>();
+        	List<UsuarioEncuestaDTO> listaEvaluaciones=new ArrayList<UsuarioEncuestaDTO>();
         	planProcesoDTO = procesoService.getPlanOrdenServicio(idPlan);
     		List<PlanProcesoVO> planProcesoVO = ResponseConverter.converterLista(new ArrayList<>(), planProcesoDTO,
     				PlanProcesoVO.class);
-    		return new ResponseEntity<List<PlanProcesoVO>>(planProcesoVO, HttpStatus.OK);
+    		listaEvaluaciones=procesoService.obtenerEncuestas(idOrden);
+    		return new ResponseEntity<List<PlanProcesoVO>>(procesoService.revisarEncuestasCompletas(listaEvaluaciones, planProcesoVO, idPlan), HttpStatus.OK);
 
         }catch(Exception e)
         {
