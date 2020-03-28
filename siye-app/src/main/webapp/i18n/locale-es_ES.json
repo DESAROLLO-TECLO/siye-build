@@ -140,6 +140,28 @@
             }
         }
     },
+   "ENCUESTA" : {
+		"Consulta" : {
+			"tituloServicio" : "Encuesta de Satisfacción",
+			"paramBusqueda" : "Prametros de Busqueda",
+			"paramBusquedaForm":{
+					"tipoBusqueda":{
+						 "label": "Tipo de Busqueda",
+		                 "validacion": "El Valor es requerido"
+					},
+					"valor":{
+						 "label": "Valor",
+		                 "validacion": "El Valor es Requerdo"
+					},
+					"contrasena":{
+						 "label": "Contraseña",
+		                 "validacion": "La contraseña es requerida"
+					}
+			}
+			
+		}
+	},
+	
 
     "ADMINISTRACION": {
         "ComplementosWeb": {
