@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+	</head>
+	<body>
+	<section class="content-header">
+    <h1>{{breadCrumbs.servicio}}</h1>
+    <ol class="breadcrumb">
+        <li>
+            <a><i class="{{breadCrumbs.icono}}"></i>{{breadCrumbs.modulo}} </a>
+        </li>
+        <li class="active">{{breadCrumbs.servicio}}</li>
+    </ol>
+</section>
+    
+    
+     <section class="content">
+     
+     	<!-- SECCION PARAMETROS DE BÚSQUEDA -->
+     	<div class="row centerCol">
+     		<div class="col-md-8">
+     			<div class="box box-danger">
+     				 <form name="formBoxBusqueda" novalidate>
+     				 	<div class="box-header with-border ">
+                            
+                            <div class="col-xs-12 col-md-4 text-center">
+                                <h3 class="box-title">Búsqueda</h3>
+                            </div>
+
+                            <div class="box-tools pull-right">
+                                <button class="btn btn-box-tool" type="button" id="btnAlmacen" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="box-body">
+                            <div class="row centerCol">
+                            	<div class="col-md-8">
+	                            	<div class="col-md-6">
+	                                    <div class="form-group"
+	                                        ng-class="{'has-error': (formBoxBusqueda.localidaes.$invalid && formBoxBusqueda.localidaes.$dirty) }">
+	                                        <label>
+	                                            *Tipo de Búsqueda
+	                                        </label>
+	
+	                                        <div class="input-group">
+	                                            <div class="input-group-addon">
+	                                                <i class="fa fa-list-alt"></i>
+	                                            </div>
+	                                            <select class="form-control" name="localidaes" id="localidaes" select-picker
+	                                                multiple data-actions-box="true" data-selected-text-format="count > 2"
+	                                                idioma-s2="{{currentLanguage}}" ng-model="opcionBusqueda.tpBusqueda"
+	                                                ng-disabled="catLocalidades.length<2" ng-required="true"
+	                                                ng-options="tc as tc.nbLocalidad for tc in parametros.tipoBusqueda">
+	                                            </select>
+	                                        </div>
+	                                        <div
+	                                            ng-show="formBoxBusqueda.localidaes.$error.required && formBoxBusqueda.localidaes.$dirty">
+	                                            <span ng-style="{color:'red'}">
+	                                                El tipo de búsqueda es reqeurido
+	                                            </span>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="col-md-6">
+	                                	<div class="form-group"
+	                                        ng-class="{'has-error': (formBoxBusqueda.fechaInicio.$invalid && formBoxBusqueda.fechaInicio.$dirty) }">
+	                                        <label>
+	                                            *Valor de Búsqueda
+	                                        </label>
+	                                        <div class="input-group">
+	                                            <div class="input-group-addon">
+	                                                <i class="fa fa-calendar"></i>
+	                                            </div>
+	                                            <input class="form-control" id="valor" type="text"
+	                                                name="fechaInicio" idioma-dp="{{currentLanguage}}"
+	                                                ng-disabled="opcionBusqueda.tpBusqueda == undefined"
+	                                                ng-model="opcionBusqueda.valor"/>
+	                                        </div>
+	                                        <div
+	                                            ng-show="formBoxBusqueda.fechaInicio.$error.required && formBoxBusqueda.fechaInicio.$dirty">
+	                                            <span ng-style="{color:'red'}">
+	                                                {{'GESTION.consultaKardex.busqueda.error.titulo.rangoFechas.fInicio' | translate}}
+	                                            </span>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                        	</div>
+	                        	<div col-md-1>
+	                        		<button  class="btn btn-danger"
+                                        ng-click="">
+                                        Buscar
+                                    </button>
+	                        	</div>
+                            </div>
+                        </div>
+                        
+     				 </form>
+     			</div>
+     		</div>
+     	</div>     	
+     	<!-- SECCION PARAMETROS DE BÚSQUEDA -->
+     	
+     	
+     	<!-- SECCION PARA TABLA DE RESULTADOS -->
+     	<div class="row">
+            <div class="col-md-12">
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                     	<div class="row">
+                            <div class="col-sm-4">
+                                <div>
+                                    <h4>Registros Encontrados:0</h4>
+                                </div>
+                            </div>
+                    	</div>
+                    </div><br/>
+                    <div class="row">
+                    	<div class="col-xs-12 col-md-12">
+                    		<div class="col-xs-4 col-md-4">Placa: {{expedienteImg.placa}}</div>
+                    		<div class="col-xs-4 col-md-4">VIN: {{expedienteImg.vin}}</div>
+                    		<div class="col-xs-4 col-md-4">Consesionario: {{expedienteImg.nameConsesionario}}</div>
+                    	</div>
+             		</div><br/>
+             		<div class="row">
+             			<div class="col-xs-12 col-md-12">
+             				<div class="col-xs-1 col-md-1">
+             					<div class="form-group topButton">
+									<input type="file" nv-file-select="" ng-show="false"
+										uploader="fileUploader" id="file-1"
+										class="inputfile inputfile-1" multiple />
+									<label for="file-1" capture="camera"
+										class="noneSelectedUser btn btn-danger form-control">
+										<i class="fa fa-camera fa-2x" aria-hidden="true"></i>
+									</label>
+								</div>
+             				</div>
+             				<div class="col-xs-6 col-md-6 centerCol"><h4>{{expedienteImg.tpNivel}}</h4></div>
+	             			
+	             			<div class="row">
+		             			<div class="col-xs-12 col-md-12">
+		             				<div class="col-xs-3 col-md-3"
+							       		ng-repeat="fileItem in ((fileUploader.queue | filter:{ cdClasif : expedienteImg.cdClasif}))">
+						       				<div ng-if="isImage(fileItem.file)" ng-thumb="{file:fileItem._file,height:50}"></div>
+						       				<br/>
+						       				<span>{{fileItem.file.nameImg}}</span>				       		
+							       </div>
+		             			</div>
+		             		</div>
+	             			
+	             			<div class="row">
+		             			<div class="col-xs-12 col-md-12">
+							       <div class="col-xs-3 col-md-3"
+							       		ng-repeat="item in listImagesClasifiView">
+						       			<a ng-click="changedView(item)">
+							       			<i class="fa fa-folder fa-5x" aria-hidden="true"></i><br/>
+							       			<span>{{item.name}}</span>
+						       			</a>						       		
+							       </div>
+		                    	</div>
+		             		</div>
+                    	</div>
+             		</div>
+             		<div class="row centerCol">
+             			<button class="btn btn-danger" ng-click="returnParent(expedienteImg.listProcesoImages)" 
+             				ng-show="flags.showButtonBack">
+             				<i class="fa fa-reply" aria-hidden="true"></i>Regresar
+             			</button>
+             		</div>
+                </div>
+            </div>
+        </div>
+     	
+     	<!-- SECCION PARA TABLA DE RESULTADOS -->
+     </section>
+	
+	</body>
+</html>

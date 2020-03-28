@@ -19,7 +19,7 @@
 
 <body id="bodyGlobal" ng-controller="templateController" class="hold-transition {{configuracionApp.tema.cdTema}} sidebar-mini" fullscreen="fullScreenActive" only-watched-property ng-cloak>
 
-    <div class="wrapper ngOnlyEnterApp" ng-if="currentPath() != '/'">
+    <div class="wrapper ngOnlyEnterApp" ng-if="currentPath() != '/'  && currentPath() != '/encuestaSatisfaccion'">
         <div ng-include="'header.html'">
             <!-- ** HEADER **-->
         </div>
@@ -44,7 +44,7 @@
         </div>
     </div>
     <!-- Validación de login -->
-    <div class="ngOnlyEnter" ng-if="currentPath() === '/'" ng-view ng-cloak>
+    <div class="ngOnlyEnter" ng-if="currentPath() === '/' || currentPath() == '/encuestaSatisfaccion'"  ng-view ng-cloak>
         <!-- ** LOGIN **-->
     </div>
 </body>
@@ -267,6 +267,9 @@
 <!-- directiva mascara de moneda -->
 <script src="static/js/directivas/rw-money-mask.js"></script>
 
+<!-- muestra una imagen con canvas con FileUploader -->
+<script src="static/js/directivas/ngThumb.js"></script>
+
 <!-- angular-daterangepicker  -->
 <script src="static/js/directivas/angular-daterangepicker.js"></script>
 <!-- daterangepicker  -->
@@ -301,6 +304,8 @@
 <!-- Configuración aplicación -->
 <script src="static/js/services/aplicacion/configAppService.js"></script>
 
+<!-- Expediente -->
+<script src="static/js/services/expediente/expedienteService.js"></script>
 
 <!-- Etapa -->
 <script src="static/js/services/etapa/etapaService.js"></script>
@@ -326,7 +331,8 @@
 <script src="static/js/controllers/login/menuController.js"></script>
 <!-- Footer -->
 <script src="static/js/controllers/login/footerController.js"></script>
-
+<!-- encuestaSatisfaccionController -->
+	<script src="static/js/controllers/encuesta/encuestaSatisfaccionController.js"></script>
 <!-- Etapa -->
 <script src="static/js/controllers/etapa/etapaController.js"></script>
 <!-- Proceso -->
@@ -361,5 +367,8 @@
 <script src="static/js/controllers/administracion/resources/pasoTresController.js"></script>
 <!-- Herramientas web -->
 <script src="static/js/controllers/administracion/resources/toolsWebController.js"></script>
+
+<!-- Expedientes -->
+<script src="static/js/controllers/expediente/expedienteController.js"></script>
 
 </html>
