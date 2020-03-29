@@ -2,12 +2,12 @@ angular.module(appTeclo).service("catalogoGenericoService", function($http, conf
 	
 const END_POINT="/catalogo";
 	
-this.cargarCatalogo = function (param) {
+this.getTransportistas = function (param) {
 	return $http.get(config.baseUrl + END_POINT + "/getTransportistas");
 };
 
-this.saveCatalogo = function (objectVO) {
-			return $http.get("https://jsonplaceholder.typicode.com/posts");
-			};
+this.getTecnicos = function (param) {
+	return $http.get(config.baseUrl + END_POINT + "/getTecnicos");
+};
 		
 });

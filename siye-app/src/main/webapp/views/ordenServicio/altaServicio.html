@@ -25,8 +25,8 @@
 							</h3>
 						</div>
 						<div class="box-body">
+<!-- 						PRIMER ROW -->
 							<div class="row">
-<!-- 							CODIGO DE ORDEN SERVICIO -->
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="">Orden de Servicio:</label>
@@ -35,36 +35,35 @@
 												<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
 											</div>
 											<input type="text" class="form-control inputs" 
-											ng-model="orden.cdOrden" placeholder="">
+											ng-model="orden.cdOrden" placeholder="" maxlength="15">
 										</div>
 									</div>
 								</div>
-
-<!-- 							FIN CODIGO ORDEN DE SERVICIO -->
-
-<!-- 								INICIA PLACA VEHICULAR  -->
-
+								
 							<div class="col-md-6">
                                 <div class="form-group" ng-class="{'has-error': formConsultaServicio.valorBusqueda.$invalid && formConsultaServicio.valorBusqueda.$dirty}">
                                     <label for="">*Placa Vehicular </label>
                                     <div class="input-group">
                                         <span class="input-group-addon"> <i class="fa fa-pencil"> </i> </span>
-                                        <input type="text" ng-model="orden.placa" name="valorBusqueda" ng-required="true" class="form-control" capitalize></input>
-                                        <span class="input-group-btn">
-						                      	<button type="button" ng-click="buscarOrdenServicio()" class="btn btn-danger btn-flat" >
-						                      		Buscar
-						                      	</button>
-					                     </span>
+                                        <input type="text" ng-model="cdPlacaVehiculo" maxlength="11" name="valorBusqueda" ng-required="true" class="form-control" capitalize>
+                                        </input>
+	                                        <span class="input-group-btn">
+							                      	<button type="button" ng-click="buscarVehculoPorPlaca(cdPlacaVehiculo)" class="btn btn-danger btn-flat" >
+							                      		Buscar
+							                      	</button>
+						                     </span>
                                     </div>
-                                    <div ng-show="formConsultaServicio.valorBusqueda.$invalid && formConsultaServicio.valorBusqueda.$dirty" ng-style="{color:'red'}">
+                                    <div ng-show="formAltaServicio.valorBusqueda.$invalid && formAltaServicio.valorBusqueda.$dirty" ng-style="{color:'red'}">
                                         <label> {{'ORDENSERVICIO.AltaServicio.seleccionadores.valor.validacion' | translate}} </label>
                                     </div>
                                 </div>
                             </div>
-                            
-<!--                             							<div class=row > -->
-
-								<div class="col-md-12">
+							
+							</div>
+<!-- 							FIN PRIMER ROW -->
+<!-- 							INICIA SEGUNDO ROW -->
+							<div class="row">
+								<div class="col-md-12" ng-show="banderaVehiculo" ng-disabled="true">
 									<fieldset class="scheduler-border">
 										<legend class="scheduler-border text-center">Datos del vehículo</legend>
 										<div class="row">
@@ -75,9 +74,9 @@
 													<div class="input-group-addon">
 														<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>								
 													</div>
-													<input maxlength="10" type="text" id="placaOficial" class="form-control"
-                                            				name="placaOficial" ng-model="orden.placa"
-                                            				autocomplete="off" ng-required="true">
+													<input maxlength="11" type="text" id="placaOficial" class="form-control"
+                                            				name="placaOficial" ng-model="orden.vehiculoVO.placa"
+                                            				autocomplete="off" ng-required="true" ng-disabled="banderadeshabilitar">
 												</div>
 										</div>
 									</div>
@@ -91,8 +90,8 @@
 											
 										</div>
 										<input maxlength="10" type="text" id="placaOficial" class="form-control"
-                                          	name="placaOficial" ng-model="orden.cdVIN"
-                                          	autocomplete="off" ng-required="true">
+                                          	name="placaOficial" ng-model="orden.vehiculoVO.cdVIN"
+                                          	autocomplete="off" ng-required="true" ng-disabled="banderadeshabilitar">
 									</div>
 									</div>
 								</div>
@@ -105,8 +104,8 @@
 														<i class="fa fa-sort-numeric-asc" irian-hidden="true"></i>
 													</div>
 													<input maxlength="10" type="text" id="placaOficial" class="form-control"
-                                            			name="placaOficial" ng-model="orden.tjtCirculacion"
-                                            				autocomplete="off" ng-required="true">
+                                            			name="placaOficial" ng-model="orden.vehiculoVO.tjtCirculacion"
+                                            				autocomplete="off" ng-required="true" ng-disabled="banderadeshabilitar">
 												</div>
 									</div>
 								</div>
@@ -122,9 +121,9 @@
 															
 														</div>
 														<select class="form-control" select2 data-minimum-results-for-search="Infinity"
-															ng-options="tpVehiculo.idTipoVehiculo as tpVehiculo.nbTipoVehiculo for tpVehiculo in catalogoTipoVehiculo"
-															ng-model="orden.tpVehiculo"
-															style="width:100%">
+															ng-options="tpVehiculo.idTipoVehiculo as tpVehiculo.nbTipoVehiculo for tpVehiculo in catalogoTipoVehiculo track by tpVehiculo.nbTipoVehiculo"
+															ng-model="orden.vehiculoVO.tpVehiculo"
+															style="width:100%" ng-disabled="banderadeshabilitar">
 															<option value="">Seleccione</option>
 														</select>
 													</div>
@@ -139,8 +138,8 @@
 												<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
 											</div>
 												<input maxlength="10" type="text" id="placaOficial" class="form-control"
-                                            				name="placaOficial" ng-model="orden.marca"
-                                            				autocomplete="off" ng-required="true">
+                                            				name="placaOficial" ng-model="orden.vehiculoVO.marca"
+                                            				autocomplete="off" ng-required="true" ng-disabled="banderadeshabilitar">
 										</div>
 									</div>
 								</div>
@@ -154,8 +153,8 @@
 														
 													</div>
 													<input maxlength="10" type="text" id="placaOficial" class="form-control"
-                                            				name="placaOficial" ng-model="orden.subMarca"
-                                            				autocomplete="off" ng-required="true">
+                                            				name="placaOficial" ng-model="orden.vehiculoVO.subMarca"
+                                            				autocomplete="off" ng-required="true" ng-disabled="banderadeshabilitar">
 												</div>
 												</div>
 											</div>
@@ -163,11 +162,11 @@
 										</div>
 									</fieldset>
 								</div>
-<!-- 							</div>	 -->
-										
-<!-- 								FIN PLACA VEHICULAR  -->
+							</div>
+<!-- 							TERMINA SEGUNDO ROW -->
 
-
+<!-- 							INICIA TERCER ROW -->
+							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Centro de Instalación</label>
@@ -184,7 +183,7 @@
 										</div>
 									</div>
 								</div>
-								
+								{{orden}}
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="">Serie de Kit:</label>
@@ -195,10 +194,89 @@
 											<input type="text" class="form-control inputs" ng-model="orden.cdKitIntalacion" placeholder="">
 										</div>
 									</div>
-								
 								</div>
+							</div>
+<!-- 							TERMINA TERCER ROW -->
+<!-- 								{{range}} -->
 
-<!-- 									INICIO PLAN -->
+								{{rango.nbDispositivo}}
+<!-- 							INICIA CUARTO ROW -->
+							<div class="row">
+								<div class="col-md-6">
+								<div class="form-group">
+									<label>Tipo Kit: </label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-cubes" aria-hidden="true"></i>
+										</div>
+										<select class="form-control inputs"
+											ng-options="tpKit.idTipoKit as tpKit.nbTipoKit for tpKit in catalogoProcesos.tipoKit"
+											ng-change="buscarTipoKit(orden.tpKit)"
+											ng-model="orden.tpKit">
+										<option value="">Seleccione</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							</div>
+<!-- 							TERMINA CUARTO ROW -->
+							{{range}}
+<!-- 							ng-options="proveed.idProveedor as proveed.nbProveedor for proveed in catalogoProcesos.proveedorVO" -->
+
+<!-- 							INICIA QUINTO ROW -->
+							<div class="row" ng-repeat="rango in range track by rango.idDispositivo">
+								<div class="col-md-4">
+									<div class="form-group">
+										<label form="">Nombre Disp:</label>
+											<div class="input-group">
+												<div class="input-group-addon">
+														<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+														
+												</div>
+												<input maxlength="10" type="text" id="placaOficial" class="form-control"
+												
+                                            	name="placaOficial" ng-model="orden.kitInstalacionVO[$index].idDip.rango.nbDispositivo"
+                                            	autocomplete="off" ng-required="true" ng-disabled="false">
+											</div>
+									</div>
+								</div>
+								
+								<div class="col-md-4" >
+												<div class="form-group">
+												<label form="">Serie Disp:</label>
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+														
+													</div>
+													<input maxlength="10" type="text" id="placaOficial" class="form-control"
+                                            				name="placaOficial" ng-model="orden.kitInstalacionVO[$index].serie"
+                                            				autocomplete="off" ng-required="true" ng-disabled="banderadeshabilitar">
+												</div>
+												</div>
+								</div>
+								<div class="col-md-4">
+								<div class="form-group">
+									<label>Proveedor: </label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-cubes" aria-hidden="true"></i>
+										</div>
+										<select class="form-control inputs"
+											ng-options="proveed.idProveedor as proveed.nbProveedor for proveed in catalogoProcesos.proveedorVO"
+											ng-model="orden.kitInstalacionVO[$index].proveed">
+										<option value="">Seleccione</option>
+										</select>
+									</div>
+								</div>
+							</div>
+								
+							
+							</div>
+<!-- 							TERMINA QUINTO ROW -->
+<!-- 							INICIA SEXTO ROW -->
+
+							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
 										<label>Plan: </label>
@@ -215,9 +293,15 @@
 										</div>
 									</div>
 								</div>
-								{{orden}}
-<!-- 										FIN PLAN -->		
+							
 							</div>
+<!-- 							TERMINA SEXTO ROW -->
+								
+							
+							
+
+							
+							
 							<div class="centerCol">
 							    <span class="input-group-btn">
 						              <button type="button" ng-click="guardarOrden(orden)" class="btn btn-danger btn-flat" >

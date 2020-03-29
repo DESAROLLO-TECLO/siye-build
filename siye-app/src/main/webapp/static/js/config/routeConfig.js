@@ -24,7 +24,6 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
 
     $routeProvider.otherwise({ redirectTo: "/index" });
 
-
     /*________** INICIO -> ADMINISTRACIÓN CONTROLLERS ** ________*/
     $routeProvider.when("/administracionModificaClave", {
         templateUrl: "views/administracion/administracionModificaClave.html",
@@ -53,13 +52,12 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         templateUrl: "views/ordenServicio/consultaServicio.html",
         controller: "consultaServicioController",
         resolve: {
-            opciones: function() {
-                return null;
+            opciones: function(){
+            	return {opt: null, val: null};
             }
         }
     });
-
-
+    
     //	Usuarios
     $routeProvider.when("/users", {
         templateUrl: "views/administracion/users.html",
@@ -92,19 +90,34 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
     ________** FIN -> ADMINISTRACIÓN CONTROLLERS ** ___________*/
 
     /*________** INICIO -> ETAPA ** ________*/
-    $routeProvider.when("/etapas", {
+    $routeProvider.when("/etapas/:id", {
         templateUrl: "views/etapa/etapa.html",
-        controller: "etapaController"
+        controller: "etapaController",
+        resolve: {
+            etapaInfo : function(etapaService, $route){
+                return etapaService.getInfoEtapa($route.current.params.id);
+            }
+        }
     });
 
     $routeProvider.when("/etapas/proceso", {
         templateUrl: "views/etapa/proceso/proceso.html",
-        controller: "procesoController"
+        controller: "procesoController",
+        resolve: {
+            procesoInfo : function(procesoService, $route){
+                return procesoService.getInfoProceso($route.current.params.id);
+            }
+        }
     });
 
     $routeProvider.when("/etapas/proceso/encuesta", {
         templateUrl: "views/etapa/proceso/encuesta/encuesta.html",
-        controller: "encuestaController"
+        controller: "encuestaController",
+        resolve: {
+            encuestaInfo : function(encuestaService, $route){
+                return encuestaService.getInfoEncuesta($route.current.params.id);
+            }
+        }
     });
 
     $routeProvider.when("/editar/:id/:opt/:val", {
@@ -119,7 +132,17 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
 
     $routeProvider.when("/consulta/:opt/:val", {
         templateUrl: "views/ordenServicio/consultaServicio.html",
-        controller: "consultaServicioController"
+        controller: "consultaServicioController",
+        resolve: {
+            opciones: function($route) {
+                return {opt: $route.current.params.opt, val: $route.current.params.val};
+            }
+        }
     });
+    
+	$routeProvider.when("/encuestaSatisfaccion", {
+		templateUrl : "views/encuesta/encuesta.html",
+		controller: "encuestaSatisfaccionController"
+	});
 
 });
