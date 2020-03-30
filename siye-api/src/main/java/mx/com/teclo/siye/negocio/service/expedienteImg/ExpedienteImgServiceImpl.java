@@ -65,7 +65,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 	@Autowired
 	private TipoExpedienteDAO tipoExpedienteDAO;
 
-	private static Boolean ACTIVO = true;
+	private static Boolean ACTIVO = true, BORRAR = false;
 	private static String PLACA = "PLACA", OS = "ORDEN DE SERVICIO", VIN = "VIN";
 
 	@Override
@@ -98,17 +98,17 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 				expedientes.add(os.getIdOrdenServicio());
 
 				if (os.getPlan().getIdPlan() != null) {
-					List<ExpedienteNivelProcesoVO> procesosByOS = planProcesoDAO.getProcesosPlanVO(1L);
+					List<ExpedienteNivelProcesoVO> procesosByOS = planProcesoDAO.getProcesosPlanVO(os.getPlan().getIdPlan());
 					if (!procesosByOS.isEmpty()) {
 						for (ExpedienteNivelProcesoVO proceso : procesosByOS) {
 							List<ExpedienteNivelEncuestaVO> LisEncuestas = procesoEncuestaDAO.getEncuestasByProcesoVO(proceso.getIdProceso());
 							if (!LisEncuestas.isEmpty()) {
 								for (ExpedienteNivelEncuestaVO encuesta : LisEncuestas) {								
 									List<ExpedienteNivelPreguntaVO> listPreguntas = seccionDAO.getPreguntasByEncuestaVO(encuesta.getIdEncuesta());
-									encuesta.setPreguntas(listPreguntas);
+									encuesta.setListImageClasif(listPreguntas);
 								}
 							}
-							proceso.setEncuestas(LisEncuestas);
+							proceso.setListImageClasif(LisEncuestas);
 						}
 						
 					}
@@ -166,10 +166,10 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 			if(!encontre) {
 				break;
 			}else {
-				for(ExpedienteNivelEncuestaVO encuesta: pro.getEncuestas()) {
+				for(ExpedienteNivelEncuestaVO encuesta: pro.getListImageClasif()) {
 					if(imagen.getIdOdsEncuesta().equals(encuesta.getIdEncuesta())) {
 						if(imagen.getIdPregunta()!=null) {
-							encuesta.setPreguntas(addImgPregunta(encuesta.getPreguntas(), imagen));
+							encuesta.setListImageClasif(addImgPregunta(encuesta.getListImageClasif(), imagen));
 							encontre = true;
 							break;
 						}else {
@@ -248,7 +248,14 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 			}
 			
 			for(ImagenVO archivo: expedientes) {
-				ExpedientesImgDTO registro = new ExpedientesImgDTO();	
+				ExpedientesImgDTO registro = new ExpedientesImgDTO();
+				if(archivo.getIdExpedienteODS()!=null) {
+					registro = expedienteImgDAO.findOne(archivo.getIdExpedienteODS());
+					registro.setLbExpedienteODS(archivo.getLbExpedienteODS());
+					registro.setFhModifica(fechaCarga);
+					registro.setIdUsrModifica(idUsuario);
+					expedienteImgDAO.update(registro);					
+				}else {
 					registro = new ExpedientesImgDTO();
 					registro.setIdOrdenServicio(ordenServicioDTO);
 					registro.setIdOdsEncuesta(archivo.getIdOdsEncuesta());
@@ -266,8 +273,10 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 					registro.setIdUsrModifica(idUsuario);
 					expedienteImgDAO.save(registro);
 					archivo.setIdExpedienteODS(registro.getIdExpedienteODS());
-				}
+				}					
+			   }
 			}else {
+				//exepcion 
 				
 			}
 		
@@ -279,6 +288,23 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 	public List<TipoExpedienteVO> getTipoExpediente() {
 		List<TipoExpedienteVO> respuesta = tipoExpedienteDAO.getTipoExpedientes();
 		return respuesta;
+	}
+
+	@Override
+	@Transactional
+	public List<ImagenVO> delListEvidencia(List<ImagenVO> expedientes, Long idUsuario) {
+		Date fechaEliminacion = new Date();	
+		for(ImagenVO imagen: expedientes) {
+			ExpedientesImgDTO registro = expedienteImgDAO.findOne(imagen.getIdExpedienteODS());
+			if(registro!=null) {
+				registro.setStActivo(BORRAR);
+				registro.setFhModifica(fechaEliminacion);
+				registro.setIdUsrModifica(idUsuario);
+				expedienteImgDAO.save(registro);
+				imagen.setLbExpedienteODS(null);
+			}	
+		}
+		return expedientes;
 	}
 
 

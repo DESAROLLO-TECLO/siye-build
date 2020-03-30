@@ -8,7 +8,7 @@ public class ExpedienteNivelProcesoVO {
 	private String cdProceso;
 	private Long nuMaxImg;
 	private List<ImagenVO> imagenes;
-	private List<ExpedienteNivelEncuestaVO> encuestas;
+	private List<ExpedienteNivelEncuestaVO> listImageClasif;
 	
 	/**
 	 * @return the idProceso
@@ -59,16 +59,17 @@ public class ExpedienteNivelProcesoVO {
 		this.imagenes = imagenes;
 	}
 	/**
-	 * @return the encuestas
+	 * @return the listImageClasif
 	 */
-	public List<ExpedienteNivelEncuestaVO> getEncuestas() {
-		return encuestas;
+	public List<ExpedienteNivelEncuestaVO> getListImageClasif() {
+		return listImageClasif;
 	}
 	/**
-	 * @param encuestas the encuestas to set
+	 * @param listImageClasif the listImageClasif to set
 	 */
-	public void setEncuestas(List<ExpedienteNivelEncuestaVO> encuestas) {
-		this.encuestas = encuestas;
+	public void setListImageClasif(List<ExpedienteNivelEncuestaVO> listImageClasif) {
+		this.listImageClasif = listImageClasif;
 	}
+	
 
 }
