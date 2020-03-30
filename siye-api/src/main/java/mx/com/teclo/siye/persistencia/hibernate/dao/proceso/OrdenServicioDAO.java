@@ -83,6 +83,16 @@ public interface OrdenServicioDAO extends BaseDao<OrdenServicioDTO>{
 	 */
 	public List<OrdenServicioDTO> consultaOrdenByVin(String valor);
 	
+	
+	/**
+     * Descripción: Obtener el registro de orden de 
+     * servicio mediante CD_ORDEN_SERVICIO
+     * @author Eric Rivera
+     * @param idOrdenServicio
+     * @return OrdenServicioDTO
+     * */
+	public OrdenServicioDTO obtenerOrdenServicioCD_ORDEN_SERVICIO(String  cdOrdenServicio);
+	
 
 
 }

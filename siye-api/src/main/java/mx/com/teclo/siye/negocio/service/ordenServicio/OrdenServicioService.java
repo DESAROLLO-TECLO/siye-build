@@ -21,6 +21,8 @@ public interface OrdenServicioService {
 	
 	public OrdenServicioVO findOrdenServicio(Long idOrdenServico) throws NotFoundException, BusinessException;
 	
+	public OrdenServicioVO findOrdenServiciobyCD_ORDEN_SERVICIO(String  cdOrdenServicio) throws NotFoundException, BusinessException;
+	
 	/**
 	 * Valida y registra en modo "express" una orden de servicio en el sistema.<br>
 	 * Esto aplica cuando el veh&iacute;lo no fu&eacute; encontrado en el sistema y tiene
