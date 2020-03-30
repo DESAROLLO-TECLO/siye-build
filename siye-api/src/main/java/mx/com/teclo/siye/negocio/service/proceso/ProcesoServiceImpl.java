@@ -183,6 +183,10 @@ public class ProcesoServiceImpl implements ProcesoService {
 									{
 										actual.setStRespondida(true);
 									}
+									else
+									{
+										actual.setStRespondida(false);	
+									}
 									
 								}
 							

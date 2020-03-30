@@ -68,7 +68,7 @@ public class ExpedienteImgRestController {
 	public ResponseEntity<List<ImagenVO>> getInfoExpedienteByNivel(@RequestParam(value ="nuOrdenServicio") Long nuOrdenServicio,
 														           @RequestParam(value ="cdNivel") String cdNivel,
 														           @RequestParam(value="idValor") Long idparamBusqueda) throws NotFoundException{	
-		List<ImagenVO> respuesta = expedienteImg.getInformacionExpediente(nuOrdenServicio, idparamBusqueda, cdNivel);
+		List<ImagenVO> respuesta = expedienteImg.getInfoExpedienteByNivel(nuOrdenServicio, idparamBusqueda, cdNivel);
 		return new ResponseEntity<List<ImagenVO>>(respuesta, HttpStatus.OK);
 	};
 }
