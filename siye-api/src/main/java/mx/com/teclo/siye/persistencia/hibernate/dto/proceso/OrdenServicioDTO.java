@@ -28,27 +28,27 @@ public class OrdenServicioDTO implements Serializable {
 	@Column(name = "CD_ORDEN_SERVICIO")
 	private String cdOrdenServicio;
 	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name="ID_LOTE_ODS", referencedColumnName="ID_LOTE_ODS", insertable=false, updatable=false)
 	private LoteOrdenServicioDTO loteOrdenServicio;
 	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name="ID_VEHICULO", referencedColumnName="ID_VEHICULO", insertable=false, updatable=false)
 	private VehiculoDTO vehiculo;
 	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name="ID_CENTRO_INSTALACION", referencedColumnName="ID_CENTRO_INSTALACION", insertable=false, updatable=false)
 	private CentroInstalacionDTO centroInstalacion;
 	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name="ID_KIT_INSTALACION", referencedColumnName="ID_KIT_INSTALACION", insertable=false, updatable=false)
 	private KitInstalacionDTO kitInstalacion;
 	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name="ID_PLAN", referencedColumnName="ID_PLAN", insertable=false, updatable=false)
 	private PlanDTO plan;
 	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	@JoinColumn(name="ID_ST_SEGUIMIENTO", referencedColumnName="ID_ST_SEGUIMIENTO", insertable=false, updatable=false)
 	private StSeguimientoDTO stSeguimiento;
 	

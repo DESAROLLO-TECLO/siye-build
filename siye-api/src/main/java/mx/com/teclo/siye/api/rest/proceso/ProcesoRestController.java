@@ -83,14 +83,16 @@ public class ProcesoRestController {
 	 
 	 @RequestMapping(value = "/encuestasProceso", method = RequestMethod.GET)
 	public ResponseEntity<List<ProcesoEncuestaVO>> consultaEncuestasProceso(
-			@RequestParam("idProceso") Long idProceso) throws BusinessException, NotFoundException {
+			@RequestParam("idProceso") Long idProceso,@RequestParam("idOrden") Long idOrden) throws BusinessException, NotFoundException {
         try
         {
         	List<ProcesoEncuestaDTO> procesoEncuestaDTO = new ArrayList<ProcesoEncuestaDTO>();
+        	List<UsuarioEncuestaDTO> listaEvaluaciones=new ArrayList<UsuarioEncuestaDTO>();
         	procesoEncuestaDTO = procesoService.getEncuestasProceso(idProceso);
     		List<ProcesoEncuestaVO> procesoEncuestaVO = ResponseConverter.converterLista(new ArrayList<>(), procesoEncuestaDTO,
     				ProcesoEncuestaVO.class);
-    		return new ResponseEntity<List<ProcesoEncuestaVO>>(procesoEncuestaVO, HttpStatus.OK);
+    		listaEvaluaciones=procesoService.obtenerEncuestas(idOrden);
+    		return new ResponseEntity<List<ProcesoEncuestaVO>>(procesoService.revisarEncuestasCompletas2(listaEvaluaciones, procesoEncuestaVO), HttpStatus.OK);
 
         }catch(Exception e)
         {
