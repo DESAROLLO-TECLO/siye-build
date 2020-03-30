@@ -72,6 +72,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/aplicacion/**").permitAll()
 		.antMatchers("/async/**").permitAll()
 		.antMatchers("/encuestas/**").permitAll()
+		.antMatchers("/encuestaSatisfaccion/**").permitAll()
 		.antMatchers(AUTH_WHITELIST).permitAll()
 		.anyRequest()
 		.authenticated();
