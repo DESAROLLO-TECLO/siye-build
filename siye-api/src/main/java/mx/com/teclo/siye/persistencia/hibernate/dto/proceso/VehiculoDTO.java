@@ -32,7 +32,7 @@ public class VehiculoDTO implements Serializable {
 	@Column(name = "CD_TARJETA_CIRCULACION")
 	private String cdTarjetaDeCirculacion;
 	
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="ID_TIPO_VEHICULO", referencedColumnName="ID_TIPO_VEHICULO", insertable=false, updatable=false)
 	private TipoVehiculoDTO tipoVehiculo;
 	
@@ -60,7 +60,7 @@ public class VehiculoDTO implements Serializable {
 	@Column(name = "FH_MODIFICACION")	
 	private Date fhModificacion;
 	
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="ID_CONCESION", referencedColumnName="ID_CONCESION", insertable=false, updatable=false)
 	private ConsecionarioDTO consecionario;
 
