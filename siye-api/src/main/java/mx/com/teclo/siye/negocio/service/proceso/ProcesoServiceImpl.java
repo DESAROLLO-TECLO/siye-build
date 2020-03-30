@@ -20,10 +20,11 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitDispositivoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
+import mx.com.teclo.siye.persistencia.mybatis.dao.proceso.ServicioEncuestasMyBatisDAO;
 import mx.com.teclo.siye.persistencia.vo.proceso.DispositivosVO;
 
 import mx.com.teclo.siye.persistencia.vo.proceso.PlanProcesoVO;
-import mx.com.teclo.siye.util.enumerados.RespuestaHttp;
+import mx.com.teclo.siye.persistencia.vo.proceso.ProcesoEncuestaVO;
 
 
 
@@ -45,6 +46,10 @@ public class ProcesoServiceImpl implements ProcesoService {
 	
 	@Autowired
 	private UsuarioEncuentaDAO usuarioEncuentaDAO;
+	
+	@Autowired
+	private ServicioEncuestasMyBatisDAO servicioEncuestasMyBatisDAO;
+	
 	
 
 	@Override
@@ -87,27 +92,115 @@ public class ProcesoServiceImpl implements ProcesoService {
 	}
 	
 	@Override
-	public List<PlanProcesoVO> revisarEncuestasCompletas(List<UsuarioEncuestaDTO> encuestasByUsuario,List<PlanProcesoVO> plan, Long idencuesta)
+	public List<PlanProcesoVO> revisarEncuestasCompletas(List<UsuarioEncuestaDTO> encuestasByUsuario,List<PlanProcesoVO> plan, Long idSolicitud)
 	{
     	List<ProcesoEncuestaDTO> procesoEncuestaDTO = new ArrayList<ProcesoEncuestaDTO>();
+    	int contador=0;
+    	int cantidadEncuestasAcontestar=0;
 		if(encuestasByUsuario.size()>0)
 		{
-			
+			for(PlanProcesoVO actual:plan)
+			{
+				if(actual.getNuorden()!=1)
+				{
+					
+				
+				procesoEncuestaDTO=procesoEncuestaDAO.obtenerEncuestasProceso(actual.getProceso().getIdProceso());
+				if(procesoEncuestaDTO.size()>0)
+				{
+				cantidadEncuestasAcontestar=procesoEncuestaDTO.size();
+				for(ProcesoEncuestaDTO encuestaActual:procesoEncuestaDTO)
+				{
+					for(UsuarioEncuestaDTO encuestas:encuestasByUsuario)
+					{
+						if(encuestaActual.getIdEncuesta().getIdEncuesta()==encuestas.getEncuesta().getIdEncuesta())
+						{
+							if(encuestas.getStAplicaEncuesta()==false)
+							{
+								contador++;
+							}
+							
+						}
+					}
+
+				}
+				}
+				if(cantidadEncuestasAcontestar==contador)
+				{
+					actual.setStatusProceos(true);
+				}
+				else
+				{
+					actual.setStatusProceos(false);
+				}
+				}else
+				{
+					actual.setStatusProceos(true);
+				}
+
+			}
+			return plan;
 		}else
 		{
 			for(PlanProcesoVO actual:plan)
 			{
 			procesoEncuestaDTO=procesoEncuestaDAO.obtenerEncuestasProceso(actual.getIdPlanProceso());
-				
-			}
-			
+			if(procesoEncuestaDTO.size()>0)
+			{
+				for(ProcesoEncuestaDTO actualEncuestas:procesoEncuestaDTO)
+				{
+				servicioEncuestasMyBatisDAO.insertarEncuestas(idSolicitud, actualEncuestas.getIdEncuesta().getIdEncuesta());
+				}
 
-			
+			}
+              if(actual.getNuorden()==1)
+              {
+            	  actual.setStatusProceos(true);
+              }
+              else
+              {
+            	  actual.setStatusProceos(false);
+              } 
+			}
+			return plan;
 		}
-		return null;
 	}
 		
+	@Override
+	public List<ProcesoEncuestaVO> revisarEncuestasCompletas2(List<UsuarioEncuestaDTO> encuestasByUsuario,List<ProcesoEncuestaVO> encuestasByProceso)
+	{
+		if(encuestasByUsuario.size()>0)
+		{
+				for(ProcesoEncuestaVO actual:encuestasByProceso )
+				{
+					if(actual.getNuorden()!=1)
+					{
+							for(UsuarioEncuestaDTO encuestas:encuestasByUsuario)
+							{
+								if(actual.getIdEncuesta().getIdEncuesta()==encuestas.getEncuesta().getIdEncuesta())
+								{
+									if(encuestas.getStAplicaEncuesta()==false)
+									{
+										actual.setStRespondida(true);
+									}
+									
+								}
+							
+                          
+
+					    }
+				   }else
+				   {
+					   actual.setStRespondida(true);
+				   }
+				}
+		}
+		return  encuestasByProceso;
+	}
+				
+				
 		
+	
 		
 
 }

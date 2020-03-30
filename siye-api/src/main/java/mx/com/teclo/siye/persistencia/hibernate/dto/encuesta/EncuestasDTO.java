@@ -73,13 +73,13 @@ public class EncuestasDTO implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fhModificacion;
 	@JoinColumn(name = "ID_TIPO_ENCUESTA", referencedColumnName = "ID_TIPO_ENCUESTA", nullable = false)
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	private TipoEncuestaDTO tipoEncuesta;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "encuesta")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "encuesta")
 	private List<UsuarioEncuestaDTO> usuarioEncuesta;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idEncuesta")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idEncuesta")
 	private List<SeccionDTO> seccion;
 
 	@Column(name = "FH_VIG_INI", nullable = false)
