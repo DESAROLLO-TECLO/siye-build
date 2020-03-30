@@ -95,16 +95,29 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 				OSVO.setCdOrdenServicio(os.getCdOrdenServicio());
 				OSVO.setNuMaxImg(numeroMaximo);
 				OSVO.setIdOrdenServicio(os.getIdOrdenServicio());
+				OSVO.setNbNivel("Orden de Servicio");
+				OSVO.setCdClasif(os.getIdOrdenServicio()+"OS");
 				expedientes.add(os.getIdOrdenServicio());
 
 				if (os.getPlan().getIdPlan() != null) {
 					List<ExpedienteNivelProcesoVO> procesosByOS = planProcesoDAO.getProcesosPlanVO(os.getPlan().getIdPlan());
 					if (!procesosByOS.isEmpty()) {
 						for (ExpedienteNivelProcesoVO proceso : procesosByOS) {
+							proceso.setNbNivel("Proceso");
+							proceso.setCdClasif(proceso.getIdProceso()+"PRO");
+							proceso.setName(proceso.getCdProceso());
 							List<ExpedienteNivelEncuestaVO> LisEncuestas = procesoEncuestaDAO.getEncuestasByProcesoVO(proceso.getIdProceso());
 							if (!LisEncuestas.isEmpty()) {
-								for (ExpedienteNivelEncuestaVO encuesta : LisEncuestas) {								
+								for (ExpedienteNivelEncuestaVO encuesta : LisEncuestas) {
+									encuesta.setNbNivel("Encuesta");
+									encuesta.setCdClasif(encuesta.getIdEncuesta()+"ENC");
+									encuesta.setName(encuesta.getCdEncuesta());
 									List<ExpedienteNivelPreguntaVO> listPreguntas = seccionDAO.getPreguntasByEncuestaVO(encuesta.getIdEncuesta());
+									for(ExpedienteNivelPreguntaVO pregunta: listPreguntas){
+										pregunta.setNbNivel("Pregunta");
+										pregunta.setName(pregunta.getCdPregunta());
+										pregunta.setCdClasif(encuesta.getIdEncuesta()+""+pregunta.getIdPregunta()+"PREG");
+									}
 									encuesta.setListImageClasif(listPreguntas);
 								}
 							}
@@ -305,6 +318,12 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 			}	
 		}
 		return expedientes;
+	}
+
+	@Override
+	public List<ImagenVO> getInfoExpedienteByNivel(Long nuOrderServicio, Long idValorBuscar, String cdNivel) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

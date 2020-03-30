@@ -34,7 +34,16 @@ public interface ExpedienteImgService {
 	 *@param  List<ImagenVO>
 	 *@param  idUsuario 
 	 *@return List<ImagenVO>
-	 *  Metodo para realizar la insercion de la imagen de evidencia, a nivel proceso, gral o incidencia o pregunta */
+	 *  Metodo para realizar la eliminacion logica, de una evidencia en especifico */
 	public List<ImagenVO> delListEvidencia(List<ImagenVO> expedientes, Long idUsuario);
 
+	
+	/*@Author Maverick
+	 *@param nuOrdenServicio
+	 *@param idValorBuscar
+	 *@param cdNivel 
+	 *@return List<ImagenVO>
+	 *  Metodo para obtener las imagenes que pertenescan a la Orden de Servicio en el nivel Indicado*/
+	public List<ImagenVO> getInfoExpedienteByNivel(Long nuOrderServicio, Long idValorBuscar, String cdNivel);
+	
 }

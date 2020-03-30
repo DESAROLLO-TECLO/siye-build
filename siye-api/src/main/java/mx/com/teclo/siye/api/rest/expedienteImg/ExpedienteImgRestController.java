@@ -62,4 +62,13 @@ public class ExpedienteImgRestController {
 		List<ImagenVO> respuesta = expedienteImg.saveExpediente(expedientes, usuario.getId());
 		return new ResponseEntity<List<ImagenVO>>(respuesta, HttpStatus.OK);
 	}
+	
+	@GetMapping(value="/getInfoExpByNivel")
+	//@PreAuthorize("hasAnyAuthority('GET_STATUS_CARGA_EVIDENCIAS')")
+	public ResponseEntity<List<ImagenVO>> getInfoExpedienteByNivel(@RequestParam(value ="nuOrdenServicio") Long nuOrdenServicio,
+														           @RequestParam(value ="cdNivel") String cdNivel,
+														           @RequestParam(value="idValor") Long idparamBusqueda) throws NotFoundException{	
+		List<ImagenVO> respuesta = expedienteImg.getInformacionExpediente(nuOrdenServicio, idparamBusqueda, cdNivel);
+		return new ResponseEntity<List<ImagenVO>>(respuesta, HttpStatus.OK);
+	};
 }
