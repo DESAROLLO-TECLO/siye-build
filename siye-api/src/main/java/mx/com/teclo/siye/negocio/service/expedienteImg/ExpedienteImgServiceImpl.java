@@ -95,20 +95,33 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 				OSVO.setCdOrdenServicio(os.getCdOrdenServicio());
 				OSVO.setNuMaxImg(numeroMaximo);
 				OSVO.setIdOrdenServicio(os.getIdOrdenServicio());
+				OSVO.setNbNivel("Orden de Servicio");
+				OSVO.setCdClasif(os.getIdOrdenServicio()+"OS");
 				expedientes.add(os.getIdOrdenServicio());
 
 				if (os.getPlan().getIdPlan() != null) {
 					List<ExpedienteNivelProcesoVO> procesosByOS = planProcesoDAO.getProcesosPlanVO(1L);
 					if (!procesosByOS.isEmpty()) {
 						for (ExpedienteNivelProcesoVO proceso : procesosByOS) {
+							proceso.setNbNivel("Proceso");
+							proceso.setCdClasif(proceso.getIdProceso()+"PRO");
+							proceso.setName(proceso.getCdProceso());
 							List<ExpedienteNivelEncuestaVO> LisEncuestas = procesoEncuestaDAO.getEncuestasByProcesoVO(proceso.getIdProceso());
 							if (!LisEncuestas.isEmpty()) {
-								for (ExpedienteNivelEncuestaVO encuesta : LisEncuestas) {								
+								for (ExpedienteNivelEncuestaVO encuesta : LisEncuestas) {
+									encuesta.setNbNivel("Encuesta");
+									encuesta.setCdClasif(encuesta.getIdEncuesta()+"ENC");
+									encuesta.setName(encuesta.getCdEncuesta());
 									List<ExpedienteNivelPreguntaVO> listPreguntas = seccionDAO.getPreguntasByEncuestaVO(encuesta.getIdEncuesta());
-									encuesta.setPreguntas(listPreguntas);
+									for(ExpedienteNivelPreguntaVO pregunta: listPreguntas){
+										pregunta.setNbNivel("Pregunta");
+										pregunta.setName(pregunta.getCdPregunta());
+										pregunta.setCdClasif(encuesta.getIdEncuesta()+""+pregunta.getIdPregunta()+"PREG");
+									}
+									encuesta.setListImageClasif(listPreguntas);
 								}
 							}
-							proceso.setEncuestas(LisEncuestas);
+							proceso.setListImageClasif(LisEncuestas);
 						}
 						
 					}
@@ -166,10 +179,10 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 			if(!encontre) {
 				break;
 			}else {
-				for(ExpedienteNivelEncuestaVO encuesta: pro.getEncuestas()) {
+				for(ExpedienteNivelEncuestaVO encuesta: pro.getListImageClasif()) {
 					if(imagen.getIdOdsEncuesta().equals(encuesta.getIdEncuesta())) {
 						if(imagen.getIdPregunta()!=null) {
-							encuesta.setPreguntas(addImgPregunta(encuesta.getPreguntas(), imagen));
+							encuesta.setListImageClasif(addImgPregunta(encuesta.getListImageClasif(), imagen));
 							encontre = true;
 							break;
 						}else {

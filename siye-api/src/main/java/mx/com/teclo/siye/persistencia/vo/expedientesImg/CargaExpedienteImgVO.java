@@ -10,6 +10,8 @@ public class CargaExpedienteImgVO {
 	private Long idOrdenServicio;
 	private String cdOrdenServicio;
 	private Long nuMaxImg;
+	private String cdClasif;
+	private String nbNivel;
 	private List<ImagenVO> imagenes;
 	private List<ExpedienteNivelProcesoVO> procesos;
 	
@@ -110,6 +112,28 @@ public class CargaExpedienteImgVO {
 	public void setProcesos(List<ExpedienteNivelProcesoVO> procesos) {
 		this.procesos = procesos;
 	}
-	
-	
+	/**
+	 * @return the cdClasif
+	 */
+	public String getCdClasif() {
+		return cdClasif;
+	}
+	/**
+	 * @param cdClasif the cdClasif to set
+	 */
+	public void setCdClasif(String cdClasif) {
+		this.cdClasif = cdClasif;
+	}
+	/**
+	 * @return the nbNivel
+	 */
+	public String getNbNivel() {
+		return nbNivel;
+	}
+	/**
+	 * @param nbNivel the nbNivel to set
+	 */
+	public void setNbNivel(String nbNivel) {
+		this.nbNivel = nbNivel;
+	}
 }
