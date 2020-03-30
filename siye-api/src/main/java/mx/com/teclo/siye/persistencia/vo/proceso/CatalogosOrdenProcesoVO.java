@@ -2,6 +2,7 @@ package mx.com.teclo.siye.persistencia.vo.proceso;
 
 import java.util.List;
 
+import mx.com.teclo.siye.persistencia.vo.catalogo.ProveedorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoKitVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 
@@ -18,6 +19,8 @@ public class CatalogosOrdenProcesoVO {
 	private List<TipoVehiculoVO> tipoVehiculo;
 	
 	private List<TipoKitVO> tipoKit;
+	
+	private List<ProveedorVO> proveedorVO;
 	
 
 	public List<CentroInstalacionVO> getCentrosInstalacion() {
@@ -58,6 +61,14 @@ public class CatalogosOrdenProcesoVO {
 
 	public void setTipoKit(List<TipoKitVO> tipoKit) {
 		this.tipoKit = tipoKit;
+	}
+
+	public List<ProveedorVO> getProveedorVO() {
+		return proveedorVO;
+	}
+
+	public void setProveedorVO(List<ProveedorVO> proveedorVO) {
+		this.proveedorVO = proveedorVO;
 	}
 	
 	

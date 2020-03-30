@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
+import mx.com.teclo.siye.negocio.service.ordenServicio.VehiculoService;
 import mx.com.teclo.siye.negocio.service.proceso.ProcesoService;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
@@ -22,6 +24,7 @@ import mx.com.teclo.siye.persistencia.vo.proceso.DispositivosVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.PlanProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.ProcesoEncuestaVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.VehiculoVO;
 
 
 
@@ -32,6 +35,9 @@ public class ProcesoRestController {
 	
 	@Autowired
 	private ProcesoService procesoService;	
+	
+	@Autowired
+	private VehiculoService vehiculoService;
 	
 	
 
@@ -57,14 +63,16 @@ public class ProcesoRestController {
 	 
 	 @RequestMapping(value = "/plan", method = RequestMethod.GET)
 	public ResponseEntity<List<PlanProcesoVO>> consultaPlanOrdenServicio(
-			@RequestParam("idPlan") Long idPlan) throws BusinessException, NotFoundException {
+			@RequestParam("idPlan") Long idPlan,@RequestParam("idOrden") Long idOrden) throws BusinessException, NotFoundException {
         try
         {
         	List<PlanProcesoDTO> planProcesoDTO = new ArrayList<PlanProcesoDTO>();
+        	List<UsuarioEncuestaDTO> listaEvaluaciones=new ArrayList<UsuarioEncuestaDTO>();
         	planProcesoDTO = procesoService.getPlanOrdenServicio(idPlan);
     		List<PlanProcesoVO> planProcesoVO = ResponseConverter.converterLista(new ArrayList<>(), planProcesoDTO,
     				PlanProcesoVO.class);
-    		return new ResponseEntity<List<PlanProcesoVO>>(planProcesoVO, HttpStatus.OK);
+    		listaEvaluaciones=procesoService.obtenerEncuestas(idOrden);
+    		return new ResponseEntity<List<PlanProcesoVO>>(procesoService.revisarEncuestasCompletas(listaEvaluaciones, planProcesoVO, idPlan), HttpStatus.OK);
 
         }catch(Exception e)
         {
@@ -93,8 +101,34 @@ public class ProcesoRestController {
        
 	}
 	 @RequestMapping(value ="/dipositivosPorKit", method=RequestMethod.GET)
-     public ResponseEntity<List<DispositivosVO>> consultaDispositivos(@RequestParam("idTipoKit") Long idTpKit)throws NotFoundException {
-     	List<DispositivosVO> listDispositivoVO = procesoService.getKitDispositivo(idTpKit);
-     	return new ResponseEntity<List<DispositivosVO>>(listDispositivoVO, HttpStatus.OK);
+     public ResponseEntity<List<DispositivosVO>> consultaDispositivos(
+    		 @RequestParam("idTipoKit") Long idTpKit)throws NotFoundException, BusinessException {
+		 try	
+		 {	
+			 List<DispositivosVO> listDispositivoVO = procesoService.getKitDispositivo(idTpKit);				 
+			 return new ResponseEntity<List<DispositivosVO>>(listDispositivoVO, HttpStatus.OK);				 
+		 }catch(Exception e)	
+		 {	
+			 e.printStackTrace();	
+			 throw new NotFoundException("Ha ocurrido un imprevisto!, por favor contacte al administrador.");	
+		 }
+
      }
+	 
+	 @RequestMapping(value ="/buscaPlacaVehiculo", method=RequestMethod.GET)
+	 public ResponseEntity <VehiculoVO> consultaVehiculoPlaca(
+			 @RequestParam("placa") String placa) throws NotFoundException, BusinessException {
+
+		 try	
+		 {	
+		 VehiculoVO vehiculoVO = vehiculoService.bucarVehiculoPlaca(placa);			
+		 return new ResponseEntity<VehiculoVO>(vehiculoVO,HttpStatus.OK);			
+		 }catch(Exception e)	
+		 {	
+			 e.printStackTrace();	
+			 throw new NotFoundException("Ha ocurrido un imprevisto!, por favor contacte al administrador.");	
+		 }
+
+		 
+	 }
 }

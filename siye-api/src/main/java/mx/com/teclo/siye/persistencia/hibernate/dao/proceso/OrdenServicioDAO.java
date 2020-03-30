@@ -56,6 +56,33 @@ public interface OrdenServicioDAO extends BaseDao<OrdenServicioDTO>{
 	 */
 	public List<OrdenServicioDTO> consultaOrdenByFhCita(Long centroInstalacion);
 	
+	/**
+     * Descripción: Obtener lista de los registros de orden de 
+     * servicio mediante la placa
+     * @author Maverick
+	 * @param valor
+	 * @return List<OrdenServicioDTO>
+	 */
+	public List<OrdenServicioDTO> consultaOrdenByPlaca(String valor);
+
+	/**
+     * Descripción: Obtener lista de los registros de orden de 
+     * servicio mediante el codigo de orden de servicio 
+     * @author Maverick
+	 * @param valor
+	 * @return List<OrdenServicioDTO>
+	 */
+	public List<OrdenServicioDTO> consultaOrdenByOrdenServicio(String valor);
+	
+	/**
+     * Descripción: Obtener lista de los registros de orden de 
+     * servicio mediante el VIN
+     * @author Maverick
+	 * @param valor
+	 * @return List<OrdenServicioDTO>
+	 */
+	public List<OrdenServicioDTO> consultaOrdenByVin(String valor);
+	
 
 
 }
