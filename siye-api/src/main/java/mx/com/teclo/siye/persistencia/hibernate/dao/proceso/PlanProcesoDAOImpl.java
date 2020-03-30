@@ -138,7 +138,7 @@ public class PlanProcesoDAOImpl extends BaseDaoHibernate<PlanProcesoDTO> impleme
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ExpedienteNivelProcesoVO> getProcesosPlanVO(Long idPlan) {
-		StringBuilder consulta = new StringBuilder("SELECT pp.ID_PROCESO AS idProceso, proceso.NB_PROCESO AS cdProceso, proceso.NU_MAX_IMAGENES AS nuMaxImg " + 
+		StringBuilder consulta = new StringBuilder("SELECT pp.ID_PROCESO AS idProceso, proceso.TX_PROCESO AS cdProceso, proceso.NU_MAX_IMAGENES AS nuMaxImg " + 
 				"   FROM TIE036D_IE_PLAN_PROCESO pp" + 
 				"     INNER JOIN TIE035C_IE_PROCESOS proceso ON (pp.ID_PROCESO  = proceso.ID_PROCESO)" + 
 				"     WHERE pp.ID_PLAN ="+ idPlan +" AND pp.ST_ACTIVO =1 AND proceso.ST_ACTIVO =1");

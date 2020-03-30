@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -82,6 +83,7 @@ public class ProcesoRestController {
 	}
 	 
 	 @RequestMapping(value = "/encuestasProceso", method = RequestMethod.GET)
+	 @Transactional
 	public ResponseEntity<List<ProcesoEncuestaVO>> consultaEncuestasProceso(
 			@RequestParam("idProceso") Long idProceso,@RequestParam("idOrden") Long idOrden) throws BusinessException, NotFoundException {
         try

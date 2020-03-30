@@ -8,7 +8,7 @@ import mx.com.teclo.siye.persistencia.vo.tipoExpediente.TipoExpedienteVO;
 
 public interface ExpedienteImgService {
 	
-	/*@Author Mavericks
+	/*@Author Maverick
 	 *@param  List<ExpedienteImgVO>
 	 *@param  idUsuario 
 	 *@return List<ExpedienteImgVO>
@@ -24,10 +24,26 @@ public interface ExpedienteImgService {
 	public List<CargaExpedienteImgVO> getInformacionExpediente(String tipoBusqueda, String valor);
 	
 	
-	/*@Author Mavericks
+	/*@Author Maverick
 	 *@return List<TipoExpedienteVO>
 	 *  Metodo para obtener tipos de expedientes para clasificar las imagenes
 	 *   */
 	public List<TipoExpedienteVO> getTipoExpediente();
+	
+	/*@Author Maverick
+	 *@param  List<ImagenVO>
+	 *@param  idUsuario 
+	 *@return List<ImagenVO>
+	 *  Metodo para realizar la eliminacion logica, de una evidencia en especifico */
+	public List<ImagenVO> delListEvidencia(List<ImagenVO> expedientes, Long idUsuario);
 
+	
+	/*@Author Maverick
+	 *@param nuOrdenServicio
+	 *@param idValorBuscar
+	 *@param cdNivel 
+	 *@return List<ImagenVO>
+	 *  Metodo para obtener las imagenes que pertenescan a la Orden de Servicio en el nivel Indicado*/
+	public List<ImagenVO> getInfoExpedienteByNivel(Long nuOrderServicio, Long idValorBuscar, String cdNivel);
+	
 }
