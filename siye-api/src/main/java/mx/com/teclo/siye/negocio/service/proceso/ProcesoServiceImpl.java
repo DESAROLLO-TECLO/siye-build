@@ -92,6 +92,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 	}
 	
 	@Override
+	@Transactional
 	public List<PlanProcesoVO> revisarEncuestasCompletas(List<UsuarioEncuestaDTO> encuestasByUsuario,List<PlanProcesoVO> plan, Long idSolicitud)
 	{
     	List<ProcesoEncuestaDTO> procesoEncuestaDTO = new ArrayList<ProcesoEncuestaDTO>();
@@ -167,6 +168,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 	}
 		
 	@Override
+	@Transactional
 	public List<ProcesoEncuestaVO> revisarEncuestasCompletas2(List<UsuarioEncuestaDTO> encuestasByUsuario,List<ProcesoEncuestaVO> encuestasByProceso)
 	{
 		if(encuestasByUsuario.size()>0)
