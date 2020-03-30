@@ -22,7 +22,7 @@ public class UsuarioEncuestaDAOImpl extends BaseDaoHibernate<UsuarioEncuestaDTO>
 		Criteria c = getCurrentSession().createCriteria(UsuarioEncuestaDTO.class);
 		c.createAlias("usuario", "orden");
 		c.add(Restrictions.eq("orden.idOrdenServicio", idOrden));
-		c.add(Restrictions.eq("stActivo", 1));
+		c.add(Restrictions.eq("stActivo", true));
 		return (List<UsuarioEncuestaDTO>) c.list();
 	}
 
