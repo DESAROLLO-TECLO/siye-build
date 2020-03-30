@@ -140,7 +140,7 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         }
     });
     
-	$routeProvider.when("/encuestaSatisfaccion", {
+	$routeProvider.when("/encuesta", {
 		templateUrl : "views/encuesta/encuesta.html",
 		controller: "encuestaSatisfaccionController"
 	});

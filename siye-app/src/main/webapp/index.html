@@ -19,7 +19,7 @@
 
 <body id="bodyGlobal" ng-controller="templateController" class="hold-transition {{configuracionApp.tema.cdTema}} sidebar-mini" fullscreen="fullScreenActive" only-watched-property ng-cloak>
 
-    <div class="wrapper ngOnlyEnterApp" ng-if="currentPath() != '/'  && currentPath() != '/encuestaSatisfaccion'">
+    <div class="wrapper ngOnlyEnterApp" ng-if="currentPath() != '/'  && currentPath() != '/encuesta'">
         <div ng-include="'header.html'">
             <!-- ** HEADER **-->
         </div>
@@ -44,7 +44,7 @@
         </div>
     </div>
     <!-- Validación de login -->
-    <div class="ngOnlyEnter" ng-if="currentPath() === '/' || currentPath() == '/encuestaSatisfaccion'"  ng-view ng-cloak>
+    <div class="ngOnlyEnter" ng-if="currentPath() === '/' || currentPath() == '/encuesta'"  ng-view ng-cloak>
         <!-- ** LOGIN **-->
     </div>
 </body>
