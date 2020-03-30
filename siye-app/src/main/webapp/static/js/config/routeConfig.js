@@ -52,12 +52,12 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         templateUrl: "views/ordenServicio/consultaServicio.html",
         controller: "consultaServicioController",
         resolve: {
-            opciones: function(){
-            	return {opt: null, val: null};
+            opciones: function() {
+                return { opt: null, val: null };
             }
         }
     });
-    
+
     //	Usuarios
     $routeProvider.when("/users", {
         templateUrl: "views/administracion/users.html",
@@ -94,7 +94,7 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         templateUrl: "views/etapa/etapa.html",
         controller: "etapaController",
         resolve: {
-            etapaInfo : function(etapaService, $route){
+            etapaInfo: function(etapaService, $route) {
                 return etapaService.getInfoEtapa($route.current.params.id);
             }
         }
@@ -114,7 +114,7 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         templateUrl: "views/etapa/proceso/encuesta/encuesta.html",
         controller: "encuestaController",
         resolve: {
-            encuestaInfo : function(encuestaService, $route){
+            encuestaInfo: function(encuestaService, $route) {
                 return encuestaService.getInfoEncuesta($route.current.params.id);
             }
         }
@@ -135,14 +135,21 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         controller: "consultaServicioController",
         resolve: {
             opciones: function($route) {
-                return {opt: $route.current.params.opt, val: $route.current.params.val};
+                return { opt: $route.current.params.opt, val: $route.current.params.val };
             }
         }
     });
-    
-	$routeProvider.when("/encuesta", {
-		templateUrl : "views/encuesta/encuesta.html",
-		controller: "encuestaSatisfaccionController"
-	});
 
+    $routeProvider.when("/encuesta", {
+        templateUrl: "views/encuesta/encuesta.html",
+        controller: "encuestaSatisfaccionController"
+    });
+
+    $routeProvider.when("/modificar", {
+        templateUrl: "views/ordenServicio/editar/editarOrdenServicio.html",
+        controller: "editarOrdenServicioController",
+        ordenServicio: function(consultaServicioService, $route) {
+            return null;
+        }
+    });
 });
