@@ -78,7 +78,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		List<OrdenServicioDTO> listOrdenServicioDTO = new ArrayList<>(); 
 		UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
 		GerenteSupervisorDTO gerenteSupervisorDTO = gerenteSupervisorDAO.consultaGerenteSupervisorBySupervisor(usuario.getId());
-		if(listOrdenServicioDTO.isEmpty())
+		if(gerenteSupervisorDTO == null)
 			throw new NotFoundException("No se encontró el centro de instalación, favor de reportar al administrador del sistema.");
 		switch(cdTipoBusqueda) {
 			case "TODO":
