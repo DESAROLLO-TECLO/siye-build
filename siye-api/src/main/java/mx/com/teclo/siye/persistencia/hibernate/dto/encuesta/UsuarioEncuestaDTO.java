@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,7 +37,7 @@ public class UsuarioEncuestaDTO implements Serializable {
 	@Column(name = "ID_ODS_ENCUESTA", nullable = false)
 	private Long idUsuarioEncuesta;
 
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "ID_ORDEN_SERVICIO", referencedColumnName = "ID_ORDEN_SERVICIO", nullable = false)
 	private OrdenServicioDTO usuario;
 

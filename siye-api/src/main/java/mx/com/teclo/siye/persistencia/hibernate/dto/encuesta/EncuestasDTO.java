@@ -93,8 +93,8 @@ public class EncuestasDTO implements Serializable {
 	@Column(name = "NB_ENCUESTA_ORIGEN", nullable = false)
 	private String nbEncuestaOrigen;
 
-	@Column(name = "NU_TIEMPO", nullable = false, precision = 1, scale = 0)
-	private Integer nuTiempo;
+    /*@Column(name = "NU_TIEMPO", nullable = false, precision = 1, scale = 0)
+	private Integer nuTiempo;*/
 	
 	@Column(name = "NU_MAX_IMAGENES")
 	private Long nuMaxImagenes;
@@ -281,16 +281,16 @@ public class EncuestasDTO implements Serializable {
 	/**
 	 * @return the nuTiempo
 	 */
-	public Integer getNuTiempo() {
+	/*public Integer getNuTiempo() {
 		return nuTiempo;
-	}
+	}*/
 
 	/**
 	 * @param nuTiempo the nuTiempo to set
 	 */
-	public void setNuTiempo(Integer nuTiempo) {
+	/*public void setNuTiempo(Integer nuTiempo) {
 		this.nuTiempo = nuTiempo;
-	}
+	}*/
 
 	/**
 	 * @return the nuMaxImagenes
