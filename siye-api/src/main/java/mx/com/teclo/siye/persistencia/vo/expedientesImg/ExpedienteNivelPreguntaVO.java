@@ -7,6 +7,9 @@ public class ExpedienteNivelPreguntaVO {
 	private Long idPregunta;
 	private String cdPregunta;
 	private Long nuMaxImg;
+	private String cdClasif;
+	private String nbNivel;
+	private String name;
 	private List<ImagenVO> imagenes;
 	
 	
@@ -58,7 +61,40 @@ public class ExpedienteNivelPreguntaVO {
 	public void setImagenes(List<ImagenVO> imagenes) {
 		this.imagenes = imagenes;
 	}
-	
-	
-	
+	/**
+	 * @return the cdClasif
+	 */
+	public String getCdClasif() {
+		return cdClasif;
+	}
+	/**
+	 * @param cdClasif the cdClasif to set
+	 */
+	public void setCdClasif(String cdClasif) {
+		this.cdClasif = cdClasif;
+	}
+	/**
+	 * @return the nbNivel
+	 */
+	public String getNbNivel() {
+		return nbNivel;
+	}
+	/**
+	 * @param nbNivel the nbNivel to set
+	 */
+	public void setNbNivel(String nbNivel) {
+		this.nbNivel = nbNivel;
+	}
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
 }
