@@ -9,6 +9,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
 import mx.com.teclo.siye.persistencia.vo.proceso.DispositivosVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.PlanProcesoVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.ProcesoEncuestaVO;
 
 public interface ProcesoService {
 
@@ -42,7 +43,9 @@ public interface ProcesoService {
 	
 	List<UsuarioEncuestaDTO> obtenerEncuestas(Long idOrden);
 	
-	List<PlanProcesoVO> revisarEncuestasCompletas(List<UsuarioEncuestaDTO> encuestasByUsuario,List<PlanProcesoVO> plan, Long idEncuesta);
+	List<PlanProcesoVO> revisarEncuestasCompletas(List<UsuarioEncuestaDTO> encuestasByUsuario,List<PlanProcesoVO> plan, Long idSolicitud);
+	
+	List<ProcesoEncuestaVO> revisarEncuestasCompletas2(List<UsuarioEncuestaDTO> encuestasByUsuario,List<ProcesoEncuestaVO> encuestasByProceso);
 
 
 

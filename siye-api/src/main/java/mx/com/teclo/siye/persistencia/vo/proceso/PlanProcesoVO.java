@@ -11,6 +11,16 @@ public class PlanProcesoVO {
 	private Long nuorden;
 	private Boolean stActivo;
 	
+	//Se agrega esta variable para conocer en que etapa se ecnuetra la orden de servicio
+	private Boolean statusProceos;
+	
+	
+	public Boolean getStatusProceos() {
+		return statusProceos;
+	}
+	public void setStatusProceos(Boolean statusProceos) {
+		this.statusProceos = statusProceos;
+	}
 	public Long getIdPlanProceso() {
 		return idPlanProceso;
 	}
