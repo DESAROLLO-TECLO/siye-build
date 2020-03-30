@@ -1,5 +1,4 @@
-angular.module(appTeclo).controller('consultaServicioController', 
-function($scope, showAlert, $location, growl, consultaServicioService, opciones) {
+angular.module(appTeclo).controller('consultaServicioController', function($scope, showAlert, $location, growl, consultaServicioService, opciones) {
     $scope.tabla = new Object({
         order: 'folio',
         reverse: false,
@@ -28,7 +27,7 @@ function($scope, showAlert, $location, growl, consultaServicioService, opciones)
         ];
 
         // CUANDO CARGUE TODO EL CONTROLLER VALIDAMOS EL OBJETO
-        if (opciones.opt != null && opciones.val != null) {
+        if (opciones.opt != null && opciones.val != "null") {
             var opt = filtroBuscarTipoBusqueda(opciones.opt);
             if (filtroBuscarTipoBusqueda != null) {
                 $scope.parametroBusqueda.tipoBusqueda = opt;
@@ -36,7 +35,7 @@ function($scope, showAlert, $location, growl, consultaServicioService, opciones)
                 $scope.buscarOrdenServicio(false);
             }
         }else{
-		$scope.parametroBusqueda.tipoBusqueda = $scope.listTipoBusqueda[0];
+        	$scope.parametroBusqueda.tipoBusqueda = $scope.listTipoBusqueda[0];
 	}
     };
 
