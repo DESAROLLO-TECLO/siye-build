@@ -23,7 +23,7 @@ public class SeccionDAOImpl extends BaseDaoHibernate<SeccionDTO> implements Secc
 				"   WHERE seccion.ID_ENCUESTA ="+ idEncuesta+" AND pregunta.ST_ACTIVO = 1");
 		List<ExpedienteNivelPreguntaVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				 .addScalar("idEncuesta",LongType.INSTANCE)
-					.addScalar("cdEncuesta",StringType.INSTANCE)
+					.addScalar("cdPregunta",StringType.INSTANCE)
 					.addScalar("nuMaxImg", LongType.INSTANCE)
 					.setResultTransformer(Transformers.aliasToBean(ExpedienteNivelPreguntaVO.class)).list();
 		return respuesta;
