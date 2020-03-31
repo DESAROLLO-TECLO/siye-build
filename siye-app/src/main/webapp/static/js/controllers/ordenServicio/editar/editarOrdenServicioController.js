@@ -1,12 +1,19 @@
 angular.module(appTeclo).controller('editarOrdenServicioController', function($scope, showAlert,
-    growl, consultaServicioService, ordenServicio, $timeout, $location, $routeParams) {
+    growl, consultaServicioService, $timeout, $location, $routeParams) {
     $scope.banderas = {
         modal: false
     };
 
     $scope.general = {
         voModal: {},
-        voModalBackup: {}
+        voModalBackup: {},
+        voIncidencia: {},
+        cdIncidencia: undefined
+    };
+
+    $scope.banderas = {
+        formEditar: false,
+        folioDisable: false
     };
 
     $scope.listas = {
@@ -42,6 +49,56 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
         }
     };
 
+    $scope.buscarIncidencia = function(cdIncidencia, form) {
+        $scope.banderas.formEditar = false;
+        if (form.$invalid) {
+            showAlert.requiredFields(form);
+            growl.warning('Formulario incompleto', { ttl: 5000 });
+            return;
+        } else {
+            consultaServicioService.buscaIncidencia(cdIncidencia).success(function(data) {
+                if (data) {
+                    angular.copy(data, $scope.general.voIncidencia);
+                    $scope.banderas.formEditar = true;
+                }
+            }).error(function(data) {
+                if (data != null && data.status != null) {
+                    growl.error(data.message, { ttl: 4000 });
+                } else {
+                    growl.error('Ocurrió un error al tratar de actualizar datos del servicio', { ttl: 4000 });
+                }
+                return;
+            });
+        };
+    };
+
+    $scope.buscaServicio = function(cdOrdenServicio, form) {
+        if (cdOrdenServicio == undefined) {
+            growl.warning('Es necesario especificar el folio del servicio', { ttl: 4000 });
+            form['cdOrdenServicio'].$pristine = true;
+            form['cdOrdenServicio'].$setDirty();
+            return;
+        } else {
+            consultaServicioService.buscaServicioByCd(cdOrdenServicio).success(function(data) {
+                if (data != null) {
+                    $scope.banderas.folioDisable = true;
+                    angular.copy(data, $scope.general.voModal);
+                    angular.copy(data, $scope.general.voModalBackup);
+                    $("#select2-nbCentroInstalacion-container").text($scope.general.voModal.centroInstalacion.nbCentroInstalacion);
+                    $("#select2-kit-container").text($scope.general.voModal.kitInstalacion.cdKitInstalacion);
+                    $("#select2-plan-container").text($scope.general.voModal.plan.nbPlan);
+                    $("#select2-idTipoVehiculo-container").text($scope.general.voModal.vehiculo.tipoVehiculo.nbTipoVehiculo);
+                }
+            }).error(function(data) {
+                if (data != null && data.status != null) {
+                    growl.error(data.message, { ttl: 4000 });
+                } else {
+                    growl.error('Ocurrió un error al tratar de consultar el servicio', { ttl: 4000 });
+                }
+                return;
+            });
+        }
+    };
 
     function catalogos() {
         consultaServicioService.catalogosOrdenServicio().success(function(data) {
@@ -49,19 +106,20 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
             angular.copy(data.kitInstalacion, $scope.listas.kitInstalacion);
             angular.copy(data.plan, $scope.listas.planInstalacion);
             angular.copy(data.tipoVehiculo, $scope.listas.tipoVehiculo);
-
-            $timeout(function() {
-                angular.copy(ordenServicio.data, $scope.general.voModal);
-                angular.copy(ordenServicio.data, $scope.general.voModalBackup);
-                $("#select2-nbCentroInstalacion-container").text($scope.general.voModal.centroInstalacion.nbCentroInstalacion);
-                $("#select2-kit-container").text($scope.general.voModal.kitInstalacion.cdKitInstalacion);
-                $("#select2-plan-container").text($scope.general.voModal.plan.nbPlan);
-                $("#select2-idTipoVehiculo-container").text($scope.general.voModal.vehiculo.tipoVehiculo.nbTipoVehiculo);
-            }, 200);
-
         }).error(function(data) {
             growl.error('Ocurrió un error al consultar los catálogos', { ttl: 4000 });
         });
+    };
+
+
+    $scope.resetActualData = function() {
+        $scope.banderas.folioDisable = false;
+        $scope.general.voModal = {};
+        $scope.general.voModalBackup = {};
+        $("#select2-nbCentroInstalacion-container").text('Seleccione una opción');
+        $("#select2-kit-container").text('Seleccione una opción');
+        $("#select2-plan-container").text('Seleccione una opción');
+        $("#select2-idTipoVehiculo-container").text('Seleccione una opción');
     };
 
     $scope.regresar = function() {
