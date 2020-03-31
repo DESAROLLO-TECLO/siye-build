@@ -22,7 +22,7 @@ public class SeccionDAOImpl extends BaseDaoHibernate<SeccionDTO> implements Secc
 				"  INNER JOIN TIE005D_EE_PREGUNTAS pregunta ON (seccion.ID_SECCION = pregunta.ID_SECCION)" + 
 				"   WHERE seccion.ID_ENCUESTA ="+ idEncuesta+" AND pregunta.ST_ACTIVO = 1");
 		List<ExpedienteNivelPreguntaVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
-				 .addScalar("idEncuesta",LongType.INSTANCE)
+				 .addScalar("idPregunta",LongType.INSTANCE)
 					.addScalar("cdPregunta",StringType.INSTANCE)
 					.addScalar("nuMaxImg", LongType.INSTANCE)
 					.setResultTransformer(Transformers.aliasToBean(ExpedienteNivelPreguntaVO.class)).list();
