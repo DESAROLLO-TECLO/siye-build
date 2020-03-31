@@ -14,4 +14,7 @@ public interface IncidenciaDAO extends BaseDao<IncidenciaDTO> {
 	
 	public IncidenciaDTO getIncidenciabycdIncidencia(String cdIncidencia);
 	
+
+	
+	
 }
