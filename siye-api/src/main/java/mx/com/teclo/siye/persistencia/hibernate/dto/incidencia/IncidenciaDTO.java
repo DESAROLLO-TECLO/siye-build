@@ -6,9 +6,12 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
@@ -20,6 +23,8 @@ public class IncidenciaDTO implements Serializable {
 	private static final long serialVersionUID = -5365441506721842142L;
 
 	@Id
+	@SequenceGenerator(name = "sqIncidencia", sequenceName = "SQIE041B_IE_INCIDENCI", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqIncidencia")
 	@Column(name = "ID_INCIDENCIA", unique = true, nullable = false, insertable = false)
 	private Long idIncidencia;
 

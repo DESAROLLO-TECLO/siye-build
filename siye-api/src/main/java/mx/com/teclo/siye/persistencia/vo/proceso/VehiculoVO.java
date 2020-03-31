@@ -17,7 +17,7 @@ public class VehiculoVO implements Serializable {
 	private String nbSubMarca;
 	private Long cdModelo;
 	private Boolean stActivo;
-	private Long idConcesion;
+	private ConsecionarioVO consecionario;
 
 	private Long idTipoVehiculo;
 	private String cdTipoVehiculo;
@@ -79,12 +79,13 @@ public class VehiculoVO implements Serializable {
 		this.stActivo = stActivo;
 	}
 
-	public Long getIdConcesion() {
-		return idConcesion;
+
+	public ConsecionarioVO getConsecionario() {
+		return consecionario;
 	}
 
-	public void setIdConcesion(Long idConcesion) {
-		this.idConcesion = idConcesion;
+	public void setConsecionario(ConsecionarioVO consecionario) {
+		this.consecionario = consecionario;
 	}
 
 	public String getCdTarjetaDeCirculacion() {

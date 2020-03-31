@@ -75,7 +75,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	private GerenteSupervisorDAO gerenteSupervisorDAO;
 	
 	@Autowired
-	private IncidenciaDAO IncidenciaDAO;
+	private IncidenciaDAO incidenciaDAO;
 	
 	@Transactional
 	@Override
@@ -173,12 +173,12 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		osDTO.setIdOrigenOds(1L);
 	
 		if (osVO.getIncidencia() != null) {
-		IncidenciaDTO iDTO	= new IncidenciaDTO();
-		iDTO = ResponseConverter.copiarPropiedadesFull(osVO.getIncidencia(), IncidenciaDTO.class);
-				IncidenciaDAO.save(iDTO);
+//		IncidenciaDTO iDTO	= new IncidenciaDTO();
+//		iDTO = ResponseConverter.copiarPropiedadesFull(osVO.getIncidencia(), IncidenciaDTO.class);
+//				incidenciaDAO.save(iDTO);
 				ordenServicioDAO.update(osDTO);	
 		} else {
-			throw new NotFoundException("la Incidencia se encuentra vacia.");
+			throw new NotFoundException("La incidencia se encuentra vacia.");
 		}
 
 	return true;
