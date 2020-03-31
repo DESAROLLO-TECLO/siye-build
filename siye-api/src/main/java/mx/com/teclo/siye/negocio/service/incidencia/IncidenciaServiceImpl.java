@@ -5,7 +5,6 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
@@ -28,7 +27,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		IncidenciaDTO iDTO = incidenciaDAO.getIncidenciabycdIncidencia(cdIncidencia);
 		iVO = ResponseConverter.copiarPropiedadesFull(iDTO, IncidenciaVO.class);
 		
-		if (iVO == null) {
+		if (iDTO == null) {
 			throw new NotFoundException(MSG_ERROR_INCIDENCIA_NULA);
 		}
 		
