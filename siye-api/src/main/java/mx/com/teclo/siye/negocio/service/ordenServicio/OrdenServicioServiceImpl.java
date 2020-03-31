@@ -16,6 +16,7 @@ import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
+import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.CentroInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.LoteOrdenServicioDAO;
@@ -24,6 +25,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.SeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.VehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.LoteOrdenServicioDTO;
@@ -71,6 +73,9 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 
 	@Autowired
 	private GerenteSupervisorDAO gerenteSupervisorDAO;
+	
+	@Autowired
+	private IncidenciaDAO IncidenciaDAO;
 	
 	@Transactional
 	@Override
@@ -167,8 +172,14 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		osDTO.setFhAtencionIni(osVO.getFhAtencionIni());
 		osDTO.setIdOrigenOds(1L);
 	
-		ordenServicioDAO.update(osDTO);		
-
+		if (osVO.getIncidencia() != null) {
+		IncidenciaDTO iDTO	= new IncidenciaDTO();
+		iDTO = ResponseConverter.copiarPropiedadesFull(osVO.getIncidencia(), IncidenciaDTO.class);
+				IncidenciaDAO.save(iDTO);
+				ordenServicioDAO.update(osDTO);	
+		} else {
+			throw new NotFoundException("la Incidencia se encuentra vacia.");
+		}
 
 	return true;
 	}

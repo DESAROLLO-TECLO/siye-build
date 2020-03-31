@@ -5,6 +5,8 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import mx.com.teclo.siye.persistencia.vo.incidencia.IncidenciaVO;
+
 public class OrdenServicioVO implements Serializable {
 	
 	private static final long serialVersionUID = 3398117821017518569L;
@@ -25,6 +27,7 @@ public class OrdenServicioVO implements Serializable {
 	private Date fhAtencionFin;
 	private Long idOrigenOds;
 	private Boolean stActivo;
+	private IncidenciaVO incidencia;
 	
 	public Long getIdOrdenServicio() {
 		return idOrdenServicio;
@@ -105,5 +108,14 @@ public class OrdenServicioVO implements Serializable {
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
 	}
+	public IncidenciaVO getIncidencia() {
+		return incidencia;
+	}
+	public void setIncidencia(IncidenciaVO incidencia) {
+		this.incidencia = incidencia;
+	}
+
+	
+	
 	
 }
