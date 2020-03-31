@@ -102,7 +102,19 @@ public class EncuestaRestController {
 
 	}
 	
-	
+	@RequestMapping(value="/cargar", method = RequestMethod.GET)
+	public ResponseEntity<Boolean> cargarEncuesta (
+		@RequestParam(value="idEncuesta") long idEncuesta,
+		@RequestParam(value="idOrdenServicio") long idOrdenServicio
+		) throws Exception, BusinessException, NotFoundException {
+		try {
+			encuestaService.cargarEncuesta(idEncuesta, idOrdenServicio);
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
+		}
+		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+	}
 
 	
 }

@@ -470,4 +470,21 @@ public class EncuestaServiceImpl implements EncuestaService {
 		}
 		return true;	
 	}
+	
+	@Transactional
+	@Override
+	public void cargarEncuesta(
+			Long idEncuesta, Long idOrdenServicio
+		) throws Exception, BusinessException, NotFoundException {
+		Long idUsuario = idOrdenServicio;
+		UsuarioEncuestaIntentosDTO usuarioEncuestaIntentosDTO = null;
+		usuarioEncuestaIntentosDTO = usuarioEncuentaIntentoDAO.getEncuestaByUsuario(idEncuesta, idUsuario);
+		StEncuestaDTO seDTO = stEncuestaDAO.encuesta("EC");
+		List<StEncuestaDTO> seDTOw = stEncuestaDAO.stEncuesta();
+		usuarioEncuestaIntentosDTO.setStEncuesta(seDTO);
+		UsuarioEncuestaDetalleDTO usuarioEncuestaDetalleDTO = encuestaDetalleDAO.getEncuestaDetalle(idEncuesta, idUsuario);
+		
+		List<SeccionDTO> secciones =  usuarioEncuestaDetalleDTO.getEncuesta().getSecciones();
+		List<UsuaroEncuestaRespuestaDTO> respuestas = new ArrayList<UsuaroEncuestaRespuestaDTO>();
+	}
 }

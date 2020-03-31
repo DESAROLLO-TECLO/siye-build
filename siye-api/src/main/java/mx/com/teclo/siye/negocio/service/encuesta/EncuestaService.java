@@ -60,4 +60,5 @@ public interface EncuestaService {
 	 */
 	public Boolean guardarRespuestas(List<UserRespuestaVO> l)throws BusinessException;
 	
+	public void cargarEncuesta(Long idEncuesta, Long idOrdenServicio) throws Exception, BusinessException, NotFoundException;
 }
