@@ -36,8 +36,7 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 	public List<ImagenVO> getAllExpedientesImgVO(List<Long> idOrdenServicio) {
 		StringBuilder consulta = new StringBuilder("SELECT ID_EXPEDIENTE_ODS AS idExpedienteODS," + 
 				"ID_ORDEN_SERVICIO AS idOrdenServicio," + 
-				"ID_ODS_ENCUESTA AS idOdsEncuesta,"+
-				
+				"ID_ODS_ENCUESTA AS idOdsEncuesta,"+				
 				"ID_PROCESO_ENCUESTA  AS idProcesoEncuesta," + 
 				"ID_PREGUNTA AS idPregunta," + 
 				"NB_EXPEDIENTE_ODS AS nbExpedienteODS," + 
@@ -61,47 +60,53 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<ImagenVO> getImgByPlan(String OrdenServicio, Long idPlan) {
+	public List<ImagenVO> getImgByPlan(Long OrdenServicio, Long idPlan) {
 		StringBuilder consulta = new StringBuilder("SELECT ID_EXPEDIENTE_ODS AS idExpedienteODS," + 
 				"ID_ORDEN_SERVICIO AS idOrdenServicio," + 
+				"ID_ODS_ENCUESTA AS idOdsEncuesta,"+				
 				"ID_PROCESO_ENCUESTA  AS idProcesoEncuesta," + 
 				"ID_PREGUNTA AS idPregunta," + 
 				"NB_EXPEDIENTE_ODS AS nbExpedienteODS," + 
 				"CD_TIPO_ARCHIVO AS cdTipoArchivo," + 
 				"LB_EXPEDIENTE_ODS AS lbExpedienteODS " + 
 				" FROM TIE050D_IE_EXPEDIENTES_IMG" + 
-				"   WHERE ID_ORDEN_SERVICIO ='"+ OrdenServicio +"' AND ID_PROCESO_ENCUESTA="+ idPlan +" AND ST_ACTIVO=1 AND ID_ODS_ENCUESTA=NULL AND ID_PREGUNTA = NULL");		
+				"   WHERE ID_ORDEN_SERVICIO =:OrdenServicio' AND ID_PROCESO_ENCUESTA=:idPlan AND ST_ACTIVO=1 AND ID_ODS_ENCUESTA IS NULL AND ID_PREGUNTA IS NULL");		
 		List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				 .addScalar("idExpedienteODS", LongType.INSTANCE)
+				 .addScalar("idOdsEncuesta", LongType.INSTANCE)
 				 .addScalar("idOrdenServicio", LongType.INSTANCE)
 				 .addScalar("idProcesoEncuesta", LongType.INSTANCE)
 				 .addScalar("idPregunta",LongType.INSTANCE)
 				 .addScalar("nbExpedienteODS", StringType.INSTANCE)
-				 .addScalar("CD_TIPO_ARCHIVO", StringType.INSTANCE)
+				 .addScalar("cdTipoArchivo", StringType.INSTANCE)
 				 .addScalar("lbExpedienteODS",StandardBasicTypes.BINARY)
+				 .setParameter("OrdenServicio", OrdenServicio)
+				 .setParameter("idPlan", idPlan)
 				 .setResultTransformer(Transformers.aliasToBean(ImagenVO.class)).list();
 		return respuesta;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<ImagenVO> getImgByEncuesta(String OrdenServicio, Long idEncuesta) {
+	public List<ImagenVO> getImgByEncuesta(Long OrdenServicio, Long idEncuesta) {
 		StringBuilder consulta = new StringBuilder("SELECT ID_EXPEDIENTE_ODS AS idExpedienteODS," + 
 				"ID_ORDEN_SERVICIO AS idOrdenServicio," + 
+				"ID_ODS_ENCUESTA AS idOdsEncuesta,"+				
 				"ID_PROCESO_ENCUESTA  AS idProcesoEncuesta," + 
 				"ID_PREGUNTA AS idPregunta," + 
 				"NB_EXPEDIENTE_ODS AS nbExpedienteODS," + 
 				"CD_TIPO_ARCHIVO AS cdTipoArchivo," + 
 				"LB_EXPEDIENTE_ODS AS lbExpedienteODS " + 
 				" FROM TIE050D_IE_EXPEDIENTES_IMG" + 
-				"   WHERE ID_EXPEDIENTE_ODS=:OrdenServicio AND ID_ODS_ENCUESTA=:idEncuesta AND ST_ACTIVO=1 AND ID_PREGUNTA=NULL");
+				"   WHERE ID_ORDEN_SERVICIO=:OrdenServicio AND ID_PROCESO_ENCUESTA=:idEncuesta AND ID_PREGUNTA IS NULL AND ST_ACTIVO=1");
 		 List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				 .addScalar("idExpedienteODS", LongType.INSTANCE)
+				 .addScalar("idOdsEncuesta", LongType.INSTANCE)
 				 .addScalar("idOrdenServicio", LongType.INSTANCE)
 				 .addScalar("idProcesoEncuesta", LongType.INSTANCE)
 				 .addScalar("idPregunta",LongType.INSTANCE)
 				 .addScalar("nbExpedienteODS", StringType.INSTANCE)
-				 .addScalar("CD_TIPO_ARCHIVO", StringType.INSTANCE)
+				 .addScalar("cdTipoArchivo", StringType.INSTANCE)
 				 .addScalar("lbExpedienteODS",StandardBasicTypes.BINARY)
 				 .setParameter("OrdenServicio", OrdenServicio)
 				 .setParameter("idEncuesta", idEncuesta)
@@ -111,23 +116,25 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<ImagenVO> getImgByPregunta(String OrdenServicio, Long idPregunta) {
+	public List<ImagenVO> getImgByPregunta(Long OrdenServicio, Long idPregunta) {
 		StringBuilder consulta = new StringBuilder("SELECT ID_EXPEDIENTE_ODS AS idExpedienteODS," + 
 				"ID_ORDEN_SERVICIO AS idOrdenServicio," + 
+				"ID_ODS_ENCUESTA AS idOdsEncuesta,"+				
 				"ID_PROCESO_ENCUESTA  AS idProcesoEncuesta," + 
 				"ID_PREGUNTA AS idPregunta," + 
 				"NB_EXPEDIENTE_ODS AS nbExpedienteODS," + 
 				"CD_TIPO_ARCHIVO AS cdTipoArchivo," + 
 				"LB_EXPEDIENTE_ODS AS lbExpedienteODS " + 
 				" FROM TIE050D_IE_EXPEDIENTES_IMG" + 
-				"   WHERE ID_EXPEDIENTE_ODS=:OrdenServicio AND ID_PREGUNTA=:idPregunta AND ST_ACTIVO=1");
+				"   WHERE ID_ORDEN_SERVICIO=:OrdenServicio AND ID_PREGUNTA=:idPregunta AND ST_ACTIVO=1");
 		 List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				 .addScalar("idExpedienteODS", LongType.INSTANCE)
+				 .addScalar("idOdsEncuesta", LongType.INSTANCE)
 				 .addScalar("idOrdenServicio", LongType.INSTANCE)
 				 .addScalar("idProcesoEncuesta", LongType.INSTANCE)
 				 .addScalar("idPregunta",LongType.INSTANCE)
 				 .addScalar("nbExpedienteODS", StringType.INSTANCE)
-				 .addScalar("CD_TIPO_ARCHIVO", StringType.INSTANCE)
+				 .addScalar("cdTipoArchivo", StringType.INSTANCE)
 				 .addScalar("lbExpedienteODS",StandardBasicTypes.BINARY)
 				 .setParameter("OrdenServicio", OrdenServicio)
 				 .setParameter("idPregunta", idPregunta)
@@ -137,24 +144,27 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ImagenVO> getImgByOrdenServicio(String OrdenServicio) {
+	public List<ImagenVO> getImgByOrdenServicio(Long OrdenServicio) {//AND ID_PROCESO_ENCUESTA=NULL
 		StringBuilder consulta = new StringBuilder("SELECT ID_EXPEDIENTE_ODS AS idExpedienteODS," + 
 				"ID_ORDEN_SERVICIO AS idOrdenServicio," + 
+				"ID_ODS_ENCUESTA AS idOdsEncuesta,"+				
 				"ID_PROCESO_ENCUESTA  AS idProcesoEncuesta," + 
 				"ID_PREGUNTA AS idPregunta," + 
 				"NB_EXPEDIENTE_ODS AS nbExpedienteODS," + 
 				"CD_TIPO_ARCHIVO AS cdTipoArchivo," + 
 				"LB_EXPEDIENTE_ODS AS lbExpedienteODS " + 
 				" FROM TIE050D_IE_EXPEDIENTES_IMG" + 
-				"   WHERE ID_ORDEN_SERVICIO='"+OrdenServicio+"' AND ID_PROCESO_ENCUESTA=NULL AND ST_ACTIVO=1 AND ID_ODS_ENCUESTA=NULL AND ID_PREGUNTA = NULL ");
+				"   WHERE ID_ORDEN_SERVICIO=:OrdenServicio  AND ST_ACTIVO=1 AND ID_ODS_ENCUESTA IS NULL AND ID_PREGUNTA IS NULL ");
 		 List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				 .addScalar("idExpedienteODS", LongType.INSTANCE)
+				 .addScalar("idOdsEncuesta", LongType.INSTANCE)
 				 .addScalar("idOrdenServicio", LongType.INSTANCE)
 				 .addScalar("idProcesoEncuesta", LongType.INSTANCE)
 				 .addScalar("idPregunta",LongType.INSTANCE)
 				 .addScalar("nbExpedienteODS", StringType.INSTANCE)
-				 .addScalar("CD_TIPO_ARCHIVO", StringType.INSTANCE)
+				 .addScalar("cdTipoArchivo", StringType.INSTANCE)
 				 .addScalar("lbExpedienteODS",StandardBasicTypes.BINARY)
+				 .setParameter("OrdenServicio", OrdenServicio)
 				 .setResultTransformer(Transformers.aliasToBean(ImagenVO.class)).list();
 		return respuesta;
 	}

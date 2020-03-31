@@ -31,7 +31,7 @@ public interface ExpedienteImgDAO extends BaseDao<ExpedientesImgDTO> {
      * @return List<ImagenVO>
      * Metodo para traer las imagenes que pertenescan a ordenes de servicio y al plan corespondiente 
      * */
-	public List<ImagenVO> getImgByPlan(String OrdenServicio, Long idPlan);
+	public List<ImagenVO> getImgByPlan(Long OrdenServicio, Long idPlan);
 	
 	/**
      * @author Maverick
@@ -40,7 +40,7 @@ public interface ExpedienteImgDAO extends BaseDao<ExpedientesImgDTO> {
      * @return List<ImagenVO>
      * Metodo para traer las imagenes que pertenescan a ordenes de servicio y a la encuensta 
      * */
-	public List<ImagenVO> getImgByEncuesta(String OrdenServicio, Long idEncuesta);
+	public List<ImagenVO> getImgByEncuesta(Long OrdenServicio, Long idEncuesta);
 	
 	
 	/**
@@ -50,7 +50,7 @@ public interface ExpedienteImgDAO extends BaseDao<ExpedientesImgDTO> {
      * @return List<ImagenVO>
      * Metodo para traer las imagenes que pertenescan a ordenes de servicio y a la pregunta especifica 
      * */
-	public List<ImagenVO> getImgByPregunta(String OrdenServicio, Long idPregunta);
+	public List<ImagenVO> getImgByPregunta(Long OrdenServicio, Long idPregunta);
 	
 	/**
      * @author Maverick
@@ -58,6 +58,6 @@ public interface ExpedienteImgDAO extends BaseDao<ExpedientesImgDTO> {
      * @return List<ImagenVO>
      * Metodo para traer las imagenes que pertenescan a una OS y que estan en este nivel
      * */
-	public List<ImagenVO> getImgByOrdenServicio(String OrdenServicio);
+	public List<ImagenVO> getImgByOrdenServicio(Long OrdenServicio);
 
 }

@@ -160,17 +160,6 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 					//nivel pregunta
 					expediente.setProcesos(addImgEncuestaPregunta(expediente.getProcesos(), img));	
 				}
-
-//				if (img.getIdProcesoEncuesta() != null) {
-//					if (img.getIdOdsEncuesta() != null) {
-//						expediente.setProcesos(addImgEncuestaPregunta(expediente.getProcesos(), img));
-//					} else {
-//						expediente.setProcesos(addImgProceso(expediente.getProcesos(), img));
-//					}
-//				} else {
-//					List<ImagenVO> imagenes = expediente.getImagenes();
-//					imagenes.add(img);
-//				}
 			}
 		}
 
@@ -343,7 +332,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 
 	@Override
 	@Transactional
-	public List<ImagenVO> getInfoExpedienteByNivel(String nuOrderServicio, Long idValorBuscar, String cdNivel) {
+	public List<ImagenVO> getInfoExpedienteByNivel(Long nuOrderServicio, Long idValorBuscar, String cdNivel) {
 		List<ImagenVO> respuesta =null;;
 		switch (cdNivel) {
 		case CDOS:
