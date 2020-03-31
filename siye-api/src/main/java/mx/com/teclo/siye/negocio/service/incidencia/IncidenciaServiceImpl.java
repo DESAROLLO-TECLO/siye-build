@@ -1,8 +1,28 @@
 package mx.com.teclo.siye.negocio.service.incidencia;
 
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
+import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
+import mx.com.teclo.siye.persistencia.vo.incidencia.IncidenciaVO;
 
 @Service
 public class IncidenciaServiceImpl implements IncidenciaService {
+	
+	@Autowired
+	private IncidenciaDAO incidenciaDAO;
+
+	@Override
+	@Transactional
+	public IncidenciaVO getIncidenciabycdIncidencia(String cdIncidencia) {
+		IncidenciaVO iVO = new IncidenciaVO();
+		IncidenciaDTO iDTO = incidenciaDAO.getIncidenciabycdIncidencia(cdIncidencia);
+		iVO = ResponseConverter.copiarPropiedadesFull(iDTO, IncidenciaVO.class);
+		return iVO;
+	}
 
 }
