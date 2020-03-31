@@ -190,4 +190,10 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
             }
         }
     });
+//	Indicendias
+    $routeProvider.when("/altaIncidencia", {
+        templateUrl: "views/incidencia/altaIncidencia.html",
+        controller: "altaIncidenciaController"
+    });
+
 });
