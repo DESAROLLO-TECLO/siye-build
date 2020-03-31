@@ -14,4 +14,19 @@ public interface SeccionDAO  extends BaseDao<SeccionDTO> {
 	 * metodo para consultar las preguntas y numero maximo de imagens que se puede cargar en cada una , por encuesta 
 	 * */
 	public List<ExpedienteNivelPreguntaVO> getPreguntasByEncuestaVO(Long idEncuesta);
+	
+	/**
+	 * @Descripción: Método para consultar las secciones respondidas de cada encuesta
+	 * @author Fjmb
+	 * @return List<Long>
+	 */
+	public List<Integer> seccionesContestadasEncuesta(Integer idEncuesta);
+	
+	/**
+	 * @Descripción: Método para consultar las secciones que pertenecen
+	 * a cierta encuesta por su identificador
+	 * @author David Guerra
+	 * @return List<SeccionDTO>
+	 */
+	public List<SeccionDTO> seccionesEncuesta(Long idEncuesta);
 }

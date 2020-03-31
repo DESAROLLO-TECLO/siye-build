@@ -37,6 +37,9 @@ public class ExpedienteImgRestController {
 	public ResponseEntity<List<CargaExpedienteImgVO>> getImgExpediente(@RequestParam(value ="tipoBusqueda") String tipoBusqueda,
 														   @RequestParam(value ="valor") String valor) throws NotFoundException{	
 		List<CargaExpedienteImgVO> respuesta = expedienteImg.getInformacionExpediente(tipoBusqueda, valor);
+		if(respuesta==null) {
+			throw new NotFoundException("No se encontro expediente relacionado");
+		}
 		return new ResponseEntity<List<CargaExpedienteImgVO>>(respuesta, HttpStatus.OK);
 	};
 	
@@ -67,8 +70,11 @@ public class ExpedienteImgRestController {
 	//@PreAuthorize("hasAnyAuthority('GET_STATUS_CARGA_EVIDENCIAS')")
 	public ResponseEntity<List<ImagenVO>> getInfoExpedienteByNivel(@RequestParam(value ="nuOrdenServicio") Long nuOrdenServicio,
 														           @RequestParam(value ="cdNivel") String cdNivel,
-														           @RequestParam(value="idValor") Long idparamBusqueda) throws NotFoundException{	
+														           @RequestParam(value="idValor", required= false) Long idparamBusqueda) throws NotFoundException{	
 		List<ImagenVO> respuesta = expedienteImg.getInfoExpedienteByNivel(nuOrdenServicio, idparamBusqueda, cdNivel);
+		if(respuesta.isEmpty()) {
+			throw new NotFoundException("No tiene evidencias asignadas ");
+		}
 		return new ResponseEntity<List<ImagenVO>>(respuesta, HttpStatus.OK);
 	};
 }

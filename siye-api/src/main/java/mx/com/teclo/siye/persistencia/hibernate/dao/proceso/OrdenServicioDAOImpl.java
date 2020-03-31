@@ -95,6 +95,16 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		c.add(Restrictions.eq("stActivo", true));
 		return (List<OrdenServicioDTO>)c.list();
 	}
+	
+	
+	@Override
+	public OrdenServicioDTO obtenerOrdenServicioCD_ORDEN_SERVICIO(String  cdOrdenServicio) {
+		Criteria c = getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("cdOrdenServicio", cdOrdenServicio));
+		return (OrdenServicioDTO) c.uniqueResult();
+	}
+
 
 
 }

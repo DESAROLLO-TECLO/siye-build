@@ -97,10 +97,10 @@ public class UsuarioEncuestaIntentosDTO implements Serializable {
 	
 	@JoinColumn(name = "ID_ODS_ENCUESTA", referencedColumnName = "ID_ODS_ENCUESTA", nullable = false)
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	private UsuarioEncuestaDTO usuarioEncuesta;
+	private UsuarioEncuestaDetalleDTO usuarioEncuesta;
 
-	@Column(name = "NU_MIN_CONSUMIDOS", nullable = false, precision = 4, scale = 0)
-	private Integer nuMinConsumidos;
+	/*@Column(name = "NU_MIN_CONSUMIDOS", nullable = false, precision = 4, scale = 0)
+	private Integer nuMinConsumidos;*/
 
 	public UsuarioEncuestaIntentosDTO() {
 		super();
@@ -216,11 +216,11 @@ public class UsuarioEncuestaIntentosDTO implements Serializable {
 		this.fhModificacion = fhModificacion;
 	}
 
-	public UsuarioEncuestaDTO getUsuarioEncuesta() {
+	public UsuarioEncuestaDetalleDTO getUsuarioEncuesta() {
 		return usuarioEncuesta;
 	}
 
-	public void setUsuarioEncuesta(UsuarioEncuestaDTO usuarioEncuesta) {
+	public void setUsuarioEncuesta(UsuarioEncuestaDetalleDTO usuarioEncuesta) {
 		this.usuarioEncuesta = usuarioEncuesta;
 	}
 
@@ -301,15 +301,15 @@ public class UsuarioEncuestaIntentosDTO implements Serializable {
 	/**
 	 * @return the nuMinConsumidos
 	 */
-	public Integer getNuMinConsumidos() {
+	/*public Integer getNuMinConsumidos() {
 		return nuMinConsumidos;
-	}
+	}*/
 
 	/**
 	 * @param nuMinConsumidos the nuMinConsumidos to set
 	 */
-	public void setNuMinConsumidos(Integer nuMinConsumidos) {
+	/*public void setNuMinConsumidos(Integer nuMinConsumidos) {
 		this.nuMinConsumidos = nuMinConsumidos;
-	}
+	}*/
 
 }

@@ -9,7 +9,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaDTO;
 
 
 
-public interface UsuarioEncuentaDAO extends BaseDao<UsuarioEncuestaDTO>{
+public interface UsuarioEncuestaDAO extends BaseDao<UsuarioEncuestaDTO>{
 	
 	
 	/**
@@ -21,5 +21,5 @@ public interface UsuarioEncuentaDAO extends BaseDao<UsuarioEncuestaDTO>{
 	
     List<UsuarioEncuestaDTO> getEncuestasPorOrden(Long idOrden);
 	
-
+    public List<UsuarioEncuestaDTO> consultaOrdenByOrdenServicio(String valor);
 }

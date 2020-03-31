@@ -53,5 +53,13 @@ public class OrdenServicioRestController {
 	}
 	
 	
+	@RequestMapping(value = "/getOrdenServicioCDOS", method = RequestMethod.GET)
+	@PreAuthorize("hasAnyAuthority('ACTUALIZACION_ORDEN_SERVICIO')")
+	public ResponseEntity<OrdenServicioVO> getOrdenServicioCDOS(@RequestParam(value="cdOrdenServicio", required=true) String cdOrdenServicio) throws NotFoundException, BusinessException{
+		OrdenServicioVO osVO = ordenServicioService.findOrdenServiciobyCD_ORDEN_SERVICIO(cdOrdenServicio);
+		
+		return new ResponseEntity<OrdenServicioVO>(osVO,HttpStatus.OK);
+	}
+	
 
 }
