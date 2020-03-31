@@ -29,4 +29,12 @@ public class PlanDAOImpl extends BaseDaoHibernate<PlanDTO> implements PlanDAO {
 		return (List<PlanDTO>) c.list();
 	}
 
+	@Override
+	public PlanDTO getId(Long idPlan)  {
+		Criteria c = getCurrentSession().createCriteria(PlanDTO.class);
+		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("idPlan", idPlan));
+		return (PlanDTO)c.uniqueResult();
+	}
+
 }

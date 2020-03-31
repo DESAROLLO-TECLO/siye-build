@@ -28,4 +28,12 @@ public class KitInstalacionDAOImpl extends BaseDaoHibernate<KitInstalacionDTO> i
 		return (List<KitInstalacionDTO>) c.list();
 	}
 
+	@Override
+	public KitInstalacionDTO kitIns(String cdKitIns) {
+		Criteria c = getCurrentSession().createCriteria(KitInstalacionDTO.class);
+		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("cdKitInstalacion", cdKitIns));
+		return (KitInstalacionDTO)c.uniqueResult();
+	}
+
 }

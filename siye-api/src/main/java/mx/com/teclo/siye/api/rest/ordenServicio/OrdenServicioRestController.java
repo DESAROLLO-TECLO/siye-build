@@ -2,6 +2,8 @@ package mx.com.teclo.siye.api.rest.ordenServicio;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.negocio.service.ordenServicio.OrdenServicioService;
+import mx.com.teclo.siye.persistencia.vo.ordenServicio.OrdenServiVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
 
 @RestController
@@ -61,5 +64,10 @@ public class OrdenServicioRestController {
 		return new ResponseEntity<OrdenServicioVO>(osVO,HttpStatus.OK);
 	}
 	
-
+	@RequestMapping(value="/guardarReporteBd", method= RequestMethod.POST)
+//	@PreAuthorize("hasAnyAuthority('NUEVO_REPORTE')")
+	public ResponseEntity<OrdenServiVO> guardarOrdenServicio(@Valid @RequestBody OrdenServiVO ordenServiVO) throws NotFoundException{
+		ordenServicioService.saveOrdenServicio(ordenServiVO);
+		return new ResponseEntity<OrdenServiVO>(ordenServiVO, HttpStatus.CREATED);
+	}
 }
