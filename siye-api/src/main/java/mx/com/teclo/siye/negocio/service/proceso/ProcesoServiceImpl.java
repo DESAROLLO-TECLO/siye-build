@@ -14,7 +14,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.DispositivosDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanProcesoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.procesoencuesta.ProcesoEncuestaDAO;
-import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitDispositivoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
@@ -84,14 +84,14 @@ public class ProcesoServiceImpl implements ProcesoService {
 	
 	@Override
 	@Transactional
-	public List<UsuarioEncuestaDTO> obtenerEncuestas(Long orden) {
+	public List<OrdenEncuestaDTO> obtenerEncuestas(Long orden) {
 
 		return usuarioEncuestaDAO.getEncuestasPorOrden(orden);
 	}
 	
 	@Override
 	@Transactional
-	public List<PlanProcesoVO> revisarEncuestasCompletas(List<UsuarioEncuestaDTO> encuestasByUsuario,List<PlanProcesoVO> plan, Long idSolicitud)
+	public List<PlanProcesoVO> revisarEncuestasCompletas(List<OrdenEncuestaDTO> encuestasByUsuario,List<PlanProcesoVO> plan, Long idSolicitud)
 	{
     	List<ProcesoEncuestaDTO> procesoEncuestaDTO = new ArrayList<ProcesoEncuestaDTO>();
     	int contador=0;
@@ -110,7 +110,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 				cantidadEncuestasAcontestar=procesoEncuestaDTO.size();
 				for(ProcesoEncuestaDTO encuestaActual:procesoEncuestaDTO)
 				{
-					for(UsuarioEncuestaDTO encuestas:encuestasByUsuario)
+					for(OrdenEncuestaDTO encuestas:encuestasByUsuario)
 					{
 						if(encuestaActual.getIdEncuesta().getIdEncuesta()==encuestas.getEncuesta().getIdEncuesta())
 						{
@@ -167,7 +167,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 		
 	@Override
 	@Transactional
-	public List<ProcesoEncuestaVO> revisarEncuestasCompletas2(List<UsuarioEncuestaDTO> encuestasByUsuario,List<ProcesoEncuestaVO> encuestasByProceso)
+	public List<ProcesoEncuestaVO> revisarEncuestasCompletas2(List<OrdenEncuestaDTO> encuestasByUsuario,List<ProcesoEncuestaVO> encuestasByProceso)
 	{
 		if(encuestasByUsuario.size()>0)
 		{
@@ -175,7 +175,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 				{
 					if(actual.getNuorden()!=1)
 					{
-							for(UsuarioEncuestaDTO encuestas:encuestasByUsuario)
+							for(OrdenEncuestaDTO encuestas:encuestasByUsuario)
 							{
 								if(actual.getIdEncuesta().getIdEncuesta()==encuestas.getEncuesta().getIdEncuesta())
 								{

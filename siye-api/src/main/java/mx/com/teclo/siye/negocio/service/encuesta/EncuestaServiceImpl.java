@@ -29,7 +29,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EstatusCalificacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.PreguntasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.SeccionDTO;
-import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaDetalleDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaIntentosDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuaroEncuestaRespuestaDTO;
@@ -188,7 +188,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 	@Transactional
 	@Override
 	public Boolean nuevoIntento(UsuarioEncuestaVO vo) throws BusinessException{
-		UsuarioEncuestaDTO ueDTO = usuarioEncuestaDAO.findOne(vo.getIdUsuarioEncuesta());
+		OrdenEncuestaDTO ueDTO = usuarioEncuestaDAO.findOne(vo.getIdUsuarioEncuesta());
 		Long idUsr = userSession.getUsuarioFirmadoVO().getId();
 		if(ueDTO == null)
 			throw new BusinessException(RespuestaHttp.CONFLICT.getMessage());
@@ -366,7 +366,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 //				}
 				
 				
-				List<UsuarioEncuestaDTO> listaUsuarioEncuestaDTO = usuarioEncuestaDAO.consultaOrdenByOrdenServicio(valor);
+				List<OrdenEncuestaDTO> listaUsuarioEncuestaDTO = usuarioEncuestaDAO.consultaOrdenByOrdenServicio(valor);
 				
 				String s ="";
 				
@@ -392,7 +392,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 		//Convertir de UsuarioEncuestaIntentosVO a UsuarioEncuestaDTO
 		List<UsuarioEncuestaVO> encuestaIntentosVOs =new ArrayList<>();
 		encuestaIntentosVOs.add(encuestaIntentosVO.getUsuarioEncuesta());
-		List<UsuarioEncuestaDTO> listReturn =ResponseConverter.converterLista(new ArrayList<>(), encuestaIntentosVOs,UsuarioEncuestaDTO.class);
+		List<OrdenEncuestaDTO> listReturn =ResponseConverter.converterLista(new ArrayList<>(), encuestaIntentosVOs,OrdenEncuestaDTO.class);
 	    listReturn.get(0).setStAplicaEncuesta(false);
 //	    listReturn.get(0).setNuIntegerentos(listReturn.get(0).getNuIntegerentos() + 1);
 		//userDTO = ResponseConverter.copiarPropiedadesFull(userVO, UsuarioDTO.class);
