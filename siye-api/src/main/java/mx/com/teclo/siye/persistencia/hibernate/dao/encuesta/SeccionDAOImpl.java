@@ -74,4 +74,12 @@ public class SeccionDAOImpl extends BaseDaoHibernate<SeccionDTO> implements Secc
 		return (List<SeccionDTO>) c.list();
 	}
 
+	@Override
+	public SeccionDTO seccion(Long idSeccion) {
+		Criteria c = getCurrentSession().createCriteria(SeccionDTO.class);
+		c.add(Restrictions.eq("idSeccion", idSeccion));
+		c.add(Restrictions.eq("stActivo", 1));
+		return (SeccionDTO) c.uniqueResult();
+	}
+
 }
