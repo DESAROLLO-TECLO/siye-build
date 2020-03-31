@@ -7,11 +7,13 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.vo.proceso.SeguimientoVO;
 
 @Repository
-public class SeguimientoDAOImpl extends BaseDaoHibernate<StSeguimientoDTO> implements SeguimientoDAO {
+public class StSeguimientoDAOImpl extends BaseDaoHibernate<StSeguimientoDTO> implements StSeguimientoDAO {
 
 	@Override
 	public SeguimientoVO obtenerSeguimiento(Long idSeguimiento) {
 		return null;
 	}
+	
+	
 
 }

@@ -22,7 +22,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.LoteOrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
-import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.SeguimientoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.VehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
@@ -66,7 +66,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	private UsuarioFirmadoService contexto;
 
 	@Autowired
-	private SeguimientoDAO seguimientoDAO;
+	private StSeguimientoDAO seguimientoDAO;
 	
 	@Autowired
 	private UsuarioFirmadoService usuarioFirmadoService;
