@@ -120,15 +120,16 @@
 															<i class="fa fa-list-ul"></i>
 															
 														</div>
-														<select class="form-control" select2 data-minimum-results-for-search="Infinity"
-															ng-options="tpVehiculo.idTipoVehiculo as tpVehiculo.nbTipoVehiculo for tpVehiculo in catalogoTipoVehiculo track by tpVehiculo.nbTipoVehiculo"
+														<select class="form-control" select2 data-minimum-results-for-search="Infinity" id="tipopVehiculo"
+															ng-options="tpVehiculo.nbTipoVehiculo  for tpVehiculo in catalogoTipoVehiculo track by tpVehiculo.idTipoVehiculo"
 															ng-model="orden.vehiculoVO.tpVehiculo"
-															style="width:100%" ng-disabled="banderadeshabilitar">
+															style="width:100%" >
 															<option value="">Seleccione</option>
 														</select>
 													</div>
 											</div>
-
+<!-- 											ng-disabled="banderadeshabilitar" -->
+								{{orden.vehiculoVO.tpVehiculo}}
 											
 								<div class="col-md-4">
 									<div class="form-group">
@@ -163,6 +164,7 @@
 									</fieldset>
 								</div>
 							</div>
+						
 <!-- 							TERMINA SEGUNDO ROW -->
 
 <!-- 							INICIA TERCER ROW -->
@@ -183,7 +185,7 @@
 										</div>
 									</div>
 								</div>
-								{{orden}}
+<!-- 								{{orden}} -->
 								<div class="col-md-6">
 									<div class="form-group">
 										<label for="">Serie de Kit:</label>
@@ -199,7 +201,8 @@
 <!-- 							TERMINA TERCER ROW -->
 <!-- 								{{range}} -->
 
-								{{rango.nbDispositivo}}
+								{{range}}
+<!-- 								{{range}} -->
 <!-- 							INICIA CUARTO ROW -->
 							<div class="row">
 								<div class="col-md-6">
@@ -220,7 +223,7 @@
 							</div>
 							</div>
 <!-- 							TERMINA CUARTO ROW -->
-							{{range}}
+<!-- 							{{range}} -->
 <!-- 							ng-options="proveed.idProveedor as proveed.nbProveedor for proveed in catalogoProcesos.proveedorVO" -->
 
 <!-- 							INICIA QUINTO ROW -->
@@ -233,9 +236,13 @@
 														<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
 														
 												</div>
-												<input maxlength="10" type="text" id="placaOficial" class="form-control"
+<!-- 												<input maxlength="10" type="text" id="iddisp" class="form-control" -->
 												
-                                            	name="placaOficial" ng-model="orden.kitInstalacionVO[$index].idDip.rango.nbDispositivo"
+<!--                                             	name="placaOficial" ng-model="rango.idDispositivo" -->
+<!--                                             	autocomplete="off" ng-required="true" ng-disabled="false" style="display:none;"> -->
+												
+												<input maxlength="10" type="text" id="placaOficial" class="form-control"
+                                            	name="placaOficial" ng-model="rango.nbDispositivo"
                                             	autocomplete="off" ng-required="true" ng-disabled="false">
 											</div>
 									</div>
@@ -250,7 +257,7 @@
 														
 													</div>
 													<input maxlength="10" type="text" id="placaOficial" class="form-control"
-                                            				name="placaOficial" ng-model="orden.kitInstalacionVO[$index].serie"
+                                            				name="placaOficial" ng-model="rango.serie"
                                             				autocomplete="off" ng-required="true" ng-disabled="banderadeshabilitar">
 												</div>
 												</div>
@@ -264,7 +271,7 @@
 										</div>
 										<select class="form-control inputs"
 											ng-options="proveed.idProveedor as proveed.nbProveedor for proveed in catalogoProcesos.proveedorVO"
-											ng-model="orden.kitInstalacionVO[$index].proveed">
+											ng-model="rango.proveedor">
 										<option value="">Seleccione</option>
 										</select>
 									</div>
@@ -298,13 +305,14 @@
 <!-- 							TERMINA SEXTO ROW -->
 								
 							
-							
+							{{ordenVO}}
+							{{catalogoProcesos}}
 
 							
 							
 							<div class="centerCol">
 							    <span class="input-group-btn">
-						              <button type="button" ng-click="guardarOrden(orden)" class="btn btn-danger btn-flat" >
+						              <button type="button" ng-click="guardarOrden(range, orden)" class="btn btn-danger btn-flat" >
 						                      		Guardar
 						              </button>
 					           </span>
