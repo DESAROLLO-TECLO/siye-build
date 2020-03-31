@@ -146,3 +146,7 @@
 @media screen and (max-width: 992px) {
     
 }
+
+.inactiv-click{
+    pointer-events: none !important;
+}

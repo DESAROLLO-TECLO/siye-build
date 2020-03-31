@@ -1,41 +1,46 @@
 angular.module(appTeclo)
 .controller("etapaController",
-function($rootScope,$scope,$window,$translate,$timeout,ModalService, etapaService, etapaInfo) {
+function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, etapaInfo) {
 
     $scope.fechaHoy = new Date();
     $scope.stValidarCheck = false;
     
-    $scope.dataEtapa = new Object({
-        idOrdenServicio:etapaInfo.data[0].idOrdenServicio,
-        cdOrdenServicio:etapaInfo.data[0].cdOrdenServicio,
-        transportista:etapaInfo.data[0].transportista,
-        vehiculo:{
-            idVehiculo:etapaInfo.data[0].vehiculo.idVehiculo,
-            cdPlacaVehiculo:etapaInfo.data[0].vehiculo.cdPlacaVehiculo,
-	        cdVin:etapaInfo.data[0].vehiculo.cdVin,
-            cdTarjetaDeCirculacion:etapaInfo.data[0].vehiculo.cdTarjetaDeCirculacion,
-            tipoVehiculo:etapaInfo.data[0].vehiculo.tipoVehiculo,
-            consecionario:etapaInfo.data[0].vehiculo.consecionario
-        },
-        centroInstalacion:{
-            idVehiculo:etapaInfo.data[0].centroInstalacion.idCentroInstalacion,
-            cdCentroInstalacion:etapaInfo.data[0].centroInstalacion.cdCentroInstalacion,
-            nbCentroInstalacion:etapaInfo.data[0].centroInstalacion.nbCentroInstalacion
-        },
-        kitInstalacion:{
-            idKitInstalacion:etapaInfo.data[0].kitInstalacion.idKitInstalacion,
-            cdKitInstalacion:etapaInfo.data[0].kitInstalacion.cdKitInstalacion
-        },
-        plan:{
-            idPlan:etapaInfo.data[0].plan.idPlan,
-            cdPlan:etapaInfo.data[0].plan.cdPlan,
-            nbPlan:etapaInfo.data[0].plan.nbPlan,
-            txPlan:etapaInfo.data[0].plan.txPlan,
-            stActivo:etapaInfo.data[0].plan.stActivo
-        }
-    });
-    
-    console.log($scope.dataEtapa);
+    if(etapaInfo != null){
+        console.log(etapaInfo);
+        $rootScope.idOrSer = etapaInfo.data[0].idOrdenServicio;
+        console.log("id Orden de Servicio en RooteScope ::: " + $rootScope.idOrSer)
+        $scope.dataEtapa = new Object({
+            idOrdenServicio:etapaInfo.data[0].idOrdenServicio,
+            cdOrdenServicio:etapaInfo.data[0].cdOrdenServicio,
+            transportista:etapaInfo.data[0].transportista,
+            vehiculo:{
+                idVehiculo:etapaInfo.data[0].vehiculo.idVehiculo,
+                cdPlacaVehiculo:etapaInfo.data[0].vehiculo.cdPlacaVehiculo,
+                cdVin:etapaInfo.data[0].vehiculo.cdVin,
+                cdTarjetaDeCirculacion:etapaInfo.data[0].vehiculo.cdTarjetaDeCirculacion,
+                tipoVehiculo:etapaInfo.data[0].vehiculo.tipoVehiculo,
+                consecionario:etapaInfo.data[0].vehiculo.consecionario
+            },
+            centroInstalacion:{
+                idVehiculo:etapaInfo.data[0].centroInstalacion.idCentroInstalacion,
+                cdCentroInstalacion:etapaInfo.data[0].centroInstalacion.cdCentroInstalacion,
+                nbCentroInstalacion:etapaInfo.data[0].centroInstalacion.nbCentroInstalacion
+            },
+            kitInstalacion:{
+                idKitInstalacion:etapaInfo.data[0].kitInstalacion.idKitInstalacion,
+                cdKitInstalacion:etapaInfo.data[0].kitInstalacion.cdKitInstalacion
+            },
+            plan:{
+                idPlan:etapaInfo.data[0].plan.idPlan,
+                cdPlan:etapaInfo.data[0].plan.cdPlan,
+                nbPlan:etapaInfo.data[0].plan.nbPlan,
+                txPlan:etapaInfo.data[0].plan.txPlan,
+                stActivo:etapaInfo.data[0].plan.stActivo
+            }
+        });
+    }else{
+        growl({ title: "-ERROR-", message: "No se logró recuperar el  registro solicitado" });
+    }
 
     consultaPlan = function(){
         var idPlan = $scope.dataEtapa.plan.idPlan;
@@ -59,7 +64,6 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService, etapaServic
                         break;
                 }
             }
-            console.log($scope.dataPlan);
         }).error(function(error){
             console.log(error);
         });
