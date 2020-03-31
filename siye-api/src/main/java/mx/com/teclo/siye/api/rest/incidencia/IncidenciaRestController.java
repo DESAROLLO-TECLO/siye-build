@@ -22,7 +22,7 @@ public class IncidenciaRestController {
 	
 	@RequestMapping(value = "/getIncidenciaBycdIncidencia", method = RequestMethod.GET)
 	@PreAuthorize("hasAnyAuthority('ACTUALIZACION_ORDEN_SERVICIO')")
-	ResponseEntity<IncidenciaVO> getIncidenciaBycdInicidencia(@RequestParam(value="cdIncidencia", required=true) String cdIncidencia) throws NotFoundException{
+	public ResponseEntity<IncidenciaVO> getIncidenciaBycdInicidencia(@RequestParam(value="cdIncidencia", required=true) String cdIncidencia) throws NotFoundException{
 		IncidenciaVO iVO = incidenciaService.getIncidenciabycdIncidencia(cdIncidencia);
 		return new ResponseEntity<IncidenciaVO>(iVO, HttpStatus.OK);
 		
