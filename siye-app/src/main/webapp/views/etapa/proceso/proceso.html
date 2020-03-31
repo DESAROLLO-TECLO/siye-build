@@ -33,7 +33,7 @@
                         <div class="panel-heading center">
                             <h3>
                                 <span>
-                                    {{dataPlan.proceso.nbProceso}}
+                                    {{nombreEtapa}}
                                 </span>
                             </h3>
                         </div>
@@ -68,8 +68,8 @@
                             <br><br>
                             <div class="row">
                                 <hr>
-                                <div class="col-sm-6 col-md-3">
-                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Cuestionario" >
+                                <div class="col-sm-6 col-md-3" ng-repeat="item in dataEtapa">
+                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="{{item.idEncuesta.txEncuesta}}" >
                                         <div class="dash-info color-fondo">
                                             <div class="dash-img">
                                                 <img class="dash-img-img" 
@@ -77,44 +77,13 @@
                                             </div>
                                             
                                             <div class="marcador" value="1" to="1" duration="2500" effect="swing">
-                                                Cuestionario
+                                                {{item.idEncuesta.nbEncuesta}}
                                             </div>
                                         </div>
                                     </a>
                                     
                                 </div>
-                                <div class="col-sm-6 col-md-3">
-                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Cuestionario"
-                                    style="pointer-events: none;">
-                                        <div class="dash-info color-fondo-desactivado">
-                                            <div class="dash-img">
-                                                <img class="dash-img-img-desactivado" 
-                                                    src="static/dist/img/etapas/004-registration.png">
-                                            </div>
-                                            
-                                            <div class="marcador" value="1" to="1" duration="2500" effect="swing">
-                                                Cuestionario
-                                            </div>
-                                        </div>
-                                    </a>
-                                    
-                                </div>
-                                <div class="col-sm-6 col-md-3">
-                                    <a href="#" data-toggle="tooltip" data-placement="bottom" title="Cuestionario"
-                                    style="pointer-events: none;">
-                                        <div class="dash-info color-fondo-desactivado">
-                                            <div class="dash-img">
-                                                <img class="dash-img-img-desactivado" 
-                                                    src="static/dist/img/etapas/004-registration.png">
-                                            </div>
-                                            
-                                            <div class="marcador" value="1" to="1" duration="2500" effect="swing">
-                                                Cuestionario
-                                            </div>
-                                        </div>
-                                    </a>
-                                    
-                                </div>
+                                
                                 <div class="col-sm-6 col-md-3">
                                     
                                     <div class="dash-info color-fondo">
