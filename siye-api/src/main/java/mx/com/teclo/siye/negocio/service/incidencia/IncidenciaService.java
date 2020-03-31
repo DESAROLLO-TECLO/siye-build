@@ -1,6 +1,7 @@
 package mx.com.teclo.siye.negocio.service.incidencia;
 
 
+import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.persistencia.vo.incidencia.IncidenciaVO;
 
 public interface IncidenciaService {
@@ -12,6 +13,6 @@ public interface IncidenciaService {
      * @return IncidenciaDTO
      * */
 	
-	public IncidenciaVO getIncidenciabycdIncidencia(String cdIncidencia);
+	public IncidenciaVO getIncidenciabycdIncidencia(String cdIncidencia) throws NotFoundException;
 
 }

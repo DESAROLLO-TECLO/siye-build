@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.negocio.service.incidencia.IncidenciaService;
 import mx.com.teclo.siye.persistencia.vo.incidencia.IncidenciaVO;
 
@@ -21,7 +22,7 @@ public class IncidenciaRestController {
 	
 	@RequestMapping(value = "/getIncidenciaBycdIncidencia", method = RequestMethod.GET)
 	@PreAuthorize("hasAnyAuthority('ACTUALIZACION_ORDEN_SERVICIO')")
-	ResponseEntity<IncidenciaVO> getIncidenciaBycdInicidencia(@RequestParam(value="cdIncidencia", required=true) String cdIncidencia){
+	ResponseEntity<IncidenciaVO> getIncidenciaBycdInicidencia(@RequestParam(value="cdIncidencia", required=true) String cdIncidencia) throws NotFoundException{
 		IncidenciaVO iVO = incidenciaService.getIncidenciabycdIncidencia(cdIncidencia);
 		return new ResponseEntity<IncidenciaVO>(iVO, HttpStatus.OK);
 		
