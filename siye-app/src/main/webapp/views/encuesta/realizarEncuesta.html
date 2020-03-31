@@ -48,7 +48,7 @@ display: block;
 								</div>
 								
 								<div class="col-md-6">
-									Total: {{preguntasContestadasEncuesta+' DE ' }}<span>{{encuestaDetalle.encuesta.nuPreguntas}}</span>
+									Total: {{preguntasContestadasEncuesta+' DE ' }}<span>{{encuesta.nuPreguntas}}</span>
 									<div ng-if="myVar" style="display: inline-block;">
 										<a href="#" data-toggle="tooltipinfo" data-placement="top" title="Total de preguntas contestadas de la evaluación">
 											<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
@@ -138,7 +138,7 @@ display: block;
 										Instrucciones
 									</div>
 								</button>
-								<div ng-if="preguntasContestadasEncuesta===encuestaDetalle.encuesta.nuPreguntas" class="w-100">
+								<div ng-if="preguntasContestadasEncuesta===encuesta.nuPreguntas" class="w-100">
 									<div style="display:block; margin: 0 auto;" ng-if="myVar">
 										<a href="#" data-toggle="tooltipinfo" data-placement="right" title="Concluir la evaluación">
 											<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
@@ -151,7 +151,7 @@ display: block;
 										</div>
 									</button>
 								</div>
-								<div ng-if="preguntasContestadasEncuesta!=encuestaDetalle.encuesta.nuPreguntas" class="w-100">
+								<div ng-if="preguntasContestadasEncuesta!=encuesta.nuPreguntas" class="w-100">
 									<div style="display:block; margin: 0 auto;" ng-if="myVar">
 										<a href="#" data-toggle="tooltipinfo" 
 											data-placement="right" title="Pausar la evaluación y continuar en otro momento" aria-disabled="true">
@@ -178,12 +178,12 @@ display: block;
 					</div>
 					<div class="col-md-9">
 						<fieldset class="scheduler-border">
-							<legend class="scheduler-border text-18">{{paramConfigPage.bigCurrentPage}} / {{numPages}}</legend>
+							<legend class="scheduler-border text-18">Sección: {{seccionVO.nbSeccion}} {{paramConfigPage.bigCurrentPage}} / {{numPages}}</legend>
 							
 							<div class="box-body table-responsive no-padding" >
 								<table class="table table-hover header-fixed">
-									<tbody id="myTable">
-										<tr   ng-repeat=" respuesta in encuesta.secciones[0].preguntas.slice(((paramConfigPage.bigCurrentPage-1)*paramConfigPage.itemsPerPage),((paramConfigPage.bigCurrentPage)*paramConfigPage.itemsPerPage))" 
+									<tbody id="myTable2">
+										<tr   ng-repeat=" respuesta in seccionVO.preguntas.slice(((paramConfigPage.bigCurrentPage-1)*paramConfigPage.itemsPerPage),((paramConfigPage.bigCurrentPage)*paramConfigPage.itemsPerPage))" 
 											id="{{respuesta.idPregunta}}" class="sin-seleccionar" ng-class="{'seleccionado': respuesta.stMarcado==1}">
 											
 											<td ng-class="{ 'has-error' : formStepTwo.{{'valueOption'+$index}}.$invalid && formStepTwo.{{'customValue'+$index}}.$dirty}">
@@ -211,7 +211,7 @@ display: block;
 									<div  class="col-md-12">
 												<div class="col-md-1 col-md-offset-2">
  														<span  ng-if="posicionActual >0 && paramConfigPage.bigCurrentPage==1"
-														class="btn btn-danger" ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,encuestaDetalle.encuesta.secciones[posicionActual-1]) "
+														class="btn btn-danger" ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,encuesta.secciones[posicionActual-1]) "
 														data-toggle="tooltip" data-placement="right" title="Sección Anterior">
 														<i class="fa fa-arrow-left"></i>
 														</span>
@@ -245,12 +245,12 @@ display: block;
 					
 													</div>
 													<div class="col-md-2 center">
-														<span ng-if="(posicionActual < (encuestaDetalle.encuesta.secciones.length-1)) && paramConfigPage.bigCurrentPage==numPages" 
+														<span ng-if="(posicionActual < (encuesta.secciones.length-1)) && paramConfigPage.bigCurrentPage==numPages" 
 														class="btn btn-danger"  data-toggle="tooltip" data-placement="right" title="Siguiente Sección"
-														ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,encuestaDetalle.encuesta.secciones[posicionActual+1])">
+														ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,encuesta.secciones[posicionActual+1])">
 														<i class="fa fa-arrow-right"></i> 
 														</span>
-														<div style="display:inline-block" ng-if="myVar && (posicionActual < (encuestaDetalle.encuesta.secciones.length-1)) && paramConfigPage.bigCurrentPage==numPages">
+														<div style="display:inline-block" ng-if="myVar && (posicionActual < (encuesta.secciones.length-1)) && paramConfigPage.bigCurrentPage==numPages">
 														<a href="#" data-toggle="tooltipinfo" data-placement="bottom" title="Consultar la siguiente sección de la evaluación">
 														<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 														</a>
