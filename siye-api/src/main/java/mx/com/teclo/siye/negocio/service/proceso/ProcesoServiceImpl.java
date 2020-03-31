@@ -96,6 +96,7 @@ public class ProcesoServiceImpl implements ProcesoService {
     	List<ProcesoEncuestaDTO> procesoEncuestaDTO = new ArrayList<ProcesoEncuestaDTO>();
     	int contador=0;
     	int cantidadEncuestasAcontestar=0;
+    	Boolean banderaMostrarContestados=false;
 		if(encuestasByUsuario.size()>0)
 		{
 			for(PlanProcesoVO actual:plan)
@@ -148,7 +149,14 @@ public class ProcesoServiceImpl implements ProcesoService {
 			{
 				for(ProcesoEncuestaDTO actualEncuestas:procesoEncuestaDTO)
 				{
-				servicioEncuestasMyBatisDAO.insertarEncuestas(idSolicitud, actualEncuestas.getIdEncuesta().getIdEncuesta());
+					if(actualEncuestas.getIdEncuesta().getCdEncuesta()=="SAT01"||actualEncuestas.getIdEncuesta().getCdEncuesta()=="SAT02")
+					{
+						servicioEncuestasMyBatisDAO.insertarEncuestas(idSolicitud, actualEncuestas.getIdEncuesta().getIdEncuesta(),false);
+					}else
+					{
+					    servicioEncuestasMyBatisDAO.insertarEncuestas(idSolicitud, actualEncuestas.getIdEncuesta().getIdEncuesta(),true);
+							
+					}
 				}
 
 			}
