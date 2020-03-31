@@ -25,10 +25,10 @@ public class EncuestaRestController {
 			@RequestParam(value="idEncuesta") Long idEncuesta, 
 			@RequestParam(value="idOrdenServicio") Long idOrdenServicio) throws NotFoundException{
 		UsuarioEncuestaDetalleVO encuesta = encuestaService.encuestaDetalle(idEncuesta, idOrdenServicio);
-		return new ResponseEntity<UsuarioEncuestaDetalleVO>(encuesta, HttpStatus.OK);
-		
-		
+		return new ResponseEntity<UsuarioEncuestaDetalleVO>(encuesta, HttpStatus.OK);	
 	}
+	
+	
 	
 
 
