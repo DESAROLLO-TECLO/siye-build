@@ -23,5 +23,41 @@ public interface ExpedienteImgDAO extends BaseDao<ExpedientesImgDTO> {
      * Metodo para traer las imagenes que pertenescan a ordenes de servicio 
      * */
 	public List<ImagenVO> getAllExpedientesImgVO(List<Long> idOrdenServicio);
+	
+	/**
+     * @author Maverick
+     * @param numOrdenServicio
+     * @param Long idPlan
+     * @return List<ImagenVO>
+     * Metodo para traer las imagenes que pertenescan a ordenes de servicio y al plan corespondiente 
+     * */
+	public List<ImagenVO> getImgByPlan(Long OrdenServicio, Long idPlan);
+	
+	/**
+     * @author Maverick
+     * @param numOrdenServicio
+     * @param Long idEncuesta
+     * @return List<ImagenVO>
+     * Metodo para traer las imagenes que pertenescan a ordenes de servicio y a la encuensta 
+     * */
+	public List<ImagenVO> getImgByEncuesta(Long OrdenServicio, Long idEncuesta);
+	
+	
+	/**
+     * @author Maverick
+     * @param numOrdenServicio
+     * @param Long idPlan
+     * @return List<ImagenVO>
+     * Metodo para traer las imagenes que pertenescan a ordenes de servicio y a la pregunta especifica 
+     * */
+	public List<ImagenVO> getImgByPregunta(Long OrdenServicio, Long idPregunta);
+	
+	/**
+     * @author Maverick
+     * @param numOrdenServicio
+     * @return List<ImagenVO>
+     * Metodo para traer las imagenes que pertenescan a una OS y que estan en este nivel
+     * */
+	public List<ImagenVO> getImgByOrdenServicio(Long OrdenServicio);
 
 }

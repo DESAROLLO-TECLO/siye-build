@@ -11,12 +11,21 @@ angular.module(appTeclo).service('altaServicioService',function($http,config) {
 	
 	this.buscarCentroInstalacion = function(){
 		return $http.get(config.baseUrl + "/catalogo/getCatOrdenProceso")
-	}
-	
-	this.buscarVehiculo = function (valor) {
-		return $http.get(config.baseUrl + "/falta", 
-				{params:{
-					"valor": valor}});
 	};
+	
+	this.buscarVehiculo = function (placa) {
+		return $http.get(config.baseUrl + "/proceso/buscaPlacaVehiculo", 
+				{params:{
+					"placa": placa}});
+	};
+	this.buscarTipoKit = function(idTipoKit){
+		return $http.get(config.baseUrl + "/proceso/dipositivosPorKit",
+				{params:{
+					"idTipoKit" : idTipoKit}});
+	};
+	
+	this.altaOrdenServicio = function(ordenVO){
+	return $http.post(config.baseUrl + "/altaOrdenServicio", ordenVO);	
+	}
 	
 });

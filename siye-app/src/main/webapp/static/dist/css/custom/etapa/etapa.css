@@ -62,3 +62,9 @@
         opacity: 0.5;
     }
   }
+
+  .etapa-texto{
+      color: #cf0a2c;
+      font-weight: bold;
+      font-size: 1.2em;
+  }

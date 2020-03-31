@@ -9,7 +9,7 @@ public class ImagenVO {
 	private Long idPregunta;
 	private String nbExpedienteODS; 
 	private String cdTipoArchivo;
-	private Byte[] lbExpedienteODS;
+	private byte[] lbExpedienteODS;
 	
 	
 	/**
@@ -99,13 +99,13 @@ public class ImagenVO {
 	/**
 	 * @return the lbExpedienteODS
 	 */
-	public Byte[] getLbExpedienteODS() {
+	public byte[] getLbExpedienteODS() {
 		return lbExpedienteODS;
 	}
 	/**
 	 * @param lbExpedienteODS the lbExpedienteODS to set
 	 */
-	public void setLbExpedienteODS(Byte[] lbExpedienteODS) {
+	public void setLbExpedienteODS(byte[] lbExpedienteODS) {
 		this.lbExpedienteODS = lbExpedienteODS;
 	}
 	
