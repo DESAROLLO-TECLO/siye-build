@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
 
@@ -21,7 +22,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncue
 @Table(name = "TIE050D_IE_EXPEDIENTES_IMG")
 public class ExpedientesImgDTO implements Serializable{
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -5086259212784236181L;
 
 	@Id
 	@SequenceGenerator(name = "seqExpeImg", sequenceName = "SQIE050D_IE_EXPEDIENTES_IMG", allocationSize = 1)
@@ -72,6 +73,14 @@ public class ExpedientesImgDTO implements Serializable{
 
 	@Column(name = "FH_MODIFICACION")
 	private Date fhModifica;
+
+	@JoinColumn(name = "ID_INCIDENCIA")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private IncidenciaDTO incidencia;
+
+	@JoinColumn(name = "ID_TIPO_EXPEDIENTE")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private TipoExpedienteDTO tipoExpediente;
 	
 
 	/**
