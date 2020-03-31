@@ -16,4 +16,17 @@ public interface UsuarioEncuestaRespuestaDAO extends BaseDao<UsuaroEncuestaRespu
 	public List<UsuaroEncuestaRespuestaDTO> repuestas(Long idUsuEncuIntento);
 	
 	List<UsuaroEncuestaRespuestaDTO> getRespuestas(Long idUsuEncuIntento, Long idEncuesta);
+	
+	
+	/**
+	 * @Descripción: Se guardan las repuestas marcadas por el usuario
+	 * @author Mannuel
+	 * @param idUsuEncuIntento
+	 * @param idEncuesta
+	 * @param idSeccion
+	 * @param idPregunta
+	 * @return UsuaroEncuestaRespuestaDTO 
+	 */
+	public UsuaroEncuestaRespuestaDTO userEncuestaRespuesta(Long idUsuEncuIntento, Long idEncuesta, Long idSeccion, Long idPregunta);
+
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
+import mx.com.teclo.siye.persistencia.vo.encuesta.UserRespuestaVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaIntentosVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaVO;
@@ -50,4 +51,13 @@ public interface EncuestaService {
 	 * @return UsuarioEncuestaIntentosVO
 	 */
 	public UsuarioEncuestaIntentosVO detalle(Long idUsuEncuIntento, Boolean finalizar) throws NotFoundException;
+	
+	/**
+	 * @Descripción: Se guardan las repuestas marcadas por el usuario
+	 * @author Mannuel Dirsio
+	 * @param List<UserRespuestaVO>
+	 * @return Boolean 
+	 */
+	public Boolean guardarRespuestas(List<UserRespuestaVO> l)throws BusinessException;
+	
 }

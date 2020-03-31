@@ -29,4 +29,13 @@ public interface SeccionDAO  extends BaseDao<SeccionDTO> {
 	 * @return List<SeccionDTO>
 	 */
 	public List<SeccionDTO> seccionesEncuesta(Long idEncuesta);
+	
+	
+	/**
+	 * @Descripción: Método para consultar la sección medienta
+	 * su identificador unico
+	 * @author Mannuel
+	 * @return SeccionDTO
+	 */
+	public SeccionDTO seccion(Long idSeccion);
 }

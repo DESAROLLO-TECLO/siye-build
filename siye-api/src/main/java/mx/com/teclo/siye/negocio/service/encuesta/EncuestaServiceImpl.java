@@ -19,7 +19,10 @@ import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.EstatusCalificacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestaDetalleDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestasDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.OpcionesDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.PasswordDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.PreguntasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.SeccionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuentaIntentoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaDAO;
@@ -27,6 +30,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaResp
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.StEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EstatusCalificacionDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OpcionesDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.PreguntasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.SeccionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
@@ -38,6 +42,7 @@ import mx.com.teclo.siye.persistencia.vo.encuesta.IntentoDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.OpcionVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.PreguntaVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.SeccionVO;
+import mx.com.teclo.siye.persistencia.vo.encuesta.UserRespuestaVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaIntentosVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaRespuestaVO;
@@ -80,10 +85,17 @@ public class EncuestaServiceImpl implements EncuestaService {
 	@Autowired
 	private UsuarioEncuestaDAO usuarioEncuestaDAO;
 	
+	@Autowired 
+	private EncuestasDAO encuestasDAO;
+	
+	@Autowired
+	private PreguntasDAO preguntasDAO;
+	
+	@Autowired 
+	private OpcionesDAO  opcionesDAO;
 	
 	
-	
-
+		
 	@Override
 	@Transactional
 	public UsuarioEncuestaDetalleVO encuestaDetalle(Long idEncuesta,
@@ -419,5 +431,43 @@ public class EncuestaServiceImpl implements EncuestaService {
 			}
 		}
 		return objectReturn;
+	}
+
+
+	@Override
+	public Boolean guardarRespuestas(List<UserRespuestaVO> l) throws BusinessException {
+	
+		if(l.isEmpty())// No se guardar ni procesa nada
+			return true;
+		Long idIntento = l.isEmpty() ? 0L: l.get(0).getIdIntento();		
+		UsuarioEncuestaIntentosDTO ueDTO = usuarioEncuentaIntentoDAO.getIntentoById(idIntento);	
+		// Obtenemos la encuesta actual del usuario
+		if(ueDTO.getStEncuesta().getCdStEncuesta().equals("FIN"))
+			throw new BusinessException("Esta encuesta ya fue finalizada, favor de validar.");
+		
+		if(ueDTO != null)
+		for(UserRespuestaVO urVO: l) {
+			// Obtenemos la encuesta actual
+			EncuestasDTO eDTO = encuestasDAO.encuestaIntento(urVO.getIdEncuesta());
+			
+			// Obtener la sección actual
+			SeccionDTO sDTO = seccionDAO.seccion(urVO.getIdSeccion());
+			
+			// Obtener la prelgunta actual
+			PreguntasDTO pDTO = preguntasDAO.pregunta(urVO.getIdPregunta(), true);
+			
+			UsuaroEncuestaRespuestaDTO uDTO = usuarioEncuestaRespuestaDAO.userEncuestaRespuesta(ueDTO.getIdUsuEncuIntento(), eDTO.getIdEncuesta(), sDTO.getIdSeccion(), pDTO.getIdPregunta());
+			if(uDTO != null) {
+				if(urVO.getIdOpcion() != null) {
+					// Obtenemos la opción medianta su identificador unico recibido
+					OpcionesDTO oDTO = opcionesDAO.opcion(urVO.getIdOpcion());
+					uDTO.setFhRespuesta(new Date());
+					uDTO.setOpcionesDTO(oDTO);
+				}
+				uDTO.setFhLectura(new Date());
+				usuarioEncuestaRespuestaDAO.update(uDTO);	
+			}
+		}
+		return true;	
 	}
 }

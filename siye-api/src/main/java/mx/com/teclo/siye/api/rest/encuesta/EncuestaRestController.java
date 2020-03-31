@@ -17,6 +17,7 @@ import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.negocio.service.encuesta.EncuestaService;
 import mx.com.teclo.siye.negocio.service.encuesta.RespuestaService;
 import mx.com.teclo.siye.negocio.service.usuario.UsuarioService;
+import mx.com.teclo.siye.persistencia.vo.encuesta.UserRespuestaVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaIntentosVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaVO;
@@ -92,6 +93,15 @@ public class EncuestaRestController {
 		}
 		return new ResponseEntity<UsuarioEncuestaIntentosVO>(encuestaIntentosVO, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value="/respuestas", method = RequestMethod.POST)
+	//@PreAuthorize("hasAnyAuthority('SERVICE14_ENC_RESPUESTAS')")
+	public ResponseEntity<Boolean> respuestas(@RequestBody List<UserRespuestaVO> l) throws NotFoundException, BusinessException {
+		Boolean b = encuestaService.guardarRespuestas(l);
+		return new ResponseEntity<Boolean>(b, HttpStatus.OK);
+
+	}
+	
 	
 
 	
