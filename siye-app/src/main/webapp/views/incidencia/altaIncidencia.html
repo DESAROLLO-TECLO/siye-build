@@ -1,0 +1,122 @@
+<head>
+    <meta charset="UTF-8">
+    <style type="text/css">
+    	.nbStatus {
+			display: block;
+			border-radius: .25em;
+			width: 10px;
+			height: 30px;
+			margin: 0 auto;
+		}
+    </style>
+</head>
+<section class="content-header">
+    <h1>{{breadCrumbs.servicio}}</h1>
+    <ol class="breadcrumb">
+        <li>
+            <a>
+                <i class="{{breadCrumbs.icono}}"></i>{{breadCrumbs.modulo}}
+            </a>
+        </li>
+        <li class="active">{{breadCrumbs.servicio}}</li>
+    </ol>
+</section>
+
+<section class="content">
+    <form role="form" name="formAltaIncidencia" novalidate>
+        <div class="row">
+            <div class="col-xs-12 col-md-offset-1 col-md-10">
+                <div class="box box-danger">
+                    <div class="box-header with-border text-center">
+                        <h3 class="box-title"> Registro de incidencia </h3>
+<!--                         <div class="box-tools pull-right"> -->
+<!--                             <button type="button" class="btn btn-box-tool" data-widget="collapse"> -->
+<!-- 								<i class="fa fa-minus"></i> -->
+<!-- 							</button> -->
+<!--                         </div> -->
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                        	<div class="col-md-12 text-right">
+                        		<label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelFh' | translate}} {{fechaAnio}}</label>
+                        	</div>
+                        </div>	
+                        <div class="row">
+                        	<div class="col-md-4">
+                        		<label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelFlSol' | translate}} {{fechaAnio}}</label>
+                        	</div>
+                        	<div class="col-md-4">
+                        		<label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelPl' | translate}} {{fechaAnio}}</label>
+                        	</div>
+                        	<div class="col-md-4">
+                        		<label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelMA' | translate}} {{fechaAnio}}</label>
+                        	</div>
+                        </div>	
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group" ng-class="{'has-error': formConsultaServicio.tipoBusqueda.$invalid && formConsultaServicio.tipoBusqueda.$dirty}">
+                                    <label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelTpInc' | translate}} </label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-list-ul"></i>
+                                        </div>
+                                        <select class="form-control" name="tipoBusqueda" id="tipoBusqueda" ng-required="true" select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
+                                        	ng-model="parametroBusqueda.tipoBusqueda" ng-options="tipo as tipo.nbTipoBusqueda for tipo in listTipoBusqueda" ng-change="validarSelect()">
+											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+										</select>
+                                    </div>
+                                    <div ng-show="formConsultaServicio.tipoBusqueda.$invalid && formConsultaServicio.tipoBusqueda.$dirty" ng-style="{color:'red'}">
+                                        <label> {{'ORDENSERVICIO.AltaServicio.seleccionadores.tipoBusqueda.validacion' | translate}} </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group" ng-class="{'has-error': formConsultaServicio.valorBusqueda.$invalid && formConsultaServicio.valorBusqueda.$dirty}">
+                                    <label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelPriod' | translate}} </label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"> <i class="fa fa-pencil"> </i> </span>
+                                        <select class="form-control" name="tipoBusqueda" id="tipoBusqueda" ng-required="true" select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
+                                        	ng-model="parametroBusqueda.tipoBusqueda" ng-options="tipo as tipo.nbTipoBusqueda for tipo in listTipoBusqueda" ng-change="validarSelect()">
+											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+										</select>
+                                    </div>
+                                    <div ng-show="formConsultaServicio.valorBusqueda.$invalid && formConsultaServicio.valorBusqueda.$dirty" ng-style="{color:'red'}">
+                                        <label> {{'ORDENSERVICIO.AltaServicio.seleccionadores.valor.validacion' | translate}} </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        	<div class="col-md-4">
+                        		<label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelTC' | translate}} {{fechaAnio}}</label>
+                        	</div>
+                        	<div class="col-md-4">
+                        		<label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelVin' | translate}} {{fechaAnio}}</label>
+                        	</div>
+                        </div>	
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="form-group" ng-class="{'has-error': formConsultaServicio.tipoBusqueda.$invalid && formConsultaServicio.tipoBusqueda.$dirty}">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-list-ul"></i>
+                                        </div>
+                                        <textarea name="textarea" rows="10" cols="50">Observaciones</textarea>
+                                    </div>
+                                    <div ng-show="formConsultaServicio.tipoBusqueda.$invalid && formConsultaServicio.tipoBusqueda.$dirty" ng-style="{color:'red'}">
+                                        <label> {{'ORDENSERVICIO.AltaServicio.seleccionadores.tipoBusqueda.validacion' | translate}} </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group" ng-class="{'has-error': formConsultaServicio.tipoBusqueda.$invalid && formConsultaServicio.tipoBusqueda.$dirty}">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

@@ -32,6 +32,19 @@ public class UsuarioEncuestaRespuestaDAOImpl extends BaseDaoHibernate<UsuaroEncu
 		return criteria.list();
 	}
 
+	@Override
+	public UsuaroEncuestaRespuestaDTO userEncuestaRespuesta(Long idUsuEncuIntento, Long idEncuesta, Long idSeccion,
+			Long idPregunta) {
+		
+		Criteria c = getCurrentSession().createCriteria(UsuaroEncuestaRespuestaDTO.class);
+		c.add(Restrictions.eq("id.idUsuEncuIntento", idUsuEncuIntento));
+		c.add(Restrictions.eq("id.idEncuesta", idEncuesta));
+		c.add(Restrictions.eq("id.idSeccion", idSeccion));
+		c.add(Restrictions.eq("id.idPregunta", idPregunta));
+		c.add(Restrictions.eq("stActivo", 1));
+		return (UsuaroEncuestaRespuestaDTO) c.uniqueResult();
+	}
+
 	 
 	
 }

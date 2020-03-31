@@ -29,18 +29,13 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
  */
 @Entity
 @Table(name = "TIE002D_EE_ODS_ENCUESTA", catalog = "")
-public class UsuarioEncuestaDTO implements Serializable {
+public class OrdenEncuestaDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
 	@Basic(optional = false)
 	@Column(name = "ID_ODS_ENCUESTA", nullable = false)
 	private Long idUsuarioEncuesta;
-
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "ID_ORDEN_SERVICIO", referencedColumnName = "ID_ORDEN_SERVICIO", nullable = false)
-	private OrdenServicioDTO usuario;
-
 	@Basic(optional = false)
 	@Column(name = "NU_INTENTOS", nullable = false)
 	private Integer nuIntegerentos;
@@ -63,12 +58,23 @@ public class UsuarioEncuestaDTO implements Serializable {
 	@Column(name = "FH_MODIFICACION", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fhModificacion;
-	@JoinColumn(name = "ID_ENCUESTA", referencedColumnName = "ID_ENCUESTA", nullable = false)
+	
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_ENCUESTA", referencedColumnName = "ID_ENCUESTA", nullable = false)
 	private EncuestasDTO encuesta;
 	
-	/*@OneToMany(fetch = FetchType.LAZY, mappedBy = "usuarioEncuesta")
-	private List<UsuarioEncuestaIntentosDTO> usuarioEncuestaIntentos;*/
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name = "ID_ORDEN_SERVICIO", referencedColumnName = "ID_ORDEN_SERVICIO", nullable = false)
+	private OrdenServicioDTO ordenServicio;
+	
+
+	public OrdenServicioDTO getOrdenServicio() {
+		return ordenServicio;
+	}
+
+	public void setOrdenServicio(OrdenServicioDTO ordenServicio) {
+		this.ordenServicio = ordenServicio;
+	}
 
 	public Long getIdUsuarioEncuesta() {
 		return idUsuarioEncuesta;
@@ -134,13 +140,6 @@ public class UsuarioEncuestaDTO implements Serializable {
 		this.fhModificacion = fhModificacion;
 	}
 
-	public OrdenServicioDTO getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(OrdenServicioDTO usuario) {
-		this.usuario = usuario;
-	}
 
 	public EncuestasDTO getEncuesta() {
 		return encuesta;
@@ -149,14 +148,6 @@ public class UsuarioEncuestaDTO implements Serializable {
 	public void setEncuesta(EncuestasDTO encuesta) {
 		this.encuesta = encuesta;
 	}
-/*
-	
-	public List<UsuarioEncuestaIntentosDTO> getUsuarioEncuestaIntentos() {
-		return usuarioEncuestaIntentos;
-	}
 
-	public void setUsuarioEncuestaIntentos(List<UsuarioEncuestaIntentosDTO> usuarioEncuestaIntentos) {
-		this.usuarioEncuestaIntentos = usuarioEncuestaIntentos;
-	}*/
 
 }
