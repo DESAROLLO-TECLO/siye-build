@@ -16,8 +16,8 @@ angular.module(appTeclo)
 				WebuiPopovers.hideAll();
 				
 				$location.path('/');
-				if ( next.$$route.originalPath === "/encuestaSatisfaccion" )
-					$location.path('/encuestaSatisfaccion');
+				if ( next.$$route.originalPath === "/encuesta" )
+					$location.path('/encuesta');
 			})
 		}
 		else if(next.$$route.originalPath === "/" && token) {

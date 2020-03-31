@@ -3,21 +3,68 @@ angular.module(appTeclo)
 function($rootScope,$scope,$window,$translate,$timeout,ModalService, etapaService, etapaInfo) {
 
     $scope.fechaHoy = new Date();
-
-    $scope.etapaInfo = new Object({
-        id:etapaInfo[0]
+    $scope.stValidarCheck = false;
+    
+    $scope.dataEtapa = new Object({
+        idOrdenServicio:etapaInfo.data[0].idOrdenServicio,
+        cdOrdenServicio:etapaInfo.data[0].cdOrdenServicio,
+        transportista:etapaInfo.data[0].transportista,
+        vehiculo:{
+            idVehiculo:etapaInfo.data[0].vehiculo.idVehiculo,
+            cdPlacaVehiculo:etapaInfo.data[0].vehiculo.cdPlacaVehiculo,
+	        cdVin:etapaInfo.data[0].vehiculo.cdVin,
+            cdTarjetaDeCirculacion:etapaInfo.data[0].vehiculo.cdTarjetaDeCirculacion,
+            tipoVehiculo:etapaInfo.data[0].vehiculo.tipoVehiculo,
+            consecionario:etapaInfo.data[0].vehiculo.consecionario
+        },
+        centroInstalacion:{
+            idVehiculo:etapaInfo.data[0].centroInstalacion.idCentroInstalacion,
+            cdCentroInstalacion:etapaInfo.data[0].centroInstalacion.cdCentroInstalacion,
+            nbCentroInstalacion:etapaInfo.data[0].centroInstalacion.nbCentroInstalacion
+        },
+        kitInstalacion:{
+            idKitInstalacion:etapaInfo.data[0].kitInstalacion.idKitInstalacion,
+            cdKitInstalacion:etapaInfo.data[0].kitInstalacion.cdKitInstalacion
+        },
+        plan:{
+            idPlan:etapaInfo.data[0].plan.idPlan,
+            cdPlan:etapaInfo.data[0].plan.cdPlan,
+            nbPlan:etapaInfo.data[0].plan.nbPlan,
+            txPlan:etapaInfo.data[0].plan.txPlan,
+            stActivo:etapaInfo.data[0].plan.stActivo
+        }
     });
-    console.log(etapaInfo);
-    /*
+    
+    console.log($scope.dataEtapa);
+
     consultaPlan = function(){
-        etapaService.getConsultaPlan(1).success(function(data){
+        var idPlan = $scope.dataEtapa.plan.idPlan;
+        var idOrden = $scope.dataEtapa.idOrdenServicio;
+        etapaService.getPlan(idPlan, idOrden).success(function(data){
             $scope.dataPlan = data;
-            console.log(data);
-        }).error(function(data){
-			console.log(data);
-		});
+            var dplength = $scope.dataPlan.length;
+            for(var i = 0; i < dplength; i++){
+                switch($scope.dataPlan[i].proceso.cdProceso){
+                    case 'INS':
+                        $scope.dataPlan[i].urlImg = "static/dist/img/etapas/003-mechanic.png";
+                        break;
+                    case 'PLAT':
+                        $scope.dataPlan[i].urlImg = "static/dist/img/etapas/002-null.png";
+                        break;
+                    case 'HOLO':
+                        $scope.dataPlan[i].urlImg = "static/dist/img/etapas/001-qr-code.png";
+                        break;
+                    default:
+                        $scope.dataPlan[i].urlImg = "static/dist/img/etapas/004-registration.png";
+                        break;
+                }
+            }
+            console.log($scope.dataPlan);
+        }).error(function(error){
+            console.log(error);
+        });
     }
 
     consultaPlan();
-    */
+
 });
