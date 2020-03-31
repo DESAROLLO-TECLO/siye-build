@@ -110,12 +110,12 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         }
     });
 
-    $routeProvider.when("/etapas/proceso/encuesta/:idEncuesta", {
+    $routeProvider.when("/etapas/proceso/encuesta/:idencuesta", {
         templateUrl: "views/etapa/proceso/encuesta/encuesta.html",
         controller: "encuestaController",
         resolve: {
             encuestaInfo: function(encuestaService, $route) {
-                return encuestaService.getInfoEncuesta($route.current.params.idEncuesta);
+                return encuestaService.getInfoEncuesta($route.current.params.idencuesta);
             }
         }
     });

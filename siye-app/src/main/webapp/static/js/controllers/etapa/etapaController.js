@@ -7,8 +7,7 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
     
     if(etapaInfo != null){
         console.log(etapaInfo);
-        $rootScope.idOrSer = etapaInfo.data[0].idOrdenServicio;
-        console.log("id Orden de Servicio en RooteScope ::: " + $rootScope.idOrSer)
+        $rootScope.idOrSer = parseInt(etapaInfo.data[0].idOrdenServicio);
         $scope.dataEtapa = new Object({
             idOrdenServicio:etapaInfo.data[0].idOrdenServicio,
             cdOrdenServicio:etapaInfo.data[0].cdOrdenServicio,
