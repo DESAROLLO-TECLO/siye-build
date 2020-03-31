@@ -287,6 +287,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 		return true;
 	}
 	
+	@Override
 	@Transactional
 	public UsuarioEncuestaIntentosVO finalizarIntento(Long idUsuEncuIntento, Boolean b) throws BusinessException{
 		
@@ -383,5 +384,40 @@ public class EncuestaServiceImpl implements EncuestaService {
 				throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
 			}
 		}
+	}
+	
+	@Transactional
+	@Override
+	public void finalizarEncuesta(UsuarioEncuestaIntentosVO encuestaIntentosVO) {
+		//Convertir de UsuarioEncuestaIntentosVO a UsuarioEncuestaDTO
+		List<UsuarioEncuestaVO> encuestaIntentosVOs =new ArrayList<>();
+		encuestaIntentosVOs.add(encuestaIntentosVO.getUsuarioEncuesta());
+		List<UsuarioEncuestaDTO> listReturn =ResponseConverter.converterLista(new ArrayList<>(), encuestaIntentosVOs,UsuarioEncuestaDTO.class);
+	    listReturn.get(0).setStAplicaEncuesta(false);
+//	    listReturn.get(0).setNuIntegerentos(listReturn.get(0).getNuIntegerentos() + 1);
+		//userDTO = ResponseConverter.copiarPropiedadesFull(userVO, UsuarioDTO.class);
+	    usuarioEncuestaDAO.update(listReturn.get(0));
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Transactional
+	@Override
+	public UsuarioEncuestaIntentosVO detalle(Long idUsuEncuIntento, Boolean finalizar) throws NotFoundException{
+		UsuarioEncuestaIntentosDTO ueiDTO = usuarioEncuentaIntentoDAO.getIntentoById(idUsuEncuIntento);
+		if(ueiDTO == null)
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		UsuarioEncuestaIntentosVO objectReturn = ResponseConverter.copiarPropiedadesFull(ueiDTO, UsuarioEncuestaIntentosVO.class);
+		List<UsuaroEncuestaRespuestaDTO> uerListDTO = usuarioEncuestaRespuestaDAO.repuestas(ueiDTO.getIdUsuEncuIntento());
+					
+		objectReturn.setDetalleRespuesta(detalleIntentoService.fitroUsuarioRespuesta(uerListDTO));
+		
+		if(finalizar != null && finalizar) {
+			Map<String, Object> mapSeciones = detalleIntentoService.detalleFinalizar(objectReturn.getDetalleRespuesta());
+			if(mapSeciones.get("secciones") != null) {
+				List<SeccionVO> sListVO = (List<SeccionVO>) mapSeciones.get("secciones"); 
+				objectReturn.setSeccionesListVO(sListVO);
+			}
+		}
+		return objectReturn;
 	}
 }

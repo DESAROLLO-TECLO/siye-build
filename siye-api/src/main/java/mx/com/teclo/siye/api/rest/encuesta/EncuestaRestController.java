@@ -15,9 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.negocio.service.encuesta.EncuestaService;
+import mx.com.teclo.siye.negocio.service.encuesta.RespuestaService;
 import mx.com.teclo.siye.negocio.service.usuario.UsuarioService;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaIntentosVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaVO;
+
+
 
 
 
@@ -30,6 +34,10 @@ public class EncuestaRestController {
 	
 	@Autowired
 	private EncuestaService encuestaService;
+	
+	@Autowired
+	private RespuestaService respuestaService;
+	
 		
 	@RequestMapping(value="/detalle", method = RequestMethod.GET)
 	public ResponseEntity<UsuarioEncuestaDetalleVO> encuestaDetalle (
@@ -55,6 +63,34 @@ public class EncuestaRestController {
 		String passwordEnc = usuarioService.toggleEncryption(password, "encrypt");
 		List<UsuarioEncuestaVO> listaUsuarioEncuestaDTO = encuestaService.consultaEncuestasSatisfaccion(tipoBusqueda, valor, passwordEnc);
 		return new ResponseEntity<List<UsuarioEncuestaVO>>(listaUsuarioEncuestaDTO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/finalizar", method = RequestMethod.PUT)
+	public ResponseEntity<UsuarioEncuestaIntentosVO> finalizarEncuesta(
+		@RequestBody UsuarioEncuestaIntentosVO usuarioEncuestaIntentosVO
+			) throws NotFoundException {
+		UsuarioEncuestaIntentosVO encuestaIntentosVO =null;
+		try {
+			//1.- Finalizar intento
+			encuestaIntentosVO = encuestaService.finalizarIntento(usuarioEncuestaIntentosVO.getIdUsuEncuIntento(), false);
+			//2.- Calificar intento
+			respuestaService.calificarIntentoEncuesta(usuarioEncuestaIntentosVO.getIdUsuEncuIntento());
+			//3.- Actuaizar a falso el campo aplicar encuesta y contar total de intentos 
+			encuestaService.finalizarEncuesta(encuestaIntentosVO);
+			encuestaIntentosVO.setIdUsuEncuIntento(null);
+			encuestaIntentosVO.setUsuarioEncuesta(null);
+			encuestaIntentosVO.setEsProcesoExitoso(true);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			encuestaIntentosVO=new UsuarioEncuestaIntentosVO();
+			encuestaIntentosVO.setEsProcesoExitoso(false);
+		}
+		
+		if(encuestaIntentosVO != null) {
+			// Consultamos los datoas del itento por el ID 
+			encuestaIntentosVO = encuestaService.detalle(usuarioEncuestaIntentosVO.getIdUsuEncuIntento(), true);
+		}
+		return new ResponseEntity<UsuarioEncuestaIntentosVO>(encuestaIntentosVO, HttpStatus.OK);
 	}
 	
 
