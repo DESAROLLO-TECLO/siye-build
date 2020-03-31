@@ -44,6 +44,6 @@ public interface ExpedienteImgService {
 	 *@param cdNivel 
 	 *@return List<ImagenVO>
 	 *  Metodo para obtener las imagenes que pertenescan a la Orden de Servicio en el nivel Indicado*/
-	public List<ImagenVO> getInfoExpedienteByNivel(Long nuOrderServicio, Long idValorBuscar, String cdNivel);
+	public List<ImagenVO> getInfoExpedienteByNivel(String nuOrderServicio, Long idValorBuscar, String cdNivel);
 	
 }

@@ -16,6 +16,9 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 	
 	@Autowired
 	private IncidenciaDAO incidenciaDAO;
+	
+	private static final String MSG_ERROR_INCIDENCIA_NULA = "No se Encontraron Incidencias";
+
 
 	@Override
 	@Transactional
@@ -23,6 +26,11 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		IncidenciaVO iVO = new IncidenciaVO();
 		IncidenciaDTO iDTO = incidenciaDAO.getIncidenciabycdIncidencia(cdIncidencia);
 		iVO = ResponseConverter.copiarPropiedadesFull(iDTO, IncidenciaVO.class);
+		
+		if (iDTO == null) {
+			throw new NotFoundException(MSG_ERROR_INCIDENCIA_NULA);
+		}
+		
 		return iVO;
 	}
 
