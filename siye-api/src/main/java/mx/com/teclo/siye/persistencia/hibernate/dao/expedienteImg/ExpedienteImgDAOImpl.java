@@ -41,7 +41,9 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 				"ID_PREGUNTA AS idPregunta," + 
 				"NB_EXPEDIENTE_ODS AS nbExpedienteODS," + 
 				"CD_TIPO_ARCHIVO AS cdTipoArchivo," + 
-				"LB_EXPEDIENTE_ODS AS lbExpedienteODS " + 
+				"LB_EXPEDIENTE_ODS AS lbExpedienteODS, " +
+				"ID_INCIDENCIA AS idIncidencia,"+
+				"ID_TIPO_EXPEDIENTE AS idTipoExpediente"+
 				" FROM TIE050D_IE_EXPEDIENTES_IMG" + 
 				"   WHERE ID_ORDEN_SERVICIO IN (:idOrdenServicio) AND ST_ACTIVO =1");
 		 List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
@@ -53,9 +55,13 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 				 .addScalar("nbExpedienteODS", StringType.INSTANCE)
 				 .addScalar("cdTipoArchivo", StringType.INSTANCE)
 				 .addScalar("lbExpedienteODS",StandardBasicTypes.BINARY)
+				 .addScalar("idIncidencia",LongType.INSTANCE)
+				 .addScalar("idTipoExpediente",LongType.INSTANCE)
 				 .setParameterList("idOrdenServicio", idOrdenServicio)
 				 .setResultTransformer(Transformers.aliasToBean(ImagenVO.class)).list();
 		return respuesta;
+		
+		
 	}
 
 	@Override
@@ -154,7 +160,7 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 				"CD_TIPO_ARCHIVO AS cdTipoArchivo," + 
 				"LB_EXPEDIENTE_ODS AS lbExpedienteODS " + 
 				" FROM TIE050D_IE_EXPEDIENTES_IMG" + 
-				"   WHERE ID_ORDEN_SERVICIO=:OrdenServicio  AND ST_ACTIVO=1 AND ID_ODS_ENCUESTA IS NULL AND ID_PREGUNTA IS NULL ");
+				"   WHERE ID_ORDEN_SERVICIO=:OrdenServicio  AND ST_ACTIVO=1 AND ID_PROCESO_ENCUESTA IS NULL AND ID_ODS_ENCUESTA IS NULL AND ID_PREGUNTA IS NULL ");
 		 List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				 .addScalar("idExpedienteODS", LongType.INSTANCE)
 				 .addScalar("idOdsEncuesta", LongType.INSTANCE)
