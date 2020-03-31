@@ -104,8 +104,8 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         templateUrl: "views/etapa/proceso/proceso.html",
         controller: "procesoController",
         resolve: {
-            procesoInfo : function(procesoService, $route){
-                return procesoService.getInfoProceso($route.current.params.idpro,$route.current.params.idord);
+            procesoInfo: function(procesoService, $route) {
+                return procesoService.getInfoProceso($route.current.params.idpro, $route.current.params.idord);
             }
         }
     });
@@ -120,26 +120,6 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         }
     });
 
-    $routeProvider.when("/editar/:id/:opt/:val", {
-        templateUrl: "views/ordenServicio/editar/editarOrdenServicio.html",
-        controller: "editarOrdenServicioController",
-        resolve: {
-            ordenServicio: function(consultaServicioService, $route) {
-                return consultaServicioService.obtenerOrden($route.current.params.id);
-            }
-        }
-    });
-
-    $routeProvider.when("/consulta/:opt/:val", {
-        templateUrl: "views/ordenServicio/consultaServicio.html",
-        controller: "consultaServicioController",
-        resolve: {
-            opciones: function($route) {
-                return { opt: $route.current.params.opt, val: $route.current.params.val };
-            }
-        }
-    });
-
     $routeProvider.when("/encuesta", {
         templateUrl: "views/encuesta/encuesta.html",
         controller: "encuestaSatisfaccionController"
@@ -147,9 +127,67 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
 
     $routeProvider.when("/modificar", {
         templateUrl: "views/ordenServicio/editar/editarOrdenServicio.html",
-        controller: "editarOrdenServicioController",
-        ordenServicio: function(consultaServicioService, $route) {
-            return null;
+        controller: "editarOrdenServicioController"
+    });
+
+    $routeProvider.when("/informe", {
+        templateUrl: "static/recursos/dinamicReporte.html",
+        controller: "dinamicReporteController"
+    });
+
+    $routeProvider.when("/reporteDinamicoConsulta/:idReporte", {
+        templateUrl: "static/recursos/formBusqueda.html",
+        controller: "formBusquedaController",
+        resolve: {
+            reporte: function($route, $http, $q, config, storageService) {
+                var URIWS = storageService.getParameterValApp('URLAPIREP');
+                var deferred = $q.defer();
+                $http({
+                    method: 'GET',
+                    url: URIWS + "/reporte/getReporte",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    params: {
+                        'idReporte': $route.current.params.idReporte
+                    }
+                }).then(function(reporteVO) {
+                    let objectReporteVO = reporteVO.data;
+                    let array = new Array();
+                    let objetc = undefined;
+                    if (objectReporteVO.parametrosAux) {
+                        for (let i = 0; i < objectReporteVO.parametrosAux.length; i++) {
+                            if (objectReporteVO.parametrosAux[i].txtQueryTipoCat != null) {
+                                objetc = new Object({ 'idParamtro': objectReporteVO.parametrosAux[i].idParamtro, 'txQuery': objectReporteVO.parametrosAux[i].txtQueryTipoCat });
+                                array.push(objetc);
+                            }
+                        }
+                        if (array.length < 1) {
+                            return deferred.resolve(objectReporteVO);
+                        }
+                    }
+
+                    $http({
+                        method: 'POST',
+                        url: config.baseUrl + "/validacion/validacionParametroTipoCatalogoVO",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        data: array
+                    }).then(function(data) {
+                        let lisResult = data.data;
+                        for (let j = 0; j < lisResult.length; j++) {
+                            for (let k = 0; k < objectReporteVO.parametrosAux.length; k++) {
+                                if (lisResult[j].idParamtro == objectReporteVO.parametrosAux[k].idParamtro) {
+                                    objectReporteVO.parametrosAux[k].catValues = lisResult[j].catValues;
+                                }
+                            }
+                        }
+                        deferred.resolve(objectReporteVO);
+                    });
+                });
+                return deferred.promise;
+            }
         }
     });
 });

@@ -28,4 +28,12 @@ angular.module(appTeclo).service('consultaServicioService', function($http, conf
             }
         });
     };
+
+    this.buscaIncidencia = function(cdIncidencia) {
+        return $http.get(config.baseUrl + '/incidencia/getIncidenciaBycdIncidencia', {
+            params: {
+                cdIncidencia: cdIncidencia
+            }
+        });
+    };
 });
