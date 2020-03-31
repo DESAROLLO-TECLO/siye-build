@@ -20,11 +20,11 @@ public class UsuarioEncuestaIntentoDAOImpl extends BaseDaoHibernate<UsuarioEncue
 		
 		criteria.createAlias("usuarioEncuesta", "ue");
 		criteria.createAlias("ue.encuesta", "en");
-		criteria.createAlias("ue.usuario", "usr");
+		criteria.createAlias("ue.ordenServicio", "usr");
  
 		criteria.add(Restrictions.eq("stActivo", true));
 		criteria.add(Restrictions.eq("en.idEncuesta", idEncuesta));
-		criteria.add(Restrictions.eq("usr.idUsuario", idUsuario));
+		criteria.add(Restrictions.eq("usr.idOrdenServicio", idUsuario));
 		criteria.add(Restrictions.eq("stMostrar", true));
 
 		return (UsuarioEncuestaIntentosDTO) criteria.uniqueResult();

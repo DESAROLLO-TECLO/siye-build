@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
@@ -48,6 +49,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 	
 
 	@Override
+	@Transactional
 	public UsuarioEncuestaDetalleVO encuestaDetalle(Long idEncuesta,
 			Long idOrdenServicio) throws NotFoundException {
 		
@@ -68,7 +70,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 				steVO = new StEncuestaVO();
 				ResponseConverter.copiarPropriedades(steVO, ueiDTO.getStEncuesta());
 				idVO.setStEncuesta(steVO);
-				idVO.setNuMinConsumidos(ueiDTO.getNuMinConsumidos());
+				//idVO.setNuMinConsumidos(ueiDTO.getNuMinConsumidos());
 				idVO.setIdUsuEncuIntento(ueiDTO.getIdUsuEncuIntento());
 			}
 			List<UsuaroEncuestaRespuestaDTO> uerListDTO = usuarioEncuestaRespuestaDAO.repuestas(ueiDTO.getIdUsuEncuIntento());
