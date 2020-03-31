@@ -5,15 +5,17 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
+import org.hibernate.type.LongType;
+import org.hibernate.type.StringType;
 import org.springframework.stereotype.Repository;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
+import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelProcesoVO;
 
 @Repository
-public class PlanProcesoDAOImpl extends BaseDaoHibernate<PlanProcesoDTO>
-		implements
-			PlanProcesoDAO {
+public class PlanProcesoDAOImpl extends BaseDaoHibernate<PlanProcesoDTO> implements PlanProcesoDAO {
 
 	@Override
 	public void beginTransaction() {
@@ -131,6 +133,21 @@ public class PlanProcesoDAOImpl extends BaseDaoHibernate<PlanProcesoDTO>
 		c.add(Restrictions.eq("plan.idPlan", idPlan));
 		c.add(Restrictions.eq("stActivo", true));
 		return (List<PlanProcesoDTO>) c.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ExpedienteNivelProcesoVO> getProcesosPlanVO(Long idPlan) {
+		StringBuilder consulta = new StringBuilder("SELECT pp.ID_PROCESO AS idProceso, proceso.TX_PROCESO AS cdProceso, proceso.NU_MAX_IMAGENES AS nuMaxImg " + 
+				"   FROM TIE036D_IE_PLAN_PROCESO pp" + 
+				"     INNER JOIN TIE035C_IE_PROCESOS proceso ON (pp.ID_PROCESO  = proceso.ID_PROCESO)" + 
+				"     WHERE pp.ID_PLAN ="+ idPlan +" AND pp.ST_ACTIVO =1 AND proceso.ST_ACTIVO =1");
+		List<ExpedienteNivelProcesoVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
+				.addScalar("idProceso",LongType.INSTANCE)
+				.addScalar("cdProceso",StringType.INSTANCE)
+				.addScalar("nuMaxImg",LongType.INSTANCE)
+				.setResultTransformer(Transformers.aliasToBean(ExpedienteNivelProcesoVO.class)).list();
+		return respuesta;
 	}
 
 }

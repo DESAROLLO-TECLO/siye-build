@@ -1,0 +1,143 @@
+<head>
+	<meta charset="utf-8">
+</head>
+<body>
+	<div class="row">
+		<div class="box-body">
+			<div class="col-md-12">
+				<ul class="nav nav-tabs preventClic">
+					<li role="presentation" class="tabBox" ng-class="{'active border-box':flags.showValidarOrden}">
+						<a ng-click="changeViewTab('VOR')">
+							Validación de Orden
+						</a>
+					</li>
+					<li role="presentation" class="tabBox" ng-class="{'active border-box':flags.showKit}">
+						<a ng-click="changeViewTab('KIT')">
+							Kit
+						</a>
+					</li>
+					<li role="presentation" class="tabBox" ng-class="{'active border-box':flags.showInstalacion}">
+						<a ng-click="changeViewTab('INT')">
+							Instalación
+						</a>
+					</li>
+				</ul>
+				<div class="">
+					<div class="box-header with-border text-center">
+						<div class="row middleRow">
+							<div class="col-md-5 ngShowEnter" ng-show="oldMode">
+								<rzslider rz-slider-model="slider.value" rz-slider-options="slider.options"></rzslider>
+							</div>
+							<div ng-if="((fileUploader.queue | filter:{ nameTab : expedineteImg.nameTabCurrent})).length > 0" 
+								class="col-xs-3 col-md-3">
+								<span class="form-group">Adjuntar Imagenes
+									<input type="file" nv-file-select="" ng-show="false"
+										uploader="fileUploader" id="file-1"
+										class="inputfile inputfile-1" multiple />
+									<label for="file-1"
+										class="btn btn-danger">
+										<i class="fa fa-plus" aria-hidden="true"></i>
+									</label>
+								</span>
+							</div>
+                       		<div class="col-xs-3 col-md-3">
+                       			<span>
+                       				Total de Imagenes Cargadas: 
+                       				{{((fileUploader.queue | filter:{ nameTab : expedineteImg.nameTabCurrent})).length}} 
+                       			</span>
+                       		</div>
+                       		<div class="col-xs-3 col-md-3">
+                       			<span>Maximo Número de Imagenes: {{expedineteImg.maxLimitUpdate}}</span>
+                       		</div>
+							<div class="col-xs-3 col-md-3">
+								<input class="btn btn-danger" uploader="fileUploader" type="file" accept="image/*" capture="camera">
+			         		</div>
+							<div class="box-body ngShowEnter col-xs-12 col-md-12">
+								
+								<div ng-show="((fileUploader.queue | filter:{ nameTab : expedineteImg.nameTabCurrent})).length == 0">
+									<div class="well my-drop-zone col-xs-6 col-md-6 col-xs-offset-3 col-md-offset-3"
+									nv-file-over="" uploader="fileUploader">
+		                            	<div class="row">
+		                            		<div class="col-xs-6 col-md-6 col-xs-offset-3 col-md-offset-3 centerCol">
+		                            			<i class="fa fa-upload fa-5x" aria-hidden="true"></i><br/>
+		                            			<div class="form-group topButton"
+													style=" width:250px; margin-left: -20px;margin-top:0.1rem;">
+													<input type="file" nv-file-select="" ng-show="false"
+														uploader="fileUploader" id="file-1"
+														class="inputfile inputfile-1" multiple />
+													<label for="file-1" capture="camera"
+														class="noneSelectedUser btn btn-danger form-control">
+														<span>Arrastredd o seleccione imagenes</span>
+													</label>
+												</div>
+		                            		</div>
+		                            	</div>
+		                        	</div>
+								</div>
+		                        	
+	                        	<div ng-if="((fileUploader.queue | filter:{ nameTab : expedineteImg.nameTabCurrent})).length > 0">
+	                        	
+	                        		<div class="col-md-12">
+                                		<div class="box-body table-responsive no-padding">
+                                    		<table class="table table-hover header-fixed">
+                                        		<thead>
+                                            		<tr>
+                                            			<th class="center center-text">
+                                                    		VISTA PREVIA
+                                                		</th>
+                                                		<th sort order="'folio'" by="order" reverse="reverse" 
+                                                    		class="center center-text">
+                                                    		NOMBRE
+                                                		</th>
+                                                		<th sort order="'folio'" by="order" reverse="reverse" 
+                                                    		class="center center-text">
+                                                    		TAMAÑO
+                                                		</th>
+                                                		<th sort order="'folio'" by="order" reverse="reverse" 
+                                                    		class="center center-text">
+                                                    		TIPO
+                                                		</th>
+                                                		<th class="center center-text">
+                                                    		Porcentaje de Carga
+                                                		</th>
+                                                		<th sort order="'folio'" by="order" reverse="reverse" 
+                                                    		class="center center-text">
+                                                    		Accion
+                                                		</th>
+                                            		</tr>
+                                            	</thead>
+                                            	<tbody>
+		                                           	<tr dir-paginate="item in (fileUploader.queue | filter:{ nameTab : expedineteImg.nameTabCurrent}) 
+		                                           						| orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage"
+							                    						pagination-id="listImages">
+		                                            	<td class="center state">
+		                                            		<div ng-if="isImage(item.file)" ng-thumb="{file:item._file,height:50}"></div>
+		                                            	</td>
+		                                            	<td class="center state">{{item.file.nameImg}}</td>
+		                                            	<td class="center state"> {{item.file.size/1024/1024|number:2}} Mb</td>
+		                                            	<td class="center state"> {{item.file.type}}</td>
+		                                            	<td class="center state"> Porcentaje de carga</td>
+		                                            	<td class="center state"><div class="col-xs-md"></div></td>
+		                                            </tr>
+		                                    	</tbody>
+                                            </table>
+                                       </div>
+                                       <div class="container-fluid">
+	                                        <div class="fixed-table-pagination" style="display: block;">
+	                                            <rows-per-page rows="view.rowsPerPage"  array="((fileUploader.queue | filter:{ nameTab : expedineteImg.nameTabCurrent}))"></rows-per-page>
+	                                            <div class="pull-right pagination">
+	                                                <dir-pagination-controls class="pagination" pagination-id="listImages"></dir-pagination-controls>
+	                                            </div>
+	                                        </div>
+                                    	</div>
+                                    </div>
+	                        	</div>
+	                        	
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>

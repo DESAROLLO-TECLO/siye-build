@@ -15,10 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-
-
-
-
 @Entity
 @Table(name = "TIE026D_IE_ORDEN_SERVICIOS")
 public class OrdenServicioDTO implements Serializable {
@@ -31,30 +27,31 @@ public class OrdenServicioDTO implements Serializable {
 	@Column(name = "ID_ORDEN_SERVICIO", unique = true, nullable = false)
 	private Long idOrdenServicio;
 	
+	
 	@Column(name = "CD_ORDEN_SERVICIO")
 	private String cdOrdenServicio;
 	
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_LOTE_ODS", referencedColumnName="ID_LOTE_ODS", insertable=false, updatable=false)
 	private LoteOrdenServicioDTO loteOrdenServicio;
 	
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_VEHICULO", referencedColumnName="ID_VEHICULO", insertable=false, updatable=false)
 	private VehiculoDTO vehiculo;
 	
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_CENTRO_INSTALACION", referencedColumnName="ID_CENTRO_INSTALACION", insertable=false, updatable=false)
 	private CentroInstalacionDTO centroInstalacion;
 	
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_KIT_INSTALACION", referencedColumnName="ID_KIT_INSTALACION", insertable=false, updatable=false)
 	private KitInstalacionDTO kitInstalacion;
 	
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_PLAN", referencedColumnName="ID_PLAN", insertable=false, updatable=false)
 	private PlanDTO plan;
 	
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_ST_SEGUIMIENTO", referencedColumnName="ID_ST_SEGUIMIENTO", insertable=false, updatable=false)
 	private StSeguimientoDTO stSeguimiento;
 	
@@ -84,6 +81,9 @@ public class OrdenServicioDTO implements Serializable {
 	
 	@Column(name = "ID_ORIGEN_ODS")
 	private Long idOrigenOds;
+	
+	@Column(name = "ID_PROCESO_ACTUAL")
+	private Long idProcesoActual;
 	
 	
 	
@@ -191,5 +191,12 @@ public class OrdenServicioDTO implements Serializable {
 	public void setIdOrigenOds(Long idOrigenOds) {
 		this.idOrigenOds = idOrigenOds;
 	}
+	public Long getIdProcesoActual() {
+		return idProcesoActual;
+	}
+	public void setIdProcesoActual(Long idProcesoActual) {
+		this.idProcesoActual = idProcesoActual;
+	}
+	
 
 }

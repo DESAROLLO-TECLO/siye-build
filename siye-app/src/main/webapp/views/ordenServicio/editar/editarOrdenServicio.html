@@ -2,18 +2,81 @@
     <meta charset="UTF-8" />
 </head>
 <section class="content-header">
-    <h1>Edición Orden Servicio</h1>
+    <h1>{{breadCrumbs.servicio}}</h1>
     <ol class="breadcrumb">
         <li>
-            <a> <i class="fa fa-book"></i>Consulta </a>
+            <a>
+                <i class="{{breadCrumbs.icono}}"></i>{{breadCrumbs.modulo}}
+            </a>
         </li>
-        <li class="active">Edición Orden Servicio</li>
+        <li class="active">{{breadCrumbs.servicio}}</li>
     </ol>
 </section>
 
 <section class="content">
-    <form role="form" name="editarOS" novalidate>
+    <form role="form" name="consultaIncidencia" novalidate>
         <div class="row">
+            <div class="col-xs-12 col-md-offset-4 col-md-4">
+                <div class="box box-danger">
+                    <div class="box-header with-border text-center">
+                        <h3 class="box-title"> Búsqueda Incidencia</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+									<i class="fa fa-minus"></i>
+								</button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group" ng-class="{'has-error': consultaIncidencia.valorBusqueda.$invalid && consultaIncidencia.valorBusqueda.$dirty}">
+                                    <label for=""> *{{'ORDENSERVICIO.AltaServicio.seleccionadores.valor.label' | translate}} </label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"> <i class="fa fa-pencil"> </i> </span>
+                                        <input type="text" ng-model="general.cdIncidencia" name="valorBusqueda" class="form-control" capitalize required></input>
+                                        <span class="input-group-btn">
+                                            <button type="button" ng-click="buscarIncidencia(general.cdIncidencia, consultaIncidencia)" class="btn btn-danger btn-flat" >
+                                                Buscar
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <div ng-show="consultaIncidencia.valorBusqueda.$invalid && consultaIncidencia.valorBusqueda.$dirty" ng-style="{color:'red'}">
+                                        <label> {{'ORDENSERVICIO.AltaServicio.seleccionadores.valor.validacion' | translate}} </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <form role="form" name="editarOS" novalidate>
+        <div class="row" ng-if="banderas.formEditar">
+
+            <div class="col-md-12">
+                <fieldset class="scheduler-border fieldsetCustom">
+                    <legend class="scheduler-border text-center">Incidencia</legend>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <td><dt>Folio:</dt></td>
+                                        <td>{{general.voIncidencia.cdIncidencia}}</td>
+                                        <td><dt>Nombre:</dt></td>
+                                        <td>{{general.voIncidencia.nbIncidencia}}</td>
+                                        <td><dt>Descripción:</dt></td>
+                                        <td>{{general.voIncidencia.txIncidencia}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+            </div>
+
             <div class="col-md-12">
                 <div class="box box-danger">
                     <div class="box-body">
@@ -68,8 +131,6 @@
                                             <div class="input-group-addon">
                                                 <i class="fa fa-clock-o"></i>
                                             </div>
-                                            <!-- <input class="form-control inputFecha" required name="hrCita" id="hrCita" 
-                                            time-picker tp-options="opcionesTimepicker" ng-model="general.voModal.hrCita" readonly /> -->
                                             <input class="form-control inputFecha" ng-disabled="true" name="hrCita" id="hrCita" ng-model="general.voModal.fhCita" readonly />
                                         </div>
                                         <div ng-show="editarOS.hrCita.$invalid && editarOS.hrCita.$dirty">
@@ -231,37 +292,19 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- <div class="toast-footer">
-                                <div class="center">
-                                    <button class="btn btn-danger fadeInDown a-10ms" ng-click="guardar(general.voModal, editarOS)">
-                                    Guardar
-                                </button>
-                                </div>
-                            </div> -->
                         </div>
                         <div class="box-footer">
                             <div class="row">
-                                <div class="col-md-2">
+                                <!-- <div class="col-md-2">
                                     <button type="button" class="btn btn-danger" ng-click="regresar()" tooltip="Regresar" tooltip-placement="right">
                                         <i class="fa fa-arrow-left" aria-hidden="true"></i>
                                     </button>
-                                </div>
-                                <div class="col-md-8 text-center">
+                                </div> -->
+                                <div class="col-md-12 text-center">
                                     <button class="btn btn-danger fadeInDown a-10ms" ng-click="guardar(general.voModal, editarOS)">
                                         Guardar
                                     </button>
                                 </div>
-
-                                <!-- <div class="col-md-12 text-center">
-                                    <div class="col-md-2">
-                                        <button type="button" class="btn btn-danger" ng-click="regresar()">Regresar</button>
-                                    </div>
-                                    <div class="col-md-8 col-md-offset-4 text-center">
-                                        <button class="btn btn-danger fadeInDown a-10ms" ng-click="guardar(general.voModal, editarOS)">
-                                            Guardar
-                                        </button>
-                                    </div>
-                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -269,3 +312,7 @@
             </div>
     </form>
 </section>
+
+<!--<section class="content">
+    
+</section>-->

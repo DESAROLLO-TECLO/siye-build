@@ -56,4 +56,13 @@ public class VehiculoDAOImpl extends BaseDaoHibernate<VehiculoDTO> implements Ve
 		return criteria.list();
 
 	}
+
+	@Override
+	public VehiculoDTO buscarVehiculoPorPlaca(String placa) {
+		Criteria c = getCurrentSession().createCriteria(VehiculoDTO.class);
+		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("cdPlacaVehiculo", placa));
+		
+		return (VehiculoDTO) c.uniqueResult();
+	}
 }

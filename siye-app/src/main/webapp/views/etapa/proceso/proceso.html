@@ -33,7 +33,7 @@
                         <div class="panel-heading center">
                             <h3>
                                 <span>
-                                    - Nombre Etapa -
+                                    {{dataPlan.proceso.nbProceso}}
                                 </span>
                             </h3>
                         </div>
@@ -124,13 +124,14 @@
                                         </div>
                                         <div style="text-align: center;">
                                             <switcher class="swTeclo switcherEncTransp"
-                                            id-check="stEncuestaTransportista"
-                                            true-label="<i class='fa fa-check-circle'></i>"
-                                            true-value="1"
-                                            false-label="<i class='fa fa-times-circle'></i>"
-                                            false-value="0"
-                                            data-placement="top" title="Activar Encuesta">
-                                        </switcher>
+                                                id-check="stEncuestaTransportista"
+                                                ng-model="stActivarEncuesta"
+                                                true-label="<i class='fa fa-check-circle'></i>"
+                                                true-value="1"
+                                                false-label="<i class='fa fa-times-circle'></i>"
+                                                false-value="0"
+                                                data-placement="top" title="Activar Encuesta">
+                                            </switcher>
                                         </div>
                                         <label for="stEncuestaTransportista" class="marcador" 
                                         data-toggle="tooltip" data-placement="top" title="Activar Encuesta">

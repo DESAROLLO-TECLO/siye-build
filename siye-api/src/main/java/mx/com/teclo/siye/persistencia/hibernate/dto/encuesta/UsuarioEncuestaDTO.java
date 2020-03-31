@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,7 +20,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import mx.com.teclo.siye.persistencia.hibernate.dto.usuario.UsuarioDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
+
 
 /**
  *
@@ -35,9 +37,9 @@ public class UsuarioEncuestaDTO implements Serializable {
 	@Column(name = "ID_ODS_ENCUESTA", nullable = false)
 	private Long idUsuarioEncuesta;
 
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name = "ID_ORDEN_SERVICIO", referencedColumnName = "ID_USUARIO", nullable = false)
-	private UsuarioDTO usuario;
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "ID_ORDEN_SERVICIO", referencedColumnName = "ID_ORDEN_SERVICIO", nullable = false)
+	private OrdenServicioDTO usuario;
 
 	@Basic(optional = false)
 	@Column(name = "NU_INTENTOS", nullable = false)
@@ -132,11 +134,11 @@ public class UsuarioEncuestaDTO implements Serializable {
 		this.fhModificacion = fhModificacion;
 	}
 
-	public UsuarioDTO getUsuario() {
+	public OrdenServicioDTO getUsuario() {
 		return usuario;
 	}
 
-	public void setUsuario(UsuarioDTO usuario) {
+	public void setUsuario(OrdenServicioDTO usuario) {
 		this.usuario = usuario;
 	}
 

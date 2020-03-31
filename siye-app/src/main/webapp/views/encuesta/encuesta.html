@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+
+
+</head>
+<body>
+    <div class="cont-formuarioCliente">
+		<div class="contLogoExpo">
+			<img src="static/dist/img/logoTeclo.png" class="logoRegistro">
+		</div>
+		<form  class="formularioCliente row" name="busquedaForm">
+			<h1 class="tituloRegistro">
+				{{'ENCUESTA.Consulta.tituloServicio' | translate}}
+			</h1>
+			<div class="fullScreen-icon hidden-xs ngFullScreenAnimate"
+				tooltip="{{'APP.Base.mensaje.pantallaCompleta' | translate}}"
+				tooltip-placement="bottom"
+				ng-show="!fullScreenActive">
+				
+				<i class="fa fa-arrows-alt" ng-click="goFullscreen()"></i>
+			
+			</div>
+			
+			<div class="fullScreen-icon hidden-xs ngFullScreenAnimate"
+				tooltip="{{'APP.Base.mensaje.salirPantallaCompleta' | translate}}"
+				tooltip-placement="bottom"
+				ng-show="fullScreenActive">
+				
+				<i class="fa fa-close" ng-click="goFullscreen()"></i>
+			
+			</div>
+			
+			<!-- phone mask -->
+			<div class="form-group inputForm">
+				
+			<div class="row" >
+				<div ng-show="!banderaPantalla"  ng-include="'views/encuesta/consultaEncuesta.html'"></div>   
+				<div ng-show="banderaPantalla" ng-include="'views/encuesta/realizarEncuesta.html'"></div>   
+			</div>
+			<!-- /.form group -->
+									
+			
+		</form>	
+		<div class="copyright text-center">
+			<strong>{{'APP.Footer.derechosAutor' | translate}} &copy; 2017 
+				<a href="http://teclomexicana.mx/" target="_blank">{{'APP.Footer.tecloMexicana' | translate}}</a>
+			</strong> {{'APP.Footer.derechosReservados' | translate}}.
+		</div>
+	</div>
+</body>
+</html>

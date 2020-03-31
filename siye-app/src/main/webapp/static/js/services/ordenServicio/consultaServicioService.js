@@ -8,7 +8,7 @@ angular.module(appTeclo).service('consultaServicioService', function($http, conf
         return $http.get(config.baseUrl + "/ordenServicio/consultaOrden", {
             params: {
                 "cdTipoBusqueda": params.tipoBusqueda.cdTipoBusqueda,
-                "valor": params.valor
+                "valor": params.valor == null ? " " : params.valor
             }
         });
     };
@@ -25,6 +25,14 @@ angular.module(appTeclo).service('consultaServicioService', function($http, conf
         return $http.get(config.baseUrl + '/ordenServicio/getOrdenServicio', {
             params: {
                 idOrdenservicio: id
+            }
+        });
+    };
+
+    this.buscaIncidencia = function(cdIncidencia) {
+        return $http.get(config.baseUrl + '/incidencia/getIncidenciaBycdIncidencia', {
+            params: {
+                cdIncidencia: cdIncidencia
             }
         });
     };

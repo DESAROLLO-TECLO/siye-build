@@ -1,0 +1,218 @@
+body{
+	background-color: #fff;
+}
+.comodinHeight{
+	height: 100vh !important;
+}
+.cont-formuarioCliente{
+	overflow-y: auto;
+	display: flex;
+/* 	height: calc(100vh + 7.143rem); */
+/* 	height: 100vh; */
+	min-height: 100vh;
+	flex-direction: column;
+	background-color: #fff;
+}
+.contLogoExpo{
+	width: 100%;
+	max-width: 77.14rem;
+	margin: 1.429rem auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.formularioCliente{
+	margin: 0.7143rem 7.143rem;
+	box-shadow: 1px 1px 0.3571rem #c1c1c1;
+	position: relative;
+}
+.inputForm{
+	padding: 1.071rem;
+}
+.logoRegistro{
+	width: 17.86rem;
+}
+.tituloRegistro{
+	text-align: center;
+	padding: 0.7143rem 0.2143rem;
+	background-color: #cf0a2c;
+	color: #fff;
+}
+.dataImportant{
+	color: #cf0a2c;
+	margin-right: 0.2143rem;
+}
+.btnCenter{
+	margin-bottom: 0.7143rem;
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	align-items: center;
+}
+.margen{
+	margin-top: 1.071rem;
+}
+.labelRegistro{
+/* 	margin-top: 15px; */
+	color: #607D8B;
+	transition: all .3s ease-out;
+}
+.inputCustom,
+.selectCustom {
+/* 	height: 2.429rem; */
+}
+
+.inputCustom{
+	border: none !important;
+	box-shadow: 0 -0.1429rem #607D8B inset !important;
+	font-size: 1.286rem;
+	font-weight: 600;
+	transition: all .3s ease-out;
+}
+.boxShadow{
+	color: #00ACC1 !important;
+	box-shadow: 0 -0.1429rem #00ACC1 inset !important;
+}
+.labelFocus{
+	color: #00ACC1;
+}
+.contSelect:before{
+	content: '';
+	position: absolute;
+	right: 0.3571rem;
+	top: 1.071rem;
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 0.5rem 0.3571rem 0 0.3571rem;
+	border-color: #607D8B transparent transparent transparent;
+	z-index: 5;
+	pointer-events: none;
+}
+.group-addonRewrite{
+	border: none !important;
+	background-color: inherit !important;
+	box-shadow: 0 -0.1429rem #607D8B inset;
+	transition: all .3s ease-out;
+}
+.selectCustom{
+    padding: 0.3571rem 0.5714rem;
+    width: 130%;
+    border: none;
+    box-shadow: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+.selectCustom::-ms-expand {
+    display: none;
+}
+
+.selectCustom option{
+	padding: 0.7143rem;
+}
+
+.selectPhone{
+	border: none;
+	outline: none;
+	width: 3rem;
+	color: #00ACC1;
+/* 	color: #E92D3D; */
+	font-weight: 600;
+	-webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-apparence:none;
+    appearance: none;
+    cursor: pointer;
+}
+.selectCr{
+	padding-left: 0.3571rem;
+}
+.selectPhone::-ms-expand {
+    display: none;
+}
+.contSelectPhone:before,
+.contSelectPhoneR:before,
+.contSelectPhoneCr:before{
+	content: "\f0d7";
+	font-family: FontAwesome;
+	position: absolute;
+	top: 0.6429rem;
+	z-index: 5;
+	pointer-events: none;
+	background-color: #fff;
+	font-size: 1.4rem;
+	color: #607D8B;
+}
+.contSelectPhone:before{
+	left: 1.643rem;
+	padding: 0px 0.4286rem 0.1429rem 0.4286rem;
+}
+.contSelectPhoneCr:before{
+	left: 1.286rem;
+	padding: 0px 0.5714rem 0px 0.5rem;
+}
+.contSelectPhoneR:before{
+	left: 1.643rem;
+	padding: 0 0.3571rem 0 0.29rem;
+}
+.contSelectComodin:before{
+	left: 1.55rem;
+	padding: 0 0.3571rem 0 0.3571rem !important;
+}
+
+.contSelectPhone select{
+	background-color: #fff;
+	box-shadow: none;
+}
+.contSelectPhoneR select{
+	color: #777 !important;
+	width: 3rem;
+}
+.contSelectPhone select option,
+.contSelectPhoneR select option{
+	border-right: 1px solid #c1c1c1;
+	border-bottom: 1px solid #e5e5e5;
+}
+.contSelectPhone select option{
+	padding: 0.3571rem;
+}
+.sinMargen{
+	padding: 0;
+}
+
+/* COPYRIGHT */
+.copyright{
+	width: 95%;
+	margin: 0.3571rem auto;
+	padding: 0.7143rem;
+	color: #95a5a6 !important;
+}
+
+/* FULLSCREEN */
+.fullScreen-icon{
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	cursor: pointer;
+}
+.fullScreen-icon i{
+	color: #f89499;
+	font-size: 2rem;
+	transition: all .2s ease-out;
+}
+.fullScreen-icon i:hover{
+	color: #fff;
+}
+
+/* MEDIAS  */
+
+@media only screen and (max-width: 40em) {
+	.tituloRegistro{
+		font-size: 1.429rem !important;
+	}
+	.formularioCliente {
+		margin: 0.7143rem !important;
+	}
+}

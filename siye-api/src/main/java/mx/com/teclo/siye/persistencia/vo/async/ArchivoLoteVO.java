@@ -1,7 +1,7 @@
 /**
  * 
  */
-package mx.com.teclo.siye.persistencia.vo.ods;
+package mx.com.teclo.siye.persistencia.vo.async;
 
 import java.util.Date;
 

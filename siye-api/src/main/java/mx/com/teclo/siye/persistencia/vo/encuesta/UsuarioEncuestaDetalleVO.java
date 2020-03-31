@@ -2,7 +2,7 @@ package mx.com.teclo.siye.persistencia.vo.encuesta;
 
 import java.io.Serializable;
 
-import mx.com.teclo.siye.persistencia.vo.usuario.UsuarioVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
 
 public class UsuarioEncuestaDetalleVO implements Serializable{
 
@@ -12,7 +12,7 @@ public class UsuarioEncuestaDetalleVO implements Serializable{
 	private static final long serialVersionUID = 267760952991527421L;
 	
 	private Long idUsuarioEncuesta;
-	private UsuarioVO usuario;
+	private OrdenServicioVO ordenServicio;
 	private Integer nuIntentos;
 	private Boolean stAplicaEncuesta;
 	private EncuestaDetalleVO encuesta;
@@ -32,14 +32,14 @@ public class UsuarioEncuestaDetalleVO implements Serializable{
 	/**
 	 * @return the usuario
 	 */
-	public UsuarioVO getUsuario() {
-		return usuario;
+	public OrdenServicioVO getUsuario() {
+		return ordenServicio;
 	}
 	/**
 	 * @param usuario the usuario to set
 	 */
-	public void setUsuario(UsuarioVO usuario) {
-		this.usuario = usuario;
+	public void setUsuario(OrdenServicioVO ordenServicio) {
+		this.ordenServicio = ordenServicio;
 	}
 	/**
 	 * @return the nuIntentos

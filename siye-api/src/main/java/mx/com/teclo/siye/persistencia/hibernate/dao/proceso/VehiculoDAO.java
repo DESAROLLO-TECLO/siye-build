@@ -31,5 +31,7 @@ public interface VehiculoDAO extends BaseDao<VehiculoDTO> {
 	 * @return List<VehiculoVO>
 	 */
 	public List<VehiculoVO> buscarVehiculos(FiltroVehiculoVO filtro);
+	
+	public VehiculoDTO buscarVehiculoPorPlaca(String placa);
 
 }

@@ -15,36 +15,83 @@ public interface OrdenServicioDAO extends BaseDao<OrdenServicioDTO>{
      * @return OrdenServicioDTO
      * */
 	public OrdenServicioDTO obtenerOrdenServicio(Long idOrdenServicio);
-
+	
 	/**
      * Descripción: Obtener lista de los registros de orden de 
      * servicio mediante la placa
      * @author Estephanie Chavez
-     * @param idOrdenServicio
-     * @return OrdenServicioDTO
-     * */
-	public List<OrdenServicioDTO> consultaOrdenByPlaca(String valor);
+	 * @param valor
+	 * @param centroInstalacion
+	 * @return List<OrdenServicioDTO>
+	 */
+	public List<OrdenServicioDTO> consultaOrdenByPlaca(String valor, Long centroInstalacion);
 
 	/**
      * Descripción: Obtener lista de los registros de orden de 
      * servicio mediante el codigo de orden de servicio 
      * @author Estephanie Chavez
-     * @param idOrdenServicio
-     * @return OrdenServicioDTO
-     * */
-	public List<OrdenServicioDTO> consultaOrdenByOrdenServicio(String valor);
+	 * @param valor
+	 * @param centroInstalacion
+	 * @return List<OrdenServicioDTO>
+	 */
+	public List<OrdenServicioDTO> consultaOrdenByOrdenServicio(String valor, Long centroInstalacion);
 	
 	/**
      * Descripción: Obtener lista de los registros de orden de 
      * servicio mediante el VIN
      * @author Estephanie Chavez
+	 * @param valor
+	 * @param centroInstalacion
+	 * @return List<OrdenServicioDTO>
+	 */
+	public List<OrdenServicioDTO> consultaOrdenByVin(String valor, Long centroInstalacion);
+
+
+	/**
+     * Descripción: Obtener lista de los registros de orden de 
+     * servicio del dia
+     * @author Estephanie Chavez
+	 * @param centroInstalacion
+	 * @return List<OrdenServicioDTO>
+	 */
+	public List<OrdenServicioDTO> consultaOrdenByFhCita(Long centroInstalacion);
+	
+	/**
+     * Descripción: Obtener lista de los registros de orden de 
+     * servicio mediante la placa
+     * @author Maverick
+	 * @param valor
+	 * @return List<OrdenServicioDTO>
+	 */
+	public List<OrdenServicioDTO> consultaOrdenByPlaca(String valor);
+
+	/**
+     * Descripción: Obtener lista de los registros de orden de 
+     * servicio mediante el codigo de orden de servicio 
+     * @author Maverick
+	 * @param valor
+	 * @return List<OrdenServicioDTO>
+	 */
+	public List<OrdenServicioDTO> consultaOrdenByOrdenServicio(String valor);
+	
+	/**
+     * Descripción: Obtener lista de los registros de orden de 
+     * servicio mediante el VIN
+     * @author Maverick
+	 * @param valor
+	 * @return List<OrdenServicioDTO>
+	 */
+	public List<OrdenServicioDTO> consultaOrdenByVin(String valor);
+	
+	
+	/**
+     * Descripción: Obtener el registro de orden de 
+     * servicio mediante CD_ORDEN_SERVICIO
+     * @author Eric Rivera
      * @param idOrdenServicio
      * @return OrdenServicioDTO
      * */
-
-	public List<OrdenServicioDTO> consultaOrdenByVin(String valor);
-
-	
+	public OrdenServicioDTO obtenerOrdenServicioCD_ORDEN_SERVICIO(String  cdOrdenServicio);
 	
 
 
