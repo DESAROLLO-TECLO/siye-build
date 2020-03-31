@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
-import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuentaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.DispositivosDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanProcesoDAO;
@@ -43,7 +43,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 	private DispositivosDAO dispositivosDAO;
 	
 	@Autowired
-	private UsuarioEncuentaDAO usuarioEncuentaDAO;
+	private UsuarioEncuestaDAO usuarioEncuestaDAO;
 	
 	@Autowired
 	private ServicioEncuestasMyBatisDAO servicioEncuestasMyBatisDAO;
@@ -86,7 +86,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 	@Transactional
 	public List<UsuarioEncuestaDTO> obtenerEncuestas(Long orden) {
 
-		return usuarioEncuentaDAO.getEncuestasPorOrden(orden);
+		return usuarioEncuestaDAO.getEncuestasPorOrden(orden);
 	}
 	
 	@Override

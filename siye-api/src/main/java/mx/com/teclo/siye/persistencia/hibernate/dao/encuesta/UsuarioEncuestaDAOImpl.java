@@ -12,7 +12,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaDTO;
 
 
 @Repository
-public class UsuarioEncuestaDAOImpl extends BaseDaoHibernate<UsuarioEncuestaDTO> implements UsuarioEncuentaDAO {
+public class UsuarioEncuestaDAOImpl extends BaseDaoHibernate<UsuarioEncuestaDTO> implements UsuarioEncuestaDAO {
 	
 
 	@SuppressWarnings("unchecked")
@@ -25,5 +25,18 @@ public class UsuarioEncuestaDAOImpl extends BaseDaoHibernate<UsuarioEncuestaDTO>
 		c.add(Restrictions.eq("stActivo", true));
 		return (List<UsuarioEncuestaDTO>) c.list();
 	}
-
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<UsuarioEncuestaDTO> consultaOrdenByOrdenServicio(String valor){
+		Criteria c= getCurrentSession().createCriteria(UsuarioEncuestaDTO.class);
+		c.createAlias("usuario", "ordenServicio");
+//		c.createAlias("encuesta", "encuesta");
+//		c.createAlias("encuesta.tipoEncuesta", "tipoEncuesta");
+		c.add(Restrictions.eq("ordenServicio.cdOrdenServicio", valor));
+		c.add(Restrictions.eq("ordenServicio.stActivo", true));
+//		c.add(Restrictions.eq("tipoEncuesta.idTipoEncuesta", 2));
+		c.add(Restrictions.eq("stActivo", true));
+		return (List<UsuarioEncuestaDTO>)c.list();
+	}
 }

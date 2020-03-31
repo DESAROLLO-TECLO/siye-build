@@ -19,9 +19,10 @@ import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.EstatusCalificacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestaDetalleDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.PasswordDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.SeccionDAO;
-import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuentaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuentaIntentoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaRespuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.StEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestasDTO;
@@ -60,10 +61,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 	
 	@Autowired
 	private DetalleIntentoService detalleIntentoService;
-	
-	@Autowired
-	private UsuarioEncuentaDAO usuarioEncuentaDAO;
-	
+		
 	@Autowired
 	private RespuestaService respuestaService;
 	
@@ -76,9 +74,11 @@ public class EncuestaServiceImpl implements EncuestaService {
 	@Autowired
 	private SeccionDAO seccionDAO;
 	
+	@Autowired
+	private PasswordDAO passwordDAO;
 	
-	
-	
+	@Autowired
+	private UsuarioEncuestaDAO usuarioEncuestaDAO;
 	
 	
 	
@@ -188,7 +188,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 	@Transactional
 	@Override
 	public Boolean nuevoIntento(UsuarioEncuestaVO vo) throws BusinessException{
-		UsuarioEncuestaDTO ueDTO = usuarioEncuentaDAO.findOne(vo.getIdUsuarioEncuesta());
+		UsuarioEncuestaDTO ueDTO = usuarioEncuestaDAO.findOne(vo.getIdUsuarioEncuesta());
 		Long idUsr = userSession.getUsuarioFirmadoVO().getId();
 		if(ueDTO == null)
 			throw new BusinessException(RespuestaHttp.CONFLICT.getMessage());
@@ -212,7 +212,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 					
 				// DESCATIVAMOS LOS REGISTROS ACTUALES
 				ueDTO.setStAplicaEncuesta(true);
-				usuarioEncuentaDAO.update(ueDTO);
+				usuarioEncuestaDAO.update(ueDTO);
 				
 				decactivaIntentosActuales(ueDTO.getIdUsuarioEncuesta());
 				
@@ -339,5 +339,49 @@ public class EncuestaServiceImpl implements EncuestaService {
 		return nuPreguntas;
 	}
 	
-
+	@Transactional
+	@Override
+	public List<UsuarioEncuestaVO> consultaEncuestasSatisfaccion(Integer tipoBusqueda, String valor, String passwordEnc) 
+		throws Exception, BusinessException, NotFoundException {
+		String mensajeErr = "";
+		try {
+			Boolean contraseniaValida = passwordDAO.validarContraseniaTransportista(passwordEnc);
+			
+//			List<OrdenServicioDTO> listaOrdenServicioDTO = new ArrayList<OrdenServicioDTO>(); 
+			
+			if(contraseniaValida == true) {
+//				switch(tipoBusqueda) {
+//					case 1: //Por Orden de Servicio
+//						listaOrdenServicioDTO = ordenServicioDAO.consultaOrdenByOrdenServicio(valor);
+//					break;
+//					case 2: //Por Placa Vehicular
+//						listaOrdenServicioDTO = ordenServicioDAO.consultaOrdenByPlaca(valor);
+//					break;
+//					case 3: //Por VIN
+//						listaOrdenServicioDTO = ordenServicioDAO.consultaOrdenByVin(valor);
+//					break;
+//					default:
+//					break;
+//				}
+				
+				
+				List<UsuarioEncuestaDTO> listaUsuarioEncuestaDTO = usuarioEncuestaDAO.consultaOrdenByOrdenServicio(valor);
+				
+				String s ="";
+				
+				List<UsuarioEncuestaVO> listaUsuarioEncuestaVO = ResponseConverter.converterLista(new ArrayList<>(), listaUsuarioEncuestaDTO, UsuarioEncuestaVO.class);
+				return listaUsuarioEncuestaVO;
+			}else {
+				mensajeErr = "La contraseña no es válida, porfavor solicitarla a un supervisor.";
+				throw new NotFoundException("");
+			}
+		} catch (Exception e) {
+			if(mensajeErr != null && !mensajeErr.isEmpty() && !mensajeErr.equals(null)) {
+				throw new NotFoundException(mensajeErr);
+			} else {
+				e.printStackTrace();
+				throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
+			}
+		}
+	}
 }

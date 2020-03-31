@@ -1,5 +1,7 @@
 package mx.com.teclo.siye.api.rest.encuesta;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.negocio.service.encuesta.EncuestaService;
+import mx.com.teclo.siye.negocio.service.usuario.UsuarioService;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaVO;
 
@@ -23,9 +26,11 @@ import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaVO;
 public class EncuestaRestController {
 	
 	@Autowired
+	private UsuarioService usuarioService;
+	
+	@Autowired
 	private EncuestaService encuestaService;
-	
-	
+		
 	@RequestMapping(value="/detalle", method = RequestMethod.GET)
 	public ResponseEntity<UsuarioEncuestaDetalleVO> encuestaDetalle (
 			@RequestParam(value="idEncuesta") Long idEncuesta, 
@@ -41,9 +46,18 @@ public class EncuestaRestController {
 		return new ResponseEntity<Boolean>(b, HttpStatus.OK);
 	}
 	
-	
+	@RequestMapping(value="/consultaEncuestasSatisfaccion", method = RequestMethod.POST)
+	public ResponseEntity<List<UsuarioEncuestaVO>> encuestaDetalle (
+		@RequestParam(value="tipoBusqueda") Integer tipoBusqueda,
+		@RequestParam(value="valor") String valor, 
+		@RequestParam(value="password") String password) 
+		throws Exception, BusinessException, NotFoundException{
+		String passwordEnc = usuarioService.toggleEncryption(password, "encrypt");
+		List<UsuarioEncuestaVO> listaUsuarioEncuestaDTO = encuestaService.consultaEncuestasSatisfaccion(tipoBusqueda, valor, passwordEnc);
+		return new ResponseEntity<List<UsuarioEncuestaVO>>(listaUsuarioEncuestaDTO, HttpStatus.OK);
+	}
 	
 
-
+	
 }
 	
