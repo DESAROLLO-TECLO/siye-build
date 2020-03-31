@@ -43,6 +43,7 @@ public class ProcesoRestController {
 	
 
 	 @RequestMapping(value = "/ordenServicioProceso", method = RequestMethod.GET)
+	 @Transactional
 	public ResponseEntity<List<OrdenServicioProcesoVO>> consultaOrdenParaProceso(
 			@RequestParam("idSolicitud") Long idSolicitud) throws BusinessException, NotFoundException {
         try
