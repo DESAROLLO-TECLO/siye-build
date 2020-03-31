@@ -14,4 +14,6 @@ public interface UsuarioEncuestaRespuestaDAO extends BaseDao<UsuaroEncuestaRespu
 	 * @return List<UsuaroEncuestaRespuestaDTO>
 	 */
 	public List<UsuaroEncuestaRespuestaDTO> repuestas(Long idUsuEncuIntento);
+	
+	List<UsuaroEncuestaRespuestaDTO> getRespuestas(Long idUsuEncuIntento, Long idEncuesta);
 }

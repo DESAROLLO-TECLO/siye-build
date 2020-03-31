@@ -21,5 +21,13 @@ public class StEncuestaDAOImpl extends BaseDaoHibernate<StEncuestaDTO> implement
 		c.addOrder(Order.asc("nuOrden"));
 		return (List<StEncuestaDTO>)c.list();
 	}
+	
+	@Override
+	public StEncuestaDTO encuesta(String cdStEncuesta) {
+		Criteria c = getCurrentSession().createCriteria(StEncuestaDTO.class);
+		c.add(Restrictions.eq("stActivo", 1));
+		c.add(Restrictions.eq("cdStEncuesta", cdStEncuesta));
+		return (StEncuestaDTO) c.uniqueResult();
+	}
 
 }

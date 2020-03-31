@@ -21,6 +21,16 @@ public class UsuarioEncuestaRespuestaDAOImpl extends BaseDaoHibernate<UsuaroEncu
 		c.add(Restrictions.eq("stActivo", 1));
 		return (List<UsuaroEncuestaRespuestaDTO>) c.list();
 	}
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<UsuaroEncuestaRespuestaDTO> getRespuestas(Long idUsuEncuIntento, Long idEncuesta) {
+		Criteria criteria = getCurrentSession().createCriteria(UsuaroEncuestaRespuestaDTO.class);
+		criteria.add(Restrictions.eq("id.idUsuEncuIntento", idUsuEncuIntento));
+		criteria.add(Restrictions.eq("id.idEncuesta", idEncuesta));
+		criteria.add(Restrictions.eq("stActivo", 1));
+		return criteria.list();
+	}
 
 	 
 	
