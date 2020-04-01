@@ -11,6 +11,11 @@ public interface StSeguimientoDAO extends BaseDao<StSeguimientoDTO> {
 	 * @param idSeguimiento
 	 * @return
 	 */
+
 	public StSeguimientoVO obtenerSeguimiento(Long idSeguimiento);
+
+	
+	public StSeguimientoDTO obtenerSeguimientoDos(Long idSeg);
+
 
 }

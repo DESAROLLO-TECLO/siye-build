@@ -32,6 +32,8 @@ public interface PlanDAO extends BaseDao<PlanDTO> {
 	 */
 	public List<PlanDTO> getPlanAll() throws NotFoundException;
 	
+	public PlanDTO getId(Long idPlan);
+	
 	
 	
 

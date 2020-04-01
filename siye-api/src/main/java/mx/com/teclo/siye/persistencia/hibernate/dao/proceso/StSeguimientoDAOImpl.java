@@ -1,5 +1,7 @@
 package mx.com.teclo.siye.persistencia.hibernate.dao.proceso;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
@@ -15,5 +17,13 @@ public class StSeguimientoDAOImpl extends BaseDaoHibernate<StSeguimientoDTO> imp
 	}
 	
 	
+
+	@Override
+	public StSeguimientoDTO obtenerSeguimientoDos(Long idSeg) {
+		Criteria c = getCurrentSession().createCriteria(StSeguimientoDTO.class);
+		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("idStSeguimiento", idSeg));
+		return (StSeguimientoDTO)c.uniqueResult();
+	}
 
 }

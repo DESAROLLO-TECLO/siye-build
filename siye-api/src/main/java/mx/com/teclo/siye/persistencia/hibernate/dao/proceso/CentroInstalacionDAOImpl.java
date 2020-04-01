@@ -27,4 +27,11 @@ public class CentroInstalacionDAOImpl extends BaseDaoHibernate<CentroInstalacion
 		return (List<CentroInstalacionDTO>) c.list();
 	}
 
+	@Override
+	public CentroInstalacionDTO centroIns(Long centroIn) {
+		Criteria c = getCurrentSession().createCriteria(CentroInstalacionDTO.class);
+		c.add(Restrictions.eq("idCentroInstalacion", centroIn));
+		return (CentroInstalacionDTO)c.uniqueResult();
+	}
+
 }
