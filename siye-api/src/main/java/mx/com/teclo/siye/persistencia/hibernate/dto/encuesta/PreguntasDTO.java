@@ -75,14 +75,14 @@ public class PreguntasDTO implements Serializable {
     //private List<UsuaroEncuestaRespuestaDTO> usuaroEncuestaRespuestaDTOList;
     
     @JoinColumn(name = "ID_SECCION", referencedColumnName = "ID_SECCION", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private SeccionDTO idSeccion;
     
     @JoinColumn(name = "ID_TIPO_PREGUNTA", referencedColumnName = "ID_TP_PREGUNTA", nullable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private TipoPreguntaDTO idTipoPregunta;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPregunta", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPregunta", fetch = FetchType.LAZY)
     private List<OpcionesDTO> opciones;
     
     @Column(name = "NU_MAX_IMAGENES", nullable = false)

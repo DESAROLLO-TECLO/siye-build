@@ -28,10 +28,10 @@ public class UsuarioEncuestaVO {
 	private Date fhModificacion;
 	private EncuestaVO encuesta;
 	private List<UsuarioEncuestaIntentosVO> usuarioEncuestaIntentos;
-
+	private UsuarioEncuestaIntentosVO intentoMostrar;
 	private Integer valor;
 	private Long intento;
-
+	
 	public Long getIdUsuarioEncuesta() {
 		return idUsuarioEncuesta;
 	}
@@ -39,8 +39,6 @@ public class UsuarioEncuestaVO {
 	public void setIdUsuarioEncuesta(Long idUsuarioEncuesta) {
 		this.idUsuarioEncuesta = idUsuarioEncuesta;
 	}
-
-
 
 	public Integer getNuIntegerentos() {
 		return nuIntegerentos;
@@ -106,46 +104,35 @@ public class UsuarioEncuestaVO {
 		this.encuesta = encuesta;
 	}
 
-	/**
-	 * @return the usuarioEncuestaIntentos
-	 */
 	public List<UsuarioEncuestaIntentosVO> getUsuarioEncuestaIntentos() {
 		return usuarioEncuestaIntentos;
 	}
 
-	/**
-	 * @param usuarioEncuestaIntentos the usuarioEncuestaIntentos to set
-	 */
 	public void setUsuarioEncuestaIntentos(List<UsuarioEncuestaIntentosVO> usuarioEncuestaIntentos) {
 		this.usuarioEncuestaIntentos = usuarioEncuestaIntentos;
 	}
 
-	/**
-	 * @return the valor
-	 */
+	public UsuarioEncuestaIntentosVO getIntentoMostrar() {
+		return intentoMostrar;
+	}
+
+	public void setIntentoMostrar(UsuarioEncuestaIntentosVO intentoMostrar) {
+		this.intentoMostrar = intentoMostrar;
+	}
+
 	public Integer getValor() {
 		return valor;
 	}
 
-	/**
-	 * @param valor the valor to set
-	 */
 	public void setValor(Integer valor) {
 		this.valor = valor;
 	}
 
-	/**
-	 * @return the intento
-	 */
 	public Long getIntento() {
 		return intento;
 	}
 
-	/**
-	 * @param intento the intento to set
-	 */
 	public void setIntento(Long intento) {
 		this.intento = intento;
 	}
-
 }
