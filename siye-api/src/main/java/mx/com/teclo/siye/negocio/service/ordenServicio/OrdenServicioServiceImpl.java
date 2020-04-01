@@ -304,7 +304,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		
 		KitInstalacionDTO kitInstDTO = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion()); //TIE030_KIT_INSTALACION
 		
-//		KitInstalacionDispDTO kitInstalDisp = new KitInstalacionDispDTO(); // TIE039_KIT_INST_DISP
+
 		CentroInstalacionDTO centroInst = centroInstalacionDAO.findOne(ordenServiVO.getCentroI());
 		
 		PlanDTO planDTO = planDAO.getId(ordenServiVO.getPlan());
