@@ -29,7 +29,6 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.OdsIncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDTO;
-import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDispDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.LoteOrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanDTO;
@@ -299,14 +298,14 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		
 		OrdenServicioDTO ordenServiDTO = new OrdenServicioDTO(); // TIE026_ORDEN_SERVICIO
 		
-		VehiculoDTO vehiculoDTO = new VehiculoDTO(); // TIE027_VEHICULO
+		 // TIE027_VEHICULO
 		
 		VehiculoDTO vehoDTO = vehiculoDAO.buscarVehiculoPorPlaca(ordenServiVO.getVehiculoVO().getPlaca());
 		
 		KitInstalacionDTO kitInstDTO = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion()); //TIE030_KIT_INSTALACION
 		
-		KitInstalacionDispDTO kitInstalDisp = new KitInstalacionDispDTO(); // TIE039_KIT_INST_DISP
-		CentroInstalacionDTO centroInst = centroInstalacionDAO.centroIns(ordenServiVO.getCentroI());
+//		KitInstalacionDispDTO kitInstalDisp = new KitInstalacionDispDTO(); // TIE039_KIT_INST_DISP
+		CentroInstalacionDTO centroInst = centroInstalacionDAO.findOne(ordenServiVO.getCentroI());
 		
 		PlanDTO planDTO = planDAO.getId(ordenServiVO.getPlan());
 		StSeguimientoDTO stSegDTO =seguimientoDAO.obtenerSeguimientoDos(1l);
