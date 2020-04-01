@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -20,19 +21,16 @@ import javax.persistence.Table;
 @Table(name = "TIE053B_IE_ODS_DETALLE_CAMBIO")
 public class OdsDetalleCambioDTO  implements Serializable{
 	
-	
 	private static final long serialVersionUID = 4814258386727191940L;
 	
-	
 	@Id
-	@SequenceGenerator(name = "sqOrdenServicio", sequenceName = "SQIE026D_IE_ORDEN_SER", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqOrdenServicio")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "ID_DETALLE_CAMBIO", unique = true, nullable = false)
 	private Long idDetalleCambio;
 	
+	@OneToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_ORDEN_SERVICIO", referencedColumnName="ID_ORDEN_SERVICIO")
-	@Column(name = "ID_ORDEN_SERVICIO")
-	private OrdenServicioDTO idOrdenServicio;
+	private OrdenServicioDTO OrdenServicio2;
 	
 	
 	@Column(name = "CD_ORDEN_SERVICIO")
@@ -100,12 +98,14 @@ public class OdsDetalleCambioDTO  implements Serializable{
 		this.idDetalleCambio = idDetalleCambio;
 	}
 
-	public OrdenServicioDTO getIdOrdenServicio() {
-		return idOrdenServicio;
+
+
+	public OrdenServicioDTO getOrdenServicio2() {
+		return OrdenServicio2;
 	}
 
-	public void setIdOrdenServicio(OrdenServicioDTO idOrdenServicio) {
-		this.idOrdenServicio = idOrdenServicio;
+	public void setOrdenServicio2(OrdenServicioDTO ordenServicio2) {
+		OrdenServicio2 = ordenServicio2;
 	}
 
 	public String getCdOrdenServicio() {
@@ -244,9 +244,6 @@ public class OdsDetalleCambioDTO  implements Serializable{
 		this.idProcesoActual = idProcesoActual;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 	
 	
 	

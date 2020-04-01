@@ -124,7 +124,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 			{
                  if(banderaMostrarContestados)
                  {
-                	 if(actual.getProceso().getIdProceso()<=ordenServicioDTO.getIdProcesoActual())
+                	 if(actual.getProceso().getIdProceso()<=ordenServicioDTO.getProceso().getIdProceso())
                 	 {
                 		 actual.setStatusProceos(true);
                 	 } 
@@ -132,7 +132,7 @@ public class ProcesoServiceImpl implements ProcesoService {
                 		 actual.setStatusProceos(false);
                  }else
                  {
-                	 if(actual.getProceso().getIdProceso()==ordenServicioDTO.getIdProcesoActual())
+                	 if(actual.getProceso().getIdProceso()==ordenServicioDTO.getProceso().getIdProceso())
                 	 {
                 		 actual.setStatusProceos(true);
                 	 }

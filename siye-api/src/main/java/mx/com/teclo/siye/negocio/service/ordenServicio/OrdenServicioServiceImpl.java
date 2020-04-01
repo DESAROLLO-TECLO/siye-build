@@ -200,7 +200,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			OdsDetalleCambioDTO dcDTO = new OdsDetalleCambioDTO();	
 			
 			dcDTO = ResponseConverter.copiarPropiedadesFull(osDTO, OdsDetalleCambioDTO.class);
-			dcDTO.setIdOrdenServicio(osDTO);				
+			dcDTO.setOrdenServicio2(osDTO);				
 			odsDetalleCambioDAO.save(dcDTO);	
 			odsIncidenciaDAO.save(oiDTO);
 			ordenServicioDAO.update(osDTO);	

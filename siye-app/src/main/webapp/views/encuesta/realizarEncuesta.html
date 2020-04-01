@@ -25,7 +25,7 @@ display: block;
 					<div class="row">
 						<div class="col-md-2 center">
 							<div ng-if="myVar">
-								<a  href="#" data-toggle="tooltipinfo" data-placement="top" title="Tiempo restante para finalizar la evaluación">
+								<a  href="#" data-toggle="tooltipinfo" data-placement="top" title="Tiempo restante para finalizar la evaluaciï¿½n">
 									<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 								</a>
 							</div>
@@ -39,9 +39,9 @@ display: block;
 						<div class="col-md-9">
 							<div class="row">
 								<div class="col-md-6">
-									Contestadas por Sección: {{seccionVO.nuPreguntasContestadas+' DE '}} {{ (seccionVO.preguntas | filter:general.filter).length }}
+									Contestadas por Secciï¿½n: {{seccionVO.nuPreguntasContestadas+' DE '}} {{ (seccionVO.preguntas | filter:general.filter).length }}
 									<div ng-if="myVar" style="display: inline-block;">
-										<a href="#" data-toggle="tooltipinfo" data-placement="top" title="Total de preguntas contestadas por sección">
+										<a href="#" data-toggle="tooltipinfo" data-placement="top" title="Total de preguntas contestadas por secciï¿½n">
 											<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 										</a>
 									</div>
@@ -50,7 +50,7 @@ display: block;
 								<div class="col-md-6">
 									Total: {{preguntasContestadasEncuesta+' DE ' }}<span>{{encuesta.nuPreguntas}}</span>
 									<div ng-if="myVar" style="display: inline-block;">
-										<a href="#" data-toggle="tooltipinfo" data-placement="top" title="Total de preguntas contestadas de la evaluación">
+										<a href="#" data-toggle="tooltipinfo" data-placement="top" title="Total de preguntas contestadas de la evaluaciï¿½n">
 											<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 										</a>
 									</div>
@@ -86,7 +86,7 @@ display: block;
 					<div class="col-md-2 center-vert center" style="margin-top:2%;">
 
 										
-						<div ng-repeat="seccion in encuesta.secciones" > 
+						<div ng-repeat="seccion in encuesta.seccion" > 
 					
 							<div class="btn-group-vertical w-100" role="group" >
 								
@@ -128,7 +128,7 @@ display: block;
 				       <div style="position: absolute; bottom: 0;">
 				       		<div class="centerRow">
 								<div style="display:block;  margin: 0 auto;" ng-if="myVar">
-									<a href="#" data-toggle="tooltipinfo" data-placement="top" title="Regresar a la pantalla anterior para consultar las instrucciones de la evaluación">
+									<a href="#" data-toggle="tooltipinfo" data-placement="top" title="Regresar a la pantalla anterior para consultar las instrucciones de la evaluaciï¿½n">
 										<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 									</a>
 								</div>
@@ -140,7 +140,7 @@ display: block;
 								</button>
 								<div ng-if="preguntasContestadasEncuesta===encuesta.nuPreguntas" class="w-100">
 									<div style="display:block; margin: 0 auto;" ng-if="myVar">
-										<a href="#" data-toggle="tooltipinfo" data-placement="right" title="Concluir la evaluación">
+										<a href="#" data-toggle="tooltipinfo" data-placement="right" title="Concluir la evaluaciï¿½n">
 											<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 										</a>
 									</div>
@@ -154,7 +154,7 @@ display: block;
 								<div ng-if="preguntasContestadasEncuesta!=encuesta.nuPreguntas" class="w-100">
 									<div style="display:block; margin: 0 auto;" ng-if="myVar">
 										<a href="#" data-toggle="tooltipinfo" 
-											data-placement="right" title="Pausar la evaluación y continuar en otro momento" aria-disabled="true">
+											data-placement="right" title="Pausar la evaluaciï¿½n y continuar en otro momento" aria-disabled="true">
 											<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 										</a>
 									</div>
@@ -178,7 +178,7 @@ display: block;
 					</div>
 					<div class="col-md-9">
 						<fieldset class="scheduler-border">
-							<legend class="scheduler-border text-18">Sección: {{seccionVO.nbSeccion}} {{paramConfigPage.bigCurrentPage}} / {{numPages}}</legend>
+							<legend class="scheduler-border text-18">Secciï¿½n: {{seccionVO.nbSeccion}} {{paramConfigPage.bigCurrentPage}} / {{numPages}}</legend>
 							
 							<div class="box-body table-responsive no-padding" >
 								<table class="table table-hover header-fixed">
@@ -211,12 +211,12 @@ display: block;
 									<div  class="col-md-12">
 												<div class="col-md-1 col-md-offset-2">
  														<span  ng-if="posicionActual >0 && paramConfigPage.bigCurrentPage==1"
-														class="btn btn-danger" ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,encuesta.secciones[posicionActual-1]) "
-														data-toggle="tooltip" data-placement="right" title="Sección Anterior">
+														class="btn btn-danger" ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,encuesta.seccion[posicionActual-1]) "
+														data-toggle="tooltip" data-placement="right" title="Secciï¿½n Anterior">
 														<i class="fa fa-arrow-left"></i>
 														</span>
 														<div style="display:inline-block" ng-if="myVar && posicionActual >0 && paramConfigPage.bigCurrentPage==1">
-														<a href="#" data-toggle="tooltipinfo" data-placement="bottom" title="Consultar la sección anterior de la evaluación">
+														<a href="#" data-toggle="tooltipinfo" data-placement="bottom" title="Consultar la secciï¿½n anterior de la evaluaciï¿½n">
 														<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 														</a>
 														</div>
@@ -230,7 +230,7 @@ display: block;
 															</a>
 														</div>
 
-														<uib-pagination previous-text="Página Anterior" next-text="Página Siguiente" total-items="paramConfigPage.bigTotalItems"
+														<uib-pagination previous-text="Pï¿½gina Anterior" next-text="Pï¿½gina Siguiente" total-items="paramConfigPage.bigTotalItems"
 														num-pages="numPages" ng-model="paramConfigPage.bigCurrentPage" max-size="paramConfigPage.maxSize" 
 														items-per-page="paramConfigPage.itemsPerPage" class="pagination-md"
 														boundary-link-numbers="true" direction-links="true"
@@ -245,13 +245,13 @@ display: block;
 					
 													</div>
 													<div class="col-md-2 center">
-														<span ng-if="(posicionActual < (encuesta.secciones.length-1)) && paramConfigPage.bigCurrentPage==numPages" 
-														class="btn btn-danger"  data-toggle="tooltip" data-placement="right" title="Siguiente Sección"
-														ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,encuesta.secciones[posicionActual+1])">
+														<span ng-if="(posicionActual < (encuesta.seccion.length-1)) && paramConfigPage.bigCurrentPage==numPages" 
+														class="btn btn-danger"  data-toggle="tooltip" data-placement="right" title="Siguiente Secciï¿½n"
+														ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,encuesta.seccion[posicionActual+1])">
 														<i class="fa fa-arrow-right"></i> 
 														</span>
-														<div style="display:inline-block" ng-if="myVar && (posicionActual < (encuesta.secciones.length-1)) && paramConfigPage.bigCurrentPage==numPages">
-														<a href="#" data-toggle="tooltipinfo" data-placement="bottom" title="Consultar la siguiente sección de la evaluación">
+														<div style="display:inline-block" ng-if="myVar && (posicionActual < (encuesta.seccion.length-1)) && paramConfigPage.bigCurrentPage==numPages">
+														<a href="#" data-toggle="tooltipinfo" data-placement="bottom" title="Consultar la siguiente secciï¿½n de la evaluaciï¿½n">
 														<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 														</a>
 														</div>
@@ -263,7 +263,7 @@ display: block;
 					</div>
 					<div class="col-md-1" style="line-height: 30px;	height: 515px; margin-top: 2%;">
 						<div style="position: absolute; display: inline; top: 0;" ng-if="myVar">
-							<a href="#" data-toggle="tooltipinfo" data-placement="top" title="Sección de preguntas correspondientes a la evaluación, la pregunta contiene un número identificado de pregunta y contiene tres opciones, se debe marcar con un click la opción deseada">
+							<a href="#" data-toggle="tooltipinfo" data-placement="top" title="Secciï¿½n de preguntas correspondientes a la evaluaciï¿½n, la pregunta contiene un nï¿½mero identificado de pregunta y contiene tres opciones, se debe marcar con un click la opciï¿½n deseada">
 								<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 							</a>
 						</div>

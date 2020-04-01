@@ -533,4 +533,18 @@ public class EncuestaServiceImpl implements EncuestaService {
 
 		usuarioEncuestaIntentoDAO.update(usuarioEncuestaIntentosDTO);
 	}
+	
+	@Override
+	@Transactional
+	public Boolean activarODesactivarSatisfaccion(Long idEncuesta, Long idOrdenServicio, Boolean nuevoValor)
+	{
+		UsuarioEncuestaDetalleDTO ueDTO = encuestaDetalleDAO.getEncuestaDetalle(idEncuesta, idOrdenServicio);
+		 ;
+		ueDTO.setStAplicaEncuesta(nuevoValor);
+		ueDTO.setIdUsrModifica(userSession.getUsuarioFirmadoVO().getId());
+		ueDTO.setFhModificacion(new Date());
+		encuestaDetalleDAO.update(ueDTO);
+		return true;
+	}
+	
 }
