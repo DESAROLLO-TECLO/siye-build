@@ -3,7 +3,7 @@ package mx.com.teclo.siye.persistencia.vo.ordenServicio;
 import java.util.List;
 
 import mx.com.teclo.siye.persistencia.vo.proceso.KitInstDispVO;
-import mx.com.teclo.siye.persistencia.vo.proceso.VehiculoProcesoVO;
+
 
 
 public class OrdenServiVO {
@@ -14,14 +14,15 @@ public class OrdenServiVO {
 	private Long tpKit;
 	private String cdKitIntalacion;
 	private List<KitInstDispVO> kitInstalacionVO;
-	private VehiculoProcesoVO vehiculoVO;
+	private VehiculoOSVO vehiculoVO;
 	
 	
 	
-	public VehiculoProcesoVO getVehiculoVO() {
+	
+	public VehiculoOSVO getVehiculoVO() {
 		return vehiculoVO;
 	}
-	public void setVehiculoVO(VehiculoProcesoVO vehiculoVO) {
+	public void setVehiculoVO(VehiculoOSVO vehiculoVO) {
 		this.vehiculoVO = vehiculoVO;
 	}
 	public String getCdOrden() {

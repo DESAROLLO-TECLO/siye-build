@@ -16,6 +16,7 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.InstaladorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.StSeguimientoVO;
 
 
 @RestController
@@ -24,6 +25,8 @@ public class CatalogoRestController {
 	
 	@Autowired
 	private CatalogoService catalogoService;
+	
+	
 	
 	@RequestMapping(value="/encuesta", method = RequestMethod.GET)
 	@PreAuthorize("hasAnyAuthority('SERVICE_CAT_ENCUESTA')")
@@ -57,4 +60,17 @@ public class CatalogoRestController {
 		CatalogosOrdenProcesoVO ciVO = catalogoService.getCatalogosOrdenProceso();
 		return new ResponseEntity<CatalogosOrdenProcesoVO>(ciVO, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value = "/getTpSeguimiento", method =  RequestMethod.GET)
+	public ResponseEntity<List<StSeguimientoVO>> getTpSeguimiento()  throws NotFoundException {
+		List<StSeguimientoVO> listTpSeguimientoVO = catalogoService.obtenerStSeguimientoByCdTpSeguimiento("ID_TP_INCIDENCIA");
+		return new ResponseEntity<List<StSeguimientoVO>>(listTpSeguimientoVO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/getPrioridad", method =  RequestMethod.GET)
+	public ResponseEntity<List<StSeguimientoVO>> getPrioridad()  throws NotFoundException {
+		List<StSeguimientoVO> listStSeguimientoVO = catalogoService.obtenerStSeguimientoByCdTpSeguimiento("ID_PRIORIDAD");
+		return new ResponseEntity<List<StSeguimientoVO>>(listStSeguimientoVO, HttpStatus.OK);
+	}
+
 }

@@ -18,6 +18,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoVehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.CentroInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConductorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.InstaladorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ProveedorDTO;
@@ -26,6 +27,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.TipoKitDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.TipoVehiculoDTO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.InstaladorVO;
@@ -37,6 +39,7 @@ import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.KitInstalacionVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.PlanVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.StSeguimientoVO;
 import mx.com.teclo.siye.util.enumerados.RespuestaHttp;
 
 @Service
@@ -68,6 +71,9 @@ public class CatalogoServiceImpl implements CatalogoService{
 	
 	@Autowired
 	private ProveedorDAO proveedorDAO;
+
+	@Autowired
+	private StSeguimientoDAO stSeguimientoDAO;
 	
 	@Transactional
 	@Override
@@ -150,4 +156,15 @@ public class CatalogoServiceImpl implements CatalogoService{
 		
 		return copVO;
 	}
+	
+	@Transactional
+	@Override
+	public List<StSeguimientoVO> obtenerStSeguimientoByCdTpSeguimiento(String cdTpSeguimiento) throws NotFoundException {
+		List<StSeguimientoDTO> listStSeguimientoDTO = stSeguimientoDAO.obtenerStSeguimientoByCdTpSeguimiento(cdTpSeguimiento);
+		if(listStSeguimientoDTO.isEmpty())
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		List<StSeguimientoVO> listStSeguimientoVO = ResponseConverter.converterLista(new ArrayList<>(), listStSeguimientoDTO, StSeguimientoVO.class);
+		return listStSeguimientoVO;
+	}
+
 }

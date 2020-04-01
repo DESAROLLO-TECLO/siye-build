@@ -24,10 +24,10 @@ public class TipoSeguimientoDTO implements Serializable {
 	private Long idTipoSeguimiento;
 	
 	@Column(name = "CD_TIPO_SEGUIMIENTO")
-	private String cdStSeguimiento;
+	private String cdTpSeguimiento;
 	
 	@Column(name = "NB_TIPO_SEGUIMIENTO")
-	private String nbStSeguimiento;
+	private String nbTpSeguimiento;
 	
 	@Column(name = "NU_ORDEN")
 	private Long nuOrden;
@@ -55,20 +55,20 @@ public class TipoSeguimientoDTO implements Serializable {
 		this.idTipoSeguimiento = idTipoSeguimiento;
 	}
 
-	public String getCdStSeguimiento() {
-		return cdStSeguimiento;
+	public String getCdTpSeguimiento() {
+		return cdTpSeguimiento;
 	}
 
-	public void setCdStSeguimiento(String cdStSeguimiento) {
-		this.cdStSeguimiento = cdStSeguimiento;
+	public void setCdTpSeguimiento(String cdTpSeguimiento) {
+		this.cdTpSeguimiento = cdTpSeguimiento;
 	}
 
-	public String getNbStSeguimiento() {
-		return nbStSeguimiento;
+	public String getNbTpSeguimiento() {
+		return nbTpSeguimiento;
 	}
 
-	public void setNbStSeguimiento(String nbStSeguimiento) {
-		this.nbStSeguimiento = nbStSeguimiento;
+	public void setNbTpSeguimiento(String nbTpSeguimiento) {
+		this.nbTpSeguimiento = nbTpSeguimiento;
 	}
 
 	public Long getNuOrden() {
@@ -118,5 +118,10 @@ public class TipoSeguimientoDTO implements Serializable {
 	public void setFhModificacion(Date fhModificacion) {
 		this.fhModificacion = fhModificacion;
 	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	
 }
