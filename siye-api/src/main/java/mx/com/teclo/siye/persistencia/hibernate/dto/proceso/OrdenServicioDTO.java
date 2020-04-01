@@ -30,27 +30,27 @@ public class OrdenServicioDTO implements Serializable {
 	private String cdOrdenServicio;
 	
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name="ID_LOTE_ODS", referencedColumnName="ID_LOTE_ODS", insertable=false, updatable=false)
+	@JoinColumn(name="ID_LOTE_ODS", referencedColumnName="ID_LOTE_ODS")
 	private LoteOrdenServicioDTO loteOrdenServicio;
 	
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name="ID_VEHICULO", referencedColumnName="ID_VEHICULO", insertable=false, updatable=false)
+	@JoinColumn(name="ID_VEHICULO", referencedColumnName="ID_VEHICULO")
 	private VehiculoDTO vehiculo;
 	
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name="ID_CENTRO_INSTALACION", referencedColumnName="ID_CENTRO_INSTALACION", insertable=false, updatable=false)
+	@JoinColumn(name="ID_CENTRO_INSTALACION", referencedColumnName="ID_CENTRO_INSTALACION")
 	private CentroInstalacionDTO centroInstalacion;
 	
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name="ID_KIT_INSTALACION", referencedColumnName="ID_KIT_INSTALACION", insertable=false, updatable=false)
+	@JoinColumn(name="ID_KIT_INSTALACION", referencedColumnName="ID_KIT_INSTALACION")
 	private KitInstalacionDTO kitInstalacion;
 	
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name="ID_PLAN", referencedColumnName="ID_PLAN", insertable=false, updatable=false)
+	@JoinColumn(name="ID_PLAN", referencedColumnName="ID_PLAN")
 	private PlanDTO plan;
 	
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name="ID_ST_SEGUIMIENTO", referencedColumnName="ID_ST_SEGUIMIENTO", insertable=false, updatable=false)
+	@JoinColumn(name="ID_ST_SEGUIMIENTO", referencedColumnName="ID_ST_SEGUIMIENTO")
 	private StSeguimientoDTO stSeguimiento;
 	
 	@Column(name = "ST_ACTIVO")
