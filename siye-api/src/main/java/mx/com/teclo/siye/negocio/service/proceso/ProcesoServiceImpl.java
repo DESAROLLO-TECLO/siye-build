@@ -13,7 +13,7 @@ import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.EstatusCalificacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
-import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuentaIntentoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaIntentoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.DispositivosDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
@@ -61,7 +61,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 	private EstatusCalificacionDAO estatusCalificacionDAO;
 	
 	@Autowired
-	private UsuarioEncuentaIntentoDAO usuarioEncuentaIntentoDAO;
+	private UsuarioEncuestaIntentoDAO usuarioEncuestaIntentoDAO;
 	
 	@Autowired
 	private UsuarioFirmadoService usuarioFirmadoService;
@@ -192,7 +192,7 @@ public class ProcesoServiceImpl implements ProcesoService {
           	  nuevoIntentoEncuesta.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
           	  nuevoIntentoEncuesta.setFhModificacion(new Date());
           	  nuevoIntentoEncuesta.setUsuarioEncuesta(ordenEncuesta);
-          	  usuarioEncuentaIntentoDAO.save(nuevoIntentoEncuesta);
+          	  usuarioEncuestaIntentoDAO.save(nuevoIntentoEncuesta);
 
             }
             

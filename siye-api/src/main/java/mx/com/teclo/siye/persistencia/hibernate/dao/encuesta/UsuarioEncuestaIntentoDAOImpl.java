@@ -12,7 +12,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaInte
 
 
 @Repository
-public class UsuarioEncuestaIntentoDAOImpl extends BaseDaoHibernate<UsuarioEncuestaIntentosDTO> implements UsuarioEncuentaIntentoDAO {
+public class UsuarioEncuestaIntentoDAOImpl extends BaseDaoHibernate<UsuarioEncuestaIntentosDTO> implements UsuarioEncuestaIntentoDAO {
 
  
 	@Override

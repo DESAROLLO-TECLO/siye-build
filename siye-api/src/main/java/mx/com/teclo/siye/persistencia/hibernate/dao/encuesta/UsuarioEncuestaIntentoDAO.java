@@ -7,7 +7,7 @@ import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDao;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaIntentosDTO;
 
 
-public interface UsuarioEncuentaIntentoDAO extends BaseDao<UsuarioEncuestaIntentosDTO>{
+public interface UsuarioEncuestaIntentoDAO extends BaseDao<UsuarioEncuestaIntentosDTO>{
 	
 	/**
 	 * @author David Guerra

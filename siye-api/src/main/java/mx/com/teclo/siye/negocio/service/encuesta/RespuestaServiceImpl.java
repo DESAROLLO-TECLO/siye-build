@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.EstatusCalificacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.SeccionDAO;
-import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuentaIntentoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaIntentoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaRespuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.StEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EstatusCalificacionDTO;
@@ -26,7 +26,7 @@ import mx.com.teclo.siye.util.enumerados.CalificacionEnum;
 public class RespuestaServiceImpl implements RespuestaService {
 
 	@Autowired
-	private UsuarioEncuentaIntentoDAO usuarioEncuestaIntentoDAO;
+	private UsuarioEncuestaIntentoDAO usuarioEncuestaIntentoDAO;
 	@Autowired
 	private UsuarioEncuestaRespuestaDAO usuarioEncuestaRespuestaDAO;
 	@Autowired
