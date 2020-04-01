@@ -3,6 +3,7 @@
  */
 package mx.com.teclo.siye.negocio.service.async;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
@@ -26,12 +27,11 @@ public interface AsyncArchivoLoteService {
 	 * @return Long ID del lote
 	 * @throws BusinessException
 	 */
-	Integer registrarArchivoLote(MultipartFile archivoLote) throws BusinessException;
+	Long registrarArchivoLote(MultipartFile archivoLote) throws BusinessException;
 
 	/**
 	 * 
-	 * Valida que un archivo lote cargado desde la aplicaci&oacute;n web cumpla lo
-	 * siguiente:<br>
+	 * Procesa cada linea y verifica lo siguiente:<br>
 	 * <ul>
 	 * <li>Que el archivo tenga la cantidad correcta de columnas</li>
 	 * <li>Que cada columna tenga el tipo de dato correcto</li>
@@ -44,22 +44,14 @@ public interface AsyncArchivoLoteService {
 	 * @throws BusinessException
 	 */
 
-	void validarArchivoLote() throws BusinessException;
+	void cargarArchivoLote() throws BusinessException;
 
 	/**
-	 * Toma el contenido de un archivo validado y por cada l&iacute;nea inserta una
-	 * orden de servicio en la BD.
+	 * Actualiza el seguimiento del archivo
 	 * 
 	 * @throws BusinessException
 	 */
-	void procesarArchivoLote() throws BusinessException;
-
-	/**
-	 * Actualiza el estatus y conteos de ODS en un archivo lote.
-	 * 
-	 * @throws BusinessException
-	 */
-	void actualizarArchivoLote() throws BusinessException;
+	void actualizarSeguimiento() throws BusinessException;
 
 	/**
 	 * Recupera la informaci&oacute;n de un archivo lote
@@ -69,4 +61,5 @@ public interface AsyncArchivoLoteService {
 	 */
 	ArchivoLoteVO getArchivoLote(Long idArchivoLote) throws BusinessException;
 
+	Long crearLote(String nombreFinal, String error) ;
 }
