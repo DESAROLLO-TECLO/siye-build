@@ -18,7 +18,7 @@ public class OrdenServicioVO implements Serializable {
 	private CentroInstalacionVO centroInstalacion;
 	private KitInstalacionVO kitInstalacion;
 	private PlanVO plan;
-	private SeguimientoVO stSeguimiento;
+	private StSeguimientoVO stSeguimiento;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
 	private Date fhCita;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
@@ -71,10 +71,10 @@ public class OrdenServicioVO implements Serializable {
 	public void setPlan(PlanVO plan) {
 		this.plan = plan;
 	}
-	public SeguimientoVO getStSeguimiento() {
+	public StSeguimientoVO getStSeguimiento() {
 		return stSeguimiento;
 	}
-	public void setStSeguimiento(SeguimientoVO stSeguimiento) {
+	public void setStSeguimiento(StSeguimientoVO stSeguimiento) {
 		this.stSeguimiento = stSeguimiento;
 	}
 

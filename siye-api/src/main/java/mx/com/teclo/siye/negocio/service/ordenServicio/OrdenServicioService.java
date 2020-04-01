@@ -4,6 +4,7 @@ import java.util.List;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
+import mx.com.teclo.siye.persistencia.vo.ordenServicio.OrdenServiVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
 
 public interface OrdenServicioService {
@@ -14,7 +15,7 @@ public interface OrdenServicioService {
      * Descripción: Método para actualizar los datos del 
      * orden de servicio
      * @author Jorge Luis
-     * @param OrdenServicioVO
+     * @param OrdenServiVO
      * @return Boolean
      * */
 	public Boolean actualizaOrdenServicio(OrdenServicioVO osVO) throws NotFoundException, BusinessException;
@@ -34,5 +35,7 @@ public interface OrdenServicioService {
 	 * @throws BusinessException
 	 */
 	Long crearOrdenServicio(OrdenServicioVO ordenServicioVO) throws BusinessException;
+	
+	public void saveOrdenServicio(OrdenServiVO ordenServiVO); 
 
 }
