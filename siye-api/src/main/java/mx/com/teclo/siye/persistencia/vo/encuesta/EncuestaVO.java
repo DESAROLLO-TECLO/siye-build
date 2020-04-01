@@ -31,10 +31,20 @@ public class EncuestaVO {
 	private Date fhModificacion;
 
 	private TipoEncuestaVO tipoEncuesta;
-	private List<SeccionVO> seccionListVO;
+	private List<SeccionVO> seccion;
 	private Date fhVigIni;
 	private Date fhVigFin;
 	private Integer nuCalificacionApro;
+	
+	
+
+	public List<SeccionVO> getSeccion() {
+		return seccion;
+	}
+
+	public void setSeccion(List<SeccionVO> seccion) {
+		this.seccion = seccion;
+	}
 
 	public Long getIdEncuesta() {
 		return idEncuesta;
@@ -146,20 +156,6 @@ public class EncuestaVO {
 
 	public void setFhVigFin(Date fhVigFin) {
 		this.fhVigFin = fhVigFin;
-	}
-
-	/**
-	 * @return the seccionListVO
-	 */
-	public List<SeccionVO> getSeccionListVO() {
-		return seccionListVO;
-	}
-
-	/**
-	 * @param seccionListVO the seccionListVO to set
-	 */
-	public void setSeccionListVO(List<SeccionVO> seccionListVO) {
-		this.seccionListVO = seccionListVO;
 	}
 
 	public Integer getNuCalificacionApro() {
