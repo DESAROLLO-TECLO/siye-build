@@ -521,7 +521,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 		
 		usuarioEncuestaIntentosDTO.setFhInicio(new Date());
 		usuarioEncuestaIntentosDTO.setFhModificacion(new Date());
-		usuarioEncuestaIntentosDTO.setIdUsrModifica(idUsuario);
+		usuarioEncuestaIntentosDTO.setIdUsrModifica(-1L);
 		usuarioEncuestaIntentosDTO.getUsuarioEncuesta().setNuIntegerentos(usuarioEncuestaIntentosDTO.getUsuarioEncuesta().getNuIntegerentos() + 1);
 
 		usuarioEncuentaIntentoDAO.update(usuarioEncuestaIntentosDTO);
