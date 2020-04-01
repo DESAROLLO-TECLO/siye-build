@@ -380,6 +380,17 @@ public class EncuestaServiceImpl implements EncuestaService {
 				}
 				
 				List<UsuarioEncuestaVO> listaUsuarioEncuestaVO = ResponseConverter.converterLista(new ArrayList<>(), listaOrdenServicioDTO, UsuarioEncuestaVO.class);
+
+				for (int i = 0; i < listaUsuarioEncuestaVO.size(); i++) {
+					UsuarioEncuestaVO usuarioEncuestaVO = listaUsuarioEncuestaVO.get(i);
+					Long idOrdenServicio = usuarioEncuestaVO.getOrdenServicio().getIdOrdenServicio();
+					Long idEncuesta = usuarioEncuestaVO.getEncuesta().getIdEncuesta();
+					
+					UsuarioEncuestaIntentosDTO usuarioEncuestaIntentosDTO = usuarioEncuestaIntentoDAO.getEncuestaByUsuario(idEncuesta, idOrdenServicio);
+					UsuarioEncuestaIntentosVO usuarioEncuestaIntentosVO = ResponseConverter.copiarPropiedadesFull(usuarioEncuestaIntentosDTO, UsuarioEncuestaIntentosVO.class);
+					listaUsuarioEncuestaVO.get(i).setIntentoMostrar(usuarioEncuestaIntentosVO);
+				}
+				//usuarioEncuestaIntentoDAO.getEncuestaByUsuario
 				return listaUsuarioEncuestaVO;
 			}else {
 				mensajeErr = "La contraseña no es válida, porfavor solicitarla a un supervisor.";
