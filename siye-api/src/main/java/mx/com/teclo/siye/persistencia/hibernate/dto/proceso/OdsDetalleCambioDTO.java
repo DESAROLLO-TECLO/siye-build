@@ -21,9 +21,7 @@ import javax.persistence.Table;
 @Table(name = "TIE053B_IE_ODS_DETALLE_CAMBIO")
 public class OdsDetalleCambioDTO  implements Serializable{
 	
-	
 	private static final long serialVersionUID = 4814258386727191940L;
-	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -32,7 +30,7 @@ public class OdsDetalleCambioDTO  implements Serializable{
 	
 	@OneToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_ORDEN_SERVICIO", referencedColumnName="ID_ORDEN_SERVICIO")
-	private OrdenServicioDTO idOrdenServicio;
+	private OrdenServicioDTO OrdenServicio2;
 	
 	
 	@Column(name = "CD_ORDEN_SERVICIO")
@@ -100,12 +98,14 @@ public class OdsDetalleCambioDTO  implements Serializable{
 		this.idDetalleCambio = idDetalleCambio;
 	}
 
-	public OrdenServicioDTO getIdOrdenServicio() {
-		return idOrdenServicio;
+
+
+	public OrdenServicioDTO getOrdenServicio2() {
+		return OrdenServicio2;
 	}
 
-	public void setIdOrdenServicio(OrdenServicioDTO idOrdenServicio) {
-		this.idOrdenServicio = idOrdenServicio;
+	public void setOrdenServicio2(OrdenServicioDTO ordenServicio2) {
+		OrdenServicio2 = ordenServicio2;
 	}
 
 	public String getCdOrdenServicio() {
@@ -244,9 +244,6 @@ public class OdsDetalleCambioDTO  implements Serializable{
 		this.idProcesoActual = idProcesoActual;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 	
 	
 	

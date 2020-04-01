@@ -29,7 +29,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 	@Autowired
 	private UsuarioFirmadoService usuarioFirmadoService;
 	
-	private static final String MSG_ERROR_INCIDENCIA_NULA = "No se Encontraron Incidencias";
+	private static final String MSG_ERROR_INCIDENCIA_NULA = "No se encontraron incidencias";
 	private static final String MSG_ERROR_IMAGEN_NULA = "La imagen esta vac\u00EDa";
 	private static final String MSG_ERROR_DESCRIPCION_NULA = "La descripci\u00f3n esta vac\u00EDa";
 
@@ -39,11 +39,11 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 	public IncidenciaVO getIncidenciabycdIncidencia(String cdIncidencia)  throws NotFoundException{
 		IncidenciaVO iVO = new IncidenciaVO();
 		IncidenciaDTO iDTO = incidenciaDAO.getIncidenciabycdIncidencia(cdIncidencia);
-		iVO = ResponseConverter.copiarPropiedadesFull(iDTO, IncidenciaVO.class);
-		
 		if (iDTO == null) {
 			throw new NotFoundException(MSG_ERROR_INCIDENCIA_NULA);
 		}
+		
+		iVO = ResponseConverter.copiarPropiedadesFull(iDTO, IncidenciaVO.class);
 		
 		return iVO;
 	}

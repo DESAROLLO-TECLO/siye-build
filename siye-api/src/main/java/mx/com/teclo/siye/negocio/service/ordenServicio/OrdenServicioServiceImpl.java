@@ -180,17 +180,17 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		osDTO.setFhAtencionIni(osVO.getFhAtencionIni());
 		osDTO.setIdOrigenOds(1L);
 	
-		if (osVO.getIncidenciaVO() != null) {
+		if (osVO.getIncidencia() != null) {
 				OdsIncidenciaDTO oiDTO = new OdsIncidenciaDTO();
 				IncidenciaDTO iDTO = new IncidenciaDTO();
-				iDTO = ResponseConverter.copiarPropiedadesFull(osVO.getIncidenciaVO(), IncidenciaDTO.class);
+				iDTO = ResponseConverter.copiarPropiedadesFull(osVO.getIncidencia(), IncidenciaDTO.class);
 				oiDTO.setIdOrdenServicio(osDTO);
 				oiDTO.setIdIncidencia(iDTO);
 				
 			OdsDetalleCambioDTO dcDTO = new OdsDetalleCambioDTO();	
 			
 			dcDTO = ResponseConverter.copiarPropiedadesFull(osDTO, OdsDetalleCambioDTO.class);
-			dcDTO.setIdOrdenServicio(osDTO);				
+			dcDTO.setOrdenServicio2(osDTO);				
 			odsDetalleCambioDAO.save(dcDTO);	
 			odsIncidenciaDAO.save(oiDTO);
 			ordenServicioDAO.update(osDTO);	

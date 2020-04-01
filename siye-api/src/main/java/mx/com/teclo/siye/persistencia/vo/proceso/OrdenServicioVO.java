@@ -25,7 +25,7 @@ public class OrdenServicioVO implements Serializable {
 	private Date fhAtencionFin;
 	private Long idOrigenOds;
 	private Boolean stActivo;
-	private IncidenciaVO incidenciaVO;
+	private IncidenciaVO incidencia;
 	private ProcesoVO proceso;
 	
 	public Long getIdOrdenServicio() {
@@ -107,12 +107,11 @@ public class OrdenServicioVO implements Serializable {
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
 	}
-
-	public IncidenciaVO getIncidenciaVO() {
-		return incidenciaVO;
+	public IncidenciaVO getIncidencia() {
+		return incidencia;
 	}
-	public void setIncidenciaVO(IncidenciaVO incidenciaVO) {
-		this.incidenciaVO = incidenciaVO;
+	public void setIncidencia(IncidenciaVO incidencia) {
+		this.incidencia = incidencia;
 	}
 	public ProcesoVO getProceso() {
 		return proceso;
