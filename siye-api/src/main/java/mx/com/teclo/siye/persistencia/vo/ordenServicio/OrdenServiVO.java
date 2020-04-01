@@ -1,13 +1,16 @@
 package mx.com.teclo.siye.persistencia.vo.ordenServicio;
 
+import java.io.Serializable;
 import java.util.List;
 
 import mx.com.teclo.siye.persistencia.vo.proceso.KitInstDispVO;
 
 
 
-public class OrdenServiVO {
+public class OrdenServiVO implements Serializable{
 	
+	private static final long serialVersionUID = -2154104909635252655L;
+
 	private String cdOrden;
 	private Long centroI;
 	private Long plan;
@@ -15,10 +18,8 @@ public class OrdenServiVO {
 	private String cdKitIntalacion;
 	private List<KitInstDispVO> kitInstalacionVO;
 	private VehiculoOSVO vehiculoVO;
-	
-	
-	
-	
+	private Long idProcesoActual;
+
 	public VehiculoOSVO getVehiculoVO() {
 		return vehiculoVO;
 	}
@@ -61,10 +62,11 @@ public class OrdenServiVO {
 	public void setKitInstalacionVO(List<KitInstDispVO> kitInstalacionVO) {
 		this.kitInstalacionVO = kitInstalacionVO;
 	}
-	
-	
-	
-	
-	
+	public Long getIdProcesoActual() {
+		return idProcesoActual;
+	}
+	public void setIdProcesoActual(Long idProcesoActual) {
+		this.idProcesoActual = idProcesoActual;
+	}
 
 }
