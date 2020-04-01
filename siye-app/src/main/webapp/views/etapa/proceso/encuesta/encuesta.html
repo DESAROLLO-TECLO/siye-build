@@ -32,9 +32,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading center">
                             <h3>
-                                <span>
-                                    - Nombre Encuesta -
-                                </span>
+                                {{nombEncuesta}}
                             </h3>
                         </div>
                         <div class="panel-body">
@@ -68,262 +66,27 @@
                             <div class="row">
                                 <hr>
                                 <div class="col-md-10 col-md-offset-1">
-                                    <form >
+                                    <form>
                                         <fieldset>
-                                            <legend>Nombre de la Sección</legend>
+                                            <legend> <h3>{{nombSeccion}}</h3> </legend>
                                             <div class="box-body">
                                                 <ul class="list-group">
-                                                    <li class="list-group-item">
+                                                    <li class="list-group-item" ng-repeat="item in seccEncuesta.preguntas">
                                                         <div class="row">
                                                             <div class="col-md-6">
                                                                 <div class="opcion-pregunta">
-                                                                    1.- Descripción de la Pregunta
+                                                                    {{item.txPregunta}}
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-5">
                                                                 <div class="opcion-respuesta">
                                                                     <div class="btn-group" data-toggle="buttons">
-                                                                        <label class="btn btn-default m-3" >
-                                                                          <input type="radio" name="options" id="option2" autocomplete="off"> Cumple
+                                                                        <label class="btn btn-default m-3" ng-repeat="resp in item.opciones">
+                                                                            <input type="radio" name="{{item.cdPregunta}}" id="{{item.cdPregunta}}" autocomplete="off"
+                                                                                ng-model="resp.stMarcado">
+                                                                                {{resp.txOpcion}}
                                                                         </label>
-                                                                        <label class="btn btn-default m-3">
-                                                                          <input type="radio" name="options" id="option3" autocomplete="off"> No Cumple
-                                                                        </label>
-                                                                      </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-1">
-                                                                <div class="media add-img">
-                                                                    <img class="add-img-img" src="static/dist/img/etapas/add.png">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="opcion-pregunta">
-                                                                    2.- Descripción de la Pregunta
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-5">
-                                                                <div class="opcion-respuesta">
-                                                                    <div class="btn-group" data-toggle="buttons">
-                                                                        <label class="btn btn-default m-3" >
-                                                                          <input type="radio" name="options" id="option2" autocomplete="off"> Cumple
-                                                                        </label>
-                                                                        <label class="btn btn-default m-3">
-                                                                          <input type="radio" name="options" id="option3" autocomplete="off"> No Cumple
-                                                                        </label>
-                                                                      </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-1">
-                                                                <div class="media add-img">
-                                                                    <img class="add-img-img" src="static/dist/img/etapas/add.png">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="opcion-pregunta">
-                                                                    3.- Descripción de la Pregunta
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-5">
-                                                                <div class="opcion-respuesta">
-                                                                    <div class="btn-group" data-toggle="buttons">
-                                                                        <label class="btn btn-default m-3" >
-                                                                          <input type="radio" name="options" id="option2" autocomplete="off"> Cumple
-                                                                        </label>
-                                                                        <label class="btn btn-default m-3">
-                                                                          <input type="radio" name="options" id="option3" autocomplete="off"> No Cumple
-                                                                        </label>
-                                                                      </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-1">
-                                                                <div class="media add-img">
-                                                                    <img class="add-img-img" src="static/dist/img/etapas/add.png">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="opcion-pregunta">
-                                                                    4.- Descripción de la Pregunta
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-5">
-                                                                <div class="opcion-respuesta">
-                                                                    <div class="btn-group" data-toggle="buttons">
-                                                                        <label class="btn btn-default m-3" >
-                                                                          <input type="radio" name="options" id="option2" autocomplete="off"> Cumple
-                                                                        </label>
-                                                                        <label class="btn btn-default m-3">
-                                                                          <input type="radio" name="options" id="option3" autocomplete="off"> No Cumple
-                                                                        </label>
-                                                                      </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-1">
-                                                                <div class="media add-img">
-                                                                    <img class="add-img-img" src="static/dist/img/etapas/add.png">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="opcion-pregunta">
-                                                                    5.- Descripción de la Pregunta
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-5">
-                                                                <div class="opcion-respuesta">
-                                                                    <div class="btn-group" data-toggle="buttons">
-                                                                        <label class="btn btn-default m-3" >
-                                                                          <input type="radio" name="options" id="option2" autocomplete="off"> Cumple
-                                                                        </label>
-                                                                        <label class="btn btn-default m-3">
-                                                                          <input type="radio" name="options" id="option3" autocomplete="off"> No Cumple
-                                                                        </label>
-                                                                      </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-1">
-                                                                <div class="media add-img">
-                                                                    <img class="add-img-img" src="static/dist/img/etapas/add.png">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="opcion-pregunta">
-                                                                    5.- Descripción de la Pregunta
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-5">
-                                                                <div class="opcion-respuesta">
-                                                                    <div class="btn-group" data-toggle="buttons">
-                                                                        <label class="btn btn-default m-3" >
-                                                                          <input type="radio" name="options" id="option2" autocomplete="off"> Cumple
-                                                                        </label>
-                                                                        <label class="btn btn-default m-3">
-                                                                          <input type="radio" name="options" id="option3" autocomplete="off"> No Cumple
-                                                                        </label>
-                                                                      </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-1">
-                                                                <div class="media add-img">
-                                                                    <img class="add-img-img" src="static/dist/img/etapas/add.png">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="opcion-pregunta">
-                                                                    5.- Descripción de la Pregunta
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-5">
-                                                                <div class="opcion-respuesta">
-                                                                    <div class="btn-group" data-toggle="buttons">
-                                                                        <label class="btn btn-default m-3" >
-                                                                          <input type="radio" name="options" id="option2" autocomplete="off"> Cumple
-                                                                        </label>
-                                                                        <label class="btn btn-default m-3">
-                                                                          <input type="radio" name="options" id="option3" autocomplete="off"> No Cumple
-                                                                        </label>
-                                                                      </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-1">
-                                                                <div class="media add-img">
-                                                                    <img class="add-img-img" src="static/dist/img/etapas/add.png">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="opcion-pregunta">
-                                                                    5.- Descripción de la Pregunta
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-5">
-                                                                <div class="opcion-respuesta">
-                                                                    <div class="btn-group" data-toggle="buttons">
-                                                                        <label class="btn btn-default m-3" >
-                                                                          <input type="radio" name="options" id="option2" autocomplete="off"> Cumple
-                                                                        </label>
-                                                                        <label class="btn btn-default m-3">
-                                                                          <input type="radio" name="options" id="option3" autocomplete="off"> No Cumple
-                                                                        </label>
-                                                                      </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-1">
-                                                                <div class="media add-img">
-                                                                    <img class="add-img-img" src="static/dist/img/etapas/add.png">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="opcion-pregunta">
-                                                                    5.- Descripción de la Pregunta
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-5">
-                                                                <div class="opcion-respuesta">
-                                                                    <div class="btn-group" data-toggle="buttons">
-                                                                        <label class="btn btn-default m-3" >
-                                                                          <input type="radio" name="options" id="option2" autocomplete="off"> Cumple
-                                                                        </label>
-                                                                        <label class="btn btn-default m-3">
-                                                                          <input type="radio" name="options" id="option3" autocomplete="off"> No Cumple
-                                                                        </label>
-                                                                      </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-1">
-                                                                <div class="media add-img">
-                                                                    <img class="add-img-img" src="static/dist/img/etapas/add.png">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                    <li class="list-group-item">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="opcion-pregunta">
-                                                                    5.- Descripción de la Pregunta
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-5">
-                                                                <div class="opcion-respuesta">
-                                                                    <div class="btn-group" data-toggle="buttons">
-                                                                        <label class="btn btn-default m-3" >
-                                                                          <input type="radio" name="options" id="option2" autocomplete="off"> Cumple
-                                                                        </label>
-                                                                        <label class="btn btn-default m-3">
-                                                                          <input type="radio" name="options" id="option3" autocomplete="off"> No Cumple
-                                                                        </label>
-                                                                      </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-1">
@@ -339,8 +102,17 @@
                                         </fieldset>
                                     </form>
                                     <br>
-                                    <div style="float: right;">
-                                        <button type="button" class="btn btn-danger">Finalizar</button>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div style="float: left;">
+                                                <button type="button" class="btn btn-danger">Regresar</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div style="float: right;">
+                                                <button type="button" class="btn btn-danger">Finalizar</button>
+                                            </div>
+                                        </div>
                                     </div>
                                     
                                 </div>

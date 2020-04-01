@@ -105,7 +105,12 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 		$scope.ordenVO = $scope.orden;
 		console.log($scope.ordenVO);
 			
-		
+		altaServicioService.altaOrdenServicio(valorDos).success(function(data){
+			$scope.error = false;
+			
+		}).error(function(data){
+			$scope.error = true;
+		});
 
 		
 		

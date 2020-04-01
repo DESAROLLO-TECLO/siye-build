@@ -25,7 +25,7 @@ angular.module(appTeclo).service('altaServicioService',function($http,config) {
 	};
 	
 	this.altaOrdenServicio = function(ordenVO){
-	return $http.post(config.baseUrl + "/altaOrdenServicio", ordenVO);	
+	return $http.post(config.baseUrl + "/ordenServicio/guardarReporteBd", ordenVO);	
 	}
 	
 });
