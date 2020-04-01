@@ -36,9 +36,11 @@ public class SeccionDTO implements Serializable {
 	@Basic(optional = false)
 	@Column(name = "ID_SECCION", nullable = false)
 	private Long idSeccion;
+	
 	@Basic(optional = false)
 	@Column(name = "CD_SECCION", nullable = false, length = 15)
 	private String cdSeccion;
+	
 	@Basic(optional = false)
 	@Column(name = "NB_SECCION", nullable = false, length = 100)
 	private String nbSeccion;
@@ -50,25 +52,32 @@ public class SeccionDTO implements Serializable {
 	@Basic(optional = false)
 	@Column(name = "NU_ORDEN", nullable = false)
 	private Integer nuOrden;
+	
 	@Basic(optional = false)
 	@Column(name = "ST_ACTIVO", nullable = false)
 	private Integer stActivo;
+	
 	@Basic(optional = false)
 	@Column(name = "ID_USR_CREACION", nullable = false)
 	private Long idUsrCreacion;
+	
 	@Basic(optional = false)
 	@Column(name = "FH_CREACION", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fhCreacion;
+	
 	@Basic(optional = false)
 	@Column(name = "ID_USR_MODIFICA", nullable = false)
 	private Long idUsrModifica;
+	
 	@Column(name = "FH_MODIFICACION")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fhModificacion;
+	
 	@JoinColumn(name = "ID_ENCUESTA", referencedColumnName = "ID_ENCUESTA", nullable = false)
 	@ManyToOne(optional = false, fetch = FetchType.EAGER)
 	private EncuestasDTO idEncuesta;
+	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "idSeccion", fetch = FetchType.EAGER)
 	private List<PreguntasDTO> preguntas;
 

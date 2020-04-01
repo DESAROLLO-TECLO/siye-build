@@ -22,19 +22,22 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.LoteOrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
-import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.SeguimientoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.VehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.OdsIncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDispDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.LoteOrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.TipoVehiculoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.VehiculoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.usuario.GerenteSupervisorDTO;
+import mx.com.teclo.siye.persistencia.vo.ordenServicio.OrdenServiVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
 import mx.com.teclo.siye.util.enumerados.RespuestaHttp;
 
@@ -67,7 +70,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	private UsuarioFirmadoService contexto;
 
 	@Autowired
-	private SeguimientoDAO seguimientoDAO;
+	private StSeguimientoDAO seguimientoDAO;
 	
 	@Autowired
 	private UsuarioFirmadoService usuarioFirmadoService;
@@ -288,6 +291,44 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			throw new BusinessException(MSG_ERROR_ORDEN_CON_REFERENCIAS_NULAS);
 		}
 
+	}
+
+	@Override
+	@Transactional
+	public void saveOrdenServicio(OrdenServiVO ordenServiVO) {
+		
+		OrdenServicioDTO ordenServiDTO = new OrdenServicioDTO(); // TIE026_ORDEN_SERVICIO
+		
+		VehiculoDTO vehiculoDTO = new VehiculoDTO(); // TIE027_VEHICULO
+		
+		VehiculoDTO vehoDTO = ResponseConverter.copiarPropiedadesFull(ordenServiVO.getVehiculoVO(), VehiculoDTO.class);
+		
+		KitInstalacionDTO kitInstDTO = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion()); //TIE030_KIT_INSTALACION
+		
+		KitInstalacionDispDTO kitInstalDisp = new KitInstalacionDispDTO(); // TIE039_KIT_INST_DISP
+		CentroInstalacionDTO centroInst = centroInstalacionDAO.centroIns(ordenServiVO.getCentroI());
+		
+		PlanDTO planDTO = planDAO.getId(ordenServiVO.getPlan());
+		StSeguimientoDTO stSegDTO =seguimientoDAO.obtenerSeguimientoDos(1l);
+		
+		ordenServiDTO.setCdOrdenServicio(ordenServiVO.getCdOrden());
+		ordenServiDTO.setVehiculo(vehoDTO);
+		ordenServiDTO.setCentroInstalacion(centroInst);
+		ordenServiDTO.setKitInstalacion(kitInstDTO);
+		ordenServiDTO.setPlan(planDTO);
+		ordenServiDTO.setStSeguimiento(stSegDTO);
+		ordenServiDTO.setIdOrigenOds(2l);
+		ordenServiDTO.setStActivo(true);
+		ordenServiDTO.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
+		ordenServiDTO.setFhCreacion(new Date());
+		ordenServiDTO.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
+		ordenServiDTO.setFhModificacion(new Date());
+		ordenServicioDAO.save(ordenServiDTO);
+		
+		
+
+		
+		
 	}
 
 

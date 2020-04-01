@@ -32,4 +32,6 @@ public interface CentroInstalacionDAO extends BaseDao<CentroInstalacionDTO> {
 	 */
 	public List<CentroInstalacionDTO> obtenerCentroInstalacion();
 	
+	public CentroInstalacionDTO centroIns(Long centroIn);
+	
 }

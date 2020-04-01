@@ -2,7 +2,7 @@ package mx.com.teclo.siye.persistencia.vo.incidencia;
 
 import java.io.Serializable;
 import java.util.Date;
-import mx.com.teclo.siye.persistencia.vo.proceso.StSeguimientoVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.TipoSeguimientoVO;
 
 public class IncidenciaVO implements Serializable {
 	
@@ -12,16 +12,16 @@ public class IncidenciaVO implements Serializable {
 	private String cdIncidencia;
 	private String nbIncidencia;
 	private String txIncidencia;
-	private StSeguimientoVO stSeguimiento;
+	private TipoSeguimientoVO stSeguimiento;
 	private Long stActivo;
 	private Long idUsrCreacion;
 	private Date fhCreacion;
 	private Long idUsrModifica;
 	private Date fhModificacion;
-	private StSeguimientoVO tpIncidencia;
-	private StSeguimientoVO stIncidencia;
-	private StSeguimientoVO stAutorizacion;
-	private StSeguimientoVO prioridad;
+	private TipoSeguimientoVO tpIncidencia;
+	private TipoSeguimientoVO stIncidencia;
+	private TipoSeguimientoVO stAutorizacion;
+	private TipoSeguimientoVO prioridad;
 	
 	public Long getIdIncidencia() {
 		return idIncidencia;
@@ -47,10 +47,10 @@ public class IncidenciaVO implements Serializable {
 	public void setTxIncidencia(String txIncidencia) {
 		this.txIncidencia = txIncidencia;
 	}
-	public StSeguimientoVO getStSeguimiento() {
+	public TipoSeguimientoVO getStSeguimiento() {
 		return stSeguimiento;
 	}
-	public void setStSeguimiento(StSeguimientoVO stSeguimiento) {
+	public void setStSeguimiento(TipoSeguimientoVO stSeguimiento) {
 		this.stSeguimiento = stSeguimiento;
 	}
 	public Long getStActivo() {
@@ -83,28 +83,28 @@ public class IncidenciaVO implements Serializable {
 	public void setFhModificacion(Date fhModificacion) {
 		this.fhModificacion = fhModificacion;
 	}
-	public StSeguimientoVO getTpIncidencia() {
+	public TipoSeguimientoVO getTpIncidencia() {
 		return tpIncidencia;
 	}
-	public void setTpIncidencia(StSeguimientoVO tpIncidencia) {
+	public void setTpIncidencia(TipoSeguimientoVO tpIncidencia) {
 		this.tpIncidencia = tpIncidencia;
 	}
-	public StSeguimientoVO getStIncidencia() {
+	public TipoSeguimientoVO getStIncidencia() {
 		return stIncidencia;
 	}
-	public void setStIncidencia(StSeguimientoVO stIncidencia) {
+	public void setStIncidencia(TipoSeguimientoVO stIncidencia) {
 		this.stIncidencia = stIncidencia;
 	}
-	public StSeguimientoVO getStAutorizacion() {
+	public TipoSeguimientoVO getStAutorizacion() {
 		return stAutorizacion;
 	}
-	public void setStAutorizacion(StSeguimientoVO stAutorizacion) {
+	public void setStAutorizacion(TipoSeguimientoVO stAutorizacion) {
 		this.stAutorizacion = stAutorizacion;
 	}
-	public StSeguimientoVO getPrioridad() {
+	public TipoSeguimientoVO getPrioridad() {
 		return prioridad;
 	}
-	public void setPrioridad(StSeguimientoVO prioridad) {
+	public void setPrioridad(TipoSeguimientoVO prioridad) {
 		this.prioridad = prioridad;
 	}
 

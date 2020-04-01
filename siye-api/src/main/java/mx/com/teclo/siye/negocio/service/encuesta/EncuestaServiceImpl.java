@@ -37,6 +37,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaDetalleDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaIntentosDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuaroEncuestaRespuestaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuaroEncuestaRespuestaDTOPK;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.IntentoDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.OpcionVO;
@@ -94,8 +95,9 @@ public class EncuestaServiceImpl implements EncuestaService {
 	@Autowired 
 	private OpcionesDAO  opcionesDAO;
 	
+	@Autowired
+	private UsuarioEncuestaRespuestaDAO usuaroEncuestaRespuestaDAO;
 	
-		
 	@Override
 	@Transactional
 	public UsuarioEncuestaDetalleVO encuestaDetalle(Long idEncuesta,
@@ -486,5 +488,42 @@ public class EncuestaServiceImpl implements EncuestaService {
 		
 		List<SeccionDTO> secciones =  usuarioEncuestaDetalleDTO.getEncuesta().getSecciones();
 		List<UsuaroEncuestaRespuestaDTO> respuestas = new ArrayList<UsuaroEncuestaRespuestaDTO>();
+		
+		for(SeccionDTO seccion: secciones) {
+			UsuaroEncuestaRespuestaDTO respuesta= null;
+			
+			List<PreguntasDTO> preguntas = seccion.getPreguntas();
+			for(PreguntasDTO pregunta : preguntas) {
+				if(pregunta.getStActivo()==1) {
+					UsuaroEncuestaRespuestaDTOPK respuestaPK= null;
+					respuestaPK = new UsuaroEncuestaRespuestaDTOPK();
+					respuestaPK.setIdUsuEncuIntento(usuarioEncuestaIntentosDTO.getIdUsuEncuIntento());
+					respuestaPK.setIdEncuesta(usuarioEncuestaDetalleDTO.getEncuesta().getIdEncuesta());
+					respuestaPK.setIdSeccion(seccion.getIdSeccion());
+					respuesta = new UsuaroEncuestaRespuestaDTO();
+					respuestaPK.setIdPregunta(pregunta.getIdPregunta());
+					respuesta.setUsuaroEncuestaRespuestaPK(respuestaPK);
+					respuesta.setNuIntentos(0);
+					respuesta.setStCorrecto(0);
+					respuesta.setStActivo(1);
+					respuesta.setIdUsrCreacion(idUsuario);
+					respuesta.setIdUsrModifica(idUsuario);
+					respuesta.setFhCreacion(new Date());
+					respuesta.setFhModificacion(new Date());
+	 				respuestas.add(respuesta);
+				}
+			}
+		}
+		
+		for(UsuaroEncuestaRespuestaDTO respuesta: respuestas) {
+			usuaroEncuestaRespuestaDAO.save(respuesta);
+		}
+		
+		usuarioEncuestaIntentosDTO.setFhInicio(new Date());
+		usuarioEncuestaIntentosDTO.setFhModificacion(new Date());
+		usuarioEncuestaIntentosDTO.setIdUsrModifica(idUsuario);
+		usuarioEncuestaIntentosDTO.getUsuarioEncuesta().setNuIntegerentos(usuarioEncuestaIntentosDTO.getUsuarioEncuesta().getNuIntegerentos() + 1);
+
+		usuarioEncuentaIntentoDAO.update(usuarioEncuestaIntentosDTO);
 	}
 }

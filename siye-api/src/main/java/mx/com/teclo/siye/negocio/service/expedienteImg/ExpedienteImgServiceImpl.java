@@ -12,6 +12,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.configuracion.ConfiguracionO
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.PreguntasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.SeccionDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.expedienteImg.ExpedienteImgDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
@@ -21,6 +22,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.procesos.IEProcesosDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.tipoExpediente.TipoExpedienteDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.configuracion.ConfiguracionOSDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestasDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.PreguntasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.expedientesImg.ExpedientesImgDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
@@ -71,6 +73,9 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 	@Autowired
 	private IncidenciaDAO incidenciaDAO;
 	
+	@Autowired
+	private UsuarioEncuestaDAO usuarioEncuesta;
+	
 
 	private static Boolean ACTIVO = true, BORRAR = false;
 	private static String PLACA = "PLACA", OS = "ORDEN_SERVICIO", VIN = "VIN";
@@ -94,7 +99,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 			OSDTO = ordenServicioDAO.consultaOrdenByVin(valor);
 		}
 
-		if (OSDTO != null) {
+		if (!OSDTO.isEmpty() && OSDTO!=null) {
 			for (OrdenServicioDTO os : OSDTO) {
 				CargaExpedienteImgVO OSVO = new CargaExpedienteImgVO();
 				OSVO.setNameConsesionario(os.getVehiculo().getConsecionario().getNbConsecion());
@@ -140,35 +145,36 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 		}
 
 		// Consulta De imegenes y fintrado por OS
-		List<ImagenVO> listImg = expedienteImgDAO.getAllExpedientesImgVO(expedientes);
-		if (!listImg.isEmpty()) {
-			for (ImagenVO img : listImg) {
-				CargaExpedienteImgVO expediente = null;
-				for (CargaExpedienteImgVO exp : respuesta) {
-					if (img.getIdOrdenServicio() == exp.getIdOrdenServicio()) {
-						expediente = exp;
-						break;
+		if(expedientes.size()>0) {
+			List<ImagenVO> listImg = expedienteImgDAO.getAllExpedientesImgVO(expedientes);
+			if (!listImg.isEmpty()) {
+				for (ImagenVO img : listImg) {
+					CargaExpedienteImgVO expediente = null;
+					for (CargaExpedienteImgVO exp : respuesta) {
+						if (img.getIdOrdenServicio() == exp.getIdOrdenServicio()) {
+							expediente = exp;
+							break;
+						}
 					}
-				}
-				if(img.getIdOrdenServicio()!= null  && img.getIdProcesoEncuesta()==null && img.getIdOdsEncuesta()==null && img.getIdPregunta()==null) {
-					///nivel Orden Servicio
-					List<ImagenVO> imagenes = expediente.getImagenes()!=null ? expediente.getImagenes() : new ArrayList<ImagenVO>() ;
-					imagenes.add(img);
-					expediente.setImagenes(imagenes);
-					
-				}else if(img.getIdOrdenServicio()!= null && img.getIdProcesoEncuesta()!=null && img.getIdOdsEncuesta()==null && img.getIdPregunta()==null) {
-					// nivel proceso
-					expediente.setProcesos(addImgProceso(expediente.getProcesos(), img));
-				}else if(img.getIdOrdenServicio()!= null && img.getIdOdsEncuesta()!=null && img.getIdPregunta()==null) {
-					// nivel Encuesta
-					expediente.setProcesos(addImgEncuestaPregunta(expediente.getProcesos(), img));
-				}else if(img.getIdOrdenServicio()!= null && img.getIdProcesoEncuesta()!=null && img.getIdOdsEncuesta()!=null && img.getIdPregunta()!=null) {
-					//nivel pregunta
-					expediente.setProcesos(addImgEncuestaPregunta(expediente.getProcesos(), img));	
+					if(img.getIdOrdenServicio()!= null  && img.getIdProcesoEncuesta()==null && img.getIdOdsEncuesta()==null && img.getIdPregunta()==null) {
+						///nivel Orden Servicio
+						List<ImagenVO> imagenes = expediente.getImagenes()!=null ? expediente.getImagenes() : new ArrayList<ImagenVO>() ;
+						imagenes.add(img);
+						expediente.setImagenes(imagenes);
+						
+					}else if(img.getIdOrdenServicio()!= null && img.getIdProcesoEncuesta()!=null && img.getIdOdsEncuesta()==null && img.getIdPregunta()==null) {
+						// nivel proceso
+						expediente.setProcesos(addImgProceso(expediente.getProcesos(), img));
+					}else if(img.getIdOrdenServicio()!= null && img.getIdOdsEncuesta()!=null && img.getIdPregunta()==null) {
+						// nivel Encuesta
+						expediente.setProcesos(addImgEncuestaPregunta(expediente.getProcesos(), img));
+					}else if(img.getIdOrdenServicio()!= null && img.getIdProcesoEncuesta()!=null && img.getIdOdsEncuesta()!=null && img.getIdPregunta()!=null) {
+						//nivel pregunta
+						expediente.setProcesos(addImgEncuestaPregunta(expediente.getProcesos(), img));	
+					}
 				}
 			}
 		}
-
 		return respuesta;
 	}
 
@@ -260,11 +266,12 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 		return expedientes;
 	};
 
-	public List<ImagenVO> saveImagenEvidencia(List<ImagenVO> expedientes, Long idUsuario, Date fechaCarga,
-			Long nuMaximoImagenes) {
+	public List<ImagenVO> saveImagenEvidencia(List<ImagenVO> expedientes, Long idUsuario, Date fechaCarga,Long nuMaximoImagenes) {
 		ProcesoEncuestaDTO PEDTO = new ProcesoEncuestaDTO();
 		IncidenciaDTO incidenciaDTO = null;
 		TipoExpedienteDTO tipoExpedienteDTO = null;
+		OrdenEncuestaDTO ordenEncuestaDTO = null;
+		
 		
 		if (expedientes.size() <= nuMaximoImagenes) {
 			ImagenVO imagen = expedientes.get(0);
@@ -279,13 +286,28 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 			if(imagen.getIdTipoExpediente()!=null) {
 				tipoExpedienteDTO = tipoExpedienteDAO.findOne(imagen.getIdTipoExpediente());
 			}
+			if(imagen.getIdOdsEncuesta()!=null) {
+				 ordenEncuestaDTO = usuarioEncuesta.findOne(imagen.getIdOdsEncuesta());
+			}
 			
 			for (ImagenVO archivo : expedientes) {
 				ExpedientesImgDTO registro = new ExpedientesImgDTO();
 				if (archivo.getIdExpedienteODS() != null) {
 					registro = expedienteImgDAO.findOne(archivo.getIdExpedienteODS());
+					registro.setIdOrdenServicio(ordenServicioDTO);
+					registro.setIdOdsEncuesta(archivo.getIdOdsEncuesta());
+					registro.setIdProcesoEncuesta(PEDTO != null ? PEDTO : null);
+					registro.setIdPregunta(archivo.getIdPregunta());
+					registro.setIncidencia(incidenciaDTO!=null ? incidenciaDTO: null);
+					registro.setTipoExpediente(tipoExpedienteDTO!=null ? tipoExpedienteDTO : null);				
+					registro.setNuOrden(null);
+					registro.setNbExpedienteODS(archivo.getNbExpedienteODS());
+					registro.setCdTipoArchivo(archivo.getCdTipoArchivo());
 					registro.setLbExpedienteODS(archivo.getLbExpedienteODS());
-					registro.setTipoExpediente(tipoExpedienteDTO);
+					registro.setTxRutaExpedienteODS(null);
+					registro.setStActivo(ACTIVO);
+					registro.setFhCreacion(fechaCarga);
+					registro.setIdUsrCreacion(idUsuario);
 					registro.setFhModifica(fechaCarga);
 					registro.setIdUsrModifica(idUsuario);
 					expedienteImgDAO.update(registro);
@@ -293,10 +315,10 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 					registro = new ExpedientesImgDTO();
 					registro.setIdOrdenServicio(ordenServicioDTO);
 					registro.setIdOdsEncuesta(archivo.getIdOdsEncuesta());
-					registro.setIdProcesoEncuesta(PEDTO);
-					registro.setIdPregunta(registro.getIdPregunta());
-					registro.setIncidencia(incidenciaDTO);
-					registro.setTipoExpediente(tipoExpedienteDTO);				
+					registro.setIdProcesoEncuesta(PEDTO != null ? PEDTO : null);
+					registro.setIdPregunta(archivo.getIdPregunta());
+					registro.setIncidencia(incidenciaDTO!=null ? incidenciaDTO: null);
+					registro.setTipoExpediente(tipoExpedienteDTO!=null ? tipoExpedienteDTO : null);				
 					registro.setNuOrden(null);
 					registro.setNbExpedienteODS(archivo.getNbExpedienteODS());
 					registro.setCdTipoArchivo(archivo.getCdTipoArchivo());

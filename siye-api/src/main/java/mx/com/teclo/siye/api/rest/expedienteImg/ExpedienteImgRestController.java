@@ -36,7 +36,7 @@ public class ExpedienteImgRestController {
 	public ResponseEntity<List<CargaExpedienteImgVO>> getImgExpediente(@RequestParam(value ="tipoBusqueda") String tipoBusqueda,
 														   @RequestParam(value ="valor") String valor) throws NotFoundException{	
 		List<CargaExpedienteImgVO> respuesta = expedienteImg.getInformacionExpediente(tipoBusqueda, valor);
-		if(respuesta==null) {
+		if(respuesta.isEmpty() || respuesta == null) {
 			throw new NotFoundException("No se encontro expediente relacionado");
 		}
 		return new ResponseEntity<List<CargaExpedienteImgVO>>(respuesta, HttpStatus.OK);
