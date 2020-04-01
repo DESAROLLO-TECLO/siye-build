@@ -362,29 +362,24 @@ public class EncuestaServiceImpl implements EncuestaService {
 		try {
 			Boolean contraseniaValida = passwordDAO.validarContraseniaTransportista(passwordEnc);
 			
-//			List<OrdenServicioDTO> listaOrdenServicioDTO = new ArrayList<OrdenServicioDTO>(); 
+			List<OrdenEncuestaDTO> listaOrdenServicioDTO = new ArrayList<OrdenEncuestaDTO>(); 
 			
 			if(contraseniaValida == true) {
-//				switch(tipoBusqueda) {
-//					case 1: //Por Orden de Servicio
-//						listaOrdenServicioDTO = ordenServicioDAO.consultaOrdenByOrdenServicio(valor);
-//					break;
-//					case 2: //Por Placa Vehicular
-//						listaOrdenServicioDTO = ordenServicioDAO.consultaOrdenByPlaca(valor);
-//					break;
-//					case 3: //Por VIN
-//						listaOrdenServicioDTO = ordenServicioDAO.consultaOrdenByVin(valor);
-//					break;
-//					default:
-//					break;
-//				}
+				switch(tipoBusqueda) {
+					case 1: //Por Orden de Servicio
+						listaOrdenServicioDTO = usuarioEncuestaDAO.consultaOrdenByOrdenServicio(valor);
+					break;
+					case 2: //Por Placa Vehicular
+						listaOrdenServicioDTO = usuarioEncuestaDAO.consultaOrdenByPlaca(valor);
+					break;
+					case 3: //Por VIN
+						listaOrdenServicioDTO = usuarioEncuestaDAO.consultaOrdenByVin(valor);
+					break;
+					default:
+					break;
+				}
 				
-				
-				List<OrdenEncuestaDTO> listaUsuarioEncuestaDTO = usuarioEncuestaDAO.consultaOrdenByOrdenServicio(valor);
-				
-				String s ="";
-				
-				List<UsuarioEncuestaVO> listaUsuarioEncuestaVO = ResponseConverter.converterLista(new ArrayList<>(), listaUsuarioEncuestaDTO, UsuarioEncuestaVO.class);
+				List<UsuarioEncuestaVO> listaUsuarioEncuestaVO = ResponseConverter.converterLista(new ArrayList<>(), listaOrdenServicioDTO, UsuarioEncuestaVO.class);
 				return listaUsuarioEncuestaVO;
 			}else {
 				mensajeErr = "La contraseña no es válida, porfavor solicitarla a un supervisor.";
