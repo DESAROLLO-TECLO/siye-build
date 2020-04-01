@@ -40,4 +40,32 @@ public class UsuarioEncuestaDAOImpl extends BaseDaoHibernate<OrdenEncuestaDTO> i
 		c.add(Restrictions.eq("stActivo", true));
 		return (List<OrdenEncuestaDTO>)c.list();
 	}
+
+	@Override
+	public List<OrdenEncuestaDTO> consultaOrdenByPlaca( String valor) {
+		Criteria c= getCurrentSession().createCriteria(OrdenEncuestaDTO.class);
+		c.createAlias("ordenServicio", "ordenServicio");
+		c.createAlias("ordenServicio.vehiculo", "vehiculo");
+		c.createAlias("encuesta", "encuesta");
+		c.createAlias("encuesta.tipoEncuesta", "tipoEncuesta");
+		c.add(Restrictions.eq("vehiculo.cdPlacaVehiculo", valor));
+		c.add(Restrictions.eq("ordenServicio.stActivo", true));
+		c.add(Restrictions.eq("tipoEncuesta.idTipoEncuesta", 2L));
+		c.add(Restrictions.eq("stActivo", true));
+		return (List<OrdenEncuestaDTO>)c.list();
+	}
+
+	@Override
+	public List<OrdenEncuestaDTO> consultaOrdenByVin(String valor) {
+		Criteria c= getCurrentSession().createCriteria(OrdenEncuestaDTO.class);
+		c.createAlias("ordenServicio", "ordenServicio");
+		c.createAlias("ordenServicio.vehiculo", "vehiculo");
+		c.createAlias("encuesta", "encuesta");
+		c.createAlias("encuesta.tipoEncuesta", "tipoEncuesta");
+		c.add(Restrictions.eq("vehiculo.cdVin", valor));
+		c.add(Restrictions.eq("ordenServicio.stActivo", true));
+		c.add(Restrictions.eq("tipoEncuesta.idTipoEncuesta", 2L));
+		c.add(Restrictions.eq("stActivo", true));
+		return (List<OrdenEncuestaDTO>)c.list();
+	}
 }

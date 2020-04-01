@@ -55,7 +55,7 @@ public class EncuestaRestController {
 		return new ResponseEntity<Boolean>(b, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/consultaEncuestasSatisfaccion", method = RequestMethod.POST)
+	@RequestMapping(value="/consultaEncuestasSatisfaccion", method = RequestMethod.GET)
 	public ResponseEntity<List<UsuarioEncuestaVO>> encuestaDetalle (
 		@RequestParam(value="tipoBusqueda") Integer tipoBusqueda,
 		@RequestParam(value="valor") String valor, 

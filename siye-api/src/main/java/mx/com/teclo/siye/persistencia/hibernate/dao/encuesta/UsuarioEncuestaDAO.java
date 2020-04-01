@@ -23,4 +23,6 @@ public interface UsuarioEncuestaDAO extends BaseDao<OrdenEncuestaDTO>{
     List<OrdenEncuestaDTO> getEncuestasPorOrden(Long idOrden);
 	
     public List<OrdenEncuestaDTO> consultaOrdenByOrdenServicio(String valor);
+    public List<OrdenEncuestaDTO> consultaOrdenByPlaca(String valor);
+    public List<OrdenEncuestaDTO> consultaOrdenByVin(String valor);
 }
