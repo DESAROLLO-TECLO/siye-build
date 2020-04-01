@@ -101,7 +101,7 @@
 				
 <!--Inicia tabla de resultados-->
 
-<section class="content" >
+<section class="content" ng-if="listOrden.length>0" >
     <div class="row">
         <div class="col-md-12">
             <div class="box box-danger">
@@ -113,7 +113,7 @@
                                     <div class="box-header col-md-12">
                                         <div class="col-md-4 col-xs-12">
                                             <h3 class="box-title">
-                                                Registros Encontrados: <span>{{ (listEncuesta | filter:general.filter).length }}</span>
+                                                Registros Encontrados: <span>{{ (listOrden | filter:general.filter).length }}</span>
                                             </h3>
                                         </div>
                                         <div class="col-md-7 form-group">
@@ -138,22 +138,22 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr dir-paginate="encuestaVO in listEncuesta | filter:general.filter | orderBy:order:reverse | itemsPerPage: view.rowsPerPage ">
+                                                <tr dir-paginate="ordenVO in listOrden | filter:general.filter | orderBy:order:reverse | itemsPerPage: view.rowsPerPage ">
                                                     <td class="center">
-                                                        <a ng-click="empezarEncuesta(true)">
+                                                        <a ng-click="empezarEncuesta(ordenVO.ordenServicio.idOrdenServicio,ordenVO.encuesta,true)">
                                                         <label   class="btn-xs" 
-                                                        style=" color: #ffffff; background-color: {{encuestaVO.cdColor}};  border-color:#e08e0b; cursor: pointer;">
-                                                        {{encuestaVO.estatus}}
+                                                        style=" color: #ffffff; background-color: #F81717;  border-color:#e08e0b; cursor: pointer;">
+                                                        Iniciar
                                                         </label>
                                                          </a>
                                                        
                                                     </td>
-                                                         <td class="center"><span>{{encuestaVO.placa}}</span></td>
-                                                         <td class="center"><span>{{encuestaVO.ordenServicio}}</span></td>
-                                                         <td class="center"><span>{{caracterVO.fInicio|date:'dd-MM-yyyy'}}</span></td>
-                                                         <td class="center"><span>{{encuestaVO.cuestionario}}</span></td>
+                                                         <td class="center"><span>{{ordenVO.ordenServicio.vehiculo.cdPlacaVehiculo}}</span></td>
+                                                         <td class="center"><span>{{ordenVO.ordenServicio.cdOrdenServicio}}</span></td>
+                                                         <td class="center"><span>{{ordenVO.fhAtencionIni|date:'dd-MM-yyyy'}}</span></td>
+                                                         <td class="center"><span>{{ordenVO.encuesta.txEncuesta}}</span></td>
                                                 </tr>
-                                                <tr ng-if="(listCaracter | filter:general.filter).length < 1">
+                                                <tr ng-if="(listOrden | filter:general.filter).length < 1">
                                                         <td colspan="5" class="text-center">
                                                             <h4>No se encontraron coincidencias</h4>
                                                         </td>
@@ -163,7 +163,7 @@
                                     </div>
                                     <div class="container-fluid">
                                         <div class="fixed-table-pagination" style="display: block;">
-                                            <rows-per-page rows="view.rowsPerPage" filtro="general.filter" array="listCaracter"></rows-per-page>
+                                            <rows-per-page rows="view.rowsPerPage" filtro="general.filter" array="listOrden"></rows-per-page>
                                             <div class="pull-right pagination">
                                                 <dir-pagination-controls class="pagination"></dir-pagination-controls>
                                             </div>

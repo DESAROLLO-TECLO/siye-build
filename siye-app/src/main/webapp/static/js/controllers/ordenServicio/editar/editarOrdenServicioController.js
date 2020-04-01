@@ -34,7 +34,7 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
                 growl.warning('No se han detectado cambios por guardar, favor de validar', { ttl: 4000 });
                 return;
             } else {
-                vo.incidenciaVO = $scope.general.voIncidencia; // agregamos la incidencia que estará asociada
+                vo.incidencia = $scope.general.voIncidencia; // agregamos la incidencia que estará asociada
                 consultaServicioService.actualizarServicio(vo).success(function(data) {
                     if (data) {
                         // Cuando toda la petición sea correcta, debemos actualizar el objeto del array aztualizado
