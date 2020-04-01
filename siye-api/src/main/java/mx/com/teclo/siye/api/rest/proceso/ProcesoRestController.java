@@ -74,7 +74,7 @@ public class ProcesoRestController {
     		List<PlanProcesoVO> planProcesoVO = ResponseConverter.converterLista(new ArrayList<>(), planProcesoDTO,
     				PlanProcesoVO.class);
     		listaEvaluaciones=procesoService.obtenerEncuestas(idOrden);
-    		return new ResponseEntity<List<PlanProcesoVO>>(procesoService.revisarEncuestasCompletas(listaEvaluaciones, planProcesoVO, idPlan), HttpStatus.OK);
+    		return new ResponseEntity<List<PlanProcesoVO>>(procesoService.revisarEncuestasCompletas(listaEvaluaciones, planProcesoVO, idOrden), HttpStatus.OK);
 
         }catch(Exception e)
         {
