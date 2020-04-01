@@ -81,7 +81,7 @@ public class OrdenServicioDTO implements Serializable {
 	private Long idOrigenOds;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name="ID_PROCESO_ACTUAL", referencedColumnName="ID_PROCESO_ACTUAL")
+	@JoinColumn(name="ID_PROCESO_ACTUAL", referencedColumnName="ID_PROCESO")
 	private ProcesoDTO proceso;
 	
 	

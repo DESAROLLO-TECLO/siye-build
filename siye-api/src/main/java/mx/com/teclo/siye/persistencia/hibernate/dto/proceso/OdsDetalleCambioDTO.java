@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -25,13 +26,12 @@ public class OdsDetalleCambioDTO  implements Serializable{
 	
 	
 	@Id
-	@SequenceGenerator(name = "sqOrdenServicio", sequenceName = "SQIE026D_IE_ORDEN_SER", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqOrdenServicio")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "ID_DETALLE_CAMBIO", unique = true, nullable = false)
 	private Long idDetalleCambio;
 	
+	@OneToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_ORDEN_SERVICIO", referencedColumnName="ID_ORDEN_SERVICIO")
-	@Column(name = "ID_ORDEN_SERVICIO")
 	private OrdenServicioDTO idOrdenServicio;
 	
 	

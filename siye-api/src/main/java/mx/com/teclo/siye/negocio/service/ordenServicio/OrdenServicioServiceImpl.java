@@ -180,10 +180,10 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		osDTO.setFhAtencionIni(osVO.getFhAtencionIni());
 		osDTO.setIdOrigenOds(1L);
 	
-		if (osVO.getIncidencia() != null) {
+		if (osVO.getIncidenciaVO() != null) {
 				OdsIncidenciaDTO oiDTO = new OdsIncidenciaDTO();
 				IncidenciaDTO iDTO = new IncidenciaDTO();
-				iDTO = ResponseConverter.copiarPropiedadesFull(osVO.getIncidencia(), IncidenciaDTO.class);
+				iDTO = ResponseConverter.copiarPropiedadesFull(osVO.getIncidenciaVO(), IncidenciaDTO.class);
 				oiDTO.setIdOrdenServicio(osDTO);
 				oiDTO.setIdIncidencia(iDTO);
 				
