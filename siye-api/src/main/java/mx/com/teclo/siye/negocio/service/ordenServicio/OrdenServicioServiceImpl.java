@@ -19,6 +19,7 @@ import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoVehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.OdsIncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.CentroInstalacionDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.ConcesionariaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.LoteOrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OdsDetalleCambioDAO;
@@ -89,6 +90,9 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	
 	@Autowired
 	private TipoVehiculoDAO tpVehiculoDAO;
+	
+	@Autowired
+	private ConcesionariaDAO concesionariaDAO;
 	
 	
 	@Transactional
@@ -322,7 +326,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		if(vehiculo == null);
 		
 			TipoVehiculoDTO tpVehiculoDTO = tpVehiculoDAO.findOne(ordenServiVO.getVehiculoVO().getTpVehiculo().getIdTipoVehiculo());
-//			ConsecionarioDTO concesinarioDTO = 
+			ConsecionarioDTO concesinarioDTO = concesionariaDAO.findOne(ordenServiVO.getVehiculoVO().getConcesionaria().getIdConsecion());
 			
 			vehiculo.setCdPlacaVehiculo(ordenServiVO.getVehiculoVO().getPlaca());
 			vehiculo.setCdVin(ordenServiVO.getVehiculoVO().getCdVIN());
@@ -331,21 +335,20 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			vehiculo.setNbMarca(ordenServiVO.getVehiculoVO().getMarca());
 			vehiculo.setNbSubMarca(ordenServiVO.getVehiculoVO().getSubMarca());
 			vehiculo.setCdModelo(ordenServiVO.getVehiculoVO().getCdModelo());
-//			vehiculo.setConsecionario(ordenServiVO.getVehiculoVO().getConcesionaria().getIdConsecion());
+			vehiculo.setConsecionario(concesinarioDTO);
 			
 			vehiculo.setStActivo(true);
 			vehiculo.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
 			vehiculo.setFhCreacion(new Date());
 			vehiculo.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
 			vehiculo.setFhModificacion(new Date());
+			vehiculoDAO.save(vehiculo);
 			
 			
 			
 			
 		
 		KitInstalacionDTO kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion()); //TIE030_KIT_INSTALACION
-		
-
 		CentroInstalacionDTO centroInst = centroInstalacionDAO.findOne(ordenServiVO.getCentroI());
 		
 		PlanDTO planDTO = planDAO.getId(ordenServiVO.getPlan());
