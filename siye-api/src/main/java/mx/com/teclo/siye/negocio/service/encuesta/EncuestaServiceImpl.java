@@ -443,6 +443,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 
 
 	@Override
+	@Transactional
 	public Boolean guardarRespuestas(List<UserRespuestaVO> l) throws BusinessException {
 	
 		if(l.isEmpty())// No se guardar ni procesa nada
