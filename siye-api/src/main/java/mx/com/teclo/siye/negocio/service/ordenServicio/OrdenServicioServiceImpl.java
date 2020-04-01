@@ -16,6 +16,7 @@ import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoVehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.OdsIncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.CentroInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstalacionDAO;
@@ -29,6 +30,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.OdsIncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.ConsecionarioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.LoteOrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OdsDetalleCambioDTO;
@@ -84,6 +86,10 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	
 	@Autowired
 	private OdsDetalleCambioDAO odsDetalleCambioDAO;
+	
+	@Autowired
+	private TipoVehiculoDAO tpVehiculoDAO;
+	
 	
 	@Transactional
 	@Override
@@ -312,6 +318,30 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		 // TIE027_VEHICULO
 		
 		VehiculoDTO vehiculo = vehiculoDAO.buscarVehiculoPorPlaca(ordenServiVO.getVehiculoVO().getPlaca());
+		
+		if(vehiculo == null);
+		
+			TipoVehiculoDTO tpVehiculoDTO = tpVehiculoDAO.findOne(ordenServiVO.getVehiculoVO().getTpVehiculo().getIdTipoVehiculo());
+//			ConsecionarioDTO concesinarioDTO = 
+			
+			vehiculo.setCdPlacaVehiculo(ordenServiVO.getVehiculoVO().getPlaca());
+			vehiculo.setCdVin(ordenServiVO.getVehiculoVO().getCdVIN());
+			vehiculo.setCdTarjetaDeCirculacion(ordenServiVO.getVehiculoVO().getTjtCirculacion());
+			vehiculo.setTipoVehiculo(tpVehiculoDTO);
+			vehiculo.setNbMarca(ordenServiVO.getVehiculoVO().getMarca());
+			vehiculo.setNbSubMarca(ordenServiVO.getVehiculoVO().getSubMarca());
+			vehiculo.setCdModelo(ordenServiVO.getVehiculoVO().getCdModelo());
+//			vehiculo.setConsecionario(ordenServiVO.getVehiculoVO().getConcesionaria().getIdConsecion());
+			
+			vehiculo.setStActivo(true);
+			vehiculo.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
+			vehiculo.setFhCreacion(new Date());
+			vehiculo.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
+			vehiculo.setFhModificacion(new Date());
+			
+			
+			
+			
 		
 		KitInstalacionDTO kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion()); //TIE030_KIT_INSTALACION
 		

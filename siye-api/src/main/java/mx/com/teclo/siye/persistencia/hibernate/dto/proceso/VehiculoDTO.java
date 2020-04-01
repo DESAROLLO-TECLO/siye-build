@@ -7,9 +7,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -19,7 +22,11 @@ public class VehiculoDTO implements Serializable {
 	
 	private static final long serialVersionUID = 4814258386727191940L;
 	
+	
+	
 	@Id
+	@SequenceGenerator(name = "sqVehiculo", sequenceName = "SQIE027C_IE_VEHICULO", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqVehiculo")
 	@Column(name = "ID_VEHICULO", unique = true, nullable = false)
 	private Long idVehiculo;
 	
@@ -33,7 +40,7 @@ public class VehiculoDTO implements Serializable {
 	private String cdTarjetaDeCirculacion;
 	
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name="ID_TIPO_VEHICULO", referencedColumnName="ID_TIPO_VEHICULO", insertable=false, updatable=false)
+	@JoinColumn(name="ID_TIPO_VEHICULO", referencedColumnName="ID_TIPO_VEHICULO")
 	private TipoVehiculoDTO tipoVehiculo;
 	
 	@Column(name = "NB_MARCA")
@@ -61,7 +68,7 @@ public class VehiculoDTO implements Serializable {
 	private Date fhModificacion;
 	
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name="ID_CONCESION", referencedColumnName="ID_CONCESION", insertable=false, updatable=false)
+	@JoinColumn(name="ID_CONCESION", referencedColumnName="ID_CONCESION")
 	private ConsecionarioDTO consecionario;
 
 	public Long getIdVehiculo() {

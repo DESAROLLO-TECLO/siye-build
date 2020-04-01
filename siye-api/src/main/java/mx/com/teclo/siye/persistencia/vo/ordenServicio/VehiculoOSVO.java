@@ -1,5 +1,7 @@
 package mx.com.teclo.siye.persistencia.vo.ordenServicio;
 
+import mx.com.teclo.siye.persistencia.vo.proceso.ConsecionarioVO;
+
 public class VehiculoOSVO {
 	
 	private String placa;
@@ -8,7 +10,15 @@ public class VehiculoOSVO {
 	private String marca;
 	private String subMarca;
 	private TpVehiculoVO tpVehiculo;
+	private Long cdModelo;
+	private ConsecionarioVO concesionaria;
 	
+	public ConsecionarioVO getConcesionaria() {
+		return concesionaria;
+	}
+	public void setConcesionaria(ConsecionarioVO concesionaria) {
+		this.concesionaria = concesionaria;
+	}
 	public String getPlaca() {
 		return placa;
 	}
@@ -44,6 +54,12 @@ public class VehiculoOSVO {
 	}
 	public void setTpVehiculo(TpVehiculoVO tpVehiculo) {
 		this.tpVehiculo = tpVehiculo;
+	}
+	public Long getCdModelo() {
+		return cdModelo;
+	}
+	public void setCdModelo(Long cdModelo) {
+		this.cdModelo = cdModelo;
 	}
 	
 	
