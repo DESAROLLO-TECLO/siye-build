@@ -20,6 +20,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.OdsIncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.CentroInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.LoteOrdenServicioDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OdsDetalleCambioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
@@ -30,6 +31,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.OdsIncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.LoteOrdenServicioDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OdsDetalleCambioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
@@ -79,6 +81,9 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	
 	@Autowired
 	private OdsIncidenciaDAO odsIncidenciaDAO;
+	
+	@Autowired
+	private OdsDetalleCambioDAO odsDetalleCambioDAO;
 	
 	@Transactional
 	@Override
@@ -181,8 +186,14 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 				iDTO = ResponseConverter.copiarPropiedadesFull(osVO.getIncidencia(), IncidenciaDTO.class);
 				oiDTO.setIdOrdenServicio(osDTO);
 				oiDTO.setIdIncidencia(iDTO);
-				odsIncidenciaDAO.save(oiDTO);
-				ordenServicioDAO.update(osDTO);	
+				
+			OdsDetalleCambioDTO dcDTO = new OdsDetalleCambioDTO();	
+			
+			dcDTO = ResponseConverter.copiarPropiedadesFull(osDTO, OdsDetalleCambioDTO.class);
+			dcDTO.setIdOrdenServicio(osDTO);				
+			odsDetalleCambioDAO.save(dcDTO);	
+			odsIncidenciaDAO.save(oiDTO);
+			ordenServicioDAO.update(osDTO);	
 		} else {
 			throw new NotFoundException("La incidencia se encuentra vacia.");
 		}
