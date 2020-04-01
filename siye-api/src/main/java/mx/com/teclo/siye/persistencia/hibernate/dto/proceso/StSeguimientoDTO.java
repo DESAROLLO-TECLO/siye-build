@@ -138,9 +138,14 @@ public class StSeguimientoDTO implements Serializable {
 		this.fhModificacion = fhModificacion;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public TipoSeguimientoDTO getTipoSeguimiento() {
+		return tipoSeguimiento;
 	}
+
+	public void setTipoSeguimiento(TipoSeguimientoDTO tipoSeguimiento) {
+		this.tipoSeguimiento = tipoSeguimiento;
+	}
+
 	
 
 }

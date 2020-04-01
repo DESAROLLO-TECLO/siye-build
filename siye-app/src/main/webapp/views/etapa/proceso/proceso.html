@@ -72,47 +72,55 @@
                             <div class="row">
                                 <hr>
                                 <div class="col-sm-6 col-md-3" ng-repeat="item in dataEtapa">
-                                    <a ng-class="{'inactiv-click' : item.stRespondida == false}" 
-                                    href="#/etapas/proceso/encuesta/{{item.idEncuesta.idEncuesta}}/:0" 
-                                    data-toggle="tooltip" data-placement="bottom" title="{{item.idEncuesta.txEncuesta}}" >
-                                        <div class="dash-info" ng-class="{'color-fondo': item.stRespondida == true, 'color-fondo-desactivado': item.stRespondida == false}">
+                                    <div ng-if="item.idEncuesta.cdEncuesta == 'SAT01'">
+                                        <div class="dash-info" ng-class="{'color-fondo-contestado': item.stRespondida == true, 'color-fondo-desactivado': item.stActivaMostrar == false, 'color-fondo': item.stActivaMostrar == true}">
                                             <div class="dash-img">
                                                 <img class="dash-img-img" 
                                                     src="static/dist/img/etapas/004-registration.png">
+                                            </div>
+                                            <div style="text-align: center;">
+                                                <switcher class="swTeclo switcherEncTransp"
+                                                    id-check="stEncuestaTransportista"
+                                                    ng-model="stActivarEncuesta"
+                                                    true-label="<i class='fa fa-check-circle'></i>"
+                                                    true-value="1"
+                                                    false-label="<i class='fa fa-times-circle'></i>"
+                                                    false-value="0"
+                                                    data-placement="top" title="Activar Encuesta">
+                                                </switcher>
                                             </div>
                                             
                                             <div class="marcador" value="1" to="1" duration="2500" effect="swing">
                                                 {{item.idEncuesta.nbEncuesta}}
                                             </div>
                                         </div>
-                                    </a>
-                                    
+                                    </div>
+                                    <div ng-if="item.idEncuesta.cdEncuesta != 'SAT01'">
+                                        <a ng-class="{'inactiv-click' : item.stActivaMostrar == false}" 
+                                        href="#/etapas/proceso/encuesta/{{item.idEncuesta.idEncuesta}}/:0" 
+                                        data-toggle="tooltip" data-placement="bottom" title="{{item.idEncuesta.txEncuesta}}" >
+                                            <div class="dash-info" ng-class="{'color-fondo-contestado': item.stRespondida == true, 'color-fondo-desactivado': item.stActivaMostrar == false, 'color-fondo': item.stActivaMostrar == true}">
+                                                <div class="dash-img">
+                                                    <img class="dash-img-img" 
+                                                        src="static/dist/img/etapas/004-registration.png">
+                                                </div>                                                
+                                                <div class="marcador" value="1" to="1" duration="2500" effect="swing">
+                                                    {{item.idEncuesta.nbEncuesta}}
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
                                 </div>
                                 
-                                <div class="col-sm-6 col-md-3">
-                                    
-                                    <div class="dash-info color-fondo">
-                                        <div class="dash-img">
-                                            <img class="dash-img-img" 
-                                                src="static/dist/img/etapas/004-registration.png">
-                                        </div>
-                                        <div style="text-align: center;">
-                                            <switcher class="swTeclo switcherEncTransp"
-                                                id-check="stEncuestaTransportista"
-                                                ng-model="stActivarEncuesta"
-                                                true-label="<i class='fa fa-check-circle'></i>"
-                                                true-value="1"
-                                                false-label="<i class='fa fa-times-circle'></i>"
-                                                false-value="0"
-                                                data-placement="top" title="Activar Encuesta">
-                                            </switcher>
-                                        </div>
-                                        <label for="stEncuestaTransportista" class="marcador" 
-                                        data-toggle="tooltip" data-placement="top" title="Activar Encuesta">
-                                            Activar Encuesta
-                                        </label>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
                                     </div>
-                                    
+                                    <div class="col-md-6">
+                                        <div style="float: right;">
+                                            <a class="btn btn-primary" href="#/consulta" role="button">Regresar</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -8,28 +8,28 @@ public class TipoSeguimientoVO implements Serializable {
 	private static final long serialVersionUID = 4857407727892817950L;
 
 	private Long idTipoSeguimiento;
-	private String cdStSeguimiento;
-	private String nbStSeguimiento;
+	private String cdTpSeguimiento;
+	private String nbTpSeguimiento;
 	private Long nuOrden;
 	private Boolean stActivo;
-	
+
 	public Long getIdTipoSeguimiento() {
 		return idTipoSeguimiento;
 	}
 	public void setIdTipoSeguimiento(Long idTipoSeguimiento) {
 		this.idTipoSeguimiento = idTipoSeguimiento;
 	}
-	public String getCdStSeguimiento() {
-		return cdStSeguimiento;
+	public String getCdTpSeguimiento() {
+		return cdTpSeguimiento;
 	}
-	public void setCdStSeguimiento(String cdStSeguimiento) {
-		this.cdStSeguimiento = cdStSeguimiento;
+	public void setCdTpSeguimiento(String cdTpSeguimiento) {
+		this.cdTpSeguimiento = cdTpSeguimiento;
 	}
-	public String getNbStSeguimiento() {
-		return nbStSeguimiento;
+	public String getNbTpSeguimiento() {
+		return nbTpSeguimiento;
 	}
-	public void setNbStSeguimiento(String nbStSeguimiento) {
-		this.nbStSeguimiento = nbStSeguimiento;
+	public void setNbTpSeguimiento(String nbTpSeguimiento) {
+		this.nbTpSeguimiento = nbTpSeguimiento;
 	}
 	public Long getNuOrden() {
 		return nuOrden;
@@ -43,5 +43,7 @@ public class TipoSeguimientoVO implements Serializable {
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
 	}
+	
+	
 	
 }
