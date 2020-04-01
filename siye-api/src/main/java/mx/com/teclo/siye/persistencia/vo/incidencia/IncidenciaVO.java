@@ -1,7 +1,6 @@
 package mx.com.teclo.siye.persistencia.vo.incidencia;
 
 import java.io.Serializable;
-import java.util.Date;
 import mx.com.teclo.siye.persistencia.vo.proceso.TipoSeguimientoVO;
 
 public class IncidenciaVO implements Serializable {
@@ -13,11 +12,7 @@ public class IncidenciaVO implements Serializable {
 	private String nbIncidencia;
 	private String txIncidencia;
 	private TipoSeguimientoVO stSeguimiento;
-	private Long stActivo;
-	private Long idUsrCreacion;
-	private Date fhCreacion;
-	private Long idUsrModifica;
-	private Date fhModificacion;
+	private Boolean stActivo;
 	private TipoSeguimientoVO tpIncidencia;
 	private TipoSeguimientoVO stIncidencia;
 	private TipoSeguimientoVO stAutorizacion;
@@ -53,35 +48,11 @@ public class IncidenciaVO implements Serializable {
 	public void setStSeguimiento(TipoSeguimientoVO stSeguimiento) {
 		this.stSeguimiento = stSeguimiento;
 	}
-	public Long getStActivo() {
+	public Boolean getStActivo() {
 		return stActivo;
 	}
-	public void setStActivo(Long stActivo) {
+	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
-	}
-	public Long getIdUsrCreacion() {
-		return idUsrCreacion;
-	}
-	public void setIdUsrCreacion(Long idUsrCreacion) {
-		this.idUsrCreacion = idUsrCreacion;
-	}
-	public Date getFhCreacion() {
-		return fhCreacion;
-	}
-	public void setFhCreacion(Date fhCreacion) {
-		this.fhCreacion = fhCreacion;
-	}
-	public Long getIdUsrModifica() {
-		return idUsrModifica;
-	}
-	public void setIdUsrModifica(Long idUsrModifica) {
-		this.idUsrModifica = idUsrModifica;
-	}
-	public Date getFhModificacion() {
-		return fhModificacion;
-	}
-	public void setFhModificacion(Date fhModificacion) {
-		this.fhModificacion = fhModificacion;
 	}
 	public TipoSeguimientoVO getTpIncidencia() {
 		return tpIncidencia;

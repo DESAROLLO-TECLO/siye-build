@@ -10,6 +10,7 @@ import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteImgVO;
@@ -21,6 +22,9 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 	
 	@Autowired
 	private IncidenciaDAO incidenciaDAO;
+	
+	@Autowired
+	private StSeguimientoDAO stSeguimientoDAO;
 	
 	@Autowired
 	private UsuarioFirmadoService usuarioFirmadoService;
@@ -54,25 +58,44 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		SimpleDateFormat sdf2 = new SimpleDateFormat("yy");
 		Date date = new Date();
 		String year = sdf2.format(date);
-		// consulta
-		String cdIncidencia = "I" + year + "000010";
+		Long serial = incidenciaDAO.getUltimoId();
+		String serie = "";
+		if  (serial < 10) {
+			serie = "00000" + serial;
+		}
+		if  (serial < 100) {
+			serie = "0000" + serial;
+		}
+		if  (serial < 1000) {
+			serie = "000" + serial;
+		}
+		if  (serial < 1000) {
+			serie = "00" + serial;
+		}
+		if  (serial < 10000) {
+			serie = "0" + serial;
+		}
+		if  (serial < 100000) {
+			serie = "" + serial;
+		}
+		String cdIncidencia = "I" + year + serie;
 		String nbIncidencia = "NB" + cdIncidencia;
-		
-		StSeguimientoDTO stAutorizacionDTO = new StSeguimientoDTO();
-		
+		StSeguimientoDTO stAutorizacionDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NO_AUT_ATND");
+		StSeguimientoDTO stIncidenciaDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NO_ATND");
+		StSeguimientoDTO tpIncidenciaDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getTpIncidencia().getCdStSeguimiento());
+		StSeguimientoDTO prioridadDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getPrioridad().getCdStSeguimiento());
 		incidenciaDTO.setCdIncidencia(cdIncidencia);
 		incidenciaDTO.setCdIncidencia(nbIncidencia);
 		incidenciaDTO.setTxIncidencia(altaIncidenciaVO.getDescripcion());
-		incidenciaDTO.setStActivo((long) 1);
+		incidenciaDTO.setStActivo(true);
 		incidenciaDTO.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
 		incidenciaDTO.setFhCreacion(new Date());
 		incidenciaDTO.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
 		incidenciaDTO.setFhModificacion(new Date());
-		//incidenciaDTO.setTpIncidencia(altaIncidenciaVO.getTpIncidencia());
-		//incidenciaDTO.setStIncidencia(altaIncidenciaVO.getTpIncidencia());
+		incidenciaDTO.setTpIncidencia(tpIncidenciaDTO);
+		incidenciaDTO.setStIncidencia(stIncidenciaDTO);
 		incidenciaDTO.setStAutorizacion(stAutorizacionDTO);
-		//incidenciaDTO.setPrioridad(altaIncidenciaVO.getPrioridad());
-		
+		incidenciaDTO.setPrioridad(prioridadDTO);
 		
 		respuesta = (Boolean) incidenciaDAO.save(incidenciaDTO);
 		
