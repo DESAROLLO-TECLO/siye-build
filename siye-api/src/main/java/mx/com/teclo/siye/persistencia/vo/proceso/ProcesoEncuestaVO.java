@@ -13,7 +13,9 @@ public class ProcesoEncuestaVO {
 	private Boolean stActivo;
 	
 	//variable para conocer si la encuesta ya esta terminanda o no
-	private Boolean stRespondida;
+	private Boolean stRespondida=false;
+	//variable para conocer si la encuesta esta activa
+	private Boolean stActivaMostrar=false;
 	
 	public Long getIdProcesoEncuesta() {
 		return idProcesoEncuesta;
@@ -52,6 +54,12 @@ public class ProcesoEncuestaVO {
 	}
 	public void setStRespondida(Boolean stRespondida) {
 		this.stRespondida = stRespondida;
+	}
+	public Boolean getStActivaMostrar() {
+		return stActivaMostrar;
+	}
+	public void setStActivaMostrar(Boolean stActivaMostrar) {
+		this.stActivaMostrar = stActivaMostrar;
 	}
 	
 	
