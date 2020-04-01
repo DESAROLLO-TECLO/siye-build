@@ -32,34 +32,44 @@ public class OpcionesDTO implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID_OPCION", nullable = false)
     private Long idOpcion;
+    
     @Basic(optional = false)
     @Column(name = "TX_OPCION", nullable = false, length = 1000)
     private String txOpcion;
+    
     @Basic(optional = false)
     @Column(name = "ST_CORRECTO", nullable = false)
     private Integer stCorrecto;
+    
     @Basic(optional = false)
     @Column(name = "CD_OPCION", nullable = false, length = 15)
     private String cdOpcion;
+    
     @Column(name = "NU_ORDEN")
     private Integer nuOrden;
+    
     @Basic(optional = false)
     @Column(name = "ST_ACTIVO", nullable = false)
     private Integer stActivo;
+    
     @Basic(optional = false)
     @Column(name = "ID_USR_CREACION", nullable = false)
     private Long idUsrCreacion;
+    
     @Basic(optional = false)
     @Column(name = "FH_CREACION", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fhCreacion;
+    
     @Basic(optional = false)
     @Column(name = "ID_USR_MODIFICA", nullable = false)
     private Long idUsrModifica;
+    
     @Basic(optional = false)
     @Column(name = "FH_MODIFICACION", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fhModificacion;
+    
     @JoinColumn(name = "ID_PREGUNTA", referencedColumnName = "ID_PREGUNTA", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private PreguntasDTO idPregunta;

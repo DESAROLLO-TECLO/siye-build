@@ -2,6 +2,8 @@ package mx.com.teclo.siye.api.rest.async;
 
 import java.io.IOException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,7 @@ import mx.com.teclo.siye.negocio.service.async.AsyncArchivoLoteService;
 @RestController
 @RequestMapping("/async/lote")
 public class AsyncArchivoLoteRestController {
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(AsyncArchivoLoteRestController.class);
 	@Autowired
 	private AsyncArchivoLoteService asyncLoteService;
 
@@ -32,7 +34,7 @@ public class AsyncArchivoLoteRestController {
 	@PostMapping(value = "/upload", consumes = "multipart/form-data")
 	public ResponseEntity recibirArchivoLote(@RequestParam("file") MultipartFile archivoLote)
 			throws IOException, BusinessException {
-		Integer lineas = asyncLoteService.registrarArchivoLote(archivoLote);
+		Long idFile = asyncLoteService.registrarArchivoLote(archivoLote);
 		return new ResponseEntity(HttpStatus.NO_CONTENT);
 	}
 }

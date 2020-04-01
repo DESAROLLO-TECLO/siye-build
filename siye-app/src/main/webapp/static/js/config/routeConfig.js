@@ -110,7 +110,7 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         }
     });
 
-    $routeProvider.when("/etapas/proceso/encuesta/:idencuesta", {
+    $routeProvider.when("/etapas/proceso/encuesta/:idencuesta/:idorden", {
         templateUrl: "views/etapa/proceso/encuesta/encuesta.html",
         controller: "encuestaController",
         resolve: {

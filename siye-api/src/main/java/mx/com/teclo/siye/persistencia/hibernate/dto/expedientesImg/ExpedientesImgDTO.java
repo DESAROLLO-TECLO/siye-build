@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
@@ -48,6 +49,7 @@ public class ExpedientesImgDTO implements Serializable{
 	private OrdenServicioDTO idOrdenServicio;
 
 	@Column(name = "ID_ODS_ENCUESTA")
+	//@ManyToOne(fetch = FetchType.LAZY)
 	private Long idOdsEncuesta;
 
 	@JoinColumn(name = "ID_PROCESO_ENCUESTA")
