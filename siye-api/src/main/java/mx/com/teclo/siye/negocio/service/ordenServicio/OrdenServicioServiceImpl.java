@@ -312,7 +312,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		
 		ordenServiDTO.setCdOrdenServicio(ordenServiVO.getCdOrden());
 		ordenServiDTO.setVehiculo(vehoDTO);
-		ordenServiDTO.setCentroInstalacion(centroInst);
+		ordenServiDTO.setCentroInstalacion(centroInstalacionDAO.findOne(ordenServiVO.getCentroI()));
 		ordenServiDTO.setKitInstalacion(kitInstDTO);
 		ordenServiDTO.setPlan(planDTO);
 		ordenServiDTO.setStSeguimiento(stSegDTO);
