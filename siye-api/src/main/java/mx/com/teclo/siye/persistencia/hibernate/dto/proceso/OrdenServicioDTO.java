@@ -79,9 +79,10 @@ public class OrdenServicioDTO implements Serializable {
 	
 	@Column(name = "ID_ORIGEN_ODS")
 	private Long idOrigenOds;
-	
-	@Column(name = "ID_PROCESO_ACTUAL")
-	private Long idProcesoActual;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name="ID_PROCESO_ACTUAL", referencedColumnName="ID_PROCESO_ACTUAL")
+	private ProcesoDTO proceso;
 	
 	
 	
@@ -189,12 +190,13 @@ public class OrdenServicioDTO implements Serializable {
 	public void setIdOrigenOds(Long idOrigenOds) {
 		this.idOrigenOds = idOrigenOds;
 	}
-	public Long getIdProcesoActual() {
-		return idProcesoActual;
+	public ProcesoDTO getProceso() {
+		return proceso;
 	}
-	public void setIdProcesoActual(Long idProcesoActual) {
-		this.idProcesoActual = idProcesoActual;
+	public void setProceso(ProcesoDTO proceso) {
+		this.proceso = proceso;
 	}
+	
 	
 
 }

@@ -385,7 +385,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 					UsuarioEncuestaVO usuarioEncuestaVO = listaUsuarioEncuestaVO.get(i);
 					Long idOrdenServicio = usuarioEncuestaVO.getOrdenServicio().getIdOrdenServicio();
 					Long idEncuesta = usuarioEncuestaVO.getEncuesta().getIdEncuesta();
-					String s = "";
+					
 					UsuarioEncuestaIntentosDTO usuarioEncuestaIntentosDTO = usuarioEncuestaIntentoDAO.getEncuestaByUsuario(idEncuesta, idOrdenServicio);
 					UsuarioEncuestaIntentosVO usuarioEncuestaIntentosVO = ResponseConverter.copiarPropiedadesFull(usuarioEncuestaIntentosDTO, UsuarioEncuestaIntentosVO.class);
 					listaUsuarioEncuestaVO.get(i).setIntentoMostrar(usuarioEncuestaIntentosVO);
