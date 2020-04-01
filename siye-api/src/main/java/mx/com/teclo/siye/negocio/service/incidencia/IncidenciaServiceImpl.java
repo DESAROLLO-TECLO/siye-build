@@ -2,26 +2,19 @@ package mx.com.teclo.siye.negocio.service.incidencia;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import javax.transaction.Transactional;
-
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
-import mx.com.teclo.siye.persistencia.hibernate.dto.expedientesImg.ExpedientesImgDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
-import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteImgVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.AltaIncidenciaVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.IncidenciaVO;
-import mx.com.teclo.siye.persistencia.vo.proceso.StSeguimientoVO;
 
 @Service
 public class IncidenciaServiceImpl implements IncidenciaService {

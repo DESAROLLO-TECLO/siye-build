@@ -8,7 +8,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.AltaIncidenciaVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.IncidenciaVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
-import mx.com.teclo.siye.persistencia.vo.proceso.StSeguimientoVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.TipoSeguimientoVO;
 
 public interface IncidenciaService {
 

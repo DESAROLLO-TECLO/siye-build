@@ -4,35 +4,30 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TIE048C_IE_ST_SEGUIMIENTO")
-public class StSeguimientoDTO implements Serializable {
+@Table(name = "TIE049C_TIPO_SEGUIMIENTO")
+public class TipoSeguimientoDTO implements Serializable {
 	
-	private static final long serialVersionUID = 1666800297557578438L;
+	private static final long serialVersionUID = 3573326788851789799L;
+
 
 	@Id
-	@SequenceGenerator(name = "sqStSeguimiento", sequenceName = "SQIE048C_IE_ST_SEGUIM", allocationSize = 1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqStSeguimiento")
-	@Column(name = "ID_ST_SEGUIMIENTO", unique = true, nullable = false)
-	private Long idStSeguimiento;
+	@SequenceGenerator(name = "sqTipoSeguimiento", sequenceName = "SQIE049C_TIPO_SEGUIMI", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqTipoSeguimiento")
+	@Column(name = "ID_TIPO_SEGUIMIENTO", unique = true, nullable = false)
+	private Long idTipoSeguimiento;
 	
-	@Column(name = "CD_ST_SEGUIMIENTO")
+	@Column(name = "CD_TIPO_SEGUIMIENTO")
 	private String cdStSeguimiento;
 	
-	@Column(name = "NB_ST_SEGUIMIENTO")
+	@Column(name = "NB_TIPO_SEGUIMIENTO")
 	private String nbStSeguimiento;
-	
-	@Column(name = "CD_COLOR")
-	private String cdColor;
 	
 	@Column(name = "NU_ORDEN")
 	private Long nuOrden;
@@ -51,19 +46,13 @@ public class StSeguimientoDTO implements Serializable {
 	
 	@Column(name = "FH_MODIFICACION")	
 	private Date fhModificacion;
-	
-	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name="ID_TIPO_SEGUIMIENTO", referencedColumnName="ID_TIPO_SEGUIMIENTO")
-	private TipoSeguimientoDTO tipoSeguimiento;
-	
-	
 
-	public Long getIdStSeguimiento() {
-		return idStSeguimiento;
+	public Long getIdTipoSeguimiento() {
+		return idTipoSeguimiento;
 	}
 
-	public void setIdStSeguimiento(Long idStSeguimiento) {
-		this.idStSeguimiento = idStSeguimiento;
+	public void setIdTipoSeguimiento(Long idTipoSeguimiento) {
+		this.idTipoSeguimiento = idTipoSeguimiento;
 	}
 
 	public String getCdStSeguimiento() {
@@ -80,14 +69,6 @@ public class StSeguimientoDTO implements Serializable {
 
 	public void setNbStSeguimiento(String nbStSeguimiento) {
 		this.nbStSeguimiento = nbStSeguimiento;
-	}
-
-	public String getCdColor() {
-		return cdColor;
-	}
-
-	public void setCdColor(String cdColor) {
-		this.cdColor = cdColor;
 	}
 
 	public Long getNuOrden() {
@@ -137,10 +118,5 @@ public class StSeguimientoDTO implements Serializable {
 	public void setFhModificacion(Date fhModificacion) {
 		this.fhModificacion = fhModificacion;
 	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 	
-
 }

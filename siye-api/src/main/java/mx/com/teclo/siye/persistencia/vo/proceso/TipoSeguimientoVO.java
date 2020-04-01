@@ -1,25 +1,23 @@
 package mx.com.teclo.siye.persistencia.vo.proceso;
 
 import java.io.Serializable;
-import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.TipoSeguimientoDTO;
 
-public class StSeguimientoVO  implements Serializable {
 
-	private static final long serialVersionUID = -6432339200022501620L;
-	
-	private Long idStSeguimiento;
+public class TipoSeguimientoVO implements Serializable {
+
+	private static final long serialVersionUID = 4857407727892817950L;
+
+	private Long idTipoSeguimiento;
 	private String cdStSeguimiento;
 	private String nbStSeguimiento;
-	private String cdColor;
 	private Long nuOrden;
 	private Boolean stActivo;
-	private TipoSeguimientoDTO tipoSeguimiento;
 	
-	public Long getIdStSeguimiento() {
-		return idStSeguimiento;
+	public Long getIdTipoSeguimiento() {
+		return idTipoSeguimiento;
 	}
-	public void setIdStSeguimiento(Long idStSeguimiento) {
-		this.idStSeguimiento = idStSeguimiento;
+	public void setIdTipoSeguimiento(Long idTipoSeguimiento) {
+		this.idTipoSeguimiento = idTipoSeguimiento;
 	}
 	public String getCdStSeguimiento() {
 		return cdStSeguimiento;
@@ -33,12 +31,6 @@ public class StSeguimientoVO  implements Serializable {
 	public void setNbStSeguimiento(String nbStSeguimiento) {
 		this.nbStSeguimiento = nbStSeguimiento;
 	}
-	public String getCdColor() {
-		return cdColor;
-	}
-	public void setCdColor(String cdColor) {
-		this.cdColor = cdColor;
-	}
 	public Long getNuOrden() {
 		return nuOrden;
 	}
@@ -50,12 +42,6 @@ public class StSeguimientoVO  implements Serializable {
 	}
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
-	}
-	public TipoSeguimientoDTO getTipoSeguimiento() {
-		return tipoSeguimiento;
-	}
-	public void setTipoSeguimiento(TipoSeguimientoDTO tipoSeguimiento) {
-		this.tipoSeguimiento = tipoSeguimiento;
 	}
 	
 }
