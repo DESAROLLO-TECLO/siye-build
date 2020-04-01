@@ -300,22 +300,22 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		
 		 // TIE027_VEHICULO
 		
-		VehiculoDTO vehoDTO = vehiculoDAO.buscarVehiculoPorPlaca(ordenServiVO.getVehiculoVO().getPlaca());
+		VehiculoDTO vehiculo = vehiculoDAO.buscarVehiculoPorPlaca(ordenServiVO.getVehiculoVO().getPlaca());
 		
-		KitInstalacionDTO kitInstDTO = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion()); //TIE030_KIT_INSTALACION
+		KitInstalacionDTO kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion()); //TIE030_KIT_INSTALACION
 		
 
 		CentroInstalacionDTO centroInst = centroInstalacionDAO.findOne(ordenServiVO.getCentroI());
 		
 		PlanDTO planDTO = planDAO.getId(ordenServiVO.getPlan());
-		StSeguimientoDTO stSegDTO =seguimientoDAO.obtenerSeguimientoDos(1l);
+		StSeguimientoDTO stSeguimiento =seguimientoDAO.obtenerSeguimientoDos(1l);
 		
 		ordenServiDTO.setCdOrdenServicio(ordenServiVO.getCdOrden());
-		ordenServiDTO.setVehiculo(vehoDTO);
+		ordenServiDTO.setVehiculo(vehiculo);
 		ordenServiDTO.setCentroInstalacion(centroInstalacionDAO.findOne(ordenServiVO.getCentroI()));
-		ordenServiDTO.setKitInstalacion(kitInstDTO);
+		ordenServiDTO.setKitInstalacion(kitInstalacion);
 		ordenServiDTO.setPlan(planDTO);
-		ordenServiDTO.setStSeguimiento(stSegDTO);
+		ordenServiDTO.setStSeguimiento(stSeguimiento);
 		ordenServiDTO.setIdOrigenOds(2l);
 		ordenServiDTO.setStActivo(true);
 		ordenServiDTO.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
