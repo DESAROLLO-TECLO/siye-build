@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.EstatusCalificacionVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 
@@ -36,7 +36,7 @@ public class IntentoDetalleVO implements Serializable {
 	private Long idUsrModifica;
 	private Date fhModificacion;
 	@JsonIgnore
-	private UsuarioEncuestaDTO usuarioEncuesta;
+	private OrdenEncuestaDTO usuarioEncuesta;
 	private List<UsuarioEncuestaRespuestaVO> resumenRespuesta;
 	private Integer nuMinConsumidos;
 
@@ -295,14 +295,14 @@ public class IntentoDetalleVO implements Serializable {
 	/**
 	 * @return the usuarioEncuesta
 	 */
-	public UsuarioEncuestaDTO getUsuarioEncuesta() {
+	public OrdenEncuestaDTO getUsuarioEncuesta() {
 		return usuarioEncuesta;
 	}
 
 	/**
 	 * @param usuarioEncuesta the usuarioEncuesta to set
 	 */
-	public void setUsuarioEncuesta(UsuarioEncuestaDTO usuarioEncuesta) {
+	public void setUsuarioEncuesta(OrdenEncuestaDTO usuarioEncuesta) {
 		this.usuarioEncuesta = usuarioEncuesta;
 	}
 

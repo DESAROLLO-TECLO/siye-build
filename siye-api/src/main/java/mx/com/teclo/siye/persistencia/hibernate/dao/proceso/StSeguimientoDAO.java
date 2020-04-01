@@ -4,7 +4,7 @@ import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDao;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.vo.proceso.SeguimientoVO;
 
-public interface SeguimientoDAO extends BaseDao<StSeguimientoDTO> {
+public interface StSeguimientoDAO extends BaseDao<StSeguimientoDTO> {
 
 	/**
 	 * Obtiene el siguiento por su identificador

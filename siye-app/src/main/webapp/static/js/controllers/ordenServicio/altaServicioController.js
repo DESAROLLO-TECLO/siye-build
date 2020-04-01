@@ -76,12 +76,8 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 			$scope.tipoKitsDisp = data;
 		
 	
-//			$scope.kitInstalacionVO.idDisp=[];
 			angular.forEach($scope.tipoKitsDisp, function(value, key){
-//				$scope.range.push(value.dispositivo.nbDispositivo);
 				$scope.range.push(value.dispositivo);
-//				$scope.orden.kitInstalacionVO.push(value.dispositivo.idDispositivo);
-//				$scope.kitInstalacionVO[key].idDisp.push(value.dispositivo[key].idDispositivo);
 				
 			});
 				

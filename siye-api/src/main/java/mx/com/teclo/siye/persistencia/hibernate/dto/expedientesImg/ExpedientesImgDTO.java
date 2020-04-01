@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.tipoexpediente.TipoExpedienteDTO;
 
 @Entity
 @Table(name = "TIE050D_IE_EXPEDIENTES_IMG")
@@ -25,7 +26,7 @@ public class ExpedientesImgDTO implements Serializable{
 	private static final long serialVersionUID = -5086259212784236181L;
 
 	@Id
-	@SequenceGenerator(name = "seqExpeImg", sequenceName = "SQIE050D_IE_EXPEDIENTES_IMG", allocationSize = 1)
+	@SequenceGenerator(name = "seqExpeImg", sequenceName = "SQIE050D_IE_EXPEDIENT", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqExpeImg")
 	@Column(name = "ID_EXPEDIENTE_ODS")
 	private Long idExpedienteODS;
@@ -88,6 +89,34 @@ public class ExpedientesImgDTO implements Serializable{
 	 */
 	public Long getIdExpedienteODS() {
 		return idExpedienteODS;
+	}
+
+	/**
+	 * @return the incidencia
+	 */
+	public IncidenciaDTO getIncidencia() {
+		return incidencia;
+	}
+
+	/**
+	 * @param incidencia the incidencia to set
+	 */
+	public void setIncidencia(IncidenciaDTO incidencia) {
+		this.incidencia = incidencia;
+	}
+
+	/**
+	 * @return the tipoExpediente
+	 */
+	public TipoExpedienteDTO getTipoExpediente() {
+		return tipoExpediente;
+	}
+
+	/**
+	 * @param tipoExpediente the tipoExpediente to set
+	 */
+	public void setTipoExpediente(TipoExpedienteDTO tipoExpediente) {
+		this.tipoExpediente = tipoExpediente;
 	}
 
 	/**

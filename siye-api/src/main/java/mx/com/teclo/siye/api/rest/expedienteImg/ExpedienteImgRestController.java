@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,11 +57,11 @@ public class ExpedienteImgRestController {
 		return new ResponseEntity<List<TipoExpedienteVO>>(respuesta, HttpStatus.OK);
 	};
 	
-	@DeleteMapping(value="/delEvidencia")
+	@PostMapping(value="/delEvidencia")
 	//@PreAuthorize("hasAnyAuthority('DELETE_EVIDENCIA')")
 	public ResponseEntity<List<ImagenVO>> deleteEvidencia(@RequestBody List<ImagenVO> expedientes) throws NotFoundException{
 		UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO(); 		
-		List<ImagenVO> respuesta = expedienteImg.saveExpediente(expedientes, usuario.getId());
+		List<ImagenVO> respuesta = expedienteImg.delListEvidencia(expedientes, usuario.getId());
 		return new ResponseEntity<List<ImagenVO>>(respuesta, HttpStatus.OK);
 	}
 	

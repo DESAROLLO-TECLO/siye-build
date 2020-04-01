@@ -44,8 +44,8 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-list-ul"></i>
                                         </div>
-                                        <select class="form-control" name="tipoBusqueda" id="tipoBusqueda" ng-required="true" select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" ng-model="parametroBusqueda.tipoBusqueda" ng-options="tipo as tipo.nbTipoBusqueda for tipo in listTipoBusqueda"
-                                            ng-change="validarSelect()">
+                                        <select class="form-control" name="tipoBusqueda" id="tipoBusqueda" ng-required="true" select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
+                                        	ng-model="parametroBusqueda.tipoBusqueda" ng-options="tipo as tipo.nbTipoBusqueda for tipo in listTipoBusqueda" ng-change="validarSelect()">
 												<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
 											</select>
                                     </div>
@@ -59,7 +59,8 @@
                                     <label for=""> *{{'ORDENSERVICIO.AltaServicio.seleccionadores.valor.label' | translate}} </label>
                                     <div class="input-group">
                                         <span class="input-group-addon"> <i class="fa fa-pencil"> </i> </span>
-                                        <input type="text" ng-model="parametroBusqueda.valor" name="valorBusqueda" class="form-control" capitalize ng-required="parametroBusqueda.tipoBusqueda.idTipoBusqueda != 0" ng-disabled="parametroBusqueda.tipoBusqueda.idTipoBusqueda == 0"></input>
+                                        <input type="text" ng-model="parametroBusqueda.valor" name="valorBusqueda" class="form-control" capitalize
+                                        	ng-required="parametroBusqueda.tipoBusqueda.idTipoBusqueda != 0" ng-disabled="parametroBusqueda.tipoBusqueda.idTipoBusqueda == 0" ></input>
                                         <span class="input-group-btn">
 						                      	<button type="button" ng-click="buscarOrdenServicio(true)" class="btn btn-danger btn-flat" >
 						                      		Buscar
@@ -115,14 +116,14 @@
                                 <tbody>
                                     <tr dir-paginate="servicio in listServicio | orderBy:tabla.order:tabla.reverse | filter:tabla.view.filterSearchVal | itemsPerPage:tabla.view.rowsPerPageVal">
                                         <td class="center" style="width: 5%">
-                                            <a href="#/etapas/{{servicio.idOrdenServicio}}" data-toggle="tooltip" data-placement="top" title="{{servicio.stSeguimiento.nbStSeguimiento}}">
-                                                <span class="nbStatus" style="background-color: {{servicio.stSeguimiento.cdColor}}"></span>
-                                            </a>
+                                        	<a href="#/etapas/{{servicio.idOrdenServicio}}" data-toggle="tooltip" data-placement="top" title="{{servicio.stSeguimiento.nbStSeguimiento}}">
+												<span class="nbStatus" style="background-color: {{servicio.stSeguimiento.cdColor}}"></span>
+											</a>
                                         </td>
                                         <td class="center" style="width: 15%">
-                                            <!--                                             <span ng-click="verIntentos($index)" class="etiquetaCancelado col-md-6 fullWidth" style="cursor: pointer; background-color: #868686;" tooltip="Realizar servicio" tooltip-placement="top"> -->
-                                            <a href="#/etapas/{{servicio.idOrdenServicio}}"> {{servicio.cdOrdenServicio}} </a>
-                                            <!-- 		                                	</span> -->
+<!--                                             <span ng-click="verIntentos($index)" class="etiquetaCancelado col-md-6 fullWidth" style="cursor: pointer; background-color: #868686;" tooltip="Realizar servicio" tooltip-placement="top"> -->
+			                                	<a href="#/etapas/{{servicio.idOrdenServicio}}"> {{servicio.cdOrdenServicio}} </a>
+<!-- 		                                	</span> -->
                                         </td>
                                         <td class="center" style="width: 12%">
                                             <a href="#/etapas/{{servicio.idOrdenServicio}}"> <span>{{servicio.vehiculo.cdPlacaVehiculo}}</span> </a>

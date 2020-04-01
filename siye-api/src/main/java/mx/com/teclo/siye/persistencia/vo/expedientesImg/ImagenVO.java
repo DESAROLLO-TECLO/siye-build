@@ -10,7 +10,8 @@ public class ImagenVO {
 	private String nbExpedienteODS; 
 	private String cdTipoArchivo;
 	private byte[] lbExpedienteODS;
-	
+	private Long idIncidencia;
+	private Long idTipoExpediente;
 	
 	/**
 	 * @return the idExpedienteODS
@@ -107,6 +108,30 @@ public class ImagenVO {
 	 */
 	public void setLbExpedienteODS(byte[] lbExpedienteODS) {
 		this.lbExpedienteODS = lbExpedienteODS;
+	}
+	/**
+	 * @return the idIncidencia
+	 */
+	public Long getIdIncidencia() {
+		return idIncidencia;
+	}
+	/**
+	 * @param idIncidencia the idIncidencia to set
+	 */
+	public void setIdIncidencia(Long idIncidencia) {
+		this.idIncidencia = idIncidencia;
+	}
+	/**
+	 * @return the idTipoExpediente
+	 */
+	public Long getIdTipoExpediente() {
+		return idTipoExpediente;
+	}
+	/**
+	 * @param idTipoExpediente the idTipoExpediente to set
+	 */
+	public void setIdTipoExpediente(Long idTipoExpediente) {
+		this.idTipoExpediente = idTipoExpediente;
 	}
 	
 }
