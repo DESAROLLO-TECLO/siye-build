@@ -301,7 +301,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		
 		VehiculoDTO vehiculoDTO = new VehiculoDTO(); // TIE027_VEHICULO
 		
-		VehiculoDTO vehoDTO = ResponseConverter.copiarPropiedadesFull(ordenServiVO.getVehiculoVO(), VehiculoDTO.class);
+		VehiculoDTO vehoDTO = vehiculoDAO.buscarVehiculoPorPlaca(ordenServiVO.getVehiculoVO().getPlaca());
 		
 		KitInstalacionDTO kitInstDTO = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion()); //TIE030_KIT_INSTALACION
 		
