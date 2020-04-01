@@ -6,7 +6,6 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
     $scope.stValidarCheck = false;
     
     if(etapaInfo != null){
-        console.log(etapaInfo);
         $rootScope.idOrSer = parseInt(etapaInfo.data[0].idOrdenServicio);
         $scope.dataEtapa = new Object({
             idOrdenServicio:etapaInfo.data[0].idOrdenServicio,
