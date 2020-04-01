@@ -2,9 +2,7 @@ package mx.com.teclo.siye.persistencia.vo.proceso;
 
 import java.io.Serializable;
 import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import mx.com.teclo.siye.persistencia.vo.incidencia.IncidenciaVO;
 
 public class OrdenServicioVO implements Serializable {
@@ -28,6 +26,7 @@ public class OrdenServicioVO implements Serializable {
 	private Long idOrigenOds;
 	private Boolean stActivo;
 	private IncidenciaVO incidencia;
+	private ProcesoVO proceso;
 	
 	public Long getIdOrdenServicio() {
 		return idOrdenServicio;
@@ -114,8 +113,10 @@ public class OrdenServicioVO implements Serializable {
 	public void setIncidencia(IncidenciaVO incidencia) {
 		this.incidencia = incidencia;
 	}
-
-	
-	
-	
+	public ProcesoVO getProceso() {
+		return proceso;
+	}
+	public void setProceso(ProcesoVO proceso) {
+		this.proceso = proceso;
+	}
 }
