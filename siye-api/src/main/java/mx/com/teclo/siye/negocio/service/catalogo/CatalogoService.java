@@ -24,8 +24,4 @@ public interface CatalogoService {
 	public CatalogosOrdenProcesoVO getCatalogosOrdenProceso() throws NotFoundException;
 
 	List<StSeguimientoVO> obtenerStSeguimientoByCdTpSeguimiento(String cdTpSeguimiento) throws NotFoundException;
-	
-	
-	
-
 }

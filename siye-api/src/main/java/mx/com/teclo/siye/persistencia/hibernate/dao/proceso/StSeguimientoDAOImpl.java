@@ -37,6 +37,7 @@ public class StSeguimientoDAOImpl extends BaseDaoHibernate<StSeguimientoDTO> imp
 	}
 	
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<StSeguimientoDTO> obtenerStSeguimientoByCdTpSeguimiento(String cdTpSeguimiento) {
 		Criteria c = getCurrentSession().createCriteria(StSeguimientoDTO.class);

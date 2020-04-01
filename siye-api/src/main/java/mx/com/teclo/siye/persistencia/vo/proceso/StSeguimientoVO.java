@@ -1,7 +1,6 @@
 package mx.com.teclo.siye.persistencia.vo.proceso;
 
 import java.io.Serializable;
-import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.TipoSeguimientoDTO;
 
 public class StSeguimientoVO  implements Serializable {
 
@@ -13,7 +12,7 @@ public class StSeguimientoVO  implements Serializable {
 	private String cdColor;
 	private Long nuOrden;
 	private Boolean stActivo;
-	private TipoSeguimientoDTO tipoSeguimiento;
+	private TipoSeguimientoVO tipoSeguimiento;
 	
 	public Long getIdStSeguimiento() {
 		return idStSeguimiento;
@@ -51,10 +50,10 @@ public class StSeguimientoVO  implements Serializable {
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
 	}
-	public TipoSeguimientoDTO getTipoSeguimiento() {
+	public TipoSeguimientoVO getTipoSeguimiento() {
 		return tipoSeguimiento;
 	}
-	public void setTipoSeguimiento(TipoSeguimientoDTO tipoSeguimiento) {
+	public void setTipoSeguimiento(TipoSeguimientoVO tipoSeguimiento) {
 		this.tipoSeguimiento = tipoSeguimiento;
 	}
 	

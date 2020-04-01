@@ -61,8 +61,8 @@ public class CatalogoRestController {
 		return new ResponseEntity<CatalogosOrdenProcesoVO>(ciVO, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/getTpSeguimiento", method =  RequestMethod.GET)
-	public ResponseEntity<List<StSeguimientoVO>> getTpSeguimiento()  throws NotFoundException {
+	@RequestMapping(value = "/getTpIncidencia", method =  RequestMethod.GET)
+	public ResponseEntity<List<StSeguimientoVO>> getTpIncidencia()  throws NotFoundException {
 		List<StSeguimientoVO> listTpSeguimientoVO = catalogoService.obtenerStSeguimientoByCdTpSeguimiento("ID_TP_INCIDENCIA");
 		return new ResponseEntity<List<StSeguimientoVO>>(listTpSeguimientoVO, HttpStatus.OK);
 	}
