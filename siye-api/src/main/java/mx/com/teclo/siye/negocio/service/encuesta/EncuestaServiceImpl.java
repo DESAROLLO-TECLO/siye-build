@@ -535,6 +535,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 	}
 	
 	@Override
+	@Transactional
 	public Boolean activarODesactivarSatisfaccion(Long idEncuesta, Long idOrdenServicio, Boolean nuevoValor)
 	{
 		UsuarioEncuestaDetalleDTO ueDTO = encuestaDetalleDAO.getEncuestaDetalle(idEncuesta, idOrdenServicio);
