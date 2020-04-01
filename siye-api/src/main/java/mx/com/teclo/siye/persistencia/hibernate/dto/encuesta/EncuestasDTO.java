@@ -73,13 +73,13 @@ public class EncuestasDTO implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date fhModificacion;
 	@JoinColumn(name = "ID_TIPO_ENCUESTA", referencedColumnName = "ID_TIPO_ENCUESTA", nullable = false)
-	@ManyToOne(optional = false, fetch = FetchType.EAGER)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private TipoEncuestaDTO tipoEncuesta;
-
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "encuesta")
+/*
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "encuesta")
 	private List<UsuarioEncuestaDTO> usuarioEncuesta;
-
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "idEncuesta")
+*/
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "idEncuesta")
 	private List<SeccionDTO> seccion;
 
 	@Column(name = "FH_VIG_INI", nullable = false)
@@ -195,21 +195,17 @@ public class EncuestasDTO implements Serializable {
 	public void setTipoEncuesta(TipoEncuestaDTO tipoEncuesta) {
 		this.tipoEncuesta = tipoEncuesta;
 	}
+/*
 
-	/**
-	 * @return the usuarioEncuesta
-	 */
 	public List<UsuarioEncuestaDTO> getUsuarioEncuesta() {
 		return usuarioEncuesta;
 	}
 
-	/**
-	 * @param usuarioEncuesta the usuarioEncuesta to set
-	 */
+	
 	public void setUsuarioEncuesta(List<UsuarioEncuestaDTO> usuarioEncuesta) {
 		this.usuarioEncuesta = usuarioEncuesta;
 	}
-
+*/
 	public Date getFhVigIni() {
 		return fhVigIni;
 	}

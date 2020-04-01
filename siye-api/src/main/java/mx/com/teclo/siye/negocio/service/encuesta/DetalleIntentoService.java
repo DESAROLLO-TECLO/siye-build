@@ -1,7 +1,7 @@
 package mx.com.teclo.siye.negocio.service.encuesta;
 
 import java.util.List;
-
+import java.util.Map;
 
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuaroEncuestaRespuestaDTO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.PreguntaVO;
@@ -33,5 +33,13 @@ public interface DetalleIntentoService {
 	 * @return List<PreguntaVO>
 	 */
 	public List<PreguntaVO> orderList(List<PreguntaVO> pListVO);
+	
+	/**
+	 * Clasificar la respuesta mendiante mapas para grupar 
+	 * por secciones y agregar sus preguntas y respuestas
+	 * @author jorgeluis
+	 * @return UsuarioEncuestaIntentosVO
+	 */
+	public Map<String, Object> detalleFinalizar(List<UsuarioEncuestaRespuestaVO> l);
 
 }

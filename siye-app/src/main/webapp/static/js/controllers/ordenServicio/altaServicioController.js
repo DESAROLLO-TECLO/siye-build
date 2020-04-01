@@ -2,10 +2,12 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 
 	$scope.parametroBusqueda = {};
 	$scope.orden = {};
+	$scope.orden.vehiculoVO = {};
 	$scope.banderaVehiculo = false;
 	$scope.kitInstalacionVO = {};
-	$scope.vehiculoVO = {};
-	
+	$scope.range = [] ;
+	$scope.rango =[];
+	$scope.ordenVO={};
 	
 	$scope.consultTipoVehiculos = function(){
 		altaServicioService.buscarTipoVehiculos()
@@ -44,12 +46,15 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 		.success(function(data){
 			$scope.vehiculoResult  = data;
 			
-			$scope.orden.placa = $scope.vehiculoResult.cdPlacaVehiculo;
-			$scope.orden.cdVIN=$scope.vehiculoResult.cdVin;
-			$scope.orden.tjtCirculacion = $scope.vehiculoResult.cdTarjetaDeCirculacion;
-			$scope.orden.tpVehiculo = $scope.vehiculoResult.tipoVehiculo.nbTipoVehiculo;
-			$scope.orden.marca = $scope.vehiculoResult.nbMarca;
-			$scope.orden.subMarca=$scope.vehiculoResult.nbSubMarca;
+			$scope.orden.vehiculoVO.placa = $scope.vehiculoResult.cdPlacaVehiculo;
+			$scope.orden.vehiculoVO.cdVIN=$scope.vehiculoResult.cdVin;
+			$scope.orden.vehiculoVO.tjtCirculacion = $scope.vehiculoResult.cdTarjetaDeCirculacion;
+//			$scope.orden.vehiculoVO.tpVehiculo = $scope.vehiculoResult.tipoVehiculo.nbTipoVehiculo;
+			$scope.orden.vehiculoVO.marca = $scope.vehiculoResult.nbMarca;
+			$scope.orden.vehiculoVO.subMarca=$scope.vehiculoResult.nbSubMarca;
+//			$scope.orden.vehiculoVO.tpVehiculo = $scope.vehiculoResult.tipoVehiculo.idTipoVehiculo;
+			$scope.orden.vehiculoVO.tpVehiculo = $scope.vehiculoResult.tipoVehiculo;
+			$("#select2-tipopVehiculo-container").text($scope.vehiculoResult.tipoVehiculo.nbTipoVehiculo);
 			
 			$scope.banderaVehiculo = true;
 			$scope.banderadeshabilitar = true;
@@ -63,19 +68,16 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 			$scope.banderaVehiculo = true;
 			$scope.banderadeshabilitar = false;
 		})
-	}
+	};
 	
 	$scope.buscarTipoKit = function(idTpKit){
 		altaServicioService.buscarTipoKit(idTpKit)
 		.success(function(data){
 			$scope.tipoKitsDisp = data;
 		
-			$scope.range = [] ;
-//			$scope.kitInstalacionVO.idDisp=[];
+	
 			angular.forEach($scope.tipoKitsDisp, function(value, key){
-//				$scope.range.push(value.dispositivo.nbDispositivo);
 				$scope.range.push(value.dispositivo);
-//				$scope.kitInstalacionVO[key].idDisp.push(value.dispositivo[key].idDispositivo);
 				
 			});
 				
@@ -88,7 +90,26 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 			$scope.error = true;
 			growl.warning("No Existe", { ttl: 5000 });
 		})
-	}
+	};
+	
+	
+	$scope.guardarOrden = function(valor, valorDos){
+		
+		var temp = valor.map(item =>{
+			return {
+				"idDispositivo" : item.idDispositivo, "serie" : item.serie, "proveedor" : item.proveedor
+			}
+		});
+		console.log(temp);
+		$scope.orden.kitInstalacionVO= temp;
+		$scope.ordenVO = $scope.orden;
+		console.log($scope.ordenVO);
+			
+		
+
+		
+		
+	};
 	
 	$scope.consultTipoVehiculos();
 	$scope.consultaCentroInstalacion();

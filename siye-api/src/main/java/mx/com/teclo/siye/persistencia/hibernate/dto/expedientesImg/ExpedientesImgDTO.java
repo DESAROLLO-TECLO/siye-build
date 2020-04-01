@@ -14,17 +14,20 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.tipoexpediente.TipoExpedienteDTO;
 
 @Entity
 @Table(name = "TIE050D_IE_EXPEDIENTES_IMG")
 public class ExpedientesImgDTO implements Serializable{
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -5086259212784236181L;
 
 	@Id
-	@SequenceGenerator(name = "seqExpeImg", sequenceName = "SQIE050D_IE_EXPEDIENTES_IMG", allocationSize = 1)
+	@SequenceGenerator(name = "seqExpeImg", sequenceName = "SQIE050D_IE_EXPEDIENT", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seqExpeImg")
 	@Column(name = "ID_EXPEDIENTE_ODS")
 	private Long idExpedienteODS;
@@ -36,7 +39,7 @@ public class ExpedientesImgDTO implements Serializable{
 	private String cdTipoArchivo;
 
 	@Column(name = "LB_EXPEDIENTE_ODS")
-	private Byte[] lbExpedienteODS;
+	private byte[] lbExpedienteODS;
 
 	@Column(name = "TX_RUTA_EXPEDIENTE_ODS")
 	private String txRutaExpedienteODS;
@@ -46,6 +49,7 @@ public class ExpedientesImgDTO implements Serializable{
 	private OrdenServicioDTO idOrdenServicio;
 
 	@Column(name = "ID_ODS_ENCUESTA")
+	//@ManyToOne(fetch = FetchType.LAZY)
 	private Long idOdsEncuesta;
 
 	@JoinColumn(name = "ID_PROCESO_ENCUESTA")
@@ -72,6 +76,14 @@ public class ExpedientesImgDTO implements Serializable{
 
 	@Column(name = "FH_MODIFICACION")
 	private Date fhModifica;
+
+	@JoinColumn(name = "ID_INCIDENCIA")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private IncidenciaDTO incidencia;
+
+	@JoinColumn(name = "ID_TIPO_EXPEDIENTE")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private TipoExpedienteDTO tipoExpediente;
 	
 
 	/**
@@ -79,6 +91,34 @@ public class ExpedientesImgDTO implements Serializable{
 	 */
 	public Long getIdExpedienteODS() {
 		return idExpedienteODS;
+	}
+
+	/**
+	 * @return the incidencia
+	 */
+	public IncidenciaDTO getIncidencia() {
+		return incidencia;
+	}
+
+	/**
+	 * @param incidencia the incidencia to set
+	 */
+	public void setIncidencia(IncidenciaDTO incidencia) {
+		this.incidencia = incidencia;
+	}
+
+	/**
+	 * @return the tipoExpediente
+	 */
+	public TipoExpedienteDTO getTipoExpediente() {
+		return tipoExpediente;
+	}
+
+	/**
+	 * @param tipoExpediente the tipoExpediente to set
+	 */
+	public void setTipoExpediente(TipoExpedienteDTO tipoExpediente) {
+		this.tipoExpediente = tipoExpediente;
 	}
 
 	/**
@@ -119,14 +159,14 @@ public class ExpedientesImgDTO implements Serializable{
 	/**
 	 * @return the lbExpedienteODS
 	 */
-	public Byte[] getLbExpedienteODS() {
+	public byte[] getLbExpedienteODS() {
 		return lbExpedienteODS;
 	}
 
 	/**
 	 * @param lbExpedienteODS the lbExpedienteODS to set
 	 */
-	public void setLbExpedienteODS(Byte[] lbExpedienteODS) {
+	public void setLbExpedienteODS(byte[] lbExpedienteODS) {
 		this.lbExpedienteODS = lbExpedienteODS;
 	}
 

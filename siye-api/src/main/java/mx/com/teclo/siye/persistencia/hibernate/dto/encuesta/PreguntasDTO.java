@@ -37,27 +37,35 @@ public class PreguntasDTO implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID_PREGUNTA", nullable = false)
     private Long idPregunta;
+    
     @Basic(optional = false)
     @Column(name = "CD_PREGUNTA", nullable = false, length = 15)
     private String cdPregunta;
+    
     @Basic(optional = false)
     @Column(name = "TX_PREGUNTA", nullable = false, length = 250)
     private String txPregunta;
+    
     @Column(name = "NU_ORDEN")
     private Integer nuOrden;
+    
     @Basic(optional = false)
     @Column(name = "ST_ACTIVO", nullable = false)
     private Integer stActivo;
+    
     @Basic(optional = false)
     @Column(name = "ID_USR_CREACION", nullable = false)
     private Long idUsrCreacion;
+    
     @Basic(optional = false)
     @Column(name = "FH_CREACION", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date fhCreacion;
+    
     @Basic(optional = false)
     @Column(name = "ID_USR_MODIFICA", nullable = false)
     private Long idUsrModifica;
+    
     @Basic(optional = false)
     @Column(name = "FH_MODIFICACION", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -69,9 +77,11 @@ public class PreguntasDTO implements Serializable {
     @JoinColumn(name = "ID_SECCION", referencedColumnName = "ID_SECCION", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private SeccionDTO idSeccion;
+    
     @JoinColumn(name = "ID_TIPO_PREGUNTA", referencedColumnName = "ID_TP_PREGUNTA", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private TipoPreguntaDTO idTipoPregunta;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idPregunta", fetch = FetchType.EAGER)
     private List<OpcionesDTO> opciones;
     

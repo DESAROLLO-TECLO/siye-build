@@ -17,7 +17,7 @@ import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.negocio.service.ordenServicio.VehiculoService;
 import mx.com.teclo.siye.negocio.service.proceso.ProcesoService;
-import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
@@ -43,6 +43,7 @@ public class ProcesoRestController {
 	
 
 	 @RequestMapping(value = "/ordenServicioProceso", method = RequestMethod.GET)
+	 @Transactional
 	public ResponseEntity<List<OrdenServicioProcesoVO>> consultaOrdenParaProceso(
 			@RequestParam("idSolicitud") Long idSolicitud) throws BusinessException, NotFoundException {
         try
@@ -68,7 +69,7 @@ public class ProcesoRestController {
         try
         {
         	List<PlanProcesoDTO> planProcesoDTO = new ArrayList<PlanProcesoDTO>();
-        	List<UsuarioEncuestaDTO> listaEvaluaciones=new ArrayList<UsuarioEncuestaDTO>();
+        	List<OrdenEncuestaDTO> listaEvaluaciones=new ArrayList<OrdenEncuestaDTO>();
         	planProcesoDTO = procesoService.getPlanOrdenServicio(idPlan);
     		List<PlanProcesoVO> planProcesoVO = ResponseConverter.converterLista(new ArrayList<>(), planProcesoDTO,
     				PlanProcesoVO.class);
@@ -89,7 +90,7 @@ public class ProcesoRestController {
         try
         {
         	List<ProcesoEncuestaDTO> procesoEncuestaDTO = new ArrayList<ProcesoEncuestaDTO>();
-        	List<UsuarioEncuestaDTO> listaEvaluaciones=new ArrayList<UsuarioEncuestaDTO>();
+        	List<OrdenEncuestaDTO> listaEvaluaciones=new ArrayList<OrdenEncuestaDTO>();
         	procesoEncuestaDTO = procesoService.getEncuestasProceso(idProceso);
     		List<ProcesoEncuestaVO> procesoEncuestaVO = ResponseConverter.converterLista(new ArrayList<>(), procesoEncuestaDTO,
     				ProcesoEncuestaVO.class);

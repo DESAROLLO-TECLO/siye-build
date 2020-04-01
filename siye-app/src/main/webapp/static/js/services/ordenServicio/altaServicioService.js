@@ -24,4 +24,8 @@ angular.module(appTeclo).service('altaServicioService',function($http,config) {
 					"idTipoKit" : idTipoKit}});
 	};
 	
+	this.altaOrdenServicio = function(ordenVO){
+	return $http.post(config.baseUrl + "/altaOrdenServicio", ordenVO);	
+	}
+	
 });

@@ -3,7 +3,9 @@ package mx.com.teclo.siye.negocio.service.encuesta;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -12,10 +14,13 @@ import org.springframework.stereotype.Service;
 
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.PreguntasDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.SeccionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.PreguntasDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.SeccionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuaroEncuestaRespuestaDTO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.OpcionVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.PreguntaVO;
+import mx.com.teclo.siye.persistencia.vo.encuesta.SeccionVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaRespuestaVO;
 
 @Service
@@ -23,6 +28,10 @@ public class DetalleIntentoServiceImpl implements DetalleIntentoService{
 	
 	@Autowired
 	private PreguntasDAO preguntasDAO;
+	
+	
+	@Autowired
+	private SeccionDAO seccionDAO;
 	
 
 
@@ -93,5 +102,41 @@ public class DetalleIntentoServiceImpl implements DetalleIntentoService{
 			  }
 			});
 		return l;
+	}
+	
+
+	@Transactional
+	@Override
+	public Map<String, Object> detalleFinalizar(List<UsuarioEncuestaRespuestaVO> l) {
+		Map<Long, Long> idSecciones = new HashMap<>();
+		for(UsuarioEncuestaRespuestaVO uerDTO: l) {
+			idSecciones.put(uerDTO.getId().getIdSeccion(), uerDTO.getId().getIdSeccion());
+		}
+		List<SeccionDTO> sListDTO = new ArrayList<>();
+		if(!idSecciones.isEmpty()) {
+			for(Map.Entry<Long, Long> id: idSecciones.entrySet()) {
+				sListDTO.add(seccionDAO.findOne(id.getKey()));
+			}
+		}
+		
+		List<SeccionVO> sListVO = ResponseConverter.converterLista(new ArrayList<>(), sListDTO, SeccionVO.class);
+		List<PreguntaVO> pListVO = null; 
+		if(!sListVO.isEmpty()) {
+			for(SeccionVO sVO: sListVO) {
+				pListVO = new ArrayList<>();
+				for(UsuarioEncuestaRespuestaVO uerVO: l) {
+					if(uerVO.getId().getIdSeccion().equals(sVO.getIdSeccion())) {
+						pListVO.add(uerVO.getPregunta());
+					}
+				}
+				//sVO.setPreguntas(pListVO);
+				sVO.setPreguntas(orderList(pListVO)); // ORDENAMOS LA LISTA DE PREGUNTAS
+				sVO.setPreguntas(sVO.getPreguntas()); // ORDENA LAS OPCIONES DE LAS PREGUNTAS
+			}
+		}
+		Map<String, Object> mapReturn = new HashMap<>();
+		mapReturn.put("secciones", sListVO);
+		return mapReturn;
+
 	}
 }

@@ -4,9 +4,12 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -48,6 +51,12 @@ public class StSeguimientoDTO implements Serializable {
 	
 	@Column(name = "FH_MODIFICACION")	
 	private Date fhModificacion;
+	
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name="ID_TIPO_SEGUIMIENTO", referencedColumnName="ID_TIPO_SEGUIMIENTO")
+	private TipoSeguimientoDTO tipoSeguimiento;
+	
+	
 
 	public Long getIdStSeguimiento() {
 		return idStSeguimiento;
