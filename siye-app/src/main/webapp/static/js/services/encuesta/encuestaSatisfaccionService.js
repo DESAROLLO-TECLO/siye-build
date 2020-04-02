@@ -7,6 +7,11 @@ this.servicio = function () {
 	return $http.get(config.baseUrl + "/encuestaSatisfaccion/prueba"); 
 };
 
+this.getDetalleEncuesta = function (idEncuesta, idOrdenServicio) {
+	return $http.get(config.baseUrl + END_POINT + "/detalle", 
+	{params:{"idEncuesta": idEncuesta,"idOrdenServicio": idOrdenServicio}});
+};
+
 this.getEncuesta = function (tipoBusqueda,valor,password){
 	var idTipobusqueda = parseInt(tipoBusqueda);
 	return $http.get(config.baseUrl + END_POINT + "/consultaEncuestasSatisfaccion",

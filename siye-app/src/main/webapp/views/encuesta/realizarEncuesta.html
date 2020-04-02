@@ -1,5 +1,32 @@
 
 			<style>
+	.toolTip{
+			background: #f4f4f4;
+			border: 2px solid #87cefa;
+			border-radius: 5px;
+			box-shadow: 5px 5px 5px #333;
+			color: #87cefa;
+			font-size: 0.8em;
+			padding: 10px 10px 10px 35px;
+			max-width: 600px;
+			position: absolute;
+			z-index: 9999;   
+	}
+			
+			
+.toolTipInfo{
+	display: block;
+	color: rgb(207, 10, 44);
+}
+.toolTipInfo:hover{
+	color: #880219;
+	background: none;
+}
+
+.toolTipInfo-btn{
+	display: block;
+	color: #fff;
+}
 
 .btn-ant-seccion{
 display: block;
@@ -25,7 +52,7 @@ display: block;
 					<div class="row">
 						<div class="col-md-2 center">
 							<div ng-if="myVar">
-								<a  href="#" data-toggle="tooltipinfo" data-placement="top" title="Tiempo restante para finalizar la evaluaci�n">
+								<a   data-toggle="tooltipinfo" data-placement="top" title="Tiempo restante para finalizar la evaluaci�n">
 									<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 								</a>
 							</div>
@@ -41,7 +68,7 @@ display: block;
 								<div class="col-md-6">
 									Contestadas por Secci�n: {{seccionVO.nuPreguntasContestadas+' DE '}} {{ (seccionVO.preguntas | filter:general.filter).length }}
 									<div ng-if="myVar" style="display: inline-block;">
-										<a href="#" data-toggle="tooltipinfo" data-placement="top" title="Total de preguntas contestadas por secci�n">
+										<a  data-toggle="tooltipinfo" data-placement="top" title="Total de preguntas contestadas por secci�n">
 											<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 										</a>
 									</div>
@@ -50,7 +77,7 @@ display: block;
 								<div class="col-md-6">
 									Total: {{preguntasContestadasEncuesta+' DE ' }}<span>{{encuesta.nuPreguntas}}</span>
 									<div ng-if="myVar" style="display: inline-block;">
-										<a href="#" data-toggle="tooltipinfo" data-placement="top" title="Total de preguntas contestadas de la evaluaci�n">
+										<a  data-toggle="tooltipinfo" data-placement="top" title="Total de preguntas contestadas de la evaluaci�n">
 											<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 										</a>
 									</div>
@@ -129,7 +156,7 @@ display: block;
 				       		<div class="centerRow">
 								<div ng-if="preguntasContestadasEncuesta===encuesta.nuPreguntas" class="w-100">
 									<div style="display:block; margin: 0 auto;" ng-if="myVar">
-										<a href="#" data-toggle="tooltipinfo" data-placement="right" title="Concluir la evaluaci�n">
+										<a  data-toggle="tooltipinfo" data-placement="right" title="Concluir la evaluaci�n">
 											<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 										</a>
 									</div>
@@ -142,7 +169,7 @@ display: block;
 								</div>
 								<div ng-if="preguntasContestadasEncuesta!=encuesta.nuPreguntas" class="w-100">
 									<div style="display:block; margin: 0 auto;" ng-if="myVar">
-										<a href="#" data-toggle="tooltipinfo" 
+										<a  data-toggle="tooltipinfo" 
 											data-placement="right" title="Pausar la evaluaci�n y continuar en otro momento" aria-disabled="true">
 											<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 										</a>
@@ -205,7 +232,7 @@ display: block;
 														<i class="fa fa-arrow-left"></i>
 														</span>
 														<div style="display:inline-block" ng-if="myVar && posicionActual >0 && paramConfigPage.bigCurrentPage==1">
-														<a href="#" data-toggle="tooltipinfo" data-placement="bottom" title="Consultar la secci�n anterior de la evaluaci�n">
+														<a  data-toggle="tooltipinfo" data-placement="bottom" title="Consultar la secci�n anterior de la evaluaci�n">
 														<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 														</a>
 														</div>
@@ -213,7 +240,7 @@ display: block;
 												<div class="col-md-9">
 													<div class="">
 														<div style="display:inline-block" ng-if="myVar">
-															<a href="#" data-toggle="tooltipinfo" data-placement="right" 
+															<a  data-toggle="tooltipinfo" data-placement="right" 
 															title="Regresar al grupo de preguntas anteriores">
 															<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 															</a>
@@ -226,7 +253,7 @@ display: block;
 														rotate="false"></uib-pagination>
 
 														<div style="display:inline-block" ng-if="myVar">
-															<a href="#" data-toggle="tooltipinfo" data-placement="right" 
+															<a  data-toggle="tooltipinfo" data-placement="right" 
 															title="Avanzar al grupo de preguntas siguientes">
 															<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 															</a>
@@ -240,7 +267,7 @@ display: block;
 														<i class="fa fa-arrow-right"></i> 
 														</span>
 														<div style="display:inline-block" ng-if="myVar && (posicionActual < (encuesta.secciones.length-1)) && paramConfigPage.bigCurrentPage==numPages">
-														<a href="#" data-toggle="tooltipinfo" data-placement="bottom" title="Consultar la siguiente secci�n de la evaluaci�n">
+														<a  data-toggle="tooltipinfo" data-placement="bottom" title="Consultar la siguiente secci�n de la evaluaci�n">
 														<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 														</a>
 														</div>
@@ -252,7 +279,7 @@ display: block;
 					</div>
 					<div class="col-md-1" style="line-height: 30px;	height: 515px; margin-top: 2%;">
 						<div style="position: absolute; display: inline; top: 0;" ng-if="myVar">
-							<a href="#" data-toggle="tooltipinfo" data-placement="top" title="Secci�n de preguntas correspondientes a la evaluaci�n, la pregunta contiene un n�mero identificado de pregunta y contiene tres opciones, se debe marcar con un click la opci�n deseada">
+							<a  data-toggle="tooltipinfo" data-placement="top" title="Secci�n de preguntas correspondientes a la evaluaci�n, la pregunta contiene un n�mero identificado de pregunta y contiene tres opciones, se debe marcar con un click la opci�n deseada">
 								<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 							</a>
 						</div>
