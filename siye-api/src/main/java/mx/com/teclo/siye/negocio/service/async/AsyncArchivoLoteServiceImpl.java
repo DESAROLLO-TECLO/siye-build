@@ -3,9 +3,12 @@
  */
 package mx.com.teclo.siye.negocio.service.async;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +23,12 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.LoteOrdenServicioDAO
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.configuracion.ConfiguracionOSDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.LoteOrdenServicioDTO;
-import mx.com.teclo.siye.persistencia.vo.async.ArchivoLoteVO;
+import mx.com.teclo.siye.persistencia.vo.async.ColumnaVO;
+import mx.com.teclo.siye.persistencia.vo.async.InsercionTablaVO;
 import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.LoteOrdenServicioVO;
 import mx.com.teclo.siye.util.enumerados.ArchivoSeguimientoEnum;
+import mx.com.teclo.siye.util.enumerados.SeccionLayoutEnum;
 
 @Service
 public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
@@ -38,8 +44,14 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 	private static final String MSG_ARCHIVO_TAMANIO_REBASADO = "El tamanio del archivo excede el maximo configurado";
 	private static final String MSG_DIRECTORIO_ORT_INDEFINIDO = "El directorio ort no ha sido especificado";
 	private static final Long ID_CONTENT_TYPE = 6L;
+	private static final Long ID_ORDEN_INSERCION = 5L;
 	private static final Long ID_PROCESO_CON_RECHAZO = 9L;
 	private static final String MSG_PARAM_CONTENT_TYPE_NULO = "El tipo de archivo esperado no esta definido";
+	private static final String MSG_LAYOUT_SIN_COLUMNAS_CONFIGURADAS = "El layout no tiene columnas configuradas";
+	private static final String MSG_LAYOUT_SIN_ORDEN_INSERCION = "El layout no tiene un orden de valores a insertar";
+	private static final String MSG_LAYOUT_INCONSISTENTE = "El layout no tiene igual cantidad de columnas en sus diferentes secciones";
+	private static final String MSG_INSERT_PATTERN = "INSERT INTO {0}({1}) VALUES({2})";
+
 
 	@Autowired
 	private LayoutService layoutService;
@@ -87,10 +99,51 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
-	public void cargarArchivoLote() throws BusinessException {
-		// TODO Auto-generated method stub
+	@Transactional
+	public void cargarArchivoLote(Long idArchivoLote) throws BusinessException {
+		LoteOrdenServicioVO lote = loteDAO.obtenerLote(idArchivoLote);
 
+		ConfiguracionOSDTO tablas = configuracionDAO.findOne(ID_ORDEN_INSERCION);
+		if (tablas == null || StringUtils.isBlank(tablas.getCdValorConfig())) {
+			throw new BusinessException(MSG_LAYOUT_SIN_ORDEN_INSERCION);
+		}
+
+		List<String> tbls = Arrays.asList(tablas.getCdValorConfig().split(","));
+		Map<String, InsercionTablaVO> insertQueriesMap = new HashMap<String, InsercionTablaVO>();
+
+		for (String nbTbl : tbls) {
+			String nbCols = layoutService.getNbsColumnas(nbTbl);
+			InsercionTablaVO colsObj = new InsercionTablaVO(
+					MessageFormat.format(MSG_INSERT_PATTERN, nbTbl, nbCols), "");
+			insertQueriesMap.put(nbTbl, colsObj);
+			System.out.println(insertQueriesMap.get(nbTbl).getColumnas());
+		}
+
+		
+	}
+
+	private void validacionesExtra() throws BusinessException {
+		System.out.println("Execute method with configured executor - " + Thread.currentThread().getName());
+		TipoLayoutVO layoutVigente = layoutService.getLayoutVigente();
+		List<ColumnaVO> titulos = layoutService.getLayout(layoutVigente.getIdTipoArchivo(),
+				SeccionLayoutEnum.HEADER.getCdIndicadorReg());
+
+		List<ColumnaVO> columnas = layoutService.getLayout(layoutVigente.getIdTipoArchivo(),
+				SeccionLayoutEnum.DETALLE.getCdIndicadorReg());
+
+		List<ColumnaVO> footers = layoutService.getLayout(layoutVigente.getIdTipoArchivo(),
+				SeccionLayoutEnum.DETALLE.getCdIndicadorReg());
+
+		if (columnas == null || columnas.isEmpty()) {
+			throw new BusinessException(MSG_LAYOUT_SIN_COLUMNAS_CONFIGURADAS);
+		}
+
+		if ((titulos != null && titulos.size() != columnas.size())
+				|| (footers != null && footers.size() != columnas.size())) {
+			throw new BusinessException(MSG_LAYOUT_INCONSISTENTE);
+		}
 	}
 
 	@Override
@@ -100,9 +153,9 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 	}
 
 	@Override
-	public ArchivoLoteVO getArchivoLote(Long idArchivoLote) throws BusinessException {
-		// TODO Auto-generated method stub
-		return null;
+	@Transactional(readOnly = true)
+	public LoteOrdenServicioVO obtenerArchivoLote(Long idArchivoLote) throws BusinessException {
+		return loteDAO.obtenerLote(idArchivoLote);
 	}
 
 	/**
@@ -189,6 +242,10 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 		}
 
 		return (Long) loteDAO.save(loteDTO);
+
+	}
+
+	private void testInsert() {
 
 	}
 

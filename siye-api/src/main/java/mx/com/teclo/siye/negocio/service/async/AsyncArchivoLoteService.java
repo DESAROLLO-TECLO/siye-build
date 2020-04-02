@@ -3,11 +3,11 @@
  */
 package mx.com.teclo.siye.negocio.service.async;
 
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.siye.persistencia.vo.async.ArchivoLoteVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.LoteOrdenServicioVO;
 
 /**
  * Administra la carga masiva de &oacute;rdenes de servicios contenidos en un
@@ -40,11 +40,11 @@ public interface AsyncArchivoLoteService {
 	 * <li>Si incumple alguno de los tres primeros puntos, clasificar el archivo con
 	 * resultado fallido en su validaci&oacute;n arrojando una excepci&oacute;n</li>
 	 * </ul>
-	 * 
+	 * @param Long idArchivoLote
 	 * @throws BusinessException
 	 */
 
-	void cargarArchivoLote() throws BusinessException;
+	void cargarArchivoLote(Long idArchivoLote) throws BusinessException;
 
 	/**
 	 * Actualiza el seguimiento del archivo
@@ -56,10 +56,10 @@ public interface AsyncArchivoLoteService {
 	/**
 	 * Recupera la informaci&oacute;n de un archivo lote
 	 * 
-	 * @return ArchivoLoteVO
+	 * @return LoteOrdenServicioVO
 	 * @throws BusinessException
 	 */
-	ArchivoLoteVO getArchivoLote(Long idArchivoLote) throws BusinessException;
+	LoteOrdenServicioVO obtenerArchivoLote(Long idArchivoLote) throws BusinessException;
 
 	Long crearLote(String nombreFinal, String error) ;
 }

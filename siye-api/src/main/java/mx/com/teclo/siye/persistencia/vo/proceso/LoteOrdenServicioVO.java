@@ -1,6 +1,7 @@
 package mx.com.teclo.siye.persistencia.vo.proceso;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class LoteOrdenServicioVO implements Serializable {
 	
@@ -10,14 +11,17 @@ public class LoteOrdenServicioVO implements Serializable {
 	private String cdLoteOds;
 	private String nbLoteOds;
 	private Long idStSeguimiento;
+	private String cdStSeguimiento;
+	private String nbStSeguimiento;
 	private Long nuOdsReportados;
 	private Long nuOdsCargados;
 	private Long nuOdsAtendidos;
 	private Long nuOdsPendientes;
 	private Long nuOdsIncidencia;
-	private String txtLoteOds;
+	private String txLoteOds;
 	private Boolean stActivo;
-	
+	private Long idUsrCreacion;
+	private Date fhCreacion;
 	public Long getIdLoteOds() {
 		return idLoteOds;
 	}
@@ -41,6 +45,18 @@ public class LoteOrdenServicioVO implements Serializable {
 	}
 	public void setIdStSeguimiento(Long idStSeguimiento) {
 		this.idStSeguimiento = idStSeguimiento;
+	}
+	public String getCdStSeguimiento() {
+		return cdStSeguimiento;
+	}
+	public void setCdStSeguimiento(String cdStSeguimiento) {
+		this.cdStSeguimiento = cdStSeguimiento;
+	}
+	public String getNbStSeguimiento() {
+		return nbStSeguimiento;
+	}
+	public void setNbStSeguimiento(String nbStSeguimiento) {
+		this.nbStSeguimiento = nbStSeguimiento;
 	}
 	public Long getNuOdsReportados() {
 		return nuOdsReportados;
@@ -72,11 +88,11 @@ public class LoteOrdenServicioVO implements Serializable {
 	public void setNuOdsIncidencia(Long nuOdsIncidencia) {
 		this.nuOdsIncidencia = nuOdsIncidencia;
 	}
-	public String getTxtLoteOds() {
-		return txtLoteOds;
+	public String getTxLoteOds() {
+		return txLoteOds;
 	}
-	public void setTxtLoteOds(String txtLoteOds) {
-		this.txtLoteOds = txtLoteOds;
+	public void setTxtLoteOds(String txLoteOds) {
+		this.txLoteOds = txLoteOds;
 	}
 	public Boolean getStActivo() {
 		return stActivo;
@@ -84,5 +100,16 @@ public class LoteOrdenServicioVO implements Serializable {
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
 	}
-	
+	public Long getIdUsrCreacion() {
+		return idUsrCreacion;
+	}
+	public void setIdUsrCreacion(Long idUsrCreacion) {
+		this.idUsrCreacion = idUsrCreacion;
+	}
+	public Date getFhCreacion() {
+		return fhCreacion;
+	}
+	public void setFhCreacion(Date fhCreacion) {
+		this.fhCreacion = fhCreacion;
+	}
 }

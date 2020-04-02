@@ -21,8 +21,8 @@ public class TipoLayoutDAOImpl extends BaseDaoHibernate<TipoLayoutDTO> implement
 
 		Criteria criteria = getCurrentSession().createCriteria(TipoLayoutDTO.class, "tipoLayout");
 
-		criteria.add(Restrictions.eq("tipoLayout.stActivo", Boolean.TRUE));
-		criteria.add(Restrictions.eq("tipoLayout.stVigente", Boolean.TRUE));
+		criteria.add(Restrictions.eq("tipoLayout.stActivo", Boolean.TRUE.booleanValue()));
+		criteria.add(Restrictions.eq("tipoLayout.stVigente", Boolean.TRUE.booleanValue()));
 
 		criteria.setProjection(
 				Projections.projectionList().add(Projections.property("tipoLayout.idTipoLayout").as("idTipoLayout"))

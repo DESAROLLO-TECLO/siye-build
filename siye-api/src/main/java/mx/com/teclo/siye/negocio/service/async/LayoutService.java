@@ -1,5 +1,8 @@
 package mx.com.teclo.siye.negocio.service.async;
 
+import java.util.List;
+
+import mx.com.teclo.siye.persistencia.vo.async.ColumnaVO;
 import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
 
 /**
@@ -11,5 +14,22 @@ import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
  */
 public interface LayoutService {
 
+	/**
+	 * Obtiene el conjunto de columnas esperadas en el archivo
+	 * 
+	 * @return
+	 */
 	TipoLayoutVO getLayoutVigente();
+
+	List<ColumnaVO> getLayout(Long idTipoLayout, String cdSeccion);
+
+	/**
+	 * Regresa los nombres de columnas que deber&aacute;n ser afectadas en la carga
+	 * masiva
+	 * 
+	 * @param idTipoLayout
+	 * @param tabla
+	 * @return
+	 */
+	String getNbsColumnas(String tabla);
 }

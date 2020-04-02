@@ -16,7 +16,9 @@ public class ArchivoLoteVO {
 	private Long idLoteOds;
 	private String cdLoteOds;
 	private String nbLoteOds;
-	private Short idStSeguimiento;
+	private Long idStSeguimiento;
+	private String cdStSeguimiento;
+	private String nbStSeguimiento;
 	private Integer nuOdsReportados;
 	private Integer nuOdsCargados;
 	private Integer nuOdsAtendidos;
@@ -51,14 +53,30 @@ public class ArchivoLoteVO {
 
 	public void setNbLoteOds(String nbLoteOds) {
 		this.nbLoteOds = nbLoteOds;
-	}
+	}	
 
-	public Short getIdStSeguimiento() {
+	public Long getIdStSeguimiento() {
 		return idStSeguimiento;
 	}
 
-	public void setIdStSeguimiento(Short idStSeguimiento) {
+	public void setIdStSeguimiento(Long idStSeguimiento) {
 		this.idStSeguimiento = idStSeguimiento;
+	}
+
+	public String getCdStSeguimiento() {
+		return cdStSeguimiento;
+	}
+
+	public void setCdStSeguimiento(String cdStSeguimiento) {
+		this.cdStSeguimiento = cdStSeguimiento;
+	}
+
+	public String getNbStSeguimiento() {
+		return nbStSeguimiento;
+	}
+
+	public void setNbStSeguimiento(String nbStSeguimiento) {
+		this.nbStSeguimiento = nbStSeguimiento;
 	}
 
 	public Integer getNuOdsReportados() {
