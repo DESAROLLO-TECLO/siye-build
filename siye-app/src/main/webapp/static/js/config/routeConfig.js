@@ -149,7 +149,8 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
                         'Content-Type': 'application/json'
                     },
                     params: {
-                        'idReporte': $route.current.params.idReporte
+                        'idReporte': $route.current.params.idReporte,
+                        'validacion': 'validacion'
                     }
                 }).then(function(reporteVO) {
                     let objectReporteVO = reporteVO.data;
@@ -190,7 +191,7 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
             }
         }
     });
-//	Indicendias
+    //	Indicendias
     $routeProvider.when("/altaIncidencia", {
         templateUrl: "views/incidencia/altaIncidencia.html",
         controller: "altaIncidenciaController"

@@ -46,6 +46,20 @@
     border-radius: 5px;
 }
 
+.color-fondo-contestado{
+    color: #fff;
+    background: #78d5f1;
+    background: -moz-linear-gradient(left, #78d5f1 0%,
+    #224365 100%);
+    background: -webkit-gradient(left top, right top, color-stop(0%, #78d5f1), color-stop(100%, #224365));
+    background: -webkit-linear-gradient(left, #78d5f1 0%, #224365 100%);;
+    background: -o-linear-gradient(left, #78d5f1 0%, #224365 100%);;
+    background: -ms-linear-gradient(left, #78d5f1 0%, #224365 100%);;
+    background: linear-gradient(to right, #78d5f1 0%, #224365 100%);;
+    
+    border-radius: 5px;
+}
+
 .dash-img {
     position: absolute;
     top: 0;
@@ -108,6 +122,13 @@
 	width: 5rem;
 	height: 3rem;
 	margin: 0 0.5714rem;
+}
+
+.switcher{
+    position: relative ;
+    background: #d2d6de94;
+    padding: 5%;
+    border-radius: 5px;
 }
 
 /* Color del texto o elemento cuando es falso */

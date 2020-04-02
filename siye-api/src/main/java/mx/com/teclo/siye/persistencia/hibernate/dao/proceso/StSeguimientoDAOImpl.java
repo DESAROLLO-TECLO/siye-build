@@ -1,5 +1,7 @@
 package mx.com.teclo.siye.persistencia.hibernate.dao.proceso;
 
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -25,5 +27,25 @@ public class StSeguimientoDAOImpl extends BaseDaoHibernate<StSeguimientoDTO> imp
 		c.add(Restrictions.eq("idStSeguimiento", idSeg));
 		return (StSeguimientoDTO)c.uniqueResult();
 	}
+	
+	@Override
+	public StSeguimientoDTO obtenerStSeguimientoByCodigo(String cdStSeguimiento) {
+		Criteria c = getCurrentSession().createCriteria(StSeguimientoDTO.class);
+		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("cdStSeguimiento", cdStSeguimiento));
+		return (StSeguimientoDTO)c.uniqueResult();
+	}
+	
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StSeguimientoDTO> obtenerStSeguimientoByCdTpSeguimiento(String cdTpSeguimiento) {
+		Criteria c = getCurrentSession().createCriteria(StSeguimientoDTO.class);
+		c.createAlias("tipoSeguimiento", "tipoSeguimiento");
+		c.add(Restrictions.eq("tipoSeguimiento.cdTpSeguimiento", cdTpSeguimiento));
+		c.add(Restrictions.eq("stActivo", true));
+		return (List<StSeguimientoDTO>)c.list();
+	}
+
 
 }

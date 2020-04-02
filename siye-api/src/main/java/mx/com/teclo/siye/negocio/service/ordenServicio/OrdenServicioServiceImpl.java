@@ -16,10 +16,13 @@ import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoVehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.OdsIncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.CentroInstalacionDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.ConcesionariaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.LoteOrdenServicioDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OdsDetalleCambioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
@@ -28,9 +31,10 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.OdsIncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.ConsecionarioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDTO;
-import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDispDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.LoteOrdenServicioDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OdsDetalleCambioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
@@ -80,6 +84,16 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	
 	@Autowired
 	private OdsIncidenciaDAO odsIncidenciaDAO;
+	
+	@Autowired
+	private OdsDetalleCambioDAO odsDetalleCambioDAO;
+	
+	@Autowired
+	private TipoVehiculoDAO tpVehiculoDAO;
+	
+	@Autowired
+	private ConcesionariaDAO concesionariaDAO;
+	
 	
 	@Transactional
 	@Override
@@ -182,8 +196,14 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 				iDTO = ResponseConverter.copiarPropiedadesFull(osVO.getIncidencia(), IncidenciaDTO.class);
 				oiDTO.setIdOrdenServicio(osDTO);
 				oiDTO.setIdIncidencia(iDTO);
-				odsIncidenciaDAO.save(oiDTO);
-				ordenServicioDAO.update(osDTO);	
+				
+			OdsDetalleCambioDTO dcDTO = new OdsDetalleCambioDTO();	
+			
+			dcDTO = ResponseConverter.copiarPropiedadesFull(osDTO, OdsDetalleCambioDTO.class);
+			dcDTO.setOrdenServicio2(osDTO);				
+			odsDetalleCambioDAO.save(dcDTO);	
+			odsIncidenciaDAO.save(oiDTO);
+			ordenServicioDAO.update(osDTO);	
 		} else {
 			throw new NotFoundException("La incidencia se encuentra vacia.");
 		}
@@ -299,24 +319,47 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		
 		OrdenServicioDTO ordenServiDTO = new OrdenServicioDTO(); // TIE026_ORDEN_SERVICIO
 		
-		VehiculoDTO vehiculoDTO = new VehiculoDTO(); // TIE027_VEHICULO
+		 // TIE027_VEHICULO
 		
-		VehiculoDTO vehoDTO = ResponseConverter.copiarPropiedadesFull(ordenServiVO.getVehiculoVO(), VehiculoDTO.class);
+		VehiculoDTO vehiculo = vehiculoDAO.buscarVehiculoPorPlaca(ordenServiVO.getVehiculoVO().getPlaca());
 		
-		KitInstalacionDTO kitInstDTO = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion()); //TIE030_KIT_INSTALACION
+		if(vehiculo == null);
 		
-		KitInstalacionDispDTO kitInstalDisp = new KitInstalacionDispDTO(); // TIE039_KIT_INST_DISP
-		CentroInstalacionDTO centroInst = centroInstalacionDAO.centroIns(ordenServiVO.getCentroI());
+			TipoVehiculoDTO tpVehiculoDTO = tpVehiculoDAO.findOne(ordenServiVO.getVehiculoVO().getTpVehiculo().getIdTipoVehiculo());
+			ConsecionarioDTO concesinarioDTO = concesionariaDAO.findOne(ordenServiVO.getVehiculoVO().getConcesionaria().getIdConsecion());
+			
+			vehiculo.setCdPlacaVehiculo(ordenServiVO.getVehiculoVO().getPlaca());
+			vehiculo.setCdVin(ordenServiVO.getVehiculoVO().getCdVIN());
+			vehiculo.setCdTarjetaDeCirculacion(ordenServiVO.getVehiculoVO().getTjtCirculacion());
+			vehiculo.setTipoVehiculo(tpVehiculoDTO);
+			vehiculo.setNbMarca(ordenServiVO.getVehiculoVO().getMarca());
+			vehiculo.setNbSubMarca(ordenServiVO.getVehiculoVO().getSubMarca());
+			vehiculo.setCdModelo(ordenServiVO.getVehiculoVO().getCdModelo());
+			vehiculo.setConsecionario(concesinarioDTO);
+			
+			vehiculo.setStActivo(true);
+			vehiculo.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
+			vehiculo.setFhCreacion(new Date());
+			vehiculo.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
+			vehiculo.setFhModificacion(new Date());
+			vehiculoDAO.save(vehiculo);
+			
+			
+			
+			
+		
+		KitInstalacionDTO kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion()); //TIE030_KIT_INSTALACION
+		CentroInstalacionDTO centroInst = centroInstalacionDAO.findOne(ordenServiVO.getCentroI());
 		
 		PlanDTO planDTO = planDAO.getId(ordenServiVO.getPlan());
-		StSeguimientoDTO stSegDTO =seguimientoDAO.obtenerSeguimientoDos(1l);
+		StSeguimientoDTO stSeguimiento =seguimientoDAO.obtenerSeguimientoDos(1l);
 		
 		ordenServiDTO.setCdOrdenServicio(ordenServiVO.getCdOrden());
-		ordenServiDTO.setVehiculo(vehoDTO);
-		ordenServiDTO.setCentroInstalacion(centroInst);
-		ordenServiDTO.setKitInstalacion(kitInstDTO);
+		ordenServiDTO.setVehiculo(vehiculo);
+		ordenServiDTO.setCentroInstalacion(centroInstalacionDAO.findOne(ordenServiVO.getCentroI()));
+		ordenServiDTO.setKitInstalacion(kitInstalacion);
 		ordenServiDTO.setPlan(planDTO);
-		ordenServiDTO.setStSeguimiento(stSegDTO);
+		ordenServiDTO.setStSeguimiento(stSeguimiento);
 		ordenServiDTO.setIdOrigenOds(2l);
 		ordenServiDTO.setStActivo(true);
 		ordenServiDTO.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());

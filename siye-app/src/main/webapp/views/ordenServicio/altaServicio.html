@@ -129,8 +129,7 @@
 													</div>
 											</div>
 <!-- 											ng-disabled="banderadeshabilitar" -->
-<!-- 								{{orden.vehiculoVO.tpVehiculo}} -->
-<!-- 									{{ordenVO}}		 -->
+
 								<div class="col-md-4">
 									<div class="form-group">
 										<label for="">Marca:</label>
@@ -159,6 +158,42 @@
 												</div>
 												</div>
 											</div>
+											
+										</div>
+<!-- 										TERCERA FILA -->
+										<div class="row">
+												<div class="col-md-6">
+												<div class="form-group">
+												<label form="">Código Modelo:</label>
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+														
+													</div>
+													<input maxlength="10" type="text" id="placaOficial" class="form-control"
+                                            				name="placaOficial" ng-model="orden.vehiculoVO.cdModelo"
+                                            				autocomplete="off" ng-required="true" ng-disabled="banderadeshabilitar">
+												</div>
+												</div>
+											</div>
+											
+											<div class="col-md-4">
+												<label for="">Tipo Vehiculo:</label>
+													<div class="input-group">
+														<div class="input-group-addon">
+															<i class="fa fa-list-ul"></i>
+															
+														</div>
+														<select class="form-control" select2 data-minimum-results-for-search="Infinity" id="catConcesionario"
+															ng-options="tpVehiculo.nbTipoVehiculo  for tpVehiculo in catalogoTipoVehiculo track by tpVehiculo.idTipoVehiculo"
+															ng-model="orden.vehiculoVO.concesionario"
+															style="width:100%" >
+															<option value="">Seleccione</option>
+														</select>
+													</div>
+											</div>
+											
+											
 											
 										</div>
 									</fieldset>

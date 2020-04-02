@@ -55,7 +55,7 @@ public class EncuestaRestController {
 		return new ResponseEntity<Boolean>(b, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/consultaEncuestasSatisfaccion", method = RequestMethod.POST)
+	@RequestMapping(value="/consultaEncuestasSatisfaccion", method = RequestMethod.GET)
 	public ResponseEntity<List<UsuarioEncuestaVO>> encuestaDetalle (
 		@RequestParam(value="tipoBusqueda") Integer tipoBusqueda,
 		@RequestParam(value="valor") String valor, 
@@ -114,6 +114,15 @@ public class EncuestaRestController {
 			throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
 		}
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/activarEncuestaSatis", method = RequestMethod.POST)
+	//@PreAuthorize("hasAnyAuthority('SERVICE13_ENC_INTENTO')")
+	public ResponseEntity<Boolean> activar(@RequestParam(value="idEncuesta") long idEncuesta,
+			@RequestParam(value="idOrdenServicio") long idOrdenServicio,
+			@RequestParam(value="nuevoValor") Boolean nuevoValor) throws NotFoundException, BusinessException{
+		Boolean b = encuestaService.activarODesactivarSatisfaccion(idEncuesta, idOrdenServicio, nuevoValor);
+		return new ResponseEntity<Boolean>(b, HttpStatus.OK);
 	}
 
 	

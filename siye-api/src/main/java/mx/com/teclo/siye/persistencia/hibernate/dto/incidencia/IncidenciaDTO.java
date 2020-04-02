@@ -42,7 +42,7 @@ public class IncidenciaDTO implements Serializable {
 	private StSeguimientoDTO stSeguimiento;
 
 	@Column(name = "ST_ACTIVO", nullable = false, precision = 1, scale = 0)
-	private Long stActivo;
+	private Boolean stActivo;
 
 	@Column(name = "ID_USR_CREACION", nullable = false, precision = 11, scale = 0)
 	private Long idUsrCreacion;
@@ -112,11 +112,11 @@ public class IncidenciaDTO implements Serializable {
 		this.stSeguimiento = stSeguimiento;
 	}
 
-	public Long getStActivo() {
+	public Boolean getStActivo() {
 		return stActivo;
 	}
 
-	public void setStActivo(Long stActivo) {
+	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
 	}
 

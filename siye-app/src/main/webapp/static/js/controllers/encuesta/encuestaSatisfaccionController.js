@@ -1,8 +1,10 @@
 angular.module(appTeclo)
 .controller("encuestaSatisfaccionController",
-function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,showAlert,growl, $location) {
+function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,showAlert,growl, $location,encuestaSatisfaccionService) {
 	$scope.banderaPantalla=false;
 	$scope.formato = '0';
+    $scope.encuesta={};
+    $scope.listOrden=new Array();
 	$scope.parametroBusqueda =new Object();
     $scope.paramConfigPage = {
             bigCurrentPage: 1,
@@ -27,9 +29,9 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 	//Se declaran tipos de busqueda
     $scope.listTipoBusqueda ={
         tipoBusqueda: [
-            {idTipo:1,cdTipo:"PLACA",nbTipo:"Placa"},
-            {idTipo:2,cdTipo:"ORDEN",nbTipo:"Orden"},
-            {idTipo:2,cdTipo:"VIN",nbTipo:"Vin"}
+            {idTipo:1,cdTipo:"ORDEN",nbTipo:"Orden"},
+            {idTipo:2,cd:"PLACA",nbTipo:"Placa"},
+            {idTipo:3,cdTipo:"VIN",nbTipo:"Vin"}
         ]
 	};
 	
@@ -44,20 +46,36 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
     $scope.buscarOrden=function(param,form){
     	if (form.$invalid) {
     		showAlert.requiredFields(form);
-			growl.error('Formulario Incompleto');
+			showAlert.error('Formulario Incompleto');
 			
-		}
+        }else
+        encuestaSatisfaccionService.getEncuesta(param.tipoBusqueda.idTipo,param.valor,param.pass).success(function(data){
+            if (data.length>0) 
+                $scope.listOrden=data;
+                else
+                showAlert.aviso("No se encontraron concidencias con el valor ingresado");
+          
+        }).error(function(data){
+            showAlert.error(data.message);
+        });
     	
-    }
+    };
 		
-		$scope.empezarEncuesta=function(accion){
-			$scope.banderaPantalla=accion;
-			   $timeout(() => {
-			$scope.cambiarPregunta(null,$scope.encuesta.secciones[0]);
-			$scope.iniciarConteo();
-			  $scope.paramConfigPage.tiempoEncuesta = $scope.encuesta.nuTiempo;
-			$scope.encuesta=$scope.encuesta},300);
-			//alert($scope.encuesta.secciones[0]);
+		$scope.empezarEncuesta=function(idOrdenServicio,encuestaVO,accion){
+            var idEncuesta= encuestaVO.idEncuesta;
+            encuestaSatisfaccionService.cargarEncuesta(idOrdenServicio,idEncuesta).success(function(data) {
+                if (data) {
+                    $scope.banderaPantalla=accion;
+                    $scope.encuesta=angular.copy(encuestaVO);
+                    $scope.cambiarPregunta(null,$scope.encuesta.seccion[0]);
+                    $scope.iniciarConteo();
+                    $scope.paramConfigPage.tiempoEncuesta = 5700;
+                    //reloj();
+                }
+            }).error(function(data) {
+                growl.warning(data.message);
+            });
+			//alert($scope.encuesta.seccion[0]);
 		};
     
 //	Detectar el navegador para ajustar el contenido
@@ -93,188 +111,16 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 	
 	
 	
-	$scope.encuesta=new Object({idEncuesta:1,
-		cdEncuesta:"AA",
-		nbEncuesta:"Instalacion",
-		nuSecciones:3,
-		nuTiempo:3,
-		nuTiempo:5700,
-		nuPreguntas:24,
-		  secciones:new Array(
-				  {idSeccion:2,
-		    nuPreguntasContestadas:null,
-		    cdSeccion:"SECCION INSTALACION",
-		    nbSeccion:" Instalacion Camaras",
-		    preguntas:new Array(
 
-		      {txPregunta:"Pregunta 1",stMarcado:0,
-		        opciones:new Array(       
-		       { txOpcion:"Opcion A",stMarcado:0},
-		       { txOpcion:"Opcion B",stMarcado:0},
-		       { txOpcion:"Opcion C",stMarcado:0})},
-
-		      {txPregunta:"Pregunta 2",stMarcado:0,
-		      opciones:new Array(
-		      {txOpcion:"Opcion A",stMarcado:0},
-		      {txOpcion:"Opcion B",stMarcado:0},
-		      {txOpcion:"Opcion C",stMarcado:0})},
-
-		     {txPregunta:"Pregunta 3",stMarcado:0,
-		      opciones:new Array(
-		        {txOpcion:"Opcion A",stMarcado:0},
-		        {txOpcion:"Opcion B",stMarcado:0},
-		        {txOpcion:"Opcion C",stMarcado:0})},
-
-		      {txPregunta:"Pregunta 4",stMarcado:0,
-		        opciones:new Array(       
-		       { txOpcion:"Opcion A",stMarcado:0},
-		       { txOpcion:"Opcion B",stMarcado:0},
-		       { txOpcion:"Opcion C",stMarcado:0})},
-
-		      {txPregunta:"Pregunta 5",stMarcado:0,
-		      opciones:new Array(
-		      {txOpcion:"Opcion A",stMarcado:0},
-		      {txOpcion:"Opcion B",stMarcado:0},
-		      {txOpcion:"Opcion C",stMarcado:0})},
-
-		     {txPregunta:"Pregunta 6",stMarcado:0,
-		      opciones:new Array(
-		        {txOpcion:"Opcion A",stMarcado:0},
-		        {txOpcion:"Opcion B",stMarcado:0},
-		        {txOpcion:"Opcion C",stMarcado:0})},
-
-		    
-		      {txPregunta:"Pregunta 7",stMarcado:0,
-		        opciones:new Array(       
-		       { txOpcion:"Opcion A",stMarcado:0},
-		       { txOpcion:"Opcion B",stMarcado:0},
-		       { txOpcion:"Opcion C",stMarcado:0})},
-
-		      {txPregunta:"Pregunta 8",
-		      opciones:new Array(
-		      {txOpcion:"Opcion A",stMarcado:0},
-		      {txOpcion:"Opcion B",stMarcado:0},
-		      {txOpcion:"Opcion C",stMarcado:0})},
-
-		     {txPregunta:"Pregunta 9",stMarcado:0,
-		      opciones:new Array(
-		        {txOpcion:"Opcion A",stMarcado:0},
-		        {txOpcion:"Opcion B",stMarcado:0},
-		        {txOpcion:"Opcion C",stMarcado:0})},
-
-		      {txPregunta:"Pregunta 10",stMarcado:0,
-		        opciones:new Array(       
-		       { txOpcion:"Opcion A",stMarcado:0},
-		       { txOpcion:"Opcion B",stMarcado:0},
-		       { txOpcion:"Opcion C",stMarcado:0})},
-
-		      {txPregunta:"Pregunta 11",stMarcado:0,
-		      opciones:new Array(
-		      {txOpcion:"Opcion A",stMarcado:0},
-		      {txOpcion:"Opcion B",stMarcado:0},
-		      {txOpcion:"Opcion C",stMarcado:0})},
-
-		     {txPregunta:"Pregunta 12",stMarcado:0,
-		      opciones:new Array(
-		        {txOpcion:"Opcion A",stMarcado:0},
-		        {txOpcion:"Opcion B",stMarcado:0},
-		        {txOpcion:"Opcion C",stMarcado:0})})
-		  },
-		 //SEGUNDA SECCION
-		  {idSeccion:2,
-			    nuPreguntasContestadas:null,
-			    cdSeccion:"SECCION CORROBORACION",
-			    nbSeccion:" Corroboracion Camaras",
-			    preguntas:new Array(
-
-			      {txPregunta:"Pregunta 13",stMarcado:0,
-			        opciones:new Array(       
-			       { txOpcion:"Opcion A",stMarcado:0},
-			       { txOpcion:"Opcion B",stMarcado:0},
-			       { txOpcion:"Opcion C",stMarcado:0})},
-
-			      {txPregunta:"Pregunta 14",stMarcado:0,
-			      opciones:new Array(
-			      {txOpcion:"Opcion A",stMarcado:0},
-			      {txOpcion:"Opcion B",stMarcado:0},
-			      {txOpcion:"Opcion C",stMarcado:0})},
-
-			     {txPregunta:"Pregunta 15",stMarcado:0,
-			      opciones:new Array(
-			        {txOpcion:"Opcion A",stMarcado:0},
-			        {txOpcion:"Opcion B",stMarcado:0},
-			        {txOpcion:"Opcion C",stMarcado:0})},
-
-			      {txPregunta:"Pregunta 16",stMarcado:0,
-			        opciones:new Array(       
-			       { txOpcion:"Opcion A",stMarcado:0},
-			       { txOpcion:"Opcion B",stMarcado:0},
-			       { txOpcion:"Opcion C",stMarcado:0})},
-
-			      {txPregunta:"Pregunta 17",stMarcado:0,
-			      opciones:new Array(
-			      {txOpcion:"Opcion A",stMarcado:0},
-			      {txOpcion:"Opcion B",stMarcado:0},
-			      {txOpcion:"Opcion C",stMarcado:0})},
-
-			     {txPregunta:"Pregunta 18",stMarcado:0,
-			      opciones:new Array(
-			        {txOpcion:"Opcion A",stMarcado:0},
-			        {txOpcion:"Opcion B",stMarcado:0},
-			        {txOpcion:"Opcion C",stMarcado:0})},
-
-			    
-			      {txPregunta:"Pregunta 19",stMarcado:0,
-			        opciones:new Array(       
-			       { txOpcion:"Opcion A",stMarcado:0},
-			       { txOpcion:"Opcion B",stMarcado:0},
-			       { txOpcion:"Opcion C",stMarcado:0})},
-
-			      {txPregunta:"Pregunta 20",
-			      opciones:new Array(
-			      {txOpcion:"Opcion A",stMarcado:0},
-			      {txOpcion:"Opcion B",stMarcado:0},
-			      {txOpcion:"Opcion C",stMarcado:0})},
-
-			     {txPregunta:"Pregunta 21",stMarcado:0,
-			      opciones:new Array(
-			        {txOpcion:"Opcion A",stMarcado:0},
-			        {txOpcion:"Opcion B",stMarcado:0},
-			        {txOpcion:"Opcion C",stMarcado:0})},
-
-			      {txPregunta:"Pregunta 22",stMarcado:0,
-			        opciones:new Array(       
-			       { txOpcion:"Opcion A",stMarcado:0},
-			       { txOpcion:"Opcion B",stMarcado:0},
-			       { txOpcion:"Opcion C",stMarcado:0})},
-
-			      {txPregunta:"Pregunta 23",stMarcado:0,
-			      opciones:new Array(
-			      {txOpcion:"Opcion A",stMarcado:0},
-			      {txOpcion:"Opcion B",stMarcado:0},
-			      {txOpcion:"Opcion C",stMarcado:0})},
-
-			     {txPregunta:"Pregunta 24",stMarcado:0,
-			      opciones:new Array(
-			        {txOpcion:"Opcion A",stMarcado:0},
-			        {txOpcion:"Opcion B",stMarcado:0},
-			        {txOpcion:"Opcion C",stMarcado:0})})
-			  }
-		  //SEGUNDA SECCION
-		  
-	 )
-
-});
-	
 	
 	$scope.checkPregunta =function(opcion,respuesta){
-		var evaluaContestadas=$scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas;
+		var evaluaContestadas=$scope.encuesta.seccion[$scope.posicionActual].nuPreguntasContestadas;
 		var preguntasCont=evaluaContestadas!=undefined?evaluaContestadas:0;
 		var cambio=false;
 
 		if(respuesta.stMarcado==undefined || respuesta.stMarcado==0  || respuesta.stMarcado==null){
-			$scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas=preguntasCont;
-			$scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas++
+			$scope.encuesta.seccion[$scope.posicionActual].nuPreguntasContestadas=preguntasCont;
+			$scope.encuesta.seccion[$scope.posicionActual].nuPreguntasContestadas++
 			$scope.preguntasContestadasEncuesta++;
 		}
 		for (let i in respuesta.opciones) {
@@ -297,12 +143,12 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
             guardarSeccion = $scope.guardaAvancePorPagina(nuPagina);
         }
         if (seccionVO != undefined || seccionVO != null) {
-            $scope.posicionActual = $scope.encuesta.secciones.indexOf(seccionVO);
-            var evaluaContestadas = $scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas != undefined ?
-                $scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas : 0;
+            $scope.posicionActual = $scope.encuesta.seccion.indexOf(seccionVO);
+            var evaluaContestadas = $scope.encuesta.seccion[$scope.posicionActual].nuPreguntasContestadas != undefined ?
+                $scope.encuesta.seccion[$scope.posicionActual].nuPreguntasContestadas : 0;
             $scope.seccionSeleccion = seccionVO.cdSeccion;
             $scope.seccionVO = seccionVO;
-            $scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas = evaluaContestadas;
+            $scope.encuesta.seccion[$scope.posicionActual].nuPreguntasContestadas = evaluaContestadas;
             $scope.paramConfigPage.bigTotalItems = $scope.seccionVO.preguntas.length;
             if (instruccion != 1) {
                 $scope.paramConfigPage.bigCurrentPage = 1;
@@ -368,10 +214,10 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
         var guardaSeccionPorPaginaVO = new Object();
         var preguntasPorPagina = new Array();
         var seccionVO = new Object();
-        var seccionVO = angular.copy($scope.encuesta.secciones[$scope.posicionActual]);
+        var seccionVO = angular.copy($scope.encuesta.seccion[$scope.posicionActual]);
         var preguntasPorPagina = seccionVO.preguntas.slice(((numPagina - 1) * $scope.paramConfigPage.itemsPerPage), ((numPagina) * $scope.paramConfigPage.itemsPerPage));
         seccionVO.preguntas = preguntasPorPagina;
-       // $scope.saveEncuesta(seccionVO);
+        $scope.saveEncuesta(seccionVO);
     };
 	//Escuchar  la variable de paginador
     $scope.$watch("paramConfigPage.bigCurrentPage", function(newValue, oldValue) {
@@ -392,22 +238,22 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 	
 	   //Funcion obtiene las respuestas por parametros de busqueda
     $scope.finalizaEncuesta = function(tiempo) {
-        var lisSeccionesValid = new Array();
-        var secciones = $scope.encuesta.secciones;
+        var lisseccionValid = new Array();
+        var seccion = $scope.encuesta.seccion;
         var preguntasSinContestar = false;
-        for (let i in secciones) {
-            if (secciones[i].nuPreguntasContestadas < secciones[i].preguntas.length) {
+        for (let i in seccion) {
+            if (seccion[i].nuPreguntasContestadas < seccion[i].preguntas.length) {
                 preguntasSinContestar = true;
                 let comprobacion = new Object({
-                    nbSeccion: secciones[i].nbSeccion,
-                    preguntasSinContestar: secciones[i].preguntas.length - secciones[i].nuPreguntasContestadas,
+                    nbSeccion: seccion[i].nbSeccion,
+                    preguntasSinContestar: seccion[i].preguntas.length - seccion[i].nuPreguntasContestadas,
                     preguntas: new Array()
                 });
-                for (let j in secciones[i].preguntas) {
+                for (let j in seccion[i].preguntas) {
                     var contador = 0;
-                    for (let k in secciones[i].preguntas[j].opciones) {
-                        if (contador == 0 && secciones[i].preguntas[j].opciones[k].stMarcado != 1) {
-                            comprobacion.preguntas.push(secciones[i].preguntas[j]);
+                    for (let k in seccion[i].preguntas[j].opciones) {
+                        if (contador == 0 && seccion[i].preguntas[j].opciones[k].stMarcado != 1) {
+                            comprobacion.preguntas.push(seccion[i].preguntas[j]);
                             contador++
                         }
                     }
@@ -456,6 +302,64 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
         });
         */
     };
+
+
+
+    //Guarda respuestas de encuesta
+    $scope.saveEncuesta = function(seccionVO) {
+        var guardarSeccion = false;
+        var seccionContestada = new Array();
+        var listPreguntaSeccion = angular.copy(seccionVO.preguntas);
+        for (let i in listPreguntaSeccion) {
+            let guardar = false;
+            let objectEncuesta = new Object({
+                idEncuesta: angular.copy($scope.encuesta.idEncuesta),
+                idSeccion: angular.copy(seccionVO.idSeccion),
+                idPregunta: undefined,
+                idOpcion: undefined,
+                idIntento: 7
+            });
+
+            objectEncuesta.idPregunta = listPreguntaSeccion[i].idPregunta;
+            for (let j in listPreguntaSeccion[i].opciones) {
+                if (listPreguntaSeccion[i].opciones[j].stMarcado === 1) {
+                    guardar = true
+                    objectEncuesta.idOpcion = listPreguntaSeccion[i].opciones[j].idOpcion != undefined ? listPreguntaSeccion[i].opciones[j].idOpcion : 0;
+                }
+            }
+            if (guardar) {
+                seccionContestada.push(objectEncuesta);
+            }
+        }
+        encuestaSatisfaccionService.saveRespuestaEncuesta(seccionContestada).success(function(data) {
+            if (data == true) {
+                if ($scope.redireccionar) {
+                    $timeout(() => {
+                        $scope.regresarEncuestas()
+                    }, 1000);
+                }
+                guardarSeccion = true;
+                //  growl.success("Se guardaron respuestas ",{ ttl: 5000 });
+            } else
+                growl.success("No se pudieron guardar respuestas", { ttl: 5000 });
+            guardarSeccion = false;
+
+        }).error(function(data) {
+            if (data != null && data.status != null && data.status == 400) {
+                //$scope.paramConfigPage.tiempoReanuda = true;
+                //$scope.paramConfigPage.flagFinalizaEncueta = true;
+                //showAlert.aviso(data.message, $scope.regresarEncuestas2);
+                // growl.error(data.message, { ttl: 3000 });
+                /// $scope.consultaEvaEvaluados();
+            } else {
+                growl.error('Ha ocurrido un error al tratar de activar la evaluación, favor de validar.', { ttl: 4000 });
+            }
+
+            guardarSeccion = false;
+        });
+        return guardarSeccion;
+    };
+
     
     
 

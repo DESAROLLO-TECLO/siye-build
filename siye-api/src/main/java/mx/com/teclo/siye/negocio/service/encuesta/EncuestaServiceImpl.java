@@ -24,7 +24,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.OpcionesDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.PasswordDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.PreguntasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.SeccionDAO;
-import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuentaIntentoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaIntentoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaRespuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.StEncuestaDTO;
@@ -60,7 +60,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 	private EncuestaDetalleDAO encuestaDetalleDAO;
 	
 	@Autowired
-	private UsuarioEncuentaIntentoDAO usuarioEncuentaIntentoDAO;
+	private UsuarioEncuestaIntentoDAO usuarioEncuestaIntentoDAO;
 	
 	@Autowired
 	private UsuarioEncuestaRespuestaDAO usuarioEncuestaRespuestaDAO;
@@ -112,7 +112,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 		uedVO = ResponseConverter.copiarPropiedadesFull(uedDTO, UsuarioEncuestaDetalleVO.class);
 		
 		// Obtener el detalle del intento actual
-		UsuarioEncuestaIntentosDTO ueiDTO = usuarioEncuentaIntentoDAO.getEncuestaByUsuario(uedDTO.getEncuesta().getIdEncuesta(), idOrdenServicio);
+		UsuarioEncuestaIntentosDTO ueiDTO = usuarioEncuestaIntentoDAO.getEncuestaByUsuario(uedDTO.getEncuesta().getIdEncuesta(), idOrdenServicio);
 		if(ueiDTO != null) {
 			StEncuestaVO steVO = null;
 			IntentoDetalleVO idVO = new IntentoDetalleVO();
@@ -208,7 +208,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 			throw new BusinessException(RespuestaHttp.CONFLICT.getMessage());
 		
 		if(vo.getValor() == 0) {
-			UsuarioEncuestaIntentosDTO ueiDTO = usuarioEncuentaIntentoDAO.buscaUsuEncuIntento(vo.getIntento());
+			UsuarioEncuestaIntentosDTO ueiDTO = usuarioEncuestaIntentoDAO.buscaUsuEncuIntento(vo.getIntento());
 			if(ueiDTO.getStEncuesta().getCdStEncuesta().equals("FIN"))
 				throw new BusinessException("Esta encuesta ya fue finalizada, favor de validar.");
 		}
@@ -259,7 +259,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 				
 				ueiDTO.setNuSeccionesTot(nuSecciones);// numero de secciones
 				ueiDTO.setNuPreguntas(nuPreguntas);// contar
-				usuarioEncuentaIntentoDAO.save(ueiDTO);
+				usuarioEncuestaIntentoDAO.save(ueiDTO);
 			}else {
 				ueDTO.setStAplicaEncuesta(false);
 				decactivaIntentosActuales(ueDTO.getIdUsuarioEncuesta());
@@ -270,7 +270,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 	
 	@Transactional
 	private Boolean decactivaIntentosActuales(Long idUsuEncuIntento) throws BusinessException {
-		List<UsuarioEncuestaIntentosDTO> ueiListDTO = usuarioEncuentaIntentoDAO.usuarioEncuesta(idUsuEncuIntento);
+		List<UsuarioEncuestaIntentosDTO> ueiListDTO = usuarioEncuestaIntentoDAO.usuarioEncuesta(idUsuEncuIntento);
 		Long idUsr = userSession.getUsuarioFirmadoVO().getId();
 		if(!ueiListDTO.isEmpty()) {
 			for(UsuarioEncuestaIntentosDTO ueiDTO : ueiListDTO) {
@@ -289,12 +289,12 @@ public class EncuestaServiceImpl implements EncuestaService {
 				if(ueiDTO.getFhInicio()==null && ueiDTO.getFhFin()==null){
 					StEncuestaDTO seDTO = stEncuestaDAO.encuesta("CAN");
 					ueiDTO.setStEncuesta(seDTO);
-					List<UsuarioEncuestaIntentosDTO> listaDOs = usuarioEncuentaIntentoDAO.intentoMismaEncuesta(idUsuEncuIntento);
+					List<UsuarioEncuestaIntentosDTO> listaDOs = usuarioEncuestaIntentoDAO.intentoMismaEncuesta(idUsuEncuIntento);
 					respuestaService.determinarCalifAlta(listaDOs, null);
 				}
 //				ueiDTO.getUsuarioEncuesta().setStAplicaEncuesta(false);
 				ueiDTO.setStMostrar(false);
-				usuarioEncuentaIntentoDAO.update(ueiDTO);
+				usuarioEncuestaIntentoDAO.update(ueiDTO);
 			}
 			//
 		}
@@ -307,7 +307,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 		
 		UsuarioEncuestaIntentosDTO usuarioEncuestaIntentosDTO = null;
 		//JLGD
-		usuarioEncuestaIntentosDTO = usuarioEncuentaIntentoDAO.buscaUsuEncuIntento(idUsuEncuIntento);
+		usuarioEncuestaIntentosDTO = usuarioEncuestaIntentoDAO.buscaUsuEncuIntento(idUsuEncuIntento);
 		
 		if(b) {
 			if(usuarioEncuestaIntentosDTO.getStEncuesta().getCdStEncuesta().equals("FIN"))
@@ -317,7 +317,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 			usuarioEncuestaIntentosDTO.setFhFin(new Date());
 			usuarioEncuestaIntentosDTO.setFhModificacion(new Date());
 			usuarioEncuestaIntentosDTO.setIdUsrModifica(userSession.getUsuarioFirmadoVO().getId());
-			usuarioEncuentaIntentoDAO.update(usuarioEncuestaIntentosDTO);
+			usuarioEncuestaIntentoDAO.update(usuarioEncuestaIntentosDTO);
 			List<UsuarioEncuestaIntentosDTO> encuestaIntentosDTOs=new ArrayList<>();
 			encuestaIntentosDTOs.add(usuarioEncuestaIntentosDTO);
 			List<UsuarioEncuestaIntentosVO> listReturn =ResponseConverter.converterLista(new ArrayList<>(), encuestaIntentosDTOs, UsuarioEncuestaIntentosVO.class);
@@ -362,29 +362,35 @@ public class EncuestaServiceImpl implements EncuestaService {
 		try {
 			Boolean contraseniaValida = passwordDAO.validarContraseniaTransportista(passwordEnc);
 			
-//			List<OrdenServicioDTO> listaOrdenServicioDTO = new ArrayList<OrdenServicioDTO>(); 
+			List<OrdenEncuestaDTO> listaOrdenServicioDTO = new ArrayList<OrdenEncuestaDTO>(); 
 			
 			if(contraseniaValida == true) {
-//				switch(tipoBusqueda) {
-//					case 1: //Por Orden de Servicio
-//						listaOrdenServicioDTO = ordenServicioDAO.consultaOrdenByOrdenServicio(valor);
-//					break;
-//					case 2: //Por Placa Vehicular
-//						listaOrdenServicioDTO = ordenServicioDAO.consultaOrdenByPlaca(valor);
-//					break;
-//					case 3: //Por VIN
-//						listaOrdenServicioDTO = ordenServicioDAO.consultaOrdenByVin(valor);
-//					break;
-//					default:
-//					break;
-//				}
+				switch(tipoBusqueda) {
+					case 1: //Por Orden de Servicio
+						listaOrdenServicioDTO = usuarioEncuestaDAO.consultaOrdenByOrdenServicio(valor);
+					break;
+					case 2: //Por Placa Vehicular
+						listaOrdenServicioDTO = usuarioEncuestaDAO.consultaOrdenByPlaca(valor);
+					break;
+					case 3: //Por VIN
+						listaOrdenServicioDTO = usuarioEncuestaDAO.consultaOrdenByVin(valor);
+					break;
+					default:
+					break;
+				}
 				
-				
-				List<OrdenEncuestaDTO> listaUsuarioEncuestaDTO = usuarioEncuestaDAO.consultaOrdenByOrdenServicio(valor);
-				
-				String s ="";
-				
-				List<UsuarioEncuestaVO> listaUsuarioEncuestaVO = ResponseConverter.converterLista(new ArrayList<>(), listaUsuarioEncuestaDTO, UsuarioEncuestaVO.class);
+				List<UsuarioEncuestaVO> listaUsuarioEncuestaVO = ResponseConverter.converterLista(new ArrayList<>(), listaOrdenServicioDTO, UsuarioEncuestaVO.class);
+
+				for (int i = 0; i < listaUsuarioEncuestaVO.size(); i++) {
+					UsuarioEncuestaVO usuarioEncuestaVO = listaUsuarioEncuestaVO.get(i);
+					Long idOrdenServicio = usuarioEncuestaVO.getOrdenServicio().getIdOrdenServicio();
+					Long idEncuesta = usuarioEncuestaVO.getEncuesta().getIdEncuesta();
+					
+					UsuarioEncuestaIntentosDTO usuarioEncuestaIntentosDTO = usuarioEncuestaIntentoDAO.getEncuestaByUsuario(idEncuesta, idOrdenServicio);
+					UsuarioEncuestaIntentosVO usuarioEncuestaIntentosVO = ResponseConverter.copiarPropiedadesFull(usuarioEncuestaIntentosDTO, UsuarioEncuestaIntentosVO.class);
+					listaUsuarioEncuestaVO.get(i).setIntentoMostrar(usuarioEncuestaIntentosVO);
+				}
+				//usuarioEncuestaIntentoDAO.getEncuestaByUsuario
 				return listaUsuarioEncuestaVO;
 			}else {
 				mensajeErr = "La contraseña no es válida, porfavor solicitarla a un supervisor.";
@@ -417,7 +423,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 	@Transactional
 	@Override
 	public UsuarioEncuestaIntentosVO detalle(Long idUsuEncuIntento, Boolean finalizar) throws NotFoundException{
-		UsuarioEncuestaIntentosDTO ueiDTO = usuarioEncuentaIntentoDAO.getIntentoById(idUsuEncuIntento);
+		UsuarioEncuestaIntentosDTO ueiDTO = usuarioEncuestaIntentoDAO.getIntentoById(idUsuEncuIntento);
 		if(ueiDTO == null)
 			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
 		UsuarioEncuestaIntentosVO objectReturn = ResponseConverter.copiarPropiedadesFull(ueiDTO, UsuarioEncuestaIntentosVO.class);
@@ -437,12 +443,13 @@ public class EncuestaServiceImpl implements EncuestaService {
 
 
 	@Override
+	@Transactional
 	public Boolean guardarRespuestas(List<UserRespuestaVO> l) throws BusinessException {
 	
 		if(l.isEmpty())// No se guardar ni procesa nada
 			return true;
 		Long idIntento = l.isEmpty() ? 0L: l.get(0).getIdIntento();		
-		UsuarioEncuestaIntentosDTO ueDTO = usuarioEncuentaIntentoDAO.getIntentoById(idIntento);	
+		UsuarioEncuestaIntentosDTO ueDTO = usuarioEncuestaIntentoDAO.getIntentoById(idIntento);	
 		// Obtenemos la encuesta actual del usuario
 		if(ueDTO.getStEncuesta().getCdStEncuesta().equals("FIN"))
 			throw new BusinessException("Esta encuesta ya fue finalizada, favor de validar.");
@@ -480,7 +487,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 		) throws Exception, BusinessException, NotFoundException {
 		Long idUsuario = idOrdenServicio;
 		UsuarioEncuestaIntentosDTO usuarioEncuestaIntentosDTO = null;
-		usuarioEncuestaIntentosDTO = usuarioEncuentaIntentoDAO.getEncuestaByUsuario(idEncuesta, idUsuario);
+		usuarioEncuestaIntentosDTO = usuarioEncuestaIntentoDAO.getEncuestaByUsuario(idEncuesta, idUsuario);
 		StEncuestaDTO seDTO = stEncuestaDAO.encuesta("EC");
 		List<StEncuestaDTO> seDTOw = stEncuestaDAO.stEncuesta();
 		usuarioEncuestaIntentosDTO.setStEncuesta(seDTO);
@@ -521,9 +528,23 @@ public class EncuestaServiceImpl implements EncuestaService {
 		
 		usuarioEncuestaIntentosDTO.setFhInicio(new Date());
 		usuarioEncuestaIntentosDTO.setFhModificacion(new Date());
-		usuarioEncuestaIntentosDTO.setIdUsrModifica(idUsuario);
+		usuarioEncuestaIntentosDTO.setIdUsrModifica(-1L);
 		usuarioEncuestaIntentosDTO.getUsuarioEncuesta().setNuIntegerentos(usuarioEncuestaIntentosDTO.getUsuarioEncuesta().getNuIntegerentos() + 1);
 
-		usuarioEncuentaIntentoDAO.update(usuarioEncuestaIntentosDTO);
+		usuarioEncuestaIntentoDAO.update(usuarioEncuestaIntentosDTO);
 	}
+	
+	@Override
+	@Transactional
+	public Boolean activarODesactivarSatisfaccion(Long idEncuesta, Long idOrdenServicio, Boolean nuevoValor)
+	{
+		UsuarioEncuestaDetalleDTO ueDTO = encuestaDetalleDAO.getEncuestaDetalle(idEncuesta, idOrdenServicio);
+		 ;
+		ueDTO.setStAplicaEncuesta(nuevoValor);
+		ueDTO.setIdUsrModifica(userSession.getUsuarioFirmadoVO().getId());
+		ueDTO.setFhModificacion(new Date());
+		encuestaDetalleDAO.update(ueDTO);
+		return true;
+	}
+	
 }

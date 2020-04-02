@@ -1,6 +1,7 @@
 package mx.com.teclo.siye.negocio.service.proceso;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,13 +9,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
+import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.EstatusCalificacionDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaIntentoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.DispositivosDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanProcesoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.procesoencuesta.ProcesoEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaIntentosDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitDispositivoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
@@ -47,6 +53,18 @@ public class ProcesoServiceImpl implements ProcesoService {
 	
 	@Autowired
 	private ServicioEncuestasMyBatisDAO servicioEncuestasMyBatisDAO;
+	
+	@Autowired
+	private StEncuestaDAO stEncuestaDAO;
+	
+	@Autowired
+	private EstatusCalificacionDAO estatusCalificacionDAO;
+	
+	@Autowired
+	private UsuarioEncuestaIntentoDAO usuarioEncuestaIntentoDAO;
+	
+	@Autowired
+	private UsuarioFirmadoService usuarioFirmadoService;
 	
 	
 
@@ -94,49 +112,33 @@ public class ProcesoServiceImpl implements ProcesoService {
 	public List<PlanProcesoVO> revisarEncuestasCompletas(List<OrdenEncuestaDTO> encuestasByUsuario,List<PlanProcesoVO> plan, Long idSolicitud)
 	{
     	List<ProcesoEncuestaDTO> procesoEncuestaDTO = new ArrayList<ProcesoEncuestaDTO>();
-    	int contador=0;
-    	int cantidadEncuestasAcontestar=0;
+    	List<OrdenEncuestaDTO> nuevoOrdenEncuestas=new ArrayList<OrdenEncuestaDTO>();
+    	
+
     	Boolean banderaMostrarContestados=false;
 		if(encuestasByUsuario.size()>0)
 		{
+        	OrdenServicioDTO  ordenServicioDTO = new OrdenServicioDTO();
+        	ordenServicioDTO=getInfoBasicaOrdenServicio(idSolicitud);
 			for(PlanProcesoVO actual:plan)
 			{
-				if(actual.getNuorden()!=1)
-				{
-					
-				
-				procesoEncuestaDTO=procesoEncuestaDAO.obtenerEncuestasProceso(actual.getProceso().getIdProceso());
-				if(procesoEncuestaDTO.size()>0)
-				{
-				cantidadEncuestasAcontestar=procesoEncuestaDTO.size();
-				for(ProcesoEncuestaDTO encuestaActual:procesoEncuestaDTO)
-				{
-					for(OrdenEncuestaDTO encuestas:encuestasByUsuario)
-					{
-						if(encuestaActual.getIdEncuesta().getIdEncuesta()==encuestas.getEncuesta().getIdEncuesta())
-						{
-							if(encuestas.getStAplicaEncuesta()==false)
-							{
-								contador++;
-							}
-							
-						}
-					}
-
-				}
-				}
-				if(cantidadEncuestasAcontestar==contador)
-				{
-					actual.setStatusProceos(true);
-				}
-				else
-				{
-					actual.setStatusProceos(false);
-				}
-				}else
-				{
-					actual.setStatusProceos(true);
-				}
+                 if(banderaMostrarContestados)
+                 {
+                	 if(actual.getProceso().getIdProceso()<=ordenServicioDTO.getProceso().getIdProceso())
+                	 {
+                		 actual.setStatusProceos(true);
+                	 } 
+                	 else
+                		 actual.setStatusProceos(false);
+                 }else
+                 {
+                	 if(actual.getProceso().getIdProceso()==ordenServicioDTO.getProceso().getIdProceso())
+                	 {
+                		 actual.setStatusProceos(true);
+                	 }
+                	 else
+                		 actual.setStatusProceos(false);
+                 }
 
 			}
 			return plan;
@@ -149,7 +151,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 			{
 				for(ProcesoEncuestaDTO actualEncuestas:procesoEncuestaDTO)
 				{
-					if(actualEncuestas.getIdEncuesta().getCdEncuesta()=="SAT01"||actualEncuestas.getIdEncuesta().getCdEncuesta()=="SAT02")
+					if(actualEncuestas.getIdEncuesta().getCdEncuesta().equals("SAT01")||actualEncuestas.getIdEncuesta().getCdEncuesta().equals("SAT02"))
 					{
 						servicioEncuestasMyBatisDAO.insertarEncuestas(idSolicitud, actualEncuestas.getIdEncuesta().getIdEncuesta(),false);
 					}else
@@ -160,6 +162,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 				}
 
 			}
+              
               if(actual.getNuorden()==1)
               {
             	  actual.setStatusProceos(true);
@@ -167,8 +170,32 @@ public class ProcesoServiceImpl implements ProcesoService {
               else
               {
             	  actual.setStatusProceos(false);
-              } 
+              }
 			}
+            nuevoOrdenEncuestas=obtenerEncuestas(idSolicitud);
+            for(OrdenEncuestaDTO ordenEncuesta:nuevoOrdenEncuestas)
+            {
+              UsuarioEncuestaIntentosDTO nuevoIntentoEncuesta=new UsuarioEncuestaIntentosDTO();
+          	  nuevoIntentoEncuesta.setStEncuesta(stEncuestaDAO.encuesta("NI"));
+          	  nuevoIntentoEncuesta.setNuCalificacion(0);
+          	  nuevoIntentoEncuesta.setStCalificacion(estatusCalificacionDAO.calificacion("SC"));
+          	  nuevoIntentoEncuesta.setStMostrar(true);
+          	  nuevoIntentoEncuesta.setNuPreguntas(ordenEncuesta.getEncuesta().getNuPreguntas());
+          	  nuevoIntentoEncuesta.setNuPreguntasCorrectas(0);
+          	  nuevoIntentoEncuesta.setNuPreguntasIncorr(0);
+          	  nuevoIntentoEncuesta.setNuSeccionesTot(ordenEncuesta.getEncuesta().getNuSecciones());
+          	  nuevoIntentoEncuesta.setNuSeccionesRsp(0);
+          	  nuevoIntentoEncuesta.setNuPreguntasVacias(0);
+          	  nuevoIntentoEncuesta.setStActivo(true);
+          	  nuevoIntentoEncuesta.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
+          	  nuevoIntentoEncuesta.setFhCreacion(new Date());
+          	  nuevoIntentoEncuesta.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
+          	  nuevoIntentoEncuesta.setFhModificacion(new Date());
+          	  nuevoIntentoEncuesta.setUsuarioEncuesta(ordenEncuesta);
+          	  usuarioEncuestaIntentoDAO.save(nuevoIntentoEncuesta);
+
+            }
+            
 			return plan;
 		}
 	}
@@ -177,34 +204,35 @@ public class ProcesoServiceImpl implements ProcesoService {
 	@Transactional
 	public List<ProcesoEncuestaVO> revisarEncuestasCompletas2(List<OrdenEncuestaDTO> encuestasByUsuario,List<ProcesoEncuestaVO> encuestasByProceso)
 	{
+
+		Boolean seEncontroActiva=false;
 		if(encuestasByUsuario.size()>0)
 		{
 				for(ProcesoEncuestaVO actual:encuestasByProceso )
 				{
-					if(actual.getNuorden()!=1)
-					{
+					
+
 							for(OrdenEncuestaDTO encuestas:encuestasByUsuario)
 							{
-								if(actual.getIdEncuesta().getIdEncuesta()==encuestas.getEncuesta().getIdEncuesta())
+								if((actual.getIdEncuesta().getIdEncuesta()==encuestas.getEncuesta().getIdEncuesta() && !seEncontroActiva)||(actual.getIdEncuesta().getIdEncuesta()==encuestas.getEncuesta().getIdEncuesta() && (actual.getIdEncuesta().getCdEncuesta().equals("SAT01") || actual.getIdEncuesta().getCdEncuesta().equals("SAT02"))))
 								{
-									if(encuestas.getStAplicaEncuesta()==false)
+									if(encuestas.getStAplicaEncuesta()==false && encuestas.getNuIntegerentos()>0)
 									{
 										actual.setStRespondida(true);
+										actual.setStActivaMostrar(false);
 									}
 									else
 									{
 										actual.setStRespondida(false);	
+										actual.setStActivaMostrar(true);	
+										seEncontroActiva=true;
 									}
 									
 								}
-							
                           
 
 					    }
-				   }else
-				   {
-					   actual.setStRespondida(true);
-				   }
+
 				}
 		}
 		return  encuestasByProceso;

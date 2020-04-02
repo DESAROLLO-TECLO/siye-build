@@ -34,7 +34,7 @@ public class UsuarioEncuestaIntentosDTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
- 	@SequenceGenerator(name = "sqee006d", sequenceName="SQEE006D_EE_USU_ENC", allocationSize=1)
+ 	@SequenceGenerator(name = "sqee006d", sequenceName="SQIE006D_EE_USU_ENCU_", allocationSize=1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqee006d")
 	@Column(name = "ID_USU_ENCU_INTENTO", nullable = false)
 	private Long idUsuEncuIntento;
@@ -97,7 +97,7 @@ public class UsuarioEncuestaIntentosDTO implements Serializable {
 	
 	@JoinColumn(name = "ID_ODS_ENCUESTA", referencedColumnName = "ID_ODS_ENCUESTA", nullable = false)
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	private UsuarioEncuestaDetalleDTO usuarioEncuesta;
+	private OrdenEncuestaDTO usuarioEncuesta;
 
 	/*@Column(name = "NU_MIN_CONSUMIDOS", nullable = false, precision = 4, scale = 0)
 	private Integer nuMinConsumidos;*/
@@ -216,11 +216,11 @@ public class UsuarioEncuestaIntentosDTO implements Serializable {
 		this.fhModificacion = fhModificacion;
 	}
 
-	public UsuarioEncuestaDetalleDTO getUsuarioEncuesta() {
+	public OrdenEncuestaDTO getUsuarioEncuesta() {
 		return usuarioEncuesta;
 	}
 
-	public void setUsuarioEncuesta(UsuarioEncuestaDetalleDTO usuarioEncuesta) {
+	public void setUsuarioEncuesta(OrdenEncuestaDTO usuarioEncuesta) {
 		this.usuarioEncuesta = usuarioEncuesta;
 	}
 

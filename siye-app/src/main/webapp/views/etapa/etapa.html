@@ -283,8 +283,11 @@
                             <br><br>
                             <div class="row">
                                 <div class="col-sm-6 col-md-4" ng-repeat="item in dataPlan">
-                                    <a href="#/etapas/proceso/{{item.proceso.idProceso}}/{{dataEtapa.idOrdenServicio}}" data-toggle="tooltip" data-placement="bottom" title="{{item.proceso.nbProceso}}">
-                                        <div class="dash-info color-fondo">
+                                    <a ng-class="{'inactiv-click' : item.statusProceos == false}"
+                                        href="#/etapas/proceso/{{item.proceso.idProceso}}/{{dataEtapa.idOrdenServicio}}" 
+                                        data-toggle="tooltip" data-placement="bottom" title="{{item.proceso.nbProceso}}">
+                                        <div class="dash-info" 
+                                        ng-class="{'color-fondo': item.statusProceos == true, 'color-fondo-desactivado': item.statusProceos == false}">
                                             <div class="dash-img">
                                                 <img class="dash-img-img" 
                                                     src="{{item.urlImg}}">
@@ -295,7 +298,16 @@
                                             </div>
                                         </div>
                                     </a>
-                                    
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                </div>
+                                <div class="col-md-6">
+                                    <div style="float: right;">
+                                        <a class="btn btn-primary" href="#/consulta" role="button">Regresar</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

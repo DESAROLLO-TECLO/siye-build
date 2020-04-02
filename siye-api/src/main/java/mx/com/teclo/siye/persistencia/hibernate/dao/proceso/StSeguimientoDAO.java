@@ -1,5 +1,7 @@
 package mx.com.teclo.siye.persistencia.hibernate.dao.proceso;
 
+import java.util.List;
+
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDao;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.vo.proceso.StSeguimientoVO;
@@ -16,6 +18,11 @@ public interface StSeguimientoDAO extends BaseDao<StSeguimientoDTO> {
 
 	
 	public StSeguimientoDTO obtenerSeguimientoDos(Long idSeg);
+
+
+	StSeguimientoDTO obtenerStSeguimientoByCodigo(String cdStSeguimiento);
+
+	List<StSeguimientoDTO> obtenerStSeguimientoByCdTpSeguimiento(String cdTpSeguimiento);
 
 
 }
