@@ -86,7 +86,7 @@ display: block;
 					<div class="col-md-2 center-vert center" style="margin-top:2%;">
 
 										
-						<div ng-repeat="seccion in encuesta.seccion" > 
+						<div ng-repeat="seccion in encuesta.secciones" > 
 					
 							<div class="btn-group-vertical w-100" role="group" >
 								
@@ -127,17 +127,6 @@ display: block;
 					
 				       <div style="position: absolute; bottom: 0;">
 				       		<div class="centerRow">
-								<div style="display:block;  margin: 0 auto;" ng-if="myVar">
-									<a href="#" data-toggle="tooltipinfo" data-placement="top" title="Regresar a la pantalla anterior para consultar las instrucciones de la evaluaci�n">
-										<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
-									</a>
-								</div>
-								<button class="btn btn-danger w-100 mb-2" 
-								ng-click="regresarInstruccion(paramConfigPage.bigCurrentPage)">
-									<div style="display:block;">
-										Instrucciones
-									</div>
-								</button>
 								<div ng-if="preguntasContestadasEncuesta===encuesta.nuPreguntas" class="w-100">
 									<div style="display:block; margin: 0 auto;" ng-if="myVar">
 										<a href="#" data-toggle="tooltipinfo" data-placement="right" title="Concluir la evaluaci�n">
@@ -161,7 +150,7 @@ display: block;
 									<button id="guardarAvance" class="btn btn-danger w-100 mb-2" 
 									ng-click="pausarEncuesta(paramConfigPage.bigCurrentPage,paramConfigPage.tiempoEncuesta)">
 										<div style="display:block;">
-											Guardar Avance
+											Regresar
 										</div>
 								   </button>
 								</div>
@@ -211,7 +200,7 @@ display: block;
 									<div  class="col-md-12">
 												<div class="col-md-1 col-md-offset-2">
  														<span  ng-if="posicionActual >0 && paramConfigPage.bigCurrentPage==1"
-														class="btn btn-danger" ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,encuesta.seccion[posicionActual-1]) "
+														class="btn btn-danger" ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,encuesta.secciones[posicionActual-1]) "
 														data-toggle="tooltip" data-placement="right" title="Secci�n Anterior">
 														<i class="fa fa-arrow-left"></i>
 														</span>
@@ -245,12 +234,12 @@ display: block;
 					
 													</div>
 													<div class="col-md-2 center">
-														<span ng-if="(posicionActual < (encuesta.seccion.length-1)) && paramConfigPage.bigCurrentPage==numPages" 
+														<span ng-if="(posicionActual < (encuesta.secciones.length-1)) && paramConfigPage.bigCurrentPage==numPages" 
 														class="btn btn-danger"  data-toggle="tooltip" data-placement="right" title="Siguiente Secci�n"
-														ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,encuesta.seccion[posicionActual+1])">
+														ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,encuesta.secciones[posicionActual+1])">
 														<i class="fa fa-arrow-right"></i> 
 														</span>
-														<div style="display:inline-block" ng-if="myVar && (posicionActual < (encuesta.seccion.length-1)) && paramConfigPage.bigCurrentPage==numPages">
+														<div style="display:inline-block" ng-if="myVar && (posicionActual < (encuesta.secciones.length-1)) && paramConfigPage.bigCurrentPage==numPages">
 														<a href="#" data-toggle="tooltipinfo" data-placement="bottom" title="Consultar la siguiente secci�n de la evaluaci�n">
 														<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 														</a>
