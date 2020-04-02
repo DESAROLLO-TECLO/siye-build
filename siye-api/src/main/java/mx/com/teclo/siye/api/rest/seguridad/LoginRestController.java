@@ -66,6 +66,10 @@ public class LoginRestController {
     private String codeApplication;
     
     /*@Autowired
+	private ParametroService parametroService;*/
+    
+    
+    /*@Autowired
 	private BitacoraCambiosService bitac;*/
     
     
@@ -87,6 +91,7 @@ public class LoginRestController {
 				"0",
 				"--", 
 				ParametrosBitacoraEnum.ORIGEN_W.getParametro());*/
+		//List<ParametroVO> pListVO = parametroService.getRestriccions();
 		return new ResponseEntity<AuthenticationResponseVO>(new AuthenticationResponseVO(token, favoritosService.getFavorites(), stContrasenia), HttpStatus.OK);
 	}
 
