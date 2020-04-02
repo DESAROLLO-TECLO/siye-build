@@ -8,8 +8,11 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
+import mx.com.teclo.arquitectura.ortogonales.persistencia.configuracion.vo.ConfiguracionVO;
+import mx.com.teclo.arquitectura.ortogonales.persistencia.hibernate.dto.configuracion.ConfiguracionDTO;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ConductorDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ConfiguracionParamDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.InstaladorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ProveedorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
@@ -74,6 +77,9 @@ public class CatalogoServiceImpl implements CatalogoService{
 
 	@Autowired
 	private StSeguimientoDAO stSeguimientoDAO;
+	
+	@Autowired
+	private ConfiguracionParamDAO configuracionDAO;
 	
 	@Transactional
 	@Override
@@ -165,6 +171,18 @@ public class CatalogoServiceImpl implements CatalogoService{
 			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
 		List<StSeguimientoVO> listStSeguimientoVO = ResponseConverter.converterLista(new ArrayList<>(), listStSeguimientoDTO, StSeguimientoVO.class);
 		return listStSeguimientoVO;
+	}
+	
+	@Transactional
+	@Override
+	public ConfiguracionVO configuracion(String cdLlavePConfig) throws NotFoundException{
+		ConfiguracionVO voReturn = null;
+		ConfiguracionDTO a1 =  configuracionDAO.configuracion(cdLlavePConfig);
+		if(a1 == null)
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		voReturn = new ConfiguracionVO();
+		ResponseConverter.copiarPropriedades(voReturn, a1);
+		return voReturn;
 	}
 
 }
