@@ -3,6 +3,7 @@ package mx.com.teclo.siye.persistencia.hibernate.dao.proceso;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
@@ -63,6 +64,8 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		c.add(Restrictions.sqlRestriction("trunc(FH_CITA) = trunc(?)", new Date(), org.hibernate.type.StandardBasicTypes.DATE));
 		c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
 		c.add(Restrictions.eq("stActivo", true));
+		c.addOrder(Order.asc("fhCita"));
+		c.addOrder(Order.asc("proceso"));
 		return (List<OrdenServicioDTO>)c.list();
 	}
 
@@ -72,7 +75,11 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
 		c.createAlias("vehiculo", "vehiculo");
 		c.add(Restrictions.eq("vehiculo.cdPlacaVehiculo", valor));
+		c.add(Restrictions.eq("vehiculo.stActivo", true));
+		c.add(Restrictions.sqlRestriction("trunc(FH_CITA) = trunc(?)", new Date(), org.hibernate.type.StandardBasicTypes.DATE));
 		c.add(Restrictions.eq("stActivo", true));
+		c.addOrder(Order.asc("fhCita"));
+		c.addOrder(Order.asc("proceso"));
 		return (List<OrdenServicioDTO>)c.list();
 	}
 
@@ -83,6 +90,8 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		c.createAlias("centroInstalacion", "centroInstalacion");
 		c.add(Restrictions.eq("cdOrdenServicio", valor));
 		c.add(Restrictions.eq("stActivo", true));
+		c.addOrder(Order.asc("fhCita"));
+		c.addOrder(Order.asc("proceso"));
 		return (List<OrdenServicioDTO>)c.list();
 	}
 
@@ -92,7 +101,11 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
 		c.createAlias("vehiculo", "vehiculo");
 		c.add(Restrictions.eq("vehiculo.cdVin", valor));
+		c.add(Restrictions.eq("vehiculo.stActivo", true));
+		c.add(Restrictions.sqlRestriction("trunc(FH_CITA) = trunc(?)", new Date(), org.hibernate.type.StandardBasicTypes.DATE));
 		c.add(Restrictions.eq("stActivo", true));
+		c.addOrder(Order.asc("fhCita"));
+		c.addOrder(Order.asc("proceso"));
 		return (List<OrdenServicioDTO>)c.list();
 	}
 	
