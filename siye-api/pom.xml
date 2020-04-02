@@ -96,11 +96,11 @@
 			<artifactId>jackson-dataformat-csv</artifactId>
 		</dependency>
 		<!-- DEPENDENCIA DEL JAR DE REPORTES DINAMICOS -->
-		<dependency>
-			<groupId>mx.com.teclo</groupId>
-			<artifactId>teclo-reporte-jar-taq</artifactId>
-			<version>${teclo-reporte-jar}</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>mx.com.teclo</groupId> -->
+<!-- 			<artifactId>teclo-reporte-jar-taq</artifactId> -->
+<!-- 			<version><${teclo-reporte-jar}</version> -->
+<!-- 		</dependency> -->
 	</dependencies>
 	<build>
 		<finalName>${project.name}_${project.version}</finalName>
