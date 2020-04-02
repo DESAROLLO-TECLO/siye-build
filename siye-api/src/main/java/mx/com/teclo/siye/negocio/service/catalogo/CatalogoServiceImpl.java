@@ -17,6 +17,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoKitDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoVehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.CentroInstalacionDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.ConcesionariaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
@@ -27,10 +28,12 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ProveedorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.StEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.TipoKitDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.ConsecionarioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.TipoVehiculoDTO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.ConcesionariaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.InstaladorVO;
@@ -78,8 +81,13 @@ public class CatalogoServiceImpl implements CatalogoService{
 	@Autowired
 	private StSeguimientoDAO stSeguimientoDAO;
 	
+	
+	@Autowired
+	private ConcesionariaDAO  concesionariaDAO;
+
 	@Autowired
 	private ConfiguracionParamDAO configuracionDAO;
+
 	
 	@Transactional
 	@Override
@@ -131,6 +139,7 @@ public class CatalogoServiceImpl implements CatalogoService{
 		List<KitInstalacionDTO> kiDTO = kitInstalacionDAO.obtenerkitInstalacionAll();
 		List<TipoKitDTO> tpKitDTO = tipoKitDAO.getTipoKit();
 		List<ProveedorDTO> proveedorDTO = proveedorDAO.getListProveedor();
+		List<ConsecionarioDTO> consecionarioDTO = concesionariaDAO.getConcesionariaAll();
 
 		
 		
@@ -145,6 +154,7 @@ public class CatalogoServiceImpl implements CatalogoService{
 		
 		List<ProveedorVO> proveedorVO = ResponseConverter.converterLista(new ArrayList<>(), proveedorDTO, ProveedorVO.class); 
 		
+		List<ConcesionariaVO> concesionarioVO = ResponseConverter.converterLista(new ArrayList<>(), consecionarioDTO, ConcesionariaVO.class);
 		List<TipoVehiculoVO> tvVO = this.tipoVehiculo();
 		
 		// Centros de Instalacion
@@ -159,6 +169,8 @@ public class CatalogoServiceImpl implements CatalogoService{
 		copVO.setTipoKit(tpKitVO);
 		
 		copVO.setProveedorVO(proveedorVO);
+		//catalogo de concesiones
+		copVO.setConcesionariaVO(concesionarioVO);
 		
 		return copVO;
 	}
