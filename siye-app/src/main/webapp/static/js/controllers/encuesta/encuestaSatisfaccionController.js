@@ -1,5 +1,4 @@
-angular.module(appTeclo)
-.controller("encuestaSatisfaccionController",
+angular.module(appTeclo).controller("encuestaSatisfaccionController",
 function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,showAlert,growl, $location,encuestaSatisfaccionService) {
 	$scope.banderaPantalla=false;
 	$scope.formato = '0';
@@ -29,36 +28,40 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 	//Se declaran tipos de busqueda
     $scope.listTipoBusqueda ={
         tipoBusqueda: [
-            {idTipo:1,cdTipo:"ORDEN",nbTipo:"Orden"},
-            {idTipo:2,cd:"PLACA",nbTipo:"Placa"},
-            {idTipo:3,cdTipo:"VIN",nbTipo:"Vin"}
+            {idTipo:1	, cdTipo:"ORDEN DE SERVICIO", nbTipo:"Orden de Servicio"},
+            {idTipo:2	, cd:"PLACA VEHICULAR"		, nbTipo:"Placa Vehicular"},
+            {idTipo:3	, cdTipo:"VIN"				, nbTipo:"VIN"}
         ]
 	};
 	
-		//Se enceustas de prueba
-		$scope.listEncuesta=[{
-			idEncuesta:1,estatus:"No Iniciado",cdColor:"#F81717",placa:"PLC001",ordenServicio:"OS001",fInicio:new Date("December 17, 1995 03:24:00"),cuestionario:"Instalacion"},
-			{
-				idEncuesta:1,estatus:"No Iniciado",cdColor:"#F81717",placa:"PLC001",ordenServicio:"OS001",fInicio:new Date("December 17, 1995 03:24:00"),cuestionario:"Plataforma"}
-					]
+    //Se enceustas de prueba
+	$scope.listEncuesta=[
+		{
+			idEncuesta:1,estatus:"No Iniciado",cdColor:"#F81717",placa:"PLC001",ordenServicio:"OS001",fInicio:new Date("December 17, 1995 03:24:00"),cuestionario:"Instalacion"
+		},
+		{
+			idEncuesta:1,estatus:"No Iniciado",cdColor:"#F81717",placa:"PLC001",ordenServicio:"OS001",fInicio:new Date("December 17, 1995 03:24:00"),cuestionario:"Plataforma"
+		}
+	];
 			
 	
     $scope.buscarOrden=function(param,form){
     	if (form.$invalid) {
     		showAlert.requiredFields(form);
 			showAlert.error('Formulario Incompleto');
-			
-        }else
-        encuestaSatisfaccionService.getEncuesta(param.tipoBusqueda.idTipo,param.valor,param.pass).success(function(data){
-            if (data.length>0) 
-                $scope.listOrden=data;
-                else
-                showAlert.aviso("No se encontraron concidencias con el valor ingresado");
-          
-        }).error(function(data){
-            showAlert.error(data.message);
-        });
-    	
+        }else{
+	        encuestaSatisfaccionService.getEncuesta(
+	        	param.tipoBusqueda.idTipo,param.valor,param.pass
+	        ).success(function(data){
+	            if (data.length>0){
+	                $scope.listOrden=data;
+	            }else {
+	                showAlert.aviso("No se encontraron concidencias con el valor ingresado");
+	            }
+	        }).error(function(data){
+	            showAlert.error(data.message);
+	        });
+		}
     };
 		
 		$scope.empezarEncuesta=function(idOrdenServicio,encuestaVO,accion){
