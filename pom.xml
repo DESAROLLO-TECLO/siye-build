@@ -8,7 +8,7 @@
 	<packaging>pom</packaging>
 
 	<name>siye-build</name>
-	<url>http://maven.apache.org</url>
+	<!-- <url>http://maven.apache.org</url> -->
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
