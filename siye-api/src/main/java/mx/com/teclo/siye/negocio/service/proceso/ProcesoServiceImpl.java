@@ -115,7 +115,7 @@ public class ProcesoServiceImpl implements ProcesoService {
     	List<OrdenEncuestaDTO> nuevoOrdenEncuestas=new ArrayList<OrdenEncuestaDTO>();
     	
 
-    	Boolean banderaMostrarContestados=false;
+    	Boolean banderaMostrarContestados=true;
 		if(encuestasByUsuario.size()>0)
 		{
         	OrdenServicioDTO  ordenServicioDTO = new OrdenServicioDTO();
@@ -127,9 +127,13 @@ public class ProcesoServiceImpl implements ProcesoService {
                 	 if(actual.getProceso().getIdProceso()<=ordenServicioDTO.getProceso().getIdProceso())
                 	 {
                 		 actual.setStatusProceos(true);
+                		 actual.setProcesoCompleto(true);
                 	 } 
                 	 else
+                	 {
                 		 actual.setStatusProceos(false);
+                		 actual.setProcesoCompleto(false);
+                	 }
                  }else
                  {
                 	 if(actual.getProceso().getIdProceso()==ordenServicioDTO.getProceso().getIdProceso())
@@ -151,14 +155,14 @@ public class ProcesoServiceImpl implements ProcesoService {
 			{
 				for(ProcesoEncuestaDTO actualEncuestas:procesoEncuestaDTO)
 				{
-					if(actualEncuestas.getIdEncuesta().getCdEncuesta().equals("SAT01")||actualEncuestas.getIdEncuesta().getCdEncuesta().equals("SAT02"))
+					/*if(actualEncuestas.getIdEncuesta().getCdEncuesta().equals("SAT01")||actualEncuestas.getIdEncuesta().getCdEncuesta().equals("SAT02"))
 					{
 						servicioEncuestasMyBatisDAO.insertarEncuestas(idSolicitud, actualEncuestas.getIdEncuesta().getIdEncuesta(),false);
 					}else
-					{
-					    servicioEncuestasMyBatisDAO.insertarEncuestas(idSolicitud, actualEncuestas.getIdEncuesta().getIdEncuesta(),true);
+					{*/
+              servicioEncuestasMyBatisDAO.insertarEncuestas(idSolicitud, actualEncuestas.getIdEncuesta().getIdEncuesta(),true);
 							
-					}
+					//}
 				}
 
 			}
@@ -166,10 +170,12 @@ public class ProcesoServiceImpl implements ProcesoService {
               if(actual.getNuorden()==1)
               {
             	  actual.setStatusProceos(true);
+            	  actual.setProcesoCompleto(false);
               }
               else
               {
             	  actual.setStatusProceos(false);
+            	  actual.setProcesoCompleto(false);
               }
 			}
             nuevoOrdenEncuestas=obtenerEncuestas(idSolicitud);
@@ -219,7 +225,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 									if(encuestas.getStAplicaEncuesta()==false && encuestas.getNuIntegerentos()>0)
 									{
 										actual.setStRespondida(true);
-										actual.setStActivaMostrar(false);
+										actual.setStActivaMostrar(true);
 									}
 									else
 									{
