@@ -1,7 +1,11 @@
 angular.module(appTeclo).controller('altaIncidenciaController', function($scope, showAlert, $location, growl, altaIncidenciaService) {
 
 	var fecha = new Date();
-	var fechaAnio = fecha.getFullYear();
+	$scope.fechaAnio = (fecha.getDate().toString().length==1?"0"+fecha.getDate():fecha.getDate()) + "/" + ((fecha.getMonth()+1)<10?"0"+(fecha.getMonth()+1):(fecha.getMonth()+1)) + "/" + fecha.getFullYear();
+
+	$scope.longitud = function (){ 
+		$scope.contador = 1000 - ($scope.registroIncidencia.txDescripcion == undefined? 0 : $scope.registroDenuncia.txDescripcion.length); 
+	} 
 	
     buscarTipoBusqueda = function() {
         $scope.listTipoBusqueda = [
