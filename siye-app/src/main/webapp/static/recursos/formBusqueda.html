@@ -1,0 +1,159 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+</head>
+
+<body ng-cloak>
+    <section class="content-header">
+        <h1>Consulta de Informes</h1>
+        <ol class="breadcrumb">
+            <li><a><i class="fa fa-book"></i>Reportes</a></li>
+            <li class="active">Consulta de Informes</li>
+            <li class="active">Informe</li>
+        </ol>
+    </section>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3" id="boxPrincipal">
+                <div class="box box-danger">
+                    <!-- Empieza cabecera del box -->
+                    <div class="box-header with-border text-center">
+                        <h3 class="box-title">{{nbReporteGeneric}}</h3>
+                        <div class="box-tools pull-right">
+                            <button id="x" type="button" class="btn btn-box-tool" data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+                        </div>
+                    </div>
+                    <!-- Termina cabecera del box -->
+
+                    <!-- Empieza cuerpo del box -->
+                    <div class="box-body">
+                        <div class="row centerBox">
+                            <div class="col-md-12">
+                                <div id="divBusqueda" class="collapse in">
+                                    <componente array="listaParametros" array-tmp="listaParametrosTMP" name-form="fName"></componente>
+                                    <div class="col-md-2 col-md-offset-5 verticalCenter">
+                                        <!-- <label> <br></label> {{infracPlaca}} -->
+                                        <button type="button" class="btn btn-danger" ng-click="buscar(listaParametros, fName)">Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!-- Termina cuerpo del box -->
+                    <!-- Empieza pie de box -->
+                    <div class="box-footer">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <a type="button" ng-click="regresar()" class="btn pull-left">
+                                    <i class="fa fa-arrow-circle-left"></i> {{'APP.Base.boton.regresar' | translate}}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Termina pie de box -->
+                </div>
+            </div>
+        </div>
+        <!-- lista:{{lista}} -->
+
+        <div class="row centerCol" ng-show="valores.length > 0">
+            <div class="col-md-12">
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <div class="row middleRow">
+                            <div class="col-md-6">
+                                <h3 class="box-title">
+                                    Registros Encontrados: <span>{{(gridOptions.data | filter:filtroBusqueda).length  | number}}</span>
+                                </h3>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-offset-4 col-md-7 col-xs-8">
+                                        <div class="for-group">
+                                            <div class="input-group">
+                                                <input id="searchsomething" type="text" class="form-control" ng-model="filtroBusqueda" ng-change="refreshData()" placeholder="Buscar por filtro"> <span class="input-group-addon"><i class="fa fa-search"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 col-xs-1">
+                                        <a ng-click="exportExcel(objectVO, fName)" title="Exportar Reporte">
+                                            <span class="pull-right "> <img
+												src="static/dist/img/excel.png" class="img-rounded"
+												width="30px">
+										</span>
+                                        </a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div align="center"><strong><font color="navy">{{avisoResultados}}</font></strong></div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div grid-data id='test' grid-options="gridOptions" grid-actions="gridActions">
+                                    <div class="table-responsive" ng-class="{'gridOptionsTable': cabeceras.length > 10}">
+                                        <table class="table table-striped header-fixed" st-table="gridOptions.data" st-safe-src="rowCollection">
+                                            <thead>
+                                                <tr>
+                                                    <th class="wrap-text" ng-repeat="column in cabeceras"><a st-sort="{{column.id}}">{{column.name}}</a></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="item in gridOptions.data | startFrom:(paginationOptions.currentPage-1)*paginationOptions.itemsPerPage | limitTo:paginationOptions.itemsPerPage | filter:filtroBusqueda track by $index">
+                                                    <td class="center" ng-repeat="row in item">{{ row }}</td>
+                                                </tr>
+                                                <tr ng-if="(gridOptions.data | filter:filtroBusqueda).length < 1">
+                                                    <td colspan="5" class="text-center">
+                                                        <h4>No se encontraron coincidencias</h4>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="row middleRow">
+                                        <div class="col-md-3">
+                                            <div class="pull-left pagination-detail">
+                                                <!-- ng-if="(gridOptions.data | filter:filtroBusqueda).length > 0" -->
+                                                <span class="pagination-info"> Mostrar <span
+													class="page-list"> <span
+														class="btn-group grupoPag dropup"> <select select2
+															id="itemsOnPageSelect2"
+															data-minimum-results-for-search="Infinity"
+															class="form-control input-sm"
+															ng-init="paginationOptions.itemsPerPage = '10'"
+															ng-model="paginationOptions.itemsPerPage"
+															ng-change="reloadGrid()">
+																<option>10</option>
+																<option>25</option>
+																<option>50</option>
+																<option>75</option>
+														</select>
+													</span> Registros
+                                                </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="form-group">
+                                                <grid-pagination max-size="5" boundary-links="true" class="pull-right" total-items="paginationOptions.totalItems" ng-model="paginationOptions.currentPage" ng-change="reloadGrid()" items-per-page="paginationOptions.itemsPerPage"></grid-pagination>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
