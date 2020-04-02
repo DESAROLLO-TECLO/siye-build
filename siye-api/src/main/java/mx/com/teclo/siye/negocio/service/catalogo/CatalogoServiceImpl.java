@@ -169,7 +169,7 @@ public class CatalogoServiceImpl implements CatalogoService{
 		copVO.setTipoKit(tpKitVO);
 		
 		copVO.setProveedorVO(proveedorVO);
-		
+		//catalogo de concesiones
 		copVO.setConcesionariaVO(concesionarioVO);
 		
 		return copVO;
