@@ -10,8 +10,8 @@ angular.module(appTeclo)
 
             var protocol = $location.protocol() + "://";
             var host = location.host;
-            //var url = protocol + host + constante.urlWs;
-            var url = "http://192.168.0.13/siye_api_v100r1";
+            var url = protocol + host + constante.urlWs;
+            // var url = "http://192.168.0.13/siye_api_v100r1";
             var absUrl = $location.absUrl();
 
             let contextApp = absUrl.split("/")[3];
