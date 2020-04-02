@@ -19,7 +19,7 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 			$scope.catalogoTipoVehiculo = {};
 			error = true;
 		})
-	}
+	};
 	
 	$scope.consultaCentroInstalacion = function(){
 		altaServicioService.buscarCentroInstalacion()
@@ -33,7 +33,7 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 			$scope.error=true;
 			
 		})
-	}
+	};
 	
 	$scope.buscarVehculoPorPlaca = function(placa){
 //		  if ($scope.formAltaServicio.$invalid) {
@@ -49,10 +49,11 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 			$scope.orden.vehiculoVO.placa = $scope.vehiculoResult.cdPlacaVehiculo;
 			$scope.orden.vehiculoVO.cdVIN=$scope.vehiculoResult.cdVin;
 			$scope.orden.vehiculoVO.tjtCirculacion = $scope.vehiculoResult.cdTarjetaDeCirculacion;
-//			$scope.orden.vehiculoVO.tpVehiculo = $scope.vehiculoResult.tipoVehiculo.nbTipoVehiculo;
 			$scope.orden.vehiculoVO.marca = $scope.vehiculoResult.nbMarca;
 			$scope.orden.vehiculoVO.subMarca=$scope.vehiculoResult.nbSubMarca;
-//			$scope.orden.vehiculoVO.tpVehiculo = $scope.vehiculoResult.tipoVehiculo.idTipoVehiculo;
+			$scope.orden.vehiculoVO.cdModelo = $scope.vehiculoResult.cdModelo;
+			$scope.orden.vehiculoVO.concesionario = $scope.vehiculoResult.consecionario;
+//			$("#select2-catConcesionario-container").text($)
 			$scope.orden.vehiculoVO.tpVehiculo = $scope.vehiculoResult.tipoVehiculo;
 			$("#select2-tipopVehiculo-container").text($scope.vehiculoResult.tipoVehiculo.nbTipoVehiculo);
 			
