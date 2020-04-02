@@ -47,6 +47,9 @@ public class ExpedienteImgRestController {
 	public ResponseEntity<List<ImagenVO>> saveImgExpediente(@RequestBody List<ImagenVO> expedientes) throws NotFoundException{
 		UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO(); 		
 		List<ImagenVO> respuesta = expedienteImg.saveExpediente(expedientes, usuario.getId());
+		if(respuesta == null) {
+			throw new NotFoundException("Exede el número maximo de imagenes permitidas");
+		}
 		return new ResponseEntity<List<ImagenVO>>(respuesta, HttpStatus.OK);
 	};
 	
