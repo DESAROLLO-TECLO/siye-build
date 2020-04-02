@@ -2,8 +2,9 @@ package mx.com.teclo.siye.persistencia.hibernate.dao.catalogo;
 
 import java.util.List;
 
-import mx.com.teclo.arquitectura.ortogonales.persistencia.hibernate.dto.configuracion.ConfiguracionDTO;
+
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDao;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConfiguracionDTO;
 
 
 public interface ConfiguracionParamDAO extends BaseDao<ConfiguracionDTO>{

@@ -3,8 +3,8 @@ package mx.com.teclo.siye.negocio.service.catalogo;
 import java.util.List;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
-import mx.com.teclo.arquitectura.ortogonales.persistencia.configuracion.vo.ConfiguracionVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.InstaladorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;

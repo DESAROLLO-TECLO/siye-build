@@ -7,8 +7,9 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import mx.com.teclo.arquitectura.ortogonales.persistencia.hibernate.dto.configuracion.ConfiguracionDTO;
+
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConfiguracionDTO;
 
 @Repository
 public class ConfiguracionParamDAOImpl extends BaseDaoHibernate<ConfiguracionDTO> implements ConfiguracionParamDAO{
