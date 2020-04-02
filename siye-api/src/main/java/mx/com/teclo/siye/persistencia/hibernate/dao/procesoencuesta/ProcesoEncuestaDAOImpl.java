@@ -6,6 +6,7 @@ import org.hibernate.transform.Transformers;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -23,6 +24,7 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 		Criteria c = getCurrentSession().createCriteria(ProcesoEncuestaDTO.class);
 		c.createAlias("idProceso", "proceso");
 		c.add(Restrictions.eq("proceso.idProceso", idProceso));
+		c.addOrder(Order.asc("nuOrden"));
 		c.add(Restrictions.eq("stActivo", true));
 		return (List<ProcesoEncuestaDTO>) c.list();
 	}
