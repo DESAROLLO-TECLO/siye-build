@@ -38,10 +38,10 @@
                     <div class="box-body">
                         <div class="row">
                         	<div class="col-md-12 text-right">
-                        		<label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelFh' | translate}} {{fechaAnio}}</label>
+                        		<label for=""> {{'ALTAINCIDENCIA.AltaIncidencia.labelFh' | translate}} {{fechaAnio}}</label>
                         	</div>
                         </div>	
-                        <div class="row">
+                        <div class="row" ng-show="false">
                         	<div class="col-md-4">
                         		<label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelFlSol' | translate}} {{fechaAnio}}</label>
                         	</div>
@@ -86,7 +86,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" ng-show="false">
                         	<div class="col-md-4">
                         		<label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelTC' | translate}} {{fechaAnio}}</label>
                         	</div>
@@ -95,13 +95,17 @@
                         	</div>
                         </div>	
                         <div class="row">
-                            <div class="col-md-9">
+                            <div class="col-md-6">
                                 <div class="form-group" ng-class="{'has-error': formConsultaServicio.tipoBusqueda.$invalid && formConsultaServicio.tipoBusqueda.$dirty}">
                                     <div class="input-group">
+<!--                                     	<label for=""> *{{contador}} Caracteres </label> -->
                                         <div class="input-group-addon">
                                             <i class="fa fa-list-ul"></i>
                                         </div>
-                                        <textarea name="textarea" rows="10" cols="50">Observaciones</textarea>
+                                        <textarea id="txDescripcion" name="txDescripcion" required capitalize
+											style="resize: none;"class="form-control" rows="7" maxlength="250" ng-KeyUp="longitud()"
+											ng-model="registroIncidencia.txDescripcion">
+										</textarea> 
                                     </div>
                                     <div ng-show="formConsultaServicio.tipoBusqueda.$invalid && formConsultaServicio.tipoBusqueda.$dirty" ng-style="{color:'red'}">
                                         <label> {{'ORDENSERVICIO.AltaServicio.seleccionadores.tipoBusqueda.validacion' | translate}} </label>
