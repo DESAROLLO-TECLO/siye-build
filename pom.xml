@@ -23,6 +23,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.7</java.version>
 		<revision>v100r1</revision>
+		<teclo-reporte-jar>1.0.0</teclo-reporte-jar>
+		
 	</properties>
 
 	<dependencies>
@@ -52,7 +54,7 @@
 							<addClasspath>true</addClasspath>
 						</manifest>
 					</archive>
-					<outputDirectory>C:\WarsMaven\</outputDirectory>
+					<outputDirectory>C:\WarsMavenBackend\</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
