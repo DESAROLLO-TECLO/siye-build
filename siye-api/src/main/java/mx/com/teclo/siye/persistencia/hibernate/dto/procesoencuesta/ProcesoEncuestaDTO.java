@@ -17,7 +17,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestaDetalleDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesos.IEprocesosDTO;
 
 @Entity
-@Table(name = "TIE037C_IE_PROCESO_ENCUESTA")
+@Table(name = "TIE037D_IE_PROCESO_ENCUESTA")
 public class ProcesoEncuestaDTO implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

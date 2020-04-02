@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
+import mx.com.teclo.arquitectura.ortogonales.persistencia.configuracion.vo.ConfiguracionVO;
 import mx.com.teclo.siye.negocio.service.catalogo.CatalogoService;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.InstaladorVO;
@@ -17,6 +19,7 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.StSeguimientoVO;
+import mx.com.teclo.siye.util.enumerados.RespuestaHttp;
 
 
 @RestController
@@ -71,6 +74,14 @@ public class CatalogoRestController {
 	public ResponseEntity<List<StSeguimientoVO>> getPrioridad()  throws NotFoundException {
 		List<StSeguimientoVO> listStSeguimientoVO = catalogoService.obtenerStSeguimientoByCdTpSeguimiento("ID_PRIORIDAD");
 		return new ResponseEntity<List<StSeguimientoVO>>(listStSeguimientoVO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/parametroCd", method = RequestMethod.GET)
+	public ResponseEntity<ConfiguracionVO> parametro(@RequestParam("cdParametro") String cdParametro) throws NotFoundException {
+		ConfiguracionVO listToReturn = catalogoService.configuracion(cdParametro);
+		if(listToReturn == null)
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		return new ResponseEntity<ConfiguracionVO>(listToReturn, HttpStatus.OK);
 	}
 
 }

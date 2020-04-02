@@ -3,6 +3,7 @@ package mx.com.teclo.siye.negocio.service.catalogo;
 import java.util.List;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
+import mx.com.teclo.arquitectura.ortogonales.persistencia.configuracion.vo.ConfiguracionVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.InstaladorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
@@ -24,4 +25,12 @@ public interface CatalogoService {
 	public CatalogosOrdenProcesoVO getCatalogosOrdenProceso() throws NotFoundException;
 
 	List<StSeguimientoVO> obtenerStSeguimientoByCdTpSeguimiento(String cdTpSeguimiento) throws NotFoundException;
+	
+	/**
+	 * @Descripción: Método para consultar un parámetro 
+	 * mediante su codigo identificador
+	 * @author David Guerra
+	 * @return ConfiguracionVO
+	 */
+	public ConfiguracionVO configuracion(String cdLlavePConfig)throws NotFoundException;
 }
