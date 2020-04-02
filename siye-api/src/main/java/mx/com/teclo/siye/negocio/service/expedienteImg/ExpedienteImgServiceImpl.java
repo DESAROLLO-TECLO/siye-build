@@ -83,7 +83,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 
 	private static Boolean ACTIVO = true, BORRAR = false;
 	private static String PLACA = "PLACA", OS = "ORDEN_SERVICIO", VIN = "VIN";
-	private final String CDOS = "ORDEN_SERVICIO", CDPLAN = "PLAN", CDENCUESTA = "ENCUESTA", CDPREGUNTA = "PREGUNTA";
+	private final String CDOS = "ORDEN_SERVICIO", CDPROCESO = "PROCESO", CDENCUESTA = "ENCUESTA", CDPREGUNTA = "PREGUNTA";
 
 	@Override
 	@Transactional
@@ -386,7 +386,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 			respuesta = expedienteImgDAO.getImgByOrdenServicio(nuOrderServicio);
 			break;
 
-		case CDPLAN:
+		case CDPROCESO:
 			respuesta = expedienteImgDAO.getImgByPlan(nuOrderServicio, idValorBuscar);
 			break;
 
