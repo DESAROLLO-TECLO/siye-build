@@ -36,7 +36,6 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.OdsIncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.ConsecionarioDTO;
-import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.DispositivosDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitDispositivoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDispDTO;
@@ -49,7 +48,6 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.TipoVehiculoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.VehiculoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.usuario.GerenteSupervisorDTO;
 import mx.com.teclo.siye.persistencia.vo.ordenServicio.OrdenServiVO;
-import mx.com.teclo.siye.persistencia.vo.proceso.KitInstDispVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
 import mx.com.teclo.siye.util.enumerados.RespuestaHttp;
 
@@ -404,7 +402,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		
 	
 
-		for(int i=0; i<=ordenServiVO.getKitInstalacionVO().size(); i++){
+		for(int i=0; i<ordenServiVO.getKitInstalacionVO().size(); i++){
 			
 			KitInstalacionDispDTO kitInsDipDTO = new KitInstalacionDispDTO();
 			

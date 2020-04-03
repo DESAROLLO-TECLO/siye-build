@@ -20,5 +20,13 @@ public interface IncidenciaDAO extends BaseDao<IncidenciaDTO> {
 	 * @return Long
 	 */
 	public Long getUltimoId();
+	
+	/**
+	 * Descripciónn: Obtiene el registro mediante el código
+	 * @author VAPD1226
+	 * @param cdInciden
+	 * @return IncidenciaDTO
+	 */
+	public IncidenciaDTO incidenciaBycdIncidencia(String cdInciden);
 
 }
