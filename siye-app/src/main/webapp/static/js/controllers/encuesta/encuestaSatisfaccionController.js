@@ -199,20 +199,21 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 				document.getElementById("myTable2").scrollTop = 0;
 				$('html, body').animate({ scrollTop: 0 }, 'slow');
 			}
-		} else {
-			growl.warning("No se pudo cargar seccion", { ttl: 5000 });
-		}
-	};
-	
-	// INICIAR CONTEO
-	$scope.iniciarConteo = function() {
-		$scope.paramConfigPage.tiempoReanuda = true;
-		iniciarConteo = $interval($scope.observaTiempo, 1000);
-	};
+        } else {
+            growl.warning("No se pudo cargar seccion", { ttl: 5000 });
+        }
+    };
     
-	$scope.observaTiempo = function() {
-		
-		if ($scope.paramConfigPage.flagTimer) {
+    // INICIAR CONTEO
+    $scope.iniciarConteo = function() {
+        $scope.paramConfigPage.tiempoReanuda = true;
+        iniciarConteo = $interval($scope.observaTiempo, 1000);
+
+    };
+    
+    $scope.observaTiempo = function() {
+
+        if ($scope.paramConfigPage.flagTimer) {
             /*
 			 * if ($scope.paramConfigPage.tiempoEncuesta > 0) {
 			 * $scope.paramConfigPage.tiempoEncuesta++;
@@ -228,51 +229,50 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 			 * //eliminamos el backdrop del modal showAlert.aviso("Se ha
 			 * terminado el tiempo de la evaluación", $scope.testConfirmacion); }
 			 */
-			$scope.paramConfigPage.tiempoEncuesta++;
-			$scope.cambiaTiempo($scope.paramConfigPage.tiempoEncuesta);
-		}
-	};
-	
-	$scope.cambiaTiempo = function(segundoRestante) {
-		var segundoDB = segundoRestante;
-		var segundos = segundoDB;
-		var segundos_s = segundos % 60;
-		var minutos = Math.floor(segundos / 60);
-		var horas = Math.floor(minutos / 60);
-		var minutos_s = minutos % 60;
-		var dias = Math.floor(horas / 24);
-		var horas_s = horas % 24;
-		
-		$scope.paramConfigPage.segundo = segundos_s;
-		$scope.paramConfigPage.minuto = minutos_s;
-		$scope.paramConfigPage.hora = horas_s;
-	};
+           $scope.paramConfigPage.tiempoEncuesta++;
+           $scope.cambiaTiempo($scope.paramConfigPage.tiempoEncuesta);
+        }
+    };
 
-	// Guardar Avance por pagina
-	$scope.guardaAvancePorPagina = function(numPagina) {
-		if($scope.redireccionar){
-			$interval.cancel(iniciarConteo);
-		};
-		if (document.getElementById("myTable2"))
-			document.getElementById("myTable2").scrollTop = 0;
-		$('html, body').animate({ scrollTop: 0 }, 'slow');
-		var guardaSeccionPorPaginaVO = new Object();
-		var preguntasPorPagina = new Array();
-		var seccionVO = new Object();
-		var seccionVO = angular.copy($scope.encuesta.secciones[$scope.posicionActual]);
-		var preguntasPorPagina = seccionVO.preguntas.slice(((numPagina - 1) * $scope.paramConfigPage.itemsPerPage), ((numPagina) * $scope.paramConfigPage.itemsPerPage));
-		seccionVO.preguntas = preguntasPorPagina;
-		$scope.saveEncuesta(seccionVO);
-	};
-	
+    $scope.cambiaTiempo = function(segundoRestante) {
+        var segundoDB = segundoRestante;
+        var segundos = segundoDB;
+        var segundos_s = segundos % 60;
+        var minutos = Math.floor(segundos / 60);
+        var horas = Math.floor(minutos / 60);
+        var minutos_s = minutos % 60;
+        var dias = Math.floor(horas / 24);
+        var horas_s = horas % 24;
+
+        $scope.paramConfigPage.segundo = segundos_s;
+        $scope.paramConfigPage.minuto = minutos_s;
+        $scope.paramConfigPage.hora = horas_s;
+    };
+
+    // Guardar Avance por pagina
+    $scope.guardaAvancePorPagina = function(numPagina) {
+        if($scope.redireccionar){
+            $interval.cancel(iniciarConteo);
+        };
+        if (document.getElementById("myTable2"))
+            document.getElementById("myTable2").scrollTop = 0;
+        $('html, body').animate({ scrollTop: 0 }, 'slow');
+        var guardaSeccionPorPaginaVO = new Object();
+        var preguntasPorPagina = new Array();
+        var seccionVO = new Object();
+        var seccionVO = angular.copy($scope.encuesta.secciones[$scope.posicionActual]);
+        var preguntasPorPagina = seccionVO.preguntas.slice(((numPagina - 1) * $scope.paramConfigPage.itemsPerPage), ((numPagina) * $scope.paramConfigPage.itemsPerPage));
+        seccionVO.preguntas = preguntasPorPagina;
+        $scope.saveEncuesta(seccionVO);
+    };
 	// Escuchar la variable de paginador
-	$scope.$watch("paramConfigPage.bigCurrentPage", function(newValue, oldValue) {
-		if (newValue === oldValue) {
-			return;
-		}
-		$scope.guardaAvancePorPagina(oldValue);
-	});
-	
+    $scope.$watch("paramConfigPage.bigCurrentPage", function(newValue, oldValue) {
+        if (newValue === oldValue) {
+            return;
+        }
+        $scope.guardaAvancePorPagina(oldValue);
+    });
+    
 	$scope.guardaFinalizaEncuesta=function(numPagina){
 		$scope.guardaAvancePorPagina(numPagina);
 		$timeout(() => {
@@ -282,51 +282,55 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 	
 	// //FUNCION PARA FINALIZAR ENCUESTA
 	
-	// Funcion obtiene las respuestas por parametros de busqueda
-	$scope.finalizaEncuesta = function(tiempo) {
-		var lisseccionValid = new Array();
-		var secciones = $scope.encuesta.secciones;
-		var preguntasSinContestar = false;
-		for (let i in secciones) {
-			if (secciones[i].nuPreguntasContestadas < secciones[i].preguntas.length) {
-				preguntasSinContestar = true;
-				let comprobacion = new Object({
-					nbSeccion: secciones[i].nbSeccion,
-					preguntasSinContestar: secciones[i].preguntas.length - secciones[i].nuPreguntasContestadas,
-					preguntas: new Array()
-				});
-				for (let j in secciones[i].preguntas) {
-					var contador = 0;
-					for (let k in secciones[i].preguntas[j].opciones) {
-						if (contador == 0 && secciones[i].preguntas[j].opciones[k].stMarcado != 1) {
-							comprobacion.preguntas.push(secciones[i].preguntas[j]);
-							contador++
-						}
-					}
-				}
-				lisSeccionesValid.push(comprobacion);
-			}
-		}
-		
-		if (preguntasSinContestar) {
-			growl.warning("Hay preguntas sin contestar en las secciones amarillas o rojas");
-		} else {
-			showAlert.confirmacion("¿Finalizar Evaluación?", $scope.testConfirmacion, $scope.object, $scope.testCancelConfirmacion);
-		}
-	};
-	
-	$scope.testCancelConfirmacion = function() {
-	}
-	
-	$scope.testCancelConfirmacion2 = function() {
-		// growl.info('',{title: ''});
-		// $scope.banderaPantalla=accion;
-		$scope.redireccionar = false;
-	}
+	   // Funcion obtiene las respuestas por parametros de busqueda
+    $scope.finalizaEncuesta = function(tiempo) {
+        var lisseccionValid = new Array();
+        var secciones = $scope.encuesta.secciones;
+        var preguntasSinContestar = false;
+        for (let i in secciones) {
+            if (secciones[i].nuPreguntasContestadas < secciones[i].preguntas.length) {
+                preguntasSinContestar = true;
+                let comprobacion = new Object({
+                    nbSeccion: secciones[i].nbSeccion,
+                    preguntasSinContestar: secciones[i].preguntas.length - secciones[i].nuPreguntasContestadas,
+                    preguntas: new Array()
+                });
+                for (let j in secciones[i].preguntas) {
+                    var contador = 0;
+                    for (let k in secciones[i].preguntas[j].opciones) {
+                        if (contador == 0 && secciones[i].preguntas[j].opciones[k].stMarcado != 1) {
+                            comprobacion.preguntas.push(secciones[i].preguntas[j]);
+                            contador++
+                        }
+                    }
 
-	$scope.testConfirmacion = function(object) {
-		$scope.banderaPantalla=false;
-		/*
+                }
+                lisSeccionesValid.push(comprobacion);
+
+            }
+        }
+
+        if (preguntasSinContestar) {
+            growl.warning("Hay preguntas sin contestar en las secciones amarillas o rojas");
+        } else {
+            showAlert.confirmacion("¿Finalizar Evaluación?", $scope.testConfirmacion, $scope.object, $scope.testCancelConfirmacion);
+        }
+    };
+
+
+    $scope.testCancelConfirmacion = function() {
+    }
+
+    $scope.testCancelConfirmacion2 = function() {
+        // growl.info('',{title: ''});
+      // $scope.banderaPantalla=accion;
+       $scope.redireccionar = false;
+       
+    }
+
+    $scope.testConfirmacion = function(object) {
+    	$scope.banderaPantalla=false;
+    	/*
 		 * encuestaService.finalizaEncuesta($scope.detalleFinalEncuesta).success(function(data) {
 		 * if (data != null) { $scope.paramConfigPage.segundo = 0;
 		 * $scope.paramConfigPage.minuto = 0; $scope.paramConfigPage.hora = 0;
@@ -335,64 +339,68 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 		 * Finalizar la encuesta", { ttl: 5000 }); guardarSeccion = false; }
 		 * }).error(function(data) { growl.error(data.message); });
 		 */
-	};
-	
-	// Guarda respuestas de encuesta
-	$scope.saveEncuesta = function(seccionVO) {
-		var guardarSeccion = false;
-		var seccionContestada = new Array();
-		var listPreguntaSeccion = angular.copy(seccionVO.preguntas);
-		for (let i in listPreguntaSeccion) {
-			let guardar = false;
-			let objectEncuesta = new Object({
-				idEncuesta: angular.copy($scope.encuesta.idEncuesta),
-				idSeccion: angular.copy(seccionVO.idSeccion),
-				idPregunta: undefined,
-				idOpcion: undefined,
-				idIntento: idIntento
-			});
-			
-			objectEncuesta.idPregunta = listPreguntaSeccion[i].idPregunta;
-			for (let j in listPreguntaSeccion[i].opciones) {
-				if (listPreguntaSeccion[i].opciones[j].stMarcado === 1) {
-					guardar = true
-					objectEncuesta.idOpcion = listPreguntaSeccion[i].opciones[j].idOpcion != undefined ? listPreguntaSeccion[i].opciones[j].idOpcion : 0;
-				}
-			}
-			if (guardar) {
-				seccionContestada.push(objectEncuesta);
-			}
-		}
-		encuestaSatisfaccionService.saveRespuestaEncuesta(seccionContestada).success(function(data) {
-			if (data == true) {
-				if ($scope.redireccionar) {
-					$scope.regresarEncuestas();
-				}
-				guardarSeccion = true;
-				// growl.success("Se guardaron respuestas ",{ ttl: 5000 });
-			}else{
-				growl.success("No se pudieron guardar respuestas", { ttl: 5000 });
-			}
-			guardarSeccion = false;
-		}).error(function(data) {
-			if (data != null && data.status != null && data.status == 400) {
-				// $scope.paramConfigPage.tiempoReanuda = true;
-				// $scope.paramConfigPage.flagFinalizaEncueta = true;
-				// showAlert.aviso(data.message, $scope.regresarEncuestas2);
-				// growl.error(data.message, { ttl: 3000 });
-				// / $scope.consultaEvaEvaluados();
-			} else {
-				growl.error('Ha ocurrido un error al tratar de activar la evaluación, favor de validar.', { ttl: 4000 });
-			}
-			guardarSeccion = false;
-		});
-		return guardarSeccion;
-	};
+    };
 
-	$scope.regresarEncuestas = function() {
-		$scope.buscaOrdenConsulta($scope.backBusqueda,true);
-		$scope.redireccionar=false;
-		$scope.controllerActual = 'NA';
-		$scope.banderaPantalla=false;
-	};
+
+
+    // Guarda respuestas de encuesta
+    $scope.saveEncuesta = function(seccionVO) {
+        var guardarSeccion = false;
+        var seccionContestada = new Array();
+        var listPreguntaSeccion = angular.copy(seccionVO.preguntas);
+        for (let i in listPreguntaSeccion) {
+            let guardar = false;
+            let objectEncuesta = new Object({
+                idEncuesta: angular.copy($scope.encuesta.idEncuesta),
+                idSeccion: angular.copy(seccionVO.idSeccion),
+                idPregunta: undefined,
+                idOpcion: undefined,
+                idIntento: idIntento
+            });
+
+            objectEncuesta.idPregunta = listPreguntaSeccion[i].idPregunta;
+            for (let j in listPreguntaSeccion[i].opciones) {
+                if (listPreguntaSeccion[i].opciones[j].stMarcado === 1) {
+                    guardar = true
+                    objectEncuesta.idOpcion = listPreguntaSeccion[i].opciones[j].idOpcion != undefined ? listPreguntaSeccion[i].opciones[j].idOpcion : 0;
+                }
+            }
+            if (guardar) {
+                seccionContestada.push(objectEncuesta);
+            }
+        }
+        encuestaSatisfaccionService.saveRespuestaEncuesta(seccionContestada).success(function(data) {
+            if (data == true) {
+                if ($scope.redireccionar) {
+                        $scope.regresarEncuestas();
+                }
+                guardarSeccion = true;
+                // growl.success("Se guardaron respuestas ",{ ttl: 5000 });
+            } else
+                growl.success("No se pudieron guardar respuestas", { ttl: 5000 });
+            guardarSeccion = false;
+
+        }).error(function(data) {
+            if (data != null && data.status != null && data.status == 400) {
+                // $scope.paramConfigPage.tiempoReanuda = true;
+                // $scope.paramConfigPage.flagFinalizaEncueta = true;
+                // showAlert.aviso(data.message, $scope.regresarEncuestas2);
+                // growl.error(data.message, { ttl: 3000 });
+                // / $scope.consultaEvaEvaluados();
+            } else {
+                growl.error('Ha ocurrido un error al tratar de activar la evaluación, favor de validar.', { ttl: 4000 });
+            }
+
+            guardarSeccion = false;
+        });
+        return guardarSeccion;
+    };
+
+    $scope.regresarEncuestas = function() {
+        $scope.buscaOrdenConsulta($scope.backBusqueda,true);
+        $scope.redireccionar=false;
+        $scope.controllerActual = 'NA';
+        $scope.banderaPantalla=false;
+    };
+    
 });
