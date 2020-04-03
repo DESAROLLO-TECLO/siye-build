@@ -4,6 +4,7 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
 
     $scope.stActivarEncuesta = true;
     $scope.tiempoTranscurrido = new Date();
+    $scope.numOrden = $rootScope.numOS;
 
     if(procesoInfo != null){
         $scope.nombreEtapa = "Orden de Servicio: " + $rootScope.nomOrdenServicio + " - Proceso: " + procesoInfo.data[0].idProceso.nbProceso;
