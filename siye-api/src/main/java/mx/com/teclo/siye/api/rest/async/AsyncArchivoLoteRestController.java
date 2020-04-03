@@ -38,7 +38,7 @@ public class AsyncArchivoLoteRestController {
 
 		Long idFile = asyncLoteService.registrarArchivoLote(archivoLote);
 		LOGGER.debug("Archivo lote registrado con ID " + idFile);
-		//asyncLoteService.cargarArchivoLote();
+		asyncLoteService.cargarArchivoLote(idFile);
 
 		return new ResponseEntity<LoteOrdenServicioVO>(asyncLoteService.obtenerArchivoLote(idFile), HttpStatus.OK);
 	}

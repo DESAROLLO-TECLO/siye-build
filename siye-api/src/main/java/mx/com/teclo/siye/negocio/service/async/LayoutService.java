@@ -3,6 +3,7 @@ package mx.com.teclo.siye.negocio.service.async;
 import java.util.List;
 
 import mx.com.teclo.siye.persistencia.vo.async.ColumnaVO;
+import mx.com.teclo.siye.persistencia.vo.async.InsercionTablaVO;
 import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
 
 /**
@@ -32,4 +33,12 @@ public interface LayoutService {
 	 * @return
 	 */
 	String getNbsColumnas(String tabla);
+
+	/**
+	 * Regresa el patr&oacute;n para formar el query de valores a insertar
+	 * 
+	 * @param tabla
+	 * @return
+	 */
+	InsercionTablaVO getPatronValues(String tabla);
 }

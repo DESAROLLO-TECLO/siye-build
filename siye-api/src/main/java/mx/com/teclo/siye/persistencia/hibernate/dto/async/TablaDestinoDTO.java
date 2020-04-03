@@ -41,6 +41,9 @@ public class TablaDestinoDTO {
 
 	@Column(name = "FH_MODIFICACION")
 	private Date fhModificacion;
+	
+	@Column(name = "TX_VALOR_DEFECTO")
+	private String txValorDefecto;
 
 	public Long getIdTablaDestino() {
 		return idTablaDestino;
@@ -120,6 +123,14 @@ public class TablaDestinoDTO {
 
 	public void setFhModificacion(Date fhModificacion) {
 		this.fhModificacion = fhModificacion;
+	}
+
+	public String getTxValorDefecto() {
+		return txValorDefecto;
+	}
+
+	public void setTxValorDefecto(String txValorDefecto) {
+		this.txValorDefecto = txValorDefecto;
 	}
 	
 	

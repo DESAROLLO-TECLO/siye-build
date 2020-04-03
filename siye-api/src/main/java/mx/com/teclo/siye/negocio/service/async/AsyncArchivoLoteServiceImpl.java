@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,7 +52,7 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 	private static final String MSG_LAYOUT_SIN_ORDEN_INSERCION = "El layout no tiene un orden de valores a insertar";
 	private static final String MSG_LAYOUT_INCONSISTENTE = "El layout no tiene igual cantidad de columnas en sus diferentes secciones";
 	private static final String MSG_INSERT_PATTERN = "INSERT INTO {0}({1}) VALUES({2})";
-
+	private static final String MSG_ERROR_LOTE_INEXISTENTE = "El lote {0} no existe";
 
 	@Autowired
 	private LayoutService layoutService;
@@ -99,11 +100,15 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 
 	}
 
-	@SuppressWarnings("static-access")
 	@Override
 	@Transactional
+	@Async
 	public void cargarArchivoLote(Long idArchivoLote) throws BusinessException {
 		LoteOrdenServicioVO lote = loteDAO.obtenerLote(idArchivoLote);
+		if (lote == null) {
+			throw new BusinessException(MessageFormat.format(MSG_ERROR_LOTE_INEXISTENTE, idArchivoLote));
+		}
+		System.out.println("---------------INICIANDO CARGA DEL ARCHIVO " + lote.getIdLoteOds() + "----------");
 
 		ConfiguracionOSDTO tablas = configuracionDAO.findOne(ID_ORDEN_INSERCION);
 		if (tablas == null || StringUtils.isBlank(tablas.getCdValorConfig())) {
@@ -114,14 +119,14 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 		Map<String, InsercionTablaVO> insertQueriesMap = new HashMap<String, InsercionTablaVO>();
 
 		for (String nbTbl : tbls) {
-			String nbCols = layoutService.getNbsColumnas(nbTbl);
-			InsercionTablaVO colsObj = new InsercionTablaVO(
-					MessageFormat.format(MSG_INSERT_PATTERN, nbTbl, nbCols), "");
+			// String nbCols = layoutService.getNbsColumnas(nbTbl);
+			InsercionTablaVO valInsertVO = layoutService.getPatronValues(nbTbl);
+			InsercionTablaVO colsObj = new InsercionTablaVO(MessageFormat.format(MSG_INSERT_PATTERN, nbTbl,
+					valInsertVO.getColumnas(), valInsertVO.getValores()), "");
 			insertQueriesMap.put(nbTbl, colsObj);
 			System.out.println(insertQueriesMap.get(nbTbl).getColumnas());
 		}
 
-		
 	}
 
 	private void validacionesExtra() throws BusinessException {

@@ -4,6 +4,7 @@ public class ColumnaVO {
 	private String nbColumna;
 	private String cdTipo;
 	private Long nuOrden;
+	private String txValorDefecto;
 	
 	public String getNbColumna() {
 		return nbColumna;
@@ -23,6 +24,13 @@ public class ColumnaVO {
 	public void setNuOrden(Long nuOrden) {
 		this.nuOrden = nuOrden;
 	}
+	public String getTxValorDefecto() {
+		return txValorDefecto;
+	}
+	public void setTxValorDefecto(String txValorDefecto) {
+		this.txValorDefecto = txValorDefecto;
+	}
+	
 	
 	
 	
