@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
@@ -22,7 +23,8 @@ public class OdsIncidenciaDTO implements Serializable {
 	
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(name = "sqOdsIncidencia", sequenceName = "SQIE058D_IE_ODS_INCID", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqOdsIncidencia")
 	@Column(name = "ID_ODS_INCIDENCIA", nullable = false)
 	private Long idOdsIncidencia;
 	
