@@ -178,15 +178,15 @@
 											</div>
 											
 											<div class="col-md-4">
-												<label for="">Tipo Vehiculo:</label>
+												<label for="">Concesion :</label>
 													<div class="input-group">
 														<div class="input-group-addon">
 															<i class="fa fa-list-ul"></i>
 															
 														</div>
 														<select class="form-control" select2 data-minimum-results-for-search="Infinity" id="catConcesionario"
-															ng-options="tpVehiculo.nbTipoVehiculo  for tpVehiculo in catalogoTipoVehiculo track by tpVehiculo.idTipoVehiculo"
-															ng-model="orden.vehiculoVO.concesionario"
+															ng-options="concesionaria.nbConsecion  for concesionaria in catalogoProcesos.concesionariaVO track by concesionaria.idConsecion"
+															ng-model="orden.vehiculoVO.concesionaria"
 															style="width:100%" >
 															<option value="">Seleccione</option>
 														</select>
