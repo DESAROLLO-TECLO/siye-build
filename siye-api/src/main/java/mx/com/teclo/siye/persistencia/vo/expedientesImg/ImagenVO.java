@@ -13,7 +13,7 @@ public class ImagenVO {
 	private String nbExpedienteODS; 
 	private String cdTipoArchivo;
 	private byte[] lbExpedienteODS;
-
+	private String nbNivel;
 	
 	/**
 	 * @return the idExpedienteODS
@@ -140,6 +140,18 @@ public class ImagenVO {
 	 */
 	public void setNuOrden(Long nuOrden) {
 		this.nuOrden = nuOrden;
+	}
+	/**
+	 * @return the nbNivel
+	 */
+	public String getNbNivel() {
+		return nbNivel;
+	}
+	/**
+	 * @param nbNivel the nbNivel to set
+	 */
+	public void setNbNivel(String nbNivel) {
+		this.nbNivel = nbNivel;
 	}
 	
 }
