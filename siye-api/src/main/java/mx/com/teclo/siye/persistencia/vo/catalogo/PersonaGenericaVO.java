@@ -12,6 +12,7 @@ public class PersonaGenericaVO  implements Serializable{
 	private String nombre;
 	private String aPaterno;
 	private String aMaterno;
+	private Integer idTipoPersona;
 	private Boolean existia;
 	
 	public Integer getIdPersona() {
@@ -37,6 +38,12 @@ public class PersonaGenericaVO  implements Serializable{
 	}
 	public void setaMaterno(String aMaterno) {
 		this.aMaterno = aMaterno;
+	}
+	public Integer getIdTipoPersona() {
+		return idTipoPersona;
+	}
+	public void setIdTipoPersona(Integer idTipoPersona) {
+		this.idTipoPersona = idTipoPersona;
 	}
 	public Boolean getExistia() {
 		return existia;
