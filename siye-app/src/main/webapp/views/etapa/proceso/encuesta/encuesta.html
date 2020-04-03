@@ -159,12 +159,11 @@
 																				</div>
 																				<div class="col-md-5 col-sm-5 col-xs-6">
 																				  	<ul>
-																						<li style="list-style: none; margin-top: 1%; margin-bottom: 2%;"
-																							ng-repeat="opciones in respuesta.opciones">
+																						<li style="list-style: none; margin-top: 1%; margin-bottom: 2%;">
 																							
 																							<div class="opcion-respuesta">
-																								<div class="btn-group" data-toggle="buttons">
-																									<label class="btn btn-default m-3">
+																								<div class="btn-group" data-toggle="buttons" >
+																									<label class="btn btn-default m-3" ng-repeat="opciones in respuesta.opciones">
 																										<input type="radio" autocomplete="off" ng-value=1
 																										name="{{respuesta.txPregunta}}" id="{{opciones.idOpcion}}" 
 																										ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
