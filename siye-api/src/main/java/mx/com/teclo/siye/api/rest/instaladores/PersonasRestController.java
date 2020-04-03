@@ -12,6 +12,7 @@ import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.negocio.service.instalador.PersonasService;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaGenericaVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 
 @RestController
 @RequestMapping("/instalador")
@@ -22,14 +23,14 @@ public class PersonasRestController {
 	
 	@RequestMapping(value="/nuevoInstalador", method = RequestMethod.POST)
 	//@PreAuthorize("hasAnyAuthority('SERVICE7_REP_USUARIO')")
-	public ResponseEntity<PersonaGenericaVO> nuevoInstalador (
+	public ResponseEntity<PersonaVO> nuevoInstalador (
 		@RequestBody PersonaGenericaVO personaGenericaVO
 	)throws Exception, BusinessException, NotFoundException{
 		String mensajeErr = "";
-		PersonaGenericaVO result = personasService.nuevoInstalador(personaGenericaVO, mensajeErr);
-		if(personaGenericaVO.getExistia() == false) {
+		PersonaVO result = personasService.nuevoInstalador(personaGenericaVO, mensajeErr);
+		if(result.getExistia() == false) {
 			personasService.ordenarInstaladores(mensajeErr);
 		}
-		return new ResponseEntity<PersonaGenericaVO>(result, HttpStatus.OK);
+		return new ResponseEntity<PersonaVO>(result, HttpStatus.OK);
 	}
 }

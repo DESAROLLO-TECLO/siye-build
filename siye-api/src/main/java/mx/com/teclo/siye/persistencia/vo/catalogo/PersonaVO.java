@@ -19,6 +19,8 @@ public class PersonaVO implements Serializable {
 	private String nbPersona;
 	private String nbPatPersona;
 	private String nbMatPersona;
+	private Integer idTipoPersona;
+	private Boolean existia;
 	
 	public Integer getIdPersona() {
 		return idPersona;
@@ -43,5 +45,17 @@ public class PersonaVO implements Serializable {
 	}
 	public void setNbMatPersona(String nbMatPersona) {
 		this.nbMatPersona = nbMatPersona;
+	}
+	public Integer getIdTipoPersona() {
+		return idTipoPersona;
+	}
+	public void setIdTipoPersona(Integer idTipoPersona) {
+		this.idTipoPersona = idTipoPersona;
+	}
+	public Boolean getExistia() {
+		return existia;
+	}
+	public void setExistia(Boolean existia) {
+		this.existia = existia;
 	}
 }

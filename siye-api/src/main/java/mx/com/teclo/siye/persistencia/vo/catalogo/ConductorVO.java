@@ -19,6 +19,7 @@ public class ConductorVO implements Serializable{
 	private String nbConductor;
 	private String nbApepatConductor;
 	private String nbApematConductor;
+	private Boolean existia;
 	
 	public Integer getIdConductor() {
 		return idConductor;
@@ -43,5 +44,11 @@ public class ConductorVO implements Serializable{
 	}
 	public void setNbApematConductor(String nbApematConductor) {
 		this.nbApematConductor = nbApematConductor;
+	}
+	public Boolean getExistia() {
+		return existia;
+	}
+	public void setExistia(Boolean existia) {
+		this.existia = existia;
 	}
 }

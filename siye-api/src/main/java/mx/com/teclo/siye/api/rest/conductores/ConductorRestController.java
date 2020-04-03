@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.negocio.service.conductor.ConductorService;
+import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaGenericaVO;
 
 @RestController
@@ -22,14 +23,14 @@ public class ConductorRestController {
 	
 	@RequestMapping(value="/nuevoConductor", method = RequestMethod.POST)
 	//@PreAuthorize("hasAnyAuthority('SERVICE7_REP_USUARIO')")
-	public ResponseEntity<PersonaGenericaVO> nuevoConductor (
+	public ResponseEntity<ConductorVO> nuevoConductor (
 		@RequestBody PersonaGenericaVO personaGenericaVO
 	)throws Exception, BusinessException, NotFoundException{
 		String mensajeErr = ""; 
-		PersonaGenericaVO result = conductorService.nuevoConductor(personaGenericaVO, mensajeErr);
-		if(personaGenericaVO.getExistia() == false) {
+		ConductorVO result = conductorService.nuevoConductor(personaGenericaVO, mensajeErr);
+		if(result.getExistia() == false) {
 			conductorService.ordenarConductores(mensajeErr);
 		}
-		return new ResponseEntity<PersonaGenericaVO>(result, HttpStatus.OK);
+		return new ResponseEntity<ConductorVO>(result, HttpStatus.OK);
 	}
 }
