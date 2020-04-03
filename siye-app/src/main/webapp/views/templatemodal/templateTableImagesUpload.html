@@ -1,0 +1,90 @@
+<div class="row">
+	<div class="col-xs-12 col-sm-12 col-md-12">
+		<div class="col-xs-5 col-sm-3 col-md-3">
+			<div ng-if="paramConfiguracion.showComponentCopy">
+				<label class="stile-puntero-pointer" for="{{idElementUp}}checkAll">Seleccionar Todos</label>
+				<label
+					class="containerCheck">
+					<input id="{{idElementUp}}checkAll" type="checkbox" ng-checked="panelAuxiliar.isCheckAll" 
+						ng-false-value="false" ng-true-value="true" ng-model="panelAuxiliar.isCheckAll">
+					<span class="checkmark"></span>
+				</label>
+			</div>
+		</div>
+		<div class="col-xs-1 col-sm-3 col-md-6"></div>
+		<div class="col-xs-2 col-sm-2 col-md-1">
+			<input type="file" nv-file-select=""
+				uploader="fileUploader" id="file-1"
+				class="inputfile inputfile-1" multiple />
+			<label for="file-1" capture="camera" class="btn btn-danger">
+				<i class="fa fa-camera fa-lg" aria-hidden="true"></i>
+			</label>
+		</div>
+		<div class="col-xs-2 col-sm-2 col-md-1" ng-if="paramConfiguracion.showComponentCopy">
+			<label  capture="camera" class="btn btn-danger">
+				<i class="fa fa-scissors" aria-hidden="true"></i>
+			</label>
+		</div>
+		<div class="col-xs-2 col-sm-2 col-md-1" ng-if="paramConfiguracion.showComponentCopy">
+			<label class="btn btn-danger">
+				<i class="fa fa-clipboard" aria-hidden="true"></i>
+			</label>
+		</div>
+	</div>
+	<div class="col-xs-12 col-sm-12 col-md-12">
+		<div class="col-xs-12 col-sm-12 col-md-12">
+			<div class="col-xs-12 col-sm-12 col-md-12 border-div">
+				<div ng-if="false" class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 border-punteado-div">
+					<div class="col-xs-12 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4 middleRow">
+						<i class="fa fa-upload fa-5x" aria-hidden="true"></i>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-12 col-md-12">
+					<div><!-- aqui se coloca el ng-repeat -->
+						<div class="col-xs-6 col-sm-2 col-md-2">
+							<label class="containerCheck" ng-if="paramConfiguracion.showComponentCopy">
+								<input id="{{idElementUp+fileItem.unic}}inputUload" type="checkbox" ng-checked="fileItem.isCopy" 
+									ng-false-value="false" ng-true-value="true" ng-model="fileItem.isCopy">
+								<span class="checkmark"></span>
+							</label>
+							<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>
+						</div>
+						<div class="col-xs-6 col-sm-3 col-md-3">
+							Nombre del Proceso
+						</div>
+						<div class="col-xs-12 col-sm-3 col-md-3" ng-if="tpDocumentList.length > 0">
+							<div class="form-group">
+	                                    <label>
+	                                        *Tipo de Documento
+	                                    </label>
+	                                    <div class="input-group">
+	                                        <div class="input-group-addon">
+	                                            <i class="fa fa-list-alt"></i>
+	                                        </div>
+	                                        <select class="form-control" name="encuesta" id="encuesta"
+	                                        	ng-required="true" select2 data-minimum-results-for-search="Infinity" 
+	                                        	idioma-s2="{{currentLanguage}}" ng-model="fileItem.imagenVO.idTipoExpediente" 
+	                                   			ng-options="tipo.idTipoExpediente as tipo.nbTipoExpediente for tipo in tpDocumentList">
+												<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+											</select>
+	                                    </div>
+	                                </div>
+						</div>
+						<div class="col-xs-6 col-sm-2 col-md-2">
+							ImageName... Size: 0.230mb
+						</div>
+						<div class="col-xs-6 col-sm-2 col-md-2">
+							<div class="col-xs-6 col-sm-6 col-md-6">
+								<i class="fa fa-check-square fa-2x" aria-hidden="true"></i>
+							</div>
+							<div class="col-xs-6 col-sm-6 col-md-6">
+								<i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
