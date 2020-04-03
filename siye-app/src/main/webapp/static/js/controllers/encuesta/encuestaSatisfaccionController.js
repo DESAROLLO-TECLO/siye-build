@@ -36,7 +36,7 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
         tipoBusqueda: [
             {idTipo:1, cdTipo:"ORDEN",	nbTipo:"Orden de Servicio"},
             {idTipo:2, cd:"PLACA", 		nbTipo:"Placa Vehicular"},
-            {idTipo:3, cdTipo:"VIN",	nbTipo:"VIN"}
+            {idTipo:3, cdTipo:"VIN",	nbTipo:"VIN"} 
         ]
 	};
 	
