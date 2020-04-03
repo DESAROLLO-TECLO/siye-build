@@ -160,7 +160,8 @@ public class PersonasServiceImpl implements PersonasService{
 			}
 			
 			String consPersonalizada = 
-			"SELECT ID_PERSONA AS idPersona, NB_PERSONA AS nbPersona, "
+			"SELECT "
+			+ "	ID_PERSONA AS idPersona, NB_PERSONA AS nbPersona, "
 			+ "	NB_PAT_PERSONA AS nbPatPersona, NB_MAT_PERSONA AS nbMatPersona, "
 			+ "	NU_ORDEN AS nuOrden, ST_ACTIVO AS stActivo, ID_USR_CREACION AS idUsrCreacion, "
 			+ "	FH_CREACION AS fhCreacion, ID_USR_MODIFICA AS idUsrModifica, "
@@ -175,10 +176,10 @@ public class PersonasServiceImpl implements PersonasService{
 				
 				PersonaDTO personaDTO = new PersonaDTO();
 				
-//				personaDTO.setIdRhInstalador(personaCompVO.getIdRhInstalador());
-//				personaDTO.setNbRhInstalador(personaCompVO.getNbRhInstalador());
-//				personaDTO.setNbPatRhInstalador(personaCompVO.getNbPatRhInstalador());
-//				personaDTO.setNbMatRhInstalador(personaCompVO.getNbMatRhInstalador());
+				personaDTO.setIdPersona(personaCompVO.getIdPersona());
+				personaDTO.setNbPersona(personaCompVO.getNbPersona());
+				personaDTO.setNbPatPersona(personaCompVO.getNbPatPersona());
+				personaDTO.setNbMatPersona(personaCompVO.getNbMatPersona());
 				personaDTO.setNuOrden(x+2);
 				personaDTO.setStActivo(personaCompVO.getStActivo());
 				personaDTO.setIdUsrCreacion(personaCompVO.getIdUsrCreacion());
