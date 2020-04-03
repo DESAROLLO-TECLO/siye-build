@@ -141,7 +141,7 @@ public class PlanProcesoDAOImpl extends BaseDaoHibernate<PlanProcesoDTO> impleme
 		StringBuilder consulta = new StringBuilder("SELECT pp.ID_PROCESO AS idProceso, proceso.TX_PROCESO AS cdProceso, proceso.NU_MAX_IMAGENES AS nuMaxImg " + 
 				"   FROM TIE036D_IE_PLAN_PROCESO pp" + 
 				"     INNER JOIN TIE035C_IE_PROCESOS proceso ON (pp.ID_PROCESO  = proceso.ID_PROCESO)" + 
-				"     WHERE pp.ID_PLAN ="+ idPlan +" AND pp.ST_ACTIVO =1 AND proceso.ST_ACTIVO =1");
+				"     WHERE pp.ID_PLAN ="+ idPlan +" AND pp.ST_ACTIVO =1 AND proceso.ST_ACTIVO =1 ORDER BY proceso.ID_PROCESO ASC");
 		List<ExpedienteNivelProcesoVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idProceso",LongType.INSTANCE)
 				.addScalar("cdProceso",StringType.INSTANCE)

@@ -273,6 +273,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 	};
 
 	public List<ImagenVO> saveImagenEvidencia(List<ImagenVO> expedientes, Long idUsuario, Date fechaCarga,Long nuMaximoImagenes) {
+		Long nuOrden =0L;
 		
 		if (expedientes.size() <= nuMaximoImagenes) {
 			ImagenVO imagen = expedientes.get(0);
@@ -302,6 +303,13 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 
 			for (ImagenVO archivo : expedientes) {
 				ExpedientesImgDTO registro = null;
+				
+				if(archivo.getNuOrden()!=null) {
+					nuOrden = archivo.getNuOrden();
+				}else {
+					nuOrden++;
+				}
+				
 				if (archivo.getIdExpedienteODS() != null) {
 					 registro  = expedienteImgDAO.findOne(archivo.getIdExpedienteODS());
 						registro.setIdOrdenServicio(ordenServicioDTO);
@@ -310,7 +318,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 						registro.setIncidencia(incidenciaDTO!=null ? incidenciaDTO: null);
 						registro.setTipoExpediente(tipoExpedienteDTO!=null ? tipoExpedienteDTO : null);	
 						registro.setIdProceso(procesoDTO!=null ? procesoDTO : null);
-						registro.setNuOrden(null);
+						registro.setNuOrden(nuOrden);
 						registro.setNbExpedienteODS(archivo.getNbExpedienteODS());
 						registro.setCdTipoArchivo(archivo.getCdTipoArchivo());
 						registro.setLbExpedienteODS(archivo.getLbExpedienteODS());
@@ -329,7 +337,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 						registro.setIncidencia(incidenciaDTO!=null ? incidenciaDTO: null);
 						registro.setTipoExpediente(tipoExpedienteDTO!=null ? tipoExpedienteDTO : null);			
 						registro.setIdProceso(procesoDTO!=null ? procesoDTO : null);
-						registro.setNuOrden(null);
+						registro.setNuOrden(nuOrden);
 						registro.setNbExpedienteODS(archivo.getNbExpedienteODS());
 						registro.setCdTipoArchivo(archivo.getCdTipoArchivo());
 						registro.setLbExpedienteODS(archivo.getLbExpedienteODS());
@@ -372,6 +380,9 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 				registro.setIdUsrModifica(idUsuario);
 				expedienteImgDAO.update(registro);
 				imagen.setLbExpedienteODS(null);
+			}else {
+				expedientes = null;
+				break;
 			}
 		}
 		return expedientes;
@@ -387,7 +398,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 			break;
 
 		case CDPROCESO:
-			respuesta = expedienteImgDAO.getImgByPlan(nuOrderServicio, idValorBuscar);
+			respuesta = expedienteImgDAO.getImgByProceso(nuOrderServicio, idValorBuscar);
 			break;
 
 		case CDENCUESTA:

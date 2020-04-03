@@ -65,6 +65,9 @@ public class ExpedienteImgRestController {
 	public ResponseEntity<List<ImagenVO>> deleteEvidencia(@RequestBody List<ImagenVO> expedientes) throws NotFoundException{
 		UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO(); 		
 		List<ImagenVO> respuesta = expedienteImg.delListEvidencia(expedientes, usuario.getId());
+		if(respuesta== null) {
+			throw new NotFoundException("Ocurrio un error el eliminar");
+		}
 		return new ResponseEntity<List<ImagenVO>>(respuesta, HttpStatus.OK);
 	}
 	

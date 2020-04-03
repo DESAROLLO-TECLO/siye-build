@@ -9,6 +9,7 @@ public class ImagenVO {
 	private Long idPregunta;
 	private Long idIncidencia;
 	private Long idTipoExpediente;
+	private Long nuOrden;
 	private String nbExpedienteODS; 
 	private String cdTipoArchivo;
 	private byte[] lbExpedienteODS;
@@ -127,6 +128,18 @@ public class ImagenVO {
 	 */
 	public void setIdProceso(Long idProceso) {
 		this.idProceso = idProceso;
+	}
+	/**
+	 * @return the nuOrden
+	 */
+	public Long getNuOrden() {
+		return nuOrden;
+	}
+	/**
+	 * @param nuOrden the nuOrden to set
+	 */
+	public void setNuOrden(Long nuOrden) {
+		this.nuOrden = nuOrden;
 	}
 	
 }
