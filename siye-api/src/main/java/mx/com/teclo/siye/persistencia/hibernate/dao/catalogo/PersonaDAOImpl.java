@@ -8,11 +8,10 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
-import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConductorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.PersonaDTO;
 
 @Repository
-public class InstaladorDAOImpl extends BaseDaoHibernate<PersonaDTO> implements InstaladorDAO{
+public class PersonaDAOImpl extends BaseDaoHibernate<PersonaDTO> implements PersonaDAO{
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -27,9 +26,9 @@ public class InstaladorDAOImpl extends BaseDaoHibernate<PersonaDTO> implements I
 	@Override
 	public List<PersonaDTO> getInstaladorXNombre(String nombre, String aPaterno, String aMaterno) {
 		Criteria criteria = getCurrentSession().createCriteria(PersonaDTO.class);
-		criteria.add(Restrictions.eq("nbRhInstalador", nombre));
-		criteria.add(Restrictions.eq("nbPatRhInstalador", aPaterno));
-		criteria.add(Restrictions.eq("nbMatRhInstalador", aMaterno));
+		criteria.add(Restrictions.eq("nbPersona", nombre));
+		criteria.add(Restrictions.eq("nbPatPersona", aPaterno));
+		criteria.add(Restrictions.eq("nbMatPersona", aMaterno));
 		criteria.add(Restrictions.eq("stActivo", true));
 		
 		return (List<PersonaDTO>)criteria.list();
