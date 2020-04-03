@@ -20,7 +20,8 @@
     <!-- botón flotante para agregar incidencia -->
     <div class="btn-flotente-incidencia">
         <button type="button" class="btn btn-warning">
-            <span class="glyphicon glyphicon-open-file" aria-hidden="true"></span> Incidencia
+            <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> 
+            <p>Incidencia</p>
         </button>
     </div>
 
@@ -33,244 +34,242 @@
                         <h3 class="box-title"> Orden de Servicio: {{dataEtapa.cdOrdenServicio}} </h3>
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse">
-									<i class="fa fa-minus"></i>
-								</button>
+                                <i class="fa fa-minus"></i>
+                            </button>
                         </div>
                     </div>
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-6 col-sm-12">
-                                <div class="form-group">
-                                    <label ng-if="dataEtapa.transportista != null ">
-                                        Transportista: 
-                                        <span class="etapa-texto">
-                                            {{dataEtapa.transportista}}
-                                        </span>
-                                    </label>
-                                    <label ng-if="dataEtapa.transportista == null ">
-                                        Transportista: 
-                                        <span class="etapa-texto">
-                                            Sin nombre  de Transportista
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-12 ">
-                                <div class="form-group" style="display: block; float:right;">
-                                    <label>Fecha: 
-                                        <span class="etapa-texto">
-                                            {{fechaHoy | date:" dd / MM / yy"}}
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
                             <div class="col-md-12">
-                                <hr>
-                            </div>
-                            <div class="col-md-4 col-sm-6">
-                                <div class="form-group">
-                                    <label  ng-if="dataEtapa.vehiculo.cdPlacaVehiculo != null ">
-                                        Placa: 
-                                        <span class="etapa-texto">
-                                            {{dataEtapa.vehiculo.cdPlacaVehiculo}}
-                                        </span>
-                                    </label>
-                                    <label  ng-if="dataEtapa.vehiculo.cdPlacaVehiculo == null ">
-                                        Placa: 
-                                        <span class="etapa-texto">
-                                            Placa no Registrada
-                                        </span>
-                                    </label>
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-12 ">
+                                        <div class="form-group">
+                                            <label ng-if="dataEtapa.transportista != null ">
+                                                Transportista: 
+                                                <span class="etapa-texto">
+                                                    {{dataEtapa.transportista}}
+                                                </span>
+                                            </label>
+                                            <label ng-if="dataEtapa.transportista == null ">
+                                                Transportista: 
+                                                <span class="etapa-texto">
+                                                    Sin nombre  de Transportista
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12 ">
+                                        <div class="form-group" style="display: block; float:right;">
+                                            <span class="glyphicon glyphicon glyphicon-time" aria-hidden="true"></span>
+                                            <label>
+                                                <span class="etapa-texto">
+                                                    Fecha: {{fechaHoy | date:" dd / MM / yyyy"}}
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6">
-                                <div class="form-group">
-                                    <label  ng-if="dataEtapa.vehiculo.cdTarjetaDeCirculacion != null ">
-                                        Tarjeta de Circulación: 
-                                        <span class="etapa-texto">
-                                            {{dataEtapa.vehiculo.cdTarjetaDeCirculacion}}
-                                        </span>
-                                    </label>
-                                    <label  ng-if="dataEtapa.vehiculo.cdTarjetaDeCirculacion == null ">
-                                        Tarjeta de Circulación: 
-                                        <span class="etapa-texto">
-                                            Tarjeta no Registrada
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6">
-                                <div class="form-group">
-                                    <label  ng-if="dataEtapa.vehiculo.cdVin != null ">
-                                        VIN: 
-                                        <span class="etapa-texto">
-                                            {{dataEtapa.vehiculo.cdVin}}
-                                        </span>
-                                    </label>
-                                    <label  ng-if="dataEtapa.vehiculo.cdVin == null ">
-                                        VIN: 
-                                        <span class="etapa-texto">
-                                            VIN no registrado
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4 col-sm-6">
-                                <div class="form-group">
-                                    <label  ng-if="dataEtapa.vehiculo.consecionario != null ">
-                                        Consecionario: 
-                                        <span class="etapa-texto">
-                                            {{dataEtapa.vehiculo.consecionario.nbConsecion}}
-                                        </span>
-                                    </label>
-                                    <label  ng-if="dataEtapa.vehiculo.consecionario == null ">
-                                        Consecionario: 
-                                        <span class="etapa-texto">
-                                            Consecionario no registrado
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6">
-                                <div class="form-group">
-                                    <label  ng-if="dataEtapa.vehiculo.tipoVehiculo != null ">
-                                        Tipo  de Vehiculo: 
-                                        <span class="etapa-texto">
-                                            {{dataEtapa.vehiculo.tipoVehiculo.cdTipoVehiculo}}
-                                        </span>
-                                    </label>
-                                    <label  ng-if="dataEtapa.vehiculo.tipoVehiculo == null ">
-                                        Tipo  de Vehiculo: 
-                                        <span class="etapa-texto">
-                                            Tipo no registrado
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6">
-                                <div class="form-group">
-                                    <label  ng-if="dataEtapa.vehiculo.tipoVehiculo != null ">
-                                        Tipo  de Vehiculo: 
-                                        <span class="etapa-texto">
-                                            {{dataEtapa.vehiculo.tipoVehiculo.nbTipoVehiculo}}
-                                        </span>
-                                    </label>
-                                    <label  ng-if="dataEtapa.vehiculo.tipoVehiculo == null ">
-                                        Tipo  de Vehiculo: 
-                                        <span class="etapa-texto">
-                                            Vehiculo no registrado
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-12">
-                                <hr>
-                            </div>
-
-                            <div class="col-md-4 col-sm-6">
-                                <div class="form-group">
-                                    <label  ng-if="dataEtapa.centroInstalacion != null ">
-                                        Código de Centro de Instalacion: 
-                                        <span class="etapa-texto">
-                                            {{dataEtapa.centroInstalacion.cdCentroInstalacion}}
-                                        </span>
-                                    </label>
-                                    <label  ng-if="dataEtapa.centroInstalacion == null ">
-                                        Código de Centro de Instalacion: 
-                                        <span class="etapa-texto">
-                                            Código no registrado
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6">
-                                <div class="form-group">
-                                    <label  ng-if="dataEtapa.centroInstalacion != null ">
-                                        Nombre de Centro de Instalacion: 
-                                        <span class="etapa-texto">
-                                            {{dataEtapa.centroInstalacion.nbCentroInstalacion}}
-                                        </span>
-                                    </label>
-                                    <label  ng-if="dataEtapa.centroInstalacion == null ">
-                                        Nombre de Centro de Instalacion: 
-                                        <span class="etapa-texto">
-                                            Nombre  no registrado
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6">
-                                <div class="form-group">
-                                    <label  ng-if="dataEtapa.kitInstalacion != null ">
-                                        Kit Instalación: 
-                                        <span class="etapa-texto">
-                                            {{dataEtapa.kitInstalacion.cdKitInstalacion}}
-                                        </span>
-                                    </label>
-                                    <label  ng-if="dataEtapa.kitInstalacion == null ">
-                                        Kit Instalación: 
-                                        <span class="etapa-texto">
-                                            Kit no registrado
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <hr>
-                            </div>
-                            <div class="col-md-4 col-sm-6">
-                                <div class="form-group">
-                                    <label  ng-if="dataEtapa.plan != null ">
-                                        Código de Plan: 
-                                        <span class="etapa-texto">
-                                            {{dataEtapa.plan.cdPlan}}
-                                        </span>
-                                    </label>
-                                    <label  ng-if="dataEtapa.plan == null ">
-                                        Código de Plan: 
-                                        <span class="etapa-texto">
-                                            Plan no registrado
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-6">
-                                <div class="form-group">
-                                    <label  ng-if="dataEtapa.plan != null ">
-                                       Nombre  de Plan: 
-                                        <span class="etapa-texto">
-                                            {{dataEtapa.plan.nbPlan}}
-                                        </span>
-                                    </label>
-                                    <label  ng-if="dataEtapa.plan == null ">
-                                        Nombre  de Plan: 
-                                        <span class="etapa-texto">
-                                            Plan no registrado
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-sm-12 ">
-                                <div class="form-group">
-                                    <label  for="stValidar" class="labelCheck">
-                                        Solo validar intalación
-                                    </label>
-                                    <br>
-                                    <switcher class="swTeclo"
-                                        ng-model="stValidarCheck"
-                                        id-check="stValidar"
-                                        true-label="<i class='fa fa-check-circle'></i>"
-                                        true-value="1"
-                                        false-label="<i class='fa fa-times-circle'></i>"
-                                        false-value="0">
-                                    </switcher>
+                                <div class="row">
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group" > 
+                                            <label style="display: block !important;"  ng-if="dataEtapa.vehiculo.cdPlacaVehiculo != null ">
+                                                Placa: 
+                                                <span class="etapa-texto">
+                                                    {{dataEtapa.vehiculo.cdPlacaVehiculo}}
+                                                </span>
+                                            </label>
+                                            <label style="display: block !important;" ng-if="dataEtapa.vehiculo.cdPlacaVehiculo == null ">
+                                                Placa: 
+                                                <span class="etapa-texto">
+                                                    Placa no Registrada
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label  ng-if="dataEtapa.vehiculo.cdTarjetaDeCirculacion != null ">
+                                                Tarjeta de Circulación: 
+                                                <span class="etapa-texto">
+                                                    {{dataEtapa.vehiculo.cdTarjetaDeCirculacion}}
+                                                </span>
+                                            </label>
+                                            <label  ng-if="dataEtapa.vehiculo.cdTarjetaDeCirculacion == null ">
+                                                Tarjeta de Circulación: 
+                                                <span class="etapa-texto">
+                                                    Tarjeta no Registrada
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label  ng-if="dataEtapa.vehiculo.cdVin != null ">
+                                                VIN: 
+                                                <span class="etapa-texto">
+                                                    {{dataEtapa.vehiculo.cdVin}}
+                                                </span>
+                                            </label>
+                                            <label  ng-if="dataEtapa.vehiculo.cdVin == null ">
+                                                VIN: 
+                                                <span class="etapa-texto">
+                                                    VIN no registrado
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+        
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label  ng-if="dataEtapa.vehiculo.consecionario != null ">
+                                                Concesionario: 
+                                                <span class="etapa-texto">
+                                                    {{dataEtapa.vehiculo.consecionario.nbConsecion}}
+                                                </span>
+                                            </label>
+                                            <label  ng-if="dataEtapa.vehiculo.consecionario == null ">
+                                                Concesionario: 
+                                                <span class="etapa-texto">
+                                                    Concesionario no registrado
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label  ng-if="dataEtapa.vehiculo.tipoVehiculo != null ">
+                                                Tipo  de Vehículo: 
+                                                <span class="etapa-texto">
+                                                    {{dataEtapa.vehiculo.tipoVehiculo.cdTipoVehiculo}}
+                                                </span>
+                                            </label>
+                                            <label  ng-if="dataEtapa.vehiculo.tipoVehiculo == null ">
+                                                Tipo  de Vehículo: 
+                                                <span class="etapa-texto">
+                                                    Tipo no registrado
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label  ng-if="dataEtapa.vehiculo.tipoVehiculo != null ">
+                                                Nombre  de Vehículo: 
+                                                <span class="etapa-texto">
+                                                    {{dataEtapa.vehiculo.tipoVehiculo.nbTipoVehiculo}}
+                                                </span>
+                                            </label>
+                                            <label  ng-if="dataEtapa.vehiculo.tipoVehiculo == null ">
+                                                Nombre  de Vehículo: 
+                                                <span class="etapa-texto">
+                                                    Vehículo no registrado
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label  ng-if="dataEtapa.centroInstalacion != null ">
+                                                Código de Centro de Instalación: 
+                                                <span class="etapa-texto">
+                                                    {{dataEtapa.centroInstalacion.cdCentroInstalacion}}
+                                                </span>
+                                            </label>
+                                            <label  ng-if="dataEtapa.centroInstalacion == null ">
+                                                Código de Centro de Instalación: 
+                                                <span class="etapa-texto">
+                                                    Código no registrado
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label  ng-if="dataEtapa.centroInstalacion != null ">
+                                                Nombre de Centro de Instalación: 
+                                                <span class="etapa-texto">
+                                                    {{dataEtapa.centroInstalacion.nbCentroInstalacion}}
+                                                </span>
+                                            </label>
+                                            <label  ng-if="dataEtapa.centroInstalacion == null ">
+                                                Nombre de Centro de Instalación: 
+                                                <span class="etapa-texto">
+                                                    Nombre  no registrado
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label  ng-if="dataEtapa.kitInstalacion != null ">
+                                                Kit Instalación: 
+                                                <span class="etapa-texto">
+                                                    {{dataEtapa.kitInstalacion.cdKitInstalacion}}
+                                                </span>
+                                            </label>
+                                            <label  ng-if="dataEtapa.kitInstalacion == null ">
+                                                Kit Instalación: 
+                                                <span class="etapa-texto">
+                                                    Kit no registrado
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label  ng-if="dataEtapa.plan != null ">
+                                                Código de Plan: 
+                                                <span class="etapa-texto">
+                                                    {{dataEtapa.plan.cdPlan}}
+                                                </span>
+                                            </label>
+                                            <label  ng-if="dataEtapa.plan == null ">
+                                                Código de Plan: 
+                                                <span class="etapa-texto">
+                                                    Plan no registrado
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 col-sm-6">
+                                        <div class="form-group">
+                                            <label  ng-if="dataEtapa.plan != null ">
+                                               Nombre  de Plan: 
+                                                <span class="etapa-texto">
+                                                    {{dataEtapa.plan.nbPlan}}
+                                                </span>
+                                            </label>
+                                            <label  ng-if="dataEtapa.plan == null ">
+                                                Nombre  de Plan: 
+                                                <span class="etapa-texto">
+                                                    Plan no registrado
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <!--
+                                        <div class="col-md-4 col-sm-12 ">
+                                        <div class="form-group">
+                                            <label  for="stValidar" class="labelCheck">
+                                                Solo validar intalación
+                                            </label>
+                                            <br>
+                                            <switcher class="swTeclo"
+                                                ng-model="stValidarCheck"
+                                                id-check="stValidar"
+                                                true-label="<i class='fa fa-check-circle'></i>"
+                                                true-value="1"
+                                                false-label="<i class='fa fa-times-circle'></i>"
+                                                false-value="0">
+                                            </switcher>
+                                        </div>
+                                    </div>
+                                    -->
+                                    
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </div>
@@ -280,7 +279,18 @@
                 <div class="box box-danger">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            <br><br>
+                            <div class="row">
+                                <div class="col-md-6">
+                                </div>
+                                <div class="col-md-6">
+                                    <div style="float: right;">
+                                        <a class="btn btn-primary" href="#" role="button">
+                                            <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                                            Agregar Evidencia</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
                             <div class="row">
                                 <div class="col-sm-6 col-md-4" ng-repeat="item in dataPlan">
                                     <a ng-class="{'inactiv-click' : item.statusProceos == false}"

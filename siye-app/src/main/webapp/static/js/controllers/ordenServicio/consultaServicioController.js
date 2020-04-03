@@ -1,6 +1,6 @@
 angular.module(appTeclo).controller('consultaServicioController', function($scope, showAlert, $location, growl, consultaServicioService, opciones) {
     $scope.tabla = new Object({
-        order: 'folio',
+        order: '',
         reverse: false,
         paginacion: [5, 10, 20, 50],
         cantidadPaginacion: 5,
@@ -73,11 +73,11 @@ angular.module(appTeclo).controller('consultaServicioController', function($scop
     	}
     }
 
-    $scope.mostrarModal = function(vo) {
-        showAlert.confirmacion("Se redireccionará a otra pantalla para la edición del servicio. ¿Desea continuar?",
+    $scope.direccionar = function(idOrdenServicio) {
+        showAlert.confirmacion("Se redireccionará a otra pantalla para realizar el servicio. ¿Desea continuar?",
             //Aceptar
             function() {
-                $location.path("/editar/" + vo.idOrdenServicio + "/" + $scope.parametroBusqueda.tipoBusqueda.cdTipoBusqueda + "/" + $scope.parametroBusqueda.valor);
+                $location.path("/etapas/" + idOrdenServicio);
                 $('.modal-backdrop').remove();
             },
             //Cancelar
@@ -89,4 +89,59 @@ angular.module(appTeclo).controller('consultaServicioController', function($scop
 
     buscarTipoBusqueda();
     $scope.buscarOrdenServicio(false);
+    
+    //  metodo para generarReporteExcel
+    $scope.descargarExcel = function() {
+        let peticionReporteVO = new Object();
+        peticionReporteVO.header = getCabeceras();
+        peticionReporteVO.values = getContenido($scope.listServicio);
+        peticionReporteVO.titulo = "Reporte de Incidencias";
+        consultaServicioService.descargarReporteExcel(peticionReporteVO).success(function(data, status, headers) {
+            let filename = headers('filename');
+            let file = new Blob([data], { type: 'application/vnd.ms-excel;base64,' });
+            consultaServicioService.downloadfile(file, filename);
+        }).error(function(data) {
+            mostrarAviso(data);
+        });
+    };
+
+    getCabeceras = () => {
+        let headers = new Array();
+        headers.push("ESTATUS");
+        headers.push("FOLIO");
+        headers.push("PLACA");
+        headers.push("VIN");
+        headers.push("CENTROINSTALACION");
+        headers.push("FECHA CITA");
+        headers.push("PLAN DE INSTALACION");
+        headers.push("PROCESO ACTUAL");
+        return headers;
+    };
+    getContenido = (list) => {
+        let array = new Array();
+        for (let i = 0; i < list.length; i++) {
+            let elemento = new Array();
+            elemento.push(list[i].stSeguimiento.nbStSeguimiento);
+            elemento.push(list[i].cdOrdenServicio);
+            elemento.push(list[i].vehiculo.cdPlacaVehiculo);
+            elemento.push(list[i].vehiculo.cdVin);
+            elemento.push(list[i].centroInstalacion.nbCentroInstalacion);
+            elemento.push(list[i].fhCita);
+            elemento.push(list[i].plan.nbPlan);
+            elemento.push(list[i].proceso.nbProceso == null ? "SIN PROCESO" : list[i].proceso.nbProceso);
+            array.push(elemento);
+        }
+        return array;
+    };
+    mostrarAviso = (data) => {
+        if (data != undefined && data.status === 404) {
+        	growl.error(data.message, { ttl: 5000 });
+        	functionMostrarDatosGenerales();
+        } else if (data != undefined && data.status === 400) {
+        	growl.error(data.message, { ttl: 5000 });
+        }
+         else {
+            growl.error('Ocurrió un error en la operación', { ttl: 5000 });
+        }
+    };
 });

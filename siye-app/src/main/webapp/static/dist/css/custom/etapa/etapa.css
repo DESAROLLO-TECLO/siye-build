@@ -78,9 +78,8 @@
   }
 
   .etapa-texto{
-      color: #cf0a2c;
+      display: block;
       font-weight: bold;
-      font-size: 1.2em;
   }
 
   .inactiv-click{

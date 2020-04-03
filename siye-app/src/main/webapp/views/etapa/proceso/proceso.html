@@ -21,7 +21,8 @@
     <!-- botón flotante para agregar incidencia -->
     <div class="btn-flotente-incidencia">
         <button type="button" class="btn btn-warning">
-            <span class="glyphicon glyphicon-open-file" aria-hidden="true"></span> Incidencia
+            <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> 
+            <p>Incidencia</p>
         </button>
     </div>
     
@@ -29,98 +30,100 @@
         <div class="row">
             <div class="col-md-10 col-md-offset-1 col-sm-12">
                 <div class="box box-danger">
-                    <div class="panel panel-default">
-                        <div class="panel-heading center">
-                            <h3>
-                                <span>
-                                    {{nombreEtapa}}
-                                </span>
-                            </h3>
+                    <div class="box-header with-border text-center">
+                        <h3 class="box-title"> {{nombreEtapa}} </h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
                         </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-9 col-sm-6">
-                                    <div class="form-group">
-                                        
-                                    </div>
-                                </div>
-                                <div class="col-md-3 col-sm-6">
-                                    <div class="form-group" style="display: block; float:right;">
-                                        <span class="glyphicon glyphicon glyphicon-time" aria-hidden="true"></span>
-                                        <label>Tiempo Transcurrido: 
-                                            <span class="etapa-texto">
-                                                {{tiempoTranscurrido | date:" dd / MM / yy"}}
-                                            </span>
-                                        </label>
-                                    </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                            </div>
+                            <div class="col-md-6 col-sm-12 ">
+                                <div class="form-group" style="display: block; float:right;">
+                                    <span class="glyphicon glyphicon glyphicon-time" aria-hidden="true"></span>
+                                    <label>Tiempo Transcurrido: 
+                                        <span class="etapa-texto">
+                                            {{tiempoTranscurrido | date:" dd / MM / yyyy"}}
+                                        </span>
+                                    </label>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group" >
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-teclo" role="progressbar" 
-                                                aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" 
-                                                style="width: 60%;">
-                                              Pocentaje de Avance: 60%
-                                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group" >
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-teclo" role="progressbar" 
+                                            aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" 
+                                            style="width: 60%;">
+                                          Pocentaje de Avance: 60%
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <br><br>
-                            <div class="row">
-                                <hr>
-                                <div class="col-sm-6 col-md-3" ng-repeat="item in dataEtapa">
-                                    <div ng-if="item.idEncuesta.cdEncuesta == 'SAT01'">
+                            <div class="col-md-4">
+                                <div style="float: right;">
+                                    <a class="btn btn-primary" href="#" role="button">
+                                        <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                                        Agregar Evidencia</a>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-sm-6 col-md-3" ng-repeat="item in dataEtapa">
+                                <div ng-if="item.idEncuesta.nbEncuesta == 'Satisfacción'">
+                                    <div class="dash-info" ng-class="{'color-fondo-contestado': item.stRespondida == true, 'color-fondo-desactivado': item.stActivaMostrar == false, 'color-fondo': item.stActivaMostrar == true}">
+                                        <div class="dash-img">
+                                            <img class="dash-img-img" 
+                                                src="static/dist/img/etapas/004-registration.png">
+                                        </div>
+                                        <div style="text-align: center;">
+                                            <switcher class="swTeclo switcherEncTransp"
+                                                id-check="stEncuestaTransportista"
+                                                ng-model="stActivarEncuesta"
+                                                ng-change="activarEncuesta(item.idEncuesta.idEncuesta)"
+                                                true-label="<i class='fa fa-check-circle'></i>"
+                                                true-value="1"
+                                                false-label="<i class='fa fa-times-circle'></i>"
+                                                false-value="0"
+                                                data-placement="top" title="Activar Encuesta">
+                                            </switcher>
+                                        </div>
+                                        
+                                        <div class="marcador" value="1" to="1" duration="2500" effect="swing">
+                                            {{item.idEncuesta.nbEncuesta}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="item.idEncuesta.nbEncuesta != 'Satisfacción'">
+                                    <a ng-class="{'inactiv-click' : item.stActivaMostrar == false}" 
+                                    href="#/etapas/proceso/encuesta/{{item.idEncuesta.idEncuesta}}/:0" 
+                                    data-toggle="tooltip" data-placement="bottom" title="{{item.idEncuesta.txEncuesta}}" >
                                         <div class="dash-info" ng-class="{'color-fondo-contestado': item.stRespondida == true, 'color-fondo-desactivado': item.stActivaMostrar == false, 'color-fondo': item.stActivaMostrar == true}">
                                             <div class="dash-img">
                                                 <img class="dash-img-img" 
                                                     src="static/dist/img/etapas/004-registration.png">
-                                            </div>
-                                            <div style="text-align: center;">
-                                                <switcher class="swTeclo switcherEncTransp"
-                                                    id-check="stEncuestaTransportista"
-                                                    ng-model="stActivarEncuesta"
-                                                    true-label="<i class='fa fa-check-circle'></i>"
-                                                    true-value="1"
-                                                    false-label="<i class='fa fa-times-circle'></i>"
-                                                    false-value="0"
-                                                    data-placement="top" title="Activar Encuesta">
-                                                </switcher>
-                                            </div>
-                                            
+                                            </div>                                                
                                             <div class="marcador" value="1" to="1" duration="2500" effect="swing">
                                                 {{item.idEncuesta.nbEncuesta}}
                                             </div>
                                         </div>
-                                    </div>
-                                    <div ng-if="item.idEncuesta.cdEncuesta != 'SAT01'">
-                                        <a ng-class="{'inactiv-click' : item.stActivaMostrar == false}" 
-                                        href="#/etapas/proceso/encuesta/{{item.idEncuesta.idEncuesta}}/:0" 
-                                        data-toggle="tooltip" data-placement="bottom" title="{{item.idEncuesta.txEncuesta}}" >
-                                            <div class="dash-info" ng-class="{'color-fondo-contestado': item.stRespondida == true, 'color-fondo-desactivado': item.stActivaMostrar == false, 'color-fondo': item.stActivaMostrar == true}">
-                                                <div class="dash-img">
-                                                    <img class="dash-img-img" 
-                                                        src="static/dist/img/etapas/004-registration.png">
-                                                </div>                                                
-                                                <div class="marcador" value="1" to="1" duration="2500" effect="swing">
-                                                    {{item.idEncuesta.nbEncuesta}}
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
+                                    </a>
                                 </div>
-                                
-                                <hr>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div style="float: right;">
-                                            <a class="btn btn-primary" href="#/consulta" role="button">Regresar</a>
-                                        </div>
-                                    </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                            </div>
+                            <div class="col-md-6">
+                                <div style="float: right;">
+                                    <a class="btn btn-primary" href="#/consulta" role="button">Regresar</a>
                                 </div>
                             </div>
                         </div>

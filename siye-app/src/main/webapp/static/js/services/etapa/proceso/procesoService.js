@@ -11,4 +11,14 @@ function($http, config) {
         });
     }
 
+    this.activarEncuesta = function(idEncuesta,idOrdenServicio,nuevoValor){
+        return $http.post(config.baseUrl + "/encuesta/activarEncuestaSatis", {
+            params:{
+                "idEncuesta": idEncuesta,
+                "idOrdenServicio": idOrdenServicio,
+                "nuevoValor": nuevoValor
+            }
+        });
+    }
+
 });
