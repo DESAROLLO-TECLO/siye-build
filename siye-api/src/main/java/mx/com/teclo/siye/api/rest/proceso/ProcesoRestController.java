@@ -133,7 +133,50 @@ public class ProcesoRestController {
 			 e.printStackTrace();	
 			 throw new NotFoundException("Ha ocurrido un imprevisto!, por favor contacte al administrador.");	
 		 }
-
-		 
 	 }
+	 
+		@RequestMapping(value="/iniciarProceso", method = RequestMethod.GET)
+		public ResponseEntity<Boolean> iniciarProceso (
+			@RequestParam(value="idOrdenServicio") long idOrdenServicio
+			) throws Exception, BusinessException, NotFoundException {
+			try {
+				Boolean correcto=procesoService.inicarProcesoOrdenServicio(idOrdenServicio);
+				return new ResponseEntity<Boolean>(correcto, HttpStatus.OK);
+			}catch (Exception e) {
+				e.printStackTrace();
+				throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
+			}		
+		}
+
+		
+		
+		@RequestMapping(value="/avanzarProceso", method = RequestMethod.GET)
+		public ResponseEntity<Boolean> avanzarProceso (
+				@RequestParam(value="idOrdenServicio") long idOrdenServicio,
+				@RequestParam(value="idProceso") long idProceso
+				) throws Exception, BusinessException, NotFoundException {
+				try {
+					Boolean correcto=procesoService.avanzarProcesoOrden(idOrdenServicio,idProceso);
+					return new ResponseEntity<Boolean>(correcto, HttpStatus.OK);
+				}catch (Exception e) {
+					e.printStackTrace();
+					throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
+				}		
+			}
+		
+		@RequestMapping(value="/finalizarProceso", method = RequestMethod.GET)
+		public ResponseEntity<Boolean> finalizarProceso (
+			@RequestParam(value="idOrdenServicio") long idOrdenServicio
+			) throws Exception, BusinessException, NotFoundException {
+			try {
+				Boolean correcto=procesoService.finalizarProceso(idOrdenServicio);
+				return new ResponseEntity<Boolean>(correcto, HttpStatus.OK);
+			}catch (Exception e) {
+				e.printStackTrace();
+				throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
+			}		
+		}
 }
+
+
+

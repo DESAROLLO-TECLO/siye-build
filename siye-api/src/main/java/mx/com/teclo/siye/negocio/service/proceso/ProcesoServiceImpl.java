@@ -18,6 +18,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.DispositivosDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanProcesoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.procesoencuesta.ProcesoEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaIntentosDTO;
@@ -25,6 +26,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitDispositivoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
+import mx.com.teclo.siye.persistencia.mybatis.dao.proceso.ProcesoDAO;
 import mx.com.teclo.siye.persistencia.mybatis.dao.proceso.ServicioEncuestasMyBatisDAO;
 import mx.com.teclo.siye.persistencia.vo.proceso.DispositivosVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.PlanProcesoVO;
@@ -65,6 +67,12 @@ public class ProcesoServiceImpl implements ProcesoService {
 	
 	@Autowired
 	private UsuarioFirmadoService usuarioFirmadoService;
+	
+	@Autowired
+	private StSeguimientoDAO stSeguimientoDAO;
+	
+	@Autowired
+	private ProcesoDAO procesoDAO;
 	
 	
 
@@ -243,6 +251,65 @@ public class ProcesoServiceImpl implements ProcesoService {
 		}
 		return  encuestasByProceso;
 	}
+	
+	@Override
+	@Transactional
+	public Boolean inicarProcesoOrdenServicio (Long idOrdenServicio)
+	{
+		OrdenServicioDTO orden=ordenServicioDAO.obtenerOrdenServicio(idOrdenServicio);
+		if(!orden.getStSeguimiento().getCdStSeguimiento().equals("NUEVO"))
+		{
+			orden.setStSeguimiento(stSeguimientoDAO.obtenerStSeguimientoByCodigo("CURSO"));
+			orden.setFhAtencionIni(new Date());
+			ordenServicioDAO.update(orden);
+			return true;
+			
+		}else
+		{
+		return false;	
+		}
+	}
+		
+		@Override
+		@Transactional
+		public Boolean finalizarProceso (Long idOrdenServicio)
+		{
+			OrdenServicioDTO orden=ordenServicioDAO.obtenerOrdenServicio(idOrdenServicio);
+			if(!orden.getStSeguimiento().getCdStSeguimiento().equals("CURSO"))
+			{
+				orden.setStSeguimiento(stSeguimientoDAO.obtenerStSeguimientoByCodigo("FINALIZADO"));
+				orden.setFhAtencionFin(new Date());
+				ordenServicioDAO.update(orden);
+				return true;
+				
+			}else
+			{
+			return false;	
+			}
+
+		
+		
+	      }
+		
+		@Override
+		@Transactional
+		public Boolean avanzarProcesoOrden (Long idOrdenServicio, Long idProceso)
+		{
+			OrdenServicioDTO orden=ordenServicioDAO.obtenerOrdenServicio(idOrdenServicio);
+			if(!orden.getStSeguimiento().getCdStSeguimiento().equals("CURSO"))
+			{
+				orden.setProceso(procesoDAO.obtenerProceso(idProceso));
+				ordenServicioDAO.update(orden);
+				return true;
+				
+			}else
+			{
+			return false;	
+			}
+
+		
+		
+	      }
 				
 				
 		

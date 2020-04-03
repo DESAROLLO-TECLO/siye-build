@@ -103,7 +103,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 	public UsuarioEncuestaDetalleVO encuestaDetalle(Long idEncuesta,
 			Long idOrdenServicio) throws NotFoundException {
 		
-        Long idUsuario = userSession.getUsuarioFirmadoVO().getId();
+        //Long idUsuario = userSession.getUsuarioFirmadoVO().getId();
 		
 		UsuarioEncuestaDetalleVO uedVO = new UsuarioEncuestaDetalleVO();
 		UsuarioEncuestaDetalleDTO uedDTO = encuestaDetalleDAO.getEncuestaDetalle(idEncuesta,idOrdenServicio);
@@ -389,8 +389,8 @@ public class EncuestaServiceImpl implements EncuestaService {
 					UsuarioEncuestaIntentosDTO usuarioEncuestaIntentosDTO = usuarioEncuestaIntentoDAO.getEncuestaByUsuario(idEncuesta, idOrdenServicio);
 					UsuarioEncuestaIntentosVO usuarioEncuestaIntentosVO = ResponseConverter.copiarPropiedadesFull(usuarioEncuestaIntentosDTO, UsuarioEncuestaIntentosVO.class);
 					listaUsuarioEncuestaVO.get(i).setIntentoMostrar(usuarioEncuestaIntentosVO);
+					listaUsuarioEncuestaVO.get(i).getEncuesta().setSeccion(null);
 				}
-				//usuarioEncuestaIntentoDAO.getEncuestaByUsuario
 				return listaUsuarioEncuestaVO;
 			}else {
 				mensajeErr = "La contraseña no es válida, porfavor solicitarla a un supervisor.";
