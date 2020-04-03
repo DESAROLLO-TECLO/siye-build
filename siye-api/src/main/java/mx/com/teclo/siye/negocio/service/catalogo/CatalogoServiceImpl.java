@@ -11,7 +11,7 @@ import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ConductorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ConfiguracionParamDAO;
-import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.InstaladorDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.PersonaTipoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ProveedorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoKitDAO;
@@ -22,8 +22,8 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConductorDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.PersonaTipoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConfiguracionDTO;
-import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.InstaladorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ProveedorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.StEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.TipoKitDTO;
@@ -35,8 +35,10 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.TipoVehiculoDTO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConcesionariaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaCompVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaTipoVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
-import mx.com.teclo.siye.persistencia.vo.catalogo.InstaladorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ProveedorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoKitVO;
@@ -61,7 +63,7 @@ public class CatalogoServiceImpl implements CatalogoService{
 	private ConductorDAO conductorDAO;
 	
 	@Autowired
-	private InstaladorDAO instaladorDAO;
+	private PersonaTipoDAO personaTipoDAO;
 	
 	@Autowired
 	private CentroInstalacionDAO centroInstalacionDAO;
@@ -121,12 +123,24 @@ public class CatalogoServiceImpl implements CatalogoService{
 	
 	@Transactional
 	@Override
-	public List<InstaladorVO> getTecnicos() throws NotFoundException {
-		List<InstaladorDTO> listaConductorDTO = instaladorDAO.getTecnicos();
-		if(listaConductorDTO.isEmpty())
+	public List<PersonaVO> getTecnicos(Integer idTipoPersona) throws NotFoundException {
+		List<PersonaTipoDTO> listaPersonaTipoDTO = personaTipoDAO.getTecnicos(idTipoPersona);
+		if(listaPersonaTipoDTO.isEmpty())
 			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
-		List<InstaladorVO> listaConductorVO = ResponseConverter.converterLista(new ArrayList<>(), listaConductorDTO, InstaladorVO.class);
-		return listaConductorVO;
+		List<PersonaTipoVO> listaPersonaTipoVO = ResponseConverter.converterLista(new ArrayList<>(), listaPersonaTipoDTO, PersonaTipoVO.class);
+		List<PersonaVO> listaPersonaVO = new ArrayList<PersonaVO>();
+		for (PersonaTipoVO personaTipoVO : listaPersonaTipoVO) {
+			PersonaCompVO personaCompVO = personaTipoVO.getPersona();
+			PersonaVO personaVO = new PersonaVO();
+			personaVO.setIdPersona(personaCompVO.getIdPersona());
+			personaVO.setNbPersona(personaCompVO.getNbPersona());
+			personaVO.setNbPatPersona(personaCompVO.getNbPatPersona());
+			personaVO.setNbMatPersona(personaCompVO.getNbMatPersona());
+			
+			listaPersonaVO.add(personaVO);
+		}
+		
+		return listaPersonaVO;
 	}
 
 	@Override

@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.negocio.service.catalogo.CatalogoService;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
-import mx.com.teclo.siye.persistencia.vo.catalogo.InstaladorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
@@ -52,9 +52,11 @@ public class CatalogoRestController {
 	}
 	
 	@RequestMapping(value="/getTecnicos", method = RequestMethod.GET)
-	public ResponseEntity<List<InstaladorVO>> getTecnicos() throws NotFoundException{
-		List<InstaladorVO> listaInstaladorVO = catalogoService.getTecnicos();
-		return new ResponseEntity<List<InstaladorVO>>(listaInstaladorVO, HttpStatus.OK);
+	public ResponseEntity<List<PersonaVO>> getTecnicos(
+		@RequestParam("idTipoPersona") Integer idTipoPersona
+	) throws NotFoundException{
+		List<PersonaVO> listaInstaladorVO = catalogoService.getTecnicos(idTipoPersona);
+		return new ResponseEntity<List<PersonaVO>>(listaInstaladorVO, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/getCatOrdenProceso", method =  RequestMethod.GET)
