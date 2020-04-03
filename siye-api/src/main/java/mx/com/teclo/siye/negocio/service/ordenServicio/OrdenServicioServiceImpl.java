@@ -16,10 +16,13 @@ import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ProveedorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoVehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.OdsIncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.CentroInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.ConcesionariaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.DispositivosDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstDispDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.LoteOrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OdsDetalleCambioDAO;
@@ -28,11 +31,14 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.VehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ProveedorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.OdsIncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.ConsecionarioDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitDispositivoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDispDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.LoteOrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OdsDetalleCambioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
@@ -93,6 +99,15 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	
 	@Autowired
 	private ConcesionariaDAO concesionariaDAO;
+	
+	@Autowired
+	private ProveedorDAO proveedorDAO;
+	
+	@Autowired
+	private DispositivosDAO dispositivoDAO;
+	
+	@Autowired
+	private KitInstDispDAO kitInstDispDAO;
 	
 	
 	@Transactional
@@ -346,8 +361,6 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			vehiculoDAO.save(vehiculo);
 		}
 		
-		
-		
 		KitInstalacionDTO kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion()); //TIE030_KIT_INSTALACION
 		
 		if(kitInstalacion == null){
@@ -360,7 +373,9 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			kitInstalacion.setFhCreacion(new Date());
 			kitInstalacion.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
 			kitInstalacion.setFhModificacion(new Date());
+			kitDAO.save(kitInstalacion);
 		}
+	
 		
 		kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion());
 		vehiculo = vehiculoDAO.buscarVehiculoPorPlaca(ordenServiVO.getVehiculoVO().getPlaca());
@@ -376,6 +391,8 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		ordenServiDTO.setPlan(planDTO);
 		ordenServiDTO.setStSeguimiento(stSeguimiento);
 		ordenServiDTO.setIdOrigenOds(2l);
+		//contemplar para front
+		ordenServiDTO.setFhCita(new Date());
 		ordenServiDTO.setStActivo(true);
 		ordenServiDTO.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
 		ordenServiDTO.setFhCreacion(new Date());
@@ -383,10 +400,25 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		ordenServiDTO.setFhModificacion(new Date());
 		ordenServicioDAO.save(ordenServiDTO);
 		
-		
+	
 
-		
-		
+		for(int i=0; i<ordenServiVO.getKitInstalacionVO().size(); i++){
+			
+			KitInstalacionDispDTO kitInsDipDTO = new KitInstalacionDispDTO();
+			
+			KitDispositivoDTO dispDTO = dispositivoDAO.findOne(ordenServiVO.getKitInstalacionVO().get(i).getIdDispositivo());
+			kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion());
+			ProveedorDTO provee = proveedorDAO.findOne(ordenServiVO.getKitInstalacionVO().get(i).getProveedor());
+			
+			
+			kitInsDipDTO.setKitInstalacion(kitInstalacion);
+			kitInsDipDTO.setKitDispositivo(dispDTO);
+			kitInsDipDTO.setProveedor(provee);
+			kitInsDipDTO.setStActivo(true);
+			kitInstDispDAO.save(kitInsDipDTO);
+			
+			
+		}
 	}
 
 
