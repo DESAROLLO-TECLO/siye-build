@@ -5,17 +5,17 @@ import java.util.Date;
 
 import javax.persistence.Column;
 
-public class InstaladorCompVO implements Serializable{
+public class PersonaCompVO implements Serializable{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6450793529068488324L;
 	
-	private Integer idRhInstalador;
-	private String nbRhInstalador;
-	private String nbPatRhInstalador;
-	private String nbMatRhInstalador;
+	private Integer idPersona;
+	private String nbPersona;
+	private String nbPatPersona;
+	private String nbMatPersona;
 	private Integer nuOrden;
 	private Boolean stActivo;
 	private Long idUsrCreacion;
@@ -23,29 +23,29 @@ public class InstaladorCompVO implements Serializable{
 	private Long idUsrModifica;
 	private Date fhModificacion;
 	
-	public Integer getIdRhInstalador() {
-		return idRhInstalador;
+	public Integer getIdPersona() {
+		return idPersona;
 	}
-	public void setIdRhInstalador(Integer idRhInstalador) {
-		this.idRhInstalador = idRhInstalador;
+	public void setIdPersona(Integer idPersona) {
+		this.idPersona = idPersona;
 	}
-	public String getNbRhInstalador() {
-		return nbRhInstalador;
+	public String getNbPersona() {
+		return nbPersona;
 	}
-	public void setNbRhInstalador(String nbRhInstalador) {
-		this.nbRhInstalador = nbRhInstalador;
+	public void setNbPersona(String nbPersona) {
+		this.nbPersona = nbPersona;
 	}
-	public String getNbPatRhInstalador() {
-		return nbPatRhInstalador;
+	public String getNbPatPersona() {
+		return nbPatPersona;
 	}
-	public void setNbPatRhInstalador(String nbPatRhInstalador) {
-		this.nbPatRhInstalador = nbPatRhInstalador;
+	public void setNbPatPersona(String nbPatPersona) {
+		this.nbPatPersona = nbPatPersona;
 	}
-	public String getNbMatRhInstalador() {
-		return nbMatRhInstalador;
+	public String getNbMatPersona() {
+		return nbMatPersona;
 	}
-	public void setNbMatRhInstalador(String nbMatRhInstalador) {
-		this.nbMatRhInstalador = nbMatRhInstalador;
+	public void setNbMatPersona(String nbMatPersona) {
+		this.nbMatPersona = nbMatPersona;
 	}
 	public Integer getNuOrden() {
 		return nuOrden;
