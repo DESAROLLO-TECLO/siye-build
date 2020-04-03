@@ -1,8 +1,16 @@
-angular.module(appTeclo).controller("encuestaSatisfaccionController",
+angular.module(appTeclo)
+.controller("encuestaSatisfaccionController",
 function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,showAlert,growl, $location,encuestaSatisfaccionService) {
 	$scope.banderaPantalla=false;
 	$scope.formato = '0';
     $scope.encuesta={};
+    var idIntento=undefined;
+    $scope.backBusqueda={
+        tipoBusqueda:undefined,
+        valor:undefined,
+        pass:undefined
+    };
+
     $scope.listOrden=new Array();
 	$scope.parametroBusqueda =new Object();
     $scope.paramConfigPage = {
@@ -28,59 +36,100 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 	//Se declaran tipos de busqueda
     $scope.listTipoBusqueda ={
         tipoBusqueda: [
-            {idTipo:1	, cdTipo:"ORDEN DE SERVICIO", nbTipo:"Orden de Servicio"},
-            {idTipo:2	, cd:"PLACA VEHICULAR"		, nbTipo:"Placa Vehicular"},
-            {idTipo:3	, cdTipo:"VIN"				, nbTipo:"VIN"}
+            {idTipo:1,cdTipo:"ORDEN",nbTipo:"Orden"},
+            {idTipo:2,cd:"PLACA",nbTipo:"Placa"},
+            {idTipo:3,cdTipo:"VIN",nbTipo:"Vin"}
         ]
 	};
 	
-    //Se enceustas de prueba
-	$scope.listEncuesta=[
-		{
-			idEncuesta:1,estatus:"No Iniciado",cdColor:"#F81717",placa:"PLC001",ordenServicio:"OS001",fInicio:new Date("December 17, 1995 03:24:00"),cuestionario:"Instalacion"
-		},
-		{
-			idEncuesta:1,estatus:"No Iniciado",cdColor:"#F81717",placa:"PLC001",ordenServicio:"OS001",fInicio:new Date("December 17, 1995 03:24:00"),cuestionario:"Plataforma"
-		}
-	];
-			
-	
-    $scope.buscarOrden=function(param,form){
+		//Se enceustas de prueba
+		$scope.listEncuesta=[{
+			idEncuesta:1,estatus:"No Iniciado",cdColor:"#F81717",placa:"PLC001",ordenServicio:"OS001",fInicio:new Date("December 17, 1995 03:24:00"),cuestionario:"Instalacion"},
+			{
+				idEncuesta:1,estatus:"No Iniciado",cdColor:"#F81717",placa:"PLC001",ordenServicio:"OS001",fInicio:new Date("December 17, 1995 03:24:00"),cuestionario:"Plataforma"}
+                    ];
+                    
+
+ $scope.pausarEncuesta = function(nuPagina, tiempo) {
+        $scope.redireccionar = true;
+        showAlert.confirmacion("¿Desea guardar la evaluación?", $scope.guardaAvancePorPagina, nuPagina, $scope.testCancelConfirmacion2);
+            };		
+    
+            
+ $scope.buscarOrden=function(param,form){
     	if (form.$invalid) {
     		showAlert.requiredFields(form);
 			showAlert.error('Formulario Incompleto');
-        }else{
-	        encuestaSatisfaccionService.getEncuesta(
-	        	param.tipoBusqueda.idTipo,param.valor,param.pass
-	        ).success(function(data){
-	            if (data.length>0){
-	                $scope.listOrden=data;
-	            }else {
-	                showAlert.aviso("No se encontraron concidencias con el valor ingresado");
-	            }
-	        }).error(function(data){
-	            showAlert.error(data.message);
-	        });
-		}
+        }else
+        $scope.buscaOrdenConsulta(param);
     };
-		
-		$scope.empezarEncuesta=function(idOrdenServicio,encuestaVO,accion){
+    
+$scope.buscaOrdenConsulta=function(param){
+        encuestaSatisfaccionService.getEncuesta(param.tipoBusqueda.idTipo,param.valor,param.pass).success(function(data){
+            if (data.length>0) {
+                $scope.backBusqueda=param;
+                $scope.listOrden=data;
+               }
+                else
+                showAlert.aviso("No se encontraron concidencias con el valor ingresado");
+        }).error(function(data){
+            showAlert.error(data.message);
+        });
+    }
+
+//Empezar Encuesta		
+$scope.empezarEncuesta=function(idOrdenServicio,encuestaVO,accion,idUsuintento){
             var idEncuesta= encuestaVO.idEncuesta;
             encuestaSatisfaccionService.cargarEncuesta(idOrdenServicio,idEncuesta).success(function(data) {
                 if (data) {
-                    $scope.banderaPantalla=accion;
-                    $scope.encuesta=angular.copy(encuestaVO);
-                    $scope.cambiarPregunta(null,$scope.encuesta.seccion[0]);
-                    $scope.iniciarConteo();
-                    $scope.paramConfigPage.tiempoEncuesta = 5700;
-                    //reloj();
+                    $scope.reanudarEncuesta(idOrdenServicio,encuestaVO,accion,idUsuintento)
                 }
             }).error(function(data) {
-                growl.warning(data.message);
+                showAlert.error(data.message);
             });
-			//alert($scope.encuesta.seccion[0]);
-		};
-    
+			//alert($scope.encuesta.secciones[0]);
+        };
+        
+//reanuda encuesta
+$scope.reanudarEncuesta = function(idOrdenServicio,encuestaVO,accion,idUsuintento) {
+    var idEncuesta= encuestaVO.idEncuesta;
+    encuestaSatisfaccionService.getDetalleEncuesta(idEncuesta,idOrdenServicio).success(function(data){
+        if (data != null) {
+            var detalle = data;
+            $scope.preguntasContestadasEncuesta=0;
+           // $scope.encuestaDetalle;
+            for (let i in detalle.encuesta.secciones) {
+                for (let j in detalle.encuesta.secciones[i].preguntas) {
+                    for (const k in detalle.encuesta.secciones[i].preguntas[j].opciones) {
+                        if (detalle.encuesta.secciones[i].preguntas[j].opciones[k].stMarcado == 1) {
+                            $scope.preguntasContestadasEncuesta++;
+                            detalle.encuesta.secciones[i].nuPreguntasContestadas++;
+                            detalle.encuesta.secciones[i].preguntas[j].stMarcado = 1;
+                        }
+                    }
+                }
+            }
+            $scope.encuesta = detalle.encuesta;
+        } else {
+            growl.warning("Sin evaluaciones por asignar", { ttl: 5000 });
+        }
+        $scope.iniciarEncuesta(accion,1,idUsuintento);
+    }).error(function(data){
+        showAlert.error(data.message);
+    });
+};
+
+//Inicia Encuesta
+$scope.iniciarEncuesta=function(accion,instruccion,idUsuintento){
+    $scope.banderaPantalla=accion;
+    idIntento=idUsuintento;
+   // $scope.encuesta=angular.copy(encuestaVO);
+    var pocision=$scope.posicionActual==-1?0:$scope.posicionActual;
+    $scope.cambiarPregunta(null,$scope.encuesta.secciones[pocision],instruccion);
+    $scope.iniciarConteo();
+};
+
+
 //	Detectar el navegador para ajustar el contenido
 	detectarNavegador = function(){
 
@@ -117,13 +166,13 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 
 	
 	$scope.checkPregunta =function(opcion,respuesta){
-		var evaluaContestadas=$scope.encuesta.seccion[$scope.posicionActual].nuPreguntasContestadas;
+		var evaluaContestadas=$scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas;
 		var preguntasCont=evaluaContestadas!=undefined?evaluaContestadas:0;
 		var cambio=false;
 
 		if(respuesta.stMarcado==undefined || respuesta.stMarcado==0  || respuesta.stMarcado==null){
-			$scope.encuesta.seccion[$scope.posicionActual].nuPreguntasContestadas=preguntasCont;
-			$scope.encuesta.seccion[$scope.posicionActual].nuPreguntasContestadas++
+			$scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas=preguntasCont;
+			$scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas++
 			$scope.preguntasContestadasEncuesta++;
 		}
 		for (let i in respuesta.opciones) {
@@ -146,12 +195,12 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
             guardarSeccion = $scope.guardaAvancePorPagina(nuPagina);
         }
         if (seccionVO != undefined || seccionVO != null) {
-            $scope.posicionActual = $scope.encuesta.seccion.indexOf(seccionVO);
-            var evaluaContestadas = $scope.encuesta.seccion[$scope.posicionActual].nuPreguntasContestadas != undefined ?
-                $scope.encuesta.seccion[$scope.posicionActual].nuPreguntasContestadas : 0;
+            $scope.posicionActual = $scope.encuesta.secciones.indexOf(seccionVO);
+            var evaluaContestadas = $scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas != undefined ?
+                $scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas : 0;
             $scope.seccionSeleccion = seccionVO.cdSeccion;
             $scope.seccionVO = seccionVO;
-            $scope.encuesta.seccion[$scope.posicionActual].nuPreguntasContestadas = evaluaContestadas;
+            $scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas = evaluaContestadas;
             $scope.paramConfigPage.bigTotalItems = $scope.seccionVO.preguntas.length;
             if (instruccion != 1) {
                 $scope.paramConfigPage.bigCurrentPage = 1;
@@ -171,9 +220,11 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
     };
     
     $scope.observaTiempo = function() {
+
         if ($scope.paramConfigPage.flagTimer) {
+            /*
             if ($scope.paramConfigPage.tiempoEncuesta > 0) {
-                $scope.paramConfigPage.tiempoEncuesta--;
+                $scope.paramConfigPage.tiempoEncuesta++;
                 $scope.cambiaTiempo($scope.paramConfigPage.tiempoEncuesta);
             } else {
                 $scope.paramConfigPage.segundo = 0;
@@ -187,7 +238,9 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
                 $('.modal-backdrop').remove(); //eliminamos el backdrop del modal
                 showAlert.aviso("Se ha terminado el tiempo de la evaluación", $scope.testConfirmacion);
             }
-
+            */
+           $scope.paramConfigPage.tiempoEncuesta++;
+           $scope.cambiaTiempo($scope.paramConfigPage.tiempoEncuesta);
         }
     };
 
@@ -217,7 +270,7 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
         var guardaSeccionPorPaginaVO = new Object();
         var preguntasPorPagina = new Array();
         var seccionVO = new Object();
-        var seccionVO = angular.copy($scope.encuesta.seccion[$scope.posicionActual]);
+        var seccionVO = angular.copy($scope.encuesta.secciones[$scope.posicionActual]);
         var preguntasPorPagina = seccionVO.preguntas.slice(((numPagina - 1) * $scope.paramConfigPage.itemsPerPage), ((numPagina) * $scope.paramConfigPage.itemsPerPage));
         seccionVO.preguntas = preguntasPorPagina;
         $scope.saveEncuesta(seccionVO);
@@ -242,21 +295,21 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 	   //Funcion obtiene las respuestas por parametros de busqueda
     $scope.finalizaEncuesta = function(tiempo) {
         var lisseccionValid = new Array();
-        var seccion = $scope.encuesta.seccion;
+        var secciones = $scope.encuesta.secciones;
         var preguntasSinContestar = false;
-        for (let i in seccion) {
-            if (seccion[i].nuPreguntasContestadas < seccion[i].preguntas.length) {
+        for (let i in secciones) {
+            if (secciones[i].nuPreguntasContestadas < secciones[i].preguntas.length) {
                 preguntasSinContestar = true;
                 let comprobacion = new Object({
-                    nbSeccion: seccion[i].nbSeccion,
-                    preguntasSinContestar: seccion[i].preguntas.length - seccion[i].nuPreguntasContestadas,
+                    nbSeccion: secciones[i].nbSeccion,
+                    preguntasSinContestar: secciones[i].preguntas.length - secciones[i].nuPreguntasContestadas,
                     preguntas: new Array()
                 });
-                for (let j in seccion[i].preguntas) {
+                for (let j in secciones[i].preguntas) {
                     var contador = 0;
-                    for (let k in seccion[i].preguntas[j].opciones) {
-                        if (contador == 0 && seccion[i].preguntas[j].opciones[k].stMarcado != 1) {
-                            comprobacion.preguntas.push(seccion[i].preguntas[j]);
+                    for (let k in secciones[i].preguntas[j].opciones) {
+                        if (contador == 0 && secciones[i].preguntas[j].opciones[k].stMarcado != 1) {
+                            comprobacion.preguntas.push(secciones[i].preguntas[j]);
                             contador++
                         }
                     }
@@ -276,12 +329,12 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 
 
     $scope.testCancelConfirmacion = function() {
-       
     }
 
     $scope.testCancelConfirmacion2 = function() {
         // growl.info('',{title: ''});
-        $scope.redireccionar = false;
+      //  $scope.banderaPantalla=accion;
+       $scope.redireccionar = false;
        
     }
 
@@ -320,7 +373,7 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
                 idSeccion: angular.copy(seccionVO.idSeccion),
                 idPregunta: undefined,
                 idOpcion: undefined,
-                idIntento: 7
+                idIntento: idIntento
             });
 
             objectEncuesta.idPregunta = listPreguntaSeccion[i].idPregunta;
@@ -337,9 +390,7 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
         encuestaSatisfaccionService.saveRespuestaEncuesta(seccionContestada).success(function(data) {
             if (data == true) {
                 if ($scope.redireccionar) {
-                    $timeout(() => {
-                        $scope.regresarEncuestas()
-                    }, 1000);
+                        $scope.regresarEncuestas();
                 }
                 guardarSeccion = true;
                 //  growl.success("Se guardaron respuestas ",{ ttl: 5000 });
@@ -363,7 +414,11 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
         return guardarSeccion;
     };
 
+    $scope.regresarEncuestas = function() {
+        $scope.buscaOrdenConsulta($scope.backBusqueda,true);
+        $scope.redireccionar=false;
+        $scope.controllerActual = 'NA';
+        $scope.banderaPantalla=false;
+    };
     
-    
-
 });

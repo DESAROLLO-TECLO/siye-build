@@ -147,11 +147,18 @@
                                                     </span>
                                                 </td>
                                                 <td class="center" style="vertical-align: middle;" width="15%">
-                                                    <a ng-click="empezarEncuesta(ordenVO.ordenServicio.idOrdenServicio,ordenVO.encuesta,true)">
+                                                    <a ng-if="ordenVO.intentoMostrar.stEncuesta.cdStEncuesta=='NI'" ng-click="empezarEncuesta(ordenVO.ordenServicio.idOrdenServicio,ordenVO.encuesta,true,ordenVO.intentoMostrar.idUsuEncuIntento)">
                                                         <span class="etiquetaCancelado fullWidth" 
                                                             style="cursor: pointer; background-color: {{ordenVO.intentoMostrar.stEncuesta.cdColor}};" 
                                                             data-toggle="tooltip" data-placement="bottom" title="{{ordenVO.intentoMostrar.stEncuesta.nbStEncuesta}}">
                                                             {{encuesta.accionBtn}} Iniciar
+                                                        </span>
+                                                    </a>
+                                                      <a ng-if="ordenVO.intentoMostrar.stEncuesta.cdStEncuesta=='EC'" ng-click="reanudarEncuesta(ordenVO.ordenServicio.idOrdenServicio,ordenVO.encuesta,true,ordenVO.intentoMostrar.idUsuEncuIntento)">
+                                                        <span class="etiquetaCancelado fullWidth" 
+                                                            style="cursor: pointer; background-color: {{ordenVO.intentoMostrar.stEncuesta.cdColor}};" 
+                                                            data-toggle="tooltip" data-placement="bottom" title="{{ordenVO.intentoMostrar.stEncuesta.nbStEncuesta}}">
+                                                            {{encuesta.accionBtn}} Reanudar
                                                         </span>
                                                     </a>
                                                 </td>
