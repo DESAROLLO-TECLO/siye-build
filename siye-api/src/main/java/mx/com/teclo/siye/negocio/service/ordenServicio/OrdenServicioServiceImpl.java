@@ -346,8 +346,6 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			vehiculoDAO.save(vehiculo);
 		}
 		
-		
-		
 		KitInstalacionDTO kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion()); //TIE030_KIT_INSTALACION
 		
 		if(kitInstalacion == null){
@@ -360,6 +358,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			kitInstalacion.setFhCreacion(new Date());
 			kitInstalacion.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
 			kitInstalacion.setFhModificacion(new Date());
+			kitDAO.save(kitInstalacion);
 		}
 		
 		kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion());
@@ -376,6 +375,8 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		ordenServiDTO.setPlan(planDTO);
 		ordenServiDTO.setStSeguimiento(stSeguimiento);
 		ordenServiDTO.setIdOrigenOds(2l);
+		//contemplar para front
+		ordenServiDTO.setFhCita(new Date());
 		ordenServiDTO.setStActivo(true);
 		ordenServiDTO.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
 		ordenServiDTO.setFhCreacion(new Date());
@@ -383,9 +384,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		ordenServiDTO.setFhModificacion(new Date());
 		ordenServicioDAO.save(ordenServiDTO);
 		
-		
-
-		
+	
 		
 	}
 
