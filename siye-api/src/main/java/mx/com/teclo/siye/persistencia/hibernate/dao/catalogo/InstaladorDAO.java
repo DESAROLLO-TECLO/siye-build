@@ -4,11 +4,11 @@ import java.util.List;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDao;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConductorDTO;
-import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.InstaladorDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.PersonaDTO;
 
-public interface InstaladorDAO  extends BaseDao<InstaladorDTO>{
+public interface InstaladorDAO  extends BaseDao<PersonaDTO>{
 	
-	public List<InstaladorDTO> getTecnicos();
+	public List<PersonaDTO> getTecnicos();
 	
-	public List<InstaladorDTO> getInstaladorXNombre(String nombre, String aPaterno, String aMaterno);
+	public List<PersonaDTO> getInstaladorXNombre(String nombre, String aPaterno, String aMaterno);
 }

@@ -19,8 +19,8 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "TIE045C_IE_RH_INSTALADOR")
-public class InstaladorDTO implements Serializable {
+@Table(name = "TIE045C_IE_PERSONA")
+public class PersonaDTO implements Serializable {
 
 	/**
 	 * 
@@ -30,17 +30,17 @@ public class InstaladorDTO implements Serializable {
 	@Id
 	@SequenceGenerator(name = "sqie045cIERHInstal", sequenceName="SQIE045C_IE_RH_INSTAL", allocationSize=1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqie045cIERHInstal")
-	@Column(name = "ID_RH_INSTALADOR", unique = true, nullable = false, precision = 6, scale = 0)
-	private Integer idRhInstalador;
+	@Column(name = "ID_PERSONA", unique = true, nullable = false, precision = 6, scale = 0)
+	private Integer idPersona;
 	
-	@Column(name = "NB_RH_INSTALADOR", nullable = false, length = 50)
-	private String nbRhInstalador;
+	@Column(name = "NB_PERSONA", nullable = false, length = 50)
+	private String nbPersona;
 	
-	@Column(name = "NB_PAT_RH_INSTALADOR", nullable = true, length = 50)
-	private String nbPatRhInstalador;
+	@Column(name = "NB_PAT_PERSONA", nullable = true, length = 50)
+	private String nbPatPersona;
 
-	@Column(name = "NB_MAT_RH_INSTALADOR", nullable = true, length = 50)
-	private String nbMatRhInstalador;
+	@Column(name = "NB_MAT_PERSONA", nullable = true, length = 50)
+	private String nbMatPersona;
 	
 	@Column(name = "NU_ORDEN", nullable = true, precision = 4, scale = 0)
 	private Integer nuOrden;
@@ -59,37 +59,37 @@ public class InstaladorDTO implements Serializable {
 
 	@Column(name = "FH_MODIFICACION", nullable = false)
 	private Date fhModificacion;
-	
-	public Integer getIdRhInstalador() {
-		return idRhInstalador;
+
+	public Integer getIdPersona() {
+		return idPersona;
 	}
 
-	public void setIdRhInstalador(Integer idRhInstalador) {
-		this.idRhInstalador = idRhInstalador;
+	public void setIdPersona(Integer idPersona) {
+		this.idPersona = idPersona;
 	}
 
-	public String getNbRhInstalador() {
-		return nbRhInstalador;
+	public String getNbPersona() {
+		return nbPersona;
 	}
 
-	public void setNbRhInstalador(String nbRhInstalador) {
-		this.nbRhInstalador = nbRhInstalador;
+	public void setNbPersona(String nbPersona) {
+		this.nbPersona = nbPersona;
 	}
 
-	public String getNbPatRhInstalador() {
-		return nbPatRhInstalador;
+	public String getNbPatPersona() {
+		return nbPatPersona;
 	}
 
-	public void setNbPatRhInstalador(String nbPatRhInstalador) {
-		this.nbPatRhInstalador = nbPatRhInstalador;
+	public void setNbPatPersona(String nbPatPersona) {
+		this.nbPatPersona = nbPatPersona;
 	}
 
-	public String getNbMatRhInstalador() {
-		return nbMatRhInstalador;
+	public String getNbMatPersona() {
+		return nbMatPersona;
 	}
 
-	public void setNbMatRhInstalador(String nbMatRhInstalador) {
-		this.nbMatRhInstalador = nbMatRhInstalador;
+	public void setNbMatPersona(String nbMatPersona) {
+		this.nbMatPersona = nbMatPersona;
 	}
 
 	public Integer getNuOrden() {
