@@ -1,4 +1,4 @@
-package mx.com.teclo.siye.api.rest.incidencia;
+package mx.com.teclo.siye.api.rest.descargaExcel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -9,23 +9,24 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import mx.com.teclo.siye.negocio.service.incidencia.ReporteService;
+
+import mx.com.teclo.siye.negocio.service.descargaExcel.ReporteService;
 import mx.com.teclo.siye.persistencia.vo.incidencia.ReporteVO;
 
 @RestController
-@RequestMapping("/reporte")
+@RequestMapping("/descargaExcel")
 public class ReporteRestController {
 
 	@Autowired
 	private ReporteService reporteService;
 
-	@RequestMapping(value="/reporteIncidencia", method = RequestMethod.POST)
-	public ResponseEntity<byte[]> reporteIncidencia (@RequestBody ReporteVO reporteVO){
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<byte[]> reporteExcel (@RequestBody ReporteVO reporteVO){
 		byte [] byteToReturn = reporteService.reporteEXCEL(reporteVO);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.parseMediaType("application/vnd.ms-excel"));
 		
-		String fileName = reporteVO.getTitulo() != null ? reporteVO.getTitulo(): "Reporte de Incidencias"; 
+		String fileName = reporteVO.getTitulo() != null ? reporteVO.getTitulo(): "Reporte de Excel"; 
 		
 		headers.add("Content-Disposition", "attachment; filename="+fileName+".xlsx");
 		headers.add("filename", fileName+".xlsx");
