@@ -23,14 +23,14 @@ public class PersonasRestController {
 	
 	@RequestMapping(value="/nuevoInstalador", method = RequestMethod.POST)
 	//@PreAuthorize("hasAnyAuthority('SERVICE7_REP_USUARIO')")
-	public ResponseEntity<PersonaVO> nuevoInstalador (
+	public ResponseEntity<PersonaGenericaVO> nuevoInstalador (
 		@RequestBody PersonaGenericaVO personaGenericaVO
 	)throws Exception, BusinessException, NotFoundException{
 		String mensajeErr = "";
-		PersonaVO result = personasService.nuevoInstalador(personaGenericaVO, mensajeErr);
+		PersonaGenericaVO result = personasService.nuevoInstalador(personaGenericaVO, mensajeErr);
 		if(result.getExistia() == false) {
 			personasService.ordenarInstaladores(mensajeErr);
 		}
-		return new ResponseEntity<PersonaVO>(result, HttpStatus.OK);
+		return new ResponseEntity<PersonaGenericaVO>(result, HttpStatus.OK);
 	}
 }

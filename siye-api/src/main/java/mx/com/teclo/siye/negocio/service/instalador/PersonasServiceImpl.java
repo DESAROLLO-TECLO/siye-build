@@ -48,11 +48,11 @@ public class PersonasServiceImpl implements PersonasService{
 	
 	@Transactional
 	@Override
-	public PersonaVO nuevoInstalador(
+	public PersonaGenericaVO nuevoInstalador(
 		PersonaGenericaVO personaGenericaVO, String mensajeErr
 	) throws Exception, BusinessException, NotFoundException {
 		try {
-			PersonaVO personaVO = new PersonaVO();
+			PersonaGenericaVO resultPersonaGenericaVO = new PersonaGenericaVO();
 			String nombre = personaGenericaVO.getNombre().toUpperCase();
 			String aPaterno = personaGenericaVO.getaPaterno().toUpperCase();
 			String aMaterno = personaGenericaVO.getaMaterno().toUpperCase();
@@ -65,9 +65,9 @@ public class PersonasServiceImpl implements PersonasService{
 				mensajeErr = "El nombre de la persona no puede estar vacío.";
 				throw new NotFoundException("");
 			}else {
-				personaVO.setNbPersona(nombre);
-				personaVO.setNbPatPersona(aPaterno);
-				personaVO.setNbMatPersona(aMaterno);
+				resultPersonaGenericaVO.setNombre(nombre);
+				resultPersonaGenericaVO.setaPaterno(aPaterno);
+				resultPersonaGenericaVO.setaMaterno(aMaterno);
 				
 				List<PersonaDTO> listaPersonaDTO = personaDAO.getInstaladorXNombre(nombre, aPaterno, aMaterno);
 				Boolean existePersona= false;
@@ -105,15 +105,15 @@ public class PersonasServiceImpl implements PersonasService{
 					personaDTO.setFhModificacion(new Date());
 					personaDAO.save(personaDTO);
 					
-					personaVO.setIdPersona(personaDTO.getIdPersona());
-					personaVO.setExistia(false);
+					resultPersonaGenericaVO.setIdPersona(personaDTO.getIdPersona());
+					resultPersonaGenericaVO.setExistia(false);
 				}else{
-					personaVO.setIdPersona(listaPersonaDTO.get(0).getIdPersona());
-					personaVO.setExistia(true);
+					resultPersonaGenericaVO.setIdPersona(listaPersonaDTO.get(0).getIdPersona());
+					resultPersonaGenericaVO.setExistia(true);
 				}
 				
 				if(existePersonaTipo == false) {
-					Integer idPersona = personaVO.getIdPersona();
+					Integer idPersona = resultPersonaGenericaVO.getIdPersona();
 					PersonaTipoDTO insertPersonaTipoDTO = new PersonaTipoDTO();
 					insertPersonaTipoDTO.setPersona(personaDTO);
 					
@@ -121,11 +121,11 @@ public class PersonasServiceImpl implements PersonasService{
 					insertPersonaTipoDTO.setTipoPersona(TipoPersonaDTO);
 					
 					personaTipoDAO.save(insertPersonaTipoDTO);
-					personaVO.setIdTipoPersona(insertPersonaTipoDTO.getIdPersonaTipo());
+					resultPersonaGenericaVO.setIdTipoPersona(insertPersonaTipoDTO.getIdPersonaTipo());
 				}else {
-					personaVO.setIdTipoPersona(personaTipoDTO.getIdPersonaTipo());
+					resultPersonaGenericaVO.setIdTipoPersona(personaTipoDTO.getIdPersonaTipo());
 				}
-				return personaVO;
+				return resultPersonaGenericaVO;
 			}
 		} catch (Exception e) {
 			if(mensajeErr != null && !mensajeErr.isEmpty() && !mensajeErr.equals(null)) {
