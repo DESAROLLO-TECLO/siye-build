@@ -72,9 +72,9 @@ public class EncuestaRestController {
 		UsuarioEncuestaIntentosVO encuestaIntentosVO =null;
 		try {
 			//1.- Finalizar intento
-			encuestaIntentosVO = encuestaService.finalizarIntento(usuarioEncuestaIntentosVO.getIdUsuEncuIntento(), false);
+			encuestaIntentosVO = encuestaService.finalizarIntento(usuarioEncuestaIntentosVO.getIdUsuEncuIntento(), false, false);
 			//2.- Calificar intento
-			respuestaService.calificarIntentoEncuesta(usuarioEncuestaIntentosVO.getIdUsuEncuIntento());
+			respuestaService.calificarIntentoEncuesta(usuarioEncuestaIntentosVO.getIdUsuEncuIntento(), true);
 			//3.- Actuaizar a falso el campo aplicar encuesta y contar total de intentos 
 			encuestaService.finalizarEncuesta(encuestaIntentosVO);
 			encuestaIntentosVO.setIdUsuEncuIntento(null);
@@ -124,6 +124,32 @@ public class EncuestaRestController {
 		return new ResponseEntity<Boolean>(b, HttpStatus.OK);
 	}
 
-	
+	@RequestMapping(value="/finalizarEncuestaS", method = RequestMethod.PUT)
+	public ResponseEntity<UsuarioEncuestaIntentosVO> finalizarEncuestaS(
+		@RequestBody UsuarioEncuestaIntentosVO usuarioEncuestaIntentosVO
+	) throws NotFoundException {
+		UsuarioEncuestaIntentosVO encuestaIntentosVO = null;
+		try {
+			//1.- Finalizar intento
+			encuestaIntentosVO = encuestaService.finalizarIntento(usuarioEncuestaIntentosVO.getIdUsuEncuIntento(), false, true);
+			//2.- Calificar intento
+			respuestaService.calificarIntentoEncuesta(usuarioEncuestaIntentosVO.getIdUsuEncuIntento(), false);
+			//3.- Actuaizar a falso el campo aplicar encuesta y contar total de intentos 
+			encuestaService.finalizarEncuesta(encuestaIntentosVO);
+			encuestaIntentosVO.setIdUsuEncuIntento(null);
+			encuestaIntentosVO.setUsuarioEncuesta(null);
+			encuestaIntentosVO.setEsProcesoExitoso(true);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+			encuestaIntentosVO=new UsuarioEncuestaIntentosVO();
+			encuestaIntentosVO.setEsProcesoExitoso(false);
+		}
+		
+		if(encuestaIntentosVO != null) {
+			// Consultamos los datoas del itento por el ID 
+			encuestaIntentosVO = encuestaService.detalle(usuarioEncuestaIntentosVO.getIdUsuEncuIntento(), true);
+		}
+		return new ResponseEntity<UsuarioEncuestaIntentosVO>(encuestaIntentosVO, HttpStatus.OK);
+	}
 }
 	
