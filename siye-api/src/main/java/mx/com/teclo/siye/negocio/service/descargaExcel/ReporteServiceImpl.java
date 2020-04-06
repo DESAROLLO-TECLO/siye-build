@@ -1,4 +1,4 @@
-package mx.com.teclo.siye.negocio.service.incidencia;
+package mx.com.teclo.siye.negocio.service.descargaExcel;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -31,8 +31,8 @@ public class ReporteServiceImpl implements ReporteService{
 		subtitulos.add("Fecha de Consulta: "+rutinasTiempo.getStringDateFromFormta("dd/MM/yyyy HH:ss", new Date()));
 		subtitulos.add(" ");
 		PropiedadesReporte pReporteVO = new PropiedadesReporte();
-		pReporteVO.setTxTituloExcel(vo.getTitulo()==null?"Reporte_encuesta":vo.getTitulo());
-		pReporteVO.setNbReporte(vo.getTitulo()==null?"Reporte_encuesta":vo.getTitulo());
+		pReporteVO.setTxTituloExcel(vo.getTitulo()==null?"Reporte":vo.getTitulo());
+		pReporteVO.setNbReporte(vo.getTitulo()==null?"Reporte":vo.getTitulo());
 		pReporteVO.setTxExtension(".xlsx");
 		pReporteVO.setSubtitulos(subtitulos);
 		List<Object> valuesArray = new ArrayList<>(vo.getValues());
