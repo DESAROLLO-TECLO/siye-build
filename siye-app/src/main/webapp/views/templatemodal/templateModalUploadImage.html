@@ -1,21 +1,18 @@
-<button class="btn btn-danger" ng-click="showModal()">                                           
-		<i class="fa fa-clipboard" aria-hidden="true"></i></i> Carga de Imagenes                         
-</button>                                                 
-
-<div class="modal fade" id="modalUpdateImage" tabindex="-1" role="dialog" aria-hidden="true"
-data-keyboard="false" data-backdrop="static">
+<div class="modal fade" id="{{idElementUp}}modalUpdateImage" tabindex="-1" role="dialog" aria-hidden="true"
+	data-keyboard="false" data-backdrop="static">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-      	<div><h3>{{paramConfiguracion.titleModal == undefined ? 'Cargar Imagenes' : paramConfiguracion.titleModal}}</h3></div>
+      	<div><h3>{{confModal.titleModal == undefined ? 'Cargar Imagenes' : confModal.titleModal}}</h3></div>
       </div>
       <div class="modal-body">
       	<div class="container-fluid">
-      		<div ng-include="'views/templatemodal/templateTableImagesUpload.html'"></div>
+      		<div id="containerModal"></div>
+      		<!-- <div ng-include="'views/templatemodal/templateTableImagesUpload.html'"></div> -->
       	</div>
       </div>
       <div class="modal-footer">
-        <button class="btn bg-red-active btnMargin" type="button" ng-click="cerrarModal()" data-dismiss="modal">Cerrar</button>
+        <button class="btn bg-red-active btnMargin" type="button" ng-click="cerrarModal()">Cerrar</button>
       </div>
     </div>
   </div>
