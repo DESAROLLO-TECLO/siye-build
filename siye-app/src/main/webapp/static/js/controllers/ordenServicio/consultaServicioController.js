@@ -16,7 +16,7 @@ angular.module(appTeclo).controller('consultaServicioController', function($scop
         valor: null
     };
 
-
+    $scope.idOrden = 2;
 
     buscarTipoBusqueda = function() {
         $scope.listTipoBusqueda = [
@@ -95,7 +95,7 @@ angular.module(appTeclo).controller('consultaServicioController', function($scop
         let peticionReporteVO = new Object();
         peticionReporteVO.header = getCabeceras();
         peticionReporteVO.values = getContenido($scope.listServicio);
-        peticionReporteVO.titulo = "Reporte de Incidencias";
+        peticionReporteVO.titulo = "Reporte Orden de Servicio";
         consultaServicioService.descargarReporteExcel(peticionReporteVO).success(function(data, status, headers) {
             let filename = headers('filename');
             let file = new Blob([data], { type: 'application/vnd.ms-excel;base64,' });
@@ -111,9 +111,9 @@ angular.module(appTeclo).controller('consultaServicioController', function($scop
         headers.push("FOLIO");
         headers.push("PLACA");
         headers.push("VIN");
-        headers.push("CENTROINSTALACION");
+        headers.push("CENTRO DE INSTALACIÓN");
         headers.push("FECHA CITA");
-        headers.push("PLAN DE INSTALACION");
+        headers.push("PLAN DE INSTALACIÓN");
         headers.push("PROCESO ACTUAL");
         return headers;
     };
