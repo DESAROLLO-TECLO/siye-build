@@ -280,9 +280,9 @@ public class EncuestaServiceImpl implements EncuestaService {
 				if(ueiDTO.getFhInicio() !=null && ueiDTO.getFhFin() ==null) {
 					//1.- Finalizar intento
 					@SuppressWarnings("unused")
-					UsuarioEncuestaIntentosVO encuestaIntentosVO = finalizarIntento(ueiDTO.getIdUsuEncuIntento(), false);
+					UsuarioEncuestaIntentosVO encuestaIntentosVO = finalizarIntento(ueiDTO.getIdUsuEncuIntento(), false, false);
 					//2.- Calificar intento
-					respuestaService.calificarIntentoEncuesta(ueiDTO.getIdUsuEncuIntento());
+					respuestaService.calificarIntentoEncuesta(ueiDTO.getIdUsuEncuIntento(), true);
 					//3.- Actuaizar a falso el campo aplicar encuesta y contar total de intentos 
 					//finalizarEncuesta(encuestaIntentosVO);
 				}
@@ -303,7 +303,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 	
 	@Override
 	@Transactional
-	public UsuarioEncuestaIntentosVO finalizarIntento(Long idUsuEncuIntento, Boolean b) throws BusinessException{
+	public UsuarioEncuestaIntentosVO finalizarIntento(Long idUsuEncuIntento, Boolean b, Boolean finEnc) throws BusinessException{
 		
 		UsuarioEncuestaIntentosDTO usuarioEncuestaIntentosDTO = null;
 		//JLGD
@@ -312,7 +312,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 		if(b) {
 			if(usuarioEncuestaIntentosDTO.getStEncuesta().getCdStEncuesta().equals("FIN"))
 				throw new BusinessException("Esta encuesta ya fue finalizada, favor de validar.");
-		}else {
+		}else if(finEnc == false){
 			usuarioEncuestaIntentosDTO.setStMostrar(true);
 			usuarioEncuestaIntentosDTO.setFhFin(new Date());
 			usuarioEncuestaIntentosDTO.setFhModificacion(new Date());
@@ -321,6 +321,16 @@ public class EncuestaServiceImpl implements EncuestaService {
 			List<UsuarioEncuestaIntentosDTO> encuestaIntentosDTOs=new ArrayList<>();
 			encuestaIntentosDTOs.add(usuarioEncuestaIntentosDTO);
 			List<UsuarioEncuestaIntentosVO> listReturn =ResponseConverter.converterLista(new ArrayList<>(), encuestaIntentosDTOs, UsuarioEncuestaIntentosVO.class);
+			return listReturn.get(0);
+		}else if(finEnc == true){
+			usuarioEncuestaIntentosDTO.setStMostrar(true);
+			usuarioEncuestaIntentosDTO.setFhFin(new Date());
+			usuarioEncuestaIntentosDTO.setFhModificacion(new Date());
+			usuarioEncuestaIntentosDTO.setIdUsrModifica(-1L);
+			usuarioEncuestaIntentoDAO.update(usuarioEncuestaIntentosDTO);
+			List<UsuarioEncuestaIntentosDTO> encuestaIntentosDTOs=new ArrayList<>();
+			encuestaIntentosDTOs.add(usuarioEncuestaIntentosDTO);
+			List<UsuarioEncuestaIntentosVO> listReturn = ResponseConverter.converterLista(new ArrayList<>(), encuestaIntentosDTOs, UsuarioEncuestaIntentosVO.class);
 			return listReturn.get(0);
 		}
 		return null;

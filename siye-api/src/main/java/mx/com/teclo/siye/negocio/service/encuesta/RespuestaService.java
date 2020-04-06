@@ -16,7 +16,7 @@ public interface RespuestaService {
 	 * @param idUsuario Long
 	 * @return UsuarioEncuestaIntentosVO
 	 */
-	UsuarioEncuestaIntentosVO calificarIntentoEncuesta(Long idIntentoEncuesta);
+	UsuarioEncuestaIntentosVO calificarIntentoEncuesta(Long idIntentoEncuesta, Boolean mayorCalifIntento);
 	
 	Integer contarSecciones ( Integer idEncuesta);
 	
