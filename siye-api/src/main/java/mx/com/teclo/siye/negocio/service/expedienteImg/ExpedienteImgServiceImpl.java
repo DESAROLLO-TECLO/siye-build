@@ -190,6 +190,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 		for (ExpedienteNivelProcesoVO proceso : procesos) {
 			if (imagen.getIdProceso().equals(proceso.getIdProceso())) {
 				imagenes = proceso.getImagenes()!=null ? proceso.getImagenes() : new ArrayList<ImagenVO>() ;
+				imagen.setNbNivel(proceso.getCdProceso());
 				imagenes.add(imagen);
 				proceso.setImagenes(imagenes);
 				break;
@@ -198,8 +199,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 		return procesos;
 	};
 
-	public List<ExpedienteNivelProcesoVO> addImgEncuestaPregunta(List<ExpedienteNivelProcesoVO> procesos,
-			ImagenVO imagen) {
+	public List<ExpedienteNivelProcesoVO> addImgEncuestaPregunta(List<ExpedienteNivelProcesoVO> procesos, ImagenVO imagen) {
 		List<ImagenVO> imagenes = null;
 		Boolean encontre = false;
 		for (ExpedienteNivelProcesoVO pro : procesos) {
@@ -214,6 +214,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 							break;
 						} else {
 							imagenes = encuesta.getImagenes() != null ? encuesta.getImagenes(): new ArrayList<ImagenVO>();
+							imagen.setNbNivel(encuesta.getCdEncuesta());
 							imagenes.add(imagen);
 							encuesta.setImagenes(imagenes);
 							encontre = true;
@@ -231,6 +232,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 		for (ExpedienteNivelPreguntaVO pregunta : preguntas) {
 			if (imagen.getIdPregunta().equals(pregunta.getIdPregunta())) {
 				imagenes = pregunta.getImagenes() !=null ? pregunta.getImagenes(): new ArrayList<ImagenVO>();
+				imagen.setNbNivel(pregunta.getCdPregunta());
 				imagenes.add(imagen);
 				pregunta.setImagenes(imagenes);
 				break;

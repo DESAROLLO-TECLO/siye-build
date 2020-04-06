@@ -54,7 +54,7 @@
 							<addClasspath>true</addClasspath>
 						</manifest>
 					</archive>
-					<outputDirectory>C:\WarsMavenBackend\</outputDirectory>
+					<outputDirectory>C:\WarsMaven\</outputDirectory>
 				</configuration>
 			</plugin>
 		</plugins>

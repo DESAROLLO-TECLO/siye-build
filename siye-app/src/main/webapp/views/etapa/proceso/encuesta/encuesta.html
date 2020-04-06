@@ -1,128 +1,312 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proceso</title>
-    <link rel="stylesheet" href="static/dist/css/custom/etapa/encuesta.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proceso</title>
+<link rel="stylesheet" href="static/dist/css/custom/etapa/encuesta.css" />
 </head>
 <body>
 
-    <!-- breadCrumbs -->
-    <section class="content-header">
-        <h1>{{breadCrumbs.servicio}}</h1>
-        <ol class="breadcrumb">
-            <li><a> <i class="{{breadCrumbs.icono}}"></i>{{breadCrumbs.modulo}}
-            </a></li>
-            <li class="active">{{breadCrumbs.servicio}}</li>
-        </ol>
-    </section>
+	<!-- breadCrumbs -->
+	<section class="content-header">
+		<h1>{{breadCrumbs.servicio}}</h1>
+		<ol class="breadcrumb">
+			<li><a> <i class="{{breadCrumbs.icono}}"></i>{{breadCrumbs.modulo}}
+			</a></li>
+			<li class="active">{{breadCrumbs.servicio}}</li>
+		</ol>
+	</section>
 
-    <!-- botón flotante para agregar incidencia -->
-    <div class="btn-flotente-incidencia">
-        <button type="button" class="btn btn-warning">
-            <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> 
-            <p>Incidencia</p>
-        </button>
-    </div>
-    
-    <section class="content">
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1 col-sm-12">
-                <div class="box box-danger">
-                    <div class="panel panel-default">
-                        <div class="panel-heading center">
-                            <h3 class="box-title">
-                                {{nombEncuesta}}
-                            </h3>
-                        </div>
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-md-10 col-md-offset-1">
-                                    <div class="row">
-                                        <div class="col-md-8">
-                                            <div class="form-group" >
-                                                <div class="progress">
-                                                    <div class="progress-bar progress-bar-teclo" role="progressbar" 
-                                                        aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" 
-                                                        style="width: 60%;">
-                                                      Pocentaje de Avance: 60%
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div style="float: right;">
-                                                <a class="btn btn-primary" href="#" role="button">
-                                                    <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-                                                    Agregar Evidencia</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <hr>
-                                <div class="col-md-10 col-md-offset-1">
-                                    <form>
-                                        <fieldset>
-                                            <legend> <h3 class="box-title">{{nombSeccion}}</h3> </legend>
-                                            <div class="box-body">
-                                                <ul class="list-group">
-                                                    <li class="list-group-item" ng-repeat="item in seccEncuesta.preguntas">
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <div class="opcion-pregunta">
-                                                                    {{item.txPregunta}}
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-5">
-                                                                <div class="opcion-respuesta">
-                                                                    <div class="btn-group" data-toggle="buttons">
-                                                                        <label class="btn btn-default m-3" ng-repeat="resp in item.opciones">
-                                                                            <input type="radio" name="{{item.cdPregunta}}" id="{{item.cdPregunta}}" autocomplete="off"
-                                                                                ng-model="resp.stMarcado">
-                                                                                {{resp.txOpcion}}
-                                                                        </label>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-1">
-                                                                <div class="media add-img">
-                                                                    <a href="#">
-                                                                        <img class="add-img-img" src="static/dist/img/etapas/add.png">
-                                                                    </a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                  </ul>
-                                                  
-                                            </div>
-                                        </fieldset>
-                                    </form>
-                                    <br>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div style="float: left;">
-                                                <button type="button" class="btn btn-danger">Regresar</button>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div style="float: right;">
-                                                <button type="button" class="btn btn-danger">Finalizar</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+	<!-- botón flotante para agregar incidencia -->
+	<div class="btn-flotente-incidencia">
+		<button type="button" class="btn btn-warning">
+			<span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
+			<p>Incidencia</p>
+		</button>
+	</div>
+
+	<section class="content">
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1 col-sm-12">
+				<div class="box box-danger">
+					<div class="panel panel-default">
+						<div class="panel-heading center">
+							<h3 class="box-title">{{nombEncuesta}}</h3>
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-5">
+											<div ng-if="myVar" style="display: inline-block;">
+												<a href="#" data-toggle="tooltipinfo" data-placement="top"
+													title="Total de preguntas contestadas por sección"> <i
+													class="glyphicon glyphicon-question-sign toolTipInfo"></i>
+												</a>
+											</div>
+											<div class="progress">
+												<div class="progress-bar progress-bar-success active progress-bar-striped" 
+													role="progressbar" 
+													aria-valuenow="{{ (seccionVO.nuPreguntasContestadas * 100) / seccionVO.preguntas.length }}" 
+													aria-valuemin="0" aria-valuemax="100" 
+													style="width: {{ (seccionVO.nuPreguntasContestadas * 100) / seccionVO.preguntas.length }}%">
+														Contestadas por Sección:
+														{{seccionVO.nuPreguntasContestadas+' DE '}} {{
+														(seccionVO.preguntas | filter:general.filter).length }}
+												</div>
+											</div>
+										</div>
+
+										<div class="col-md-5">
+											<div ng-if="myVar" style="display: inline-block;">
+												<a href="#" data-toggle="tooltipinfo" data-placement="top"
+													title="Total de preguntas contestadas de la evaluación"> <i
+													class="glyphicon glyphicon-question-sign toolTipInfo"></i>
+												</a>
+											</div>
+											<div class="progress">
+												<div class="progress-bar progress-bar-success active progress-bar-striped" 
+													role="progressbar" 
+													aria-valuenow="{{ (preguntasContestadasEncuesta * 100) / encuestaDetalle.encuesta.nuPreguntas }}" 
+													aria-valuemin="0" aria-valuemax="100" 
+													style="width: {{ (preguntasContestadasEncuesta * 100) / encuestaDetalle.encuesta.nuPreguntas }}%">
+													Total: {{preguntasContestadasEncuesta+' DE ' }}<span>{{encuestaDetalle.encuesta.nuPreguntas}}</span>
+												</div>
+											</div>
+											
+										</div>
+
+										<div class="col-md-2">
+											<div style="float: right;">
+												<a class="btn btn-primary" href="#" role="button"> <span
+													class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+													Agregar Evidencia
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<hr>
+									<div class="col-md-12">
+										<div class="col-md-2">
+											<div
+												ng-repeat="seccion in encuestaDetalle.encuesta.secciones">
+
+												<div class="btn-group-vertical w-100" role="group">
+
+													<div class="btn-group" role="group">
+														<div
+															ng-show="seccion.nuPreguntasContestadas==0 || seccion.nuPreguntasContestadas===null"
+															ng-style="seccion.cdSeccion === seccionSeleccion && {'border-style':'solid','border-width':'3px','border-color':444}">
+															<button type="button"
+																class="label label-danger center-block w-100"
+																ng-show="seccion.nuPreguntasContestadas==0 || seccion.nuPreguntasContestadas===null"
+																ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,seccion)">
+																{{seccion.cdSeccion}}</button>
+														</div>
+													</div>
+
+													<div class="btn-group" role="group">
+														<div
+															ng-show="seccion.nuPreguntasContestadas>0 && seccion.nuPreguntasContestadas<seccion.preguntas.length"
+															ng-style="seccion.cdSeccion === seccionSeleccion && {'border-style':'solid','border-width':'3px','border-color':'444'}">
+															<button type="button"
+																class="label label-warning center-block w-100"
+																ng-show="seccion.nuPreguntasContestadas>0 && seccion.nuPreguntasContestadas<seccion.preguntas.length"
+																ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,seccion)">
+																{{seccion.cdSeccion}}</button>
+														</div>
+													</div>
+
+													<div class="btn-group" role="group">
+														<div
+															ng-show="seccion.nuPreguntasContestadas>=seccion.preguntas.length"
+															ng-style="seccion.cdSeccion === seccionSeleccion && {'border-style':'solid','border-width':'3px','border-color':'444'}">
+															<button type="button"
+																class="label label-success center-block w-100"
+																ng-show="seccion.nuPreguntasContestadas>=seccion.preguntas.length"
+																ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,seccion)">
+																{{seccion.cdSeccion}}</button>
+														</div>
+													</div>
+												</div>
+
+											</div>
+										</div>
+										<div class="col-md-10">
+											<form>
+												<fieldset>
+													<legend class="scheduler-border text-18">Sección:
+														{{seccionVO.nbSeccion}} {{paramConfigPage.bigCurrentPage}}
+														/ {{numPages}}</legend>
+													<div class="box-body">
+														<div class="box-body table-responsive no-padding">
+															<table class="table table-hover header-fixed">
+																<tbody id="myTable2">
+
+																	<tr ng-repeat=" respuesta in seccionVO.preguntas.slice(((paramConfigPage.bigCurrentPage-1)*paramConfigPage.itemsPerPage),((paramConfigPage.bigCurrentPage)*paramConfigPage.itemsPerPage))"
+																		id="{{respuesta.idPregunta}}" class="sin-seleccionar"
+																		ng-class="{'seleccionado': respuesta.stMarcado==1}">
+
+																		<td ng-class="{ 'has-error' : formStepTwo.{{'valueOption'+$index}}.$invalid && formStepTwo.{{'customValue'+$index}}.$dirty}">
+
+																			<div class="row">
+																				<div class="col-md-6 col-sm-6 col-xs-12">
+																					<span class="text-15">{{respuesta.txPregunta}}</span>
+																				</div>
+																				<div class="col-md-5 col-sm-5 col-xs-6">
+																				  	<ul>
+																						<li style="list-style: none; margin-top: 1%; margin-bottom: 2%;">
+																							
+																							<div class="opcion-respuesta">
+																								<div class="btn-group" data-toggle="buttons" >
+																									<label class="btn btn-default m-3" ng-repeat="opciones in respuesta.opciones">
+																										<input type="radio" autocomplete="off" ng-value=1
+																										name="{{respuesta.txPregunta}}" id="{{opciones.idOpcion}}" 
+																										ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
+																										ng-model="opciones.stMarcado"
+																										ng-checked="opciones.stMarcado">
+																											{{opciones.txOpcion}}
+																									</label>
+																								</div>
+																							</div>
+																						</li>
+																					</ul>
+																				</div>
+																				<div class="col-md-1 col-sm-1 col-xs-6">
+																					<div class="media add-img">
+																						<a href="#"> <img class="add-img-img"
+																							src="static/dist/img/etapas/add.png">
+																						</a>
+																					</div>
+																				</div>
+																			</div>
+																		</td>
+																	</tr>
+																</tbody>
+															</table>
+
+														</div>
+
+													</div>
+												</fieldset>
+												<div class="row">
+													<div class="col-md-12">
+														<div class="col-md-1 col-md-offset-2">
+															<span
+																ng-if="posicionActual >0 && paramConfigPage.bigCurrentPage==1"
+																class="btn btn-danger"
+																ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,encuestaDetalle.encuesta.secciones[posicionActual-1]) "
+																data-toggle="tooltip" data-placement="right"
+																title="Sección Anterior"> <i
+																class="fa fa-arrow-left"></i>
+															</span>
+															<div style="display: inline-block"
+																ng-if="myVar && posicionActual >0 && paramConfigPage.bigCurrentPage==1">
+																<a href="#" data-toggle="tooltipinfo"
+																	data-placement="bottom"
+																	title="Consultar la sección anterior de la evaluación">
+																	<i
+																	class="glyphicon glyphicon-question-sign toolTipInfo"></i>
+																</a>
+															</div>
+														</div>
+														<div class="col-md-9">
+															<div class="">
+																<div style="display: inline-block" ng-if="myVar">
+																	<a href="#" data-toggle="tooltipinfo"
+																		data-placement="right"
+																		title="Regresar al grupo de preguntas anteriores">
+																		<i
+																		class="glyphicon glyphicon-question-sign toolTipInfo"></i>
+																	</a>
+																</div>
+
+																<uib-pagination previous-text="Página Anterior"
+																	next-text="Página Siguiente"
+																	total-items="paramConfigPage.bigTotalItems"
+																	num-pages="numPages"
+																	ng-model="paramConfigPage.bigCurrentPage"
+																	max-size="paramConfigPage.maxSize"
+																	items-per-page="paramConfigPage.itemsPerPage"
+																	class="pagination-md" boundary-link-numbers="true"
+																	direction-links="true" rotate="false"></uib-pagination>
+
+																<div style="display: inline-block" ng-if="myVar">
+																	<a href="#" data-toggle="tooltipinfo"
+																		data-placement="right"
+																		title="Avanzar al grupo de preguntas siguientes">
+																		<i
+																		class="glyphicon glyphicon-question-sign toolTipInfo"></i>
+																	</a>
+																</div>
+
+															</div>
+															<div class="col-md-2 center">
+																<span
+																	ng-if="(posicionActual < (encuestaDetalle.encuesta.secciones.length-1)) && paramConfigPage.bigCurrentPage==numPages"
+																	class="btn btn-danger" data-toggle="tooltip"
+																	data-placement="right" title="Siguiente Sección"
+																	ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,encuestaDetalle.encuesta.secciones[posicionActual+1])">
+																	<i class="fa fa-arrow-right"></i>
+																</span>
+																<div style="display: inline-block"
+																	ng-if="myVar && (posicionActual < (encuestaDetalle.encuesta.secciones.length-1)) && paramConfigPage.bigCurrentPage==numPages">
+																	<a href="#" data-toggle="tooltipinfo"
+																		data-placement="bottom"
+																		title="Consultar la siguiente sección de la evaluación">
+																		<i
+																		class="glyphicon glyphicon-question-sign toolTipInfo"></i>
+																	</a>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</form>
+											<br>
+											<div class="row">
+												<div class="col-md-6">
+													<div style="float: left;">
+														<button type="button" class="btn btn-danger">Regresar</button>
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div style="float: right;">
+														<div
+															ng-if="preguntasContestadasEncuesta===encuestaDetalle.encuesta.nuPreguntas"
+															class="w-100">
+															<div style="display: block; margin: 0 auto;"
+																ng-if="myVar">
+																<a href="#" data-toggle="tooltipinfo"
+																	data-placement="right" title="Concluir la evaluaci�n">
+																	<i
+																	class="glyphicon glyphicon-question-sign toolTipInfo"></i>
+																</a>
+															</div>
+															<button class="btn btn-danger w-100 mb-2"
+																ng-click="guardaFinalizaEncuesta(paramConfigPage.bigCurrentPage) ">
+																<div style="display: block;">Finalizar</div>
+															</button>
+														</div>
+													</div>
+												</div>
+											</div>
+
+										</div>
+
+									</div>
+
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	</section>
 </body>
 </html>

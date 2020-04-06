@@ -15,6 +15,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteImgVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.AltaIncidenciaVO;
+import mx.com.teclo.siye.persistencia.vo.incidencia.IncidencVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.IncidenciaVO;
 
 @Service
@@ -114,5 +115,21 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 			throw new BusinessException(MSG_ERROR_DESCRIPCION_NULA);
 		}
 	}
+	
+	 @Override
+	@Transactional
+	public IncidencVO incidenciaByCdIncidencia(String cdIncidenc)  throws NotFoundException{
+		IncidencVO incidenciaVO = new IncidencVO();
+		IncidenciaDTO incidenciaDTO = incidenciaDAO.incidenciaBycdIncidencia(cdIncidenc);
+		if (incidenciaDTO == null) {
+			throw new NotFoundException(MSG_ERROR_INCIDENCIA_NULA);
+		}
+		
+		incidenciaVO = ResponseConverter.copiarPropiedadesFull(incidenciaDTO, IncidencVO.class);
+		
+		return incidenciaVO;
+	}
+	 
+	
 
 }

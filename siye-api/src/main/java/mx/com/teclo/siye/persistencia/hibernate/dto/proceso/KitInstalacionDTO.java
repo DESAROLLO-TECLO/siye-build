@@ -5,7 +5,10 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -18,6 +21,8 @@ public class KitInstalacionDTO implements Serializable {
 	private static final long serialVersionUID = -8058271907510016963L;
 
 	@Id
+	@SequenceGenerator(name = "sqKitInsta", sequenceName = "SQIE030D_IE_KIT_INSTA", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqKitInsta")
 	@Column(name = "ID_KIT_INSTALACION", unique = true, nullable = false, precision = 11, scale = 0)
 	private Long idKitInstalacion;
 

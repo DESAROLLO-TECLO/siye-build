@@ -3,12 +3,10 @@ package mx.com.teclo.siye.negocio.service.incidencia;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
-import mx.com.teclo.siye.persistencia.hibernate.dto.expedientesImg.ExpedientesImgDTO;
-import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.AltaIncidenciaVO;
+import mx.com.teclo.siye.persistencia.vo.incidencia.IncidencVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.IncidenciaVO;
-import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
-import mx.com.teclo.siye.persistencia.vo.proceso.TipoSeguimientoVO;
+
 
 public interface IncidenciaService {
 
@@ -29,5 +27,8 @@ public interface IncidenciaService {
 	 * @throws BusinessException
 	 */
 	public Boolean altaIncidencia(AltaIncidenciaVO altaIncidenciaVO) throws BusinessException;
+	
+	
+	public IncidencVO incidenciaByCdIncidencia(String cdIncidenc) throws NotFoundException;
 
 }

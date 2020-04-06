@@ -18,6 +18,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConductorDTO;
 import mx.com.teclo.siye.persistencia.mybatis.dao.comun.ComunMyBatisDAO;
 import mx.com.teclo.siye.persistencia.mybatis.dao.configuracion.ConfiguracionBDMyBatisDAO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorCompVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaGenericaVO;
 
 @Service
@@ -37,9 +38,10 @@ public class ConductorServiceImpl implements ConductorService{
 	
 	@Transactional
 	@Override
-	public PersonaGenericaVO nuevoConductor(PersonaGenericaVO personaGenericaVO, String mensajeErr) 
+	public ConductorVO nuevoConductor(PersonaGenericaVO personaGenericaVO, String mensajeErr) 
 		throws Exception, BusinessException, NotFoundException {
 		try {
+			ConductorVO conductorVO = new ConductorVO();
 			String nombre = personaGenericaVO.getNombre().toUpperCase();
 			String aPaterno = personaGenericaVO.getaPaterno().toUpperCase();
 			String aMaterno = personaGenericaVO.getaMaterno().toUpperCase();
@@ -47,9 +49,9 @@ public class ConductorServiceImpl implements ConductorService{
 				mensajeErr = "El nombre del conductor no puede estar vacío.";
 				throw new NotFoundException("");
 			}else {
-				personaGenericaVO.setNombre(nombre);
-				personaGenericaVO.setaPaterno(aPaterno);
-				personaGenericaVO.setaMaterno(aMaterno);
+				conductorVO.setNbConductor(nombre);
+				conductorVO.setNbApepatConductor(aPaterno);
+				conductorVO.setNbApematConductor(aMaterno);
 				
 				List<ConductorDTO> listaConductorDTO = conductorDAO.getConductorXNombre(nombre, aPaterno, aMaterno);
 				Boolean existeConductor = false;
@@ -77,13 +79,13 @@ public class ConductorServiceImpl implements ConductorService{
 					conductorDTO.setNuOrden(conductorDTO.getIdConductor());
 					conductorDAO.update(conductorDTO);
 					
-					personaGenericaVO.setIdPersona(conductorDTO.getIdConductor());
-					personaGenericaVO.setExistia(false);
+					conductorVO.setIdConductor(conductorDTO.getIdConductor());
+					conductorVO.setExistia(false);
 				}else{
-					personaGenericaVO.setIdPersona(listaConductorDTO.get(0).getIdConductor());
-					personaGenericaVO.setExistia(true);
+					conductorVO.setIdConductor(listaConductorDTO.get(0).getIdConductor());
+					conductorVO.setExistia(true);
 				}
-				return personaGenericaVO;
+				return conductorVO;
 			}
 		} catch (Exception e) {
 			if(mensajeErr != null && !mensajeErr.isEmpty() && !mensajeErr.equals(null)) {

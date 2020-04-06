@@ -9,6 +9,28 @@ function($http, config, $rootScope) {
                 "idOrdenServicio": parseInt($rootScope.idOrSer)
             }
         });
-    }
+    };
+    
+    this.cargarEncuesta = function(idEncuesta,idOrdenServicio){
+        return $http.get(config.baseUrl + "/encuesta/cargar", {
+            params:{
+                "idEncuesta": idEncuesta,
+                "idOrdenServicio": idOrdenServicio
+            }
+        });
+    };
+    
+	this.saveRespuestaEncuesta=function(listRespuestasVO){
+		return $http.post(config.baseUrl + "/encuesta/respuestas",listRespuestasVO);
+	};
+	
+	this.getNumPreguntasPorSeccion = function (cdParametro) {
+		return $http.get(config.baseUrl +"/catalogo/parametroCd", 
+		{params:{"cdParametro": cdParametro}});
+	};
+	
+	this.finalizaEncuesta=function(usuarioEncuestaVO){
+		return $http.put(config.baseUrl + "/encuesta/finalizar",usuarioEncuestaVO);
+	};
 
 });
