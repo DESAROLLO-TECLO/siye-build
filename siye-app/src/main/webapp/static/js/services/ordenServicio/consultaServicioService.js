@@ -47,7 +47,7 @@ angular.module(appTeclo).service('consultaServicioService', function($http, conf
     this.descargarReporteExcel = function(rVO) {
         return $http({
             method: 'POST',
-            url: config.baseUrl + "/reporte/reporteIncidencia",
+            url: config.baseUrl + "/descargaExcel",
             data: rVO,
             dataType: "json",
             header: {
