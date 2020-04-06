@@ -2,29 +2,52 @@
  * Author: Mannuel Dirsio
  * Directive: catalogoGenericoList
  * Descripcion:Obtiene una lista de un servicio y enpoint dado desde html y la muestra 
-   en el select asi mismo detecta un click del boton y lanza un modal para un nuevo registro
+   en el select asi mismo detecta un click del boton dado y lanza un modal para un nuevo registro[3 parametros]
  * Versión: 1.1.0
  */
+  /*
+         *-------------------Ejemplo Con el Componente select2-----------------------*
+         *			<div class="col-md-3">
+			<div class="form-group">
+				<label>
+					Tipo Persona 1
+				</label>
+				<div class="input-group">
+					<div class="input-group-addon">
+						<i class="fa fa-list-ul"></i>
+					</div>
+					<select name="persona2" id="persona2" class="form-control" select2
+						idioma-s2="{{currentLanguage}}"
+						ng-model="select2" 
+						catalogo-generico-list
+						param-busq="1"
+						name-consult-service="'catalogoGenericoService'" 
+						name-consult-end-point-service="'getTecnicos'" 
+						name-save-service="'instaladorService'"
+						name-save-end-point-service="'nuevoInstalador'" 
+						model-result="selectList2"
+						opcion-selec="select2"
+						object-id="'idPersona'"
+						idbtn="'btnTrans2'"
+						ng-options="x as x.nbPersona for x in selectList2">
+						<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+					</select>
+					<div class="input-group-btn">
+						<label  id="btnTrans2" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></label>
+					</div>
+				</div>
+			
+			</div>
+				VALOR DEL MODELO2:{{select2}}
+		</div>*/
 
 angular.module(appTeclo).directive('catalogoGenericoList', function($injector) {
     return {
-        /* Se Obtienen los parametros al poner la directiva 
-         * catalogoGenericoList(catalogo-generico-list ) en el componente
-         *-------------------Ejemplo Con el Componente select2-----------------------*
-         *<select  class="form-control" select2
-							ng-model="selectWithSearch" 
-							catalogo-generico-list
-							name-service="'catalogoGenericoService'" 
-							name-end-point-service="'cargarCatalogo'" 
-							model-result="selectList"
-							opcion-selec="selectWithSearch"
-							ng-options="x as x.nbConductor for x in selectList track by x.idConductor">
-							<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
-			</select>*/
         scope: {
-        	idComponent:'=?',
-        	opcionSelec:'=',
-        	modeloAtributos:'=',
+        	idbtn:'=?',
+        	objectId:'=',
+        	opcionSelec:'=?',
+        	paramBusq:'=',
         	nameConsultService:'=',
         	nameSaveService:'=',
         	modelResult:'=?',
@@ -33,45 +56,46 @@ angular.module(appTeclo).directive('catalogoGenericoList', function($injector) {
          },
          /*Se construye componente y se inyecta directiva se reciben paranetros*/
         link: function(scope, el, attr, ngModel) {
-        	var model=scope.modeloAtributos;
+        	var nameContex=el.context.name;
+        	var paramBusqueda=scope.paramBusq;
         	var nameConsultEmpServ=scope.nameConsultEndPointService;
         	var nameSaveEmpServ=scope.nameSaveEndPointService;
         	/*Se inyecta servicio con el nombre dado desde el html*/
         	var consultService=$injector.get(scope.nameConsultService);
-        	var saveService=$injector.get(scope.nameSaveService);
-			
+        	if (scope.nameSaveService==null || scope.nameSaveEndPointService==null) {
+        		$('#'+scope.idbtn).css('visibility', 'hidden');
+        		//$('#'+scope.idbtn).attr("disabled", true);
+			}else{
+				var saveService=$injector.get(scope.nameSaveService);
+			}
         	/*Se consume el enpoint del servicio dado desde html*/
-        	consultService[nameConsultEmpServ](model).success(function(response){
+        	consultService[nameConsultEmpServ](paramBusqueda).success(function(response){
         	/*Se obtiene la lista y se iguala  ala variable mandada desde html*/
         		scope.modelResult=response;
         	}).error(function(error){
         		scope.modelResult=[];
         	}); 	
-        	
+        	/* si se desea agregar un registro "NUEVO" ,que sirva para lanzar modal como el boton de + 
     		$(el).on("change",function(){
     			if (scope.opcionSelec!=null) {
     				if (scope.opcionSelec.nbConductor=="NUEVO") {
     					let serviceModal=$injector.get('ModalService');
-        				abrirModal("Guardar Objeto",serviceModal,saveService,consultService, nameSaveEmpServ,nameConsultEmpServ)
+        				abrirModal(paramBusqueda,serviceModal,saveService,consultService, nameSaveEmpServ,nameConsultEmpServ)
     				}
 				}
     			 					
     		});
-    		
-    		$(document).on('click', '#btnPersona', function() {
-    			var a=scope;
-    			var e=el;
-    			var c= attr;
-    			var d=ngModel;
+    		*/
+    		$(document).on('click', '#'+scope.idbtn, function() {
 				let serviceModal=$injector.get('ModalService');
-				abrirModal("Guardar Objeto", serviceModal,saveService,consultService, nameSaveEmpServ,nameConsultEmpServ) 	
+				abrirModal(paramBusqueda, serviceModal,saveService,consultService, nameSaveEmpServ,nameConsultEmpServ) 	
     	    });
     		
-    	    function abrirModal(messageTo, serviceModal,saveService,consultService, nameSaveEmpServ,nameConsultEmpServ){
+    	    function abrirModal(paramBusqueda, serviceModal,saveService,consultService, nameSaveEmpServ,nameConsultEmpServ){
     	    	serviceModal['showModal']({
     	 			   templateUrl: 'views/templatemodal/templateModalGenerico.html',
     	 			   controller: 'mensajeModalGenericoController',
-    	 				   inputs:{ message: messageTo,
+    	 				   inputs:{ idTipo: paramBusqueda,
     	 					  saveService:saveService,
     	 					  consultService:consultService,
     	 					  nameSaveEmpServ:nameSaveEmpServ,
@@ -79,59 +103,25 @@ angular.module(appTeclo).directive('catalogoGenericoList', function($injector) {
     	 				   }
     	 		   }).then(function(modal){
     	 			  modal.element.modal();
-    	 			 modal.close.then(function(datos) {
+    	 			  modal.close.then(function(datos) {
+    	 				  if (datos!=null) {
+    	 				  var flagIdObject=scope.objectId==null?false:true;
     					   if(datos.existe===false){
     						   scope.modelResult=datos.newList;
-    							$("#select2-selectName-container").text(datos.newObject.nombre+" "+datos.newObject.aPaterno+" "+datos.newObject.aMaterno);
-    			    					scope.opcionSelec=datos.newObject.idPersona;
-
-    					   }else if(datos.existe){
-    						   $("#select2-selectName-container").text(datos.newObject.nombre+" "+datos.newObject.aPaterno+" "+datos.newObject.aMaterno);
-    			    					scope.opcionSelec=datos.newObject.idPersona;
     					   }
+    					   $("#select2-"+nameContex+"-container").text(datos.newObject.nombre+" "+datos.newObject.aPaterno+" "+datos.newObject.aMaterno);
+    			    		if (!flagIdObject) 
+    			    			scope.opcionSelec=datos.newObject.idPersona;
+								 else	
+							     angular.forEach( scope.modelResult,function(item,index){
+    			    			 if (item[scope.objectId]==datos.newObject.idPersona) {
+    	    							 scope.opcionSelec=item;
+    	    					   }
+    			    		 });
+    	 				  }
     				   }); 
     			 }); 
-    	    	
-    	    };
-    		
-        } 
-         
-         
-         
+    	    };	
+        }           
     }
- 
-//    function abrirModal(messageTo, serviceModal,nameService,service,endPointService,modelResult,ngModel){
-//    	serviceModal['showModal']({
-// 			   templateUrl: 'views/templatemodal/templateModalGenerico.html',
-// 			   controller: 'mensajeModalGenericoController',
-// 				   inputs:{ message: messageTo,
-// 					  nameService:nameService,
-// 					  endPointService:endPointService,
-// 					  modelResult:modelResult,
-// 					  ngModel:ngModel,
-// 					  serviceConsult:service
-// 				   }
-// 		   }).then(function(modal){
-// 			  modal.element.modal();
-// 			 modal.close.then(function(datos) {
-//				   if(!datos.existe){
-//					   modelResult=datos.newList;
-//						$("#select2-selectName-container").text(datos.newObject.nombre);
-//		    			angular.forEach(modelResult,function(el,a){
-//		    				if (angular.equals(el.idConductor,datos.newObject.idPersona)) {
-//		    					ngModel=el.idConductor;
-//		    				}
-//		    			});
-//				   }else if(datos.existe){
-//					   $("#select2-selectName-container").text(datos.newObject.nombre);
-//		    			angular.forEach(modelResult,function(el,a){
-//		    				if (angular.equals(el.idConductor,datos.newObject.idPersona)) {
-//		    					ngModel=el.idConductor;
-//		    				}
-//		    			}); 
-//				   }
-//			   }); 
-//		 }); 
-//    	
-//    	};
 });
