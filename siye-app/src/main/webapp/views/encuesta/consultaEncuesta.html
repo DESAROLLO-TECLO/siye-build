@@ -137,24 +137,30 @@
                                                 <td class="center" style="width: 8px; height: 100%; vertical-align: middle;">
                                                     <span class="etiquetaCancelado" 
                                                         style="background-color: {{ordenVO.intentoMostrar.stEncuesta.cdColor}}; min-height: 40px; height: 100%;"
-                                                        data-toggle="tooltip" data-placement="bottom" title="{{ordenVO.intentoMostrar.stEncuesta.nbStEncuesta}}">
+                                                        data-toggle="tooltip" data-placement="top" title="{{ordenVO.intentoMostrar.stEncuesta.nbStEncuesta}}">
                                                     </span>
                                                 </td>
                                                 <td class="center" style="vertical-align: middle;" width="15%">
-                                                    <a ng-if="ordenVO.intentoMostrar.stEncuesta.cdStEncuesta=='NI'" ng-click="empezarEncuesta(ordenVO.ordenServicio.idOrdenServicio,ordenVO.encuesta,true,ordenVO.intentoMostrar.idUsuEncuIntento)">
+                                                    <a ng-if="ordenVO.intentoMostrar.stEncuesta.cdStEncuesta == 'NI'" ng-click="empezarEncuesta(ordenVO.ordenServicio.idOrdenServicio,ordenVO.encuesta,true,ordenVO.intentoMostrar.idUsuEncuIntento)">
                                                         <span class="etiquetaCancelado fullWidth" 
                                                             style="cursor: pointer; background-color: {{ordenVO.intentoMostrar.stEncuesta.cdColor}};" 
                                                             data-toggle="tooltip" data-placement="bottom" title="{{ordenVO.intentoMostrar.stEncuesta.nbStEncuesta}}">
-                                                            {{encuesta.accionBtn}} Iniciar
+                                                           	<b>INICIAR</b>
                                                         </span>
                                                     </a>
-                                                      <a ng-if="ordenVO.intentoMostrar.stEncuesta.cdStEncuesta=='EC'" ng-click="reanudarEncuesta(ordenVO.ordenServicio.idOrdenServicio,ordenVO.encuesta,true,ordenVO.intentoMostrar.idUsuEncuIntento)">
+                                                    <a ng-if="ordenVO.intentoMostrar.stEncuesta.cdStEncuesta == 'EC'" ng-click="reanudarEncuesta(ordenVO.ordenServicio.idOrdenServicio,ordenVO.encuesta,true,ordenVO.intentoMostrar.idUsuEncuIntento)">
                                                         <span class="etiquetaCancelado fullWidth" 
                                                             style="cursor: pointer; background-color: {{ordenVO.intentoMostrar.stEncuesta.cdColor}};" 
                                                             data-toggle="tooltip" data-placement="bottom" title="{{ordenVO.intentoMostrar.stEncuesta.nbStEncuesta}}">
-                                                            {{encuesta.accionBtn}} Reanudar
+                                                            <b>REANUDAR</b>
                                                         </span>
                                                     </a>
+                                                    <span ng-if="ordenVO.intentoMostrar.stEncuesta.cdStEncuesta == 'FIN'" 
+                                                    	class="etiquetaCancelado fullWidth" 
+                                                        style="background-color: {{ordenVO.intentoMostrar.stEncuesta.cdColor}};" 
+                                                        data-toggle="tooltip" data-placement="bottom" title="{{ordenVO.intentoMostrar.stEncuesta.nbStEncuesta}}">
+                                                        <b>FINALIZADA</b>
+                                                    </span>
                                                 </td>
                                                 <td class="center" style="vertical-align: middle;" width="20%">
                                                     {{ordenVO.ordenServicio.vehiculo.cdPlacaVehiculo}}
