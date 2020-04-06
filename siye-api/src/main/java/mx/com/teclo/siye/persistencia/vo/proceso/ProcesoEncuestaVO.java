@@ -16,6 +16,9 @@ public class ProcesoEncuestaVO {
 	private Boolean stRespondida=false;
 	//variable para conocer si la encuesta esta activa
 	private Boolean stActivaMostrar=false;
+	//variable para conocer si la de satisfaccion ya esta activa o no
+	private Boolean stSatisfaccion;
+	
 	
 	public Long getIdProcesoEncuesta() {
 		return idProcesoEncuesta;
@@ -61,6 +64,13 @@ public class ProcesoEncuestaVO {
 	public void setStActivaMostrar(Boolean stActivaMostrar) {
 		this.stActivaMostrar = stActivaMostrar;
 	}
+	public Boolean getStSatisfaccion() {
+		return stSatisfaccion;
+	}
+	public void setStSatisfaccion(Boolean stSatisfaccion) {
+		this.stSatisfaccion = stSatisfaccion;
+	}
+	
 	
 	
 	
