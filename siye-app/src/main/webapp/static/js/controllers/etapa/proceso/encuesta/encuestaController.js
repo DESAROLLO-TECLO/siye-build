@@ -5,7 +5,18 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     $scope.nombEncuesta = $rootScope.nomSeguimiento + " - Encuesta " + encuestaInfo.data.encuesta.nbEncuesta;
     $scope.nombSeccion = encuestaInfo.data.encuesta.secciones[0].nbSeccion;
     $scope.seccEncuesta = encuestaInfo.data.encuesta.secciones[0];
-    console.log($scope.seccEncuesta);
+    $scope.objOpciones = new Object(
+        {val:1,nom:'Opción 1'},
+        {val:2,nom:'Opción 2'},
+        {val:3,nom:'Opción 3'},
+        {val:4,nom:'Opción 4'},
+        {val:5,nom:'Opción 5'},
+        {val:6,nom:'Opción 6'},
+        {val:7,nom:'Opción 7'},
+        {val:8,nom:'Opción 8'},
+        {val:9,nom:'Opción 9'},
+        {val:10,nom:'Opción 10'}
+    );
 	
 	$scope.paramConfigPage = {
             bigCurrentPage: 1,
