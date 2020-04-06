@@ -8,6 +8,7 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
     if(etapaInfo != null){
         $rootScope.idOrSer = parseInt(etapaInfo.data[0].idOrdenServicio);
         $rootScope.nomOrdenServicio = etapaInfo.data[0].cdOrdenServicio;
+        $rootScope.numOS = etapaInfo.data[0].idOrdenServicio;
         $scope.dataEtapa = new Object({
             idOrdenServicio:etapaInfo.data[0].idOrdenServicio,
             cdOrdenServicio:etapaInfo.data[0].cdOrdenServicio,
