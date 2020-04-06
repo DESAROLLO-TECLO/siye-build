@@ -115,7 +115,7 @@ public class EncuestaRestController {
 		return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value="/activarEncuestaSatis", method = RequestMethod.POST)
+	@RequestMapping(value="/activarEncuestaSatis", method = RequestMethod.GET)
 	//@PreAuthorize("hasAnyAuthority('SERVICE13_ENC_INTENTO')")
 	public ResponseEntity<Boolean> activar(@RequestParam(value="idEncuesta") long idEncuesta,
 			@RequestParam(value="idOrdenServicio") long idOrdenServicio,
