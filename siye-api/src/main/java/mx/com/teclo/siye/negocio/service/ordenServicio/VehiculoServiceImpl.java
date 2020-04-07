@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
+import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.VehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.VehiculoDTO;
@@ -32,15 +33,29 @@ public class VehiculoServiceImpl implements VehiculoService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public VehiculoVO bucarVehiculoPlaca(String placa) throws BusinessException  {
+	public VehiculoVO bucarVehiculoPlaca(String placa) throws NotFoundException  {
+//		String mnsjError = "";
+//		try{
 		VehiculoDTO vehiculoDTO = vehiculoDAO.buscarVehiculoPorPlaca(placa);
 		
-		if(vehiculoDTO == null)
-			throw new BusinessException("No existe registro");
-		
+		if(vehiculoDTO == null){
+//			mnsjError= "No existe el vehiculo";
+			throw new NotFoundException("No Existe Vehiculo");
+		}
 		VehiculoVO vehiVO = ResponseConverter.copiarPropiedadesFull(vehiculoDTO, VehiculoVO.class);
 		
 		return vehiVO;
+		
+//		}catch(Exception e){
+//			if(mnsjError != null && !mnsjError.isEmpty() && !mnsjError.equals(null)) {
+//				throw new NotFoundException(mnsjError);
+//			} else {
+////				e.printStackTrace();
+//				throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
+//			}
+//			
+//		}
+		
 	}
 	
 

@@ -6,6 +6,9 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     $scope.nombEncuesta = $rootScope.nomSeguimiento + " - Encuesta " + encuestaInfo.data.encuesta.nbEncuesta;
     $scope.nombSeccion = encuestaInfo.data.encuesta.secciones[0].nbSeccion;
     $scope.seccEncuesta = encuestaInfo.data.encuesta.secciones[0];
+
+    console.log($scope.seccEncuesta);
+
     $scope.objOpciones = new Object(
         {val:1,nom:'Opción 1'},
         {val:2,nom:'Opción 2'},

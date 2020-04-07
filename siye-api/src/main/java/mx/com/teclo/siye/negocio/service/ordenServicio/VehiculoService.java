@@ -31,5 +31,5 @@ public interface VehiculoService {
 	 */
 	List<VehiculoVO> buscarVehiculos(FiltroVehiculoVO filtro);
 	
-	VehiculoVO bucarVehiculoPlaca(String placa)throws BusinessException;
+	VehiculoVO bucarVehiculoPlaca(String placa)throws NotFoundException;
 }
