@@ -10,6 +10,8 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioCatalogoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.StSeguimientoVO;
 
 
@@ -34,6 +36,13 @@ public interface CatalogoService {
 	 * @return ConfiguracionVO
 	 */
 	public ConfiguracionVO configuracion(String cdLlavePConfig)throws NotFoundException;
+
+
+	CentroInstalacionVO getModAten() throws NotFoundException;
+
+	List<OrdenServicioCatalogoVO> getOrdenServicio() throws NotFoundException;
+
 	
 	List<OpcionCausaDTO> getCatalogoCausas(Long idOpcion);
+
 }
