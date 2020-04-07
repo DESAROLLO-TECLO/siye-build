@@ -15,13 +15,10 @@ angular.module(appTeclo).directive('botonIncidencia', function ($location, showA
 			idPregunta: '='
 	    },
 	    template:  
-	    	' 	<div class="row">                                    							'+
-	    	' 		<div class="col-md-12">                                						'+
 	    	'	 	<button type="button" class="btn botonIncidencia" ng-click="redireccionar()">   '+
 	    	'	 		<span class="glyphicon glyphicon-tags" aria-hidden="true"></span>   	'+
 	    	'	 		<br>Incidencia                                    							'+
-	    	'	 	</button>                                    								'+
-	    	'	</div> ',
+	    	'	 	</button>                                    								',
     	link: function(scope){
     		scope.redireccionar = function (){
 		        showAlert.confirmacion("Se redireccionará a otra pantalla para dar de alta la incidencia. ¿Desea continuar?",
