@@ -52,20 +52,20 @@
 <div class="col-md-12">
 	<div class="row">
 		<div class="col-md-2 center">
-			<div ng-if="myVar">
-				<a data-toggle="tooltipinfo" data-placement="top"
-					title="Tiempo restante para finalizar la encuesta"> <i
-					class="glyphicon glyphicon-question-sign toolTipInfo"></i>
-				</a>
-			</div>
+<!-- 			<div ng-if="myVar"> -->
+<!-- 				<a data-toggle="tooltipinfo" data-placement="top" -->
+<!-- 					title="Tiempo restante para finalizar la encuesta"> <i -->
+<!-- 					class="glyphicon glyphicon-question-sign toolTipInfo"></i> -->
+<!-- 				</a> -->
+<!-- 			</div> -->
 <!-- 			<div class="text-15">Tiempo Restante</div> -->
 <!-- 			<div id="reloj" class="text-25"> -->
 <!-- 				{{paramConfigPage.hora<10?formato:''}}{{paramConfigPage.hora}}:{{paramConfigPage.minuto<10?formato:''}}{{paramConfigPage.minuto}}:{{paramConfigPage.segundo<10?formato:''}}{{paramConfigPage.segundo}} -->
 <!-- 			</div> -->
 		</div>
-		<div class="col-md-9">
+		<div class="col-md-10 col-xs-12">
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-6 col-xs-6">
 					Contestadas por sección: {{seccionVO.nuPreguntasContestadas+' DE '}} {{ (seccionVO.preguntas | filter:general.filter).length }}
 					<div ng-if="myVar" style="display: inline-block;">
 						<a data-toggle="tooltipinfo" data-placement="top"
@@ -74,8 +74,8 @@
 						</a>
 					</div>
 				</div>
-
-				<div class="col-md-6">
+				
+				<div class="col-md-6 col-xs-6">
 					Total: {{preguntasContestadasEncuesta+' DE ' }}<span>{{encuesta.nuPreguntas}}</span>
 					<div ng-if="myVar" style="display: inline-block;">
 						<a data-toggle="tooltipinfo" data-placement="top"
@@ -84,12 +84,10 @@
 						</a>
 					</div>
 				</div>
-
-
-				<div class="col-md-6">
+				
+				<div class="col-md-6 col-xs-6">
 					<div class="progress">
-						<div
-							class="progress-bar progress-bar-success active progress-bar-striped"
+						<div class="progress-bar progress-bar-success active progress-bar-striped"
 							role="progressbar"
 							aria-valuenow=" {{ (seccionVO.nuPreguntasContestadas * 100) / seccionVO.preguntas.length }}"
 							aria-valuemin="0" aria-valuemax="100"
@@ -100,10 +98,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-6 col-xs-6">
 					<div class="progress">
-						<div
-							class="progress-bar progress-bar-success active progress-bar-striped"
+						<div class="progress-bar progress-bar-success active progress-bar-striped"
 							role="progressbar"
 							aria-valuenow=" {{ (preguntasContestadasEncuesta * 100) / encuesta.nuPreguntas }}"
 							aria-valuemin="0" aria-valuemax="100"
@@ -115,21 +112,15 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
-		<div class="col-md-1"></div>
 	</div>
-
 </div>
 <form name="formStepTwo" novalidate>
-	<div class="col-md-2 center-vert center" style="margin-top: 2%;">
+	<div class="col-md-2 col-xs-2 center-vert center" style="margin-top: 2%;">
 		<div ng-repeat="seccion in encuesta.secciones">
-
 			<div class="btn-group-vertical w-100" role="group">
-
 				<div class="btn-group" role="group">
-					<div
-						ng-show="seccion.nuPreguntasContestadas==0 || seccion.nuPreguntasContestadas===null"
+					<div ng-show="seccion.nuPreguntasContestadas==0 || seccion.nuPreguntasContestadas===null"
 						ng-style="seccion.cdSeccion === seccionSeleccion && {'border-style':'solid','border-width':'3px','border-color':444}">
 						<button type="button"
 							class="label label-danger center-block w-100"
@@ -153,8 +144,7 @@
 				</div>
 
 				<div class="btn-group" role="group">
-					<div
-						ng-show="seccion.nuPreguntasContestadas>=seccion.preguntas.length"
+					<div ng-show="seccion.nuPreguntasContestadas>=seccion.preguntas.length"
 						ng-style="seccion.cdSeccion === seccionSeleccion && {'border-style':'solid','border-width':'3px','border-color':'444'}">
 						<button type="button"
 							class="label label-success center-block w-100"
@@ -165,11 +155,8 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
-
-
-
+		
 		<div style="position: absolute; bottom: 0;">
 			<div class="centerRow">
 				<div ng-if="preguntasContestadasEncuesta===encuesta.nuPreguntas"
@@ -203,12 +190,11 @@
 					Mostrar Ayuda <input id="checked" type="checkbox" ng-model="myVar"
 						ng-init="myVar = false" ng-click="mostarTooltip()" />
 				</div>
-
 			</div>
 		</div>
 
 	</div>
-	<div class="col-md-9">
+	<div class="col-md-10 col-xs-10">
 		<fieldset class="scheduler-border">
 			<legend class="scheduler-border text-18">
 				Sección: {{seccionVO.nbSeccion}} {{paramConfigPage.bigCurrentPage}} / {{numPages}}
@@ -217,13 +203,11 @@
 			<div class="box-body table-responsive no-padding">
 				<table class="table table-hover header-fixed">
 					<tbody id="myTable2">
-						<tr
-							ng-repeat=" respuesta in seccionVO.preguntas.slice(((paramConfigPage.bigCurrentPage-1)*paramConfigPage.itemsPerPage),((paramConfigPage.bigCurrentPage)*paramConfigPage.itemsPerPage))"
+						<tr ng-repeat=" respuesta in seccionVO.preguntas.slice(((paramConfigPage.bigCurrentPage-1)*paramConfigPage.itemsPerPage),((paramConfigPage.bigCurrentPage)*paramConfigPage.itemsPerPage))"
 							id="{{respuesta.idPregunta}}" class="sin-seleccionar"
 							ng-class="{'seleccionado': respuesta.stMarcado==1}">
 
-							<td
-								ng-class="{ 'has-error' : formStepTwo.{{'valueOption'+$index}}.$invalid && formStepTwo.{{'customValue'+$index}}.$dirty}">
+							<td ng-class="{ 'has-error' : formStepTwo.{{'valueOption'+$index}}.$invalid && formStepTwo.{{'customValue'+$index}}.$dirty}">
 								<span class="text-15">{{respuesta.txPregunta}}</span>
 								<ul>
 									<li
@@ -245,11 +229,10 @@
 						</tr>
 					</tbody>
 				</table>
-
 			</div>
 		</fieldset>
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-12 col-xs-12">
 				<div class="col-md-1 col-md-offset-2">
 					<span ng-if="posicionActual >0 && paramConfigPage.bigCurrentPage==1"
 						class="btn btn-danger"
@@ -265,7 +248,7 @@
 						</a>
 					</div>
 				</div>
-				<div class="col-md-9">
+				<div class="col-md-9 col-xs-9">
 					<div class="">
 						<div style="display: inline-block" ng-if="myVar">
 							<a data-toggle="tooltipinfo" data-placement="right"
@@ -290,7 +273,6 @@
 								<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 							</a>
 						</div>
-
 					</div>
 					<div class="col-md-2 center">
 						<span ng-if="(posicionActual < (encuesta.secciones.length-1)) && paramConfigPage.bigCurrentPage==numPages"
@@ -310,15 +292,14 @@
 				</div>
 			</div>
 		</div>
-
 	</div>
-	<div class="col-md-1"
-		style="line-height: 30px; height: 515px; margin-top: 2%;">
-		<div style="position: absolute; display: inline; top: 0;" ng-if="myVar">
-			<a data-toggle="tooltipinfo" data-placement="top"
-				title="Sección de preguntas correspondientes a la encuesta, la pregunta contiene un número identificado de pregunta y contiene tres opciones, se debe marcar con un click la opción deseada">
-				<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
-			</a>
-		</div>
-	</div>
+<!-- 	<div class="col-md-1 col-xs-1" -->
+<!-- 		style="line-height: 30px; height: 515px; margin-top: 2%;"> -->
+<!-- 		<div style="position: absolute; display: inline; top: 0;" ng-if="myVar"> -->
+<!-- 			<a data-toggle="tooltipinfo" data-placement="top" -->
+<!-- 				title="Sección de preguntas correspondientes a la encuesta, la pregunta contiene un número identificado de pregunta y contiene tres opciones, se debe marcar con un click la opción deseada"> -->
+<!-- 				<i class="glyphicon glyphicon-question-sign toolTipInfo"></i> -->
+<!-- 			</a> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
 </form>

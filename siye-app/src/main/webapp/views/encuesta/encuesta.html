@@ -4,19 +4,35 @@
 		<meta charset="utf-8">
 		<title>Insert title here</title>
 		<style>
-		    body {
+		    .fondo {
 		    	background-image: none;
 		    	background-color: #ecf0f5;
+			}
+			.btn-salir{
+				position: absolute;
+				top: 1rem;
+				left: 1rem;
+				cursor: pointer;
 			}
 		</style>
 	</head>
 	<body>
-		<div class="row cont-formuarioCliente">
-			<div class="contLogoExpo">
+		<div class="row cont-formuarioCliente fondo">
+			<div class="contLogoExpo" style="margin-bottom: 0.829rem !important;">
 				<img src="static/dist/img/logoTeclo.png" class="logoRegistro">
 			</div>
-			<form class="formularioCliente row" name="busquedaForm">
-				<h1 class="tituloRegistro">{{'ENCUESTA.Consulta.tituloServicio' | translate}}</h1>
+			<form class="formularioCliente row" name="busquedaForm" style="margin: 1.1143rem 2.243rem !important; background-color: #ffffff;">
+				<div class="tituloRegistro col-md-12" style="padding-top: 0px;padding-bottom: 0px;" >
+					<div class="col-md-2">
+<!-- 						<a type="button" href="#/" class="btn pull-left btn-salir"> -->
+<!--         					<i class="fa fa-arrow-circle-left"></i>  -->
+<!-- 					        {{'APP.Base.boton.iniciarSesion' | translate}} -->
+<!-- 					    </a> -->
+					</div>
+					<div class="col-md-8">
+						<h1 class="tituloRegistro">{{'ENCUESTA.Consulta.tituloServicio' | translate}}</h1>
+					</div>
+				</div>
 				<div class="fullScreen-icon hidden-xs ngFullScreenAnimate"
 					tooltip="{{'APP.Base.mensaje.pantallaCompleta' | translate}}"
 					tooltip-placement="bottom" ng-show="!fullScreenActive">
@@ -30,7 +46,7 @@
 				</div>
 				 
 				<!-- phone mask -->
-				<div class="form-group inputForm">
+				<div class="form-group inputForm col-md-12">
 					<div class="row">
 						<div ng-show="!banderaPantalla" ng-include="'views/encuesta/consultaEncuesta.html'"></div>
 						<div ng-show="banderaPantalla" ng-include="'views/encuesta/realizarEncuesta.html'"></div>
