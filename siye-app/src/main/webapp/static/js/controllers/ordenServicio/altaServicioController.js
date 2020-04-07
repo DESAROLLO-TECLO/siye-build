@@ -111,18 +111,18 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 		$scope.ordenVO = $scope.orden;
 		console.log($scope.ordenVO);
 			
-//		altaServicioService.altaOrdenServicio(valorDos).success(function(data){
-//			$scope.error = false;
-//			growl.success("Datos Guardado Correctamente", { ttl: 5000 });
-//			$scope.parametroBusqueda.incidencia="";
-//			$scope.orden={};
-//			$scope.ordenVO={};
-//			$scope.mostrarAlta=false
-//			
-//		}).error(function(data){
-//			$scope.error = true;
-//			growl.error("No se registraron los datos", { ttl: 5000 });
-//		});
+		altaServicioService.altaOrdenServicio(valorDos).success(function(data){
+			$scope.error = false;
+			growl.success("Datos Guardado Correctamente", { ttl: 5000 });
+			$scope.parametroBusqueda.incidencia="";
+			$scope.orden={};
+			$scope.ordenVO={};
+			$scope.mostrarAlta=false
+			
+		}).error(function(data){
+			$scope.error = true;
+			growl.error("No se registraron los datos", { ttl: 5000 });
+		});
 
 		
 		
