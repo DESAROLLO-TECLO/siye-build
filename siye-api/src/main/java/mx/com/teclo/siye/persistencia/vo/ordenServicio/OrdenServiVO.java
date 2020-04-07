@@ -21,6 +21,7 @@ public class OrdenServiVO implements Serializable{
 	private VehiculoOSVO vehiculoVO;
 	private Long idProcesoActual;
 	private Date fhCita;
+	private Long idIncidencia;
 
 	public VehiculoOSVO getVehiculoVO() {
 		return vehiculoVO;
@@ -75,6 +76,12 @@ public class OrdenServiVO implements Serializable{
 	}
 	public void setFhCita(Date fhCita) {
 		this.fhCita = fhCita;
+	}
+	public Long getIdIncidencia() {
+		return idIncidencia;
+	}
+	public void setIdIncidencia(Long idIncidencia) {
+		this.idIncidencia = idIncidencia;
 	}
 	
 
