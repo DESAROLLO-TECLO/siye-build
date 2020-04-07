@@ -203,4 +203,10 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         controller: "expedienteController"
     });
 
+    //Seguimiento 
+    $routeProvider.when("/seguimientoOS", {
+        templateUrl: "views/monitoreo/seguimiento.html",
+        controller: "seguimientoOsController"
+    });
+
 });

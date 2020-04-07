@@ -160,9 +160,34 @@
 			}
 			
 		}
-	},
-	
+    },
+    "MONITOREO":{
+        "busqueda":{
+            "tipoBusqueda":{
+                "label":"Tipo de Búsqueda",
+                "validacion":"El tipo de búsqueda es requerido."
+            },
+            "valorBusqueda":{
+                "label":"Valor de búsqueda",
+                "validacion":"El valor de búsqueda es requerido."
+            },
+            "rangoFechas":{
+                "label":"Rango de Fechas",
+                "validacion":"El rango de fechas es requerido."
+            }
+        },
+        "resultadosGral":{
+            "titulo":{
+                "moduloAtencion":"Modulo de Atención",
+                "EnCurso":"En Curso",
+                "completa":"Completadas",
+                "programada":"Programadas",
+                "noProgramada":"No Programadas",
+                "incidencia":"Incidencias"
+            }
 
+        }
+    },
     "ADMINISTRACION": {
         "ComplementosWeb": {
             "tituloServicio": "Complementos Web",
