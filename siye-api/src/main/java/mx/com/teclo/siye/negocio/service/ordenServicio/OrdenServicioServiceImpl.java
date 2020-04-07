@@ -419,7 +419,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			kitInsDipDTO.setKitInstalacion(kitInstalacion);
 			kitInsDipDTO.setKitDispositivo(dispDTO);
 			kitInsDipDTO.setProveedor(provee);
-			kitInsDipDTO.setCdKitDispositivo(ordenServiVO.getCdKitIntalacion());
+			kitInsDipDTO.setCdKitDispositivo(ordenServiVO.getKitInstalacionVO().get(i).getSerie());
 			kitInsDipDTO.setStActivo(true);
 			kitInstDispDAO.save(kitInsDipDTO);	
 		}	
@@ -428,6 +428,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		incidenciaDTO = incidenciaDAO.findOne(ordenServiVO.getIdIncidencia());
 		odsIncidencDTO.setIdOrdenServicio(ordenServiDTO);
 		odsIncidencDTO.setIdIncidencia(incidenciaDTO);
+		odsIncidenciaDAO.save(odsIncidencDTO);
 		
 	}
 
