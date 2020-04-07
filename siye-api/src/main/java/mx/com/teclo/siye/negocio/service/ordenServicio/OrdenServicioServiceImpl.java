@@ -109,6 +109,19 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	@Autowired
 	private KitInstDispDAO kitInstDispDAO;
 	
+	@Transactional
+	@Override
+	public List<OrdenServicioVO> consultaOrdenServicioAll() throws NotFoundException {
+		UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
+		GerenteSupervisorDTO gerenteSupervisorDTO = gerenteSupervisorDAO.consultaGerenteSupervisorBySupervisor(usuario.getId());
+		if(gerenteSupervisorDTO == null)
+			throw new NotFoundException("No se encontró el centro de instalación, favor de reportar al administrador del sistema.");
+		List<OrdenServicioDTO> listOrdenServicioDTO =  ordenServicioDAO.consultaOrdenByFhCita(gerenteSupervisorDTO.getCentroInstalacion().getIdCentroInstalacion()); //ordenServicioDAO.consultaOrdenAll();
+		if(listOrdenServicioDTO.isEmpty())
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		List<OrdenServicioVO> listOrdenServicioVO = ResponseConverter.converterLista(new ArrayList<>(), listOrdenServicioDTO, OrdenServicioVO.class);
+		return listOrdenServicioVO;
+	}
 	
 	@Transactional
 	@Override

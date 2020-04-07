@@ -18,6 +18,8 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioCatalogoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.StSeguimientoVO;
 import mx.com.teclo.siye.util.enumerados.RespuestaHttp;
 
@@ -78,12 +80,24 @@ public class CatalogoRestController {
 		return new ResponseEntity<List<StSeguimientoVO>>(listStSeguimientoVO, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value="/getOrdenServicio", method = RequestMethod.GET)
+	public ResponseEntity<List<OrdenServicioCatalogoVO>> getOrdenServicio() throws NotFoundException {
+		List<OrdenServicioCatalogoVO> listOrdenServicioCatalogoVO = catalogoService.getOrdenServicio();
+		return new ResponseEntity<List<OrdenServicioCatalogoVO>>(listOrdenServicioCatalogoVO, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value="/parametroCd", method = RequestMethod.GET)
 	public ResponseEntity<ConfiguracionVO> parametro(@RequestParam("cdParametro") String cdParametro) throws NotFoundException {
 		ConfiguracionVO listToReturn = catalogoService.configuracion(cdParametro);
 		if(listToReturn == null)
 			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
 		return new ResponseEntity<ConfiguracionVO>(listToReturn, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/getModAten", method = RequestMethod.GET)
+	public ResponseEntity<CentroInstalacionVO> getModAten() throws NotFoundException {
+		CentroInstalacionVO centroInstalacionVO = catalogoService.getModAten();
+		return new ResponseEntity<CentroInstalacionVO>(centroInstalacionVO, HttpStatus.OK);
 	}
 
 }
