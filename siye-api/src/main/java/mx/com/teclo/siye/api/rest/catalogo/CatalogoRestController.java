@@ -99,11 +99,11 @@ public class CatalogoRestController {
 		return new ResponseEntity<ConfiguracionVO>(listToReturn, HttpStatus.OK);
 	}
 	
-
 	@RequestMapping(value="/getModAten", method = RequestMethod.GET)
-	public ResponseEntity<CentroInstalacionVO> getModAten() throws NotFoundException {
-		CentroInstalacionVO centroInstalacionVO = catalogoService.getModAten();
-		return new ResponseEntity<CentroInstalacionVO>(centroInstalacionVO, HttpStatus.OK);
+	public ResponseEntity<List<CentroInstalacionVO>> getModAten() throws NotFoundException {
+		List<CentroInstalacionVO> listCentroInstalacionVO = new ArrayList<>(); 
+		listCentroInstalacionVO.add(catalogoService.getModAten());
+		return new ResponseEntity<List<CentroInstalacionVO>>(listCentroInstalacionVO, HttpStatus.OK);
 	}
 		
 	@RequestMapping(value = "/catCuasas", method = RequestMethod.GET)
