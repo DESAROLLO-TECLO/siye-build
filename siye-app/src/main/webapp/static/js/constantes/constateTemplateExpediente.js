@@ -48,7 +48,7 @@ var includeDeseing=
 	'											<img id="img-{{idElementUp+fileItem.unic}}"                                                      '+
 	'												ng-click="showModalImg(fileItem.imagenVO.strBase64,fileItem.nameImg)"                        '+
 	'												class="stile-puntero-pointer img-img-fluid style-rep-img"                                    '+
-	'												ng-src="data:image/png;base64, {{fileItem.imagenVO.strBase64}}" />							 '+
+	'												ng-src="data:image/jpeg;base64, {{fileItem.imagenVO.strBase64}}" />							 '+
 	'										</div>																				                 '+
 	'										<div ng-if="!isImage(fileItem.file)">                                                                '+
 	'											<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>                                         '+
