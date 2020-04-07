@@ -23,14 +23,14 @@ public class ConductorRestController {
 	
 	@RequestMapping(value="/nuevoConductor", method = RequestMethod.POST)
 	//@PreAuthorize("hasAnyAuthority('SERVICE7_REP_USUARIO')")
-	public ResponseEntity<ConductorVO> nuevoConductor (
+	public ResponseEntity<PersonaGenericaVO> nuevoConductor (
 		@RequestBody PersonaGenericaVO personaGenericaVO
 	)throws Exception, BusinessException, NotFoundException{
 		String mensajeErr = ""; 
-		ConductorVO result = conductorService.nuevoConductor(personaGenericaVO, mensajeErr);
+		PersonaGenericaVO result = conductorService.nuevoConductor(personaGenericaVO, mensajeErr);
 		if(result.getExistia() == false) {
 			conductorService.ordenarConductores(mensajeErr);
 		}
-		return new ResponseEntity<ConductorVO>(result, HttpStatus.OK);
+		return new ResponseEntity<PersonaGenericaVO>(result, HttpStatus.OK);
 	}
 }

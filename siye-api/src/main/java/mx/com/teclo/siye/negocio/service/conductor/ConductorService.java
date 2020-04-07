@@ -7,7 +7,7 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaGenericaVO;
 
 public interface ConductorService {
 	
-	public ConductorVO nuevoConductor(PersonaGenericaVO personaGenericaVO, String mensajeErr)	throws Exception, BusinessException, NotFoundException;
+	public PersonaGenericaVO nuevoConductor(PersonaGenericaVO personaGenericaVO, String mensajeErr)	throws Exception, BusinessException, NotFoundException;
 	
 	public void ordenarConductores(String mensajeErr) throws Exception, BusinessException, NotFoundException;
 }

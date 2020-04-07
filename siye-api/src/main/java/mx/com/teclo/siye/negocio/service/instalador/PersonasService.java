@@ -7,7 +7,7 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 
 public interface PersonasService {
 	
-	public PersonaVO nuevoInstalador(PersonaGenericaVO personaGenericaVO, String mensajeErr) throws Exception, BusinessException, NotFoundException;
+	public PersonaGenericaVO nuevoInstalador(PersonaGenericaVO personaGenericaVO, String mensajeErr) throws Exception, BusinessException, NotFoundException;
 	
 	public void ordenarInstaladores(String mensajeErr) throws Exception, BusinessException, NotFoundException; 
 }

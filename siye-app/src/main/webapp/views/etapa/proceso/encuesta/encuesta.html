@@ -92,8 +92,7 @@
 									<hr>
 									<div class="col-md-12">
 										<div class="col-md-2">
-											<div
-												ng-repeat="seccion in encuestaDetalle.encuesta.secciones">
+											<div ng-repeat="seccion in encuestaDetalle.encuesta.secciones">
 
 												<div class="btn-group-vertical w-100" role="group">
 
@@ -159,22 +158,53 @@
 																				</div>
 																				<div class="col-md-5 col-sm-5 col-xs-6">
 																				  	<ul>
-																						<li style="list-style: none; margin-top: 1%; margin-bottom: 2%;">
-																							
-																							<div class="opcion-respuesta">
-																								<div class="btn-group" data-toggle="buttons" >
-																									<label class="btn btn-default m-3" ng-repeat="opciones in respuesta.opciones">
-																										<input type="radio" autocomplete="off" ng-value=1
-																										name="{{respuesta.txPregunta}}" id="{{opciones.idOpcion}}" 
-																										ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
-																										ng-model="opciones.stMarcado"
-																										ng-checked="opciones.stMarcado">
-																											{{opciones.txOpcion}}
-																									</label>
-																								</div>
+																						<li style="list-style:none; margin-top: 1%; margin-bottom: 2%; display: inline-block;" 
+																							ng-repeat="opciones in respuesta.opciones" >
+																							<div ng-if="opciones.cdOpcion != 'O2'">
+																								<label class="content-input">
+																									<input type="radio" name="{{respuesta.txPregunta}}" id="{{opciones.idOpcion}}" ng-value=1
+																									ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')" 
+																									ng-model="opciones.stMarcado" ng-checked="opciones.stMarcado">
+																									{{opciones.txOpcion}}
+																									<i></i>
+																								</label>  
 																							</div>
+																							<div ng-if="opciones.cdOpcion == 'O2'">
+																								<label class="content-input">
+																									<input type="radio" name="{{respuesta.txPregunta}}" id="{{opciones.idOpcion}}" ng-value=1
+																									ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')" 
+																									ng-model="opciones.stMarcado" ng-checked="opciones.stMarcado"
+																									data-toggle="modal" data-target="#myModal">
+																									{{opciones.txOpcion}}
+																									<i></i>
+																								</label>  
+																							</div>	
 																						</li>
 																					</ul>
+
+																					<!-- Modal -->
+																					<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+																						<div class="modal-dialog" role="document">
+																						<div class="modal-content">
+																							<div class="modal-header">
+																							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+																							<h4 class="modal-title" id="myModalLabel">¿Por qué no cumple?</h4>
+																							</div>
+																							<div class="modal-body">
+																								--- Opciones ---
+																								<div class="row">
+																									<div class="col-md-12">
+																										<textarea class="form-control" rows="5"></textarea>
+																									</div>
+																								</div>
+																							</div>
+																							<div class="modal-footer">
+																							<button type="button" class="btn btn-default" data-dismiss="modal">Salir sin guardar</button>
+																							<button type="button" class="btn btn-primary">Guardar</button>
+																							</div>
+																						</div>
+																						</div>
+																					</div>
 																				</div>
 																				<div class="col-md-1 col-sm-1 col-xs-6">
 																					<div class="media add-img">

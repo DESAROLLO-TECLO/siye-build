@@ -33,7 +33,7 @@ public interface EncuestaService {
 	 * @return
 	 * @throws NotFoundException
 	 */
-	public UsuarioEncuestaIntentosVO finalizarIntento(Long idUsuEncuIntento, Boolean b) throws BusinessException;
+	public UsuarioEncuestaIntentosVO finalizarIntento(Long idUsuEncuIntento, Boolean b, Boolean finEnc) throws BusinessException;
 	
 	/**
 	 * Finaliza una encuesta actualizando su estatus y la fecha de termino

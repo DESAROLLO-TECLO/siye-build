@@ -38,10 +38,10 @@ public class ConductorServiceImpl implements ConductorService{
 	
 	@Transactional
 	@Override
-	public ConductorVO nuevoConductor(PersonaGenericaVO personaGenericaVO, String mensajeErr) 
+	public PersonaGenericaVO nuevoConductor(PersonaGenericaVO personaGenericaVO, String mensajeErr) 
 		throws Exception, BusinessException, NotFoundException {
 		try {
-			ConductorVO conductorVO = new ConductorVO();
+			PersonaGenericaVO resultPersonaGenericaVO = new PersonaGenericaVO();
 			String nombre = personaGenericaVO.getNombre().toUpperCase();
 			String aPaterno = personaGenericaVO.getaPaterno().toUpperCase();
 			String aMaterno = personaGenericaVO.getaMaterno().toUpperCase();
@@ -49,9 +49,9 @@ public class ConductorServiceImpl implements ConductorService{
 				mensajeErr = "El nombre del conductor no puede estar vacío.";
 				throw new NotFoundException("");
 			}else {
-				conductorVO.setNbConductor(nombre);
-				conductorVO.setNbApepatConductor(aPaterno);
-				conductorVO.setNbApematConductor(aMaterno);
+				resultPersonaGenericaVO.setNombre(nombre);
+				resultPersonaGenericaVO.setaPaterno(aPaterno);
+				resultPersonaGenericaVO.setaMaterno(aMaterno);
 				
 				List<ConductorDTO> listaConductorDTO = conductorDAO.getConductorXNombre(nombre, aPaterno, aMaterno);
 				Boolean existeConductor = false;
@@ -79,13 +79,13 @@ public class ConductorServiceImpl implements ConductorService{
 					conductorDTO.setNuOrden(conductorDTO.getIdConductor());
 					conductorDAO.update(conductorDTO);
 					
-					conductorVO.setIdConductor(conductorDTO.getIdConductor());
-					conductorVO.setExistia(false);
+					resultPersonaGenericaVO.setIdPersona(conductorDTO.getIdConductor());
+					resultPersonaGenericaVO.setExistia(false);
 				}else{
-					conductorVO.setIdConductor(listaConductorDTO.get(0).getIdConductor());
-					conductorVO.setExistia(true);
+					resultPersonaGenericaVO.setIdPersona(listaConductorDTO.get(0).getIdConductor());
+					resultPersonaGenericaVO.setExistia(true);
 				}
-				return conductorVO;
+				return resultPersonaGenericaVO;
 			}
 		} catch (Exception e) {
 			if(mensajeErr != null && !mensajeErr.isEmpty() && !mensajeErr.equals(null)) {

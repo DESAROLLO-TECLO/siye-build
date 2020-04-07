@@ -196,5 +196,11 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         templateUrl: "views/incidencia/altaIncidencia.html",
         controller: "altaIncidenciaController"
     });
+    
+    //Expedinete
+    $routeProvider.when("/cargaMasiva", {
+        templateUrl: "views/expediente/expediente.html",
+        controller: "expedienteController"
+    });
 
 });

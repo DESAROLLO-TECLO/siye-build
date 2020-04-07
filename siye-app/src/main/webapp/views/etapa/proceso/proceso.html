@@ -77,6 +77,21 @@
                         <br>
                         <div class="row">
                             <div class="col-sm-6 col-md-3" ng-repeat="item in dataEtapa">
+                                <div ng-if="item.idEncuesta.nbEncuesta != 'Satisfacción'">
+                                    <a ng-class="{'inactiv-click' : item.stActivaMostrar == false}" 
+                                    href="#/etapas/proceso/encuesta/{{item.idEncuesta.idEncuesta}}/:0" 
+                                    data-toggle="tooltip" data-placement="bottom" title="{{item.idEncuesta.txEncuesta}}" >
+                                        <div class="dash-info" ng-class="{'color-fondo-contestado': item.stRespondida == true, 'color-fondo-desactivado': item.stActivaMostrar == false, 'color-fondo': item.stActivaMostrar == true}">
+                                            <div class="dash-img">
+                                                <img class="dash-img-img" 
+                                                    src="static/dist/img/etapas/004-registration.png">
+                                            </div>                                                
+                                            <div class="marcador" value="1" to="1" duration="2500" effect="swing">
+                                                {{item.idEncuesta.nbEncuesta}}
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
                                 <div ng-if="item.idEncuesta.nbEncuesta == 'Satisfacción'">
                                     <div class="dash-info" ng-class="{'color-fondo-contestado': item.stRespondida == true, 'color-fondo-desactivado': item.stActivaMostrar == false, 'color-fondo': item.stActivaMostrar == true}">
                                         <div class="dash-img">
@@ -100,21 +115,6 @@
                                             {{item.idEncuesta.nbEncuesta}}
                                         </div>
                                     </div>
-                                </div>
-                                <div ng-if="item.idEncuesta.nbEncuesta != 'Satisfacción'">
-                                    <a ng-class="{'inactiv-click' : item.stActivaMostrar == false}" 
-                                    href="#/etapas/proceso/encuesta/{{item.idEncuesta.idEncuesta}}/:0" 
-                                    data-toggle="tooltip" data-placement="bottom" title="{{item.idEncuesta.txEncuesta}}" >
-                                        <div class="dash-info" ng-class="{'color-fondo-contestado': item.stRespondida == true, 'color-fondo-desactivado': item.stActivaMostrar == false, 'color-fondo': item.stActivaMostrar == true}">
-                                            <div class="dash-img">
-                                                <img class="dash-img-img" 
-                                                    src="static/dist/img/etapas/004-registration.png">
-                                            </div>                                                
-                                            <div class="marcador" value="1" to="1" duration="2500" effect="swing">
-                                                {{item.idEncuesta.nbEncuesta}}
-                                            </div>
-                                        </div>
-                                    </a>
                                 </div>
                             </div>
                         </div>

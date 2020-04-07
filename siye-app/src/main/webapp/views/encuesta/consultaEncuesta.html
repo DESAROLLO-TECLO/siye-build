@@ -2,7 +2,7 @@
 </style>
 
 <div class="row centerBox">
-    <div class="col-xs-6 col-md-6">
+    <div class="col-xs-10 col-md-6">
         <div class="box box-danger">
             <div class="box-header with-border text-center">
                 <h3 class="box-title">{{'ENCUESTA.Consulta.paramBusqueda' | translate}}</h3>
@@ -16,7 +16,7 @@
             <div class="box-body">
                 <!-- PARAMETROS DE Bï¿½SQUEDA -->
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-6 col-xs-6">
                         <div class="form-group" ng-class="{ 'has-error' : busquedaForm.comboTipoBusqueda.$invalid && !busquedaForm.comboTipoBusqueda.$pristine }">
                             <label for="tipoBusqueda">{{'ENCUESTA.Consulta.paramBusquedaForm.tipoBusqueda.label' | translate}}:</label>
                             <div class="input-group">
@@ -35,7 +35,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6" align="left">
+                    <div class="col-md-6 col-xs-6" align="left">
                         <div class="form-group"
                             ng-class="{ 'has-error' : busquedaForm.valor.$invalid && !busquedaForm.valor.$pristine }">
                             <div align="left">
@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-offset-3 col-md-6" align="left">
+                    <div class="col-md-offset-3 col-md-6 col-xs-offset-3 col-xs-6" align="left">
                         <div class="form-group"
                             ng-class="{ 'has-error' : busquedaForm.pass.$invalid && !busquedaForm.pass.$pristine }">
                             <div align="left">
@@ -92,7 +92,7 @@
 </div>
 
 <!--Inicia tabla de resultados-->
-<section class="" ng-if="listOrden.length>0">
+<section class="col-md-12" ng-if="listOrden.length>0">
     <div class="row">
         <div class="col-md-12">
             <div class="box box-danger">
@@ -137,24 +137,30 @@
                                                 <td class="center" style="width: 8px; height: 100%; vertical-align: middle;">
                                                     <span class="etiquetaCancelado" 
                                                         style="background-color: {{ordenVO.intentoMostrar.stEncuesta.cdColor}}; min-height: 40px; height: 100%;"
-                                                        data-toggle="tooltip" data-placement="bottom" title="{{ordenVO.intentoMostrar.stEncuesta.nbStEncuesta}}">
+                                                        data-toggle="tooltip" data-placement="top" title="{{ordenVO.intentoMostrar.stEncuesta.nbStEncuesta}}">
                                                     </span>
                                                 </td>
                                                 <td class="center" style="vertical-align: middle;" width="15%">
-                                                    <a ng-if="ordenVO.intentoMostrar.stEncuesta.cdStEncuesta=='NI'" ng-click="empezarEncuesta(ordenVO.ordenServicio.idOrdenServicio,ordenVO.encuesta,true,ordenVO.intentoMostrar.idUsuEncuIntento)">
+                                                    <a ng-if="ordenVO.intentoMostrar.stEncuesta.cdStEncuesta == 'NI'" ng-click="empezarEncuesta(ordenVO.ordenServicio.idOrdenServicio,ordenVO.encuesta,true,ordenVO.intentoMostrar.idUsuEncuIntento)">
                                                         <span class="etiquetaCancelado fullWidth" 
                                                             style="cursor: pointer; background-color: {{ordenVO.intentoMostrar.stEncuesta.cdColor}};" 
                                                             data-toggle="tooltip" data-placement="bottom" title="{{ordenVO.intentoMostrar.stEncuesta.nbStEncuesta}}">
-                                                            {{encuesta.accionBtn}} Iniciar
+                                                           	<b>INICIAR</b>
                                                         </span>
                                                     </a>
-                                                      <a ng-if="ordenVO.intentoMostrar.stEncuesta.cdStEncuesta=='EC'" ng-click="reanudarEncuesta(ordenVO.ordenServicio.idOrdenServicio,ordenVO.encuesta,true,ordenVO.intentoMostrar.idUsuEncuIntento)">
+                                                    <a ng-if="ordenVO.intentoMostrar.stEncuesta.cdStEncuesta == 'EC'" ng-click="reanudarEncuesta(ordenVO.ordenServicio.idOrdenServicio,ordenVO.encuesta,true,ordenVO.intentoMostrar.idUsuEncuIntento)">
                                                         <span class="etiquetaCancelado fullWidth" 
                                                             style="cursor: pointer; background-color: {{ordenVO.intentoMostrar.stEncuesta.cdColor}};" 
                                                             data-toggle="tooltip" data-placement="bottom" title="{{ordenVO.intentoMostrar.stEncuesta.nbStEncuesta}}">
-                                                            {{encuesta.accionBtn}} Reanudar
+                                                            <b>REANUDAR</b>
                                                         </span>
                                                     </a>
+                                                    <span ng-if="ordenVO.intentoMostrar.stEncuesta.cdStEncuesta == 'FIN'" 
+                                                    	class="etiquetaCancelado fullWidth" 
+                                                        style="background-color: {{ordenVO.intentoMostrar.stEncuesta.cdColor}};" 
+                                                        data-toggle="tooltip" data-placement="bottom" title="{{ordenVO.intentoMostrar.stEncuesta.nbStEncuesta}}">
+                                                        <b>FINALIZADA</b>
+                                                    </span>
                                                 </td>
                                                 <td class="center" style="vertical-align: middle;" width="20%">
                                                     {{ordenVO.ordenServicio.vehiculo.cdPlacaVehiculo}}
@@ -195,9 +201,10 @@
 </section>
 <!---->
 <div class="col-md-8">
-    <a type="button" href="#/" class="btn pull-left">
+    <a type="button" href="#/" class="btn btn-danger btn-lg pull-left ">
         <i class="fa fa-arrow-circle-left"></i> 
-        {{'APP.Base.boton.iniciarSesion' | translate}}
+<!--         {{'APP.Base.boton.iniciarSesion' | translate}} -->
+		Salir
     </a>
 </div>
 
