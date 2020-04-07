@@ -63,15 +63,27 @@ public class DetalleIntentoServiceImpl implements DetalleIntentoService{
 								 if(listCausasAnteriores.size()>0)
 								 {
 									 String[] cadena=new String[listCausasAnteriores.size()];
-									 
+									 int contador=0;
 									 for(IERespCausaDTO actual:listCausasAnteriores)
 									 {
-									 int contador=0;
+									 
 										cadena[contador]=String.valueOf(actual.getCausas().getIdCausa());
 										contador++;
 							
 									 }
-									 oVO.setCadenaCausas(cadena.toString());
+									 for(int i=0;i<cadena.length;i++)
+									 {
+										 if(i==0)
+										 {
+											 oVO.setCausas(cadena[i]);
+										 }
+										 if(i>0)
+										 {
+											 oVO.setCausas (oVO.getCausas()+","+cadena[i]);
+										 }
+
+									 }
+							
 								 }
 								
 							}else {

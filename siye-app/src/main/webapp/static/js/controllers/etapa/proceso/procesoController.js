@@ -1,7 +1,9 @@
 angular.module(appTeclo)
 .controller("procesoController",
-function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,procesoInfo) {
-
+function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,procesoInfo,idord,idpro) {
+    
+	$scope.idOrdenServicio=idord;
+	$scope.idProcesoActual=idpro;
     $scope.stActivarEncuesta = procesoInfo.data[3].stSatisfaccion;
     $scope.tiempoTranscurrido = new Date();
     $scope.numOrden = $rootScope.numOS;

@@ -77,7 +77,7 @@
                             <div class="col-sm-6 col-md-3" ng-repeat="item in dataEtapa">
                                 <div ng-if="item.idEncuesta.nbEncuesta != 'Satisfacción'">
                                     <a ng-class="{'inactiv-click' : item.stActivaMostrar == false}" 
-                                    href="#/etapas/proceso/encuesta/{{item.idEncuesta.idEncuesta}}/:0" 
+                                    href="#/etapas/proceso/encuesta/{{item.idEncuesta.idEncuesta}}/{{idOrdenServicio}}/{{idProcesoActual}}" 
                                     data-toggle="tooltip" data-placement="bottom" title="{{item.idEncuesta.txEncuesta}}" >
                                         <div class="dash-info" ng-class="{'color-fondo-contestado': item.stRespondida == true, 'color-fondo-desactivado': item.stActivaMostrar == false, 'color-fondo': item.stActivaMostrar == true}">
                                             <div class="dash-img">
