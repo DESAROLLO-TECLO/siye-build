@@ -60,13 +60,15 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 		}
 	};
 	
-	$scope.buscaOrdenConsulta=function(param){
+	$scope.buscaOrdenConsulta = function(param){
+		$scope.listOrden = [];
 		encuestaSatisfaccionService.getEncuesta(param.tipoBusqueda.idTipo,param.valor,param.pass).success(function(data){
 			if (data.length>0) {
-				$scope.backBusqueda=param;
-				$scope.listOrden=data;
+				$scope.backBusqueda = param;
+				$scope.listOrden = data;
 			}else{
 				showAlert.aviso("No se encontraron concidencias con el valor ingresado");
+				$scope.listOrden = [];
 			}
 		}).error(function(data){
 			showAlert.error(data.message);
@@ -74,7 +76,7 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 	}
 	
 	// Empezar Encuesta
-	$scope.empezarEncuesta=function(idOrdenServicio,encuestaVO,accion,idUsuintento){
+	$scope.empezarEncuesta = function(idOrdenServicio,encuestaVO,accion,idUsuintento){
 		var idEncuesta= encuestaVO.idEncuesta;
 		encuestaSatisfaccionService.cargarEncuesta(idOrdenServicio,idEncuesta)
 		.success(function(data) {
@@ -303,17 +305,15 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
                             contador++
                         }
                     }
-
                 }
                 lisSeccionesValid.push(comprobacion);
-
             }
         }
 
         if (preguntasSinContestar) {
             growl.warning("Hay preguntas sin contestar en las secciones amarillas o rojas");
         } else {
-            showAlert.confirmacion("¿Finalizar Evaluación?", $scope.testConfirmacion, $scope.object, $scope.testCancelConfirmacion);
+            showAlert.confirmacion("¿Finalizar Encuesta?", $scope.testConfirmacion, $scope.listOrden[0], $scope.testCancelConfirmacion);
         }
     };
 
@@ -328,17 +328,24 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
        
     }
 
-    $scope.testConfirmacion = function(object) {
+    $scope.testConfirmacion = function(intento) {
     	$scope.banderaPantalla=false;
-    	/*
-		 * encuestaService.finalizaEncuesta($scope.detalleFinalEncuesta).success(function(data) {
-		 * if (data != null) { $scope.paramConfigPage.segundo = 0;
-		 * $scope.paramConfigPage.minuto = 0; $scope.paramConfigPage.hora = 0;
-		 * $scope.paramConfigPage.flagTimer = false; ///$scope.saveStepTwo();
-		 * $scope.asignarValores(data); } else { growl.success("No Se Pudo
-		 * Finalizar la encuesta", { ttl: 5000 }); guardarSeccion = false; }
-		 * }).error(function(data) { growl.error(data.message); });
-		 */
+    	encuestaSatisfaccionService.finalizaEncuesta(
+    		intento.intentoMostrar
+    	).success(function(data) {
+    		if (data != null) { 
+    			$scope.paramConfigPage.segundo = 0;
+    			$scope.paramConfigPage.minuto = 0; 
+    			$scope.paramConfigPage.hora = 0;
+    			$scope.paramConfigPage.flagTimer = false; ///$scope.saveStepTwo();
+    			//$scope.asignarValores(data);
+    			$scope.listOrden[0].intentoMostrar = data;
+    		} else { 
+    			growl.success("No Se Pudo Finalizar la encuesta", { ttl: 5000 }); guardarSeccion = false; 
+    		}
+		}).error(function(data) { 
+			growl.error(data.message); 
+		});
     };
 
 

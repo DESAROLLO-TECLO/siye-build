@@ -2,11 +2,11 @@ angular.module(appTeclo)
 .service("encuestaService", 
 function($http, config, $rootScope) {
 
-    this.getInfoEncuesta = function(idEncuesta){
+    this.getInfoEncuesta = function(idEncuesta,idOrden){
         return $http.get(config.baseUrl + "/encuesta/detalle", {
             params:{
                 "idEncuesta": idEncuesta,
-                "idOrdenServicio": parseInt($rootScope.idOrSer)
+                "idOrdenServicio": idOrden
             }
         });
     };
@@ -31,6 +31,16 @@ function($http, config, $rootScope) {
 	
 	this.finalizaEncuesta=function(usuarioEncuestaVO){
 		return $http.put(config.baseUrl + "/encuesta/finalizar",usuarioEncuestaVO);
+	};
+	
+	//Combo Causas
+	this.comboCausas = function(idOpcion){
+		return $http.get(config.baseUrl + "/catalogo/catCuasas",		
+		{
+            params:{
+                "idOpcion": idOpcion
+            }	
+		});	
 	};
 
 });

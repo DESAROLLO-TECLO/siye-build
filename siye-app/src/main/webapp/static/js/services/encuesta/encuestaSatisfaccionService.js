@@ -30,7 +30,7 @@ this.saveRespuestaEncuesta=function(listRespuestasVO){
 
 
 this.finalizaEncuesta=function(usuarioEncuestaVO){
-	return $http.put(config.baseUrl + END_POINT+"/finalizar",usuarioEncuestaVO);
+	return $http.put(config.baseUrl + END_POINT+"/finalizarEncuestaS",usuarioEncuestaVO);
 };
 
 this.cargarEncuesta = function (idOrdenServicio,idEncuesta) {

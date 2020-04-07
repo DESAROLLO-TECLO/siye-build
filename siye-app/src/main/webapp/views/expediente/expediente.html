@@ -114,7 +114,6 @@
 	                                </div>
 	                            </div>
 	                            <div class="col-xs-12 col-md-6">
-	                            	<update-image id-element-up="'buttonId'" show-in-modal="true" param-configuracion="paramConfiguracion"></update-image>
 								</div>
 							</div>
                     	</div>
@@ -140,8 +139,11 @@
 	                                        </div>
 	                                        <select class="form-control" name="proceso" id="proceso" 
 	                                        	ng-required="true" select2 data-minimum-results-for-search="Infinity" 
-	                                        	idioma-s2="{{currentLanguage}}" ng-model="expedienteImg.idProceso" 
-	                                   			ng-options="tipo as tipo.nbTipoBusqueda for tipo in busqueda.catalogo">
+												idioma-s2="{{currentLanguage}}" 
+												ng-model="expedienteImg.proceso" 
+												ng-change="changedComboDependiente(expedienteImg.proceso,'proceso')"
+												ng-disabled ="catalogosRelacoinados.catProceso==null"									
+	                                   			ng-options="tipo as tipo.cdProceso for tipo in catalogosRelacoinados.catProceso">
 												<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
 											</select>
 	                                    </div>
@@ -158,8 +160,11 @@
 	                                        </div>
 	                                        <select class="form-control" name="encuesta" id="encuesta"
 	                                        	ng-required="true" select2 data-minimum-results-for-search="Infinity" 
-	                                        	idioma-s2="{{currentLanguage}}" ng-model="expedienteImg.idEncuesta" 
-	                                   			ng-options="tipo as tipo.nbTipoBusqueda for tipo in busqueda.catalogo">
+												idioma-s2="{{currentLanguage}}" 
+												ng-model="expedienteImg.encuesta.listImageClasif"
+												ng-change="changedComboDependiente(expedienteImg.encuesta.listImageClasif,'encuesta')" 
+												ng-disabled ="catalogosRelacoinados.catEncuesta==null"
+	                                   			ng-options="tipo as tipo.cdEncuesta for tipo in catalogosRelacoinados.catEncuesta">
 												<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
 											</select>
 	                                    </div>
@@ -176,8 +181,11 @@
 	                                        </div>
 	                                        <select class="form-control" name="pregunta" id="pregunta"
 	                                        	ng-required="true" select2 data-minimum-results-for-search="Infinity" 
-	                                        	idioma-s2="{{currentLanguage}}" ng-model="expedienteImg.idPregunta" 
-	                                   			ng-options="tipo as tipo.nbTipoBusqueda for tipo in busqueda.catalogo">
+												idioma-s2="{{currentLanguage}}" 
+												ng-model="expedienteImg.pregunta.listImageClasif" 
+												ng-change="changedComboDependiente(expedienteImg.pregunta.listImageClasif,'pregunta')" 
+												ng-disabled ="catalogosRelacoinados.catPregunta==null"
+	                                   			ng-options="tipo as tipo.cdPregunta for tipo in catalogosRelacoinados.catPregunta">
 												<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
 											</select>
 	                                    </div>
@@ -185,7 +193,8 @@
 	                    		</div>
 	                    	</div>
 	                   	</div>
-	                   	<div update-image id-element-up="'temPlate'" show-in-modal="false" param-configuracion="paramConfiguracion"></div>
+	                   	<update-image id-element-up="'Encuesta'" include="true" param-conf-sav="paramConfSav"
+	                   				param-conf-component="paramConfiguracion" list-images="listImages"></update-image>
             			<div class="row">
         					<div class="col-xs-12 col-sm-12 col-md-12">
         						&nbsp;

@@ -3,6 +3,7 @@ package mx.com.teclo.siye.negocio.service.catalogo;
 import java.util.List;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.OpcionCausaDTO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
@@ -36,7 +37,12 @@ public interface CatalogoService {
 	 */
 	public ConfiguracionVO configuracion(String cdLlavePConfig)throws NotFoundException;
 
+
 	CentroInstalacionVO getModAten() throws NotFoundException;
 
 	List<OrdenServicioCatalogoVO> getOrdenServicio() throws NotFoundException;
+
+	
+	List<OpcionCausaDTO> getCatalogoCausas(Long idOpcion);
+
 }

@@ -46,35 +46,36 @@
 												</a>
 											</div>
 											<div class="progress">
-												<div class="progress-bar progress-bar-success active progress-bar-striped" 
-													role="progressbar" 
-													aria-valuenow="{{ (seccionVO.nuPreguntasContestadas * 100) / seccionVO.preguntas.length }}" 
-													aria-valuemin="0" aria-valuemax="100" 
+												<div
+													class="progress-bar progress-bar-success active progress-bar-striped"
+													role="progressbar"
+													aria-valuenow="{{ (seccionVO.nuPreguntasContestadas * 100) / seccionVO.preguntas.length }}"
+													aria-valuemin="0" aria-valuemax="100"
 													style="width: {{ (seccionVO.nuPreguntasContestadas * 100) / seccionVO.preguntas.length }}%">
-														Contestadas por Sección:
-														{{seccionVO.nuPreguntasContestadas+' DE '}} {{
-														(seccionVO.preguntas | filter:general.filter).length }}
-												</div>
+													Contestadas por Sección:
+													{{seccionVO.nuPreguntasContestadas+' DE '}} {{
+													(seccionVO.preguntas | filter:general.filter).length }}</div>
 											</div>
 										</div>
 
 										<div class="col-md-5">
 											<div ng-if="myVar" style="display: inline-block;">
 												<a href="#" data-toggle="tooltipinfo" data-placement="top"
-													title="Total de preguntas contestadas de la evaluación"> <i
-													class="glyphicon glyphicon-question-sign toolTipInfo"></i>
+													title="Total de preguntas contestadas de la evaluación">
+													<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 												</a>
 											</div>
 											<div class="progress">
-												<div class="progress-bar progress-bar-success active progress-bar-striped" 
-													role="progressbar" 
-													aria-valuenow="{{ (preguntasContestadasEncuesta * 100) / encuestaDetalle.encuesta.nuPreguntas }}" 
-													aria-valuemin="0" aria-valuemax="100" 
+												<div
+													class="progress-bar progress-bar-success active progress-bar-striped"
+													role="progressbar"
+													aria-valuenow="{{ (preguntasContestadasEncuesta * 100) / encuestaDetalle.encuesta.nuPreguntas }}"
+													aria-valuemin="0" aria-valuemax="100"
 													style="width: {{ (preguntasContestadasEncuesta * 100) / encuestaDetalle.encuesta.nuPreguntas }}%">
 													Total: {{preguntasContestadasEncuesta+' DE ' }}<span>{{encuestaDetalle.encuesta.nuPreguntas}}</span>
 												</div>
 											</div>
-											
+
 										</div>
 
 										<div class="col-md-2">
@@ -137,7 +138,7 @@
 											</div>
 										</div>
 										<div class="col-md-10">
-											<form>
+											<form name="evaluacion">
 												<fieldset>
 													<legend class="scheduler-border text-18">Sección:
 														{{seccionVO.nbSeccion}} {{paramConfigPage.bigCurrentPage}}
@@ -147,31 +148,50 @@
 															<table class="table table-hover header-fixed">
 																<tbody id="myTable2">
 
-																	<tr ng-repeat=" respuesta in seccionVO.preguntas.slice(((paramConfigPage.bigCurrentPage-1)*paramConfigPage.itemsPerPage),((paramConfigPage.bigCurrentPage)*paramConfigPage.itemsPerPage))"
+																	<tr
+																		ng-repeat=" respuesta in seccionVO.preguntas.slice(((paramConfigPage.bigCurrentPage-1)*paramConfigPage.itemsPerPage),((paramConfigPage.bigCurrentPage)*paramConfigPage.itemsPerPage))"
 																		id="{{respuesta.idPregunta}}" class="sin-seleccionar"
 																		ng-class="{'seleccionado': respuesta.stMarcado==1}">
 
-																		<td ng-class="{ 'has-error' : formStepTwo.{{'valueOption'+$index}}.$invalid && formStepTwo.{{'customValue'+$index}}.$dirty}">
+																		<td
+																			ng-class="{ 'has-error' : evaluacion.{{'valueOption'+$index}}.$invalid &&evaluacion.{{'customValue'+$index}}.$dirty}">
 
 																			<div class="row">
 																				<div class="col-md-6 col-sm-6 col-xs-12">
 																					<span class="text-15">{{respuesta.txPregunta}}</span>
 																				</div>
 																				<div class="col-md-5 col-sm-5 col-xs-6">
-																				  	<ul>
-																						<li style="list-style: none; margin-top: 1%; margin-bottom: 2%;">
-																							
-																							<div class="opcion-respuesta">
-																								<div class="btn-group" data-toggle="buttons" >
-																									<label class="btn btn-default m-3" ng-repeat="opciones in respuesta.opciones">
-																										<input type="radio" autocomplete="off" ng-value=1
-																										name="{{respuesta.txPregunta}}" id="{{opciones.idOpcion}}" 
-																										ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
-																										ng-model="opciones.stMarcado"
-																										ng-checked="opciones.stMarcado">
-																											{{opciones.txOpcion}}
-																									</label>
-																								</div>
+																					<ul>
+																						<li
+																							style="list-style: none; margin-top: 1%; margin-bottom: 2%; display: inline-block;"
+																							ng-repeat="opciones in respuesta.opciones">
+																							<div ng-if="!opciones.cdMostrarCausas">
+																								<label class="content-input"> <input
+																									type="radio" name="{{respuesta.txPregunta}}"
+																									id="{{opciones.idOpcion}}" ng-value=1
+																									ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
+																									ng-model="opciones.stMarcado"
+																									ng-checked="opciones.stMarcado">
+																									{{opciones.txOpcion}} <i></i>
+																								</label>
+																							</div>
+																							<div ng-if="opciones.cdMostrarCausas">
+																								<label class="content-input"> <input
+																									type="radio" name="{{respuesta.txPregunta}}"
+																									id="{{opciones.idOpcion}}" ng-value=1
+																									ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
+																									ng-model="opciones.stMarcado"
+																									ng-checked="opciones.stMarcado"
+																									data-toggle="modal" data-target="#myModal">
+																									{{opciones.txOpcion}} <i></i>
+																								</label>
+																							</div>
+																							<div ng-if="opciones.causas"
+																								style="display: inline-block;">
+																								<button type="button" class="btn btn-primary"
+																									data-toggle="modal" data-target="#myModal"
+																									ng-click="cargarCausas(opciones,respuesta)">Ver
+																									Detalle</button>
 																							</div>
 																						</li>
 																					</ul>
@@ -262,6 +282,64 @@
 																		class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 																	</a>
 																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<!-- Modal -->
+												<div class="modal fade" id="myModal" tabindex="-1"
+													data-keyboard="false" data-backdrop="static" role="dialog"
+													aria-labelledby="myModalLabel">
+													<div class="modal-dialog" role="document">
+														<div class="modal-content">
+															<div class="modal-header">
+																<!--  <button type="button" class="close" data-dismiss="modal"
+																	aria-label="Close">
+																	<span aria-hidden="true">&times;</span>
+																</button>-->
+																<h4 class="modal-title" id="myModalLabel">¿Por qué
+																	no cumple?</h4>
+															</div>
+															<div class="modal-body">
+
+																<div class="row">
+																	<div class="col-md-8">
+																		<div class="form-group"
+																			ng-class="{'has-error': evaluacion.causa.$invalid && evaluacion.causa.$dirty}">
+																			<label> *Causas </label>
+																			<div class="input-group">
+																				<div class="input-group-addon">
+																					<i class="fa fa-list-alt"></i>
+																				</div>
+
+																				<select class="form-control" select-picker multiple
+																					idioma-sp="{{currentLanguage}}"
+																					data-actions-box="true"
+																					data-selected-text-format="count > 2"
+																					ng-required="true" data-max-options="5"
+																					ng-model="causas" name="causa" id="causa"
+																					ng-change="changeComboCausa()"
+																					ng-options="sp.idCausa as sp.nbCausa for sp in comboCausasList">
+
+																				</select>
+																			</div>
+																			<div
+																				ng-show="evaluacion.causa.$error.required && evaluacion.causa.$dirty"
+																				ng-style="{color:'red'}">Es necesario ingresar
+																				por lo menos una causa</div>
+																		</div>
+																	</div>
+																	<div class="col-md-12">
+																		<textarea class="form-control" rows="5"
+																			ng-disabled="true" style="resize: none;">{{nbCausa+""}}</textarea>
+																	</div>
+																</div>
+															</div>
+															<div class="modal-footer">
+																<!--  <button type="button" class="btn btn-default"
+																	data-dismiss="modal">Salir sin guardar</button>-->
+																<button type="button" class="btn btn-primary"
+																	ng-click="guardarCausa()">Guardar</button>
 															</div>
 														</div>
 													</div>

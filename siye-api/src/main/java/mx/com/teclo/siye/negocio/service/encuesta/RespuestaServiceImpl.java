@@ -38,7 +38,7 @@ public class RespuestaServiceImpl implements RespuestaService {
 	
 	@Override
 	@Transactional
-	public UsuarioEncuestaIntentosVO calificarIntentoEncuesta(Long idIntentoEncuesta) {
+	public UsuarioEncuestaIntentosVO calificarIntentoEncuesta(Long idIntentoEncuesta, Boolean mayorCalifIntento) {
 		List<EstatusCalificacionDTO> listaEstatusCalifacaciones = estatusCalificacionDAO.calificacion();
 		UsuarioEncuestaIntentosDTO usuarioEncuestaIntentosDTO = usuarioEncuestaIntentoDAO.getIntentoById(idIntentoEncuesta);
 		UsuarioEncuestaIntentosVO encuestaIntentos = new UsuarioEncuestaIntentosVO();
@@ -76,31 +76,32 @@ public class RespuestaServiceImpl implements RespuestaService {
  			usuarioEncuestaIntentosDTO.setNuSeccionesRsp( contarSecciones(usuarioEncuestaIntentosDTO.getIdUsuEncuIntento().intValue()));
  			usuarioEncuestaIntentoDAO.update(usuarioEncuestaIntentosDTO);
  			
- 			// DEBEMOS OBTENER LOS DEMÁS INTENTOS PARA VERIFICAR 
- 			// LAS CALIFICACIÓN MAS ALTA Y REALIZAR EL ORDENAMIENTO
- 			// SOBRE ESE DATO
- 			
- 			List<UsuarioEncuestaIntentosDTO> ueiListDTO = usuarioEncuestaIntentoDAO.intentoMismaEncuesta(usuarioEncuestaIntentosDTO.getUsuarioEncuesta().getIdUsuarioEncuesta());
- 			 			
- 			
- 			if(ueiListDTO.isEmpty()) {
- 				// SI LA LISTA DE RESULTADO ES VACÍO DEBEMOS SETEAR EL REGISTRO ACTUAL CON
- 				// ST_MOSTRAR = TRUE
- 				usuarioEncuestaIntentosDTO.setStMostrar(true);
- 			}else {
- 				// EXISTEN INTENTOS ACTUALES DE LA MISMA ENCUESTAS
- 				// LO CUAL SIFNIFICA CALCULAR LA CALIFICACIÓN MAS ALTA
-// 				determinarCalifAlta(ueiListDTO, usuarioEncuestaIntentosDTO);
- 				
- 				for(UsuarioEncuestaIntentosDTO ueiDTO: ueiListDTO){
- 					if(usuarioEncuestaIntentosDTO != null && ueiDTO.getIdUsuEncuIntento().equals(usuarioEncuestaIntentosDTO.getIdUsuEncuIntento())) {
- 						ueiDTO = usuarioEncuestaIntentosDTO;
- 						ueiDTO.setStMostrar(false);
- 						usuarioEncuestaIntentoDAO.update(ueiDTO);
- 						//break;
- 					}
- 				}
- 				determinarCalifAlta(ueiListDTO.get(0), usuarioEncuestaIntentosDTO);
+ 			if(mayorCalifIntento) {
+	 			// DEBEMOS OBTENER LOS DEMÁS INTENTOS PARA VERIFICAR 
+	 			// LAS CALIFICACIÓN MAS ALTA Y REALIZAR EL ORDENAMIENTO
+	 			// SOBRE ESE DATO
+	 			
+	 			List<UsuarioEncuestaIntentosDTO> ueiListDTO = usuarioEncuestaIntentoDAO.intentoMismaEncuesta(usuarioEncuestaIntentosDTO.getUsuarioEncuesta().getIdUsuarioEncuesta());
+	 			
+	 			if(ueiListDTO.isEmpty()) {
+	 				// SI LA LISTA DE RESULTADO ES VACÍO DEBEMOS SETEAR EL REGISTRO ACTUAL CON
+	 				// ST_MOSTRAR = TRUE
+	 				usuarioEncuestaIntentosDTO.setStMostrar(true);
+	 			}else {
+	 				// EXISTEN INTENTOS ACTUALES DE LA MISMA ENCUESTAS
+	 				// LO CUAL SIFNIFICA CALCULAR LA CALIFICACIÓN MAS ALTA
+	// 				determinarCalifAlta(ueiListDTO, usuarioEncuestaIntentosDTO);
+	 				
+	 				for(UsuarioEncuestaIntentosDTO ueiDTO: ueiListDTO){
+	 					if(usuarioEncuestaIntentosDTO != null && ueiDTO.getIdUsuEncuIntento().equals(usuarioEncuestaIntentosDTO.getIdUsuEncuIntento())) {
+	 						ueiDTO = usuarioEncuestaIntentosDTO;
+	 						ueiDTO.setStMostrar(false);
+	 						usuarioEncuestaIntentoDAO.update(ueiDTO);
+	 						//break;
+	 					}
+	 				}
+	 				determinarCalifAlta(ueiListDTO.get(0), usuarioEncuestaIntentosDTO);
+	 			}
  			}
 		}
  		return encuestaIntentos;

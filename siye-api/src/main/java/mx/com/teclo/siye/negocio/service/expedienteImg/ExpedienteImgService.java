@@ -2,6 +2,9 @@ package mx.com.teclo.siye.negocio.service.expedienteImg;
 
 import java.util.List;
 
+import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
+import mx.com.teclo.arquitectura.ortogonales.responsehttp.BadRequestHttpResponse;
+import mx.com.teclo.arquitectura.ortogonales.responsehttp.ConflictHttpResponse;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.CargaExpedienteImgVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.tipoExpediente.TipoExpedienteVO;
@@ -13,7 +16,7 @@ public interface ExpedienteImgService {
 	 *@param  idUsuario 
 	 *@return List<ExpedienteImgVO>
 	 *  Metodo para realizar la insercion de la imagen de evidencia, a nivel proceso, gral o incidencia o pregunta */
-	public List<ImagenVO> saveExpediente(List<ImagenVO> expedientes, Long idUsuario);
+	public List<ImagenVO> saveExpediente(List<ImagenVO> expedientes, Long idUsuario) throws BusinessException,BadRequestHttpResponse;
 	
 	/*@Author Mavericks
 	 *@param  List<CargaExpedienteImgVO>

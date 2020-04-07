@@ -14,6 +14,7 @@ import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.negocio.service.ordenServicio.OrdenServicioService;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ConductorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ConfiguracionParamDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.OpcionCausasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.PersonaTipoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ProveedorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
@@ -28,6 +29,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConductorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.PersonaTipoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConfiguracionDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.OpcionCausaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ProveedorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.StEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.TipoKitDTO;
@@ -96,6 +98,9 @@ public class CatalogoServiceImpl implements CatalogoService{
 
 	@Autowired
 	private ConfiguracionParamDAO configuracionDAO;
+	
+	@Autowired
+	private OpcionCausasDAO opcionCausasDAO;
 
 	@Autowired
 	private OrdenServicioService ordenServicioService;
@@ -227,6 +232,7 @@ public class CatalogoServiceImpl implements CatalogoService{
 		return voReturn;
 	}
 	
+
 	
 
 	@Transactional
@@ -262,6 +268,13 @@ public class CatalogoServiceImpl implements CatalogoService{
 		CentroInstalacionVO centroInstalacionVO = new CentroInstalacionVO(); 
 		ResponseConverter.copiarPropriedades(centroInstalacionVO, centroInstalacionDTO);
 		return centroInstalacionVO;
+	}
+
+	@Override
+	@Transactional
+	public List<OpcionCausaDTO> getCatalogoCausas(Long idOpcion) {
+		return opcionCausasDAO.getCausasByidOpcion(idOpcion);
+
 	}
 
 }

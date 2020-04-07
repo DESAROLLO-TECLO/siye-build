@@ -1,20 +1,25 @@
 package mx.com.teclo.siye.api.rest.catalogo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
+import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.negocio.service.catalogo.CatalogoService;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.OpcionCausaDTO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.OpcionCausaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
@@ -94,10 +99,21 @@ public class CatalogoRestController {
 		return new ResponseEntity<ConfiguracionVO>(listToReturn, HttpStatus.OK);
 	}
 	
+
 	@RequestMapping(value="/getModAten", method = RequestMethod.GET)
 	public ResponseEntity<CentroInstalacionVO> getModAten() throws NotFoundException {
 		CentroInstalacionVO centroInstalacionVO = catalogoService.getModAten();
 		return new ResponseEntity<CentroInstalacionVO>(centroInstalacionVO, HttpStatus.OK);
+	}
+		
+	@RequestMapping(value = "/catCuasas", method = RequestMethod.GET)
+	@Transactional
+	public ResponseEntity<List<OpcionCausaVO>> buscarCatalogo(@RequestParam("idOpcion") Long idOpcion) {
+		List<OpcionCausaDTO> opcionCausa = new ArrayList<OpcionCausaDTO>();
+		opcionCausa = catalogoService.getCatalogoCausas(idOpcion);
+		List<OpcionCausaVO> causas = ResponseConverter.converterLista(new ArrayList<>(), opcionCausa,
+				OpcionCausaVO.class);
+		return new ResponseEntity<List<OpcionCausaVO>>(causas, HttpStatus.OK);
 	}
 
 }

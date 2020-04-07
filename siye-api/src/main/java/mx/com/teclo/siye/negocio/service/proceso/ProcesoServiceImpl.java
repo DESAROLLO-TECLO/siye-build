@@ -163,14 +163,14 @@ public class ProcesoServiceImpl implements ProcesoService {
 			{
 				for(ProcesoEncuestaDTO actualEncuestas:procesoEncuestaDTO)
 				{
-					/*if(actualEncuestas.getIdEncuesta().getCdEncuesta().equals("SAT01")||actualEncuestas.getIdEncuesta().getCdEncuesta().equals("SAT02"))
+					if(actualEncuestas.getIdEncuesta().getCdEncuesta().equals("SAT01")||actualEncuestas.getIdEncuesta().getCdEncuesta().equals("SAT02"))
 					{
 						servicioEncuestasMyBatisDAO.insertarEncuestas(idSolicitud, actualEncuestas.getIdEncuesta().getIdEncuesta(),false);
 					}else
-					{*/
+					{
               servicioEncuestasMyBatisDAO.insertarEncuestas(idSolicitud, actualEncuestas.getIdEncuesta().getIdEncuesta(),true);
 							
-					//}
+					}
 				}
 
 			}
@@ -242,8 +242,13 @@ public class ProcesoServiceImpl implements ProcesoService {
 										seEncontroActiva=true;
 									}
 									
+									
 								}
                           
+								if(actual.getIdEncuesta().getIdEncuesta()==encuestas.getEncuesta().getIdEncuesta()) {
+									actual.setStSatisfaccion(encuestas.getStAplicaEncuesta());
+								}
+
 
 					    }
 

@@ -106,10 +106,8 @@ public class PersonasServiceImpl implements PersonasService{
 					personaDAO.save(personaDTO);
 					
 					resultPersonaGenericaVO.setIdPersona(personaDTO.getIdPersona());
-					resultPersonaGenericaVO.setExistia(false);
 				}else{
 					resultPersonaGenericaVO.setIdPersona(listaPersonaDTO.get(0).getIdPersona());
-					resultPersonaGenericaVO.setExistia(true);
 				}
 				
 				if(existePersonaTipo == false) {
@@ -125,6 +123,17 @@ public class PersonasServiceImpl implements PersonasService{
 				}else {
 					resultPersonaGenericaVO.setIdTipoPersona(personaTipoDTO.getIdPersonaTipo());
 				}
+				
+				if(existePersona == true) {
+					if(existePersonaTipo == true) {
+						resultPersonaGenericaVO.setExistia(true);
+					}else {
+						resultPersonaGenericaVO.setExistia(false);
+					}
+				}else {
+					resultPersonaGenericaVO.setExistia(false);
+				}
+				
 				return resultPersonaGenericaVO;
 			}
 		} catch (Exception e) {
