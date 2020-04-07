@@ -153,32 +153,38 @@
 																		<td ng-class="{ 'has-error' : formStepTwo.{{'valueOption'+$index}}.$invalid && formStepTwo.{{'customValue'+$index}}.$dirty}">
 
 																			<div class="row">
-																				<div class="col-md-6 col-sm-6 col-xs-12">
+																				<div class="col-md-5 col-sm-6 col-xs-12">
 																					<span class="text-15">{{respuesta.txPregunta}}</span>
 																				</div>
-																				<div class="col-md-5 col-sm-5 col-xs-6">
+																				<div class="col-md-6 col-sm-5 col-xs-6">
 																				  	<ul>
 																						<li style="list-style:none; margin-top: 1%; margin-bottom: 2%; display: inline-block;" 
 																							ng-repeat="opciones in respuesta.opciones" >
-																							<div ng-if="opciones.cdOpcion != 'O2'">
+																							<div ng-if="opciones.cdOpcion != 'O2'" 
+																								style="display: inline-block;">
 																								<label class="content-input">
 																									<input type="radio" name="{{respuesta.txPregunta}}" id="{{opciones.idOpcion}}" ng-value=1
 																									ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')" 
-																									ng-model="opciones.stMarcado" ng-checked="opciones.stMarcado">
+																									ng-model="opciones.stMarcado" ng-checked="opciones.stMarcado" ng-disabled="opciones.stMarcado != null">
 																									{{opciones.txOpcion}}
 																									<i></i>
 																								</label>  
 																							</div>
-																							<div ng-if="opciones.cdOpcion == 'O2'">
+																							<div ng-if="opciones.cdOpcion == 'O2'" 
+																								style="display: inline-block;">
 																								<label class="content-input">
 																									<input type="radio" name="{{respuesta.txPregunta}}" id="{{opciones.idOpcion}}" ng-value=1
 																									ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')" 
 																									ng-model="opciones.stMarcado" ng-checked="opciones.stMarcado"
-																									data-toggle="modal" data-target="#myModal">
+																									data-toggle="modal" data-target="#myModal" ng-disabled="opciones.stMarcado != null">
 																									{{opciones.txOpcion}}
 																									<i></i>
-																								</label>  
-																							</div>	
+																								</label>
+																							</div>
+																							<div ng-if="opciones.cdOpcion == 'O2'"
+																								style="display: inline-block;">
+																								<button type="button" class="btn btn-primary" >Ver Detalle</button>
+																							</div>
 																						</li>
 																					</ul>
 
