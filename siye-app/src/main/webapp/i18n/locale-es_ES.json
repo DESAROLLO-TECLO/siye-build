@@ -434,13 +434,33 @@
         "AltaIncidencia": {
             "tituloServicio": "Complementos Web",
             "labelFh": "Fecha: ",
-            "labelFlSol": "Folio Solicitud: ",
             "labelPl": "Placa: ",
-            "labelMA": "Módulo de Atención: ",
             "labelTC": "Tarjeta de Circulación: ",
             "labelVin": "VIN: ",
-            "labelTpInc": "Tipo Incidencia: ",
-            "labelPriod": "Prioridad: ",
+            "tpInc": {
+            	"label": "Tipo Incidencia: ",
+            	"validacion": "Tipo de incidencia es requerido."
+            },
+            "priod": {
+            	"label": "Prioridad: ",
+            	"validacion": "La prioridad es requerida."
+            },
+            "flSol": {
+            	"label": "Folio Solicitud: ",
+            	"validacion": "El folio de solicitud es requerido."
+            },
+            "tecnico": {
+            	"label": "Tecnico: ",
+            	"validacion": "El técnico es requerido."
+            },
+            "transportista": {
+            	"label": "Transportista: ",
+            	"validacion": "El transportista es requerido."
+            },
+            "modAten": {
+            	"label": "Módulo de Atención: ",
+            	"validacion": "El módulo de atención es requerido."
+            },
             "seleccionadores": {
                 "tituloBox": "Seleccionadores",
                 "tipoBusqueda": {
