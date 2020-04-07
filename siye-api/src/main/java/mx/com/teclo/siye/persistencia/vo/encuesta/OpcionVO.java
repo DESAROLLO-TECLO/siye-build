@@ -15,7 +15,7 @@ public class OpcionVO implements Serializable {
 	private Integer stActivo;
 	// nuevo
 	private Boolean cdMostrarCausas;
-	private String cadenaCausas;
+	private String causas;
 
 	public Long getIdOpcion() {
 		return idOpcion;
@@ -93,13 +93,15 @@ public class OpcionVO implements Serializable {
 		this.cdMostrarCausas = cdMostrarCausas;
 	}
 
-	public String getCadenaCausas() {
-		return cadenaCausas;
+	public String getCausas() {
+		return causas;
 	}
 
-	public void setCadenaCausas(String cadenaCausas) {
-		this.cadenaCausas = cadenaCausas;
+	public void setCausas(String causas) {
+		this.causas = causas;
 	}
+
+
 	
 	
 	

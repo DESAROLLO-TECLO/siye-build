@@ -106,16 +106,25 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         resolve: {
             procesoInfo: function(procesoService, $route) {
                 return procesoService.getInfoProceso($route.current.params.idpro, $route.current.params.idord);
-            }
+        },
+        idord : function($route){ 
+			return $route.current.params.idord;
+        },
+        idpro : function($route){ 
+			return $route.current.params.idpro;
         }
+      }
     });
 
-    $routeProvider.when("/etapas/proceso/encuesta/:idencuesta/:idorden", {
+    $routeProvider.when("/etapas/proceso/encuesta/:idencuesta/:idorden/:idproceso", {
         templateUrl: "views/etapa/proceso/encuesta/encuesta.html",
         controller: "encuestaController",
         resolve: {
             encuestaInfo: function(encuestaService, $route) {
-                return encuestaService.getInfoEncuesta($route.current.params.idencuesta);
+                return encuestaService.getInfoEncuesta($route.current.params.idencuesta,$route.current.params.idorden);
+            },
+            idpro : function($route){ 
+    			return $route.current.params.idproceso;
             }
         }
     });

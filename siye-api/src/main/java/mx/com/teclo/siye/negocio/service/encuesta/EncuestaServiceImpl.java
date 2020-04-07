@@ -497,7 +497,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 			}
 			
 			//Se agrega apartado para agregar las causas
-			if(!urVO.getCausas().equals(null))
+			if(urVO.getCausas()!=null)
 			{
 			List<IERespCausaDTO> listCausasAnteriores= new ArrayList<IERespCausaDTO>();
 			listCausasAnteriores=iERespCausaDAO.obtenerResCausaAnterior(ueDTO.getIdUsuEncuIntento(), eDTO.getIdEncuesta(), sDTO.getIdSeccion(), pDTO.getIdPregunta());			
