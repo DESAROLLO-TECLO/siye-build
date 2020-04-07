@@ -1,9 +1,9 @@
 angular.module(appTeclo).controller('expedienteRedirectController',
-    function($rootScope,$scope,$timeout,$filter,showAlert,growl,expedienteService,resultImage)
+    function($rootScope,$scope,$timeout,$filter,showAlert,growl,expedienteService,$routeParams)
     {
 	
 	//Objeto para la configuracion de la directiva de carga de imagenes
-	var paramsImgResp=paramsConf;
+	var paramsImgResp=$routeParams;
 	$scope.listImages=new Array();
 	$scope.fileUploader=new FileUploader();
 	$scope.fileUploaderDos=new FileUploader();

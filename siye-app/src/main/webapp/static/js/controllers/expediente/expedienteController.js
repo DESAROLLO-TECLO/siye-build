@@ -1,29 +1,26 @@
 angular.module(appTeclo).controller('expedienteController',
-    function($rootScope,$scope,$timeout,$filter,showAlert,growl,expedienteService)
+    function($rootScope,$scope,$timeout,$filter,showAlert,growl,expedienteService,FileUploader)
     {
 	const MENSAJE='Seleccione una opción';
 	//Objeto para la configuracion de la directiva de carga de imagenes
-	$scope.paramConfiguracion=new Object({
-		idOrdenServ: 1, 			 
-		idProceso: 1,   			
-		idEncuesta: 1,			
-		idPregunta: 1,			
-		idIncidencia: null,			
-		listImages: $scope.listImages,			
-		nameParamFile: null,		
-        maxSizeMb: 8,			
-        maxNuImage: 5,
-        listTypeExtencion: ['jpg','png','jpeg'],
-        listTpDocuemnt: null,
-        nameService:  null,
-        nameFunctionService: null,
-        fileUploader: null,
-        showComponentCopy:false,
-        titleModal:'Carga Masiva de Imagenes'
-    });
-	
 	$scope.listImages=new Array();
-
+	$scope.fileUploader=new FileUploader();
+	
+	$scope.paramConfSav= new Object({
+		idOrdenServ: null, 			 
+		idProceso: null,   			
+		idEncuesta:null,			
+		idPregunta:null,			
+		idIncidencia: null
+	});
+	
+	$scope.paramConfiguracion=new Object({
+		maxSizeMb: 5,			
+        maxNuImage: 1,
+        listTypeExtencion: ['jpg','png','jpeg','pdf','doc','docx'],
+        listTpDocuemnt: null
+	});
+	
 	//Variables de TipoBusqueda
 	$scope.busqueda=new Object({
 		tpBusqueda:undefined,
@@ -83,6 +80,8 @@ angular.module(appTeclo).controller('expedienteController',
 				$scope.expedienteImg=$scope.listOrdenExpediente[0];
 				$scope.catalogosRelacoinados.catProceso = response[0].procesos;  
 				$scope.listImages = response[0].imagenes;
+				$scope.paramConfSav.idOrdenServ=response[0].idOrdenServicio;
+				$scope.paramConfSav.cdOrdenServicio=response[0].cdOrdenServicio;
           }).error(function(e) {
         	  $scope.listOrdenExpediente=[];
         	  $scope.expedienteImg=new Object();
@@ -100,6 +99,9 @@ angular.module(appTeclo).controller('expedienteController',
 			let temp= [];
 			  switch(nivel){
 				  case 'proceso':
+					  $scope.paramConfSav.idProceso=itemSelected.idProceso;
+					  $scope.paramConfSav.idEncuesta=null;
+					  $scope.paramConfSav.idPregunta=null;					  
 					temp = reducirLisImagenes($scope.listImages, 'proceso');
 					  if(itemSelected.imagenes!=null){
 						$scope.listImages= temp.concat(itemSelected.imagenes);
@@ -109,6 +111,8 @@ angular.module(appTeclo).controller('expedienteController',
 					  }
 					  break;
 				  case 'encuesta':
+					  $scope.paramConfSav.idEncuesta=itemSelected.idEncuesta;
+					  $scope.paramConfSav.idPregunta=null;	
 					temp = reducirLisImagenes($scope.listImages, 'encuesta');
 					if(itemSelected.imagenes!=null){
 						$scope.listImages = temp.concat(itemSelected.imagenes);
@@ -119,6 +123,7 @@ angular.module(appTeclo).controller('expedienteController',
 					  break;
 
 				  case 'pregunta':
+					  $scope.paramConfSav.idPregunta=itemSelected.idPregunta;
 					temp = reducirLisImagenes($scope.listImages, 'pregunta');
 					if(itemSelected.imagenes!=null){
 						$scope.listImages = temp.concat(itemSelected.imagenes);

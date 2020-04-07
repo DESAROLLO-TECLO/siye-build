@@ -202,5 +202,12 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         templateUrl: "views/expediente/expediente.html",
         controller: "expedienteController"
     });
+    
+  //Expedinete por nivel
+    $routeProvider.when("/cargaMasiva/cargaNivel", {
+        templateUrl: "views/expediente/expedineteRedirec.html",
+        controller: "expedienteRedirectController"
+    });
+    
 
 });
