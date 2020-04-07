@@ -178,12 +178,11 @@
 .botonIncidencia{
 	background-color: #f39c12;
 	border-color: #e08e0b;
-	float: right !important;
-	margin-bottom: -8px;
-	top: -10px;
 	text-align: center;
-	position: relative;
+	position: fixed;
 	z-index: 100;
 	width: 100px;
 	color: #fff;
+	display: block;
+	right: 0;
 }
