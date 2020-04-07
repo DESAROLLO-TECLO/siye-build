@@ -137,7 +137,7 @@ angular.module(appTeclo).directive('updateImage',
     	  scope.$watch('lisImages', function(newValue,oldValue) {
     		  if(newValue != undefined && oldValue != undefined)
     			  if(!angular.equals(newValue, oldValue)){
-    				  uploadImageToFileUploader(scope.listImages); 
+    				  uploadImageToFileUploader(scope.listImages);	
     			  }
     	  },true);
 	    	
@@ -203,10 +203,10 @@ angular.module(appTeclo).directive('updateImage',
  	             		msj='La extención del archivo no es admitida';
  	             	break;
  	             	case 'imageFilterMaxSize':
- 	             		msj='El documento excedio el tamaño maximo ('+scope.paramConfComponent.maxSizeMb+' MB)';
+ 	             		msj='El documento excedio el tamaño maxímo ('+scope.paramConfComponent.maxSizeMb+' MB)';
  	 	            break;
  	             	case 'queueLimit':
- 	             		'Ha llegado al número ('+scope.maxNuImage+') máximo de imagenes permitidas';
+ 	             		msj='Ha llegado al número ('+ scope.paramConfComponent.maxNuImage+') máximo de imagenes permitidas';
  	 	            break;
  	             }
  	            
@@ -229,7 +229,7 @@ angular.module(appTeclo).directive('updateImage',
  	          				  'idOdsEncuesta' 	:  scope.paramConfSav.idPregunta,
  	          				  'idIncidencia' 	:  scope.paramConfSav.idIncidencia,
  	          				  'nbExpedienteODS'	:  fileItem.file.name,
- 	          				  'cdTipoArchivo'	:  fileItem.file.type,
+ 	          				  'cdTipoArchivo'	:   fileItem.file.type.slice(fileItem.file.type.lastIndexOf('/') + 1),
  	          				  'size'            :  fileItem.file.size,
  	          				  'lbExpedienteODS'	:null,
  	          				  'tpDocumentList'  :angular.copy(scope.tpDocumentList)
@@ -284,7 +284,7 @@ angular.module(appTeclo).directive('updateImage',
 	     urltoFile=function(dataurl, filename, mimeType){
 	    	 var arr = dataurl.split(','),
 	         mime = arr[0].match(/:(.*?);/)[1],
-	         bstr = atob(arr[1]), 
+	         bstr = atob(dataurl), 
 	         n = bstr.length, 
 	         u8arr = new Uint8Array(n);
 	         
@@ -312,10 +312,10 @@ angular.module(appTeclo).directive('updateImage',
 	    	        	});
 	    			 
 	    			 if(listUploader.length == 0){// si no se ha cargado previamente al componente no se vuelve a cargar
-	    				 let base64Image='data:'+itemVO.cdTipoArchivo+';base64,'+itemVO.lbExpedienteODS;
+	    				 let base64Image=itemVO.lbExpedienteODS;
 		    			 
 		    			 if(nameParam != undefined){
-		    			  let base64Image='data:'+itemVO.cdTipoArchivo+';base64,'+itemVO[nameParam];
+		    			  let base64Image=+itemVO[nameParam];
 		    			 }
 		    			 
 		    			 let file=urltoFile(base64Image,itemVO.nbExpedienteODS,itemVO.cdTipoArchivo);
@@ -367,6 +367,17 @@ angular.module(appTeclo).directive('updateImage',
 	    	 showComboTpDocument:false
 	     });
 	     
+	     getImgVOParamInitial=function(imgVO){
+	    	 
+	    	 imgVO.idOrdenServicio=scope.paramConfSav.idOrdenServ;
+	    	 imgVO.idProceso=scope.paramConfSav.idProceso;
+	    	 imgVO.idOdsEncuesta=scope.paramConfSav.idEncuesta;
+	    	 imgVO.idPregunta=scope.paramConfSav.idPregunta;
+	    	 imgVO.idIncidencia=scope.paramConfSav.idIncidencia;
+	    	 
+	    	 return imgVO;
+	     };
+	     
 	     getCatalogoTipoDocumento=function(){
 	    	 
 	    	 expedienteService.getCatTpDocumento().success(function(response){
@@ -400,6 +411,7 @@ angular.module(appTeclo).directive('updateImage',
 	    	 angular.forEach(listImages, function(item, key) {
 	    		 if(item.tipoExpediente != undefined)
 	    			 item.idTipoExpediente=item.tipoExpediente.idTipoExpediente;
+	    		 	item=getImgVOParamInitial(item);
 	    	 });
 	    	 
 	    	 let service=angular.copy(expedienteService);
@@ -420,7 +432,28 @@ angular.module(appTeclo).directive('updateImage',
 	    	 service[nameServiceSave](listImages).success(function(response){
 	    		 growl.success('Imagenes guardadas correctamente', { ttl: 4000 });
 	    		 uploadImageToFileUploader(response);
-	    	 }).error(function(error){
+	    	 }).error(function(e){
+	    		 
+	    		 if(e.status != null){
+	    			 if(e.status.descripcion != undefined){
+		                	growl.error(e.status.descripcion,{ ttl: 4000 });
+		                }else if(e.status.message != undefined) {
+		                	growl.error(e.status.message,{ ttl: 4000 });
+		                }else if(typeof status === 'string'){
+		                	growl.error(status,{ ttl: 4000 });
+		                }else {showAlert.error('Falló la petición');} 
+	    		 }else{
+	    			 if(e.descripcion != undefined){
+		                	growl.error(e.descripcion,{ ttl: 4000 });
+		                }else if(e.message != undefined) {
+		                	growl.error(e.message,{ ttl: 4000 });
+		                }else if(typeof e === 'string'){
+		                	growl.error(e,{ ttl: 4000 });
+		                }else {showAlert.error('Falló la petición');}
+	    		 }
+	    		 
+	    		   
+	    		 
 	    		 growl.error(error,{ ttl: 4000 });
 	    	 });
 	     };
@@ -481,7 +514,7 @@ angular.module(appTeclo).directive('updateImage',
 				 let paramConfSav=defineConsultaImagenesNivel();
 				 paramConfSav.locatinPrev=$location.path();
 				 let jsonObj=angular.toJson(paramConfSav);
-				 $location.path('/administracionModificaClave/').search(jsonObj);
+				 $location.path('/cargaMasiva/cargaNivel/').search(jsonObj);
 	                $('.modal-backdrop').remove();
 	                
 			 }
