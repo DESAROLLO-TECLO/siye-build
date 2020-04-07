@@ -194,13 +194,40 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
     //	Indicendias
     $routeProvider.when("/altaIncidencia", {
         templateUrl: "views/incidencia/altaIncidencia.html",
-        controller: "altaIncidenciaController"
+        controller: "altaIncidenciaController",
+        resolve: {
+            dataInfo: function($route) {
+            	let info = {}
+                return info;
+            }
+        }
     });
-    
+    $routeProvider.when("/altaIncidencia/:idOrden/:idProceso/:idEncuesta/:idPregunta/:urlActual", {
+        templateUrl: "views/incidencia/altaIncidencia.html",
+        controller: "altaIncidenciaController",
+        resolve: {
+            dataInfo: function($route) {
+            	let info = {
+            			idOrden: $route.current.params.idOrden,
+            			idProceso: $route.current.params.idProceso,
+            			idEncuesta: $route.current.params.idEncuesta,
+            			idPregunta: $route.current.params.idPregunta,
+            			urlActual: $route.current.params.urlActual
+            	}
+                return info;
+            }
+        }
+    });    
     //Expedinete
     $routeProvider.when("/cargaMasiva", {
         templateUrl: "views/expediente/expediente.html",
         controller: "expedienteController"
+    });
+    
+  //Expedinete por nivel
+    $routeProvider.when("/cargaMasiva/cargaNivel", {
+        templateUrl: "views/expediente/expedineteRedirec.html",
+        controller: "expedienteRedirectController"
     });
 
 });
