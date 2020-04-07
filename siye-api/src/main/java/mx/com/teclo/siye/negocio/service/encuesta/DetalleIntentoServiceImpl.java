@@ -13,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.IERespCausaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.PreguntasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.SeccionDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.IERespCausaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.PreguntasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.SeccionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuaroEncuestaRespuestaDTO;
@@ -32,6 +34,9 @@ public class DetalleIntentoServiceImpl implements DetalleIntentoService{
 	
 	@Autowired
 	private SeccionDAO seccionDAO;
+	
+	@Autowired
+	private IERespCausaDAO iERespCausaDAO;
 	
 
 
@@ -52,6 +57,23 @@ public class DetalleIntentoServiceImpl implements DetalleIntentoService{
 						for(OpcionVO oVO: pVO.getOpciones()) {
 							if(uerDTO.getOpcionesDTO() != null && oVO.getIdOpcion().equals(uerDTO.getOpcionesDTO().getIdOpcion())) {
 								oVO.setStMarcado(1);
+								//se agrega para las causas
+								List<IERespCausaDTO> listCausasAnteriores= new ArrayList<IERespCausaDTO>();
+								listCausasAnteriores=iERespCausaDAO.obtenerResCausaAnterior(uerDTO.getId().getIdUsuEncuIntento(), uerDTO.getId().getIdEncuesta(), uerDTO.getId().getIdSeccion(), uerDTO.getId().getIdPregunta());
+								 if(listCausasAnteriores.size()>0)
+								 {
+									 String[] cadena=new String[listCausasAnteriores.size()];
+									 
+									 for(IERespCausaDTO actual:listCausasAnteriores)
+									 {
+									 int contador=0;
+										cadena[contador]=String.valueOf(actual.getCausas().getIdCausa());
+										contador++;
+							
+									 }
+									 oVO.setCadenaCausas(cadena.toString());
+								 }
+								
 							}else {
 								oVO.setStMarcado(0);
 							}
