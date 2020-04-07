@@ -288,7 +288,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 		Long nuOrden =0L;
 		
 		if(expedientes.size() > nuMaximoImagenes)
-			throw new BusinessException("Ha llegado al número ("+nuMaximoImagenes+") máximo de imagenes admitidas");
+			throw new BusinessException("Ha llegado al nÃºmero ("+nuMaximoImagenes+") maxÃ­mo de imagenes admitidas");
 		
 		ImagenVO imagen = expedientes.get(0);
 		OrdenServicioDTO ordenServicioDTO = ordenServicioDAO.findOne(imagen.getIdOrdenServicio());
