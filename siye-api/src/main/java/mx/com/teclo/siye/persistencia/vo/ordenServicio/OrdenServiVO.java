@@ -1,6 +1,7 @@
 package mx.com.teclo.siye.persistencia.vo.ordenServicio;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import mx.com.teclo.siye.persistencia.vo.proceso.KitInstDispVO;
@@ -19,6 +20,7 @@ public class OrdenServiVO implements Serializable{
 	private List<KitInstDispVO> kitInstalacionVO;
 	private VehiculoOSVO vehiculoVO;
 	private Long idProcesoActual;
+	private Date fhCita;
 
 	public VehiculoOSVO getVehiculoVO() {
 		return vehiculoVO;
@@ -68,5 +70,12 @@ public class OrdenServiVO implements Serializable{
 	public void setIdProcesoActual(Long idProcesoActual) {
 		this.idProcesoActual = idProcesoActual;
 	}
+	public Date getFhCita() {
+		return fhCita;
+	}
+	public void setFhCita(Date fhCita) {
+		this.fhCita = fhCita;
+	}
+	
 
 }

@@ -1,6 +1,7 @@
 package mx.com.teclo.siye.negocio.service.ordenServicio;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -332,6 +333,9 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	@Transactional
 	public void saveOrdenServicio(OrdenServiVO ordenServiVO) {
 		
+		String strDateFormat = "aaaa/MM/dd hh:mm:ss";
+		SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
+		
 		OrdenServicioDTO ordenServiDTO = new OrdenServicioDTO(); // TIE026_ORDEN_SERVICIO
 		
 		 // TIE027_VEHICULO
@@ -392,7 +396,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		ordenServiDTO.setStSeguimiento(stSeguimiento);
 		ordenServiDTO.setIdOrigenOds(2l);
 		//contemplar para front
-		ordenServiDTO.setFhCita(new Date());
+		ordenServiDTO.setFhCita(ordenServiVO.getFhCita());
 		ordenServiDTO.setStActivo(true);
 		ordenServiDTO.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
 		ordenServiDTO.setFhCreacion(new Date());
