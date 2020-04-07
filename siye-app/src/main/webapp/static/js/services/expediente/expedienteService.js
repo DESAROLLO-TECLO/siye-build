@@ -7,6 +7,7 @@ function($http, config) {
 	const SAVE_UPDATE=ENDPOINT+"/saveEvidencia";
 	const GET_CAT_TP_ARCHIVO=ENDPOINT+"/getTipoExpediente";
 	const DELETE=ENDPOINT+"/delEvidencia";
+	const GET_INFO_EXP_NIVEL=ENDPOINT+"/getInfoExpByNivel";
 	const GET_CAT_TP_DOC=ENDPOINT+"/";
 	
 	this.getInfoOs = function(tipoBusqueda,valor){
@@ -36,4 +37,8 @@ function($http, config) {
         return $http.post(DELETE,listExpedinetes);
     };
 	
+    this.getInfoOsNivel = function(nuOrdenServicio,cdNivel,idValor){
+    	 return $http.get(GET_INFO_EXP_NIVEL,nuOrdenServicio,cdNivel,idValor);
+    };
+    
 });

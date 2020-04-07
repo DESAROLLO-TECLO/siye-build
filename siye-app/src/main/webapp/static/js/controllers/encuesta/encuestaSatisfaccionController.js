@@ -60,13 +60,15 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 		}
 	};
 	
-	$scope.buscaOrdenConsulta=function(param){
+	$scope.buscaOrdenConsulta = function(param){
+		$scope.listOrden = [];
 		encuestaSatisfaccionService.getEncuesta(param.tipoBusqueda.idTipo,param.valor,param.pass).success(function(data){
 			if (data.length>0) {
-				$scope.backBusqueda=param;
-				$scope.listOrden=data;
+				$scope.backBusqueda = param;
+				$scope.listOrden = data;
 			}else{
 				showAlert.aviso("No se encontraron concidencias con el valor ingresado");
+				$scope.listOrden = [];
 			}
 		}).error(function(data){
 			showAlert.error(data.message);
@@ -74,7 +76,7 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 	}
 	
 	// Empezar Encuesta
-	$scope.empezarEncuesta=function(idOrdenServicio,encuestaVO,accion,idUsuintento){
+	$scope.empezarEncuesta = function(idOrdenServicio,encuestaVO,accion,idUsuintento){
 		var idEncuesta= encuestaVO.idEncuesta;
 		encuestaSatisfaccionService.cargarEncuesta(idOrdenServicio,idEncuesta)
 		.success(function(data) {
