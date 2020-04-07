@@ -1,6 +1,7 @@
 package mx.com.teclo.siye.negocio.service.ordenServicio;
 
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,7 @@ import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ProveedorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoVehiculoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.OdsIncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.CentroInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.ConcesionariaDAO;
@@ -108,6 +110,10 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	
 	@Autowired
 	private KitInstDispDAO kitInstDispDAO;
+	
+	@Autowired
+	private IncidenciaDAO incidenciaDAO;
+	
 	
 	
 	@Transactional
@@ -332,8 +338,10 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	@Transactional
 	public void saveOrdenServicio(OrdenServiVO ordenServiVO) {
 		
+				
 		OrdenServicioDTO ordenServiDTO = new OrdenServicioDTO(); // TIE026_ORDEN_SERVICIO
-		
+		OdsIncidenciaDTO odsIncidencDTO = new OdsIncidenciaDTO();
+		IncidenciaDTO incidenciaDTO = new IncidenciaDTO();
 		 // TIE027_VEHICULO
 		
 		VehiculoDTO vehiculo = vehiculoDAO.buscarVehiculoPorPlaca(ordenServiVO.getVehiculoVO().getPlaca());
@@ -375,7 +383,6 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			kitInstalacion.setFhModificacion(new Date());
 			kitDAO.save(kitInstalacion);
 		}
-	
 		
 		kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion());
 		vehiculo = vehiculoDAO.buscarVehiculoPorPlaca(ordenServiVO.getVehiculoVO().getPlaca());
@@ -392,7 +399,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		ordenServiDTO.setStSeguimiento(stSeguimiento);
 		ordenServiDTO.setIdOrigenOds(2l);
 		//contemplar para front
-		ordenServiDTO.setFhCita(new Date());
+		ordenServiDTO.setFhCita(ordenServiVO.getFhCita());
 		ordenServiDTO.setStActivo(true);
 		ordenServiDTO.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
 		ordenServiDTO.setFhCreacion(new Date());
@@ -401,7 +408,6 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		ordenServicioDAO.save(ordenServiDTO);
 		
 	
-
 		for(int i=0; i<ordenServiVO.getKitInstalacionVO().size(); i++){
 			
 			KitInstalacionDispDTO kitInsDipDTO = new KitInstalacionDispDTO();
@@ -410,15 +416,19 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion());
 			ProveedorDTO provee = proveedorDAO.findOne(ordenServiVO.getKitInstalacionVO().get(i).getProveedor());
 			
-			
 			kitInsDipDTO.setKitInstalacion(kitInstalacion);
 			kitInsDipDTO.setKitDispositivo(dispDTO);
 			kitInsDipDTO.setProveedor(provee);
+			kitInsDipDTO.setCdKitDispositivo(ordenServiVO.getCdKitIntalacion());
 			kitInsDipDTO.setStActivo(true);
-			kitInstDispDAO.save(kitInsDipDTO);
-			
-			
-		}
+			kitInstDispDAO.save(kitInsDipDTO);	
+		}	
+		
+		ordenServiDTO = ordenServicioDAO.obtenerOrdenServicioCD_ORDEN_SERVICIO(ordenServiVO.getCdOrden());
+		incidenciaDTO = incidenciaDAO.findOne(ordenServiVO.getIdIncidencia());
+		odsIncidencDTO.setIdOrdenServicio(ordenServiDTO);
+		odsIncidencDTO.setIdIncidencia(incidenciaDTO);
+		
 	}
 
 

@@ -28,18 +28,28 @@
 <!-- 						PRIMER ROW -->
 							<div class="row">
 								<div class="col-md-6">
-									<div class="form-group">
-										<label for="">Orden de Servicio:</label>
+									<div class="form-group" ng-class="{'has-error': formConsultaServicio.incidencia.$invalid && formConsultaServicio.incidencia.$dirty}">
+										<label for="">*Folio de Incidencia:</label>
 										<div class="input-group">
-											<div class="input-group-addon">
-												<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
-											</div>
-											<input type="text" class="form-control inputs" 
-											ng-model="orden.cdOrden" placeholder="" maxlength="15">
+											<span class="input-group-addon">
+												<i class="fa fa-pencil"></i>
+											</span>
+											<input type="text" ng-model="parametroBusqueda.incidencia" name="incidencia" ng-required="true"
+												class="form-control" capitalize />
+											<span class="input-group-btn">
+												<button type="button"
+													ng-click="buscarIncidencia(parametroBusqueda.incidencia)"
+													class="btn btn-danger btn-flat">Buscar
+												</button>
+											</span>
 										</div>
+									<div ng-show="formAltaServicio.incidencia.$invalid && formAltaServicio.incidencia.$dirty" ng-style="{color:'red'}">
+                                        <label>El folio de la incidencia es requerida</label>
+                                    </div>
 									</div>
 								</div>
-								
+
+							
 							<div class="col-md-6">
                                 <div class="form-group" ng-class="{'has-error': formConsultaServicio.valorBusqueda.$invalid && formConsultaServicio.valorBusqueda.$dirty}">
                                     <label for="">*Placa Vehicular </label>
@@ -128,8 +138,8 @@
 														</select>
 													</div>
 											</div>
-<!-- 											ng-disabled="banderadeshabilitar" -->
 
+								
 								<div class="col-md-4">
 									<div class="form-group">
 										<label for="">Marca:</label>
@@ -170,8 +180,8 @@
 														<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
 														
 													</div>
-													<input maxlength="10" type="text" id="placaOficial" class="form-control"
-                                            				name="placaOficial" ng-model="orden.vehiculoVO.cdModelo"
+													<input maxlength="10" type="number" id="codigoModelo" class="form-control"
+                                            				name="cdModelo" ng-model="orden.vehiculoVO.cdModelo"  maxlength="4"
                                             				autocomplete="off" ng-required="true" ng-disabled="banderadeshabilitar">
 												</div>
 												</div>
@@ -203,10 +213,23 @@
 <!-- 							TERMINA SEGUNDO ROW -->
 
 <!-- 							INICIA TERCER ROW -->
+						{{incidenciaVO}}
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label>Centro de Instalación</label>
+										<label for="">*Orden de Servicio:</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+											</div>
+											<input type="text" class="form-control inputs" 
+											ng-model="orden.cdOrden" placeholder="" maxlength="15">
+										</div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>*Centro de Instalación</label>
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-cubes" aria-hidden="true"></i>
@@ -220,10 +243,33 @@
 										</div>
 									</div>
 								</div>
-<!-- 								{{orden}} -->
+
+
+							</div>
+<!-- 							TERMINA TERCER ROW -->
+<!-- 							INICIA CUARTO ROW -->
+						
+							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label for="">Serie de Kit:</label>
+										<label>*Tipo de Kit: </label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-cubes" aria-hidden="true"></i>
+											</div>
+										<select class="form-control inputs"
+											ng-options="tpKit.idTipoKit as tpKit.nbTipoKit for tpKit in catalogoProcesos.tipoKit"
+											ng-change="buscarTipoKit(orden.tpKit)"
+											ng-model="orden.tpKit">
+										<option value="">Seleccione</option>
+										</select>
+										</div>
+									</div>
+								</div>
+								
+								<div class="col-md-6">
+									<div class="form-group">
+										<label for="">*Serie de Kit:</label>
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
@@ -232,37 +278,16 @@
 										</div>
 									</div>
 								</div>
-							</div>
-<!-- 							TERMINA TERCER ROW -->
-<!-- 								{{range}} -->
-
-<!-- 								{{range}} -->
-<!-- 								{{range}} -->
-<!-- 							INICIA CUARTO ROW -->
-							<div class="row">
-								<div class="col-md-6">
-								<div class="form-group">
-									<label>Tipo Kit: </label>
-									<div class="input-group">
-										<div class="input-group-addon">
-											<i class="fa fa-cubes" aria-hidden="true"></i>
-										</div>
-										<select class="form-control inputs"
-											ng-options="tpKit.idTipoKit as tpKit.nbTipoKit for tpKit in catalogoProcesos.tipoKit"
-											ng-change="buscarTipoKit(orden.tpKit)"
-											ng-model="orden.tpKit">
-										<option value="">Seleccione</option>
-										</select>
-									</div>
-								</div>
-							</div>
+								
 							</div>
 <!-- 							TERMINA CUARTO ROW -->
 <!-- 							{{range}} -->
 <!-- 							ng-options="proveed.idProveedor as proveed.nbProveedor for proveed in catalogoProcesos.proveedorVO" -->
-
 <!-- 							INICIA QUINTO ROW -->
-							<div class="row" ng-repeat="rango in range track by rango.idDispositivo">
+<!-- <div class="row" ng-repeat="rango in range track by rango.idDispositivo">  original -->
+						<fieldset class="scheduler-border" ng-show="filKit">
+							<legend class="scheduler-border text-center">Datos del kit</legend>
+							<div class="row" ng-repeat="rango in range track by $index">
 								<div class="col-md-4">
 									<div class="form-group">
 										<label form="">Nombre Disp:</label>
@@ -276,9 +301,9 @@
 <!--                                             	name="placaOficial" ng-model="rango.idDispositivo" -->
 <!--                                             	autocomplete="off" ng-required="true" ng-disabled="false" style="display:none;"> -->
 												
-												<input maxlength="10" type="text" id="placaOficial" class="form-control"
+												<input maxlength="10" type="text" id="nbDispositivo" class="form-control"
                                             	name="placaOficial" ng-model="rango.nbDispositivo"
-                                            	autocomplete="off" ng-required="true" ng-disabled="false">
+                                            	autocomplete="off" ng-required="true" ng-disabled="true">
 											</div>
 									</div>
 								</div>
@@ -291,7 +316,7 @@
 														<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
 														
 													</div>
-													<input maxlength="10" type="text" id="placaOficial" class="form-control"
+													<input maxlength="10" type="text" id="cdSerie" class="form-control"
                                             				name="placaOficial" ng-model="rango.serie"
                                             				autocomplete="off" ng-required="true" ng-disabled="banderadeshabilitar">
 												</div>
@@ -299,7 +324,7 @@
 								</div>
 								<div class="col-md-4">
 								<div class="form-group">
-									<label>Proveedor: </label>
+									<label>*Proveedor: </label>
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-cubes" aria-hidden="true"></i>
@@ -311,17 +336,16 @@
 										</select>
 									</div>
 								</div>
+							</div>						
 							</div>
-								
-							
-							</div>
+							</fieldset>
 <!-- 							TERMINA QUINTO ROW -->
 <!-- 							INICIA SEXTO ROW -->
 
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group">
-										<label>Plan: </label>
+										<label>*Plan: </label>
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-cubes" aria-hidden="true"></i>
@@ -335,12 +359,30 @@
 										</div>
 									</div>
 								</div>
+								
+								<div class="col-md-6">
+									<div class="form-group">
+										<label>
+											{{'ADMINISTRACION.ComplementosWeb.fechas.calendarioTiempo.label' | translate}}
+										</label>
+										<div class="input-group" datetime-picker
+											idioma-dtp="{{currentLanguage}}"
+											options="dateTimePickerOptions"
+											ng-model="orden.fhCita">
+											
+											<div class="input-group-addon labelCheck">
+												<i class="fa fa-calendar-plus-o"></i>
+											</div>
+											<input class="form-control inputFecha" readonly />
+										</div>
+									</div>
+								</div>
 							
 							</div>
 <!-- 							TERMINA SEXTO ROW -->
 								
 							
-							{{ordenVO}}
+<!-- 							{{ordenVO}} -->
 <!-- 							{{catalogoProcesos}} -->
 
 							
