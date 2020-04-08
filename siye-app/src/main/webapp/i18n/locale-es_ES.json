@@ -143,11 +143,11 @@
    "ENCUESTA" : {
 		"Consulta" : {
 			"tituloServicio" : "Encuesta de Satisfacción",
-			"paramBusqueda" : "Prametros de Busqueda",
+			"paramBusqueda" : "Parámetros de Búsqueda",
 			"paramBusquedaForm":{
 					"tipoBusqueda":{
-						 "label": "Tipo de Busqueda",
-		                 "validacion": "El Valor es requerido"
+						 "label": "Tipo de Búsqueda",
+		                 "validacion": "El tipo de búsqueda es requerido"
 					},
 					"valor":{
 						 "label": "Valor",

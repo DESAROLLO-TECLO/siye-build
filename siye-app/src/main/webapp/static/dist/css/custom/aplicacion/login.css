@@ -153,10 +153,8 @@
   color: #fff;
   background-color: #cf0a2c;
   border: #cf0a2c;
-  border-radius: 0px !important;
-  padding-top: 5px !important;
-  padding-bottom: 5px !important;
   margin-top: 0.857rem !important;
+  font-size: 18px;
 }
 #login-container #signup-btn-enc:hover {
   background-color: #e60b31;
