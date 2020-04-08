@@ -29,5 +29,7 @@ public interface LayoutDAO {
 	 * @return
 	 */
 	List<ColumnaVO> getNbsColumnas(String tabla);
-
+	
+	Long ejecutarQueryConcatenado(String query);
+		
 }

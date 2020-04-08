@@ -2,6 +2,8 @@ package mx.com.teclo.siye.negocio.service.incidencia;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,11 +11,13 @@ import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
+import mx.com.teclo.siye.negocio.service.expedienteImg.ExpedienteImgService;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteImgVO;
+import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.AltaIncidenciaVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.IncidencVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.IncidenciaVO;
@@ -29,6 +33,9 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 	
 	@Autowired
 	private UsuarioFirmadoService usuarioFirmadoService;
+
+	@Autowired
+	private ExpedienteImgService expedienteImgService;
 	
 	private static final String MSG_ERROR_INCIDENCIA_NULA = "No se encontraron incidencias";
 	private static final String MSG_ERROR_IMAGEN_NULA = "La imagen esta vac\u00EDa";
@@ -52,10 +59,11 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 	@Override
 	@Transactional
 	public Boolean  altaIncidencia(AltaIncidenciaVO altaIncidenciaVO)  throws BusinessException{
-		
-		validarIncidencia(altaIncidenciaVO.getDescripcion(), altaIncidenciaVO.getExpedientesImgVO());
+		validarIncidencia(altaIncidenciaVO.getDescripcion(), altaIncidenciaVO.getListImagen());
 		IncidenciaDTO incidenciaDTO = new IncidenciaDTO();
 		Boolean respuesta = false;
+		Boolean respuestaIncidencia = false;
+		Boolean respuestaFinal = false;
 		SimpleDateFormat sdf2 = new SimpleDateFormat("yy");
 		Date date = new Date();
 		String year = sdf2.format(date);
@@ -80,11 +88,11 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 			serie = "" + serial;
 		}
 		String cdIncidencia = "I" + year + serie;
-		String nbIncidencia = "NB" + cdIncidencia;
+		String nbIncidencia = "Incidencia " + serie;
 		StSeguimientoDTO stAutorizacionDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NO_AUT_ATND");
 		StSeguimientoDTO stIncidenciaDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NO_ATND");
-		StSeguimientoDTO tpIncidenciaDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getTpIncidencia().getCdTpSeguimiento());
-		StSeguimientoDTO prioridadDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getPrioridad().getCdTpSeguimiento());
+		StSeguimientoDTO tpIncidenciaDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getTpIncidencia().getCdStSeguimiento());
+		StSeguimientoDTO prioridadDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getPrioridad().getCdStSeguimiento());
 		incidenciaDTO.setCdIncidencia(cdIncidencia);
 		incidenciaDTO.setCdIncidencia(nbIncidencia);
 		incidenciaDTO.setTxIncidencia(altaIncidenciaVO.getDescripcion());
@@ -97,18 +105,26 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		incidenciaDTO.setStIncidencia(stIncidenciaDTO);
 		incidenciaDTO.setStAutorizacion(stAutorizacionDTO);
 		incidenciaDTO.setPrioridad(prioridadDTO);
-		
-		respuesta = (Boolean) incidenciaDAO.save(incidenciaDTO);
-		
-		return respuesta;
+		try {
+			incidenciaDAO.save(incidenciaDTO);
+			respuesta = true;
+			respuestaIncidencia = expedienteImgService.saveImagenIncidencia(altaIncidenciaVO.getListImagen(), incidenciaDTO);
+		} catch (Exception e) {
+			respuesta = false;
+		}
+		if (respuesta == true && respuestaIncidencia == true) {
+			respuestaFinal = true;
+		} else {
+			respuestaFinal = false;
+		}
+		return respuestaFinal;
 	}
 	
 	
 	
 	
-	private void validarIncidencia(String descripcion, ExpedienteImgVO  expedientesImgDTO)  throws BusinessException{
-
-		if (expedientesImgDTO == null) {
+	private void validarIncidencia(String descripcion, List<ImagenVO>  listImagenVO)  throws BusinessException{
+        if (listImagenVO == null || listImagenVO.isEmpty()) {
 			throw new BusinessException(MSG_ERROR_IMAGEN_NULA);
 		}
 		if (descripcion ==  null || descripcion == "") {

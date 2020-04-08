@@ -428,6 +428,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion());
 			ProveedorDTO provee = proveedorDAO.findOne(ordenServiVO.getKitInstalacionVO().get(i).getProveedor());
 			
+			
 			kitInsDipDTO.setKitInstalacion(kitInstalacion);
 			kitInsDipDTO.setKitDispositivo(dispDTO);
 			kitInsDipDTO.setProveedor(provee);
