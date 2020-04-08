@@ -6,6 +6,7 @@ import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.OpcionCausaDTO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaGenericaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
@@ -44,5 +45,25 @@ public interface CatalogoService {
 
 	
 	List<OpcionCausaDTO> getCatalogoCausas(Long idOpcion);
+	
+
+	/**
+	 * @Descripción: Método para buscar persona por codigo de usuario 
+	 * mediante su codigo
+	 * @author Manuel Dirsio
+	 * @return PersonaVO
+	 */
+	public PersonaGenericaVO buscarPersona(String cdPersona,Integer idTipoPersona)throws NotFoundException;
+
+
+	/**
+	 * @Descripción: Método para generar folio en base a parametro de configuracion
+	 * @author Manuel Dirsio
+	 * @return String
+	 */
+	public String generaFolioEmpl(Integer idPersona) throws NotFoundException;
+	
+	//ParametrosFolioDTO getParametroById(Long idParametro);
+
 
 }

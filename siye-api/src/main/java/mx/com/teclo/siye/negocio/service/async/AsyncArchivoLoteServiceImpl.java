@@ -5,12 +5,12 @@ package mx.com.teclo.siye.negocio.service.async;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +19,9 @@ import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.LoteOrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.LoteOrdenServicioDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.vo.async.ConfigCargaMasivaVO;
+import mx.com.teclo.siye.persistencia.vo.async.InsercionTablaVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.LoteOrdenServicioVO;
 import mx.com.teclo.siye.util.enumerados.ArchivoSeguimientoEnum;
 
@@ -29,6 +31,9 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 
 	private static final String MSG_ARCHIVO_NULO = "El archivo lote no fue recibido";
 	private static final String MSG_INICIANDO_CARGA_DE_ARCHIVO = "INICIANDO LA CARGA DEL ARCHIVO ID {0}";
+	private static final String INSERT_INTO = "INSERT INTO ";
+	private static final String MSG_ERROR_QUERIES_INCOMPLETOS = "No se generaron todos los comandos SQL para procesar el archivo ID {0}";
+	private static final String MSG_CONFIG_CARGA_MASIVA_EXITOSA = "Configuracion completa del archivo ID {0}";
 
 	@Autowired
 	private LayoutService layoutService;
@@ -71,18 +76,32 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 	}
 
 	@Override
-	@Async
+	@Transactional
 	public void cargarArchivoLote(Long idArchivoLote) throws BusinessException {
-		LOGGER.info(MessageFormat.format(MSG_INICIANDO_CARGA_DE_ARCHIVO, idArchivoLote));
-		cargaMasivaService.iniciarCargaMasiva(idArchivoLote);		
-		ConfigCargaMasivaVO configCargaMasivaVO = layoutService.getConfigCargaMasiva(idArchivoLote);
-		cargaMasivaService.procesarLineas(configCargaMasivaVO);
 
+		cargaMasivaService.iniciarCargaMasiva(idArchivoLote);
+
+		ConfigCargaMasivaVO config = layoutService.getConfigCargaMasiva(idArchivoLote);
+
+		if (isMapaSQLValido(config)) {
+			LOGGER.info(MessageFormat.format(MSG_CONFIG_CARGA_MASIVA_EXITOSA, idArchivoLote));
+			cargaMasivaService.procesarLineas(config);
+
+		} else {
+			actualizarSeguimiento(idArchivoLote, ArchivoSeguimientoEnum.CARGADO,
+					MessageFormat.format(MSG_ERROR_QUERIES_INCOMPLETOS, idArchivoLote));
+		}
 	}
 
 	@Override
-	public void actualizarSeguimiento() throws BusinessException {
-		// TODO Auto-generated method stub
+	public void actualizarSeguimiento(Long idArchivoLote, ArchivoSeguimientoEnum seguimiento, String txLoteOdsError)
+			throws BusinessException {
+		LoteOrdenServicioDTO loteDTOrdenServicioDTO = loteDAO.findOne(idArchivoLote);
+		StSeguimientoDTO seguimientoDTO = seguimientoDAO.findOne(seguimiento.getIdArchivoSeg());
+		loteDTOrdenServicioDTO.setIdStSeguimiento(seguimientoDTO);
+		loteDTOrdenServicioDTO.setTxLoteOds(txLoteOdsError);
+		loteDTOrdenServicioDTO.setFhModificacion(new Date());
+		loteDAO.update(loteDTOrdenServicioDTO);
 
 	}
 
@@ -119,6 +138,19 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 		}
 
 		return (Long) loteDAO.save(loteDTO);
+
+	}
+
+	private boolean isMapaSQLValido(ConfigCargaMasivaVO configCargaMasivaVO) throws BusinessException {
+		int totalTablas = configCargaMasivaVO.getConfigInsercion().size();
+		int totalQueries = 0;
+		for (Map.Entry<String, InsercionTablaVO> entry : configCargaMasivaVO.getConfigMoldesSQL().entrySet()) {
+			InsercionTablaVO value = entry.getValue();
+			if (StringUtils.isNotBlank(value.getQuerySQL()) && value.getQuerySQL().startsWith(INSERT_INTO)) {
+				totalQueries++;
+			}
+		}
+		return totalTablas == totalQueries;
 
 	}
 

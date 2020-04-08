@@ -36,6 +36,9 @@ public class PersonaDTO implements Serializable {
 	@Column(name = "NB_PERSONA", nullable = false, length = 50)
 	private String nbPersona;
 	
+	@Column(name = "CD_PERSONA", nullable = false, length = 8)
+	private String cdPersona;
+	
 	@Column(name = "NB_PAT_PERSONA", nullable = true, length = 50)
 	private String nbPatPersona;
 
@@ -78,6 +81,14 @@ public class PersonaDTO implements Serializable {
 
 	public String getNbPatPersona() {
 		return nbPatPersona;
+	}
+
+	public String getCdPersona() {
+		return cdPersona;
+	}
+
+	public void setCdPersona(String cdPersona) {
+		this.cdPersona = cdPersona;
 	}
 
 	public void setNbPatPersona(String nbPatPersona) {

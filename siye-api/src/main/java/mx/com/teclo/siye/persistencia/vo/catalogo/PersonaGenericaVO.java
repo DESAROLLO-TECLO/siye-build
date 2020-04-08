@@ -10,6 +10,7 @@ public class PersonaGenericaVO  implements Serializable{
 	
 	private Integer idPersona;
 	private String nombre;
+	private String cdPersona;
 	private String aPaterno;
 	private String aMaterno;
 	private Integer idTipoPersona;
@@ -26,6 +27,13 @@ public class PersonaGenericaVO  implements Serializable{
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	
+	public String getCdPersona() {
+		return cdPersona;
+	}
+	public void setCdPersona(String cdPersona) {
+		this.cdPersona = cdPersona;
 	}
 	public String getaPaterno() {
 		return aPaterno;

@@ -41,4 +41,18 @@ public class PersonaTipoDAOImpl extends BaseDaoHibernate<PersonaTipoDTO> impleme
 			return null;
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<PersonaTipoDTO> getTecnicoByCd(String cdPersona) {
+		Criteria criteria = getCurrentSession().createCriteria(PersonaTipoDTO.class);
+		criteria.createAlias("tipoPersona", "tipoPersona");
+		criteria.createAlias("persona", "persona");
+		criteria.add(Restrictions.eq("persona.cdPersona", cdPersona));
+		criteria.add(Restrictions.eq("tipoPersona.stActivo", true));
+		criteria.add(Restrictions.eq("persona.stActivo", true));
+		return (List<PersonaTipoDTO>)criteria.list();
+	}
+
+	
 }

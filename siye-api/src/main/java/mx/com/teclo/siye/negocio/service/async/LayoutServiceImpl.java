@@ -9,7 +9,6 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
@@ -118,7 +117,7 @@ public class LayoutServiceImpl implements LayoutService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional
 	public ConfigCargaMasivaVO getConfigCargaMasiva(Long idArchivoLote) throws BusinessException {
 		ConfigCargaMasivaVO cargaMasivaVO = new ConfigCargaMasivaVO();
 
@@ -173,12 +172,16 @@ public class LayoutServiceImpl implements LayoutService {
 		Map<String, InsercionTablaVO> insertQueriesMap = new HashMap<String, InsercionTablaVO>();
 
 		for (String nbTbl : tbls) {
+			InsercionTablaVO colsObj;
 			InsercionTablaVO valInsertVO = getNbsColumnas(nbTbl);
-			InsercionTablaVO colsObj = new InsercionTablaVO(MessageFormat.format(MSG_INSERT_PATTERN, nbTbl,
-					valInsertVO.getQuerySQL(), valInsertVO.getValores()), "");
+			if (valInsertVO == null || StringUtils.isBlank(valInsertVO.getQuerySQL())) {
+				colsObj = new InsercionTablaVO(StringUtils.EMPTY, StringUtils.EMPTY);
+			} else {
+				colsObj = new InsercionTablaVO(
+						MessageFormat.format(MSG_INSERT_PATTERN, nbTbl, valInsertVO.getQuerySQL()), StringUtils.EMPTY);
+			}
 			insertQueriesMap.put(nbTbl, colsObj);
 		}
-
 		return insertQueriesMap;
 	}
 
