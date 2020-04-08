@@ -90,7 +90,8 @@ public class OrdenServicioDTO implements Serializable {
 	@JoinColumn(name="ID_ENCUESTA_ACTUAL", referencedColumnName="ID_ENCUESTA")
 	private EncuestasDTO encuesta;
 	
-	
+	@Column(name = "FH_ATENCION_PARCIAL")
+	private Date fhAtencionParcial;
 	
 	
 	
@@ -209,6 +210,12 @@ public class OrdenServicioDTO implements Serializable {
 	}
 	public void setEncuesta(EncuestasDTO encuesta) {
 		this.encuesta = encuesta;
+	}
+	public Date getFhAtencionParcial() {
+		return fhAtencionParcial;
+	}
+	public void setFhAtencionParcial(Date fhAtencionParcial) {
+		this.fhAtencionParcial = fhAtencionParcial;
 	}
 	
 	
