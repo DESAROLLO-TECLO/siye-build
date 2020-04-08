@@ -91,6 +91,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		String nbIncidencia = "Incidencia " + serie;
 		StSeguimientoDTO stAutorizacionDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NO_AUT_ATND");
 		StSeguimientoDTO stIncidenciaDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NO_ATND");
+		StSeguimientoDTO stSeguimiento = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NUEVO");
 		StSeguimientoDTO tpIncidenciaDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getTpIncidencia().getCdStSeguimiento());
 		StSeguimientoDTO prioridadDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getPrioridad().getCdStSeguimiento());
 		incidenciaDTO.setCdIncidencia(cdIncidencia);
@@ -105,6 +106,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		incidenciaDTO.setStIncidencia(stIncidenciaDTO);
 		incidenciaDTO.setStAutorizacion(stAutorizacionDTO);
 		incidenciaDTO.setPrioridad(prioridadDTO);
+		incidenciaDTO.setStSeguimiento(stSeguimiento);
 		try {
 			incidenciaDAO.save(incidenciaDTO);
 			respuesta = true;
