@@ -26,6 +26,7 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
 	$scope.registroIncidencia = {};
 	$scope.idOrden = dataInfo.idOrden;
 	$timeout(() => {
+		$scope.listOrden.push({idOrdenServicio: 0, cdOrdenServicio: "SIN ORDEN SERVICIO"});
 		if(dataInfo.idOrden){
 			let orden = filtroBuscar($scope.listOrden, "idOrdenServicio", dataInfo.idOrden)
 			if(orden){
@@ -43,7 +44,7 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
 		orderByAsc($scope.listTecnico, "idPersona");
 		$scope.listTransportista.push({idConductor: 0, nbConductor: "SIN TRANSPORTISTA", nbApepatConductor: "", nbApematConductor: ""})
 		orderByAsc($scope.listTransportista, "idConductor");
-	},1500);
+	},2000);
 	function filtroBuscar(list, attr, val) {
         for (let x = 0; x < list.length; x++) {
             if (list[x][attr] == val) {

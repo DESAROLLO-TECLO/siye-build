@@ -472,7 +472,7 @@
             	"validacion": "El folio de solicitud es requerido."
             },
             "tecnico": {
-            	"label": "Tecnico: ",
+            	"label": "Técnico: ",
             	"validacion": "El técnico es requerido."
             },
             "transportista": {
