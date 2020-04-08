@@ -1,9 +1,11 @@
 angular.module(appTeclo).controller('seguimientoOsController', function ($rootScope, $scope, $location, $document, showAlert,  growl) {
 
     $scope.catTipoBusqueda = new Array(
-        { idTipoBusqueda: "1", cdTipoBusqueda: "PLACA", nbTipoBusqueda: "PLACA", txTipoBusqueda: "PLACA" },
-        { idTipoBusqueda: "2", cdTipoBusqueda: "ORDEN_SERVICIO", nbTipoBusqueda: "ORDEN DE SERVICIO", txTipoBusqueda: "ORDEN DE SERVICIO" },
-        { idTipoBusqueda: "3", cdTipoBusqueda: "VIN", nbTipoBusqueda: "VIN", txTipoBusqueda: "VIN" }
+        { idTipoBusqueda: "1", cdTipoBusqueda: "ENCURSO",  txTipoBusqueda: "EN CURSO" },
+        { idTipoBusqueda: "2", cdTipoBusqueda: "COMPLETADAS", txTipoBusqueda: "COMPLETADAS" },
+        { idTipoBusqueda: "3", cdTipoBusqueda: "PROGRAMADAS", txTipoBusqueda: "PROGRAMADAS" },
+        { idTipoBusqueda: "4", cdTipoBusqueda: "NO PROGRAMADAS", txTipoBusqueda: "NO PROGRAMADAS" },
+        { idTipoBusqueda: "5", cdTipoBusqueda: "INCIDENCIAS", txTipoBusqueda: "INCIDENCIAS" }
     );	
 
     $scope.rangoFechas = {
@@ -29,6 +31,13 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
         seguimientoTotales:[]
     });
     
+    // consultaInicial = function(){
+    //     seguimientoOsService.getInfoOsByRangoFechas(params).success(function(data){
+
+    //     }).error(function(data){
+
+    //     });
+    // }
 
     $scope.consultaOS = function(form, paramBusqueda){
         if(validarFormulario(form)){
@@ -46,6 +55,7 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
 		} else {
 			return true;
 		}
-	};
+    };
 
+    //consultaInicial();
 });
