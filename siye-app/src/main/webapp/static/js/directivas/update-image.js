@@ -42,7 +42,8 @@ appt.directive('updateImage',
 	        paramConfComponent:'=',
 	        listImages:'=?',
 	        nameParamFile:'=',
-	        maxNuImage:'@'
+	        maxNuImage:'@',
+	        isIncidencia:'='
 	      },
 	       replace: true,
 	       terminal: true,
@@ -58,6 +59,7 @@ appt.directive('updateImage',
 	    		      pageSize		: 3,
 	    		      pages 		: []
 	    	  };
+	    	  
 	    	  
 	    	  //Constantes generales
 	    	  const constants=new Object({
@@ -184,17 +186,17 @@ appt.directive('updateImage',
 	    	  },true);*/
 	    	  
 	    	  //Se reciben las imagenes injectadas desde el directiva dragAndropFile
-	    	  scope.fileDropped=function(){
-	    		  // scope.uploadedFile, el valor lo extiende de la directiva dragAndropFile a esta
-	    		
-	    		  let filesList=[];
-    			  angular.forEach(scope.uploadedFile, function(item, key) {
+	    	  scope.fileDropped=function(scopeDragDrop){
+	    		  let filesList = [];
+	    		  
+	    		  angular.forEach(scopeDragDrop.uploadedFile, function(item, key) {
     				  filesList.push(item);
  		    	  });
-	    		// Si exsisten restricciones se omiten los archivos que no las cumplan  
-	    		  filesList=validRestrcctionsFiles(filesList);
+	    			  
+	    		  // Si exsisten restricciones se omiten los archivos que no las cumplan
+	    		  let files=validRestrcctionsFiles(filesList);
 	    		  
-	    		  // los files obtenidos se asignan a la lista enviada como parametro
+	    		// los files obtenidos se asignan a la lista enviada como parametro
 	    		  reinitListView(filesList);
 	    		  
 	    	  };
@@ -209,6 +211,7 @@ appt.directive('updateImage',
 	    		  // Si exsisten restricciones se omiten los archivos que no las cumplan
 	    		  let files=validRestrcctionsFiles(filesList);
 	    		  
+	    		// los files obtenidos se asignan a la lista enviada como parametro
 	    		  reinitListView(filesList);
 	    	  };
 	    	  
@@ -269,7 +272,7 @@ appt.directive('updateImage',
 	    	 function addImgesToLisViewBiding(files){
 	    		  
 	    		  if(files.length > 0){
-	    			  let i=0;
+	    			  let i;
 	        		  for(i=0; i<files.length; i++){
 	        			  
 	        			  if(scope.maxNuImage != undefined && scope.listImages.length >= scope.maxNuImage){
@@ -306,27 +309,7 @@ appt.directive('updateImage',
 	          				let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(imagenVO.cdTipoArchivo) !== -1);
 	          				imagenVO.isImage=isImg;
 	          				imagenVO.showProgress=true;
-	           			  getBase64(file);
-	        			  
-	           			  async function getBase64(file) {
-		          				
-	           				  let result_base64 = await new Promise((resolve) => {
-	          					let fileReader = new FileReader();
-	          					fileReader.onload = (e) => resolve(fileReader.result);
-	          					fileReader.readAsDataURL(file);
-	          				});
-	           				imagenVO.showProgress=false;
-	          				result_base64=result_base64.replace('data:', '').replace(/^.+,/, '');
-	          				//se asigna un identificador
-	          				
-	          				
-	          				//se asigna el arreglo de bytes a los correspondientes parametros
-	          				imagenVO.lbExpedienteODS=result_base64;
-	          				imagenVO.strBase64=result_base64;
-	          				let nameParam=scope.nameParamFile;
-	          				if(nameParam != undefined)
-	          					imagenVO[nameParam]=result_base64;	
-		          		};
+	          				logobs64(file,imagenVO);
 		          		
 		          		if(scope.listImages==undefined){
           					scope.listImages=new Array();
@@ -337,6 +320,25 @@ appt.directive('updateImage',
 	        		  }
 	    		  }
 	    	  };
+	    	  
+	    	//crackstillo
+				function logobs64(file,imagenVO) {
+	    			var reader = new FileReader();
+	    			reader.onload = function(){
+	    				
+	    				let result_base64=reader.result.replace('data:', '').replace(/^.+,/, '');
+	    				imagenVO.lbExpedienteODS=result_base64;
+        				imagenVO.strBase64=result_base64;
+        				let nameParam=scope.nameParamFile;
+        				if(nameParam != undefined)
+        					imagenVO[nameParam]=result_base64;	
+	    			}
+	    			reader.onerror = function(){
+	    				growl.error('No se pudo leer los archivos seleccionados.', {ttl:5000});				
+	    			}
+	    			reader.readAsDataURL(file);
+	    			imagenVO.showProgress=false;
+	    		}
 	 	     
 	 	  //CONVIERTE UNA CADENA BASE64 A OBJETO FILE PARA EL COMPONENTE FILE UPLOADER
 		     urltoFile=function(dataurl, filename, mimeType){
