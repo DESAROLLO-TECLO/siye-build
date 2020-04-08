@@ -21,7 +21,7 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
         listTpDocuemnt: null
 	});
 	
-	$scope.listImages = {};
+	$scope.listImages = [];
 	$scope.registroIncidencia = {};
 	$scope.idOrden = dataInfo.idOrden;
 //	$scope.registroIncidencia.modAten = $scope.listModAten[0]; 
@@ -43,10 +43,19 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
             growl.warning("Formulario incompleto.", { ttl: 5000 });
             return;
         }
-        altaIncidenciaService.altaIncidencia($scope.parametroBusqueda).success(function(data) {
+        let altaIncidencia = {
+        		ordenServicio: $scope.registroIncidencia.orden ? $scope.registroIncidencia.orden.cdOrdenServicio : "",
+				tpIncidencia: $scope.registroIncidencia.tpIncidencia ? $scope.registroIncidencia.tpIncidencia : null,
+				prioridad: $scope.registroIncidencia.prioridad ? $scope.registroIncidencia.prioridad : null,
+				descripcion: $scope.registroIncidencia.txDescripcion,
+				listImagen: $scope.listImages
+        }
+
+        altaIncidenciaService.altaIncidencia(altaIncidencia).success(function(data) {
             if (data) {
             	growl.success("La incidencia ha sido guardado correctamente", { ttl: 5000 });
-            }
+            }else
+            	growl.warning("No se pudo realizar el alta de la incidencia", { ttl: 5000 });
         }).error(function(e) {
             $scope.listServicio = [];
             growl.warning(e.message, { ttl: 5000 });
