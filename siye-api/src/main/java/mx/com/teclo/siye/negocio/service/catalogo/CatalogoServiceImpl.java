@@ -1,6 +1,7 @@
 package mx.com.teclo.siye.negocio.service.catalogo;
 
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -43,6 +44,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.usuario.GerenteSupervisorDTO
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConcesionariaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaCompVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaGenericaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaTipoVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
@@ -155,6 +157,7 @@ public class CatalogoServiceImpl implements CatalogoService{
 			PersonaVO personaVO = new PersonaVO();
 			personaVO.setIdPersona(personaCompVO.getIdPersona());
 			personaVO.setNbPersona(personaCompVO.getNbPersona());
+			personaVO.setCdPersona(personaCompVO.getCdPersona());
 			personaVO.setNbPatPersona(personaCompVO.getNbPatPersona());
 			personaVO.setNbMatPersona(personaCompVO.getNbMatPersona());
 			
@@ -275,6 +278,46 @@ public class CatalogoServiceImpl implements CatalogoService{
 	public List<OpcionCausaDTO> getCatalogoCausas(Long idOpcion) {
 		return opcionCausasDAO.getCausasByidOpcion(idOpcion);
 
+	}
+
+	@Override
+	@Transactional
+	public PersonaGenericaVO buscarPersona(String cdPersona, Integer idTipoPersona) throws NotFoundException {
+		PersonaGenericaVO personaVO=new PersonaGenericaVO();
+		List<PersonaTipoDTO> listpersonaTipoDTO =personaTipoDAO.getTecnicoByCd(cdPersona);
+		PersonaTipoDTO personaTipoDTO=new PersonaTipoDTO();
+		Boolean existe=false;
+		if(listpersonaTipoDTO.isEmpty())
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+			for (PersonaTipoDTO personaTipoDTO2 : listpersonaTipoDTO) {
+			if (personaTipoDTO2.getTipoPersona().getIdTipoPersona()==idTipoPersona){ 
+				existe=true;
+				}
+			}
+			personaVO.setExistia(existe);
+			personaVO.setCdPersona(listpersonaTipoDTO.get(0).getPersona().getCdPersona());
+			personaVO.setIdPersona(listpersonaTipoDTO.get(0).getPersona().getIdPersona());
+			personaVO.setaMaterno(listpersonaTipoDTO.get(0).getPersona().getNbMatPersona());
+			personaVO.setaPaterno(listpersonaTipoDTO.get(0).getPersona().getNbPatPersona());
+			personaVO.setNombre(listpersonaTipoDTO.get(0).getPersona().getNbPersona());
+			return personaVO;
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	@Transactional
+	public String generaFolioEmpl(Integer idPersona) throws NotFoundException {
+		Formatter fmt = new Formatter();
+		String folioEmpleado="";
+		ConfiguracionDTO conf =  configuracionDAO.configuracion("CODIGO_PERSONA");
+		if(conf == null)
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+			String codigo=conf.getCdValorPConfig();
+			String[] parts = codigo.split("-");
+			String formato = parts[1];
+			String prefijo = parts[0];
+	        folioEmpleado =prefijo+fmt.format("%"+formato+"d",idPersona).toString();     
+		return folioEmpleado;
 	}
 
 }

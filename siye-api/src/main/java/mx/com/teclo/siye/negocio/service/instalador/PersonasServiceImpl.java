@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
+import mx.com.teclo.siye.negocio.service.catalogo.CatalogoService;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.PersonaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.PersonaTipoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoPersonaDAO;
@@ -45,6 +46,9 @@ public class PersonasServiceImpl implements PersonasService{
 	
 	@Autowired
 	private TipoPersonaDAO tipoPersonaDAO;
+	
+	@Autowired
+	CatalogoService catalogoService;
 	
 	@Transactional
 	@Override
@@ -95,6 +99,7 @@ public class PersonasServiceImpl implements PersonasService{
 					personaDTO = new PersonaDTO();
 					
 					personaDTO.setNbPersona(nombre);
+					personaDTO.setCdPersona("AAA");
 					personaDTO.setNbPatPersona(aPaterno);
 					personaDTO.setNbMatPersona(aMaterno);
 					personaDTO.setNuOrden(null);
@@ -104,10 +109,14 @@ public class PersonasServiceImpl implements PersonasService{
 					personaDTO.setIdUsrModifica(idUsuario);
 					personaDTO.setFhModificacion(new Date());
 					personaDAO.save(personaDTO);
-					
 					resultPersonaGenericaVO.setIdPersona(personaDTO.getIdPersona());
+					String folio=catalogoService.generaFolioEmpl(personaDTO.getIdPersona());
+					personaDTO.setCdPersona(folio);
+					personaDAO.update(personaDTO);
+					resultPersonaGenericaVO.setCdPersona(folio);
 				}else{
 					resultPersonaGenericaVO.setIdPersona(listaPersonaDTO.get(0).getIdPersona());
+					resultPersonaGenericaVO.setCdPersona(listaPersonaDTO.get(0).getCdPersona());
 				}
 				
 				if(existePersonaTipo == false) {
@@ -173,7 +182,7 @@ public class PersonasServiceImpl implements PersonasService{
 			String consPersonalizada = 
 			"SELECT "
 			+ "	ID_PERSONA AS idPersona, NB_PERSONA AS nbPersona, "
-			+ "	NB_PAT_PERSONA AS nbPatPersona, NB_MAT_PERSONA AS nbMatPersona, "
+			+ "	NB_PAT_PERSONA AS nbPatPersona,CD_PERSONA as cdPersona, NB_MAT_PERSONA AS nbMatPersona, "
 			+ "	NU_ORDEN AS nuOrden, ST_ACTIVO AS stActivo, ID_USR_CREACION AS idUsrCreacion, "
 			+ "	FH_CREACION AS fhCreacion, ID_USR_MODIFICA AS idUsrModifica, "
 			+ "	FH_MODIFICACION AS fhModificacion "
@@ -190,6 +199,7 @@ public class PersonasServiceImpl implements PersonasService{
 				personaDTO.setIdPersona(personaCompVO.getIdPersona());
 				personaDTO.setNbPersona(personaCompVO.getNbPersona());
 				personaDTO.setNbPatPersona(personaCompVO.getNbPatPersona());
+				personaDTO.setCdPersona(personaCompVO.getCdPersona());
 				personaDTO.setNbMatPersona(personaCompVO.getNbMatPersona());
 				personaDTO.setNuOrden(x+2);
 				personaDTO.setStActivo(personaCompVO.getStActivo());

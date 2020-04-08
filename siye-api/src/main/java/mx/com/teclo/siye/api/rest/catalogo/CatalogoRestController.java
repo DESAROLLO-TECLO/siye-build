@@ -20,6 +20,7 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.OpcionCausaVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaGenericaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
@@ -115,5 +116,14 @@ public class CatalogoRestController {
 				OpcionCausaVO.class);
 		return new ResponseEntity<List<OpcionCausaVO>>(causas, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value="/buscarPersona", method = RequestMethod.GET)
+	public ResponseEntity<PersonaGenericaVO> buscarPersona(@RequestParam("cdPersona") String cdPersona,@RequestParam("idTipoPersona") Integer idTipoPersona) throws NotFoundException {
+		PersonaGenericaVO personaVO = catalogoService.buscarPersona(cdPersona,idTipoPersona);
+		if(personaVO == null)
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		return new ResponseEntity<PersonaGenericaVO>(personaVO, HttpStatus.OK);
+	}
+
 
 }
