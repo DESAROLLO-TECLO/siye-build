@@ -86,7 +86,7 @@
                                         <select class="form-control" name="orden" id="orden" required select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
                                         	catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getOrdenServicio'"
                                         	name-save-service="'conductorService'" name-save-end-point-service="'nuevoConductor'"
-                                        	model-result="listOrden"
+                                        	model-result="listOrden" disabled
 											opcion-selec="registroIncidencia.orden" ng-change="addTxDescripcion()"
 											ng-model="registroIncidencia.orden" ng-options="o as o.cdOrdenServicio for o in listOrden">
 											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
@@ -130,10 +130,10 @@
 										<select class="form-control" name="transportista" id="transportista" required select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}"
 											catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getTransportistas'" 
 											name-save-service="'conductorService'" name-save-end-point-service="'nuevoConductor'" 
-											model-result="selectTransportista"
+											model-result="listTransportista"
 											opcion-selec="registroIncidencia.transportista"
 											ng-model="registroIncidencia.transportista" ng-change="addTxDescripcion()" 
-											ng-options="x as x.nbConductor+' '+x.nbApepatConductor+' '+x.nbApematConductor for x in selectTransportista">
+											ng-options="x as x.nbConductor+' '+x.nbApepatConductor+' '+x.nbApematConductor for x in listTransportista">
 											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
 										</select>
 <!-- 										<div class="input-group-btn"> -->
@@ -147,7 +147,7 @@
 								
                         	</div>
                         	<div class="col-md-4">
-                                <div class="form-group" ng-class="{'has-error': formAltaIncidencia.tecnico.$invalid && formAltaIncidencia.tecnico.$dirty}">
+                                <div class="form-group" ng-class="{'has-error': formAltaIncidencia.modAten.$invalid && formAltaIncidencia.modAten.$dirty}">
                                     <label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.modAten.label' | translate}} </label>
                                     <div class="input-group">
                                         <div class="input-group-addon">
@@ -157,7 +157,7 @@
                                         	catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getModAten'"
                                         	name-save-service="'conductorService'" name-save-end-point-service="'nuevoConductor'"
                                         	model-result="listModAten"
-											opcion-selec="registroIncidencia.modAten" ng-change="addTxDescripcion()"
+											opcion-selec="registroIncidencia.modAten" disabled
 											ng-model="registroIncidencia.modAten" ng-options="ma as ma.nbCentroInstalacion for ma in listModAten">
 											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
 										</select>
@@ -179,7 +179,7 @@
 		                                            <i class="fa fa-list-ul"></i>
 		                                        </div>
 		                                        <textarea id="descripcion" name="descripcion" required capitalize ng-change="addTxDescripcion()"
-													style="resize: none;"class="form-control" rows="2" maxlength="250" ng-KeyUp="longitud()"
+													style="resize: none;"class="form-control" rows="2" maxlength="{{totalLength}}" ng-KeyUp="longitud()"
 													ng-model="registroIncidencia.descripcion">
 												</textarea> 
 		                                    </div>
@@ -204,7 +204,7 @@
 		                    	</div>
                             </div>
                             <div class="col-md-5">
-                                <update-image id-element-up="'altaIncidencia'" include="true" param-conf-sav="paramConfSav"
+                                <update-image id-element-up="altaIncidencia" include="true" param-conf-sav="paramConfSav"
 	                   				param-conf-component="paramConfiguracion" list-images="listImages"></update-image>
                             </div>
                         </div>
