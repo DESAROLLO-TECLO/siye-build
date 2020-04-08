@@ -2,8 +2,10 @@ angular.module('ui.filedrop', [])
 .directive("fileDrop", function ($parse, $document) {
     return {
         restrict: "A",
+        scope:{
+        	onImageDrop:'&'	
+        },
         link: function (scope, element, attrs) {
-            var onImageDrop = $parse(attrs.onImageDrop);
 
             //When an item is dragged over the document
             var onDragOver = function (e) {
@@ -20,7 +22,7 @@ angular.module('ui.filedrop', [])
             //When a file is dropped
             var loadFile = function (file) {
                 scope.uploadedFile = file;
-                scope.$apply(onImageDrop(scope));
+                scope.$apply(scope.onImageDrop(scope));
             };
 
             //Dragging begins on the document
