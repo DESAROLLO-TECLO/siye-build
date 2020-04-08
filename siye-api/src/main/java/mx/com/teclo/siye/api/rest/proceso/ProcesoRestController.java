@@ -122,17 +122,10 @@ public class ProcesoRestController {
 	 
 	 @RequestMapping(value ="/buscaPlacaVehiculo", method=RequestMethod.GET)
 	 public ResponseEntity <VehiculoVO> consultaVehiculoPlaca(
-			 @RequestParam("placa") String placa) throws NotFoundException, BusinessException {
+			 @RequestParam("placa") String placa) throws NotFoundException {
 
-		 try	
-		 {	
 		 VehiculoVO vehiculoVO = vehiculoService.bucarVehiculoPlaca(placa);			
 		 return new ResponseEntity<VehiculoVO>(vehiculoVO,HttpStatus.OK);			
-		 }catch(Exception e)	
-		 {	
-			 e.printStackTrace();	
-			 throw new NotFoundException("Ha ocurrido un imprevisto!, por favor contacte al administrador.");	
-		 }
 	 }
 	 
 		@RequestMapping(value="/iniciarProceso", method = RequestMethod.GET)

@@ -28,7 +28,7 @@
 <!-- 						PRIMER ROW -->
 							<div class="row">
 								<div class="col-md-6">
-									<div class="form-group" ng-class="{'has-error': formConsultaServicio.incidencia.$invalid && formConsultaServicio.incidencia.$dirty}">
+									<div class="form-group" ng-class="{'has-error': incidendiaRequerida && (parametroBusqueda.incidencia=='' || parametroBusqueda.incidencia==undefined)}">
 										<label for="">*Folio de Incidencia:</label>
 										<div class="input-group">
 											<span class="input-group-addon">
@@ -43,7 +43,7 @@
 												</button>
 											</span>
 										</div>
-									<div ng-show="formAltaServicio.incidencia.$invalid && formAltaServicio.incidencia.$dirty" ng-style="{color:'red'}">
+									<div ng-show="incidendiaRequerida && (parametroBusqueda.incidencia=='' || parametroBusqueda.incidencia==undefined) " ng-style="{color:'red'}">
                                         <label>El folio de la incidencia es requerida</label>
                                     </div>
 									</div>
@@ -130,10 +130,10 @@
 															<i class="fa fa-list-ul"></i>
 															
 														</div>
-														<select class="form-control" select2 data-minimum-results-for-search="Infinity" id="tipopVehiculo"
+														<select class="form-control select2" select2 data-minimum-results-for-search="Infinity" id="tipopVehiculo"
 															ng-options="tpVehiculo.nbTipoVehiculo  for tpVehiculo in catalogoTipoVehiculo track by tpVehiculo.idTipoVehiculo"
 															ng-model="orden.vehiculoVO.tpVehiculo"
-															style="width:100%" >
+															style="width:100%">
 															<option value="">Seleccione</option>
 														</select>
 													</div>
@@ -257,7 +257,7 @@
 											<div class="input-group-addon">
 												<i class="fa fa-cubes" aria-hidden="true"></i>
 											</div>
-										<select class="form-control inputs"
+										<select class="form-control select2" select2
 											ng-options="tpKit.idTipoKit as tpKit.nbTipoKit for tpKit in catalogoProcesos.tipoKit"
 											ng-change="buscarTipoKit(orden.tpKit)"
 											ng-model="orden.tpKit">

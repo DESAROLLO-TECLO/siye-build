@@ -11,6 +11,8 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 	$scope.mostrarAlta = false;
 	$scope.vehiculoResult = {};
 	$scope.filKit=false;
+	$scope.incidendiaRequerida = false;
+	$scope.parametroBusqueda.incidencia="";
 	
 	$scope.consultTipoVehiculos = function(){
 		altaServicioService.buscarTipoVehiculos()
@@ -114,7 +116,7 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 			
 		altaServicioService.altaOrdenServicio(valorDos).success(function(data){
 			$scope.error = false;
-			growl.success("Datos Guardado Correctamente", { ttl: 5000 });
+			growl.success("El folio " + data.cdOrden +" Correctamente", { ttl: 5000 });
 			$scope.parametroBusqueda.incidencia="";
 			$scope.orden={};
 			$scope.ordenVO={};
@@ -132,7 +134,8 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 	$scope.buscarIncidencia = function(cdIncidenc){
 		
 		  if ($scope.formAltaServicio.incidencia.$invalid) {
-	            showAlert.requiredFields($scope.formAltaServicio);
+//	            showAlert.requiredFields($scope.formAltaServicio.incidencia);
+	            $scope.incidendiaRequerida=true;
 	            return;
 	        }
 		altaServicioService.buscarIncidencia(cdIncidenc).success(function(data){

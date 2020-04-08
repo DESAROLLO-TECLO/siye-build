@@ -396,6 +396,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			kitDAO.save(kitInstalacion);
 		}	
 
+
 		kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion());
 		vehiculo = vehiculoDAO.buscarVehiculoPorPlaca(ordenServiVO.getVehiculoVO().getPlaca());
 		CentroInstalacionDTO centroInst = centroInstalacionDAO.findOne(ordenServiVO.getCentroI());

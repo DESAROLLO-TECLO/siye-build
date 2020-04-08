@@ -1,7 +1,6 @@
 package mx.com.teclo.siye.persistencia.vo.incidencia;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteImgVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.TipoSeguimientoVO;
@@ -10,7 +9,7 @@ public class AltaIncidenciaVO implements Serializable {
 
 	private static final long serialVersionUID = 7580375171139464745L;
 	
-	private String OrdenServicio;
+	private String ordenServicio;
 	private TipoSeguimientoVO tpIncidencia;
 	private TipoSeguimientoVO prioridad;
 	private String descripcion;
@@ -18,10 +17,10 @@ public class AltaIncidenciaVO implements Serializable {
 	
 	
 	public String getOrdenServicio() {
-		return OrdenServicio;
+		return ordenServicio;
 	}
 	public void setOrdenServicio(String ordenServicio) {
-		OrdenServicio = ordenServicio;
+		this.ordenServicio = ordenServicio;
 	}
 	public TipoSeguimientoVO getTpIncidencia() {
 		return tpIncidencia;

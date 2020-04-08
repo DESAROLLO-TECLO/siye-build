@@ -36,6 +36,8 @@ public interface OrdenServicioService {
 	 */
 	Long crearOrdenServicio(OrdenServicioVO ordenServicioVO) throws BusinessException;
 	
-	public void saveOrdenServicio(OrdenServiVO ordenServiVO); 
+	public void saveOrdenServicio(OrdenServiVO ordenServiVO);
+
+	List<OrdenServicioVO> consultaOrdenServicioAll() throws NotFoundException; 
 
 }

@@ -8,7 +8,10 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
+import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
+import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
+import mx.com.teclo.siye.negocio.service.ordenServicio.OrdenServicioService;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ConductorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ConfiguracionParamDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.OpcionCausasDAO;
@@ -22,6 +25,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.ConcesionariaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConductorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.PersonaTipoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConfiguracionDTO;
@@ -35,6 +39,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.TipoVehiculoDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.usuario.GerenteSupervisorDTO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConcesionariaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaCompVO;
@@ -48,6 +53,8 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.KitInstalacionVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioCatalogoVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.PlanVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.StSeguimientoVO;
 import mx.com.teclo.siye.util.enumerados.RespuestaHttp;
@@ -94,6 +101,15 @@ public class CatalogoServiceImpl implements CatalogoService{
 	
 	@Autowired
 	private OpcionCausasDAO opcionCausasDAO;
+
+	@Autowired
+	private OrdenServicioService ordenServicioService;
+	
+	@Autowired
+	private UsuarioFirmadoService usuarioFirmadoService;
+
+	@Autowired
+	private GerenteSupervisorDAO gerenteSupervisorDAO;
 
 	
 	@Transactional
@@ -216,10 +232,49 @@ public class CatalogoServiceImpl implements CatalogoService{
 		return voReturn;
 	}
 	
+
+	
+
+	@Transactional
+	@Override
+	public List<OrdenServicioCatalogoVO> getOrdenServicio() throws NotFoundException{
+		List<OrdenServicioCatalogoVO> listOrdenServicioCatalogoVO =  new ArrayList<>();
+		List<OrdenServicioVO> listOrdenServicioVO = ordenServicioService.consultaOrdenServicioAll();
+		
+		for (int i = 0; i < listOrdenServicioVO.size(); i++) {
+			OrdenServicioCatalogoVO ordenServicioCatalogoVO = new OrdenServicioCatalogoVO();
+			ordenServicioCatalogoVO.setIdOrdenServicio(listOrdenServicioVO.get(i).getIdOrdenServicio());
+			ordenServicioCatalogoVO.setCdOrdenServicio(listOrdenServicioVO.get(i).getCdOrdenServicio());
+			listOrdenServicioCatalogoVO.add(ordenServicioCatalogoVO);
+		}
+		if(listOrdenServicioCatalogoVO.isEmpty())
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		
+		return listOrdenServicioCatalogoVO;
+	}
+
+	@Transactional
+	@Override
+	public CentroInstalacionVO getModAten() throws NotFoundException{
+		UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
+		GerenteSupervisorDTO gerenteSupervisorDTO = gerenteSupervisorDAO.consultaGerenteSupervisorBySupervisor(usuario.getId());
+		if(gerenteSupervisorDTO == null)
+			throw new NotFoundException("No se encontró el centro de instalación, favor de reportar al administrador del sistema.");
+		
+		CentroInstalacionDTO centroInstalacionDTO = centroInstalacionDAO.centroIns(gerenteSupervisorDTO.getCentroInstalacion().getIdCentroInstalacion());
+		if(centroInstalacionDTO == null)
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		
+		CentroInstalacionVO centroInstalacionVO = new CentroInstalacionVO(); 
+		ResponseConverter.copiarPropriedades(centroInstalacionVO, centroInstalacionDTO);
+		return centroInstalacionVO;
+	}
+
 	@Override
 	@Transactional
 	public List<OpcionCausaDTO> getCatalogoCausas(Long idOpcion) {
 		return opcionCausasDAO.getCausasByidOpcion(idOpcion);
+
 	}
 
 }
