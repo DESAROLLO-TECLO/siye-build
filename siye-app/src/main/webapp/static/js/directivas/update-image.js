@@ -118,8 +118,8 @@ appt.directive('updateImage',
 		    	  //sirve de manera local para invocar o no el servicio de eliminacion en back, y se asigna un parametro para identificacion local
 		    	  angular.forEach(scope.listImages, function(item, key) {
 		    		  item.unic=(key+1);
-		    		  if(item.isSuccess == undefined){
-		    			  item.isSuccess=true;
+		    		  if(item.isSuccess == undefined || item.idExpedienteODS == undefined){
+		    			  item.isSuccess=false;
 		    			  item.lbExpedienteODS=result_base64;
 		    			  item.strBase64=item.lbExpedienteODS;
 		    		  }
