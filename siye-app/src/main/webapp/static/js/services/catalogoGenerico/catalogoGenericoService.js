@@ -27,4 +27,9 @@ this.getModAten = function () {
 	return $http.get(config.baseUrl + END_POINT + "/getModAten");
 };
 
+this.buscarPersona = function (cdPersona,idTipoPersona) {
+	return $http.get(config.baseUrl + END_POINT + "/buscarPersona",
+			{params:{"cdPersona":cdPersona,"idTipoPersona":idTipoPersona}});
+};
+
 });

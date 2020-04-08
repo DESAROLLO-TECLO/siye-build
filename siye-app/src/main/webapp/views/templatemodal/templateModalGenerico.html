@@ -1,13 +1,40 @@
  <div class="modal fade" id="confirmacion" data-keyboard="false" data-backdrop="static">
   	<div class="modal-dialog">
    		<div class="modal-content">
-   		<form role="form" name="formObject">
-			<div class="modal-header bg-red-active"><h3 >Nuevo Registro</h3></div>
+   		
+			<div class="modal-header bg-red-active"><h3 ng-if="!flagBtnGuardar">Nuevo {{nameModal}}</h3><h3 ng-if="flagCdUsuario">Registro Existente con Perfil {{nameModal}}</h3><h3 ng-if="flagBtnGuardar && !flagCdUsuario">Agregar Nuevo Perfil</h3></div>
 			<div class="modal-body">
 				<div class="container">
-				
-						<div class="row">
-							<div class="col-md-10 col-md-offset-1">
+					<div class="row">
+						<div class="col-md-10 col-md-offset-1">
+								<!--  -->
+						<form role="form" name="formBusqueda">
+						<div class="col-md-12">
+									<div class="form-group" ng-class="{'has-error': formBusqueda.cdBusqueda.$invalid && formBusqueda.cdBusqueda.$dirty}">
+										<label for="">*Codigo Usuario:</label>
+										<div class="input-group">
+											<span class="input-group-addon">
+											<i class="fa fa-pencil"></i>
+											</span>
+											<input type="text" ng-model="cdBusqueda" name="cdBusqueda" ng-required="true"
+												class="form-control" capitalize />
+											<span class="input-group-btn">
+											<button type="button"
+													ng-click="buscarPersona(formBusqueda,cdBusqueda)"
+													class="btn btn-danger btn-flat">Buscar
+											</button>
+											</span>
+										</div>
+									<div ng-show="formBusqueda.cdBusqueda.$invalid && formBusqueda.cdBusqueda.$dirty" ng-style="{color:'red'}">
+                                        <span>El Codigo es Requerido</span>
+                                    </div>
+									</div>
+								
+								</div>
+							</form>	
+						<!--  -->
+							
+						<form role="form" name="formObject">
 								<div class="col-md-12">
 									<div class="form-group"
 										ng-class="{'has-error': formObject.nombre.$invalid && formObject.nombre.$dirty}">
@@ -15,7 +42,7 @@
 											*Nombre </label>
 										<div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-user"></i></span>
-											<input type="text" class="form-control" name="nombre" capitalize 
+											<input  ng-disabled ="flagDisableInput" type="text" class="form-control" name="nombre" capitalize 
 												ng-model="objeto.nombre" ng-required="true"
 												maxlength="15">
 										</div>
@@ -34,7 +61,7 @@
 											Apellido Paterno </label>
 										<div class="input-group">
 											<span class="input-group-addon"><i
-												class="fa fa-user"></i></span> <input type="text" capitalize 
+												class="fa fa-user"></i></span> <input  ng-disabled ="flagDisableInput"  type="text" capitalize 
 												name="aPaterno" class="form-control"
 												ng-model="objeto.aPaterno" ng-required="true"
 												maxlength="15">
@@ -54,7 +81,7 @@
 											*Apellido Materno </label>
 										<div class="input-group">
 											<span class="input-group-addon"><i
-												class="fa fa-user"></i></span> <input type="text" capitalize
+												class="fa fa-user"></i></span> <input  ng-disabled ="flagDisableInput" type="text" capitalize
 												name="aMaterno" class="form-control"
 												ng-model="objeto.aMaterno" ng-required="true"
 												maxlength="15">
@@ -69,19 +96,21 @@
 								</div>
 							</div>
 						</div>
+					</form>
 				</div>
 			</div>
 			<div class="modal-footer">
 				<div class="container">
 					<div class="boton">
-						<button class="btn bg-red-active btnMargin" type="button" ng-click="operacion(true,objeto,formObject)">Guardar</button>
+						<button ng-if="!flagCdUsuario" class="btn bg-red-active btnMargin" type="button" ng-click="operacion(true,objeto,formObject)"><div  ng-if="flagBtnGuardar">Agregar Perfil {{nameModal}}</div><div ng-if="!flagBtnGuardar">Guardar</div></button>
+						<button ng-if="flagCdUsuario" class="btn bg-red-active btnMargin" type="button" ng-click="aceptar(objeto)">Seleccionar</button>	
 					</div>
 					<div class="boton">
 						<button class="btn bg-red-active btnMargin" type="button" ng-click="operacion(false,objeto,formObject)" data-dismiss="modal">Cancelar</button>
 					</div>
 				</div>
 			</div>
-				</form>
+				
 		</div>
 		
   	</div>
