@@ -615,4 +615,14 @@ public class EncuestaServiceImpl implements EncuestaService {
 		return true;
 	}
 	
+	@Override
+	@Transactional
+	public void actualizaOrdenServFhParcial(Long idUsuEncuIntento) {
+		UsuarioEncuestaIntentosDTO usuarioEncuestaIntentosDTO = null;
+		usuarioEncuestaIntentosDTO = usuarioEncuestaIntentoDAO.buscaUsuEncuIntento(idUsuEncuIntento);
+		
+		OrdenServicioDTO ordenServicioDTO = null;
+		ordenServicioDTO = usuarioEncuestaIntentosDTO.getUsuarioEncuesta().getOrdenServicio();
+		ordenServicioDTO.setFhAtencionParcial(new Date());
+	}	
 }

@@ -63,4 +63,6 @@ public interface EncuestaService {
 	public void cargarEncuesta(Long idEncuesta, Long idOrdenServicio) throws Exception, BusinessException, NotFoundException;
 	
 	public Boolean activarODesactivarSatisfaccion(Long idEncuesta, Long idOrdenServicio, Boolean nuevoValor);
+
+	public void actualizaOrdenServFhParcial(Long idUsuEncuIntento);
 }

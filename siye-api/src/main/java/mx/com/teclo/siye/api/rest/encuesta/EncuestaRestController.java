@@ -80,6 +80,7 @@ public class EncuestaRestController {
 			encuestaIntentosVO.setIdUsuEncuIntento(null);
 			encuestaIntentosVO.setUsuarioEncuesta(null);
 			encuestaIntentosVO.setEsProcesoExitoso(true);
+			encuestaService.actualizaOrdenServFhParcial(usuarioEncuestaIntentosVO.getIdUsuEncuIntento());
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			encuestaIntentosVO=new UsuarioEncuestaIntentosVO();
@@ -139,6 +140,7 @@ public class EncuestaRestController {
 			encuestaIntentosVO.setIdUsuEncuIntento(null);
 			encuestaIntentosVO.setUsuarioEncuesta(null);
 			encuestaIntentosVO.setEsProcesoExitoso(true);
+			encuestaService.actualizaOrdenServFhParcial(usuarioEncuestaIntentosVO.getIdUsuEncuIntento());
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			encuestaIntentosVO=new UsuarioEncuestaIntentosVO();
