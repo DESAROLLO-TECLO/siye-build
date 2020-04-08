@@ -19,9 +19,11 @@ public class LoteOrdenServicioVO implements Serializable {
 	private Long nuOdsPendientes;
 	private Long nuOdsIncidencia;
 	private String txLoteOds;
+	private Long idTipoLayout;
 	private Boolean stActivo;
 	private Long idUsrCreacion;
 	private Date fhCreacion;
+	
 	public Long getIdLoteOds() {
 		return idLoteOds;
 	}
@@ -91,8 +93,14 @@ public class LoteOrdenServicioVO implements Serializable {
 	public String getTxLoteOds() {
 		return txLoteOds;
 	}
-	public void setTxtLoteOds(String txLoteOds) {
+	public void setTxLoteOds(String txLoteOds) {
 		this.txLoteOds = txLoteOds;
+	}
+	public Long getIdTipoLayout() {
+		return idTipoLayout;
+	}
+	public void setIdTipoLayout(Long idTipoLayout) {
+		this.idTipoLayout = idTipoLayout;
 	}
 	public Boolean getStActivo() {
 		return stActivo;
@@ -112,4 +120,5 @@ public class LoteOrdenServicioVO implements Serializable {
 	public void setFhCreacion(Date fhCreacion) {
 		this.fhCreacion = fhCreacion;
 	}
+	
 }
