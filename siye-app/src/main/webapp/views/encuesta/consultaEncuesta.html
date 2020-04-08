@@ -132,11 +132,12 @@
                                     <table id="myTable" class="table table-hover header-fixed">
                                         <thead>
                                             <tr>
-                                                <th class="wrap-text" sort order="'estatus'" by="order" reverse="reverse" width="20%" colspan="2">Estatus</th>
-                                                <th class="wrap-text" sort order="'placa'" by="order" reverse="reverse" width="20%">Placa</th>
-                                                <th class="wrap-text" sort order="'ordenServicio'" by="order" reverse="reverse" width="20%">Orden Servicio</th>
-                                                <th class="wrap-text" sort order="'fInicio'" by="order" reverse="reverse" width="20%">Fecha Inicio</th>
-                                                <th class="wrap-text" sort order="'cuestionario'" by="order" reverse="reverse" width="20%">Cuestionario</th>
+                                                <th class="wrap-text" sort order="'estatus'" by="order" reverse="reverse" width="17%" colspan="2">ESTATUS</th>
+                                                <th class="wrap-text" sort order="'placa'" by="order" reverse="reverse" width="17%">PLACA VEHÍCULAR</th>
+                                                <th class="wrap-text" sort order="'ordenServicio'" by="order" reverse="reverse" width="17%">ORDEN DE SERVICIO</th>
+                                                <th class="wrap-text" sort order="'fInicio'" by="order" reverse="reverse" width="17%">FECHA INICIO</th>
+                                                <th class="wrap-text" sort order="'cuestionario'" by="order" reverse="reverse" width="17%">CUESTIONARIO</th>
+                                                <th class="wrap-text" sort order="'cuestionario'" by="order" reverse="reverse" width="15%">PROCESO</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -149,7 +150,7 @@
                                                         data-toggle="tooltip" data-placement="top" title="{{ordenVO.intentoMostrar.stEncuesta.nbStEncuesta}}">
                                                     </span>
                                                 </td>
-                                                <td class="center" style="vertical-align: middle;" width="19%">
+                                                <td class="center" style="vertical-align: middle;" width="16%">
                                                 	<div class="col-md-offset-2 col-md-8 col-xs-12" 
                                                 		data-toggle="tooltip" data-placement="bottom" title="{{ordenVO.intentoMostrar.stEncuesta.nbStEncuesta}}">
 	                                                    <span class="etiquetaCancelado fullWidth"
@@ -181,6 +182,9 @@
                                                 </td>
                                                 <td class="center" style="vertical-align: middle;" width="20%">
                                                     {{ordenVO.encuesta.txEncuesta}}
+                                                </td>
+                                                <td class="center" style="vertical-align: middle;" width="20%">
+                                                    {{ordenVO.ordenServicio.proceso.txProceso}}
                                                 </td>
                                             </tr>
                                             <tr ng-if="(listOrden | filter:general.filter).length < 1">
