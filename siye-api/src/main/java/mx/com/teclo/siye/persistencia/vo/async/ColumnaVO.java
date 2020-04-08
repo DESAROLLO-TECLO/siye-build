@@ -5,6 +5,7 @@ public class ColumnaVO {
 	private String cdTipo;
 	private Long nuOrden;
 	private String txValorDefecto;
+	private Integer nuLongitudMax;
 	
 	public String getNbColumna() {
 		return nbColumna;
@@ -30,8 +31,11 @@ public class ColumnaVO {
 	public void setTxValorDefecto(String txValorDefecto) {
 		this.txValorDefecto = txValorDefecto;
 	}
-	
-	
-	
+	public Integer getNuLongitudMax() {
+		return nuLongitudMax;
+	}
+	public void setNuLongitudMax(Integer nuLongitudMax) {
+		this.nuLongitudMax = nuLongitudMax;
+	}
 	
 }

@@ -3,6 +3,7 @@ package mx.com.teclo.siye.persistencia.hibernate.dao.proceso;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
@@ -17,6 +18,7 @@ public class LoteOrdenServicioDAOImpl extends BaseDaoHibernate<LoteOrdenServicio
 	public LoteOrdenServicioVO obtenerLote(Long idLote) {
 		Criteria c = getCurrentSession().createCriteria(LoteOrdenServicioDTO.class, "lote");
 		c.createAlias("lote.idStSeguimiento", "seguimiento");
+		c.createAlias("lote.idTipoLayout", "tipoLayout", JoinType.LEFT_OUTER_JOIN);
 		c.add(Restrictions.eq("lote.idLoteOds", idLote));
 		c.add(Restrictions.eq("lote.stActivo", Boolean.TRUE.booleanValue()));
 
@@ -31,6 +33,7 @@ public class LoteOrdenServicioDAOImpl extends BaseDaoHibernate<LoteOrdenServicio
 				.add(Projections.property("lote.nuOdsAtendidos").as("nuOdsAtendidos"))
 				.add(Projections.property("lote.nuOdsPendientes").as("nuOdsPendientes"))
 				.add(Projections.property("lote.nuOdsIncidencia").as("nuOdsIncidencia"))
+				.add(Projections.property("tipoLayout.idTipoLayout").as("idTipoLayout"))
 				.add(Projections.property("lote.txLoteOds").as("txLoteOds"))
 				.add(Projections.property("lote.stActivo").as("stActivo"))
 				.add(Projections.property("lote.idUsrCreacion").as("idUsrCreacion"))

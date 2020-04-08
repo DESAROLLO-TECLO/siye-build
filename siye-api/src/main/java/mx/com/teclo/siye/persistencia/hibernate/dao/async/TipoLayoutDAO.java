@@ -13,4 +13,6 @@ import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
  */
 public interface TipoLayoutDAO extends BaseDao<TipoLayoutDTO> {
 	TipoLayoutVO getLayoutVigente();
+	TipoLayoutVO getTipoLayoutById(Long idTipoLayout);
+	
 }
