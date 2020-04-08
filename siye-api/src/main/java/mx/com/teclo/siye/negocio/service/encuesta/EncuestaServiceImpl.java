@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Autowired;import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,10 +16,12 @@ import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.CausasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.EstatusCalificacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestaDetalleDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestasDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.IERespCausaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.OpcionesDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.PasswordDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.PreguntasDAO;
@@ -30,6 +32,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaResp
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.StEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EstatusCalificacionDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.IERespCausaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OpcionesDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.PreguntasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.SeccionDTO;
@@ -97,6 +100,12 @@ public class EncuestaServiceImpl implements EncuestaService {
 	
 	@Autowired
 	private UsuarioEncuestaRespuestaDAO usuaroEncuestaRespuestaDAO;
+	
+	@Autowired
+	private CausasDAO causasDAO;
+
+	@Autowired
+	private IERespCausaDAO iERespCausaDAO;
 	
 	@Override
 	@Transactional
@@ -455,7 +464,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 	@Override
 	@Transactional
 	public Boolean guardarRespuestas(List<UserRespuestaVO> l) throws BusinessException {
-	
+		
 		if(l.isEmpty())// No se guardar ni procesa nada
 			return true;
 		Long idIntento = l.isEmpty() ? 0L: l.get(0).getIdIntento();		
@@ -486,6 +495,55 @@ public class EncuestaServiceImpl implements EncuestaService {
 				uDTO.setFhLectura(new Date());
 				usuarioEncuestaRespuestaDAO.update(uDTO);	
 			}
+			
+			//Se agrega apartado para agregar las causas
+			if(urVO.getCausas()!=null)
+			{
+			List<IERespCausaDTO> listCausasAnteriores= new ArrayList<IERespCausaDTO>();
+			listCausasAnteriores=iERespCausaDAO.obtenerResCausaAnterior(ueDTO.getIdUsuEncuIntento(), eDTO.getIdEncuesta(), sDTO.getIdSeccion(), pDTO.getIdPregunta());			
+			String[] causasString=urVO.getCausas().split(",");
+			Long[] causas=new Long[causasString.length];
+					 for (int i = 0; i < causasString.length; i++)
+						 causas[i] = Long.parseLong(causasString[i]);
+					 
+					 for (int j = 0; j < causas.length; j++)
+					 {
+						 IERespCausaDTO listCausas= new IERespCausaDTO();
+						 listCausas.setUsuarioEncuestaIntento(ueDTO);
+						 listCausas.setEncuesta(eDTO);
+						 listCausas.setSeccion(sDTO);
+						 listCausas.setPreguntas(pDTO);
+						 listCausas.setCausas(causasDAO.findOne(causas[j]));
+						 listCausas.setStActivo(true);
+						 listCausas.setFhCreacion(new Date());
+						 iERespCausaDAO.save(listCausas);
+						 
+						 
+					 }
+					 if(listCausasAnteriores.size()>0)
+					 {
+						 for(IERespCausaDTO actual:listCausasAnteriores)
+						 {
+							 actual.setStActivo(false);
+							 iERespCausaDAO.update(actual);
+						 }
+					 }
+			}else
+			{
+				List<IERespCausaDTO> listCausasAnteriores= new ArrayList<IERespCausaDTO>();
+				listCausasAnteriores=iERespCausaDAO.obtenerResCausaAnterior(ueDTO.getIdUsuEncuIntento(), eDTO.getIdEncuesta(), sDTO.getIdSeccion(), pDTO.getIdPregunta());			
+				 if(listCausasAnteriores.size()>0)
+				 {
+					 for(IERespCausaDTO actual:listCausasAnteriores)
+					 {
+						 actual.setStActivo(false);
+						 iERespCausaDAO.update(actual);
+					 }
+				 }
+			}
+			
+
+			
 		}
 		return true;	
 	}

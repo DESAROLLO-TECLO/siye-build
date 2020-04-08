@@ -28,4 +28,12 @@ angular.module(appTeclo).service('altaServicioService',function($http,config) {
 	return $http.post(config.baseUrl + "/ordenServicio/guardarReporteBd", ordenVO);	
 	}
 	
+	this.buscarIncidencia = function(cdIncidenc){
+		return $http.get(config.baseUrl + "/incidencia/incidenciaByCdIncidencia",{
+			params:{
+				"cdIncidenc" : cdIncidenc
+			}
+		});
+	};
+	
 });

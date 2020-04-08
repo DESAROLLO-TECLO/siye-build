@@ -8,6 +8,9 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 	$scope.range = [] ;
 	$scope.rango =[];
 	$scope.ordenVO={};
+	$scope.mostrarAlta = false;
+	$scope.vehiculoResult = {};
+	$scope.filKit=false;
 	
 	$scope.consultTipoVehiculos = function(){
 		altaServicioService.buscarTipoVehiculos()
@@ -36,11 +39,10 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 	};
 	
 	$scope.buscarVehculoPorPlaca = function(placa){
-//		  if ($scope.formAltaServicio.$invalid) {
-//	            showAlert.requiredFields($scope.formAltaServicio);
-//	            growl.warning("Formulario incompleto.", { ttl: 5000 });
-//	            return;
-//	        }
+		  if ($scope.formAltaServicio.valorBusqueda.$invalid) {
+	            showAlert.requiredFields($scope.formAltaServicio);
+	            return;
+	        }
 		
 		altaServicioService.buscarVehiculo(placa)
 		.success(function(data){
@@ -62,8 +64,8 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 			$scope.error = false;
 		})
 		.error(function(data){
-			$scope.vehiculoResult = {};
-			$scope.orden = {};
+//			$scope.vehiculoResult = {};
+//			$scope.orden = {};
 			$scope.error = true;
 			growl.warning("se encontro vehiculo con esa placa", { ttl: 5000 });
 			$scope.banderaVehiculo = true;
@@ -75,6 +77,8 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 		altaServicioService.buscarTipoKit(idTpKit)
 		.success(function(data){
 			$scope.tipoKitsDisp = data;
+			$scope.range=[];
+			$scope.filKit=true;
 		
 	
 			angular.forEach($scope.tipoKitsDisp, function(value, key){
@@ -89,6 +93,7 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 		.error(function(data){
 			$scope.tipoKitsDisp = [];
 			$scope.error = true;
+			$scope.filKit=false;
 			growl.warning("No Existe", { ttl: 5000 });
 		})
 	};
@@ -104,15 +109,43 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 		console.log(temp);
 		$scope.orden.kitInstalacionVO= temp;
 		$scope.ordenVO = $scope.orden;
+		$scope.ordenVO.idIncidencia = $scope.incidenciaVO.idIncidencia;
 		console.log($scope.ordenVO);
 			
 		altaServicioService.altaOrdenServicio(valorDos).success(function(data){
 			$scope.error = false;
+			growl.success("Datos Guardado Correctamente", { ttl: 5000 });
+			$scope.parametroBusqueda.incidencia="";
+			$scope.orden={};
+			$scope.ordenVO={};
+			$scope.mostrarAlta=false
 			
 		}).error(function(data){
 			$scope.error = true;
+			growl.error("No se registraron los datos", { ttl: 5000 });
 		});
 
+		
+		
+	};
+	
+	$scope.buscarIncidencia = function(cdIncidenc){
+		
+		  if ($scope.formAltaServicio.incidencia.$invalid) {
+	            showAlert.requiredFields($scope.formAltaServicio);
+	            return;
+	        }
+		altaServicioService.buscarIncidencia(cdIncidenc).success(function(data){
+			
+			
+			$scope.incidenciaVO = data;
+			$scope.mostrarAlta= true;
+			
+		}).error(function(data){
+			growl.warning("No Existe incidencia", { ttl: 5000 });
+			$scope.mostrarAlta=false
+			
+		})
 		
 		
 	};

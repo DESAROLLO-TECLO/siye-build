@@ -73,6 +73,11 @@ public class OpcionesDTO implements Serializable {
     @JoinColumn(name = "ID_PREGUNTA", referencedColumnName = "ID_PREGUNTA", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private PreguntasDTO idPregunta;
+    
+    //nueva variable
+    @Basic(optional = false)
+    @Column(name = "CD_MOSTRAR_CAUSAS", nullable = false)
+    private Boolean cdMostrarCausas;
 
     public OpcionesDTO() {
     }
@@ -179,5 +184,15 @@ public class OpcionesDTO implements Serializable {
 
     public void setIdPregunta(PreguntasDTO idPregunta) {
         this.idPregunta = idPregunta;
-    }    
+    }
+
+	public Boolean getCdMostrarCausas() {
+		return cdMostrarCausas;
+	}
+
+	public void setCdMostrarCausas(Boolean cdMostrarCausas) {
+		this.cdMostrarCausas = cdMostrarCausas;
+	}    
+    
+    
 }

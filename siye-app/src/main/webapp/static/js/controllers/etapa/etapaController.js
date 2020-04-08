@@ -4,6 +4,7 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
 
     $scope.fechaHoy = new Date();
     $scope.stValidarCheck = false;
+    console.log(etapaInfo.data)
     
     if(etapaInfo != null){
         $rootScope.idOrSer = parseInt(etapaInfo.data[0].idOrdenServicio);
@@ -64,6 +65,7 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
                         break;
                 }
             }
+            console.log($scope.dataPlan)
         }).error(function(error){
             console.log(error);
         });

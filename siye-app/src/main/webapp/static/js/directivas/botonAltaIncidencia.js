@@ -12,29 +12,32 @@ angular.module(appTeclo).directive('botonIncidencia', function ($location, showA
 	    	idOrden: '=',
 			idProceso: '=',
 			idEncuesta: '=',
-			idPregunta: '='
+			idPregunta: '=',
+			urlActual: '='
 	    },
 	    template:  
-	    	' 	<div class="row">                                    							'+
-	    	' 		<div class="col-md-12">                                						'+
 	    	'	 	<button type="button" class="btn botonIncidencia" ng-click="redireccionar()">   '+
 	    	'	 		<span class="glyphicon glyphicon-tags" aria-hidden="true"></span>   	'+
 	    	'	 		<br>Incidencia                                    							'+
-	    	'	 	</button>                                    								'+
-	    	'	</div> ',
+	    	'	 	</button>                                    								',
     	link: function(scope){
     		scope.redireccionar = function (){
-		        showAlert.confirmacion("Se redireccionará a otra pantalla para dar de alta la incidencia. ¿Desea continuar?",
-		            //Aceptar
-		            function() {
-		                $location.path("/altaIncidencia/"+scope.idOrden+"/"+scope.idProceso+"/"+scope.idEncuesta+"/"+scope.idPregunta);
-		                $('.modal-backdrop').remove();
-		            },
-		            //Cancelar
-		            function() {
-		                return;
-		            }
-		        );
+    			let idOrden = scope.idOrden == undefined ? 0 : scope.idOrden;
+        		let idProceso = scope.idProceso == undefined ? 0 : scope.idProceso;
+        		let idEncuesta = scope.idEncuesta == undefined ? 0 : scope.idEncuesta;
+        		let idPregunta = scope.idPregunta == undefined ? 0 : scope.idPregunta;
+        		let urlActual = scope.urlActual == undefined ? 0 : scope.urlActual;
+                $location.path("/altaIncidencia/"+idOrden+"/"+idProceso+"/"+idEncuesta+"/"+idPregunta+"/"+urlActual);
+//		        showAlert.confirmacion("Se redireccionará a otra pantalla para dar de alta la incidencia. ¿Desea continuar?",
+//		            //Aceptar
+//		            function() {
+//		                $('.modal-backdrop').remove();
+//		            },
+//		            //Cancelar
+//		            function() {
+//		                return;
+//		            }
+//		        );
     		}
 		}
 	};

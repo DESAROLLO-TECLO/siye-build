@@ -16,8 +16,6 @@ angular.module(appTeclo).controller('consultaServicioController', function($scop
         valor: null
     };
 
-    $scope.idOrden = 2;
-
     buscarTipoBusqueda = function() {
         $scope.listTipoBusqueda = [
             { idTipoBusqueda: "0", cdTipoBusqueda: "TODO", nbTipoBusqueda: "TODO", txTipoBusqueda: "TODO" },
