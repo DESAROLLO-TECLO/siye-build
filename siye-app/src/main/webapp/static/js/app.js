@@ -33,7 +33,7 @@ angular.module(appTeclo,
 		'ngBootstrap',
 		'daterangepicker',
 		'rw.moneymask',
-		'ngDragDrop',
-		'ui.filedrop'
+		'ui.filedrop',
+		'widget.scrollbar'
 	]
 );
