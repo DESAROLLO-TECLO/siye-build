@@ -1,22 +1,22 @@
 var includeDeseing=
 	'	<div class="row">																														 					'+
 	'		<div class="col-xs-12 col-sm-12 col-md-12">                                                                                                             '+
-	'			<div class="{{col-xs-6 col-sm-6 col-md-9"></div>                                                                                                    '+
-	'			<div class="col-xs-2 col-sm-2 col-md-1">                                                                                                            '+
+	'			<div class="{{isIncidencia ? \'col-xs-7 col-sm-8 col-md-8\' : \'col-xs-5 col-sm-6 col-md-8\'}}"></div>                                                                                                    '+
+	'			<div class="col-xs-3 col-sm-2 col-md-2">                                                                                                            '+
 	'				<input type="file"  ng-show="false"                                                                            				                    '+
 	'					 id="file-1{{idElementUp}}"  onchange="angular.element(this).scope().getFilesFromInput(this)" 							                    '+
 	'					class="inputfile inputfile-1" multiple />                                                                                                   '+
-	'				<label for="file-1{{idElementUp}}" capture="camera" class="btn btn-danger">                                                                     '+
+	'				<label for="file-1{{idElementUp}}" capture="camera" class="btn btn-danger  pull-right">                                                                     '+
 	'					<i class="fa fa-camera fa-lg" aria-hidden="true"></i>                                                                                       '+
 	'				</label>                                                                                                                                        '+
 	'			</div>                                                                                                                                              '+
-	'			<div class="col-xs-2 col-sm-2 col-md-1">                                                                                                            '+
-	'				<Button class="btn btn-danger" ng-click="saveImagesAll()" ng-disabled="(listImages | filter:{ isSuccess : false}).length > 0">                  '+
+	'			<div class="col-xs-2 col-sm-2 col-md-1" ng-hide="isIncidencia">                                                                                                            '+
+	'				<Button class="btn btn-danger pull-right" ng-click="saveImagesAll()" ng-disabled="(listImages | filter:{ isSuccess : false}).length > 0">                  '+
 	'					<i class="fa fa-floppy-o fa-lg" aria-hidden="true"></i>                                                                                     '+
 	'				</Button>                                                                                                                                       '+
 	'			</div>                                                                                                                                              '+
-	'			<div class="col-xs-2 col-sm-2 col-md-1">                                                                                                            '+
-	'				<Button class="btn btn-danger" ng-click="cancelAllImage()" ng-disabled="listImages.length == 0">                                                '+
+	'			<div class="col-xs-2 col-sm-2 {{isIncidencia ? \'col-md-2\' : \'col-md-1\'}}">                                                                                                            '+
+	'				<Button class="btn btn-danger pull-right" ng-click="cancelAllImage()" ng-disabled="listImages.length == 0">                                                '+
 	'					<i class="fa fa-trash fa-lg" aria-hidden="true"></i>                                                                                        '+
 	'				</Button>                                                                                                                                       '+
 	'			</div>                                                                                                                                              '+
@@ -24,8 +24,8 @@ var includeDeseing=
 	'		<div class="col-xs-12 col-sm-12 col-md-12">                                                                                                             '+
 	'			<div class="col-xs-12 col-sm-12 col-md-12"                                                                                                          '+
 	'						ng-scrollbar scrollbar-config="{show: false}">													                                        '+
-	'				<div class="col-xs-12 col-sm-12 col-md-12 border-div"   file-drop on-image-drop="fileDropped()">                                                '+
-	'					<div ng-if="listImages.length == 0"  id="zonaDrop{{idElementUp}}"                                                                           '+
+	'				<div class="col-xs-12 col-sm-12 col-md-12 border-div"  file-drop on-image-drop="fileDropped">                                                '+
+	'					<div ng-if="listImages.length == 0" id="zonaDrop{{idElementUp}}"                                                                            '+
 	'					   class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 border-punteado-div">                                 '+
 	'						<div class="col-xs-12 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4 middleRow">                                                     '+
 	'							<label class="stile-puntero-pointer" for="file-1{{idElementUp}}">                                                                   '+
@@ -46,7 +46,7 @@ var includeDeseing=
 	'										</label>                                                                                                                '+
 	'																																			                    '+
 	'										<div ng-if="imagenVO.isImage">																                            '+
-	'										<i ng-if="imagenVO.showProgress" class="fa fa-spinner fa-lg fa-pulse fa-fw" aria-hidden="true"></i>						'+
+	'											<i ng-if="imagenVO.showProgress" class="fa fa-spinner fa-lg fa-pulse fa-fw" aria-hidden="true"></i>					'+
 	'											<img ng-if="!imagenVO.showProgress" id="img-{{idElementUp+unic}}"                                                   '+
 	'												ng-click="showModalImg(imagenVO.strBase64,imagenVO.name)"                                                       '+
 	'												class="stile-puntero-pointer img-img-fluid style-rep-img"                                                       '+
@@ -57,7 +57,7 @@ var includeDeseing=
 	'										</div>                                                                                                                  '+
 	'									</div>                                                                                                                      '+
 	'									<div class="col-xs-6 col-sm-3 col-md-3">                                                                                    '+
-	'										{{imagenVO.name}}                                                                                                       '+
+	'										{{imagenVO.name.length > 14 ? (imagenVO.name.substr(0,14)+\'...\') : imagenVO.name}}                                    '+
 	'										{{imagenVO.size/1024/1024|number:2}} Mb                                                                                 '+
 	'									</div>                                                                                                                      '+
 	'									<div class="col-xs-12 col-sm-3 col-md-3" ng-if="imagenVO.tpDocumentList.length > 0">                                        '+
