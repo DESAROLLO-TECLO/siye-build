@@ -94,7 +94,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		StSeguimientoDTO tpIncidenciaDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getTpIncidencia().getCdStSeguimiento());
 		StSeguimientoDTO prioridadDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getPrioridad().getCdStSeguimiento());
 		incidenciaDTO.setCdIncidencia(cdIncidencia);
-		incidenciaDTO.setCdIncidencia(nbIncidencia);
+		incidenciaDTO.setNbIncidencia(nbIncidencia);
 		incidenciaDTO.setTxIncidencia(altaIncidenciaVO.getDescripcion());
 		incidenciaDTO.setStActivo(true);
 		incidenciaDTO.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
