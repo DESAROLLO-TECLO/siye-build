@@ -33,7 +33,7 @@ public class IncidenciaRestController {
 	}
 	
 	
-	@RequestMapping(value = "/altaIncidencia", method = RequestMethod.PUT)
+	@RequestMapping(value = "/altaIncidencia", method = RequestMethod.POST)
 	@PreAuthorize("hasAnyAuthority('ALTA_INCIDENCIA')")
 	public Boolean altaIncidencia(@RequestBody AltaIncidenciaVO altaIncidenciaVO) throws BusinessException{
 		return incidenciaService.altaIncidencia(altaIncidenciaVO);
