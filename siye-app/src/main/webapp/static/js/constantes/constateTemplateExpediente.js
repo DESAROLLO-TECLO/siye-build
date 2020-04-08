@@ -16,14 +16,15 @@ var includeDeseing=
 	'				</Button>                                                                                                                                       '+
 	'			</div>                                                                                                                                              '+
 	'			<div class="col-xs-2 col-sm-2 col-md-1">                                                                                                            '+
-	'				<Button class="btn btn-danger" ng-click="cancelAllImage()" ng-disabled="listImages.length == 0">                                                                                                                  '+
-	'					<i class="fa fa-trash fa-lg" aria-hidden="true"></i>                                                                                          '+
-	'				</Button>                                                                                                                                        '+
+	'				<Button class="btn btn-danger" ng-click="cancelAllImage()" ng-disabled="listImages.length == 0">                                                '+
+	'					<i class="fa fa-trash fa-lg" aria-hidden="true"></i>                                                                                        '+
+	'				</Button>                                                                                                                                       '+
 	'			</div>                                                                                                                                              '+
 	'		</div>                                                                                                                                                  '+
 	'		<div class="col-xs-12 col-sm-12 col-md-12">                                                                                                             '+
-	'			<div class="col-xs-12 col-sm-12 col-md-12">                                                                                                         '+
-	'				<div class="col-xs-12 col-sm-12 col-md-12 border-div"  file-drop on-image-drop="fileDropped()">                                                 '+
+	'			<div class="col-xs-12 col-sm-12 col-md-12"                                                                                                          '+
+	'						ng-scrollbar scrollbar-config="{show: false}">													                                        '+
+	'				<div class="col-xs-12 col-sm-12 col-md-12 border-div"   file-drop on-image-drop="fileDropped()">                                                '+
 	'					<div ng-if="listImages.length == 0"  id="zonaDrop{{idElementUp}}"                                                                           '+
 	'					   class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 border-punteado-div">                                 '+
 	'						<div class="col-xs-12 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4 middleRow">                                                     '+
@@ -32,7 +33,7 @@ var includeDeseing=
 	'							</label>                                                                                                                            '+
 	'						</div>                                                                                                                                  '+
 	'					</div>                                                                                                                                      '+
-	'					<div ng-if="listImages.length > 0"                                      												                    '+
+	'					<div ng-if="listImages.length > 0"		                                 												                    '+
 	'						class="col-xs-12 col-sm-12 col-md-12">                                                                                                  '+
 	'						<div ng-repeat="imagenVO in listImages | startFromGrid: viewPag.currentPage * viewPag.pageSize | limitTo: viewPag.pageSize">            '+
 	'							<div class="col-xs-12 col-sm-12 col-md-12 padding-per">                                                                             '+
@@ -45,7 +46,7 @@ var includeDeseing=
 	'										</label>                                                                                                                '+
 	'																																			                    '+
 	'										<div ng-if="imagenVO.isImage">																                            '+
-	'										<i ng-if="imagenVO.showProgress" class="fa fa-spinner fa-lg fa-pulse fa-fw" aria-hidden="true"></i>							'+
+	'										<i ng-if="imagenVO.showProgress" class="fa fa-spinner fa-lg fa-pulse fa-fw" aria-hidden="true"></i>						'+
 	'											<img ng-if="!imagenVO.showProgress" id="img-{{idElementUp+unic}}"                                                   '+
 	'												ng-click="showModalImg(imagenVO.strBase64,imagenVO.name)"                                                       '+
 	'												class="stile-puntero-pointer img-img-fluid style-rep-img"                                                       '+
@@ -98,18 +99,20 @@ var includeDeseing=
 	'								</div>                                                                                                                          '+
 	'							</div>			                                                                                                                    '+
 	'						</div>                                                                                                                                  '+
-	'						                                                                                                                                        '+
-	'						 <div class="btn-group pull-rigth" ng-if="listImages.length > viewPag.pageSize">                                                                   '+
+	'					</div>                                                                                                                                      '+
+	'				</div>                                                                                                                                          '+
+	'				<div class="col-xs-12 col-sm-12 col-md-12">                                                                                                     '+
+	'					<div class="col-xs-6 col-sm-6 col-md-6"></div>                                                                                              '+
+	'					<div class="col-xs-6 col-sm-6 col-md-6">                                                                                         '+
+	'						<div class="btn-group pull-right" ng-if="listImages.length > viewPag.pageSize">                                                                    '+
 	'						  <button type="button" class="btn btn-danger" ng-disabled="viewPag.currentPage == 0"                                                   '+
 	'									ng-click="viewPag.currentPage = viewPag.currentPage - 1">&laquo;</button>                                                   '+
 	'						  <button type="button" class="btn btn-default" ng-disabled="viewPag.currentPage == page.no - 1"                                        '+
-	'									ng-repeat="page in viewPag.pages" ng-click="setPage(page.no)">{{page.no}}</button>                                                  '+
-	'						  <button type="button" class="btn btn-danger" ng-disabled="viewPag.currentPage >= listImages.length/viewPag.pageSize - 1" ,                    '+
+	'									ng-repeat="page in viewPag.pages" ng-click="setPage(page.no)">{{page.no}}</button>                                          '+
+	'						  <button type="button" class="btn btn-danger" ng-disabled="viewPag.currentPage >= listImages.length/viewPag.pageSize - 1" ,            '+
 	'								ng-click="viewPag.currentPage = viewPag.currentPage + 1">&raquo;</button>                                                       '+
 	'						</div>                                                                                                                                  '+
-	'						                                                                                                                                        '+
 	'					</div>                                                                                                                                      '+
-	'																																			                    '+
 	'				</div>                                                                                                                                          '+
 	'			</div>                                                                                                                                              '+
 	'		</div>                                                                                                                                                  '+

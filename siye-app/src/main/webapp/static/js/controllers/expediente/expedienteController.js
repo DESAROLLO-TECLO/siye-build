@@ -1,9 +1,11 @@
 angular.module(appTeclo).controller('expedienteController',
     function($rootScope,$scope,$timeout,$filter,showAlert,growl,expedienteService,FileUploader)
     {
+
 	const MENSAJE='Seleccione una opción';
 	//Objeto para la configuracion de la directiva de carga de imagenes
 	$scope.listImages=new Array();
+	$scope.listImagesDos=new Array();
 	$scope.fileUploader=new FileUploader();
 	
 	$scope.paramConfSav= new Object({
