@@ -11,10 +11,7 @@ public class CustomAsyncExceptionHandler implements AsyncUncaughtExceptionHandle
 
 	@Override
 	public void handleUncaughtException(Throwable ex, Method method, Object... params) {
-
-		for (Object param : params) {
-			LOGGER.debug("Parameter value - " + param);
-		}
+		LOGGER.error("***********error "+ex.getMessage());
 
 	}
 

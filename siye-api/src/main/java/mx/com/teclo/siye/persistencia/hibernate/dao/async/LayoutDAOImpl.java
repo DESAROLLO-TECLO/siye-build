@@ -52,6 +52,7 @@ public class LayoutDAOImpl extends BaseDaoHibernate<LayoutDTO> implements Layout
 
 		c.setProjection(Projections.projectionList().add(Projections.property("tbDestino.nbCampo").as("nbColumna"))
 				.add(Projections.property("layout.nuOrdenRegistro").as("nuOrden"))
+				.add(Projections.property("layout.cdTipoDato").as("cdTipo"))
 				.add(Projections.property("tbDestino.txValorDefecto").as("txValorDefecto"))
 				.add(Projections.property("layout.nuLongitudMax").as("nuLongitudMax")));
 		c.addOrder(Order.asc("tbDestino.idTablaDestino"));

@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.siye.persistencia.vo.proceso.LoteOrdenServicioVO;
+import mx.com.teclo.siye.util.enumerados.ArchivoSeguimientoEnum;
 
 /**
  * Administra la carga masiva de &oacute;rdenes de servicios contenidos en un
@@ -50,7 +51,7 @@ public interface AsyncArchivoLoteService {
 	 * 
 	 * @throws BusinessException
 	 */
-	void actualizarSeguimiento() throws BusinessException;
+	void actualizarSeguimiento(Long idArchivoLote, ArchivoSeguimientoEnum seguimiento, String txLoteOdsError ) throws BusinessException;
 
 	/**
 	 * Recupera la informaci&oacute;n de un archivo lote
