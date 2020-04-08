@@ -5,7 +5,6 @@ import java.util.List;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.responsehttp.BadRequestHttpResponse;
-import mx.com.teclo.arquitectura.ortogonales.responsehttp.ConflictHttpResponse;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.CargaExpedienteImgVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.tipoExpediente.TipoExpedienteVO;

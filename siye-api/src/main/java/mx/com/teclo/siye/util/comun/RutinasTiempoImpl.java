@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RutinasTiempoImpl {
+	private final int HOY =1, AYER=2, ESTA_SEMANA=3, ULTIMA_SEMANA=4, ULTIMO_7_DIAS=5, ESTE_MES=6, MES_PASADO=7, ULTIMOS30_DIAS = 8;
+	
 
 	public Date getFechaActual() {
         Date fechaActual = new Date();
@@ -433,48 +435,40 @@ public class RutinasTiempoImpl {
 	
 	// Genera Fechas por rango al perido de fecha
 	// * @author xxx
-		public List<String> generaRangoFechas(Integer periodoFecha) {
+		public List<String> generaRangoFechas(Long periodoFecha) {
+			int rangoF = Math.round(periodoFecha);
 			List<String> rangoFechas = new ArrayList<String>();
-
 			Calendar dateActual = Calendar.getInstance();
-			// dateActual = new GregorianCalendar(2018, 6, 8);
 			Calendar dateInicio;
 			dateInicio = (Calendar) dateActual.clone();
-			int diaInicio = 0;
-			int mesInicio = 0;
-			int añoInicio = 0;
-			String fechaInicio = "";
+			int diaInicio = 0, mesInicio = 0, añoInicio = 0;
+			String fechaInicio = "", fechaFin = "";
 			Calendar dateFin;
 			dateFin = (Calendar) dateActual.clone();
-			int diaFin = 0;
-			int mesFin = 0;
-			int añoFin = 0;
-			String fechaFin = "";
-			int diaSemana = 0;
-			int inicioSemana = 0;
-			int diaMes = 0;
-			int diasMes = 0;
-			int inicioMes = 0;
-			int finMes = 0;
-
-			if (periodoFecha == 0) {// "Hoy"
+			int diaFin = 0, mesFin = 0, añoFin = 0;
+			int diaSemana = 0, inicioSemana = 0, diaMes = 0, diasMes = 0, inicioMes = 0, finMes = 0;
+			
+			switch(rangoF) {
+			case HOY:
 				dateFin = (Calendar) dateInicio.clone();
+				break;
 				
-			} else if (periodoFecha == 1) {// "Ayer"
+			case AYER:
 				dateInicio.add(Calendar.DAY_OF_YEAR, -1);
 				dateFin.add(Calendar.DAY_OF_YEAR, -1);
+				break;
 				
-			} else if (periodoFecha == 2) {// "Esta Semana"
+			case ESTA_SEMANA:
 				diaSemana = dateInicio.get(Calendar.DAY_OF_WEEK);
 				if (diaSemana != 1) {
 					inicioSemana = ((diaSemana - 1) * -1);
 					dateInicio.add(Calendar.DAY_OF_YEAR, inicioSemana);
 				}
-
 				dateFin = (Calendar) dateInicio.clone();
 				dateFin.add(Calendar.DAY_OF_YEAR, 6);
+				break;
 				
-			} else if (periodoFecha == 3) {// "Última Semana"
+			case ULTIMA_SEMANA:
 				diaSemana = dateInicio.get(Calendar.DAY_OF_WEEK);
 				if (diaSemana != 1) {
 					inicioSemana = ((diaSemana - 1) * -1);
@@ -484,10 +478,14 @@ public class RutinasTiempoImpl {
 
 				dateFin = (Calendar) dateInicio.clone();
 				dateFin.add(Calendar.DAY_OF_YEAR, 6);
-			} else if (periodoFecha == 4) {// "Últimos 7 Días"
+				break;
+				
+			case ULTIMO_7_DIAS:
 				dateInicio.add(Calendar.DAY_OF_YEAR, -7);
 				dateFin = (Calendar) dateActual.clone();
-			} else if (periodoFecha == 5) {// "Este Mes"
+				break;
+				
+			case ESTE_MES:
 				diaMes = dateInicio.get(Calendar.DAY_OF_MONTH);
 				if (diaMes != 1) {
 					inicioMes = ((diaMes - 1) * -1);
@@ -499,8 +497,9 @@ public class RutinasTiempoImpl {
 				finMes = diasMes - 1;
 
 				dateFin.add(Calendar.DAY_OF_YEAR, finMes);
+				break;
 				
-			} else if (periodoFecha == 6) {// "Último Mes"
+			case MES_PASADO:
 				diaMes = dateInicio.get(Calendar.DAY_OF_MONTH);
 				if (diaMes != 1) {
 					inicioMes = ((diaMes - 1) * -1);
@@ -513,11 +512,16 @@ public class RutinasTiempoImpl {
 				finMes = diasMes - 1;
 
 				dateFin.add(Calendar.DAY_OF_YEAR, finMes);
-			} else if (periodoFecha == 7) {// "Últimos 30 Días"
+				break;
+				
+			case ULTIMOS30_DIAS:
 				dateInicio.add(Calendar.DAY_OF_YEAR, -30);
 				dateFin = (Calendar) dateActual.clone();
+				break;
+				
+			default:
+				return rangoFechas;
 			}
-
 			diaInicio = dateInicio.get(Calendar.DAY_OF_MONTH);
 			mesInicio = dateInicio.get(Calendar.MONTH) + 1;
 			añoInicio = dateInicio.get(Calendar.YEAR);
