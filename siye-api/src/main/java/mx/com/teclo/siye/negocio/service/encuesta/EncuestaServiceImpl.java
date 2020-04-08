@@ -41,6 +41,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaDeta
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaIntentosDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuaroEncuestaRespuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuaroEncuestaRespuestaDTOPK;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.IntentoDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.OpcionVO;
