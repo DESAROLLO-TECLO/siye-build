@@ -56,5 +56,5 @@ public interface ExpedienteImgService {
 	 * @return Boolean
 	 * Metodo para guardar las imagenes provenientes de las incidencias
 	 */
-	public Boolean saveImagenIncidencia(ImagenVO imagenVO, IncidenciaDTO incidenciaDTO);
+	public Boolean saveImagenIncidencia(List<ImagenVO> listImagenVO, IncidenciaDTO incidenciaDTO);
 }

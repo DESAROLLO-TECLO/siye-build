@@ -2,6 +2,8 @@ package mx.com.teclo.siye.negocio.service.incidencia;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,7 +59,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 	@Override
 	@Transactional
 	public Boolean  altaIncidencia(AltaIncidenciaVO altaIncidenciaVO)  throws BusinessException{
-		validarIncidencia(altaIncidenciaVO.getDescripcion(), altaIncidenciaVO.getImagenVO());
+		validarIncidencia(altaIncidenciaVO.getDescripcion(), altaIncidenciaVO.getListImagen());
 		IncidenciaDTO incidenciaDTO = new IncidenciaDTO();
 		Boolean respuesta = false;
 		Boolean respuestaIncidencia = false;
@@ -106,7 +108,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		try {
 			incidenciaDAO.save(incidenciaDTO);
 			respuesta = true;
-			respuestaIncidencia = expedienteImgService.saveImagenIncidencia(altaIncidenciaVO.getImagenVO(), incidenciaDTO);
+			respuestaIncidencia = expedienteImgService.saveImagenIncidencia(altaIncidenciaVO.getListImagen(), incidenciaDTO);
 		} catch (Exception e) {
 			respuesta = false;
 		}
@@ -121,9 +123,8 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 	
 	
 	
-	private void validarIncidencia(String descripcion, ImagenVO  expedientesImgDTO)  throws BusinessException{
-
-		if (expedientesImgDTO == null) {
+	private void validarIncidencia(String descripcion, List<ImagenVO>  listImagenVO)  throws BusinessException{
+        if (listImagenVO == null || listImagenVO.isEmpty()) {
 			throw new BusinessException(MSG_ERROR_IMAGEN_NULA);
 		}
 		if (descripcion ==  null || descripcion == "") {

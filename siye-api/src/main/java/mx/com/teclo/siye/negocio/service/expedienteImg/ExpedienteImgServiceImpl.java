@@ -438,29 +438,30 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 	
 	@Override
 	@Transactional
-	public Boolean saveImagenIncidencia(ImagenVO imagenVO, IncidenciaDTO incidenciaDTO) {
-		
-		if (imagenVO != null) {
-			if (imagenVO.getLbExpedienteODS() != null && imagenVO.getNbExpedienteODS() != null && imagenVO.getNbExpedienteODS() != "" &&
-					imagenVO.getCdTipoArchivo() != null	&& imagenVO.getCdTipoArchivo() != "") {
-				UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
-				ExpedientesImgDTO incidencia = new ExpedientesImgDTO();
-				incidencia.setNbExpedienteODS(imagenVO.getNbExpedienteODS());
-				incidencia.setCdTipoArchivo(imagenVO.getCdTipoArchivo());
-				incidencia.setLbExpedienteODS(imagenVO.getLbExpedienteODS());
-				incidencia.setIncidencia(incidenciaDTO);
-				incidencia.setNuOrden(null);
-				incidencia.setCdTipoArchivo(imagenVO.getCdTipoArchivo());
-				incidencia.setStActivo(true);
-				incidencia.setFhCreacion(new Date());
-				incidencia.setIdUsrCreacion(usuario.getId());
-				incidencia.setFhModifica(new Date());
-				incidencia.setIdUsrModifica(usuario.getId());
-				try {
-					expedienteImgDAO.save(incidencia);
-					return true;
-				} catch (Exception e) {
-					return false;
+	public Boolean saveImagenIncidencia(List<ImagenVO> listImagenVO, IncidenciaDTO incidenciaDTO) {
+		for(ImagenVO imagenVO : listImagenVO){
+			if (imagenVO != null) {
+				if (imagenVO.getLbExpedienteODS() != null && imagenVO.getNbExpedienteODS() != null && imagenVO.getNbExpedienteODS() != "" &&
+						imagenVO.getCdTipoArchivo() != null	&& imagenVO.getCdTipoArchivo() != "") {
+					UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
+					ExpedientesImgDTO incidencia = new ExpedientesImgDTO();
+					incidencia.setNbExpedienteODS(imagenVO.getNbExpedienteODS());
+					incidencia.setCdTipoArchivo(imagenVO.getCdTipoArchivo());
+					incidencia.setLbExpedienteODS(imagenVO.getLbExpedienteODS());
+					incidencia.setIncidencia(incidenciaDTO);
+					incidencia.setNuOrden(null);
+					incidencia.setCdTipoArchivo(imagenVO.getCdTipoArchivo());
+					incidencia.setStActivo(true);
+					incidencia.setFhCreacion(new Date());
+					incidencia.setIdUsrCreacion(usuario.getId());
+					incidencia.setFhModifica(new Date());
+					incidencia.setIdUsrModifica(usuario.getId());
+					try {
+						expedienteImgDAO.save(incidencia);
+						return true;
+					} catch (Exception e) {
+						return false;
+					}
 				}
 			}
 		}
