@@ -11,20 +11,22 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 	};
 	
 	$scope.listOrden=new Array();
-	$scope.parametroBusqueda =new Object();
+	$scope.parametroBusqueda = {
+		tipoBusqueda : 1	
+	};
 	$scope.paramConfigPage = {
-		bigCurrentPage: 1,
-		bigTotalItems: 12,
-		itemsPerPage: 4,
-		maxSize: 12,
-		tiempoEncuesta: 0,
-		tiempoReanuda: false,
-		tiempoCorriendo: false,
-		flagTimer: true,
-		segundo: 0,
-		minuto: 0,
-		hora: 0,
-		flagFinalizaEncueta: false
+		bigCurrentPage : 1,
+		bigTotalItems : 12,
+		itemsPerPage : 4,
+		maxSize : 12,
+		tiempoEncuesta : 0,
+		tiempoReanuda : false,
+		tiempoCorriendo : false,
+		flagTimer : true,
+		segundo : 0,
+		minuto : 0,
+		hora : 0,
+		flagFinalizaEncueta : false
 	};
 	
 	$scope.posicionActual = -1;
@@ -62,7 +64,7 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 	
 	$scope.buscaOrdenConsulta = function(param){
 		$scope.listOrden = [];
-		encuestaSatisfaccionService.getEncuesta(param.tipoBusqueda.idTipo,param.valor,param.pass).success(function(data){
+		encuestaSatisfaccionService.getEncuesta(param.tipoBusqueda,param.valor,param.pass).success(function(data){
 			if (data.length>0) {
 				$scope.backBusqueda = param;
 				$scope.listOrden = data;
@@ -130,7 +132,6 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 
 	// Detectar el navegador para ajustar el contenido
 	detectarNavegador = function(){
-		
 		var contFormulario = $('.cont-formuarioCliente');
 		var bfCaret = $('.contSelectPhone');
 		
@@ -339,7 +340,8 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
     			$scope.paramConfigPage.hora = 0;
     			$scope.paramConfigPage.flagTimer = false; ///$scope.saveStepTwo();
     			//$scope.asignarValores(data);
-    			$scope.listOrden[0].intentoMostrar = data;
+    			//$scope.listOrden[0].intentoMostrar = data;
+    			$scope.regresarEncuestas();
     		} else { 
     			growl.success("No Se Pudo Finalizar la encuesta", { ttl: 5000 }); guardarSeccion = false; 
     		}
@@ -347,9 +349,7 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 			growl.error(data.message); 
 		});
     };
-
-
-
+    
     // Guarda respuestas de encuesta
     $scope.saveEncuesta = function(seccionVO) {
         var guardarSeccion = false;
@@ -402,12 +402,29 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
         });
         return guardarSeccion;
     };
-
+    
+    $scope.accionPorRow = function(cdStEncuesta,idOrdenServicio,encuesta,idUsuEncuIntento){
+    	if(cdStEncuesta == "NI"){
+    		$scope.empezarEncuesta(idOrdenServicio, encuesta, true, idUsuEncuIntento);
+    	}else if(cdStEncuesta == "EC"){
+    		$scope.reanudarEncuesta(idOrdenServicio, encuesta, true, idUsuEncuIntento);
+    	}
+    }
+    
+    $scope.limpiarCampos = function(){
+    	$scope.parametroBusqueda.tipoBusqueda = 1;
+    	$scope.busquedaForm.comboTipoBusqueda.$setPristine();
+    	$scope.parametroBusqueda.valor = "";
+    	$scope.busquedaForm.valor.$setPristine();
+    	$scope.parametroBusqueda.pass = "";
+    	$scope.busquedaForm.pass.$setPristine();
+    	$scope.listOrden = [];
+    }
+    
     $scope.regresarEncuestas = function() {
         $scope.buscaOrdenConsulta($scope.backBusqueda,true);
         $scope.redireccionar=false;
         $scope.controllerActual = 'NA';
         $scope.banderaPantalla=false;
     };
-    
 });
