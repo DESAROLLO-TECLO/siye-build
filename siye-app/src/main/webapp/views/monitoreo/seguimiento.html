@@ -47,15 +47,17 @@
                                             <div class="input-group">
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-list-alt"></i>
-                                                </div>
-                                                <select class="form-control" name="tipoBusqueda" id="tipoBusqueda"
-                                                    ng-required="true" select2
-                                                    data-minimum-results-for-search="Infinity"
-                                                    idioma-s2="{{currentLanguage}}" ng-model="busqueda.tipoBusqueda"
-                                                    ng-options="tipo as tipo.nbTipoBusqueda for tipo in catTipoBusqueda">
-                                                    <option value="">
-                                                        {{'APP.Base.mensaje.seleccioneOpcion' | translate}}
-                                                    </option>
+                                                </div>                                                
+                                                <select class="form-control"
+                                                    name="tipoBusqueda"
+                                                    id="tipoBusqueda"
+                                                    select-picker 
+                                                    multiple
+                                                    idioma-sp="{{currentLanguage}}"
+                                                    data-actions-box="true"
+                                                    data-selected-text-format="count > 2"                                                    
+                                                    ng-model="busqueda.tipoBusqueda"
+                                                    ng-options="sp as sp.txTipoBusqueda for sp in catTipoBusqueda">
                                                 </select>
                                             </div>
                                             <div
@@ -67,35 +69,6 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
-                                        <div class="form-group"
-                                            ng-class="{'has-error': (formBoxBusqueda.valor.$invalid && formBoxBusqueda.valor.$dirty) }">
-                                            <label>
-                                                *{{'MONITOREO.busqueda.valorBusqueda.label' | translate}}
-                                            </label>
-                                            <div class="input-group">
-                                                <div class="input-group-addon">
-                                                    <i class="fa fa-calendar"></i>
-                                                </div>
-                                                <input class="form-control" id="valor" type="text" name="valor"
-                                                    idioma-dp="{{currentLanguage}}"
-                                                    ng-disabled="busqueda.tipoBusqueda == undefined"
-                                                    ng-model="busqueda.valor" />
-                                            </div>
-                                            <div
-                                                ng-show="formBoxBusqueda.valor.$error.required && formBoxBusqueda.valor.$dirty">
-                                                <span ng-style="{color:'red'}">
-                                                    {{'MONITOREO.busqueda.valorBusqueda.validacion' | translate}}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-md-3">
-
-                                    </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>
@@ -111,14 +84,14 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="box-footer">
-                                    <div class="center">
-                                        <button type="submit" class="btn btn-danger ng-binding"
-                                            ng-click="consultaOS(formBoxBusqueda,opcionBusqueda)">
-                                            {{ 'APP.Base.boton.buscar' | translate}}
-                                        </button>
-                                    </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-danger" ng-click="corteDiario()">
+                                        {{'MONITOREO.busqueda.corte' | translate}}
+                                    </button>
+                                    <button class="btn btn-danger"
+                                        ng-click="consultaOS(formBoxBusqueda,busqueda)">
+                                        {{'APP.Base.boton.buscar' | translate}}
+                                    </button>
                                 </div>
                             </form>
                         </div>
