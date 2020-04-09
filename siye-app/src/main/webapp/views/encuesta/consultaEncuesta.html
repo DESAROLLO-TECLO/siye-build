@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="box-body">
-                <!-- PARAMETROS DE BÃ¯Â¿Â½SQUEDA -->
+                <!-- PARAMETROS DE BÃƒÂ¯Ã‚Â¿Ã‚Â½SQUEDA -->
                 <div class="row">
                     <div class="col-md-6 col-xs-6">
                         <div class="form-group" ng-class="{ 'has-error' : busquedaForm.comboTipoBusqueda.$invalid && !busquedaForm.comboTipoBusqueda.$pristine }">
@@ -155,12 +155,11 @@
                                                 		data-toggle="tooltip" data-placement="bottom" title="{{ordenVO.intentoMostrar.stEncuesta.nbStEncuesta}}">
 	                                                    <span class="etiquetaCancelado fullWidth"
 	                                                    	ng-if="ordenVO.intentoMostrar.stEncuesta.cdStEncuesta == 'NI'" 
-	                                                    	ng-click="empezarEncuesta(ordenVO.ordenServicio.idOrdenServicio,ordenVO.encuesta,true,ordenVO.intentoMostrar.idUsuEncuIntento)" 
 	                                                        style="cursor: pointer; background-color: {{ordenVO.intentoMostrar.stEncuesta.cdColor}};" >
 	                                                       	<b>INICIAR</b>
 	                                                    </span>
 	                                                    <span class="etiquetaCancelado fullWidth"
-	                                                    	ng-if="ordenVO.intentoMostrar.stEncuesta.cdStEncuesta == 'EC'" ng-click="reanudarEncuesta(ordenVO.ordenServicio.idOrdenServicio,ordenVO.encuesta,true,ordenVO.intentoMostrar.idUsuEncuIntento)" 
+	                                                    	ng-if="ordenVO.intentoMostrar.stEncuesta.cdStEncuesta == 'EC'" 
 	                                                        style="cursor: pointer; background-color: {{ordenVO.intentoMostrar.stEncuesta.cdColor}};">
 	                                                        <b>REANUDAR</b>
 	                                                    </span>
