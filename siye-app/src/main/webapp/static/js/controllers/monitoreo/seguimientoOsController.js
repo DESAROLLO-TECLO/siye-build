@@ -1,4 +1,5 @@
-angular.module(appTeclo).controller('seguimientoOsController', function ($rootScope, $scope, $location, $document, showAlert,  growl) {
+angular.module(appTeclo).controller('seguimientoOsController', function ($rootScope, $scope, $location, $document, showAlert,  growl,catalogoGenericoService,
+    seguimientoOsService) {
 
     $scope.catTipoBusqueda = new Array(
         { idTipoBusqueda: "1", cdTipoBusqueda: "ENCURSO",  txTipoBusqueda: "EN CURSO" },
@@ -30,14 +31,22 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
         busquedaOk:false,
         seguimientoTotales:[]
     });
+
+    getRangoFechas = function(){
+        catalogoGenericoService.getCatRangoFechas().success(function(data){
+
+        }).error(function(data){
+            
+        });
+    };
     
-    // consultaInicial = function(){
-    //     seguimientoOsService.getInfoOsByRangoFechas(params).success(function(data){
+    consultaInicial = function(){
+        seguimientoOsService.getInfoOsByRangoFechas(params).success(function(data){
 
-    //     }).error(function(data){
+        }).error(function(data){
 
-    //     });
-    // }
+        });
+    }
 
     $scope.consultaOS = function(form, paramBusqueda){
         if(validarFormulario(form)){
@@ -57,5 +66,5 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
 		}
     };
 
-    //consultaInicial();
+    consultaInicial();
 });
