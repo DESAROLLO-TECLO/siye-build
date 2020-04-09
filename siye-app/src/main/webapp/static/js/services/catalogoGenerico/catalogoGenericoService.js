@@ -32,4 +32,8 @@ this.buscarPersona = function (cdPersona,idTipoPersona) {
 			{params:{"cdPersona":cdPersona,"idTipoPersona":idTipoPersona}});
 };
 
+this.getCatRangoFechas = function () {
+	return $http.get(config.baseUrl + END_POINT + "/getCatTipoFechas");
+};
+
 });
