@@ -8,7 +8,28 @@ this.getTransportistas = function () {
 
 this.getTecnicos = function (param) {
 	return $http.get(config.baseUrl + END_POINT + "/getTecnicos",
-			{params:{"idTipoPersona":param}});
+			{params:{"idTipoPersona":param==null?1:param}});
 };
-		
+
+this.getTpIncidencia = function () {
+	return $http.get(config.baseUrl + END_POINT + "/getTpIncidencia");
+};
+
+this.getPrioridad = function () {
+	return $http.get(config.baseUrl + END_POINT + "/getPrioridad");
+};
+
+this.getOrdenServicio = function () {
+	return $http.get(config.baseUrl + END_POINT + "/getOrdenServicio");
+};
+
+this.getModAten = function () {
+	return $http.get(config.baseUrl + END_POINT + "/getModAten");
+};
+
+this.buscarPersona = function (cdPersona,idTipoPersona) {
+	return $http.get(config.baseUrl + END_POINT + "/buscarPersona",
+			{params:{"cdPersona":cdPersona,"idTipoPersona":idTipoPersona}});
+};
+
 });

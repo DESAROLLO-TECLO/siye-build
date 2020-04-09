@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+
+<body>
+    <section class="content-header">
+        <h1>{{breadCrumbs.servicio}}</h1>
+        <ol class="breadcrumb">
+            <li>
+                <a><i class="{{breadCrumbs.icono}}"></i>{{breadCrumbs.modulo}} </a>
+            </li>
+            <li class="active">{{breadCrumbs.servicio}}</li>
+        </ol>
+    </section>
+
+    <!-- Formulario de busqueda -->
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2">
+                <div class="box box-danger">
+                    <div class="box-header with-border ">
+                        <div class="col-xs-12 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4 text-center">
+                            <h3 class="box-title">Búsqueda</h3>
+                        </div>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" type="button" id="btnAlmacen" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="box-body">
+                        <div class="row centerCol">
+                            <form name="formBoxBusqueda" role="form" novalidate>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group"
+                                            ng-class="{'has-error': (formBoxBusqueda.tipoBusqueda.$invalid && formBoxBusqueda.tipoBusqueda.$dirty) }">
+                                            <label>
+                                                *{{'MONITOREO.busqueda.tipoBusqueda.label' | translate}}
+                                            </label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    <i class="fa fa-list-alt"></i>
+                                                </div>                                                
+                                                <select class="form-control"
+                                                    name="tipoBusqueda"
+                                                    id="tipoBusqueda"
+                                                    select-picker 
+                                                    multiple
+                                                    idioma-sp="{{currentLanguage}}"
+                                                    data-actions-box="true"
+                                                    data-selected-text-format="count > 2"                                                    
+                                                    ng-model="busqueda.tipoBusqueda"
+                                                    ng-options="sp as sp.txTipoBusqueda for sp in catTipoBusqueda">
+                                                </select>
+                                            </div>
+                                            <div
+                                                ng-show="formBoxBusqueda.tipoBusqueda.$error.required && formBoxBusqueda.tipoBusqueda.$dirty">
+                                                <span ng-style="{color:'red'}">
+                                                    {{'MONITOREO.busqueda.tipoBusqueda.validacion' | translate}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>
+                                                *{{'MONITOREO.busqueda.rangoFechas.label' | translate}}
+                                            </label>
+                                            <div class="input-group">
+                                                <div class="input-group-addon labelCheck">
+                                                    <i class="fa fa-calendar-plus-o"></i>
+                                                </div>
+                                                <input date-range-picker class="form-control date-picker" type="text"
+                                                    ng-model="rangoFechas.date" options="rangoFechas.options" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-danger" ng-click="corteDiario()">
+                                        {{'MONITOREO.busqueda.corte' | translate}}
+                                    </button>
+                                    <button class="btn btn-danger"
+                                        ng-click="consultaOS(formBoxBusqueda,busqueda)">
+                                        {{'APP.Base.boton.buscar' | translate}}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- final formulario de busqueda -->
+
+    <!--t abla de resultados -->
+    <section class="content">
+        <div class="row" ng-if="seguimientoVO.busquedaOk">
+            <div class="box box-danger">
+                <div class="box-body ngOnlyEnter">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-hover header-fixed">
+                                    <thead>
+                                        <tr>
+                                            <th sort order="'nbModulo'" by="order" reverse="reverse" class="col-md-2">
+                                                {{'MONITOREO.resultadosGral.titulo.moduloAtencion' | translate}}
+                                            </th>
+                                            <th sort order="'nuEnCurso'" by="order" reverse="reverse" class="col-md-2">
+                                                {{'MONITOREO.resultadosGral.titulo.EnCurso' | translate}}
+                                            </th>
+                                            <th sort order="'nuCompleta'" by="order" reverse="reverse" class="col-md-2">
+                                                {{'MONITOREO.resultadosGral.titulo.completa' | translate}}
+                                            </th>
+                                            <th sort order="'nuProgramado'" by="order" reverse="reverse" class="col-md-2">
+                                                {{'MONITOREO.resultadosGral.titulo.programada' | translate}}
+                                            </th>
+                                            <th sort order="'nuNoProgramado'" by="order" reverse="reverse" class="col-md-2">
+                                                {{'MONITOREO.resultadosGral.titulo.noProgramada' | translate}}
+                                            </th>
+                                            <th sort order="'nuIncidencias'" by="order" reverse="reverse" class="col-md-2">
+                                                {{'MONITOREO.resultadosGral.titulo.incidencia' | translate}}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr dir-paginate="modulo in seguimientoVO.seguimientoTotales | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage"
+                                            pagination-id="resultTabla">
+                                            <td class="col-md-2">{{modulo.nbModulo}}</td>
+                                            <td class="col-md-2">{{modulo.nuEnCurso}}</td>
+                                            <td class="col-md-2">{{modulo.nuCompleta}}</td>
+                                            <td class="col-md-2">{{modulo.nuProgramado}}</td>
+                                            <td class="col-md-2">{{modulo.nuNoProgramado}}</td>
+                                            <td class="col-md-2">{{modulo.nuIncidencias}}</td>
+                                        </tr>
+                                        <tr ng-show="(seguimientoVO.seguimientoTotales | filter:view.searchSomething).length < 1">
+                                            <td colspan="6" class="text-center">
+                                                <h4>{{'APP.Base.mensaje.noRegistros' | translate}}</h4>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="container-fluid">
+                                <div class="fixed-table-pagination" style="display: block;">
+                                    <rows-per-page rows="view.rowsPerPage" filtro="view.searchSomething"
+                                        array="seguimientoVO.seguimientoTotales"></rows-per-page>
+                                    <div class="pull-right pagination">
+                                        <dir-pagination-controls class="pagination" pagination-id="resultTabla">
+                                        </dir-pagination-controls>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>

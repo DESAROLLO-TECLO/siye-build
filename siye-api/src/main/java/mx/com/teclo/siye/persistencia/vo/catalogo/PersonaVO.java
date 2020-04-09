@@ -17,6 +17,7 @@ public class PersonaVO implements Serializable {
 	
 	private Integer idPersona;
 	private String nbPersona;
+	private String cdPersona;
 	private String nbPatPersona;
 	private String nbMatPersona;
 	private Integer idTipoPersona;
@@ -30,6 +31,13 @@ public class PersonaVO implements Serializable {
 	}
 	public String getNbPersona() {
 		return nbPersona;
+	}
+	
+	public String getCdPersona() {
+		return cdPersona;
+	}
+	public void setCdPersona(String cdPersona) {
+		this.cdPersona = cdPersona;
 	}
 	public void setNbPersona(String nbPersona) {
 		this.nbPersona = nbPersona;

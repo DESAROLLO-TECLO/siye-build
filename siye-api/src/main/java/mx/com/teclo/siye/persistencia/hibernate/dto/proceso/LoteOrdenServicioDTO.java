@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import mx.com.teclo.siye.persistencia.hibernate.dto.async.TipoLayoutDTO;
+
 @Entity
 @Table(name = "TIE025D_IE_LOTE_ODS")
 public class LoteOrdenServicioDTO implements Serializable {
@@ -44,6 +46,9 @@ public class LoteOrdenServicioDTO implements Serializable {
 	private Long nuOdsIncidencia;
 	@Column(name = "TX_LOTE_ODS")
 	private String txLoteOds;
+	@JoinColumn(name = "ID_TIPO_LAYOUT", referencedColumnName = "ID_TIPO_LAYOUT")
+	@ManyToOne(optional = true, fetch = FetchType.LAZY)
+	private TipoLayoutDTO idTipoLayout;	
 	@Column(name = "ST_ACTIVO")
 	private Boolean stActivo;
 	@Column(name = "ID_USR_CREACION")
@@ -133,6 +138,14 @@ public class LoteOrdenServicioDTO implements Serializable {
 
 	public void setTxLoteOds(String txLoteOds) {
 		this.txLoteOds = txLoteOds;
+	}
+
+	public TipoLayoutDTO getIdTipoLayout() {
+		return idTipoLayout;
+	}
+
+	public void setIdTipoLayout(TipoLayoutDTO layoutVigenteDTO) {
+		this.idTipoLayout = layoutVigenteDTO;
 	}
 
 	public Boolean getStActivo() {

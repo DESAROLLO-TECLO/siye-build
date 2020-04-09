@@ -1,5 +1,9 @@
-angular.module(appTeclo).controller('mensajeModalGenericoController', function($scope, $element, idTipo,saveService,consultService, nameSaveEmpServ,nameConsultEmpServ, close,growl,showAlert,catalogoGenericoService) {
-	
+angular.module(appTeclo).controller('mensajeModalGenericoController', function($scope, $element,nameModal, idTipo,saveService,consultService, nameSaveEmpServ,nameConsultEmpServ, close,growl,showAlert,catalogoGenericoService) {
+	$scope.flagCdUsuario=false;
+	$scope.nameModal=nameModal;
+	$scope.flagBtnGuardar=false;
+	$scope.flagDisableInput=false;
+	$scope.objeto=new Object();
 	$scope.operacion = function(result,objeto,formObject){
 		if (idTipo!=null && objeto!=null) {objeto.idTipoPersona=idTipo};
 		$scope.message=$scope.message;
@@ -21,24 +25,56 @@ angular.module(appTeclo).controller('mensajeModalGenericoController', function($
 					$('.modal-backdrop').remove();
 					close(newData,100);
 				}else{
-					consultService[nameConsultEmpServ](idTipo).success(function (data) {
-						newData.newList=data;
-						newData.existe=false;
-						growl.success("Se guardo registro");
-						$('.modal-backdrop').remove();
-						close(newData,100);
-						    }).error(function (data) {
-						    	growl.error(data.message);
-						    });
-				}
-			
+				consultService[nameConsultEmpServ](idTipo).success(function (data) {
+					newData.newList=data;
+					newData.existe=false;
+					growl.success("Se guardo registro con Folio:"+newData.newObject.cdPersona,{ ttl: 8000 });
+					$('.modal-backdrop').remove();
+					close(newData,100);
+					}).error(function (data) {
+					growl.error(data.message);
+					});
+						}
 			}).error(function(data){
 				growl.error(data.message);
 			});
 		}else{
 			$('.modal-backdrop').remove();
-			close(null,100);
-			}
+			close(null,100);}
 			}
 		}
+	//Buscar Usuario
+	$scope.buscarPersona=function(formBusq,cdPersona){
+		if (formBusq.$invalid) {
+			showAlert.requiredFields(formBusq);
+			growl.error('Codigo Requerido');
+			}
+			else
+			consultService['buscarPersona'](cdPersona,idTipo).success(function (data) {
+				$scope.flagDisableInput=true;
+				$scope.objeto=data;
+				$scope.flagCdUsuario=$scope.objeto.existia;
+				$scope.flagBtnGuardar=true;
+				if ($scope.objeto.existia) 
+					growl.success("El Registro ya existe con este perfil",{ ttl: 5000 });		
+				else
+					growl.warning("El Registro ya existe con otro perfil",{ ttl: 5000 });
+				
+				}).error(function (data) {
+				growl.error(data.message);
+				$scope.objeto=new Object();
+				$scope.flagDisableInput=false;
+				$scope.flagBtnGuardar=false;
+			});	
+	};
+	$scope.aceptar=function(object){
+		var newData=new Object({
+		    existe:true,
+			newObject:object,
+			newList:new Array()
+		});
+		$('.modal-backdrop').remove();
+		close(newData,100);
+	};
+	
 });

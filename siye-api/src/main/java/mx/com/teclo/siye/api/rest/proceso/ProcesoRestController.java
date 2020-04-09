@@ -122,17 +122,10 @@ public class ProcesoRestController {
 	 
 	 @RequestMapping(value ="/buscaPlacaVehiculo", method=RequestMethod.GET)
 	 public ResponseEntity <VehiculoVO> consultaVehiculoPlaca(
-			 @RequestParam("placa") String placa) throws NotFoundException, BusinessException {
+			 @RequestParam("placa") String placa) throws NotFoundException {
 
-		 try	
-		 {	
 		 VehiculoVO vehiculoVO = vehiculoService.bucarVehiculoPlaca(placa);			
 		 return new ResponseEntity<VehiculoVO>(vehiculoVO,HttpStatus.OK);			
-		 }catch(Exception e)	
-		 {	
-			 e.printStackTrace();	
-			 throw new NotFoundException("Ha ocurrido un imprevisto!, por favor contacte al administrador.");	
-		 }
 	 }
 	 
 		@RequestMapping(value="/iniciarProceso", method = RequestMethod.GET)
@@ -147,22 +140,20 @@ public class ProcesoRestController {
 				throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
 			}		
 		}
+		
+		@RequestMapping(value="/avanzarEncuestaProceso", method = RequestMethod.GET)
+		public ResponseEntity<Boolean> avanzarEncuesta (
+			 @RequestParam(value="idOrdenServicio") long idOrdenServicio
+			) throws Exception, BusinessException, NotFoundException {
+			try {
+				Boolean correcto=procesoService.avanzarProcesoOrden(idOrdenServicio);;
+				return new ResponseEntity<Boolean>(correcto, HttpStatus.OK);
+			}catch (Exception e) {
+				e.printStackTrace();
+				throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
+			}		
+		}
 
-		
-		
-		@RequestMapping(value="/avanzarProceso", method = RequestMethod.GET)
-		public ResponseEntity<Boolean> avanzarProceso (
-				@RequestParam(value="idOrdenServicio") long idOrdenServicio,
-				@RequestParam(value="idProceso") long idProceso
-				) throws Exception, BusinessException, NotFoundException {
-				try {
-					Boolean correcto=procesoService.avanzarProcesoOrden(idOrdenServicio,idProceso);
-					return new ResponseEntity<Boolean>(correcto, HttpStatus.OK);
-				}catch (Exception e) {
-					e.printStackTrace();
-					throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
-				}		
-			}
 		
 		@RequestMapping(value="/finalizarProceso", method = RequestMethod.GET)
 		public ResponseEntity<Boolean> finalizarProceso (

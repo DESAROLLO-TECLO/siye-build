@@ -37,7 +37,7 @@ public class LayoutDTO implements Serializable {
 	private Short nuLongitudMin;
 
 	@Column(name = "NU_LONGITUD_MAX")
-	private String nuLongitudMax;
+	private Integer nuLongitudMax;
 
 	@Column(name = "ST_REQUERIDO")
 	private Boolean stRequerido;
@@ -120,12 +120,12 @@ public class LayoutDTO implements Serializable {
 	public void setNuLongitudMin(Short nuLongitudMin) {
 		this.nuLongitudMin = nuLongitudMin;
 	}
-
-	public String getNuLongitudMax() {
+	
+	public Integer getNuLongitudMax() {
 		return nuLongitudMax;
 	}
 
-	public void setNuLongitudMax(String nuLongitudMax) {
+	public void setNuLongitudMax(Integer nuLongitudMax) {
 		this.nuLongitudMax = nuLongitudMax;
 	}
 

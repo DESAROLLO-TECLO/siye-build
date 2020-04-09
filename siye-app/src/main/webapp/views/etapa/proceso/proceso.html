@@ -18,13 +18,8 @@
         </ol>
     </section>
 
-    <!-- botón flotante para agregar incidencia -->
-    <div class="btn-flotente-incidencia">
-        <button type="button" class="btn btn-warning">
-            <span class="glyphicon glyphicon-tags" aria-hidden="true"></span> 
-            <p>Incidencia</p>
-        </button>
-    </div>
+    <!-- Incidencia -->
+    <boton-incidencia id-orden="" id-proceso="" id-encuesta="" id-pregunta=""></boton-incidencia>
     
     <section class="content">
         <div class="row">
@@ -55,18 +50,21 @@
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-md-8">
-                                <div class="form-group" >
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-teclo" role="progressbar" 
-                                            aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" 
-                                            style="width: 60%;">
-                                          Pocentaje de Avance: 60%
+                            <!-- 
+                                <div class="col-md-8">
+                                    <div class="form-group" >
+                                        <div class="progress">
+                                            <div class="progress-bar progress-bar-teclo" role="progressbar" 
+                                                aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" 
+                                                style="width: 60%;">
+                                            Pocentaje de Avance: 60%
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
+                            -->
+                            
+                            <div class="col-md-12">
                                 <div style="float: right;">
                                     <a class="btn btn-primary" href="#" role="button">
                                         <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
@@ -79,7 +77,7 @@
                             <div class="col-sm-6 col-md-3" ng-repeat="item in dataEtapa">
                                 <div ng-if="item.idEncuesta.nbEncuesta != 'Satisfacción'">
                                     <a ng-class="{'inactiv-click' : item.stActivaMostrar == false}" 
-                                    href="#/etapas/proceso/encuesta/{{item.idEncuesta.idEncuesta}}/:0" 
+                                    href="#/etapas/proceso/encuesta/{{item.idEncuesta.idEncuesta}}/{{idOrdenServicio}}/{{idProcesoActual}}" 
                                     data-toggle="tooltip" data-placement="bottom" title="{{item.idEncuesta.txEncuesta}}" >
                                         <div class="dash-info" ng-class="{'color-fondo-contestado': item.stRespondida == true, 'color-fondo-desactivado': item.stActivaMostrar == false, 'color-fondo': item.stActivaMostrar == true}">
                                             <div class="dash-img">
@@ -101,7 +99,7 @@
                                         <div style="text-align: center;">
                                             <switcher class="swTeclo switcherEncTransp"
                                                 id-check="stEncuestaTransportista"
-                                                ng-model="stActivarEncuesta"
+                                                ng-model="item.stSatisfaccion"
                                                 ng-change="activarEncuesta(item.idEncuesta.idEncuesta)"
                                                 true-label="<i class='fa fa-check-circle'></i>"
                                                 true-value="1"

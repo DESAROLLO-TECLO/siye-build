@@ -3,6 +3,7 @@ package mx.com.teclo.siye.persistencia.hibernate.dao.async;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -51,13 +52,20 @@ public class LayoutDAOImpl extends BaseDaoHibernate<LayoutDTO> implements Layout
 
 		c.setProjection(Projections.projectionList().add(Projections.property("tbDestino.nbCampo").as("nbColumna"))
 				.add(Projections.property("layout.nuOrdenRegistro").as("nuOrden"))
-				.add(Projections.property("tbDestino.txValorDefecto").as("txValorDefecto")));
+				.add(Projections.property("layout.cdTipoDato").as("cdTipo"))
+				.add(Projections.property("tbDestino.txValorDefecto").as("txValorDefecto"))
+				.add(Projections.property("layout.nuLongitudMax").as("nuLongitudMax")));
 		c.addOrder(Order.asc("tbDestino.idTablaDestino"));
 
 		c.setResultTransformer(Transformers.aliasToBean(ColumnaVO.class));
 		return c.list();
 	}
 
-	
+	@Override
+	public Long ejecutarQueryConcatenado(String query) {
+		Query q = getCurrentSession().createSQLQuery(query);
+		Long id = (long) q.executeUpdate();
+		return id;
+	}
 
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.LongType;
@@ -132,6 +133,7 @@ public class PlanProcesoDAOImpl extends BaseDaoHibernate<PlanProcesoDTO> impleme
 		c.createAlias("plan", "plan");
 		c.add(Restrictions.eq("plan.idPlan", idPlan));
 		c.add(Restrictions.eq("stActivo", true));
+		c.addOrder(Order.asc("nuorden"));
 		return (List<PlanProcesoDTO>) c.list();
 	}
 

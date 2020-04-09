@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestasDTO;
+
 @Entity
 @Table(name = "TIE026D_IE_ORDEN_SERVICIOS")
 public class OrdenServicioDTO implements Serializable {
@@ -83,6 +85,13 @@ public class OrdenServicioDTO implements Serializable {
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_PROCESO_ACTUAL", referencedColumnName="ID_PROCESO")
 	private ProcesoDTO proceso;
+	
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name="ID_ENCUESTA_ACTUAL", referencedColumnName="ID_ENCUESTA")
+	private EncuestasDTO encuesta;
+	
+	@Column(name = "FH_ATENCION_PARCIAL")
+	private Date fhAtencionParcial;
 	
 	
 	
@@ -196,6 +205,20 @@ public class OrdenServicioDTO implements Serializable {
 	public void setProceso(ProcesoDTO proceso) {
 		this.proceso = proceso;
 	}
+	public EncuestasDTO getEncuesta() {
+		return encuesta;
+	}
+	public void setEncuesta(EncuestasDTO encuesta) {
+		this.encuesta = encuesta;
+	}
+	public Date getFhAtencionParcial() {
+		return fhAtencionParcial;
+	}
+	public void setFhAtencionParcial(Date fhAtencionParcial) {
+		this.fhAtencionParcial = fhAtencionParcial;
+	}
+	
+	
 	
 	
 

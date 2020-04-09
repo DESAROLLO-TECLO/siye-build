@@ -9,5 +9,7 @@ public interface PersonaTipoDAO extends BaseDao<PersonaTipoDTO>{
 	
 	public List<PersonaTipoDTO> getTecnicos(Integer idTipoPersona);
 	
+	public List<PersonaTipoDTO> getTecnicoByCd(String cdPersona);
+
 	public PersonaTipoDTO getTecnicosXIdPersonaYIdTipoPersona(Integer idPersona, Integer idTipoPersona);
 }

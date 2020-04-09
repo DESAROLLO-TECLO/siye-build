@@ -45,6 +45,7 @@ angular.module(appTeclo).directive('catalogoGenericoList', function($injector) {
     return {
         scope: {
         	idbtn:'=?',
+        	nameModal:'=?',
         	objectId:'=',
         	opcionSelec:'=?',
         	paramBusq:'=',
@@ -88,14 +89,17 @@ angular.module(appTeclo).directive('catalogoGenericoList', function($injector) {
     		*/
     		$(document).on('click', '#'+scope.idbtn, function() {
 				let serviceModal=$injector.get('ModalService');
-				abrirModal(paramBusqueda, serviceModal,saveService,consultService, nameSaveEmpServ,nameConsultEmpServ) 	
+				var nameModal=scope.nameModal==null?"":scope.nameModal;
+				abrirModal(nameModal,paramBusqueda, serviceModal,saveService,consultService, nameSaveEmpServ,nameConsultEmpServ) 	
     	    });
     		
-    	    function abrirModal(paramBusqueda, serviceModal,saveService,consultService, nameSaveEmpServ,nameConsultEmpServ){
+    	    function abrirModal(nameModal,paramBusqueda, serviceModal,saveService,consultService, nameSaveEmpServ,nameConsultEmpServ){
     	    	serviceModal['showModal']({
     	 			   templateUrl: 'views/templatemodal/templateModalGenerico.html',
     	 			   controller: 'mensajeModalGenericoController',
-    	 				   inputs:{ idTipo: paramBusqueda,
+    	 				   inputs:{
+    	 					  nameModal:nameModal,
+    	 					  idTipo: paramBusqueda,
     	 					  saveService:saveService,
     	 					  consultService:consultService,
     	 					  nameSaveEmpServ:nameSaveEmpServ,
@@ -109,7 +113,7 @@ angular.module(appTeclo).directive('catalogoGenericoList', function($injector) {
     					   if(datos.existe===false){
     						   scope.modelResult=datos.newList;
     					   }
-    					   $("#select2-"+nameContex+"-container").text(datos.newObject.nombre+" "+datos.newObject.aPaterno+" "+datos.newObject.aMaterno);
+    					   $("#select2-"+nameContex+"-container").text(datos.newObject.nombre+" "+datos.newObject.aPaterno+" "+datos.newObject.aMaterno+"("+datos.newObject.cdPersona+")");
     			    		if (!flagIdObject) 
     			    			scope.opcionSelec=datos.newObject.idPersona;
 								 else	
