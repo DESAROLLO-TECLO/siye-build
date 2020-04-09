@@ -71,5 +71,15 @@ public interface CatalogoService {
 	 *metodo para consultar el catalogo de fechas 
 	 * */
 	public List<CatTipoFechasVO> getCatTipoFechas();
+	
+
+	/**
+	 * @Descripción: Método para generar folio en base a parametro de configuracion
+	 * @author Manuel Dirsio
+	 * @return String
+	 */
+	
+	//ParametrosFolioDTO getParametroById(String cdParametro);
+	public String generaFolio(String cdParametro);
 
 }
