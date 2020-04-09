@@ -1,10 +1,11 @@
 angular.module(appTeclo)
 .controller("etapaController",
-function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, etapaInfo) {
+function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, etapaInfo,encuestaService) {
 
     $scope.fechaHoy = new Date();
     $scope.stValidarCheck = false;
     console.log(etapaInfo.data)
+
     
     if(etapaInfo != null){
         $rootScope.idOrSer = parseInt(etapaInfo.data[0].idOrdenServicio);
@@ -49,6 +50,7 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
         etapaService.getPlan(idPlan, idOrden).success(function(data){
             $scope.dataPlan = data;
             var dplength = $scope.dataPlan.length;
+            encuestaService.primerProceso=$scope.dataPlan[0].proceso.idProceso;
             for(var i = 0; i < dplength; i++){
                 switch($scope.dataPlan[i].proceso.cdProceso){
                     case 'INS':
