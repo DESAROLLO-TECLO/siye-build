@@ -1,5 +1,6 @@
 package mx.com.teclo.siye.negocio.service.async;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -172,12 +173,12 @@ public class LayoutServiceImpl implements LayoutService {
 
 		for (String nbTbl : tbls) {
 			InsercionTablaVO colsObj;
-			InsercionTablaVO valInsertVO = getNbsColumnas(nbTbl.trim());
+			InsercionTablaVO valInsertVO = getPatronValues(nbTbl.trim());
 			if (valInsertVO == null || StringUtils.isBlank(valInsertVO.getQuerySQL())) {
 				colsObj = new InsercionTablaVO(StringUtils.EMPTY, StringUtils.EMPTY);
 			} else {
 				colsObj = new InsercionTablaVO(
-						MessageFormat.format(MSG_INSERT_PATTERN, nbTbl, valInsertVO.getQuerySQL()), StringUtils.EMPTY);
+						MessageFormat.format(MSG_INSERT_PATTERN, nbTbl, valInsertVO.getQuerySQL(), valInsertVO.getValores()), StringUtils.EMPTY);
 			}
 			insertQueriesMap.put(nbTbl, colsObj);
 		}
@@ -252,6 +253,48 @@ public class LayoutServiceImpl implements LayoutService {
 			throw new BusinessException(MessageFormat.format(MSG_ERROR_LAYOUT_SECCION_INCOMPLETA,
 					SeccionLayoutEnum.FOOTER.getNbSeccion(), SeccionLayoutEnum.DETALLE.getNbSeccion()));
 		}
+
+	}
+	
+	private InsercionTablaVO getPatronValues(String tabla) {
+
+		List<ColumnaVO> cols = layoutDAO.getNbsColumnas(tabla);
+		if (cols == null || cols.isEmpty()) {
+			return null;
+		}
+		InsercionTablaVO insertVO = new InsercionTablaVO();
+
+		StringBuilder sbCols = new StringBuilder();
+		StringBuilder sbVals = new StringBuilder();
+		for (ColumnaVO col : cols) {
+			sbCols.append(CARACTER_COMA).append(col.getNbColumna());
+			sbVals.append(CARACTER_COMA).append(concatenarComillaSimpleEnValorSQL(col));
+		}
+
+		insertVO.setColumnas(sbCols.toString().replaceFirst(CARACTER_COMA, ""));
+		insertVO.setValores(sbVals.toString().replaceFirst(CARACTER_COMA, ""));
+		return insertVO;
+	}
+	
+	/**
+	 * Concatena los valores predeterminados a insertar o indica la columna del
+	 * archivo lote a insertar
+	 * 
+	 * @param col
+	 * @return
+	 */
+	private String concatenarComillaSimpleEnValorSQL(ColumnaVO col) {
+		String colValor = "";
+		if (col.getNuOrden() == null || col.getNuOrden() == BigDecimal.ZERO.longValue()) {
+			colValor = StringUtils.isBlank(col.getTxValorDefecto()) ? "null" : col.getTxValorDefecto();
+		} else {
+			if (col.getCdTipo().equals("String")) {
+				colValor = "''{" + col.getNuOrden() + "}''";
+			} else {
+				colValor = "{" + col.getNuOrden() + "}";
+			}
+		}
+		return colValor;
 
 	}
 
