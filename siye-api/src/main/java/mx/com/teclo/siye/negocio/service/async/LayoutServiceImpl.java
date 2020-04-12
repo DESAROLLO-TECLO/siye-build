@@ -117,7 +117,6 @@ public class LayoutServiceImpl implements LayoutService {
 	}
 
 	@Override
-	@Transactional
 	public ConfigCargaMasivaVO getConfigCargaMasiva(Long idArchivoLote) throws BusinessException {
 		ConfigCargaMasivaVO cargaMasivaVO = new ConfigCargaMasivaVO();
 
@@ -173,7 +172,7 @@ public class LayoutServiceImpl implements LayoutService {
 
 		for (String nbTbl : tbls) {
 			InsercionTablaVO colsObj;
-			InsercionTablaVO valInsertVO = getNbsColumnas(nbTbl);
+			InsercionTablaVO valInsertVO = getNbsColumnas(nbTbl.trim());
 			if (valInsertVO == null || StringUtils.isBlank(valInsertVO.getQuerySQL())) {
 				colsObj = new InsercionTablaVO(StringUtils.EMPTY, StringUtils.EMPTY);
 			} else {

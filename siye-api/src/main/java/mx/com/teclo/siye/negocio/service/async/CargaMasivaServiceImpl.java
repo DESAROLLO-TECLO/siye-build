@@ -33,6 +33,7 @@ import mx.com.teclo.siye.persistencia.vo.async.ConfigCargaMasivaVO;
 import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
 import mx.com.teclo.siye.util.enumerados.ArchivoSeguimientoEnum;
 import mx.com.teclo.siye.util.enumerados.SeccionLayoutEnum;
+import mx.com.teclo.siye.util.enumerados.TipoDirectorioStorageEnum;
 
 @Service
 public class CargaMasivaServiceImpl implements CargaMasivaService {
@@ -40,7 +41,10 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	private static final String STRING_PATTERN_INSERT = "INSERT INTO ";
 	private static final String MSG_ERROR_QUERY_INVALIDO = "El comando es inseguro para su ejecucion";
 	private static final String MSG_ERROR_INSERCION_INCOMPLETA = "Fallaron inserts de la linea {0}";
-	private static final String MSG_INICIO_PROCESAMIENTO_LINEAS = "PROCESANDO LINEAS ARCHIVO {0}";
+	private static final String MSG_INICIANDO_CARGA_MASIVA = "Iniciando carga masiva del arhivo {0}";
+	private static final String MSG_LEYENDO_ARCHIVO_LOTE = "Leyendo el archivo {0} para procesar lineas";
+	private static final String MSG_ACCEDIENDO_A_LA_RUTA = "Accediendo a la ruta  {0}";
+	private static final String MSG_INICIO_PROCESAMIENTO_LINEAS_FALLIDO = "No fue posible iniciar el proceso del archivo {0}";
 
 	@Autowired
 	private LayoutDAO layoutDAO;
@@ -50,24 +54,27 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	private LoteOrdenServicioDAO loteDAO;
 	@Autowired
 	private StSeguimientoDAO seguimientoDAO;
-
 	@Autowired
 	private LayoutService layoutService;
+	@Autowired
+	private FileStorageService fileStorageService;
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	@Async
+	@Transactional
 	public void procesarLineas(ConfigCargaMasivaVO config) throws BusinessException {
-		LOGGER.info(MessageFormat.format(MSG_INICIO_PROCESAMIENTO_LINEAS, config.getConfigLote().getIdLoteOds()));
-		LOGGER.info(config.getConfigLote().getNbLoteOds());
-		String ruta = "C:\\file\\ort\\"+config.getConfigLote().getNbLoteOds();
-		LOGGER.info(ruta);
-		try {
-			File file = new File(ruta);
-			final int primeraLinea = BigDecimal.ONE.intValue();
-			final int ultimaLinea = countLines(file);
+		LOGGER.info(MessageFormat.format(MSG_LEYENDO_ARCHIVO_LOTE, config.getConfigLote().getIdLoteOds()));
 
-			File fileResultado = new File("C:\\file\\ods" + config.getConfigLote().getNbLoteOds());
+		String rutaRecibido = config.getConfigLote().getNbLoteOds();
+		String rutaEntregado = rutaRecibido.replace(TipoDirectorioStorageEnum.INPUT.getCdTipo(),
+				TipoDirectorioStorageEnum.OUTPUT.getCdTipo());
+
+		LOGGER.info("RUTA RECIBIDO --------" + rutaRecibido);
+		LOGGER.info("RUTA ENTREGADO --------" + rutaEntregado);
+		try {
+
+			File file = new File(rutaRecibido);
+			File fileResultado = new File(rutaEntregado);
 			FileReader fr = new FileReader(file);
 			FileWriter fw = new FileWriter(fileResultado);
 
@@ -76,24 +83,9 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 
 			String linea;
 
-			boolean isConHeader = isConSeccionTipo(config, SeccionLayoutEnum.HEADER);
-			boolean isConPie = isConSeccionTipo(config, SeccionLayoutEnum.FOOTER);
-
 			while ((linea = reader.readLine()) != null) {
-				if ((isConHeader && reader.getLineNumber() == primeraLinea)
-						|| (isConPie && reader.getLineNumber() == ultimaLinea)) {
-					bw.write("ID," + linea);
-					bw.newLine();
-				} else {
-					Long idOrdenServicio;
-					try {
-						idOrdenServicio = insertarEnTablas(config, linea);
-					} catch (HibernateException | BusinessException e) {
-						idOrdenServicio = BigDecimal.ZERO.longValue();
-					}
-					bw.write(idOrdenServicio.toString() + "," + linea);
-					bw.newLine();
-				}
+				bw.write(linea);
+				bw.newLine();
 
 			}
 			bw.flush();
@@ -162,21 +154,22 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	}
 
 	@Override
+	@Async
 	@Transactional
 	public void iniciarCargaMasiva(Long idArchivoLote) throws BusinessException {
+		LOGGER.info(MessageFormat.format(MSG_INICIANDO_CARGA_MASIVA, idArchivoLote));
 		LoteOrdenServicioDTO loteDTO = loteDAO.findOne(idArchivoLote);
-		
 		Long lineas = BigDecimal.ZERO.longValue();
 		try {
-			lineas = (long) countLines(new File("C:\\file\\ort\\" + loteDTO.getNbLoteOds()));
-		}catch (IOException e) {
-			lineas--; 
+			lineas = (long) countLines(new File(loteDTO.getNbLoteOds()));
+		} catch (IOException e) {
+			lineas--;
 		}
 		TipoLayoutVO layoutVigente = tipoLayoutDAO.getLayoutVigente();
 		if (layoutVigente == null) {
 			throw new BusinessException(LayoutServiceImpl.MSG_LAYOUT_VIGENTE_NULO);
 		}
-		
+
 		TipoLayoutDTO layoutVigenteDTO = tipoLayoutDAO.findOne(layoutVigente.getIdTipoLayout());
 		StSeguimientoDTO seguimientoDTO = seguimientoDAO.findOne(ArchivoSeguimientoEnum.CARGANDO.getIdArchivoSeg());
 
@@ -185,6 +178,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		loteDTO.setFhModificacion(new Date());
 		loteDTO.setNuOdsReportados(lineas);
 		loteDAO.update(loteDTO);
+		loteDAO.flush();
 	}
 
 }
