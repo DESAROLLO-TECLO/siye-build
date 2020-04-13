@@ -1,6 +1,6 @@
 package mx.com.teclo.siye.persistencia.vo.proceso;
 
-
+import java.util.Date;
 
 public class OrdenServicioProcesoVO {
 	
@@ -11,6 +11,8 @@ public class OrdenServicioProcesoVO {
     private CentroInstalacionProcesoVO centroInstalacion;
     private KitInstalacionProcesoVO kitInstalacion;
     private PlanVO plan;
+    private Date fhAtencionIni;
+    private Date fhAtencionFin;
     
 	public Long getIdOrdenServicio() {
 		return idOrdenServicio;
@@ -54,6 +56,19 @@ public class OrdenServicioProcesoVO {
 	public void setPlan(PlanVO plan) {
 		this.plan = plan;
 	}
+	public Date getFhAtencionIni() {
+		return fhAtencionIni;
+	}
+	public void setFhAtencionIni(Date fhAtencionIni) {
+		this.fhAtencionIni = fhAtencionIni;
+	}
+	public Date getFhAtencionFin() {
+		return fhAtencionFin;
+	}
+	public void setFhAtencionFin(Date fhAtencionFin) {
+		this.fhAtencionFin = fhAtencionFin;
+	}
+	
     
 	
     

@@ -55,3 +55,8 @@
 .add-img-img{
     width: 100%;
 }
+
+button.btn.dropdown-toggle.btn-default:hover{
+    color: #55565a;
+    font-weight: bold;
+}
