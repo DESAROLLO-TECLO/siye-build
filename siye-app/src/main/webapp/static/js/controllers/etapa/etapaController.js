@@ -4,8 +4,22 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
 
     $scope.fechaHoy = new Date();
     $scope.stValidarCheck = false;
+<<<<<<< HEAD
+
+    $scope.numMaxImg = 3;
+    $scope.listImages = [];
+    $scope.paramEtapaImg = new Object({
+        idOrdenServ: etapaInfo.data[0].idOrdenServicio,
+        cdOrdenServicio: etapaInfo.data[0].cdOrdenServicio
+    });
+    $scope.paramConfigImg = new Object({
+        maxSizeMb: 1,
+        title: "Agregar Evidencia por Etapa"
+    });
+=======
     console.log(etapaInfo.data)
 
+>>>>>>> 8fed4b4ca822b4d8f7e878e3f78ebec16a51da7a
     
     if(etapaInfo != null){
         $rootScope.idOrSer = parseInt(etapaInfo.data[0].idOrdenServicio);
@@ -67,7 +81,6 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
                         break;
                 }
             }
-            console.log($scope.dataPlan)
         }).error(function(error){
             console.log(error);
         });

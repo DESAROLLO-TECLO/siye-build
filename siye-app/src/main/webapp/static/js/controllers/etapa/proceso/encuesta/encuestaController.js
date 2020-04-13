@@ -7,8 +7,6 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     $scope.nombSeccion = encuestaInfo.data.encuesta.secciones[0].nbSeccion;
     $scope.seccEncuesta = encuestaInfo.data.encuesta.secciones[0];
 
-    console.log($scope.seccEncuesta);
-
     $scope.objOpciones = new Object(
         {val:1,nom:'Opción 1'},
         {val:2,nom:'Opción 2'},
@@ -21,7 +19,6 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
         {val:9,nom:'Opción 9'},
         {val:10,nom:'Opción 10'}
     );
-	
 	
 	$scope.paramConfigPage = {
             bigCurrentPage: 1,
@@ -55,8 +52,6 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
 	
 
     $scope.preguntasContestadasEncuesta = 0;
-
-	
  
 	$scope.getNumPreguntasPorSeccion=function(cdParametro){
 		encuestaService.getNumPreguntasPorSeccion(cdParametro).success(function(data) {
@@ -108,8 +103,6 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
  				$scope.cambiarPregunta(null,$scope.encuestaDetalle.encuesta.secciones[0]);
 				//$scope.iniciarConteo();
             	 }
-             
-             
 
          } else {
              growl.warning("Sin evaluaciones por asignar", { ttl: 5000 });
@@ -479,13 +472,17 @@ $scope.cargarCausas=function(opciones,respuesta)
 {
 	if(opciones.cdMostrarCausas)
 	{
-	filtroCausas(opciones,respuesta,true);
+	    filtroCausas(opciones,respuesta,true);
 	
 	}
 
-
 }
 
+<<<<<<< HEAD
+    $scope.getNumPreguntasPorSeccion('TIE019P_NU_PAGINACION');
+    $scope.getNumMaxPaginacion('TIE019P_NU_MAX_PAG');
+    $scope.getEncuestaOrden(encuestaInfo);
+=======
 iniciarProceso=function(statusEncuesta,idEncuesta,idOrdenServicio)
 {
 	if(statusEncuesta=="NI" && $scope.idProcesoActual==encuestaService.primerProceso
@@ -512,6 +509,7 @@ iniciarProceso=function(statusEncuesta,idEncuesta,idOrdenServicio)
     $scope.getNumMaxPaginacion('TIE019P_NU_MAX_PAG');
     $scope.getEncuestaOrden(encuestaInfo);
     iniciarProceso(encuestaInfo.data.intentoDetalleVO.stEncuesta.cdStEncuesta,encuestaInfo.data.encuesta.idEncuesta,encuestaInfo.data.usuario.idOrdenServicio);
+>>>>>>> 8fed4b4ca822b4d8f7e878e3f78ebec16a51da7a
     
 });
 

@@ -1,6 +1,7 @@
 angular.module(appTeclo).controller("encuestaSatisfaccionController",
-function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,showAlert,growl, $location,encuestaSatisfaccionService) {
+function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,showAlert,growl, $location,encuestaSatisfaccionService,encuestaService) {
 	$scope.banderaPantalla=false;
+	$scope.causas="";
 	$scope.formato = '0';
 	$scope.encuesta={};
 	var idIntento=undefined;
@@ -180,8 +181,82 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 				respuesta.stMarcado=1;
 			}
 		}	
+		
+		
+		if(opcion.cdMostrarCausas)
+		{
+		filtroCausas(opcion,respuesta,false);
+		}
+		if(!opcion.cdMostrarCausas)
+			{
+			for (let i in respuesta.opciones) {
+				respuesta.opciones[i].causas=null;
+		      }
+			}
+
 	};
 	
+	filtroCausas = function(opcion,respuestas,cargarPreviamente){
+		$scope.opcionElejida=opcion;
+		$scope.respuestaActual=respuestas;
+		$scope.comboCausasList=[];
+		$scope.opcionMarcadaRespuesta=opcion;
+		encuestaService.comboCausas($scope.opcionMarcadaRespuesta.idOpcion).success(function(datos) {
+		 for (let i in datos) {
+				$scope.comboCausasList.push(datos[i].causas);
+			}	
+		 if(cargarPreviamente)
+			 {
+		 $scope.causas=opcion.causas.split(",").map(function(item) {
+			    return parseInt(item, 10);
+		
+		 })
+		 $scope.changeComboCausa();
+			 }
+					
+	}).error(function(datos) {
+	        $scope.error = datos;
+	    $scope.datos = {};
+	    });
+	}
+
+	$scope.guardarCausa=function(form){
+	    if (form.$invalid) {
+	    	showAlert.requiredFields(form);
+			growl.error('Formulario Incompleto');
+	    }else{
+	    	for(let a in $scope.seccionVO.preguntas){
+	    		if ($scope.seccionVO.preguntas[a].idPregunta==$scope.respuestaActual.idPregunta){
+	    	    	for (let i in $scope.seccionVO.preguntas[a].opciones){
+	    	    		if ($scope.seccionVO.preguntas[a].opciones[i].idOpcion==$scope.opcionElejida.idOpcion) {
+	    	    			$scope.seccionVO.preguntas[a].opciones[i].causas=$scope.causas.toString();
+	    	    			}
+	    				}
+	    			}
+	    		}
+	    	$("#myModal").modal('hide');//ocultamos el modal
+	    	}
+	};
+
+	$scope.changeComboCausa=function(causas){
+		$scope.causas=causas==null?$scope.causas:causas;
+		var listCausas =  $scope.causas;
+		$scope.nbCausa= [];
+		for(var x in listCausas ){
+		if(!isNaN(x)){
+		for(var y in $scope.comboCausasList ){
+			if(listCausas[x]==$scope.comboCausasList[y].idCausa){
+				$scope.nbCausa[x]=$scope.comboCausasList[y].nbCausa;
+					}
+				}
+			}
+		}
+	};
+
+	$scope.cargarCausas=function(opciones,respuesta){
+		if(opciones.cdMostrarCausas){
+		filtroCausas(opciones,respuesta,true);}
+	}
 	// CAMBIAR PREGUNTA
 	$scope.cambiarPregunta = function(nuPagina, seccionVO, instruccion) {
 		var guardarSeccion = false;
@@ -362,7 +437,8 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
                 idSeccion: angular.copy(seccionVO.idSeccion),
                 idPregunta: undefined,
                 idOpcion: undefined,
-                idIntento: idIntento
+                idIntento: idIntento,
+                causas: undefined
             });
 
             objectEncuesta.idPregunta = listPreguntaSeccion[i].idPregunta;
@@ -370,6 +446,7 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
                 if (listPreguntaSeccion[i].opciones[j].stMarcado === 1) {
                     guardar = true
                     objectEncuesta.idOpcion = listPreguntaSeccion[i].opciones[j].idOpcion != undefined ? listPreguntaSeccion[i].opciones[j].idOpcion : 0;
+                    objectEncuesta.causas=listPreguntaSeccion[i].opciones[j].causas;
                 }
             }
             if (guardar) {

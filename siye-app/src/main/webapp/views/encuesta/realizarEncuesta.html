@@ -115,7 +115,7 @@
 		</div>
 	</div>
 </div>
-<form name="formStepTwo" novalidate>
+<form name="evaluacion" novalidate>
 	<div class="col-md-2 col-xs-2 center-vert center" style="margin-top: 2%;">
 		<div ng-repeat="seccion in encuesta.secciones">
 			<div class="btn-group-vertical w-100" role="group">
@@ -207,22 +207,40 @@
 							id="{{respuesta.idPregunta}}" class="sin-seleccionar"
 							ng-class="{'seleccionado': respuesta.stMarcado==1}">
 
-							<td ng-class="{ 'has-error' : formStepTwo.{{'valueOption'+$index}}.$invalid && formStepTwo.{{'customValue'+$index}}.$dirty}">
+							<td ng-class="{ 'has-error' : evaluacion.{{'valueOption'+$index}}.$invalid && evaluacion.{{'customValue'+$index}}.$dirty}">
 								<span class="text-15">{{respuesta.txPregunta}}</span>
 								<ul>
 									<li
 										style="list-style: none; margin-top: 1%; margin-bottom: 2%;"
 										ng-repeat="opciones in respuesta.opciones">
-										<div>
-											<label class="content-input"> <input type="radio"
-												name="{{respuesta.txPregunta}}" id="{{opciones.idOpcion}}"
-												ng-value=1
-												ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
-												ng-model="opciones.stMarcado"
-												ng-checked="opciones.stMarcado">
-												{{opciones.txOpcion}} <i></i>
-											</label>
-										</div>
+										
+																				<div ng-if="!opciones.cdMostrarCausas" style="display: inline-block;">
+																								<label class="content-input"> <input
+																									type="radio" name="{{respuesta.txPregunta}}"
+																									id="{{opciones.idOpcion}}" ng-value=1
+																									ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
+																									ng-model="opciones.stMarcado"
+																									ng-checked="opciones.stMarcado">
+																									{{opciones.txOpcion}} <i></i>
+																								</label>
+																							</div>
+																							<div ng-if="opciones.cdMostrarCausas" style="display: inline-block;">
+																								<label class="content-input"> <input
+																									type="radio" name="{{respuesta.txPregunta}}"
+																									id="{{opciones.idOpcion}}" ng-value=1
+																									ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
+																									ng-model="opciones.stMarcado"
+																									ng-checked="opciones.stMarcado"
+																									data-toggle="modal" data-target="#myModal">
+																									{{opciones.txOpcion}} <i></i>
+																								</label>
+																							</div>
+																							<div ng-if="opciones.causas" style="display: inline-block;">
+																								<button type="button" class="btn btn-primary"
+																									data-toggle="modal" data-target="#myModal"
+																									ng-click="cargarCausas(opciones,respuesta)">
+																									Ver Detalle</button>
+																							</div>
 									</li>
 								</ul>
 							</td>
@@ -302,4 +320,68 @@
 <!-- 			</a> -->
 <!-- 		</div> -->
 <!-- 	</div> -->
+<!-- Modal -->
+												<div class="modal fade" id="myModal" tabindex="-1"
+													data-keyboard="false" data-backdrop="static" role="dialog"
+													aria-labelledby="myModalLabel">
+													<div class="modal-dialog" role="document">
+														<div class="modal-content">
+															<div class="modal-header">
+																<button type="button" class="close" data-dismiss="modal"
+																	aria-label="Close">
+																	<span aria-hidden="true">&times;</span>
+																</button>
+																<h4 class="modal-title" id="myModalLabel">
+																	Justificación
+																</h4>
+															</div>
+															<div class="modal-body">
+
+																<div class="row">
+																	<div class="col-md-12">
+																		<div class="form-group"
+																			ng-class="{'has-error': evaluacion.causa.$invalid && evaluacion.causa.$dirty}">
+																			<label> *Causas: </label>
+																			<div class="input-group">
+																				<div class="input-group-addon">
+																					<i class="fa fa-list-alt"></i>
+																				</div>
+
+																				<select class="form-control" select-picker multiple
+																					idioma-sp="{{currentLanguage}}"
+																					data-actions-box="true"
+																					data-selected-text-format="count > 2"
+																					ng-required="true" data-max-options="5"
+																					ng-model="causas" name="causa" id="causa"
+																					ng-change="changeComboCausa(causas)"
+																					ng-options="sp.idCausa as sp.nbCausa for sp in comboCausasList">
+
+																				</select>
+																			</div>
+																			<div ng-show="evaluacion.causa.$error.required && evaluacion.causa.$dirty"
+																				ng-style="{color:'red'}">
+																				Es necesario ingresar por lo menos una causa
+																			</div>
+																			
+																		</div>
+																	</div>
+																	<div class="col-md-12">
+																		<textarea class="form-control" rows="2"
+																			ng-disabled="true" style="resize: none;">{{nbCausa+""}}</textarea>
+																	</div>
+																	<div class="col-md-12">
+																		<label> *Descripción: </label>
+																		<textarea class="form-control" rows="4"></textarea>
+																	</div>
+																</div>
+															</div>
+															<div class="modal-footer">
+																<!--  <button type="button" class="btn btn-default"
+																	data-dismiss="modal">Salir sin guardar</button>-->
+																<button type="button" class="btn btn-primary"
+																	ng-click="guardarCausa(evaluacion)">Guardar</button>
+															</div>
+														</div>
+													</div>
+												</div>
 </form>
