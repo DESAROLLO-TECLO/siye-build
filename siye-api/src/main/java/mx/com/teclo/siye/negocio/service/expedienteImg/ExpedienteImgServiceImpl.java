@@ -439,6 +439,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 	@Override
 	@Transactional
 	public Boolean saveImagenIncidencia(List<ImagenVO> listImagenVO, IncidenciaDTO incidenciaDTO) {
+		Boolean respuesta = false;
 		for(ImagenVO imagenVO : listImagenVO){
 			if (imagenVO != null) {
 				if (imagenVO.getLbExpedienteODS() != null && imagenVO.getNbExpedienteODS() != null && imagenVO.getNbExpedienteODS() != "" &&
@@ -458,14 +459,14 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 					incidencia.setIdUsrModifica(usuario.getId());
 					try {
 						expedienteImgDAO.save(incidencia);
-						return true;
+						respuesta = true;
 					} catch (Exception e) {
 						return false;
 					}
 				}
 			}
 		}
-		return true;
+		return respuesta;
 	}
 
 }
