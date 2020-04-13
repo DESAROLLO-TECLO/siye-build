@@ -132,6 +132,9 @@ public class EncuestaServiceImpl implements EncuestaService {
 				idVO.setStEncuesta(steVO);
 				//idVO.setNuMinConsumidos(ueiDTO.getNuMinConsumidos());
 				idVO.setIdUsuEncuIntento(ueiDTO.getIdUsuEncuIntento());
+				//se agrega fecha inicio, fecha fin
+				idVO.setFhInicio(ueiDTO.getFhInicio());
+				idVO.setFhFin(ueiDTO.getFhFin());
 			}
 			List<UsuaroEncuestaRespuestaDTO> uerListDTO = usuarioEncuestaRespuestaDAO.repuestas(ueiDTO.getIdUsuEncuIntento());
 			List<UsuarioEncuestaRespuestaVO> uerListVO = detalleIntentoService.fitroUsuarioRespuesta(uerListDTO);

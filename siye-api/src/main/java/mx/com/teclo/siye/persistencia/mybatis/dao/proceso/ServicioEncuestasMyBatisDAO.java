@@ -1,8 +1,11 @@
 package mx.com.teclo.siye.persistencia.mybatis.dao.proceso;
 
+import java.util.Date;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.exceptions.PersistenceException;
 
@@ -26,6 +29,23 @@ public interface ServicioEncuestasMyBatisDAO {
 	String FINALIZAR_PROCESO = "UPDATE TIE065D_ODS_PROCESOS SET FH_FIN_PROCESO=SYSDATE "
 			+ "WHERE ID_ORDEN_SERVICIO=#{idSolicitud} AND ID_PROCESO=#{idProceso}";
 	
+	String CONSULTA_FECHAINICIAL = "SELECT FH_INI_PROCESO FROM TIE065D_ODS_PROCESOS "
+			+"WHERE ID_PROCESO=#{idProceso} AND ID_ORDEN_SERVICIO=#{idSolicitud}";
+	
+	String CONSULTA_FECHAFINAL = "SELECT FH_FIN_PROCESO FROM TIE065D_ODS_PROCESOS "
+			+"WHERE ID_PROCESO=#{idProceso} AND ID_ORDEN_SERVICIO=#{idSolicitud}";
+	
+	String CONSULTA_FECHAINICIALENCUESTA = "SELECT FH_INICIO FROM TIE006D_EE_USU_ENCU_INTEN "
+			+"WHERE ID_ODS_ENCUESTA=#{idOdsEncuesta}";
+	
+	String CONSULTA_FECHAFINALENCUESTA = "SELECT FH_FIN FROM TIE006D_EE_USU_ENCU_INTEN "
+			+"WHERE ID_ODS_ENCUESTA=#{idOdsEncuesta}";
+	
+	
+	
+	
+	
+	
 	
 	
 	@Insert(INSERTAR_TRAMITE)
@@ -43,5 +63,20 @@ public interface ServicioEncuestasMyBatisDAO {
 	@Update(FINALIZAR_PROCESO)
 	public Boolean finalizarProceso(@Param("idSolicitud") Long idSolicitud, 
 			@Param("idProceso") Long idProceso);
+	
+	@Select(CONSULTA_FECHAINICIAL)
+	public Date getFechaInicioProceso(@Param("idProceso") Long idProceso,
+			@Param("idSolicitud") Long idSolicitud);
+	
+	@Select(CONSULTA_FECHAFINAL)
+	public Date getFechaFinProceso(@Param("idProceso") Long idProceso,
+			@Param("idSolicitud") Long idSolicitud);
+	
+	
+	@Select(CONSULTA_FECHAINICIALENCUESTA)
+	public Date getFechaInicioEncuesta(@Param("idOdsEncuesta") Long idOdsEncuesta);
+	
+	@Select(CONSULTA_FECHAFINALENCUESTA)
+	public Date getFechaFinEncuesta(@Param("idOdsEncuesta") Long idOdsEncuesta);
 
 }
