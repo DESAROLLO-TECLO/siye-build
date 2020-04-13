@@ -14,6 +14,9 @@ public class OrdenServicioProcesoVO {
     private Date fhAtencionIni;
     private Date fhAtencionFin;
     
+    private Date fhCita;
+    private Long numMaxImagenes;
+    
 	public Long getIdOrdenServicio() {
 		return idOrdenServicio;
 	}
@@ -68,6 +71,20 @@ public class OrdenServicioProcesoVO {
 	public void setFhAtencionFin(Date fhAtencionFin) {
 		this.fhAtencionFin = fhAtencionFin;
 	}
+	public Date getFhCita() {
+		return fhCita;
+	}
+	public void setFhCita(Date fhCita) {
+		this.fhCita = fhCita;
+	}
+	public Long getNumMaxImagenes() {
+		return numMaxImagenes;
+	}
+	public void setNumMaxImagenes(Long numMaxImagenes) {
+		this.numMaxImagenes = numMaxImagenes;
+	}
+	
+	
 	
     
 	
