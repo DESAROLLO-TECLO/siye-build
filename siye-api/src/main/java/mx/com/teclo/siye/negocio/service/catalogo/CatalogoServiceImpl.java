@@ -376,5 +376,30 @@ public class CatalogoServiceImpl implements CatalogoService{
 		}
 		return folioGenerado;
 	}
+	
+	@Transactional
+	@Override
+	public List<ConfiguracionVO> configuracionIncidencia(String cdLlavePConfig1, String cdLlavePConfig2) throws NotFoundException{
+		ConfiguracionVO voReturn1 = null;
+		ConfiguracionVO voReturn2 = null;
+		ConfiguracionDTO a1 =  configuracionDAO.configuracion(cdLlavePConfig1);
+		if(a1 == null)
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		
+		ConfiguracionDTO a2 =  configuracionDAO.configuracion(cdLlavePConfig2);
+		if(a2 == null)
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		
+	
+		voReturn1 = new ConfiguracionVO();
+		ResponseConverter.copiarPropriedades(voReturn1, a1);
+		voReturn2 = new ConfiguracionVO();
+		ResponseConverter.copiarPropriedades(voReturn2, a2);
+		
+		List<ConfiguracionVO> listConfiguracionVO = new ArrayList<ConfiguracionVO>();
+		listConfiguracionVO.add(voReturn1);
+		listConfiguracionVO.add(voReturn2);
+		return listConfiguracionVO;
+	}
 
 }
