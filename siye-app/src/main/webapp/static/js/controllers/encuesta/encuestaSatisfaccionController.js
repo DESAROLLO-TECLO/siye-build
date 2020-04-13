@@ -437,7 +437,8 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
                 idSeccion: angular.copy(seccionVO.idSeccion),
                 idPregunta: undefined,
                 idOpcion: undefined,
-                idIntento: idIntento
+                idIntento: idIntento,
+                causas: undefined
             });
 
             objectEncuesta.idPregunta = listPreguntaSeccion[i].idPregunta;
@@ -445,6 +446,7 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
                 if (listPreguntaSeccion[i].opciones[j].stMarcado === 1) {
                     guardar = true
                     objectEncuesta.idOpcion = listPreguntaSeccion[i].opciones[j].idOpcion != undefined ? listPreguntaSeccion[i].opciones[j].idOpcion : 0;
+                    objectEncuesta.causas=listPreguntaSeccion[i].opciones[j].causas;
                 }
             }
             if (guardar) {
