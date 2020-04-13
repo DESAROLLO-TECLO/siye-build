@@ -7,7 +7,7 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
 	$scope.longitud = function (){ 
 		$scope.contador = $scope.totalLength - ($scope.registroIncidencia.descripcion == undefined ? 0 : $scope.registroIncidencia.descripcion.length); 
 	} 
-	$scope.paramConfSav= new Object({
+	$scope.paramConfSav = new Object({
 		idOrdenServ: null, 			 
 		idProceso: null,   			
 		idEncuesta:null,			
@@ -15,19 +15,54 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
 		idIncidencia: null
 	});
 	
-	$scope.paramConfiguracion=new Object({
-		maxSizeMb: 5,			
-        maxNuImage: 10,
+	$scope.paramConfiguracion = new Object({
+		maxSizeMb: 2,			
+        maxNuImage: 1,
         listTypeExtencion: ['jpg','png','jpeg','pdf','doc','docx'],
-        listTpDocuemnt: null
+        listTpDocuemnt: new Array()
 	});
 	
+	getParamImgIncidencia = function (){
+		altaIncidenciaService.getNuMaxImgIncidencia().success(function(data) {
+			console.log(data);
+			let param = filtroBuscar(data, "cdLlavePConfig", "TIE051D_NU_MAX_IMAGENES");
+			$scope.paramConfiguracion.maxNuImage = param.cdValorPConfig; 
+			param = filtroBuscar(data, "cdLlavePConfig", "TIE051D_IMG_REQ");
+			$scope.requiredImage = param.cdValorPConfig == "Si" ? true : false;
+			ejecutarDespues(1);
+		}).error(function(e) {
+            growl.warning(e.message, { ttl: 5000 });
+        });
+	}
 	$scope.listImages = [];
 	$scope.registroIncidencia = {};
 	$scope.idOrden = dataInfo.idOrden;
-	ejecutarDespues = function (){
-		$timeout(() => {
+	ejecutarDespues = function (opc){
+		if(opc == 1){
+			$timeout(() => {
 			$scope.listOrden.push({idOrdenServicio: 0, cdOrdenServicio: "SIN ORDEN SERVICIO"});
+			if(dataInfo.idOrden){
+				$scope.conServicio = true;
+				let orden = filtroBuscar($scope.listOrden, "idOrdenServicio", dataInfo.idOrden)
+				if(orden){
+					orderByAsc($scope.listOrden, "idOrdenServicio");
+					$scope.registroIncidencia.orden = orden; 
+					$("#select2-orden-container").text(orden.cdOrdenServicio);
+				}
+			}else{
+				$scope.registroIncidencia.orden = {idOrdenServicio: 0, cdOrdenServicio: "SIN ORDEN SERVICIO"}; 
+				$("#select2-orden-container").text("SIN ORDEN SERVICIO");
+				orderByAsc($scope.listOrden, "idOrdenServicio");
+			}
+			$scope.registroIncidencia.modAten = $scope.listModAten[0]; 
+			$("#select2-modAten-container").text($scope.registroIncidencia.modAten.nbCentroInstalacion);
+			$scope.addTxDescripcion();
+			$scope.listTecnico.push({idPersona: 0, nbPersona: "SIN TÉCNICO", nbPatPersona: "", nbMatPersona: ""})
+			orderByAsc($scope.listTecnico, "idPersona");
+			$scope.listTransportista.push({idConductor: 0, nbConductor: "SIN TRANSPORTISTA", nbApepatConductor: "", nbApematConductor: ""})
+			orderByAsc($scope.listTransportista, "idConductor");
+			},1500);
+		}else{
 			if(dataInfo.idOrden){
 				let orden = filtroBuscar($scope.listOrden, "idOrdenServicio", dataInfo.idOrden)
 				if(orden){
@@ -41,11 +76,9 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
 			$scope.registroIncidencia.modAten = $scope.listModAten[0]; 
 			$("#select2-modAten-container").text($scope.registroIncidencia.modAten.nbCentroInstalacion);
 			$scope.addTxDescripcion();
-			$scope.listTecnico.push({idPersona: 0, nbPersona: "SIN TÉCNICO", nbPatPersona: "", nbMatPersona: ""})
 			orderByAsc($scope.listTecnico, "idPersona");
-			$scope.listTransportista.push({idConductor: 0, nbConductor: "SIN TRANSPORTISTA", nbApepatConductor: "", nbApematConductor: ""})
 			orderByAsc($scope.listTransportista, "idConductor");
-		},2000);
+		}
 	}
 	function filtroBuscar(list, attr, val) {
         for (let x = 0; x < list.length; x++) {
@@ -83,6 +116,10 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
             growl.warning("Formulario incompleto.", { ttl: 5000 });
             return;
         }
+        if($scope.requiredImage && $scope.listImages.length == 0){
+        	growl.warning("Falta agregar imagenes.", { ttl: 5000 });
+            return;
+        }        	
         let altaIncidencia = {
         		ordenServicio: $scope.registroIncidencia.orden ? $scope.registroIncidencia.orden.cdOrdenServicio : "",
 				tpIncidencia: $scope.registroIncidencia.tpIncidencia ? $scope.registroIncidencia.tpIncidencia : null,
@@ -105,7 +142,7 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
             	$scope.formAltaIncidencia.modAten.$dirty;
             	$scope.formAltaIncidencia.modAten.$valid;
         		$scope.listImages = [];
-        		ejecutarDespues();
+        		ejecutarDespues(2);
             }else
             	growl.warning("No se pudo realizar el alta de la incidencia", { ttl: 5000 });
         }).error(function(e) {
@@ -122,5 +159,5 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
     	$location.path(dataInfo.urlActual.replace('-', '/'));
     }
 //    $scope.guardar(false);
-    ejecutarDespues();
+    getParamImgIncidencia();
 });
