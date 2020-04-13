@@ -39,5 +39,11 @@ this.cargarEncuesta = function (idOrdenServicio,idEncuesta) {
 			params:{"idOrdenServicio": idOrdenServicio,"idEncuesta": idEncuesta}
 		});
 		};
-
+		
+//Combo Causas
+this.comboCausas = function(idOpcion){
+			return $http.get(config.baseUrl + "/catalogo/catCuasas",		
+			{params:{"idOpcion": idOpcion}	
+			});	
+		};	
 });

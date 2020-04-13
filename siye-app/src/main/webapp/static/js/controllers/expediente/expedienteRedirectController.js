@@ -1,42 +1,48 @@
 angular.module(appTeclo).controller('expedienteRedirectController',
-    function($rootScope,$scope,$timeout,$filter,showAlert,growl,expedienteService,$routeParams)
+    function($rootScope,$scope,$timeout,$filter,showAlert,growl,expedienteService,params,$location)
     {
 	
 	//Objeto para la configuracion de la directiva de carga de imagenes
-	var paramsImgResp=$routeParams;
+	var paramsImgResp=params;
 	$scope.listImages=new Array();
-	$scope.fileUploader=new FileUploader();
-	$scope.fileUploaderDos=new FileUploader();
+	var linPrev=paramsImgResp.locatinPrev;
+	$scope.titleLinkBack=linPrev;
+
+	$scope.paramConfSav=paramsImgResp.optionSave;
 	
-	$scope.lisTpDocuments=[{idTipoExpediente:1,nbTipoExpediente:'tipo uno'},{idTipoExpediente:2,nbTipoExpediente:'tipo dos'}];
-	
-	$scope.paramConfSav= new Object();
-	
-	$scope.paramConfSavDos= new Object({
-		idOrdenServ: 2, 			 
-		idProceso: 2,   			
-		idEncuesta: 2,			
-		idPregunta: 2,			
-		idIncidencia: null
-	});
-	
-	$scope.paramConfiguracion=new Object({
-		maxSizeMb: 8,			
-        maxNuImage: 5,
-        listTypeExtencion: ['jpg','png','jpeg'],
-        listTpDocuemnt: $scope.lisTpDocuments,
-        nameService:  null,
-        nameFunctionService: null,
-        showComponentCopy:false,
-        titleModal:'Carga nivel Pregunta',
-        nameParamFile:'Buscar',
-        templateButonModal:'<button class="btn btn-danger"> '+                                          
-								'<i class="fa fa-clipboard" aria-hidden="true"></i></i> Personal' +                         
-							'</button>'
-	});
+	$scope.paramConfiguracion=paramsImgResp.optionComponent;
+	$scope.paramConfiguracion.maxNuImage=paramsImgResp.maxNuImage;
+	$scope.paramConfiguracion.isIncidencia=paramsImgResp.isIncidencia == undefined ? false : paramsImgResp.isIncidencia;
 	
 	$scope.returnPreView=function(){
-		
-	}
+		 $location.path(linPrev);
+	};
 	  
-    });
+	function getImagesByLevel(){
+		expedienteService.getInfoOsNivel(paramsImgResp.cdOs,paramsImgResp.cdNivel,paramsImgResp.valor)
+			.success(function(reponse){
+				$scope.listImages=reponse;
+		  }).error(function(e){
+			  if(e.status != null){
+	    			 if(e.status.descripcion != undefined){
+		                	growl.error(e.status.descripcion,{ ttl: 4000 });
+		                }else if(e.status.message != undefined) {
+		                	growl.error(e.status.message,{ ttl: 4000 });
+		                }else if(typeof status === 'string'){
+		                	growl.error(status,{ ttl: 4000 });
+		                }else {showAlert.error('Falló la petición');} 
+	    		 }else{
+	    			 if(e.descripcion != undefined){
+		                	growl.error(e.descripcion,{ ttl: 4000 });
+		                }else if(e.message != undefined) {
+		                	growl.error(e.message,{ ttl: 4000 });
+		                }else if(typeof e === 'string'){
+		                	growl.error(e,{ ttl: 4000 });
+		                }else {showAlert.error('Falló la petición');}
+	    		 }
+		  });;
+	};
+	
+	getImagesByLevel();
+	
+});
