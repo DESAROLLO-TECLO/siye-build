@@ -48,8 +48,8 @@
 				<!-- phone mask -->
 				<div class="form-group inputForm col-md-12">
 					<div class="row">
-						<div ng-show="!banderaPantalla" ng-include="'views/encuesta/consultaEncuesta.html'"></div>
-						<div ng-show="banderaPantalla" ng-include="'views/encuesta/realizarEncuesta.html'"></div>
+						<div ng-if="!banderaPantalla" ng-include="'views/encuesta/consultaEncuesta.html'"></div>
+						<div ng-if="banderaPantalla" ng-include="'views/encuesta/realizarEncuesta.html'"></div>
 					</div>
 				</div>
 					<!-- /.form  group -->
