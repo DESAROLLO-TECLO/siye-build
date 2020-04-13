@@ -1,5 +1,7 @@
 package mx.com.teclo.siye.persistencia.vo.proceso;
 
+import java.util.Date;
+
 import mx.com.teclo.siye.persistencia.vo.encuesta.EncuestaDetalleVO;
 
 public class ProcesoEncuestaVO {
@@ -18,6 +20,11 @@ public class ProcesoEncuestaVO {
 	private Boolean stActivaMostrar=false;
 	//variable para conocer si la de satisfaccion ya esta activa o no
 	private Boolean stSatisfaccion;
+	
+	//se agrega variables para fecha de inicio primer proceso y fecha fin ultimo procesos
+	
+      private Date fechaInicioProceso;
+	  private Date fechaFinProceso;
 	
 	
 	public Long getIdProcesoEncuesta() {
@@ -70,6 +77,19 @@ public class ProcesoEncuestaVO {
 	public void setStSatisfaccion(Boolean stSatisfaccion) {
 		this.stSatisfaccion = stSatisfaccion;
 	}
+	public Date getFechaInicioProceso() {
+		return fechaInicioProceso;
+	}
+	public void setFechaInicioProceso(Date fechaInicioProceso) {
+		this.fechaInicioProceso = fechaInicioProceso;
+	}
+	public Date getFechaFinProceso() {
+		return fechaFinProceso;
+	}
+	public void setFechaFinProceso(Date fechaFinProceso) {
+		this.fechaFinProceso = fechaFinProceso;
+	}
+	
 	
 	
 	
