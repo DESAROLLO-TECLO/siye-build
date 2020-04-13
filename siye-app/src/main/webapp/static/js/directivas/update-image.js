@@ -50,24 +50,6 @@ appt.directive('updateImage',
 	      template:'<div id="containerDirective"></div>',
 	      link: function(scope, $element, attrs) {
 	    	  
-	    	  var templateCombo=
-	    		'										<div class="form-group">                                                                                                                    '+
-	    		'											<label>                                                                                                                                 '+
-	    		'												*Tipo de Documento {{imagenVO.tipoExpediente}}                                                                                                                 '+
-	    		'											</label>                                                                                                                                '+
-	    		'											<div class="input-group">                                                                                                               '+
-	    		'												<div class="input-group-addon">                                                                                                     '+
-	    		'													<i class="fa fa-list-alt"></i>                                                                                                  '+
-	    		'												</div>                                                                                                                              '+
-	    		'												<select class="form-control" name="tpDoc{{imagenVO.unic+idElementUp}}" id="tpDoc{{imagenVO.unic+idElementUp}}"                                                                          '+
-	    		'													ng-required="true" select2 data-minimum-results-for-search="Infinity"                                                           '+
-	    		'													idioma-s2="{{currentLanguage}}" ng-model="imagenVO.tipoExpediente"                                                              '+
-	    		'													ng-options="tipo as tipo.nbTipoExpediente for tipo in tpDocumentList">                                                          '+
-	    		'													<option value="">{{\'APP.Base.mensaje.seleccioneOpcion\' | translate}}</option>                                                 '+
-	    		'												</select>                                                                                                                           '+
-	    		'											</div>                                                                                                                                  '+
-	    		'										</div>                                                                                                                                      ';
-	    	  
 	    	  scope.imagePreview=new Object();
 	    	  
 	    	//Variable con la injeccion por defecto del servicio para expedientes
@@ -163,11 +145,6 @@ appt.directive('updateImage',
 		    			  item.tpDocumentList=angular.copy(scope.tpDocumentList);
 		    			  let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(item.cdTipoArchivo) !== -1);
 		    			  item.isImage=isImg;
-		    			  
-		    			  let combo=angular.element(templateCombo);
-						  let divCombo=$element.find("#combo"+item.unic);
-						  divCombo.append(combo);
-						  $compile(divCombo)(scope);
 		    			  
 		    			  // SE VALIDA SI TIENE UN TP DE DOCUMENTO PREBIAMENTE ASIGNADO
 		    			  if(item.idTipoExpediente != undefined){
@@ -491,14 +468,27 @@ appt.directive('updateImage',
 		     };
 		     
 		     //Guarda una imagen consumiendo el servicio
-		     scope.saveImageItem=function(item){
+		     scope.saveImageItem=function(item,form){
+		    	 
+		    	 if (form.$invalid) {
+		              showAlert.requiredFields(form);
+		              growl.error('Formulario incompleto');
+		              return;
+		          }
+		    	 
 		    	 let listImages=new Array();
 		    	 listImages.push(item);
 		    	 serviceSave(listImages);
 		     };
 		     
 		   //Funcion para guardar las imagenes, se valida si se tiene una funcion en especifico
-		     scope.saveImagesAll=function(){
+		     scope.saveImagesAll=function(form){
+		    	 
+		    	 if (form.$invalid) {
+		              showAlert.requiredFields(form);
+		              growl.error('Formulario incompleto');
+		              return;
+		          }
 		    	 
 		    	 let listImages=getListImageToSaved();
 		    	 
@@ -656,8 +646,10 @@ appt.directive('updateImage',
 					 paramConfSav.optionSave=scope.paramConfSav;
 					 paramConfSav.maxNuImage=scope.maxNuImage;
 					 paramConfSav.isIncidencia=scope.isIncidencia;
-					 let jsonObj=angular.toJson(paramConfSav);
-					 $location.path("/cargaMasiva/cargaNivel/").search(jsonObj);
+					 
+					 expedienteService.setParams(paramConfSav);
+					 
+					 $location.path("/cargaMasiva/cargaNivel");
 		                $('.modal-backdrop').remove();
 		                
 				 }
@@ -666,8 +658,9 @@ appt.directive('updateImage',
 			 
 			 defineConsultaImagenesNivel=function(){
 				 let paramConfSav={};
-				 paramConfSav.cdOs=scope.paramConfSav.cdOrdenServicio;
+				 paramConfSav.cdOs=scope.paramConfSav.idOrdenServ;
 				 paramConfSav.cdNivel='CDOS';
+				 paramConfSav.valor=null;
 				 if(scope.paramConfSav.idPregunta != undefined){//nivel pregunta
 					 paramConfSav.cdNivel='CDPREGUNTA';
 					 paramConfSav.valor=scope.paramConfSav.idPregunta;
@@ -685,10 +678,38 @@ appt.directive('updateImage',
 			 scope.cerrarModal=function(){
 				  //preguntar si hay nuevas images cargadas, que no se hayan guardado, 
 				  //si se confirma cerrar modal y descartar imagenes en lista enviada
-				  
-				  $('#'+scope.idElementUp+'modalUpdateImage').modal('hide');
-				  $('.modal-backdrop').remove();
-				  scope.showModalBuild=false;
+				 let isPendient=false;
+				 let i;
+				 for(i=0; i<scope.listImages.length; i++){
+					 let item=scope.listImages[i];
+					 if(item.isSuccess == false){
+						 isPendient=true;
+						 break; 
+					 } 
+				 }
+				 
+				 if(!isPendient){// si no hay imagenes pendientes de guardar
+					 $('#'+scope.idElementUp+'modalUpdateImage').modal('hide');
+					  $('.modal-backdrop').remove();
+					  scope.showModalBuild=false;
+					 
+				 }else{
+					 showAlert.confirmacion('Hay imagenes sin guardar, ¿Desea continuar?',
+				                confirm = () => {
+				                	$('#'+scope.idElementUp+'modalUpdateImage').modal('hide');
+				   				  	$('.modal-backdrop').remove();
+				   				  	scope.showModalBuild=false;
+				   				  	i=0;
+				   				 for(i=0; i<scope.listImages.length; i++){
+									 let item=scope.listImages[i];
+									 if(item.isSuccess == false){
+										 scope.listImages.splice(i,1);
+									 } 
+								 }
+				                }, cancelaNotificar = () => {
+				                    return;
+				                });  
+				 }
 			  };
 			  
 			//METODO QUE PERMITE IDENTIFICAR EL TIPO DE DISPOSITIVO DONDE SE ESTA CARGANDO LA PANTALLA Y DETERMINA QUE COMPONENTES MOSTRAR
