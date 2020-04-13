@@ -5,6 +5,7 @@ angular.module(appTeclo).controller('expedienteController',
 	const MENSAJE='Seleccione una opción';
 	//Objeto para la configuracion de la directiva de carga de imagenes
 	$scope.listImages=new Array();
+	$scope.nuMaxImg=10;
 	$scope.listImagesDos=new Array();
 	$scope.fileUploader=new FileUploader();
 	
@@ -81,7 +82,10 @@ angular.module(appTeclo).controller('expedienteController',
 		  		$scope.listOrdenExpediente = response;
 				$scope.expedienteImg=$scope.listOrdenExpediente[0];
 				$scope.catalogosRelacoinados.catProceso = response[0].procesos;  
-				$scope.listImages = response[0].imagenes;
+				$scope.nuMaxImg=response[0].nuMaxImg;
+				if(response[0].imagenes != undefined)
+					$scope.listImages = response[0].imagenes;
+				
 				$scope.paramConfSav.idOrdenServ=response[0].idOrdenServicio;
 				$scope.paramConfSav.cdOrdenServicio=response[0].cdOrdenServicio;
           }).error(function(e) {
@@ -103,7 +107,8 @@ angular.module(appTeclo).controller('expedienteController',
 				  case 'proceso':
 					  $scope.paramConfSav.idProceso=itemSelected.idProceso;
 					  $scope.paramConfSav.idEncuesta=null;
-					  $scope.paramConfSav.idPregunta=null;					  
+					  $scope.paramConfSav.idPregunta=null;	
+					  $scope.nuMaxImg=itemSelected.nuMaxImg;
 					temp = reducirLisImagenes($scope.listImages, 'proceso');
 					  if(itemSelected.imagenes!=null){
 						$scope.listImages= temp.concat(itemSelected.imagenes);
@@ -113,6 +118,7 @@ angular.module(appTeclo).controller('expedienteController',
 					  }
 					  break;
 				  case 'encuesta':
+					  $scope.nuMaxImg=itemSelected.nuMaxImg;
 					  $scope.paramConfSav.idEncuesta=itemSelected.idEncuesta;
 					  $scope.paramConfSav.idPregunta=null;	
 					temp = reducirLisImagenes($scope.listImages, 'encuesta');
@@ -125,6 +131,7 @@ angular.module(appTeclo).controller('expedienteController',
 					  break;
 
 				  case 'pregunta':
+					  $scope.nuMaxImg=itemSelected.nuMaxImg;
 					  $scope.paramConfSav.idPregunta=itemSelected.idPregunta;
 					temp = reducirLisImagenes($scope.listImages, 'pregunta');
 					if(itemSelected.imagenes!=null){

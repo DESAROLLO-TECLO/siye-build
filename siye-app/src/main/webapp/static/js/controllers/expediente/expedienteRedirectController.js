@@ -3,40 +3,19 @@ angular.module(appTeclo).controller('expedienteRedirectController',
     {
 	
 	//Objeto para la configuracion de la directiva de carga de imagenes
-	var paramsImgResp=$routeParams;
+	var json=JSON.stringify($routeParams);
+	var paramsImgResp=angular.fromJson(json);
 	$scope.listImages=new Array();
-	$scope.fileUploader=new FileUploader();
-	$scope.fileUploaderDos=new FileUploader();
+	$scope.titleLinkBack=paramsImgResp.locatinPrev;
+
+	$scope.paramConfSav=paramsImgResp.optionSave;
 	
-	$scope.lisTpDocuments=[{idTipoExpediente:1,nbTipoExpediente:'tipo uno'},{idTipoExpediente:2,nbTipoExpediente:'tipo dos'}];
-	
-	$scope.paramConfSav= new Object();
-	
-	$scope.paramConfSavDos= new Object({
-		idOrdenServ: 2, 			 
-		idProceso: 2,   			
-		idEncuesta: 2,			
-		idPregunta: 2,			
-		idIncidencia: null
-	});
-	
-	$scope.paramConfiguracion=new Object({
-		maxSizeMb: 8,			
-        maxNuImage: 5,
-        listTypeExtencion: ['jpg','png','jpeg'],
-        listTpDocuemnt: $scope.lisTpDocuments,
-        nameService:  null,
-        nameFunctionService: null,
-        showComponentCopy:false,
-        titleModal:'Carga nivel Pregunta',
-        nameParamFile:'Buscar',
-        templateButonModal:'<button class="btn btn-danger"> '+                                          
-								'<i class="fa fa-clipboard" aria-hidden="true"></i></i> Personal' +                         
-							'</button>'
-	});
+	$scope.paramConfiguracion=paramsImgResp.optionComponent;
+	$scope.paramConfiguracion.maxNuImage=paramsImgResp.maxNuImage;
+	$scope.paramConfiguracion.isIncidencia=paramsImgResp.isIncidencia == undefined ? false : paramsImgResp.isIncidencia;
 	
 	$scope.returnPreView=function(){
-		
+		 $location.path(paramsImgResp.locatinPrev);
 	}
 	  
     });
