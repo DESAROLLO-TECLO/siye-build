@@ -38,7 +38,20 @@ function($http, config) {
     };
 	
     this.getInfoOsNivel = function(nuOrdenServicio,cdNivel,idValor){
-    	 return $http.get(GET_INFO_EXP_NIVEL,nuOrdenServicio,cdNivel,idValor);
-    };
-    
+   	 return $http.get(GET_INFO_EXP_NIVEL,{
+				params:{"nuOrdenServicio": nuOrdenServicio,
+						 "cdNivel": cdNivel,
+						 "idValor": idValor}
+		});
+   };
+   
+   //metodo para pasar parametros a expedienteRedirectController
+   var paramsCof=null;
+   this.getParams = function(){
+   	return paramsCof;
+   };
+   
+   this.setParams = function(params){
+   	paramsCof=params;
+   };
 });
