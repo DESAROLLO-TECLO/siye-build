@@ -99,7 +99,8 @@ public class PersonasServiceImpl implements PersonasService{
 					personaDTO = new PersonaDTO();
 					
 					personaDTO.setNbPersona(nombre);
-					personaDTO.setCdPersona("AAA");
+					String folio=catalogoService.generaFolio("CDPERSONA");
+					personaDTO.setCdPersona(folio);
 					personaDTO.setNbPatPersona(aPaterno);
 					personaDTO.setNbMatPersona(aMaterno);
 					personaDTO.setNuOrden(null);
@@ -110,9 +111,6 @@ public class PersonasServiceImpl implements PersonasService{
 					personaDTO.setFhModificacion(new Date());
 					personaDAO.save(personaDTO);
 					resultPersonaGenericaVO.setIdPersona(personaDTO.getIdPersona());
-					String folio=catalogoService.generaFolioEmpl(personaDTO.getIdPersona());
-					personaDTO.setCdPersona(folio);
-					personaDAO.update(personaDTO);
 					resultPersonaGenericaVO.setCdPersona(folio);
 				}else{
 					resultPersonaGenericaVO.setIdPersona(listaPersonaDTO.get(0).getIdPersona());

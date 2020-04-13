@@ -4,6 +4,7 @@ import java.util.List;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.OpcionCausaDTO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.CatTipoFechasVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaGenericaVO;
@@ -65,5 +66,20 @@ public interface CatalogoService {
 	
 	//ParametrosFolioDTO getParametroById(Long idParametro);
 
+	/*@author Maverick
+	 *@return List<CatTipoFechasVO>
+	 *metodo para consultar el catalogo de fechas 
+	 * */
+	public List<CatTipoFechasVO> getCatTipoFechas();
+	
+
+	/**
+	 * @Descripción: Método para generar folio en base a parametro de configuracion
+	 * @author Manuel Dirsio
+	 * @return String
+	 */
+	
+	//ParametrosFolioDTO getParametroById(String cdParametro);
+	public String generaFolio(String cdParametro);
 
 }

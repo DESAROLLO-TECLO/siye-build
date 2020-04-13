@@ -10,6 +10,7 @@ public class LoteOrdenServicioVO implements Serializable {
 	private Long idLoteOds;
 	private String cdLoteOds;
 	private String nbLoteOds;
+	private String nbArchivoFinal;
 	private Long idStSeguimiento;
 	private String cdStSeguimiento;
 	private String nbStSeguimiento;
@@ -41,6 +42,12 @@ public class LoteOrdenServicioVO implements Serializable {
 	}
 	public void setNbLoteOds(String nbLoteOds) {
 		this.nbLoteOds = nbLoteOds;
+	}	
+	public String getNbArchivoFinal() {
+		return nbArchivoFinal;
+	}
+	public void setNbArchivoFinal(String nbArchivoFinal) {
+		this.nbArchivoFinal = nbArchivoFinal;
 	}
 	public Long getIdStSeguimiento() {
 		return idStSeguimiento;

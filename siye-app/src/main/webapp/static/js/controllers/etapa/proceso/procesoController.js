@@ -1,6 +1,6 @@
 angular.module(appTeclo)
 .controller("procesoController",
-function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,procesoInfo,idord,idpro) {
+function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,procesoInfo,idord,idpro,encuestaService) {
     
 	$scope.idOrdenServicio=idord;
 	$scope.idProcesoActual=idpro;
@@ -29,5 +29,16 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
             growl.error(error.message, {title: '- ERROR -'});
         });
     }
+    
+    obtenerPrimeraEncuestaPrimerProceso=function(EncuestasInfo)
+    {
+    	if(EncuestasInfo[0].idProceso.idProceso==encuestaService.primerProceso)
+    		{
+    		encuestaService.primerEncuestaPrimerProceso=EncuestasInfo[0].idEncuesta.idEncuesta;
+    		}
+    	
+    }
+    
+    obtenerPrimeraEncuestaPrimerProceso(procesoInfo.data);
     
 });

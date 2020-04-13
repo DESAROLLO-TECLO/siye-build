@@ -3,6 +3,7 @@ package mx.com.teclo.siye.persistencia.mybatis.dao.proceso;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.exceptions.PersistenceException;
 
 
@@ -19,6 +20,13 @@ public interface ServicioEncuestasMyBatisDAO {
 			+ "VALUES ("
 			+ "SQIE065D_ODS_PROCESOS.NEXTVAL,#{idSolicitud},#{idProceso},null,null,1)";
 	
+	String INICIAR_PROCESO = "UPDATE TIE065D_ODS_PROCESOS SET FH_INI_PROCESO=SYSDATE "
+			+ "WHERE ID_ORDEN_SERVICIO=#{idSolicitud} AND ID_PROCESO=#{idProceso}";
+	
+	String FINALIZAR_PROCESO = "UPDATE TIE065D_ODS_PROCESOS SET FH_FIN_PROCESO=SYSDATE "
+			+ "WHERE ID_ORDEN_SERVICIO=#{idSolicitud} AND ID_PROCESO=#{idProceso}";
+	
+	
 	
 	@Insert(INSERTAR_TRAMITE)
 	public Boolean insertarEncuestas(@Param("idSolicitud") Long idSolicitud, 
@@ -26,6 +34,14 @@ public interface ServicioEncuestasMyBatisDAO {
 	
 	@Insert(INSERTAR_PROCESOS)
 	public Boolean insertarprocesos(@Param("idSolicitud") Long idSolicitud, 
+			@Param("idProceso") Long idProceso);
+	
+	@Update(INICIAR_PROCESO)
+	public Boolean iniciarProceso(@Param("idSolicitud") Long idSolicitud, 
+			@Param("idProceso") Long idProceso);
+	
+	@Update(FINALIZAR_PROCESO)
+	public Boolean finalizarProceso(@Param("idSolicitud") Long idSolicitud, 
 			@Param("idProceso") Long idProceso);
 
 }

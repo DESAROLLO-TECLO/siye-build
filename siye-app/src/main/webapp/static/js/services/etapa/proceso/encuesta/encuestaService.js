@@ -1,6 +1,10 @@
 angular.module(appTeclo)
 .service("encuestaService", 
 function($http, config, $rootScope) {
+	
+    primerProceso=undefined;
+    primerEncuestaPrimerProceso=undefined;
+
 
     this.getInfoEncuesta = function(idEncuesta,idOrden){
         return $http.get(config.baseUrl + "/encuesta/detalle", {
@@ -42,5 +46,21 @@ function($http, config, $rootScope) {
             }	
 		});	
 	};
+	
+    this.iniciarProceso = function(idOrden){
+        return $http.get(config.baseUrl + "/proceso/iniciarProceso", {
+            params:{
+                "idOrdenServicio": idOrden
+            }
+        });
+    };
+    
+    this.avanzarProceso = function(idOrden){
+        return $http.get(config.baseUrl + "/proceso/avanzarEncuestaProceso", {
+            params:{
+                "idOrdenServicio": idOrden
+            }
+        });
+    };
 
 });

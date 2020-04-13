@@ -15,7 +15,7 @@ import mx.com.teclo.siye.persistencia.vo.incidencia.ReporteVO;
 
 @RestController
 @RequestMapping("/descargaExcel")
-public class ReporteRestController {
+public class ReporteSiyeRestController {
 
 	@Autowired
 	private ReporteService reporteService;

@@ -31,6 +31,8 @@ public class LoteOrdenServicioDTO implements Serializable {
 	private String cdLoteOds;
 	@Column(name = "NB_LOTE_ODS")
 	private String nbLoteOds;
+	@Column(name = "NB_ARCHIVO_FINAL")
+	private String nbArchivoFinal;
 	@JoinColumn(name = "ID_ST_SEGUIMIENTO", referencedColumnName = "ID_ST_SEGUIMIENTO")
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
 	private StSeguimientoDTO idStSeguimiento;
@@ -82,6 +84,14 @@ public class LoteOrdenServicioDTO implements Serializable {
 
 	public void setNbLoteOds(String nbLoteOds) {
 		this.nbLoteOds = nbLoteOds;
+	}
+
+	public String getNbArchivoFinal() {
+		return nbArchivoFinal;
+	}
+
+	public void setNbArchivoFinal(String nbArchivoFinal) {
+		this.nbArchivoFinal = nbArchivoFinal;
 	}
 
 	public StSeguimientoDTO getIdStSeguimiento() {

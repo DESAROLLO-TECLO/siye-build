@@ -12,15 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.negocio.service.catalogo.CatalogoService;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.OpcionCausaDTO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.CatTipoFechasVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
-import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.OpcionCausaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaGenericaVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
@@ -125,5 +127,15 @@ public class CatalogoRestController {
 		return new ResponseEntity<PersonaGenericaVO>(personaVO, HttpStatus.OK);
 	}
 
+
+	@RequestMapping(value = "/getCatTipoFechas", method =  RequestMethod.GET)
+	//@PreAuthorize("hasAnyAuthority('GET_CAT_RANGO_FECHAS')")
+	public ResponseEntity<List<CatTipoFechasVO>> getCatTipoFechas()  throws NotFoundException {
+		List<CatTipoFechasVO> fechas = catalogoService.getCatTipoFechas();
+		if(fechas.isEmpty()) {
+			throw new NotFoundException("No hay Rango de fechas Asignado");
+		}
+		return new ResponseEntity<List<CatTipoFechasVO>>(fechas, HttpStatus.OK);
+	}
 
 }

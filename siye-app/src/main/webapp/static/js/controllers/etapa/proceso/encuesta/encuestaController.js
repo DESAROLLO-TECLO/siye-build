@@ -350,6 +350,11 @@ $scope.finalizaEncuesta = function(tiempo) {
 $scope.testConfirmacion = function(object) {
     encuestaService.finalizaEncuesta($scope.detalleFinalEncuesta).success(function(data) {
         if (data != null) {
+    	    encuestaService.avanzarProceso(encuestaInfo.data.usuario.idOrdenServicio).success(function(data) {
+    	    }).error(function(data) {
+    	        growl.error(data.message);
+    	    });
+    	    
             $scope.paramConfigPage.segundo = 0;
             $scope.paramConfigPage.minuto = 0;
             $scope.paramConfigPage.hora = 0;
@@ -473,9 +478,38 @@ $scope.cargarCausas=function(opciones,respuesta)
 
 }
 
+<<<<<<< HEAD
     $scope.getNumPreguntasPorSeccion('TIE019P_NU_PAGINACION');
     $scope.getNumMaxPaginacion('TIE019P_NU_MAX_PAG');
     $scope.getEncuestaOrden(encuestaInfo);
+=======
+iniciarProceso=function(statusEncuesta,idEncuesta,idOrdenServicio)
+{
+	if(statusEncuesta=="NI" && $scope.idProcesoActual==encuestaService.primerProceso
+			&& idEncuesta==encuestaService.primerEncuestaPrimerProceso )
+		{
+	    encuestaService.iniciarProceso(idOrdenServicio).success(function(data) {
+	        if (data) {
+	        growl.success("La orden de servicio inicio el proceso correctamente", { ttl: 5000 });
+	        } else {
+	            growl.success("La orden de servicio ya inicio el proceso", { ttl: 5000 });
+	        }
+	    }).error(function(data) {
+	        growl.error(data.message);
+	    });
+		}
+	
+
+}
+
+
+
+    
+    $scope.getNumPreguntasPorSeccion('TIE019P_NU_PAGINACION');
+    $scope.getNumMaxPaginacion('TIE019P_NU_MAX_PAG');
+    $scope.getEncuestaOrden(encuestaInfo);
+    iniciarProceso(encuestaInfo.data.intentoDetalleVO.stEncuesta.cdStEncuesta,encuestaInfo.data.encuesta.idEncuesta,encuestaInfo.data.usuario.idOrdenServicio);
+>>>>>>> 8fed4b4ca822b4d8f7e878e3f78ebec16a51da7a
     
 });
 

@@ -1,9 +1,10 @@
 angular.module(appTeclo)
 .controller("etapaController",
-function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, etapaInfo) {
+function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, etapaInfo,encuestaService) {
 
     $scope.fechaHoy = new Date();
     $scope.stValidarCheck = false;
+<<<<<<< HEAD
 
     $scope.numMaxImg = 3;
     $scope.listImages = [];
@@ -15,6 +16,10 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
         maxSizeMb: 1,
         title: "Agregar Evidencia por Etapa"
     });
+=======
+    console.log(etapaInfo.data)
+
+>>>>>>> 8fed4b4ca822b4d8f7e878e3f78ebec16a51da7a
     
     if(etapaInfo != null){
         $rootScope.idOrSer = parseInt(etapaInfo.data[0].idOrdenServicio);
@@ -59,6 +64,7 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
         etapaService.getPlan(idPlan, idOrden).success(function(data){
             $scope.dataPlan = data;
             var dplength = $scope.dataPlan.length;
+            encuestaService.primerProceso=$scope.dataPlan[0].proceso.idProceso;
             for(var i = 0; i < dplength; i++){
                 switch($scope.dataPlan[i].proceso.cdProceso){
                     case 'INS':

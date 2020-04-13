@@ -25,6 +25,7 @@ public class LoteOrdenServicioDAOImpl extends BaseDaoHibernate<LoteOrdenServicio
 		c.setProjection(Projections.projectionList().add(Projections.property("lote.idLoteOds").as("idLoteOds"))
 				.add(Projections.property("lote.cdLoteOds").as("cdLoteOds"))
 				.add(Projections.property("lote.nbLoteOds").as("nbLoteOds"))
+				.add(Projections.property("lote.nbArchivoFinal").as("nbArchivoFinal"))
 				.add(Projections.property("seguimiento.idStSeguimiento").as("idStSeguimiento"))
 				.add(Projections.property("seguimiento.cdStSeguimiento").as("cdStSeguimiento"))
 				.add(Projections.property("seguimiento.nbStSeguimiento").as("nbStSeguimiento"))
