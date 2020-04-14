@@ -1,6 +1,10 @@
 package mx.com.teclo.siye.negocio.service.async;
 
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+import javax.naming.NamingException;
 
 import org.hibernate.HibernateException;
 
@@ -24,6 +28,8 @@ public interface CargaMasivaService {
 	 * 
 	 * @param config
 	 * @throws BusinessException 
+	 * @throws NamingException 
+	 * @throws SQLException 
 	 */
 	void procesarLineas(ConfigCargaMasivaVO config) throws BusinessException;
 
@@ -35,7 +41,7 @@ public interface CargaMasivaService {
 	 * @return
 	 * @throws BusinessException
 	 */
-	Long insertarEnTablas(ConfigCargaMasivaVO config, String linea) throws BusinessException, HibernateException;
+	List<Long> ejecutarSQL(List<String> queries, boolean isModoSelect) throws BusinessException, HibernateException;
 
 	
 }

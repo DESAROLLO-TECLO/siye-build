@@ -6,6 +6,7 @@ public class ColumnaVO {
 	private Long nuOrden;
 	private String txValorDefecto;
 	private Integer nuLongitudMax;
+	private Boolean stCampoFiltro;
 	
 	public String getNbColumna() {
 		return nbColumna;
@@ -36,6 +37,12 @@ public class ColumnaVO {
 	}
 	public void setNuLongitudMax(Integer nuLongitudMax) {
 		this.nuLongitudMax = nuLongitudMax;
+	}
+	public Boolean getStCampoFiltro() {
+		return stCampoFiltro;
+	}
+	public void setStCampoFiltro(Boolean stCampoFiltro) {
+		this.stCampoFiltro = stCampoFiltro;
 	}
 	
 }
