@@ -71,7 +71,7 @@ angular.module(appTeclo).controller('expedienteController',
  */
 	  //Se otiene los datos obtenidos de base de datos por tipo de busqueda
 	  $scope.getDataOrdenServicio= function(tpBusqueda,valor,form){
-		  
+		 
 		  if (form.$invalid) {
               showAlert.requiredFields(form);
               growl.error('Formulario incompleto');
@@ -133,16 +133,17 @@ angular.module(appTeclo).controller('expedienteController',
 				  case 'pregunta':
 					  $scope.nuMaxImg=itemSelected.nuMaxImg;
 					  $scope.paramConfSav.idPregunta=itemSelected.idPregunta;
-					temp = reducirLisImagenes($scope.listImages, 'pregunta');
-					if(itemSelected.imagenes!=null){
+					  temp = reducirLisImagenes($scope.listImages, 'pregunta');
+					  if(itemSelected.imagenes!=null){
 						$scope.listImages = temp.concat(itemSelected.imagenes);
-					}
+					  }
 					  break;
 			  }
 		  }else{
 			  switch(nivel){
 				case 'proceso':
-					$scope.listImages = reducirLisImagenes($scope.listImages, 'proceso');
+					$scope.nuMaxImg=expedienteImg.nuMaxImg;
+					$scope.listImages = $scope.expedienteImg.imagenes;
 					$scope.catalogosRelacoinados.catEncuesta=null;
 					$scope.catalogosRelacoinados.catPregunta=null;
 					$scope.expedienteImg.proceso=undefined;
@@ -166,7 +167,7 @@ angular.module(appTeclo).controller('expedienteController',
 					$scope.listImages = reducirLisImagenes($scope.listImages, 'pregunta');
 					$scope.expedienteImg.pregunta=undefined;
 					$("#select2-pregunta-container").text(MENSAJE);
-					break; 
+					break;
 			  }
 		  }
 	  };
