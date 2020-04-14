@@ -19,7 +19,8 @@
 	</section>
 
 	<!-- Incidencia -->
-    <boton-incidencia id-orden="" id-proceso="" id-encuesta="" id-pregunta=""></boton-incidencia>
+	<boton-incidencia id-orden="" id-proceso="" id-encuesta=""
+		id-pregunta=""></boton-incidencia>
 
 	<section class="content">
 		<div class="row">
@@ -157,9 +158,12 @@
 																				</div>
 																				<div class="col-md-6 col-sm-5 col-xs-6">
 																					<ul>
-																						<li style="list-style: none; margin-top: 1%; margin-bottom: 2%; display: inline-block;"
+																						<li
+																							style="list-style: none; margin-top: 1%; margin-bottom: 2%; display: inline-block;"
 																							ng-repeat="opciones in respuesta.opciones">
-																							<div ng-if="!opciones.cdMostrarCausas" style="display: inline-block;">
+																							<div
+																								ng-if="!opciones.cdMostrarCausas || (opciones.cdMostrarCausas && opciones.causas)"
+																								style="display: inline-block;">
 																								<label class="content-input"> <input
 																									type="radio" name="{{respuesta.txPregunta}}"
 																									id="{{opciones.idOpcion}}" ng-value=1
@@ -169,7 +173,9 @@
 																									{{opciones.txOpcion}} <i></i>
 																								</label>
 																							</div>
-																							<div ng-if="opciones.cdMostrarCausas" style="display: inline-block;">
+																							<div
+																								ng-if="opciones.cdMostrarCausas && !opciones.causas"
+																								style="display: inline-block;">
 																								<label class="content-input"> <input
 																									type="radio" name="{{respuesta.txPregunta}}"
 																									id="{{opciones.idOpcion}}" ng-value=1
@@ -178,13 +184,27 @@
 																									ng-checked="opciones.stMarcado"
 																									data-toggle="modal" data-target="#myModal">
 																									{{opciones.txOpcion}} <i></i>
+																									<div ng-if="opciones.stMarcado"
+																										ng-style="{color:'red'}">Es necesario
+																										especificar una causa</div>
 																								</label>
 																							</div>
-																							<div ng-if="opciones.causas" style="display: inline-block;">
+																							<div
+																								ng-if="opciones.cdMostrarCausas && opciones.causas"
+																								style="display: inline-block;">
 																								<button type="button" class="btn btn-primary"
 																									data-toggle="modal" data-target="#myModal"
 																									ng-click="cargarCausas(opciones,respuesta)">
 																									Ver Detalle</button>
+																							</div>
+																							<div
+																								ng-if="opciones.stMarcado && opciones.cdMostrarCausas && !opciones.causas"
+																								style="display: inline-block;">
+																								<button type="button" class="btn btn-warning"
+																									data-toggle="modal" data-target="#myModal"
+																									ng-click="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')">
+																									Ver Detalle</button>
+
 																							</div>
 																						</li>
 																					</ul>
@@ -209,7 +229,8 @@
 												<div class="row">
 													<div class="col-md-12">
 														<div class="col-md-1 col-md-offset-2">
-															<span ng-if="posicionActual >0 && paramConfigPage.bigCurrentPage==1"
+															<span
+																ng-if="posicionActual >0 && paramConfigPage.bigCurrentPage==1"
 																class="btn btn-danger"
 																ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,encuestaDetalle.encuesta.secciones[posicionActual-1]) "
 																data-toggle="tooltip" data-placement="right"
@@ -221,7 +242,8 @@
 																<a href="#" data-toggle="tooltipinfo"
 																	data-placement="bottom"
 																	title="Consultar la sección anterior de la evaluación">
-																	<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
+																	<i
+																	class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 																</a>
 															</div>
 														</div>
@@ -231,7 +253,8 @@
 																	<a href="#" data-toggle="tooltipinfo"
 																		data-placement="right"
 																		title="Regresar al grupo de preguntas anteriores">
-																		<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
+																		<i
+																		class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 																	</a>
 																</div>
 
@@ -249,13 +272,15 @@
 																	<a href="#" data-toggle="tooltipinfo"
 																		data-placement="right"
 																		title="Avanzar al grupo de preguntas siguientes">
-																		<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
+																		<i
+																		class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 																	</a>
 																</div>
 
 															</div>
 															<div class="col-md-2 center">
-																<span ng-if="(posicionActual < (encuestaDetalle.encuesta.secciones.length-1)) && paramConfigPage.bigCurrentPage==numPages"
+																<span
+																	ng-if="(posicionActual < (encuestaDetalle.encuesta.secciones.length-1)) && paramConfigPage.bigCurrentPage==numPages"
 																	class="btn btn-danger" data-toggle="tooltip"
 																	data-placement="right" title="Siguiente Sección"
 																	ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,encuestaDetalle.encuesta.secciones[posicionActual+1])">
@@ -266,7 +291,8 @@
 																	<a href="#" data-toggle="tooltipinfo"
 																		data-placement="bottom"
 																		title="Consultar la siguiente sección de la evaluación">
-																		<i class="glyphicon glyphicon-question-sign toolTipInfo"></i>
+																		<i
+																		class="glyphicon glyphicon-question-sign toolTipInfo"></i>
 																	</a>
 																</div>
 															</div>
@@ -280,13 +306,13 @@
 													<div class="modal-dialog" role="document">
 														<div class="modal-content">
 															<div class="modal-header">
-																<button type="button" class="close" data-dismiss="modal"
+																<button type="button" class="close"
+																	ng-click="uncheckOpcion()" data-dismiss="modal"
 																	aria-label="Close">
 																	<span aria-hidden="true">&times;</span>
 																</button>
 																<h4 class="modal-title" id="myModalLabel">
-																	Justificación
-																</h4>
+																	Justificación</h4>
 															</div>
 															<div class="modal-body">
 
@@ -311,11 +337,11 @@
 
 																				</select>
 																			</div>
-																			<div ng-show="evaluacion.causa.$error.required && evaluacion.causa.$dirty"
-																				ng-style="{color:'red'}">
-																				Es necesario ingresar por lo menos una causa
-																			</div>
-																			
+																			<div
+																				ng-show="evaluacion.causa.$error.required && evaluacion.causa.$dirty"
+																				ng-style="{color:'red'}">Es necesario ingresar
+																				por lo menos una causa</div>
+
 																		</div>
 																	</div>
 																	<div class="col-md-12">
@@ -324,7 +350,8 @@
 																	</div>
 																	<div class="col-md-12">
 																		<label> *Descripción: </label>
-																		<textarea ng-model="descripcionCausa" class="form-control" rows="4"></textarea>
+																		<textarea ng-model="descripcionCausa"
+																			class="form-control" rows="4"></textarea>
 																	</div>
 																</div>
 															</div>
@@ -346,7 +373,7 @@
 														<button type="button" class="btn btn-danger">Regresar</button>
 													</div>
 													-->
-													
+
 												</div>
 												<div class="col-md-6">
 													<div style="float: right;">

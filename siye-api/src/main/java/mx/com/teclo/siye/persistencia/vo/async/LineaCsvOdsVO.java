@@ -1,91 +1,61 @@
 package mx.com.teclo.siye.persistencia.vo.async;
 
 public class LineaCsvOdsVO {
-	private String cdPlacaVehiculo;
-	private String cdVin;
-	private String cdTarjetaCirculacion;
-	private String nbMarca;
-	private String nbSubMarca;
-	private String cdModelo;
-	private String cdCentroInstalacion;
-	private String nbCentroInstalacion;
-	private String cdKitInstalacion;
-	private String idPlan;
-	private String cdPlan;
-	private String nbPlan;
-	public String getCdPlacaVehiculo() {
-		return cdPlacaVehiculo;
+	private String col1;
+	private String col2;
+	private String col3;
+	private String col4;
+	private String col5;
+	private String col6;
+	private String col7;
+	private String col8;
+	public String getCol1() {
+		return col1;
 	}
-	public void setCdPlacaVehiculo(String cdPlacaVehiculo) {
-		this.cdPlacaVehiculo = cdPlacaVehiculo;
+	public void setCol1(String col1) {
+		this.col1 = col1;
 	}
-	public String getCdVin() {
-		return cdVin;
+	public String getCol2() {
+		return col2;
 	}
-	public void setCdVin(String cdVin) {
-		this.cdVin = cdVin;
+	public void setCol2(String col2) {
+		this.col2 = col2;
 	}
-	public String getCdTarjetaCirculacion() {
-		return cdTarjetaCirculacion;
+	public String getCol3() {
+		return col3;
 	}
-	public void setCdTarjetaCirculacion(String cdTarjetaCirculacion) {
-		this.cdTarjetaCirculacion = cdTarjetaCirculacion;
+	public void setCol3(String col3) {
+		this.col3 = col3;
 	}
-	public String getNbMarca() {
-		return nbMarca;
+	public String getCol4() {
+		return col4;
 	}
-	public void setNbMarca(String nbMarca) {
-		this.nbMarca = nbMarca;
+	public void setCol4(String col4) {
+		this.col4 = col4;
 	}
-	public String getNbSubMarca() {
-		return nbSubMarca;
+	public String getCol5() {
+		return col5;
 	}
-	public void setNbSubMarca(String nbSubMarca) {
-		this.nbSubMarca = nbSubMarca;
+	public void setCol5(String col5) {
+		this.col5 = col5;
 	}
-	public String getCdModelo() {
-		return cdModelo;
+	public String getCol6() {
+		return col6;
 	}
-	public void setCdModelo(String cdModelo) {
-		this.cdModelo = cdModelo;
+	public void setCol6(String col6) {
+		this.col6 = col6;
 	}
-	public String getCdCentroInstalacion() {
-		return cdCentroInstalacion;
+	public String getCol7() {
+		return col7;
 	}
-	public void setCdCentroInstalacion(String cdCentroInstalacion) {
-		this.cdCentroInstalacion = cdCentroInstalacion;
+	public void setCol7(String col7) {
+		this.col7 = col7;
 	}
-	public String getNbCentroInstalacion() {
-		return nbCentroInstalacion;
+	public String getCol8() {
+		return col8;
 	}
-	public void setNbCentroInstalacion(String nbCentroInstalacion) {
-		this.nbCentroInstalacion = nbCentroInstalacion;
-	}
-	public String getCdKitInstalacion() {
-		return cdKitInstalacion;
-	}
-	public void setCdKitInstalacion(String cdKitInstalacion) {
-		this.cdKitInstalacion = cdKitInstalacion;
-	}
-	public String getIdPlan() {
-		return idPlan;
-	}
-	public void setIdPlan(String idPlan) {
-		this.idPlan = idPlan;
-	}
-	public String getCdPlan() {
-		return cdPlan;
-	}
-	public void setCdPlan(String cdPlan) {
-		this.cdPlan = cdPlan;
-	}
-	public String getNbPlan() {
-		return nbPlan;
-	}
-	public void setNbPlan(String nbPlan) {
-		this.nbPlan = nbPlan;
+	public void setCol8(String col8) {
+		this.col8 = col8;
 	}
 	
-	
-
 }

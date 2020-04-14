@@ -25,4 +25,6 @@ public interface FileStorageService {
 	String almacenarArchivo(MultipartFile archivoLote) throws BusinessException;
 
 	Path getRutaAlmacenamiento(TipoDirectorioStorageEnum tipoDirectorio) throws BusinessException;
+	
+	String getPrefijoNbArchivo() throws BusinessException;
 }
