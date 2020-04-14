@@ -653,6 +653,11 @@ appt.directive('updateImage',
 					 scope.showModalBuild=true;					 
 					 if(scope.listImages == undefined || scope.listImages.length == 0)
 						  await scope.getImagesByLevel();
+					 else{
+						 $timeout(function() {
+							 $('#'+scope.idElementUp+'modalUpdateImage').modal('show');
+			     		 },100);
+					 }
 				 }else if(scope.redirec){
 					 let paramConfSav=scope.defineConsultaImagenesNivel();
 					 paramConfSav.locatinPrev=$location.path();
