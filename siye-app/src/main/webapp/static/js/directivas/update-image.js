@@ -46,6 +46,7 @@ appt.directive('updateImage',
 	        isIncidencia:'='
 	      },
 	       replace: true,
+	       terminal: true,
 	       transclude: true,
 	      template:'<div id="containerDirective"></div>',
 	      link: function(scope, $element, attrs) {
@@ -154,9 +155,11 @@ appt.directive('updateImage',
 		    					  
 		    					  if(item.idTipoExpediente == a[i].idTipoExpediente){
 		    						  $timeout(function() {
-			    						  item.tipoExpediente =a[i];
-			    						  $("#select2-tpDoc"+item.unic+scope.idElementUp+"-container").text(item.tipoExpediente.nbTipoExpediente); 
-		    						  },2000);
+		    							  scope.$apply(function() {
+		    								  item.tipoExpediente =a[i];
+				    						  $("#select2-tpDoc"+item.unic+scope.idElementUp+"-container").text(item.tipoExpediente.nbTipoExpediente);
+		    								});
+		    						  },100);
 		    						  break;
 		    					  }
 		    				  }
@@ -168,7 +171,7 @@ appt.directive('updateImage',
 		    	  });
 	    	  };
 	    	  
-	    	  scope.$watch('listImages', function(newVaue,oldValue) {
+	    	  /*scope.$watch('listImages', function(newVaue,oldValue) {
 	    		  
 	    		  if(newVaue == undefined && oldValue != undefined){
 	    			  scope.listImages=new Array();
@@ -182,7 +185,7 @@ appt.directive('updateImage',
 	    				  intDirective();
 	    			  }
 	    		  }
-			  });
+			  });*/
 	    	  
 	    	  isEqualsList=function(newValue,oldValue){
 	    		  
@@ -481,6 +484,17 @@ appt.directive('updateImage',
 		    	 serviceSave(listImages);
 		     };
 		     
+		     //metodo que se crea con alcance de controller padre, se puede invocar desde el controller
+		     scope.$parent.$parent.isValidFormImages=function(){
+		    	 if(scope.formTpDocument.$invalid){
+		    		 	showAlert.requiredFields(scope.formTpDocument);
+		    		 	growl.error('Formulario incompleto');
+		              return false; 
+		    	 }
+		    	 
+		    	 return true;
+		     };
+		     
 		   //Funcion para guardar las imagenes, se valida si se tiene una funcion en especifico
 		     scope.saveImagesAll=function(form){
 		    	 
@@ -632,12 +646,15 @@ appt.directive('updateImage',
 		     
 		   //FUNCIONES DEL MODAL
 			 //Funcion que muestra el modal
-			 $(btnModal).on('click', function() {
+			 $(btnModal).on('click', async function() {
 				 if(scope.redirec == undefined || scope.showInModal){
+					 
+					 if(scope.listImages == undefined || scope.listImages.length == 0)
+						  await getImagesByLevel();
 					 scope.showModalBuild=true;
 					 $timeout(function() {
 						 $('#'+scope.idElementUp+'modalUpdateImage').modal('show');
-		     		 },100);
+		     		 },200);
 				 }else if(scope.redirec){
 					 let paramConfSav=defineConsultaImagenesNivel();
 					 paramConfSav.locatinPrev=$location.path();
@@ -659,20 +676,50 @@ appt.directive('updateImage',
 			 defineConsultaImagenesNivel=function(){
 				 let paramConfSav={};
 				 paramConfSav.cdOs=scope.paramConfSav.idOrdenServ;
-				 paramConfSav.cdNivel='CDOS';
+				 paramConfSav.cdNivel='ORDEN_SERVICIO';
 				 paramConfSav.valor=null;
 				 if(scope.paramConfSav.idPregunta != undefined){//nivel pregunta
-					 paramConfSav.cdNivel='CDPREGUNTA';
+					 paramConfSav.cdNivel='PREGUNTA';
 					 paramConfSav.valor=scope.paramConfSav.idPregunta;
 				 }else if(scope.paramConfSav.idEncuesta != undefined){//nivel encuesta
-					 paramConfSav.cdNivel='CDENCUESTA';
+					 paramConfSav.cdNivel='ENCUESTA';
 					 paramConfSav.valor=scope.paramConfSav.idPregunta;
 				 }else if(scope.paramConfSav.idProceso){// nivel prceso
-					 paramConfSav.cdNivel='CDPROCESO';
+					 paramConfSav.cdNivel='PROCESO';
 					 paramConfSav.valor=scope.paramConfSav.idPregunta;
 				 }
 				 
 				 return paramConfSav;
+			 }
+			 
+			 getImagesByLevel=function(){
+				 let paramSearch=defineConsultaImagenesNivel();
+				 
+				 expedienteService.getInfoOsNivel(paramSearch.cdOs,paramSearch.cdNivel,paramSearch.valor)
+					.success(function(reponse){
+						scope.listImages=reponse;
+						complementsDataImage();
+				  }).error(function(e){
+					  scope.listImages=[];
+					  if(e.status != undefined){
+			    			 if(e.status.descripcion != undefined){
+				                	growl.error(e.status.descripcion,{ ttl: 4000 });
+				                }else if(e.status.message != undefined) {
+				                	growl.error(e.status.message,{ ttl: 4000 });
+				                }else if(typeof status === 'string'){
+				                	growl.error(status,{ ttl: 4000 });
+				                }else {showAlert.error('Falló la petición');} 
+			    		 }else{
+			    			 if(e.descripcion != undefined){
+				                	growl.error(e.descripcion,{ ttl: 4000 });
+				                }else if(e.message != undefined) {
+				                	growl.error(e.message,{ ttl: 4000 });
+				                }else if(typeof e === 'string'){
+				                	growl.error(e,{ ttl: 4000 });
+				                }else {showAlert.error('Falló la petición');}
+			    		 }
+				  });
+				 
 			 }
 			 
 			 scope.cerrarModal=function(){
