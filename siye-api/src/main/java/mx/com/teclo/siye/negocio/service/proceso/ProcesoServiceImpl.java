@@ -227,9 +227,12 @@ public class ProcesoServiceImpl implements ProcesoService {
 		Boolean seEncontroActiva=false;
 		if(encuestasByUsuario.size()>0)
 		{
+			
+			
 				for(ProcesoEncuestaVO actual:encuestasByProceso )
 				{
-					
+					actual.setFechaInicioProceso(obtenerFechaInicioProceso(actual.getIdProceso().getIdProceso(),encuestasByUsuario.get(0).getOrdenServicio().getIdOrdenServicio()));
+					actual.setFechaFinProceso(obtenerFechaFinProceso(actual.getIdProceso().getIdProceso(),encuestasByUsuario.get(0).getOrdenServicio().getIdOrdenServicio()));
 
 							for(OrdenEncuestaDTO encuestas:encuestasByUsuario)
 							{
@@ -252,6 +255,12 @@ public class ProcesoServiceImpl implements ProcesoService {
                           
 								if(actual.getIdEncuesta().getIdEncuesta()==encuestas.getEncuesta().getIdEncuesta()) {
 									actual.setStSatisfaccion(encuestas.getStAplicaEncuesta());
+								}
+								
+								if(actual.getIdEncuesta().getIdEncuesta()==encuestas.getEncuesta().getIdEncuesta())
+								{
+									actual.getIdEncuesta().setFechaInicioEncuesta(obtenerFechaInicioEncuesta(encuestas.getIdUsuarioEncuesta()));
+								    actual.getIdEncuesta().setFechaFinEncuesta(obtenerFechaFinEncuesta(encuestas.getIdUsuarioEncuesta()));
 								}
 
 
@@ -317,9 +326,9 @@ public class ProcesoServiceImpl implements ProcesoService {
 			Boolean tieneSatisfaccion=false;
 			ProcesoEncuestaDTO encuestaSatisfaccion=new ProcesoEncuestaDTO();
 			
+			
 			OrdenServicioDTO orden=ordenServicioDAO.obtenerOrdenServicio(idOrdenServicio);
 			List<ProcesoEncuestaDTO> procesoEncuestas=procesoEncuestaDAO.obtenerEncuestasProceso(orden.getProceso().getIdProceso());
-
 			//Se remueve de los procesos las encuestas de satisfaccion para no tomarlas encuenta
 	           for(ProcesoEncuestaDTO actual:procesoEncuestas)
 	           {
@@ -406,7 +415,25 @@ public class ProcesoServiceImpl implements ProcesoService {
 	      }
 				
 				
+		public Date obtenerFechaInicioProceso(Long idProceso,Long idOrden)
+		{
+			return servicioEncuestasMyBatisDAO.getFechaInicioProceso(idProceso, idOrden);
+		}
 		
+		public Date obtenerFechaFinProceso(Long idProceso,Long idOrden)
+		{
+			return servicioEncuestasMyBatisDAO.getFechaFinProceso(idProceso, idOrden);
+		}
+		
+		public Date obtenerFechaInicioEncuesta(Long idOdsEncuesta)
+		{
+			return servicioEncuestasMyBatisDAO.getFechaInicioEncuesta(idOdsEncuesta);
+		}
+		
+		public Date obtenerFechaFinEncuesta(Long idOdsEncuesta)
+		{
+			return servicioEncuestasMyBatisDAO.getFechaFinEncuesta(idOdsEncuesta);
+		}
 	
 		
 

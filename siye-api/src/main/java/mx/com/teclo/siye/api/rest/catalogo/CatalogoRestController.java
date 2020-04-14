@@ -137,5 +137,12 @@ public class CatalogoRestController {
 		}
 		return new ResponseEntity<List<CatTipoFechasVO>>(fechas, HttpStatus.OK);
 	}
+	
+
+	@RequestMapping(value = "/getNuMaxImgIncidencia", method =  RequestMethod.GET)
+	public ResponseEntity<List<ConfiguracionVO>> getNuMaxImgIncidencia()  throws NotFoundException {
+		List<ConfiguracionVO> listConfiguracionVO = catalogoService.configuracionIncidencia("TIE051D_NU_MAX_IMAGENES", "TIE051D_IMG_REQ");
+		return new ResponseEntity<List<ConfiguracionVO>>(listConfiguracionVO, HttpStatus.OK);
+	}
 
 }
