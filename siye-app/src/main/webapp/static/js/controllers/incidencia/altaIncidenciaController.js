@@ -14,7 +14,7 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
 		idPregunta:null,			
 		idIncidencia: null
 	});
-	
+	$scope.conServicio = false;	
 	$scope.paramConfiguracion = new Object({
 		maxSizeMb: 2,			
         maxNuImage: 1,
@@ -41,18 +41,17 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
 		if(opc == 1){
 			$timeout(() => {
 			$scope.listOrden.push({idOrdenServicio: 0, cdOrdenServicio: "SIN ORDEN SERVICIO"});
+			orderByAsc($scope.listOrden, "idOrdenServicio");
 			if(dataInfo.idOrden){
 				$scope.conServicio = true;
 				let orden = filtroBuscar($scope.listOrden, "idOrdenServicio", dataInfo.idOrden)
 				if(orden){
-					orderByAsc($scope.listOrden, "idOrdenServicio");
 					$scope.registroIncidencia.orden = orden; 
 					$("#select2-orden-container").text(orden.cdOrdenServicio);
 				}
 			}else{
-				$scope.registroIncidencia.orden = {idOrdenServicio: 0, cdOrdenServicio: "SIN ORDEN SERVICIO"}; 
+				$scope.registroIncidencia.orden = $scope.listOrden[0]; 
 				$("#select2-orden-container").text("SIN ORDEN SERVICIO");
-				orderByAsc($scope.listOrden, "idOrdenServicio");
 			}
 			$scope.registroIncidencia.modAten = $scope.listModAten[0]; 
 			$("#select2-modAten-container").text($scope.registroIncidencia.modAten.nbCentroInstalacion);
@@ -61,7 +60,7 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
 			orderByAsc($scope.listTecnico, "idPersona");
 			$scope.listTransportista.push({idConductor: 0, nbConductor: "SIN TRANSPORTISTA", nbApepatConductor: "", nbApematConductor: ""})
 			orderByAsc($scope.listTransportista, "idConductor");
-			},1500);
+			},1000);
 		}else{
 			if(dataInfo.idOrden){
 				let orden = filtroBuscar($scope.listOrden, "idOrdenServicio", dataInfo.idOrden)
