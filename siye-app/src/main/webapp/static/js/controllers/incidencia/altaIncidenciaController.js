@@ -125,13 +125,17 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
 				tpIncidencia: $scope.registroIncidencia.tpIncidencia ? $scope.registroIncidencia.tpIncidencia : null,
 				prioridad: $scope.registroIncidencia.prioridad ? $scope.registroIncidencia.prioridad : null,
 				descripcion: $scope.registroIncidencia.txDescripcion,
-				listImagen: $scope.listImages
+				listImagen: $scope.listImages,
+				idOrdenServicio: dataInfo.idOrden,
+				idProceso: dataInfo.idProceso,
+				idEncuesta: dataInfo.idEncuesta,
+				idPregunta: dataInfo.idPregunta
         }
 
         altaIncidenciaService.altaIncidencia(altaIncidencia).success(function(data) {
             if (data) {
             	growl.success("La incidencia ha sido guardado correctamente", { ttl: 5000 });
-            	$scope.totalLength = 1200;
+            	$scope.contador = $scope.totalLength;
             	$scope.formAltaIncidencia.$setPristine();
         		$scope.registroIncidencia = {};
         		$("#select2-tipoIncidencia-container").text('Seleccione una opción');

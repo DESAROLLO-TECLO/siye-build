@@ -517,8 +517,9 @@ $scope.uncheckOpcion=function(){
 					$scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].opciones[k].stMarcado = 0;
 					$scope.preguntasContestadasEncuesta--
 					$scope.encuestaDetalle.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas--
+					return;
 				}
-				return;
+				
 			}
 		}
 	}
