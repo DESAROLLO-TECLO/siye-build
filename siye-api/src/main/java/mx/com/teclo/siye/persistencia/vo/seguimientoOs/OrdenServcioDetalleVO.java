@@ -2,9 +2,13 @@ package mx.com.teclo.siye.persistencia.vo.seguimientoOs;
 
 public class OrdenServcioDetalleVO {
 
-	private Long nuOrdenServicio;
+	private String nuOrdenServicio;
 	private String fechaAtencion;
+	private String txTransportista;
 	private String txPlaca;
+	private String txtRepresentante;
+	private String txSupervisor;
+	private String txTecnicoInstalacion;
 	private String txProceso;
 	private String txEtapa;
 	private Long nuIncidencia;
@@ -14,13 +18,13 @@ public class OrdenServcioDetalleVO {
 	/**
 	 * @return the nuOrdenServicio
 	 */
-	public Long getNuOrdenServicio() {
+	public String getNuOrdenServicio() {
 		return nuOrdenServicio;
 	}
 	/**
 	 * @param nuOrdenServicio the nuOrdenServicio to set
 	 */
-	public void setNuOrdenServicio(Long nuOrdenServicio) {
+	public void setNuOrdenServicio(String nuOrdenServicio) {
 		this.nuOrdenServicio = nuOrdenServicio;
 	}
 	/**
@@ -94,6 +98,54 @@ public class OrdenServcioDetalleVO {
 	 */
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	/**
+	 * @return the txTransportista
+	 */
+	public String getTxTransportista() {
+		return txTransportista;
+	}
+	/**
+	 * @param txTransportista the txTransportista to set
+	 */
+	public void setTxTransportista(String txTransportista) {
+		this.txTransportista = txTransportista;
+	}
+	/**
+	 * @return the txtRepresentante
+	 */
+	public String getTxtRepresentante() {
+		return txtRepresentante;
+	}
+	/**
+	 * @param txtRepresentante the txtRepresentante to set
+	 */
+	public void setTxtRepresentante(String txtRepresentante) {
+		this.txtRepresentante = txtRepresentante;
+	}
+	/**
+	 * @return the txSupervisor
+	 */
+	public String getTxSupervisor() {
+		return txSupervisor;
+	}
+	/**
+	 * @param txSupervisor the txSupervisor to set
+	 */
+	public void setTxSupervisor(String txSupervisor) {
+		this.txSupervisor = txSupervisor;
+	}
+	/**
+	 * @return the txTecnicoInstalacion
+	 */
+	public String getTxTecnicoInstalacion() {
+		return txTecnicoInstalacion;
+	}
+	/**
+	 * @param txTecnicoInstalacion the txTecnicoInstalacion to set
+	 */
+	public void setTxTecnicoInstalacion(String txTecnicoInstalacion) {
+		this.txTecnicoInstalacion = txTecnicoInstalacion;
 	}
 	
 }

@@ -347,8 +347,10 @@ public class CatalogoServiceImpl implements CatalogoService{
 				e.setCdTipoFecha(fecha.getCdTipoFecha());
 				e.setNbTipoFecha(fecha.getNbTipoFecha());
 				List<String> rango = rutinas.generaRangoFechas(fecha.getIdTipoFecha());
-				e.setFechaInicio(rango.get(0));
-				e.setFechaFin(rango.get(1));
+				if(!rango.isEmpty()) {
+					e.setFechaInicio(rango.get(0));
+					e.setFechaFin(rango.get(1));					
+				}
 				respuesta.add(e);
 			}
 		}

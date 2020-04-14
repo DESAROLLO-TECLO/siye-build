@@ -4,6 +4,8 @@ import java.util.List;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDao;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServcioDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.SeguimientoOrdenServicioVO;
 
 public interface OrdenServicioDAO extends BaseDao<OrdenServicioDTO>{
 
@@ -92,6 +94,26 @@ public interface OrdenServicioDAO extends BaseDao<OrdenServicioDTO>{
      * @return OrdenServicioDTO
      * */
 	public OrdenServicioDTO obtenerOrdenServicioCD_ORDEN_SERVICIO(String  cdOrdenServicio);
+	
+	/**
+     * Descripción: Detalle de la OS, por centro de instalacion y fecha de la cita 
+     * @author Maverick
+     * @param List<Long> idCentroInstalacion
+     * @return fechaInicio, fechaFin
+     * @return List<OrdenServcioDetalleVO>
+     * */
+	public List<OrdenServcioDetalleVO> getDetalleOS(Long idCentroInstalacion, String fechaInicio, String fechaFin);
+	
+	/**
+     * Descripción:Totales de operacion por OS 
+     * @author Maverick
+     * @param String consulta
+     * @param String fechaInicio
+     * @param Strin fechaFin
+     * @param List<Long> idCentroInstalacion
+     * @return List<SeguimientoOrdenServicioVO>
+     * */
+	public List<SeguimientoOrdenServicioVO> getInfoSeguimientoGeneral(StringBuilder consulta, List<Long> CentroInstalacion, List<String> columnas);
 	
 
 
