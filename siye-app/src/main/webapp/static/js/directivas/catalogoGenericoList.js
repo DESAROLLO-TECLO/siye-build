@@ -7,39 +7,8 @@
  */
   /*
          *-------------------Ejemplo Con el Componente select2-----------------------*
-         *			<div class="col-md-3">
-			<div class="form-group">
-				<label>
-					Tipo Persona 1
-				</label>
-				<div class="input-group">
-					<div class="input-group-addon">
-						<i class="fa fa-list-ul"></i>
-					</div>
-					<select name="persona2" id="persona2" class="form-control" select2
-						idioma-s2="{{currentLanguage}}"
-						ng-model="select2" 
-						catalogo-generico-list
-						param-busq="1"
-						name-consult-service="'catalogoGenericoService'" 
-						name-consult-end-point-service="'getTecnicos'" 
-						name-save-service="'instaladorService'"
-						name-save-end-point-service="'nuevoInstalador'" 
-						model-result="selectList2"
-						opcion-selec="select2"
-						object-id="'idPersona'"
-						idbtn="'btnTrans2'"
-						ng-options="x as x.nbPersona for x in selectList2">
-						<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
-					</select>
-					<div class="input-group-btn">
-						<label  id="btnTrans2" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></label>
-					</div>
-				</div>
-			
-			</div>
-				VALOR DEL MODELO2:{{select2}}
-		</div>*/
+      
+		*/
 
 angular.module(appTeclo).directive('catalogoGenericoList', function($injector) {
     return {
