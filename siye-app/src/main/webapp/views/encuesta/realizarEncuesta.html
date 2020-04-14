@@ -157,7 +157,7 @@
 			</div>
 		</div>
 		
-		<div style="position: absolute; bottom: 0;">
+		<div class="col-xs-12 col-md-offset-1 col-md-10" style="position: absolute; bottom: 0;">
 			<div class="centerRow">
 				<div ng-if="preguntasContestadasEncuesta===encuesta.nuPreguntas"
 					class="w-100">
@@ -186,10 +186,10 @@
 						<div style="display: block;">Regresar</div>
 					</button>
 				</div>
-				<div style="margin: 0 auto;">
-					Mostrar Ayuda <input id="checked" type="checkbox" ng-model="myVar"
-						ng-init="myVar = false" ng-click="mostarTooltip()" />
-				</div>
+<!-- 				<div style="margin: 0 auto;"> -->
+<!-- 					Mostrar Ayuda <input id="checked" type="checkbox" ng-model="myVar" -->
+<!-- 						ng-init="myVar = false" ng-click="mostarTooltip()" /> -->
+<!-- 				</div> -->
 			</div>
 		</div>
 
@@ -209,38 +209,54 @@
 
 							<td ng-class="{ 'has-error' : evaluacion.{{'valueOption'+$index}}.$invalid && evaluacion.{{'customValue'+$index}}.$dirty}">
 								<span class="text-15">{{respuesta.txPregunta}}</span>
-								<ul>
+								<ul style="padding-left: 0px;">
 									<li style="list-style: none; margin-top: 1%; margin-bottom: 2%;"
 										ng-repeat="opciones in respuesta.opciones">
-										
-										<div ng-if="!opciones.cdMostrarCausas" style="display: inline-block;">
-											<label class="content-input"> 
-												<input type="radio" name="{{respuesta.txPregunta}}"
-													id="{{opciones.idOpcion}}" ng-value=1
-													ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
-													ng-model="opciones.stMarcado"
-													ng-checked="opciones.stMarcado">
-													{{opciones.txOpcion}} <i></i>
-											</label>
-										</div>
-										<div ng-if="opciones.cdMostrarCausas" style="display: inline-block;">
-											<label class="content-input"> 
-												<input type="radio" name="{{respuesta.txPregunta}}"
-													id="{{opciones.idOpcion}}" ng-value=1
-													ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
-													ng-model="opciones.stMarcado"
-													ng-checked="opciones.stMarcado"
-													data-toggle="modal" data-target="#myModal">
-													{{opciones.txOpcion}} <i></i>
-											</label>
-										</div>
-										<div ng-if="opciones.causas" style="display: inline-block;">
-											<button type="button" class="btn btn-primary"
-												data-toggle="modal" data-target="#myModal"
-												ng-click="cargarCausas(opciones,respuesta)">
-												Ver Detalle
-											</button>
-										</div>
+<!-- 										<div class="row"> -->
+											<div class="col-xs-9 col-md-9">
+												<div ng-if="!opciones.cdMostrarCausas || (opciones.cdMostrarCausas && opciones.causas)" style="display: inline-block;">
+													<label class="content-input" style="margin-bottom: 8px;"> 
+														<input type="radio" name="{{respuesta.txPregunta}}"
+															id="{{opciones.idOpcion}}" ng-value=1
+															ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
+															ng-model="opciones.stMarcado"
+															ng-checked="opciones.stMarcado">
+															{{opciones.txOpcion}}<i></i>
+													</label>
+												</div>
+												<div ng-if="opciones.cdMostrarCausas && !opciones.causas" style="display: inline-block;">
+													<label class="content-input" style="margin-bottom: 8px;"> 
+														<input type="radio" name="{{respuesta.txPregunta}}"
+															id="{{opciones.idOpcion}}" ng-value=1
+															ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
+															ng-model="opciones.stMarcado"
+															ng-checked="opciones.stMarcado"
+															data-toggle="modal" data-target="#myModal">
+															{{opciones.txOpcion}} <i></i>
+															<div ng-if="opciones.stMarcado" ng-style="{color:'red'}">
+																Es necesario especificar una causa
+															</div>
+													</label>
+												</div>
+											</div>
+											<div class="col-xs-2 col-md-2">
+												<div ng-if="opciones.cdMostrarCausas && opciones.causas" style="display: inline-block;">
+													<button type="button" class="btn btn-primary"
+														data-toggle="modal" data-target="#myModal"
+														ng-click="cargarCausas(opciones,respuesta)">
+														Ver Detalle
+													</button>
+												</div>
+												<div ng-if="opciones.stMarcado && opciones.cdMostrarCausas && !opciones.causas" style="display: inline-block;">
+													<button type="button" class="btn btn-warning"
+														data-toggle="modal" data-target="#myModal"
+														ng-click="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')">
+														Ver Detalle
+													</button>
+													
+												</div>
+											</div>
+<!-- 										</div> -->
 									</li>
 								</ul>
 							</td>

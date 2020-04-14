@@ -127,5 +127,157 @@
 			</div>
 		</div>
 	</section>
+	
+	 <!--  
+<div class="row">
+<div class="col-md-3">
+<div class="form-group">
+<label>
+Tipo Persona 1
+</label>
+<div class="input-group">
+<div class="input-group-addon">
+<i class="fa fa-list-ul"></i>
+</div>
+<select name="persona1" id="persona1" class="form-control" select2
+idioma-s2="{{currentLanguage}}"
+ng-model="select1"
+catalogo-generico-list
+name-consult-service="'catalogoGenericoService'"
+name-consult-end-point-service="'getTransportistas'"
+name-save-service="'conductorService'"
+name-save-end-point-service="'nuevoConductor'"
+model-result="selectList"
+opcion-selec="select1"
+object-id="'idConductor'"
+idbtn="'btnTrans'"
+ng-options="x as x.nbConductor+' '+x.nbApepatConductor+' '+x.nbApematConductor for x in selectList">
+<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+</select>
+<div class="input-group-btn">
+<label   id="btnTrans" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></label>
+</div>
+</div>
+
+</div>
+VALOR DEL MODELO1:{{select1}}
+</div>
+</div>
+-->
+
+<div class="row">
+<div class="col-md-3">
+<div class="form-group">
+<label>
+Tipo Persona 1(TECNICO)
+</label>
+<div class="input-group">
+<div class="input-group-addon">
+<i class="fa fa-list-ul"></i>
+</div>
+<select name="tecnico" id="tecnico" class="form-control" select2
+idioma-s2="{{currentLanguage}}"
+ng-model="tecnico"
+catalogo-generico-list
+param-busq="1"
+name-consult-service="'catalogoGenericoService'"
+name-consult-end-point-service="'getTecnicos'"
+name-modal="'Tecnico'"
+model-result="listTecnico"
+opcion-selec="tecnico"
+idbtn="'btnTecnico'"
+ng-options="x.idPersona as x.nbPersona+' '+x.nbPatPersona+' '+x.nbMatPersona+' ('+x.cdPersona+')' for x in listTecnico">
+<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+</select>
+<div class="input-group-btn">
+<label  id="btnTecnico" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></label>
+</div>
+</div>
+
+</div>
+VALOR DEL MODELO2:{{tecnico}}
+</div>
+</div>
+
+<!--tipo persona 2  -->
+<div class="row">
+<div class="col-md-3">
+<div class="form-group">
+<label>
+Transportista:
+</label>
+<div class="input-group">
+<div class="input-group-addon">
+<i class="fa fa-list-ul"></i>
+</div>
+<select name="transportista" id="transportista" class="form-control" select2
+idioma-s2="{{currentLanguage}}"
+ng-model="transportista"
+catalogo-generico-list
+name-modal="'Transportista'"
+name-consult-service="'catalogoGenericoService'"
+name-consult-end-point-service="'getTransportistas'"
+name-save-service="'conductorService'"
+name-save-end-point-service="'nuevoConductor'"
+model-result="listTrans"
+opcion-selec="transportista"
+
+idbtn="'btntrans'"
+ng-options="x as x.nbConductor+' '+x.nbApepatConductor+' '+x.nbApematConductor for x in listTrans">
+<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+</select>
+<div class="input-group-btn">
+<label  id="btntrans" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></label>
+</div>
+</div>
+
+</div>
+VALOR DEL MODELO2:{{transportista}}
+</div>
+</div>
+
+<!--  -->
+
+
+
+<!--tipo persona 2  -->
+<div class="row">
+<div class="col-md-3">
+<div class="form-group">
+<label>
+Tipo Persona 3(KIT)
+</label>
+<div class="input-group">
+<div class="input-group-addon">
+<i class="fa fa-list-ul"></i>
+</div>
+<select name="kit" id="kit" class="form-control" select2
+idioma-s2="{{currentLanguage}}"
+ng-model="kit"
+catalogo-generico-list
+param-busq="3"
+name-modal="'Kit'"
+name-consult-service="'catalogoGenericoService'"
+name-consult-end-point-service="'getTecnicos'"
+name-save-service="'instaladorService'"
+name-save-end-point-service="'nuevoInstalador'"
+model-result="listKit"
+opcion-selec="kit"
+object-id="'idPersona'"
+idbtn="'btnKit'"
+ng-options="x as x.nbPersona+' '+x.nbPatPersona+' '+x.nbMatPersona +' ('+x.cdPersona+')' for x in listKit">
+<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+</select>
+<div class="input-group-btn">
+<label  id="btnKit" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></label>
+</div>
+</div>
+
+</div>
+VALOR DEL MODELO2:{{kit}}
+</div>
+</div>
+
+<!--  -->
 </body>
 </html>

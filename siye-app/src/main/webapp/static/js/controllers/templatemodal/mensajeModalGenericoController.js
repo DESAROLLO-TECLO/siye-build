@@ -29,7 +29,12 @@ angular.module(appTeclo).controller('mensajeModalGenericoController', function($
 				consultService[nameConsultEmpServ](idTipo).success(function (data) {
 					newData.newList=data;
 					newData.existe=false;
-					growl.success("Se guardo registro con Folio:"+newData.newObject.cdPersona,{ ttl: 8000 });
+					if ($scope.flagBusqueda) {
+						growl.success("Se guardo registro con Folio: "+newData.newObject.cdPersona,{ ttl: 8000 });
+					}else{
+						growl.success("Se guardo registro",{ ttl: 1000 });
+
+					}
 					$('.modal-backdrop').remove();
 					close(newData,100);
 					}).error(function (data) {
