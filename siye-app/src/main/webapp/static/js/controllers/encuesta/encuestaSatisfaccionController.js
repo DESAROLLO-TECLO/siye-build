@@ -20,9 +20,9 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 	};
 	$scope.paramConfigPage = {
 		bigCurrentPage : 1,
-		bigTotalItems : 12,
-		itemsPerPage : 4,
-		maxSize : 12,
+		bigTotalItems : 0,
+		itemsPerPage : 0,
+		maxSize : 0,
 		tiempoEncuesta : 0,
 		tiempoReanuda : false,
 		tiempoCorriendo : false,
@@ -537,4 +537,26 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
         $scope.controllerActual = 'NA';
         $scope.banderaPantalla=false;
     };
+    
+	$scope.getNumPreguntasPorSeccion=function(cdParametro){
+		encuestaSatisfaccionService.getNumPreguntasPorSeccion(cdParametro).success(function(data) {
+		 var a=parseInt(data.cdValorPConfig);
+		 $scope.paramConfigPage.itemsPerPage=a;
+		}).error(function(data) {
+		  growl.warning(data.message);
+		});
+	};
+
+	$scope.getNumMaxPaginacion=function(cdParametro){
+		encuestaSatisfaccionService.getNumPreguntasPorSeccion(cdParametro).success(function(data) {
+		 var b=parseInt(data.cdValorPConfig);
+		 $scope.paramConfigPage.maxSize=b;
+		}).error(function(data) {
+		  growl.warning(data.message);
+		});
+	};
+	
+	$scope.getNumPreguntasPorSeccion('NU_PAGINACION_E_SATISFACCION');
+	$scope.getNumMaxPaginacion('NU_MAX_PAG_E_SATISFACCION');
+    
 });
