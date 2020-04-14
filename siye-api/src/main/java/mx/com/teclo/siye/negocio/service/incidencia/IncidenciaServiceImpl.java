@@ -12,6 +12,7 @@ import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
+import mx.com.teclo.siye.negocio.service.catalogo.CatalogoService;
 import mx.com.teclo.siye.negocio.service.expedienteImg.ExpedienteImgService;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
