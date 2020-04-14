@@ -1,4 +1,5 @@
 angular.module(appTeclo).controller('mensajeModalGenericoController', function($scope, $element,nameModal, idTipo,saveService,consultService, nameSaveEmpServ,nameConsultEmpServ, close,growl,showAlert,catalogoGenericoService) {
+	$scope.flagBusqueda=idTipo==null?false:true;
 	$scope.flagCdUsuario=false;
 	$scope.nameModal=nameModal;
 	$scope.flagBtnGuardar=false;
