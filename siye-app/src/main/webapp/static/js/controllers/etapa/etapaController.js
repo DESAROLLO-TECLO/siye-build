@@ -2,7 +2,14 @@ angular.module(appTeclo)
 .controller("etapaController",
 function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, etapaInfo,encuestaService) {
 
-    $scope.fechaHoy = new Date();
+    $scope.finicio = etapaInfo.data[0].fhAtencionIni;
+    $scope.ffin = etapaInfo.data[0].fhAtencionFin;
+    if($scope.finicio != null && $scope.ffin != null){
+        $scope.fechaHoy = $scope.finicio - $scope.ffin;
+    }else{
+        $scope.fechaHoy = null;
+        $scope.fechaHoyText = "Sin Validar";
+    }
     $scope.stValidarCheck = false;
 
     $scope.numMaxImg = 3;

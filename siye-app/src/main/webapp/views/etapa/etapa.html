@@ -57,9 +57,16 @@
                                         <div class="form-group" style="display: block; float:right;">
                                             <span class="glyphicon glyphicon glyphicon-time" aria-hidden="true"></span>
                                             <label>
-                                                <span class="etapa-texto">
-                                                    Fecha: {{fechaHoy | date:" dd / MM / yyyy"}}
-                                                </span>
+                                                <div ng-if="fechaHoy != null">
+                                                    <span class="etapa-texto">
+                                                        Fecha: {{fechaHoy | date:" dd / MM / yyyy - hh:mm:ss"}}
+                                                    </span>
+                                                </div>
+                                                <div ng-if="fechaHoy == null">
+                                                    <span class="etapa-texto">
+                                                        {{fechaHoyText}}
+                                                    </span>
+                                                </div>
                                             </label>
                                         </div>
                                     </div>
