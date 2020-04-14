@@ -499,10 +499,12 @@ public class EncuestaServiceImpl implements EncuestaService {
 				uDTO.setFhLectura(new Date());
 				usuarioEncuestaRespuestaDAO.update(uDTO);	
 			}
-			
+
 			//Se agrega apartado para agregar las causas
 			if(urVO.getCausas()!=null)
 			{
+			uDTO.setDescripcionCausa(urVO.getDescripcionCausa());
+			usuarioEncuestaRespuestaDAO.update(uDTO);
 			List<IERespCausaDTO> listCausasAnteriores= new ArrayList<IERespCausaDTO>();
 			listCausasAnteriores=iERespCausaDAO.obtenerResCausaAnterior(ueDTO.getIdUsuEncuIntento(), eDTO.getIdEncuesta(), sDTO.getIdSeccion(), pDTO.getIdPregunta());			
 			String[] causasString=urVO.getCausas().split(",");
@@ -534,6 +536,8 @@ public class EncuestaServiceImpl implements EncuestaService {
 					 }
 			}else
 			{
+				uDTO.setDescripcionCausa(null);
+				usuarioEncuestaRespuestaDAO.update(uDTO);
 				List<IERespCausaDTO> listCausasAnteriores= new ArrayList<IERespCausaDTO>();
 				listCausasAnteriores=iERespCausaDAO.obtenerResCausaAnterior(ueDTO.getIdUsuEncuIntento(), eDTO.getIdEncuesta(), sDTO.getIdSeccion(), pDTO.getIdPregunta());			
 				 if(listCausasAnteriores.size()>0)
