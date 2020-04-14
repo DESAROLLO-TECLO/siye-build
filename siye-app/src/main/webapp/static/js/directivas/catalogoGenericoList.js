@@ -113,7 +113,8 @@ angular.module(appTeclo).directive('catalogoGenericoList', function($injector) {
     					   if(datos.existe===false){
     						   scope.modelResult=datos.newList;
     					   }
-    					   $("#select2-"+nameContex+"-container").text(datos.newObject.nombre+" "+datos.newObject.aPaterno+" "+datos.newObject.aMaterno+"("+datos.newObject.cdPersona+")");
+    					   var folioPersona=datos.newObject.cdPersona==null?"":" ("+datos.newObject.cdPersona+")";
+    					   $("#select2-"+nameContex+"-container").text(datos.newObject.nombre+" "+datos.newObject.aPaterno+" "+datos.newObject.aMaterno+folioPersona);
     			    		if (!flagIdObject) 
     			    			scope.opcionSelec=datos.newObject.idPersona;
 								 else	
