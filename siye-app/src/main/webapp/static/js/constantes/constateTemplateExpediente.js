@@ -78,7 +78,7 @@ var includeDeseing=
 	'									</div>                                                                                                                                          '+
 	'									<div class="col-xs-12 col-sm-12 col-md-3" ng-if="showCombo">                                                                                    '+
 	'										<div class="form-group"                                                                                                           			'+
-	'														ng-class="{\'has-error\': (formTpDocument[\'tpDoc\'+{{imagenVO.unic+idElementUp}}].$invalid && formTpDocument[\'tpDoc\'+{{imagenVO.unic+idElementUp}}].$dirty) }">				'+
+	'														ng-class="{\'has-error\': (formTpDocument[\'tpDoc\'+imagenVO.unic+\'\'+idElementUp].$invalid && formTpDocument[\'tpDoc\'+imagenVO.unic+\'\'+idElementUp].$dirty) }">				'+
 	'											<label>                                                                                                                                 '+
 	'												*Tipo de Documento                                                                                                                  '+
 	'											</label>                                                                                                                                '+
@@ -93,8 +93,8 @@ var includeDeseing=
 	'													<option value="">{{\'APP.Base.mensaje.seleccioneOpcion\' | translate}}</option>                                                 '+
 	'												</select>                                                                                                                           '+
 	'											</div>                                                                                                                                  '+
-	'											<div ng-show="(formTpDocument[\'tpDoc\'+{{imagenVO.unic+idElementUp}}].$invalid && formTpDocument[\'tpDoc\'+{{imagenVO.unic+idElementUp}}].$dirty)">										'+
-    '												<span ng-style="{color:\'red\'}">																									'+
+	'											<div ng-show="(formTpDocument[\'tpDoc\'+imagenVO.unic+\'\'+idElementUp].$invalid && formTpDocument[\'tpDoc\'+imagenVO.unic+\'\'+idElementUp].$dirty)">										'+
+    '												<span class="help-block">																									'+
     '    												El tipo de documento es requerido																								'+
     '												</span>																																'+
     '											</div>																																	'+
@@ -189,6 +189,7 @@ var includeCarouselModal=
 	'						                                                                                                                                '+
 	'						<!-- Wrapper for slides -->                                                                                                     '+
 	'						<div class="carousel-inner" role="listbox">                                                                                     '+
+	' 							<div class="col-md-10 col-md-offset-1 middleRow"> 																			'+
 	'								<div class="item active">                                                                                               '+
 	'									<img id="img-{{idElementUp+imagePreview.unic}}" alt="{{imagePreview.name}}"                                         '+
 	'											ng-src="data:image/png;base64, {{imagePreview.strBase64}}" />                                               '+
@@ -196,6 +197,7 @@ var includeCarouselModal=
 	'										{{imagePreview.name.length > 17 ? (imagePreview.name.substr(0,17)+\'...\') : imagePreview.name}}                '+
 	'									</div>                                                                                                              '+
 	'								</div>                                                                                                                  '+
+	'							</div>                                                                                                                          '+
 	'						</div>                                                                                                                          '+
 	'	                                                                                                                                                    '+
 	'						<!-- Controls -->                                                                                                               '+
