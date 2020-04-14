@@ -2,10 +2,23 @@ angular.module(appTeclo)
 .controller("procesoController",
 function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,procesoInfo,idord,idpro,encuestaService) {
     
-	$scope.idOrdenServicio=idord;
+    $rootScope.idProceso = procesoInfo.data[0].idProceso.idProceso;
+    $scope.idOrdenServicio=idord;
 	$scope.idProcesoActual=idpro;
     $scope.stActivarEncuesta = procesoInfo.data[3].stSatisfaccion;
     $scope.numOrden = $rootScope.numOS;
+
+    $scope.numMaxImgPro = procesoInfo.data[0].idProceso.nuMaxImagenes;    
+    $scope.listImagesPro = [];
+    $scope.paramProcImg = new Object({
+        idOrdenServ: $rootScope.idOrdenServ,
+        cdOrdenServicio: $rootScope.cdOrdenServicio,
+        idProceso: $rootScope.idProceso
+    });
+    $scope.paramConfigImgPro = new Object({
+        maxSizeMb: 1,
+        title: "Agregar Evidencia por Proceso"
+    });
 
     if(procesoInfo != null){
         $scope.nombreEtapa = "Orden de Servicio: " + $rootScope.nomOrdenServicio + " - Proceso: " + procesoInfo.data[0].idProceso.nbProceso;
