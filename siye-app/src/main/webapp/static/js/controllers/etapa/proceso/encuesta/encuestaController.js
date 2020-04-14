@@ -515,8 +515,10 @@ $scope.uncheckOpcion=function(){
 				var idPregunta=$scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].idPregunta
 				if (backOpcionMarcada.opcion.idOpcion==idOpcion&& backOpcionMarcada.pregunta.idPregunta==idPregunta) {
 					$scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].opciones[k].stMarcado = 0;
-					return;
+					$scope.preguntasContestadasEncuesta--
+					$scope.encuestaDetalle.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas--
 				}
+				return;
 			}
 		}
 	}
