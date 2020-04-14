@@ -6,6 +6,7 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     $scope.nombEncuesta = $rootScope.nomSeguimiento + " - Encuesta " + encuestaInfo.data.encuesta.nbEncuesta;
     $scope.nombSeccion = encuestaInfo.data.encuesta.secciones[0].nbSeccion;
     $scope.seccEncuesta = encuestaInfo.data.encuesta.secciones[0];
+	var backOpcionMarcada=new Object({opcion:undefined,pregunta:undefined});
 
     $scope.objOpciones = new Object(
         {val:1,nom:'Opción 1'},
@@ -254,6 +255,8 @@ $scope.checkPregunta =function(opcion,respuesta){
 	if(opcion.cdMostrarCausas)
 	{
 	filtroCausas(opcion,respuesta,false);
+	backOpcionMarcada.opcion=opcion;
+	backOpcionMarcada.pregunta=respuesta;
 	}
 	if(!opcion.cdMostrarCausas)
 		{
@@ -504,6 +507,21 @@ iniciarProceso=function(statusEncuesta,idEncuesta,idOrdenServicio)
 
 }
 
+$scope.uncheckOpcion=function(){
+	for (let i in $scope.encuestaDetalle.encuesta.secciones) {
+		for (let j in $scope.encuestaDetalle.encuesta.secciones[i].preguntas) {
+			for (const k in $scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].opciones) {
+				var idOpcion=$scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].opciones[k].idOpcion;
+				var idPregunta=$scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].idPregunta
+				if (backOpcionMarcada.opcion.idOpcion==idOpcion&& backOpcionMarcada.pregunta.idPregunta==idPregunta) {
+					$scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].opciones[k].stMarcado = 0;
+					return;
+				}
+			}
+		}
+	}
+backOpcionMarcada=new Object({opcion:undefined,pregunta:undefined});
+};
 
 
     
