@@ -14,10 +14,18 @@ import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.negocio.service.catalogo.CatalogoService;
 import mx.com.teclo.siye.negocio.service.expedienteImg.ExpedienteImgService;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.OdsIncidenciaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.procesos.IEProcesosDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.OdsIncidenciaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.procesos.IEprocesosDTO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteImgVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.AltaIncidenciaVO;
@@ -41,6 +49,18 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 	
 	@Autowired
 	private CatalogoService catalogoService;
+	
+	@Autowired
+	private EncuestasDAO encuestasDAO;
+	
+	@Autowired
+	private OdsIncidenciaDAO odsIncidenciaDAO;
+	
+	@Autowired
+	private IEProcesosDAO iEProcesosDAO;
+	
+	@Autowired
+	private OrdenServicioDAO ordenServicioDAO;
 	
 	private static final String MSG_ERROR_INCIDENCIA_NULA = "No se encontraron incidencias";
 	private static final String MSG_ERROR_IMAGEN_NULA = "La imagen esta vac\u00EDa";
@@ -78,6 +98,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		IncidenciaDTO incidenciaDTO = new IncidenciaDTO();
 		Boolean respuesta = false;
 		Boolean respuestaIncidencia = false;
+		Boolean respuestaOdsIncidencia = false;
 		Boolean respuestaFinal = false;
 		SimpleDateFormat sdf2 = new SimpleDateFormat("yy");
 		Date date = new Date();
@@ -109,6 +130,8 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		StSeguimientoDTO stSeguimiento = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NUEVO");
 		StSeguimientoDTO tpIncidenciaDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getTpIncidencia().getCdStSeguimiento());
 		StSeguimientoDTO prioridadDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getPrioridad().getCdStSeguimiento());
+		IEprocesosDTO procesoDTO = iEProcesosDAO.consultarProcesoByidProceso(altaIncidenciaVO.getIdProceso());
+		EncuestasDTO encuestasDTO = encuestasDAO.encuestaIntento(altaIncidenciaVO.getIdEncuesta());
 		incidenciaDTO.setCdIncidencia(cdIncidencia);
 		incidenciaDTO.setNbIncidencia(nbIncidencia);
 		incidenciaDTO.setTxIncidencia(altaIncidenciaVO.getDescripcion());
@@ -122,6 +145,9 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		incidenciaDTO.setStAutorizacion(stAutorizacionDTO);
 		incidenciaDTO.setPrioridad(prioridadDTO);
 		incidenciaDTO.setStSeguimiento(stSeguimiento);
+		incidenciaDTO.setEncuesta(encuestasDTO);
+		incidenciaDTO.setiEproceso(procesoDTO);
+
 		try {
 			incidenciaDAO.save(incidenciaDTO);
 			respuesta = true;
@@ -130,10 +156,19 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 			} else {
 				respuestaIncidencia = expedienteImgService.saveImagenIncidencia(altaIncidenciaVO.getListImagen(), incidenciaDTO);
 			}
+			if (altaIncidenciaVO.getIdOrdenServicio() != null && altaIncidenciaVO.getIdOrdenServicio() != 0 ) {
+				OrdenServicioDTO ordenServicioDTO = ordenServicioDAO.obtenerOrdenServicio(altaIncidenciaVO.getIdOrdenServicio());
+				OdsIncidenciaDTO odsIncidenciaDTO = new OdsIncidenciaDTO();
+				odsIncidenciaDTO.setIdIncidencia(incidenciaDTO);
+				odsIncidenciaDTO.setIdOrdenServicio(ordenServicioDTO);
+				odsIncidenciaDAO.save(odsIncidenciaDTO);
+			}
+			respuestaOdsIncidencia = true;
 		} catch (Exception e) {
 			respuesta = false;
+			respuestaOdsIncidencia = false;
 		}
-		if (respuesta == true && respuestaIncidencia == true) {
+		if (respuesta == true && respuestaIncidencia == true && respuestaOdsIncidencia == true) {
 			respuestaFinal = true;
 		} else {
 			respuestaFinal = false;

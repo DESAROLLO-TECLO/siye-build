@@ -14,6 +14,10 @@ public class AltaIncidenciaVO implements Serializable {
 	private StSeguimientoVO prioridad;
 	private String descripcion;
 	private List<ImagenVO> listImagen;
+	private Long idProceso;
+	private Long idEncuesta;
+	private Long idOrdenServicio;
+	private Long idPregunta;
 	
 	public String getOrdenServicio() {
 		return ordenServicio;
@@ -45,5 +49,30 @@ public class AltaIncidenciaVO implements Serializable {
 	public void setListImagen(List<ImagenVO> listImagen) {
 		this.listImagen = listImagen;
 	}
+	public Long getIdProceso() {
+		return idProceso;
+	}
+	public void setIdProceso(Long idProceso) {
+		this.idProceso = idProceso;
+	}
+	public Long getIdEncuesta() {
+		return idEncuesta;
+	}
+	public void setIdEncuesta(Long idEncuesta) {
+		this.idEncuesta = idEncuesta;
+	}
+	public Long getIdOrdenServicio() {
+		return idOrdenServicio;
+	}
+	public void setIdOrdenServicio(Long idOrdenServicio) {
+		this.idOrdenServicio = idOrdenServicio;
+	}
+	public Long getIdPregunta() {
+		return idPregunta;
+	}
+	public void setIdPregunta(Long idPregunta) {
+		this.idPregunta = idPregunta;
+	}
+	
 		
 }

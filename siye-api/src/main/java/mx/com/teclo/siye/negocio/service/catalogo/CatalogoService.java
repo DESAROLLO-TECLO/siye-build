@@ -82,7 +82,16 @@ public interface CatalogoService {
 	//ParametrosFolioDTO getParametroById(String cdParametro);
 	public String generaFolio(String cdParametro);
 
-	List<ConfiguracionVO> configuracionIncidencia(String cdLlavePConfig1, String cdLlavePConfig2)
+	/**
+	 * @Descripción: Método para extraer las opciones en incidencia
+	 * @author Estephanie Chavez
+	 * @param cdLlavePConfig1
+	 * @param cdLlavePConfig2
+	 * @param cdLlavePConfig3
+	 * @return
+	 * @throws NotFoundException
+	 */
+	public List<ConfiguracionVO> configuracionIncidencia(String cdLlavePConfig1, String cdLlavePConfig2)
 			throws NotFoundException;
 
 }
