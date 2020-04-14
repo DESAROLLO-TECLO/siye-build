@@ -37,7 +37,7 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 		StringBuilder consulta = new StringBuilder("SELECT ID_EXPEDIENTE_ODS AS idExpedienteODS," + 
 				"ID_ORDEN_SERVICIO AS idOrdenServicio," + 
 				"ID_ODS_ENCUESTA AS idOdsEncuesta,"+				
-				"ID_PROCESO_ENCUESTA  AS idProcesoEncuesta," + 
+				"ID_PROCESO  AS idProceso," + 
 				"ID_PREGUNTA AS idPregunta," + 
 				"NB_EXPEDIENTE_ODS AS nbExpedienteODS," + 
 				"CD_TIPO_ARCHIVO AS cdTipoArchivo," + 
@@ -45,12 +45,12 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 				"ID_INCIDENCIA AS idIncidencia,"+
 				"ID_TIPO_EXPEDIENTE AS idTipoExpediente"+
 				" FROM TIE050D_IE_EXPEDIENTES_IMG" + 
-				"   WHERE ID_ORDEN_SERVICIO IN (:idOrdenServicio) AND ST_ACTIVO =1");
+				"   WHERE ID_ORDEN_SERVICIO IN (:idOrdenServicio) AND ST_ACTIVO =1 ORDER BY NU_ORDEN ASC");
 		 List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				 .addScalar("idExpedienteODS", LongType.INSTANCE)
 				 .addScalar("idOdsEncuesta", LongType.INSTANCE)
 				 .addScalar("idOrdenServicio", LongType.INSTANCE)
-				 .addScalar("idProcesoEncuesta", LongType.INSTANCE)
+				 .addScalar("idProceso", LongType.INSTANCE)
 				 .addScalar("idPregunta",LongType.INSTANCE)
 				 .addScalar("nbExpedienteODS", StringType.INSTANCE)
 				 .addScalar("cdTipoArchivo", StringType.INSTANCE)
@@ -66,17 +66,18 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<ImagenVO> getImgByPlan(Long OrdenServicio, Long idPlan) {
+	public List<ImagenVO> getImgByProceso(Long OrdenServicio, Long idProceso) {
 		StringBuilder consulta = new StringBuilder("SELECT ID_EXPEDIENTE_ODS AS idExpedienteODS," + 
 				"ID_ORDEN_SERVICIO AS idOrdenServicio," + 
 				"ID_ODS_ENCUESTA AS idOdsEncuesta,"+				
-				"ID_PROCESO_ENCUESTA  AS idProcesoEncuesta," + 
+				"ID_PROCESO  AS idProceso," + 
 				"ID_PREGUNTA AS idPregunta," + 
 				"NB_EXPEDIENTE_ODS AS nbExpedienteODS," + 
 				"CD_TIPO_ARCHIVO AS cdTipoArchivo," + 
 				"LB_EXPEDIENTE_ODS AS lbExpedienteODS " + 
 				" FROM TIE050D_IE_EXPEDIENTES_IMG" + 
-				"   WHERE ID_ORDEN_SERVICIO =:OrdenServicio' AND ID_PROCESO_ENCUESTA=:idPlan AND ST_ACTIVO=1 AND ID_ODS_ENCUESTA IS NULL AND ID_PREGUNTA IS NULL");		
+				"   WHERE ID_ORDEN_SERVICIO =:OrdenServicio AND ID_PROCESO =:idProceso AND ST_ACTIVO=1 AND ID_ODS_ENCUESTA IS NULL AND ID_PREGUNTA IS NULL "+
+				"ORDER BY NU_ORDEN ASC");
 		List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				 .addScalar("idExpedienteODS", LongType.INSTANCE)
 				 .addScalar("idOdsEncuesta", LongType.INSTANCE)
@@ -87,7 +88,7 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 				 .addScalar("cdTipoArchivo", StringType.INSTANCE)
 				 .addScalar("lbExpedienteODS",StandardBasicTypes.BINARY)
 				 .setParameter("OrdenServicio", OrdenServicio)
-				 .setParameter("idPlan", idPlan)
+				 .setParameter("idProceso", idProceso)
 				 .setResultTransformer(Transformers.aliasToBean(ImagenVO.class)).list();
 		return respuesta;
 	}
@@ -98,18 +99,19 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 		StringBuilder consulta = new StringBuilder("SELECT ID_EXPEDIENTE_ODS AS idExpedienteODS," + 
 				"ID_ORDEN_SERVICIO AS idOrdenServicio," + 
 				"ID_ODS_ENCUESTA AS idOdsEncuesta,"+				
-				"ID_PROCESO_ENCUESTA  AS idProcesoEncuesta," + 
+				"ID_PROCESO  AS idProceso," + 
 				"ID_PREGUNTA AS idPregunta," + 
 				"NB_EXPEDIENTE_ODS AS nbExpedienteODS," + 
 				"CD_TIPO_ARCHIVO AS cdTipoArchivo," + 
 				"LB_EXPEDIENTE_ODS AS lbExpedienteODS " + 
 				" FROM TIE050D_IE_EXPEDIENTES_IMG" + 
-				"   WHERE ID_ORDEN_SERVICIO=:OrdenServicio AND ID_PROCESO_ENCUESTA=:idEncuesta AND ID_PREGUNTA IS NULL AND ST_ACTIVO=1");
+				"   WHERE ID_ORDEN_SERVICIO=:OrdenServicio AND ID_PROCESO=:idEncuesta AND ID_PREGUNTA IS NULL AND ST_ACTIVO=1 "+
+				"ORDER BY NU_ORDEN ASC");
 		 List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				 .addScalar("idExpedienteODS", LongType.INSTANCE)
 				 .addScalar("idOdsEncuesta", LongType.INSTANCE)
 				 .addScalar("idOrdenServicio", LongType.INSTANCE)
-				 .addScalar("idProcesoEncuesta", LongType.INSTANCE)
+				 .addScalar("idProceso", LongType.INSTANCE)
 				 .addScalar("idPregunta",LongType.INSTANCE)
 				 .addScalar("nbExpedienteODS", StringType.INSTANCE)
 				 .addScalar("cdTipoArchivo", StringType.INSTANCE)
@@ -126,18 +128,19 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 		StringBuilder consulta = new StringBuilder("SELECT ID_EXPEDIENTE_ODS AS idExpedienteODS," + 
 				"ID_ORDEN_SERVICIO AS idOrdenServicio," + 
 				"ID_ODS_ENCUESTA AS idOdsEncuesta,"+				
-				"ID_PROCESO_ENCUESTA  AS idProcesoEncuesta," + 
+				"ID_PROCESO  AS idProceso," + 
 				"ID_PREGUNTA AS idPregunta," + 
 				"NB_EXPEDIENTE_ODS AS nbExpedienteODS," + 
 				"CD_TIPO_ARCHIVO AS cdTipoArchivo," + 
 				"LB_EXPEDIENTE_ODS AS lbExpedienteODS " + 
 				" FROM TIE050D_IE_EXPEDIENTES_IMG" + 
-				"   WHERE ID_ORDEN_SERVICIO=:OrdenServicio AND ID_PREGUNTA=:idPregunta AND ST_ACTIVO=1");
+				"   WHERE ID_ORDEN_SERVICIO=:OrdenServicio AND ID_PREGUNTA=:idPregunta AND ST_ACTIVO=1 "+
+				"ORDER BY NU_ORDEN ASC");
 		 List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				 .addScalar("idExpedienteODS", LongType.INSTANCE)
 				 .addScalar("idOdsEncuesta", LongType.INSTANCE)
 				 .addScalar("idOrdenServicio", LongType.INSTANCE)
-				 .addScalar("idProcesoEncuesta", LongType.INSTANCE)
+				 .addScalar("idProceso", LongType.INSTANCE)
 				 .addScalar("idPregunta",LongType.INSTANCE)
 				 .addScalar("nbExpedienteODS", StringType.INSTANCE)
 				 .addScalar("cdTipoArchivo", StringType.INSTANCE)
@@ -154,18 +157,19 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 		StringBuilder consulta = new StringBuilder("SELECT ID_EXPEDIENTE_ODS AS idExpedienteODS," + 
 				"ID_ORDEN_SERVICIO AS idOrdenServicio," + 
 				"ID_ODS_ENCUESTA AS idOdsEncuesta,"+				
-				"ID_PROCESO_ENCUESTA  AS idProcesoEncuesta," + 
+				"ID_PROCESO  AS idProceso," + 
 				"ID_PREGUNTA AS idPregunta," + 
 				"NB_EXPEDIENTE_ODS AS nbExpedienteODS," + 
 				"CD_TIPO_ARCHIVO AS cdTipoArchivo," + 
 				"LB_EXPEDIENTE_ODS AS lbExpedienteODS " + 
 				" FROM TIE050D_IE_EXPEDIENTES_IMG" + 
-				"   WHERE ID_ORDEN_SERVICIO=:OrdenServicio  AND ST_ACTIVO=1 AND ID_PROCESO_ENCUESTA IS NULL AND ID_ODS_ENCUESTA IS NULL AND ID_PREGUNTA IS NULL ");
+				"   WHERE ID_ORDEN_SERVICIO=:OrdenServicio  AND ST_ACTIVO=1 AND ID_PROCESO IS NULL AND ID_ODS_ENCUESTA IS NULL AND ID_PREGUNTA IS NULL " +
+				"ORDER BY NU_ORDEN ASC");
 		 List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				 .addScalar("idExpedienteODS", LongType.INSTANCE)
 				 .addScalar("idOdsEncuesta", LongType.INSTANCE)
 				 .addScalar("idOrdenServicio", LongType.INSTANCE)
-				 .addScalar("idProcesoEncuesta", LongType.INSTANCE)
+				 .addScalar("idProceso", LongType.INSTANCE)
 				 .addScalar("idPregunta",LongType.INSTANCE)
 				 .addScalar("nbExpedienteODS", StringType.INSTANCE)
 				 .addScalar("cdTipoArchivo", StringType.INSTANCE)

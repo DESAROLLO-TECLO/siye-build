@@ -1,6 +1,7 @@
 package mx.com.teclo.siye.persistencia.vo.proceso;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class LoteOrdenServicioVO implements Serializable {
 	
@@ -9,14 +10,20 @@ public class LoteOrdenServicioVO implements Serializable {
 	private Long idLoteOds;
 	private String cdLoteOds;
 	private String nbLoteOds;
+	private String nbArchivoFinal;
 	private Long idStSeguimiento;
+	private String cdStSeguimiento;
+	private String nbStSeguimiento;
 	private Long nuOdsReportados;
 	private Long nuOdsCargados;
 	private Long nuOdsAtendidos;
 	private Long nuOdsPendientes;
 	private Long nuOdsIncidencia;
-	private String txtLoteOds;
+	private String txLoteOds;
+	private Long idTipoLayout;
 	private Boolean stActivo;
+	private Long idUsrCreacion;
+	private Date fhCreacion;
 	
 	public Long getIdLoteOds() {
 		return idLoteOds;
@@ -35,12 +42,30 @@ public class LoteOrdenServicioVO implements Serializable {
 	}
 	public void setNbLoteOds(String nbLoteOds) {
 		this.nbLoteOds = nbLoteOds;
+	}	
+	public String getNbArchivoFinal() {
+		return nbArchivoFinal;
+	}
+	public void setNbArchivoFinal(String nbArchivoFinal) {
+		this.nbArchivoFinal = nbArchivoFinal;
 	}
 	public Long getIdStSeguimiento() {
 		return idStSeguimiento;
 	}
 	public void setIdStSeguimiento(Long idStSeguimiento) {
 		this.idStSeguimiento = idStSeguimiento;
+	}
+	public String getCdStSeguimiento() {
+		return cdStSeguimiento;
+	}
+	public void setCdStSeguimiento(String cdStSeguimiento) {
+		this.cdStSeguimiento = cdStSeguimiento;
+	}
+	public String getNbStSeguimiento() {
+		return nbStSeguimiento;
+	}
+	public void setNbStSeguimiento(String nbStSeguimiento) {
+		this.nbStSeguimiento = nbStSeguimiento;
 	}
 	public Long getNuOdsReportados() {
 		return nuOdsReportados;
@@ -72,17 +97,35 @@ public class LoteOrdenServicioVO implements Serializable {
 	public void setNuOdsIncidencia(Long nuOdsIncidencia) {
 		this.nuOdsIncidencia = nuOdsIncidencia;
 	}
-	public String getTxtLoteOds() {
-		return txtLoteOds;
+	public String getTxLoteOds() {
+		return txLoteOds;
 	}
-	public void setTxtLoteOds(String txtLoteOds) {
-		this.txtLoteOds = txtLoteOds;
+	public void setTxLoteOds(String txLoteOds) {
+		this.txLoteOds = txLoteOds;
+	}
+	public Long getIdTipoLayout() {
+		return idTipoLayout;
+	}
+	public void setIdTipoLayout(Long idTipoLayout) {
+		this.idTipoLayout = idTipoLayout;
 	}
 	public Boolean getStActivo() {
 		return stActivo;
 	}
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
+	}
+	public Long getIdUsrCreacion() {
+		return idUsrCreacion;
+	}
+	public void setIdUsrCreacion(Long idUsrCreacion) {
+		this.idUsrCreacion = idUsrCreacion;
+	}
+	public Date getFhCreacion() {
+		return fhCreacion;
+	}
+	public void setFhCreacion(Date fhCreacion) {
+		this.fhCreacion = fhCreacion;
 	}
 	
 }

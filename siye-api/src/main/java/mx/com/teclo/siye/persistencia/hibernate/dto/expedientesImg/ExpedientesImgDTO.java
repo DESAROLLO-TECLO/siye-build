@@ -15,9 +15,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.PreguntasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
-import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.ProcesoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.tipoexpediente.TipoExpedienteDTO;
 
 @Entity
@@ -48,16 +49,25 @@ public class ExpedientesImgDTO implements Serializable{
 	@ManyToOne(fetch = FetchType.LAZY)
 	private OrdenServicioDTO idOrdenServicio;
 
-	@Column(name = "ID_ODS_ENCUESTA")
-	//@ManyToOne(fetch = FetchType.LAZY)
-	private Long idOdsEncuesta;
-
-	@JoinColumn(name = "ID_PROCESO_ENCUESTA")
+	@JoinColumn(name = "ID_ODS_ENCUESTA")
 	@ManyToOne(fetch = FetchType.LAZY)
-	private ProcesoEncuestaDTO idProcesoEncuesta;
+	private OrdenEncuestaDTO idOdsEncuesta;
 
-	@Column(name = "ID_PREGUNTA")
-	private Long idPregunta;
+	@JoinColumn(name = "ID_PROCESO")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private ProcesoDTO idProceso; 
+
+	@JoinColumn(name = "ID_PREGUNTA")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private PreguntasDTO idPregunta;
+	
+	@JoinColumn(name = "ID_INCIDENCIA")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private IncidenciaDTO incidencia;
+
+	@JoinColumn(name = "ID_TIPO_EXPEDIENTE")
+	@ManyToOne(fetch = FetchType.LAZY)
+	private TipoExpedienteDTO tipoExpediente;
 
 	@Column(name = "NU_ORDEN")
 	private Long nuOrden;
@@ -77,48 +87,11 @@ public class ExpedientesImgDTO implements Serializable{
 	@Column(name = "FH_MODIFICACION")
 	private Date fhModifica;
 
-	@JoinColumn(name = "ID_INCIDENCIA")
-	@ManyToOne(fetch = FetchType.LAZY)
-	private IncidenciaDTO incidencia;
-
-	@JoinColumn(name = "ID_TIPO_EXPEDIENTE")
-	@ManyToOne(fetch = FetchType.LAZY)
-	private TipoExpedienteDTO tipoExpediente;
-	
-
 	/**
 	 * @return the idExpedienteODS
 	 */
 	public Long getIdExpedienteODS() {
 		return idExpedienteODS;
-	}
-
-	/**
-	 * @return the incidencia
-	 */
-	public IncidenciaDTO getIncidencia() {
-		return incidencia;
-	}
-
-	/**
-	 * @param incidencia the incidencia to set
-	 */
-	public void setIncidencia(IncidenciaDTO incidencia) {
-		this.incidencia = incidencia;
-	}
-
-	/**
-	 * @return the tipoExpediente
-	 */
-	public TipoExpedienteDTO getTipoExpediente() {
-		return tipoExpediente;
-	}
-
-	/**
-	 * @param tipoExpediente the tipoExpediente to set
-	 */
-	public void setTipoExpediente(TipoExpedienteDTO tipoExpediente) {
-		this.tipoExpediente = tipoExpediente;
 	}
 
 	/**
@@ -201,43 +174,57 @@ public class ExpedientesImgDTO implements Serializable{
 	/**
 	 * @return the idOdsEncuesta
 	 */
-	public Long getIdOdsEncuesta() {
+	public OrdenEncuestaDTO getIdOdsEncuesta() {
 		return idOdsEncuesta;
 	}
 
 	/**
 	 * @param idOdsEncuesta the idOdsEncuesta to set
 	 */
-	public void setIdOdsEncuesta(Long idOdsEncuesta) {
+	public void setIdOdsEncuesta(OrdenEncuestaDTO idOdsEncuesta) {
 		this.idOdsEncuesta = idOdsEncuesta;
-	}
-
-	/**
-	 * @return the idProcesoEncuesta
-	 */
-	public ProcesoEncuestaDTO getIdProcesoEncuesta() {
-		return idProcesoEncuesta;
-	}
-
-	/**
-	 * @param idProcesoEncuesta the idProcesoEncuesta to set
-	 */
-	public void setIdProcesoEncuesta(ProcesoEncuestaDTO idProcesoEncuesta) {
-		this.idProcesoEncuesta = idProcesoEncuesta;
 	}
 
 	/**
 	 * @return the idPregunta
 	 */
-	public Long getIdPregunta() {
+	public PreguntasDTO getIdPregunta() {
 		return idPregunta;
 	}
 
 	/**
 	 * @param idPregunta the idPregunta to set
 	 */
-	public void setIdPregunta(Long idPregunta) {
+	public void setIdPregunta(PreguntasDTO idPregunta) {
 		this.idPregunta = idPregunta;
+	}
+
+	/**
+	 * @return the incidencia
+	 */
+	public IncidenciaDTO getIncidencia() {
+		return incidencia;
+	}
+
+	/**
+	 * @param incidencia the incidencia to set
+	 */
+	public void setIncidencia(IncidenciaDTO incidencia) {
+		this.incidencia = incidencia;
+	}
+
+	/**
+	 * @return the tipoExpediente
+	 */
+	public TipoExpedienteDTO getTipoExpediente() {
+		return tipoExpediente;
+	}
+
+	/**
+	 * @param tipoExpediente the tipoExpediente to set
+	 */
+	public void setTipoExpediente(TipoExpedienteDTO tipoExpediente) {
+		this.tipoExpediente = tipoExpediente;
 	}
 
 	/**
@@ -266,6 +253,20 @@ public class ExpedientesImgDTO implements Serializable{
 	 */
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
+	}
+
+	/**
+	 * @return the idProceso
+	 */
+	public ProcesoDTO getIdProceso() {
+		return idProceso;
+	}
+
+	/**
+	 * @param idProceso the idProceso to set
+	 */
+	public void setIdProceso(ProcesoDTO idProceso) {
+		this.idProceso = idProceso;
 	}
 
 	/**
@@ -324,5 +325,4 @@ public class ExpedientesImgDTO implements Serializable{
 		this.fhModifica = fhModifica;
 	}
 
-	
 }

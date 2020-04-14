@@ -14,10 +14,12 @@ import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.EstatusCalificacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaIntentoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.DispositivosDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanProcesoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.procesoencuesta.ProcesoEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaIntentosDTO;
@@ -25,6 +27,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitDispositivoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
+import mx.com.teclo.siye.persistencia.mybatis.dao.proceso.ProcesoDAO;
 import mx.com.teclo.siye.persistencia.mybatis.dao.proceso.ServicioEncuestasMyBatisDAO;
 import mx.com.teclo.siye.persistencia.vo.proceso.DispositivosVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.PlanProcesoVO;
@@ -65,6 +68,15 @@ public class ProcesoServiceImpl implements ProcesoService {
 	
 	@Autowired
 	private UsuarioFirmadoService usuarioFirmadoService;
+	
+	@Autowired
+	private StSeguimientoDAO stSeguimientoDAO;
+	
+	@Autowired
+	private ProcesoDAO procesoDAO;
+	
+	@Autowired
+	private EncuestasDAO encuestasDAO;
 	
 	
 
@@ -113,23 +125,27 @@ public class ProcesoServiceImpl implements ProcesoService {
 	{
     	List<ProcesoEncuestaDTO> procesoEncuestaDTO = new ArrayList<ProcesoEncuestaDTO>();
     	List<OrdenEncuestaDTO> nuevoOrdenEncuestas=new ArrayList<OrdenEncuestaDTO>();
-    	
 
-    	Boolean banderaMostrarContestados=false;
+    	Boolean banderaMostrarContestados=true;
 		if(encuestasByUsuario.size()>0)
 		{
+			procesoEncuestaDTO=procesoEncuestaDAO.obtenerEncuestasProceso(plan.get(0).getProceso().getIdProceso());
         	OrdenServicioDTO  ordenServicioDTO = new OrdenServicioDTO();
         	ordenServicioDTO=getInfoBasicaOrdenServicio(idSolicitud);
 			for(PlanProcesoVO actual:plan)
 			{
                  if(banderaMostrarContestados)
-                 {
-                	 if(actual.getProceso().getIdProceso()<=ordenServicioDTO.getProceso().getIdProceso())
+                 { 
+                	 if(actual.getProceso().getIdProceso()<=(ordenServicioDTO.getProceso()!=null?ordenServicioDTO.getProceso().getIdProceso():procesoEncuestaDTO.get(0).getIdProceso().getIdProceso()))
                 	 {
                 		 actual.setStatusProceos(true);
+                		 actual.setProcesoCompleto(true);
                 	 } 
                 	 else
+                	 {
                 		 actual.setStatusProceos(false);
+                		 actual.setProcesoCompleto(false);
+                	 }
                  }else
                  {
                 	 if(actual.getProceso().getIdProceso()==ordenServicioDTO.getProceso().getIdProceso())
@@ -146,6 +162,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 		{
 			for(PlanProcesoVO actual:plan)
 			{
+			servicioEncuestasMyBatisDAO.insertarprocesos(idSolicitud, actual.getProceso().getIdProceso());
 			procesoEncuestaDTO=procesoEncuestaDAO.obtenerEncuestasProceso(actual.getIdPlanProceso());
 			if(procesoEncuestaDTO.size()>0)
 			{
@@ -156,7 +173,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 						servicioEncuestasMyBatisDAO.insertarEncuestas(idSolicitud, actualEncuestas.getIdEncuesta().getIdEncuesta(),false);
 					}else
 					{
-					    servicioEncuestasMyBatisDAO.insertarEncuestas(idSolicitud, actualEncuestas.getIdEncuesta().getIdEncuesta(),true);
+                        servicioEncuestasMyBatisDAO.insertarEncuestas(idSolicitud, actualEncuestas.getIdEncuesta().getIdEncuesta(),true);
 							
 					}
 				}
@@ -166,10 +183,12 @@ public class ProcesoServiceImpl implements ProcesoService {
               if(actual.getNuorden()==1)
               {
             	  actual.setStatusProceos(true);
+            	  actual.setProcesoCompleto(false);
               }
               else
               {
             	  actual.setStatusProceos(false);
+            	  actual.setProcesoCompleto(false);
               }
 			}
             nuevoOrdenEncuestas=obtenerEncuestas(idSolicitud);
@@ -208,9 +227,12 @@ public class ProcesoServiceImpl implements ProcesoService {
 		Boolean seEncontroActiva=false;
 		if(encuestasByUsuario.size()>0)
 		{
+			
+			
 				for(ProcesoEncuestaVO actual:encuestasByProceso )
 				{
-					
+					actual.setFechaInicioProceso(obtenerFechaInicioProceso(actual.getIdProceso().getIdProceso(),encuestasByUsuario.get(0).getOrdenServicio().getIdOrdenServicio()));
+					actual.setFechaFinProceso(obtenerFechaFinProceso(actual.getIdProceso().getIdProceso(),encuestasByUsuario.get(0).getOrdenServicio().getIdOrdenServicio()));
 
 							for(OrdenEncuestaDTO encuestas:encuestasByUsuario)
 							{
@@ -219,7 +241,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 									if(encuestas.getStAplicaEncuesta()==false && encuestas.getNuIntegerentos()>0)
 									{
 										actual.setStRespondida(true);
-										actual.setStActivaMostrar(false);
+										actual.setStActivaMostrar(true);
 									}
 									else
 									{
@@ -228,8 +250,19 @@ public class ProcesoServiceImpl implements ProcesoService {
 										seEncontroActiva=true;
 									}
 									
+									
 								}
                           
+								if(actual.getIdEncuesta().getIdEncuesta()==encuestas.getEncuesta().getIdEncuesta()) {
+									actual.setStSatisfaccion(encuestas.getStAplicaEncuesta());
+								}
+								
+								if(actual.getIdEncuesta().getIdEncuesta()==encuestas.getEncuesta().getIdEncuesta())
+								{
+									actual.getIdEncuesta().setFechaInicioEncuesta(obtenerFechaInicioEncuesta(encuestas.getIdUsuarioEncuesta()));
+								    actual.getIdEncuesta().setFechaFinEncuesta(obtenerFechaFinEncuesta(encuestas.getIdUsuarioEncuesta()));
+								}
+
 
 					    }
 
@@ -237,9 +270,170 @@ public class ProcesoServiceImpl implements ProcesoService {
 		}
 		return  encuestasByProceso;
 	}
-				
-				
+	
+	@Override
+	@Transactional
+	public Boolean inicarProcesoOrdenServicio (Long idOrdenServicio)
+	{
+
+		OrdenServicioDTO orden=ordenServicioDAO.obtenerOrdenServicio(idOrdenServicio);
+		List<PlanProcesoDTO> planProceso=planProcesoDAO.obtenerPorcesosPlan(orden.getPlan().getIdPlan());
+		List<ProcesoEncuestaDTO> procesoEncuestas=procesoEncuestaDAO.obtenerEncuestasProceso(planProceso.get(0).getProceso().getIdProceso());
+		if(orden.getStSeguimiento().getCdStSeguimiento().equals("NUEVO"))
+		{
+			orden.setStSeguimiento(stSeguimientoDAO.obtenerStSeguimientoByCodigo("CURSO"));
+			orden.setProceso(procesoDAO.obtenerProceso(planProceso.get(0).getProceso().getIdProceso()));
+		    orden.setEncuesta(encuestasDAO.findOne(procesoEncuestas.get(0).getIdEncuesta().getIdEncuesta()));
+			orden.setFhAtencionIni(new Date());
+			ordenServicioDAO.update(orden);
+            servicioEncuestasMyBatisDAO.iniciarProceso(idOrdenServicio, planProceso.get(0).getProceso().getIdProceso());
+			
+			return true;
+			
+		}else
+		{
+		return false;	
+		}
+	}
 		
+		@Override
+		@Transactional
+		public Boolean finalizarProceso (Long idOrdenServicio)
+		{
+			OrdenServicioDTO orden=ordenServicioDAO.obtenerOrdenServicio(idOrdenServicio);
+			if(!orden.getStSeguimiento().getCdStSeguimiento().equals("CURSO"))
+			{
+				orden.setStSeguimiento(stSeguimientoDAO.obtenerStSeguimientoByCodigo("FINALIZADO"));
+				orden.setFhAtencionFin(new Date());
+				ordenServicioDAO.update(orden);
+				return true;
+				
+			}else
+			{
+			return false;	
+			}
+
+		
+		
+	      }
+		
+		@Override
+		@Transactional
+		public Boolean avanzarProcesoOrden (Long idOrdenServicio)
+		{
+			Boolean encuestaActualEncontrada=false;
+			Long encuestaSiguiente=null;
+			Boolean tieneSatisfaccion=false;
+			ProcesoEncuestaDTO encuestaSatisfaccion=new ProcesoEncuestaDTO();
+			
+			
+			OrdenServicioDTO orden=ordenServicioDAO.obtenerOrdenServicio(idOrdenServicio);
+			List<ProcesoEncuestaDTO> procesoEncuestas=procesoEncuestaDAO.obtenerEncuestasProceso(orden.getProceso().getIdProceso());
+			//Se remueve de los procesos las encuestas de satisfaccion para no tomarlas encuenta
+	           for(ProcesoEncuestaDTO actual:procesoEncuestas)
+	           {
+	        	   if(actual.getIdEncuesta().getCdEncuesta().equals("SAT01")||actual.getIdEncuesta().getCdEncuesta().equals("SAT02"))
+	        	   {
+	        		   tieneSatisfaccion=true;
+	        		   encuestaSatisfaccion=actual;
+	        	   }
+	           }
+	           if(tieneSatisfaccion)
+	           {
+	        	   procesoEncuestas.remove(encuestaSatisfaccion);
+	           }
+	           
+				for(int i=0;i<procesoEncuestas.size();i++)
+		        {
+
+					if(orden.getEncuesta().getIdEncuesta()==procesoEncuestas.get(i).getIdEncuesta().getIdEncuesta())
+					{
+					encuestaActualEncontrada=true;
+					}
+					if(encuestaActualEncontrada && encuestaSiguiente==null )
+					{ 
+						try {
+						encuestaSiguiente=procesoEncuestas.get(i+1).getIdEncuesta().getIdEncuesta();
+						
+			                } catch (IndexOutOfBoundsException e) {
+			                	encuestaSiguiente=null;
+			                }
+				    	}
+		        }
+			
+			if(orden.getStSeguimiento().getCdStSeguimiento().equals("CURSO") && encuestaSiguiente!=null )
+			{
+			
+				orden.setEncuesta(encuestasDAO.findOne(encuestaSiguiente));
+				ordenServicioDAO.update(orden);
+				return true;
+				
+			}else if(orden.getStSeguimiento().getCdStSeguimiento().equals("CURSO") && encuestaSiguiente==null)
+			{
+		     Boolean procesoActualEncontrado=false;
+			 Long procesoSiguiente= null;
+			List<PlanProcesoDTO> planProceso=planProcesoDAO.obtenerPorcesosPlan(orden.getPlan().getIdPlan());
+			for(int j=0;j<planProceso.size();j++)
+	        {
+
+				if(orden.getProceso().getIdProceso()==planProceso.get(j).getProceso().getIdProceso())
+				{
+					procesoActualEncontrado=true;
+					//aqui
+					servicioEncuestasMyBatisDAO.finalizarProceso(idOrdenServicio, orden.getProceso().getIdProceso());
+				}
+				if(procesoActualEncontrado && procesoSiguiente==null )
+				{
+					try {
+						procesoSiguiente=planProceso.get(j+1).getProceso().getIdProceso();
+					
+		                } catch (IndexOutOfBoundsException e) {
+		                	procesoSiguiente=null;
+		                }
+					
+				}
+	        }
+			if(procesoSiguiente!=null)
+			{
+				List<ProcesoEncuestaDTO> procesoEncuestasSiguiente=procesoEncuestaDAO.obtenerEncuestasProceso(procesoSiguiente);
+                orden.setProceso(procesoDAO.obtenerProceso(procesoSiguiente));
+                orden.setEncuesta(encuestasDAO.findOne(procesoEncuestasSiguiente.get(0).getIdEncuesta().getIdEncuesta()));
+                ordenServicioDAO.update(orden);
+			}else
+			{
+				orden.setStSeguimiento(stSeguimientoDAO.obtenerStSeguimientoByCodigo("FINALIZADO"));
+				orden.setFhAtencionFin(new Date());
+				ordenServicioDAO.update(orden);
+			}
+			return true;	
+			}
+			else
+			{
+				return false;
+			}
+		
+	      }
+				
+				
+		public Date obtenerFechaInicioProceso(Long idProceso,Long idOrden)
+		{
+			return servicioEncuestasMyBatisDAO.getFechaInicioProceso(idProceso, idOrden);
+		}
+		
+		public Date obtenerFechaFinProceso(Long idProceso,Long idOrden)
+		{
+			return servicioEncuestasMyBatisDAO.getFechaFinProceso(idProceso, idOrden);
+		}
+		
+		public Date obtenerFechaInicioEncuesta(Long idOdsEncuesta)
+		{
+			return servicioEncuestasMyBatisDAO.getFechaInicioEncuesta(idOdsEncuesta);
+		}
+		
+		public Date obtenerFechaFinEncuesta(Long idOdsEncuesta)
+		{
+			return servicioEncuestasMyBatisDAO.getFechaFinEncuesta(idOdsEncuesta);
+		}
 	
 		
 

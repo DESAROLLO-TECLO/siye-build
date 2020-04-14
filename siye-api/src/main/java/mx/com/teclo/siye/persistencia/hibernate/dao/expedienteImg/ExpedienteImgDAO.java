@@ -27,11 +27,11 @@ public interface ExpedienteImgDAO extends BaseDao<ExpedientesImgDTO> {
 	/**
      * @author Maverick
      * @param numOrdenServicio
-     * @param Long idPlan
+     * @param Long idProceso
      * @return List<ImagenVO>
      * Metodo para traer las imagenes que pertenescan a ordenes de servicio y al plan corespondiente 
      * */
-	public List<ImagenVO> getImgByPlan(Long OrdenServicio, Long idPlan);
+	public List<ImagenVO> getImgByProceso(Long OrdenServicio, Long idProceso);
 	
 	/**
      * @author Maverick

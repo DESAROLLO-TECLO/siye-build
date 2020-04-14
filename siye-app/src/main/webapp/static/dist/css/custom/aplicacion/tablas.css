@@ -5,7 +5,7 @@
 	float: left;
 }
 
-/* Estilos para el componente de búsqueda */
+/* Estilos para el componente de bï¿½squeda */
 .cont-inputSearch{
 	width: 100% !important;
 	max-width: 350px !important;
@@ -106,7 +106,7 @@ table.table tbody tr td a {
 	.header-fixed thead, 
 	.header-fixed tbody tr {
    		display: table;
-   		width: 57.14rem;
+   		/*width: 57.14rem;*/
    		table-layout: fixed;
 	}
 	.header-fixed thead tr th,

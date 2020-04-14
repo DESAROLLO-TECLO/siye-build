@@ -23,6 +23,8 @@ public class OrdenServicioVO implements Serializable {
 	private Date fhAtencionIni;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date fhAtencionFin;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	private Date fhAtencionParcial;
 	private Long idOrigenOds;
 	private Boolean stActivo;
 	private IncidenciaVO incidencia;
@@ -118,5 +120,11 @@ public class OrdenServicioVO implements Serializable {
 	}
 	public void setProceso(ProcesoVO proceso) {
 		this.proceso = proceso;
+	}
+	public Date getFhAtencionParcial() {
+		return fhAtencionParcial;
+	}
+	public void setFhAtencionParcial(Date fhAtencionParcial) {
+		this.fhAtencionParcial = fhAtencionParcial;
 	}
 }

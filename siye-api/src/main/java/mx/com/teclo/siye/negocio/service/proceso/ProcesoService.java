@@ -46,6 +46,13 @@ public interface ProcesoService {
 	List<PlanProcesoVO> revisarEncuestasCompletas(List<OrdenEncuestaDTO> encuestasByUsuario,List<PlanProcesoVO> plan, Long idSolicitud);
 	
 	List<ProcesoEncuestaVO> revisarEncuestasCompletas2(List<OrdenEncuestaDTO> encuestasByUsuario,List<ProcesoEncuestaVO> encuestasByProceso);
+	
+	Boolean inicarProcesoOrdenServicio (Long idOrdenServicio);
+	
+	Boolean finalizarProceso (Long idOrdenServicio);
+	
+	Boolean avanzarProcesoOrden (Long idOrdenServicio);
+
 
 
 

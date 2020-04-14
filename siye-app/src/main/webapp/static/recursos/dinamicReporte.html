@@ -1,0 +1,65 @@
+<section class="content-header">
+    <h1>Consulta de Informes</h1>
+    <ol class="breadcrumb">
+        <li><a><i class="fa fa-book"></i>Reportes</a></li>
+        <li class="active">Consulta de Informes</li>
+    </ol>
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <form role="form" name="form" novalidate>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <div class="box box-danger">
+                    <div class="box-header with-border text-center">
+                        <h3 class="box-title">Seleccione Informe</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+	  										<i class="fa fa-minus"></i>
+   									</button>
+                        </div>
+                    </div>
+
+                    <div class="box-body">
+                        <!-- 					  <div class="row-flex row-flex-wrap"> -->
+                        <!-- 						<div class="row col-md-12"> -->
+
+                        <div ng-repeat="listaagr in listaAgrupada track by $index">
+                            <div class="row col-md-12 col-md-offset-0">
+                                <div ng-repeat="lista in listaagr track by $index" class="col-md-4">
+                                    <div class="box collapsed-box">
+                                        <div class="box-header text-center">
+                                            <h5>
+                                                <b>{{lista.nbTipoReporte}}</b><br />
+                                                <button id="minusButton" type="button" class="btn btn-box-tool" data-widget="collapse" ng-click="faFaReporteBit=cambiaIcono(faFaReporteBit)">
+														<i class="{{faFaReporteBit}}"
+															ng-init="faFaReporteBit='fa fa-chevron-down'"
+															aria-hidden="true"></i>
+													</button>
+                                            </h5>
+                                        </div>
+                                        <div class="box-body">
+                                            <div ng-repeat="subReporte in lista.subReportes">
+                                                <a href="#{{subReporte.txUrlDinamic}}/{{subReporte.idReporte}}">{{subReporte.nbReporte}}</a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 			</div>Final del Body cajon para tipos de reportes -->
+                </div>
+            </div>
+        </div>
+
+    </form>
+    <div class="row">
+        <div class="col-md-12">
+            <div ng-include="direccionCatalogos"></div>
+        </div>
+    </div>
+</section>

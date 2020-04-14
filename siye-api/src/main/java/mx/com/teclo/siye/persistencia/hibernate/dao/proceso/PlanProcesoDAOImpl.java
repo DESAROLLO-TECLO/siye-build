@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.LongType;
@@ -132,6 +133,7 @@ public class PlanProcesoDAOImpl extends BaseDaoHibernate<PlanProcesoDTO> impleme
 		c.createAlias("plan", "plan");
 		c.add(Restrictions.eq("plan.idPlan", idPlan));
 		c.add(Restrictions.eq("stActivo", true));
+		c.addOrder(Order.asc("nuorden"));
 		return (List<PlanProcesoDTO>) c.list();
 	}
 
@@ -141,7 +143,7 @@ public class PlanProcesoDAOImpl extends BaseDaoHibernate<PlanProcesoDTO> impleme
 		StringBuilder consulta = new StringBuilder("SELECT pp.ID_PROCESO AS idProceso, proceso.TX_PROCESO AS cdProceso, proceso.NU_MAX_IMAGENES AS nuMaxImg " + 
 				"   FROM TIE036D_IE_PLAN_PROCESO pp" + 
 				"     INNER JOIN TIE035C_IE_PROCESOS proceso ON (pp.ID_PROCESO  = proceso.ID_PROCESO)" + 
-				"     WHERE pp.ID_PLAN ="+ idPlan +" AND pp.ST_ACTIVO =1 AND proceso.ST_ACTIVO =1");
+				"     WHERE pp.ID_PLAN ="+ idPlan +" AND pp.ST_ACTIVO =1 AND proceso.ST_ACTIVO =1 ORDER BY proceso.ID_PROCESO ASC");
 		List<ExpedienteNivelProcesoVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idProceso",LongType.INSTANCE)
 				.addScalar("cdProceso",StringType.INSTANCE)

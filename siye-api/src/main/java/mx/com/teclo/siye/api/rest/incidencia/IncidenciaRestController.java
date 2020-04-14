@@ -14,6 +14,7 @@ import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.negocio.service.incidencia.IncidenciaService;
 import mx.com.teclo.siye.persistencia.vo.incidencia.AltaIncidenciaVO;
+import mx.com.teclo.siye.persistencia.vo.incidencia.IncidencVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.IncidenciaVO;
 
 @RestController
@@ -32,12 +33,21 @@ public class IncidenciaRestController {
 	}
 	
 	
-	@RequestMapping(value = "/altaIncidencia", method = RequestMethod.PUT)
+	@RequestMapping(value = "/altaIncidencia", method = RequestMethod.POST)
 	@PreAuthorize("hasAnyAuthority('ALTA_INCIDENCIA')")
 	public Boolean altaIncidencia(@RequestBody AltaIncidenciaVO altaIncidenciaVO) throws BusinessException{
 		return incidenciaService.altaIncidencia(altaIncidenciaVO);
 		 
 		
 	}
+	
+	@RequestMapping(value = "/incidenciaByCdIncidencia", method = RequestMethod.GET)
+	public ResponseEntity<IncidencVO> getIncidenciabyCdInciedencia(@RequestParam(value="cdIncidenc", required=true) String cdIncidenc) throws NotFoundException{
+		IncidencVO incidenciaVO = incidenciaService.incidenciaByCdIncidencia(cdIncidenc);
+		return new ResponseEntity<IncidencVO>(incidenciaVO, HttpStatus.OK);
+	}
+	
+	
+	
 	
 }

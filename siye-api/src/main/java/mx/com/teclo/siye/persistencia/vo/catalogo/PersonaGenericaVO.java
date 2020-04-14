@@ -10,8 +10,10 @@ public class PersonaGenericaVO  implements Serializable{
 	
 	private Integer idPersona;
 	private String nombre;
+	private String cdPersona;
 	private String aPaterno;
 	private String aMaterno;
+	private Integer idTipoPersona;
 	private Boolean existia;
 	
 	public Integer getIdPersona() {
@@ -26,6 +28,13 @@ public class PersonaGenericaVO  implements Serializable{
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	
+	public String getCdPersona() {
+		return cdPersona;
+	}
+	public void setCdPersona(String cdPersona) {
+		this.cdPersona = cdPersona;
+	}
 	public String getaPaterno() {
 		return aPaterno;
 	}
@@ -37,6 +46,12 @@ public class PersonaGenericaVO  implements Serializable{
 	}
 	public void setaMaterno(String aMaterno) {
 		this.aMaterno = aMaterno;
+	}
+	public Integer getIdTipoPersona() {
+		return idTipoPersona;
+	}
+	public void setIdTipoPersona(Integer idTipoPersona) {
+		this.idTipoPersona = idTipoPersona;
 	}
 	public Boolean getExistia() {
 		return existia;

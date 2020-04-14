@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
+import mx.com.teclo.siye.negocio.service.catalogo.CatalogoService;
 import mx.com.teclo.siye.negocio.service.ordenServicio.VehiculoService;
 import mx.com.teclo.siye.negocio.service.proceso.ProcesoService;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.DispositivosVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.PlanProcesoVO;
@@ -40,6 +42,9 @@ public class ProcesoRestController {
 	@Autowired
 	private VehiculoService vehiculoService;
 	
+	@Autowired
+	private CatalogoService catalogoService;
+	
 	
 
 	 @RequestMapping(value = "/ordenServicioProceso", method = RequestMethod.GET)
@@ -48,12 +53,15 @@ public class ProcesoRestController {
 			@RequestParam("idSolicitud") Long idSolicitud) throws BusinessException, NotFoundException {
         try
         {
+        
         	List<OrdenServicioDTO> OrdenesServicio = new ArrayList<OrdenServicioDTO>();
         	OrdenServicioDTO  ordenServicioDTO = new OrdenServicioDTO();
         	ordenServicioDTO = procesoService.getInfoBasicaOrdenServicio(idSolicitud);
         	OrdenesServicio.add(ordenServicioDTO);
     		List<OrdenServicioProcesoVO> ordenServicioProcesoVO = ResponseConverter.converterLista(new ArrayList<>(), OrdenesServicio,
     				OrdenServicioProcesoVO.class);
+    		ConfiguracionVO listToReturn = catalogoService.configuracion("TIE026_NU_MAX_IMAGENES");
+    		ordenServicioProcesoVO.get(0).setNumMaxImagenes(Long.parseLong(listToReturn.getCdValorPConfig()));
     		return new ResponseEntity<List<OrdenServicioProcesoVO>>(ordenServicioProcesoVO, HttpStatus.OK);
 
         }catch(Exception e)
@@ -122,18 +130,52 @@ public class ProcesoRestController {
 	 
 	 @RequestMapping(value ="/buscaPlacaVehiculo", method=RequestMethod.GET)
 	 public ResponseEntity <VehiculoVO> consultaVehiculoPlaca(
-			 @RequestParam("placa") String placa) throws NotFoundException, BusinessException {
+			 @RequestParam("placa") String placa) throws NotFoundException {
 
-		 try	
-		 {	
 		 VehiculoVO vehiculoVO = vehiculoService.bucarVehiculoPlaca(placa);			
 		 return new ResponseEntity<VehiculoVO>(vehiculoVO,HttpStatus.OK);			
-		 }catch(Exception e)	
-		 {	
-			 e.printStackTrace();	
-			 throw new NotFoundException("Ha ocurrido un imprevisto!, por favor contacte al administrador.");	
-		 }
-
-		 
 	 }
+	 
+		@RequestMapping(value="/iniciarProceso", method = RequestMethod.GET)
+		public ResponseEntity<Boolean> iniciarProceso (
+			@RequestParam(value="idOrdenServicio") long idOrdenServicio
+			) throws Exception, BusinessException, NotFoundException {
+			try {
+				Boolean correcto=procesoService.inicarProcesoOrdenServicio(idOrdenServicio);
+				return new ResponseEntity<Boolean>(correcto, HttpStatus.OK);
+			}catch (Exception e) {
+				e.printStackTrace();
+				throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
+			}		
+		}
+		
+		@RequestMapping(value="/avanzarEncuestaProceso", method = RequestMethod.GET)
+		public ResponseEntity<Boolean> avanzarEncuesta (
+			 @RequestParam(value="idOrdenServicio") long idOrdenServicio
+			) throws Exception, BusinessException, NotFoundException {
+			try {
+				Boolean correcto=procesoService.avanzarProcesoOrden(idOrdenServicio);;
+				return new ResponseEntity<Boolean>(correcto, HttpStatus.OK);
+			}catch (Exception e) {
+				e.printStackTrace();
+				throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
+			}		
+		}
+
+		
+		@RequestMapping(value="/finalizarProceso", method = RequestMethod.GET)
+		public ResponseEntity<Boolean> finalizarProceso (
+			@RequestParam(value="idOrdenServicio") long idOrdenServicio
+			) throws Exception, BusinessException, NotFoundException {
+			try {
+				Boolean correcto=procesoService.finalizarProceso(idOrdenServicio);
+				return new ResponseEntity<Boolean>(correcto, HttpStatus.OK);
+			}catch (Exception e) {
+				e.printStackTrace();
+				throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
+			}		
+		}
 }
+
+
+

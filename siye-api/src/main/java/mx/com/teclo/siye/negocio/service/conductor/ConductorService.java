@@ -2,6 +2,7 @@ package mx.com.teclo.siye.negocio.service.conductor;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
+import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaGenericaVO;
 
 public interface ConductorService {

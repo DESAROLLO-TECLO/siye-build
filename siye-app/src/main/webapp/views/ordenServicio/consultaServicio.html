@@ -1,14 +1,5 @@
 <head>
     <meta charset="UTF-8">
-    <style type="text/css">
-        .nbStatus {
-            display: block;
-            border-radius: .25em;
-            width: 10px;
-            height: 30px;
-            margin: 0 auto;
-        }
-    </style>
 </head>
 <section class="content-header">
     <h1>{{breadCrumbs.servicio}}</h1>
@@ -23,7 +14,8 @@
 </section>
 
 <section class="content">
-    <form role="form" name="formConsultaServicio" novalidate>
+    <boton-incidencia id-orden="" id-proceso="" id-encuesta="" id-pregunta="" url-actual="'-consulta'"></boton-incidencia>
+	<form role="form" name="formConsultaServicio" novalidate>
         <div class="row">
             <div class="col-xs-12 col-md-offset-3 col-md-6">
                 <div class="box box-danger">
@@ -87,59 +79,71 @@
                         <h3 class="box-title">Registros Encontrados: {{(listServicio | filter:tabla.view.filterSearchVal).length}}</h3>
                     </div>
                     <div class="col-sm-6 form-group">
-                        <div class="row">
-                            <div class="col-md-offset-6">
-                                <div class="input-group pull-right">
-                                    <input type="text" class="form-control" placeholder="Buscar por filtro" ng-model="tabla.view.filterSearchVal">
-                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+							<div class="row">
+								<div class="col-md-offset-5 col-md-6 col-xs-8">
+									<div class="input-group pull-right">
+										<input type="text" class="form-control" placeholder="Buscar por filtro" ng-model="tabla.view.filterSearchVal">
+										<div class="input-group-addon">
+											<i class="fa fa-search"></i>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-1">
+									<a ng-click="descargarExcel()"> 
+										<span class="pull-right"> <img src="static/dist/img/excel.png"> </span>
+									</a>
+								</div>
+							</div>
+						</div>
                 </div>
                 <div class="box-body">
                     <div class="row">
                         <div class="box-body table-responsive-md">
-                            <table id="tabla_listServicio" class="table table-striped table-hover header-fixed">
+                            <table id="tabla_listServicio" class="table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th sort order="'estatus'" by="tabla.order" reverse="tabla.reverse" class="center" style="width: 5%"></th>
-                                        <th sort order="'folio'" by="tabla.order" reverse="tabla.reverse" class="center" style="width: 15%">ORDEN DE SERVICIO</th>
-                                        <th sort order="'placa'" by="tabla.order" reverse="tabla.reverse" class="center" style="width: 12%">PLACA</th>
-                                        <th sort order="'centroInstalacion'" by="tabla.order" reverse="tabla.reverse" class="center" style="width: 15%">CENTRO DE INSTALACIÓN</th>
-                                        <th sort order="'fhCita'" by="tabla.order" reverse="tabla.reverse" class="center" style="width: 12%">FECHA CITA</th>
-                                        <th sort order="'planInstalacion'" by="tabla.order" reverse="tabla.reverse" class="center" style="width: 13%">PLAN DE INSTALACIÓN</th>
-                                        <th sort order="'procesoActual'" by="tabla.order" reverse="tabla.reverse" class="center" style="width: 14%">PROCESO ACTUAL</th>
-                                        <th class="center" style="width: 13%">ACCIÓN</th>
+                                        <th sort order="'estatus'" by="tabla.order" reverse="tabla.reverse" class="text-center"></th>
+                                        <th sort order="'folio'" by="tabla.order" reverse="tabla.reverse" class="text-center">ORDEN DE SERVICIO</th>
+                                        <th sort order="'placa'" by="tabla.order" reverse="tabla.reverse" class="text-center">PLACA</th>
+                                        <th sort order="'vin'" by="tabla.order" reverse="tabla.reverse" class="text-center">VIN</th>
+                                        <th sort order="'centroInstalacion'" by="tabla.order" reverse="tabla.reverse" class="text-center">CENTRO DE INSTALACIÓN</th>
+                                        <th sort order="'fhCita'" by="tabla.order" reverse="tabla.reverse" class="text-center">FECHA CITA</th>
+                                        <th sort order="'planInstalacion'" by="tabla.order" reverse="tabla.reverse" class="text-center">PLAN DE INSTALACIÓN</th>
+                                        <th sort order="'procesoActual'" by="tabla.order" reverse="tabla.reverse" class="text-center">PROCESO ACTUAL</th>
+<!--                                         <th class="center" style="width: 13%">ACCIÓN</th> -->
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr dir-paginate="servicio in listServicio | orderBy:tabla.order:tabla.reverse | filter:tabla.view.filterSearchVal | itemsPerPage:tabla.view.rowsPerPageVal">
-                                        <td class="center" style="width: 5%">
-                                        	<a href="#/etapas/{{servicio.idOrdenServicio}}" data-toggle="tooltip" data-placement="top" title="{{servicio.stSeguimiento.nbStSeguimiento}}">
-												<span class="nbStatus" style="background-color: {{servicio.stSeguimiento.cdColor}}"></span>
-											</a>
-                                        </td>
-                                        <td class="center" style="width: 15%">
+                                <tbody align="center">
+                                    <tr ng-click="direccionar(servicio.idOrdenServicio)" style="cursor: pointer;"  
+                                    	dir-paginate="servicio in listServicio | orderBy:tabla.order:tabla.reverse | filter:tabla.view.filterSearchVal | itemsPerPage:tabla.view.rowsPerPageVal">
+                                        <td class="center" style="width: 2%">
+                                          	<span class="etiquetaCancelado" style="background-color: {{servicio.stSeguimiento.cdColor}}; min-height: 30px; height: 100%;" 
+                                           		data-toggle="tooltip" data-placement="left" title="{{servicio.stSeguimiento.nbStSeguimiento}}">
+											</span>
+                                      	</td>
+                                        <td style="width: 12%">
 <!--                                             <span ng-click="verIntentos($index)" class="etiquetaCancelado col-md-6 fullWidth" style="cursor: pointer; background-color: #868686;" tooltip="Realizar servicio" tooltip-placement="top"> -->
-			                                	<a href="#/etapas/{{servicio.idOrdenServicio}}"> {{servicio.cdOrdenServicio}} </a>
+			                                	 {{servicio.cdOrdenServicio}} </a>
 <!-- 		                                	</span> -->
                                         </td>
-                                        <td class="center" style="width: 12%">
-                                            <a href="#/etapas/{{servicio.idOrdenServicio}}"> <span>{{servicio.vehiculo.cdPlacaVehiculo}}</span> </a>
+                                        <td style="width: 10%">
+                                             <span>{{servicio.vehiculo.cdPlacaVehiculo}}</span> </a>
                                         </td>
-                                        <td class="center" style="width: 15%">
-                                            <a href="#/etapas/{{servicio.idOrdenServicio}}"> <span>{{servicio.centroInstalacion.nbCentroInstalacion}}</span> </a>
+                                        <td style="width: 12%">
+                                             <span>{{servicio.vehiculo.cdVin}}</span> </a>
                                         </td>
-                                        <td class="center" style="width: 12%">
-                                            <a href="#/etapas/{{servicio.idOrdenServicio}}"> <span>{{servicio.fhCita | date:'dd/MM/yyyy'}}</span> </a>
+                                        <td style="width: 16">
+                                             <span>{{servicio.centroInstalacion.nbCentroInstalacion}}</span> </a>
                                         </td>
-                                        <td class="center" style="width: 13%">
-                                            <a href="#/etapas/{{servicio.idOrdenServicio}}"> <span>{{servicio.plan.nbPlan}}</span> </a>
+                                        <td style="width: 16%">
+                                             <span>{{servicio.fhCita}}</span> </a>
                                         </td>
-                                        <td class="center" style="width: 14%"><a href="#/etapas/{{servicio.idOrdenServicio}}"> {{servicio.proceso.nbProceso}}</a></td>
-                                        <td class="center" style="width: 13%">
-                                            <!-- <a ng-click="mostrarModal(servicio)"><i class="fa fa-pencil fa-lg"></i> </a> --></td>
+                                        <td style="width: 16%">
+                                             <span>{{servicio.plan.nbPlan}}</span> </a>
+                                        </td>
+                                        <td style="width: 16%"> {{servicio.proceso.nbProceso==null?"SIN PROCESO":servicio.proceso.nbProceso}}</a></td>
+<!--                                         <td style="width: 13%"> -->
+<!--                                             <a ng-click="mostrarModal(servicio)"><i class="fa fa-pencil fa-lg"></i> </a></td> -->
                                     </tr>
                                 </tbody>
                             </table>

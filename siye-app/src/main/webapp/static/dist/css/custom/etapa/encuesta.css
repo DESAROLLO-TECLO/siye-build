@@ -55,7 +55,8 @@
 .add-img-img{
     width: 100%;
 }
-form{
-    max-height: 380px;
-    overflow: auto;
+
+button.btn.dropdown-toggle.btn-default:hover{
+    color: #55565a;
+    font-weight: bold;
 }

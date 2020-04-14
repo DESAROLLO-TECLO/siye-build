@@ -5,13 +5,15 @@ public class ImagenVO {
 	private Long idExpedienteODS;
 	private Long idOrdenServicio;
 	private Long idOdsEncuesta;
-	private Long idProcesoEncuesta;
+	private Long idProceso;
 	private Long idPregunta;
+	private Long idIncidencia;
+	private Long idTipoExpediente;
+	private Long nuOrden;
 	private String nbExpedienteODS; 
 	private String cdTipoArchivo;
 	private byte[] lbExpedienteODS;
-	private Long idIncidencia;
-	private Long idTipoExpediente;
+	private String nbNivel;
 	
 	/**
 	 * @return the idExpedienteODS
@@ -42,24 +44,6 @@ public class ImagenVO {
 	 */
 	public Long getIdOdsEncuesta() {
 		return idOdsEncuesta;
-	}
-	/**
-	 * @param idOdsEncuesta the idOdsEncuesta to set
-	 */
-	public void setIdOdsEncuesta(Long idOdsEncuesta) {
-		this.idOdsEncuesta = idOdsEncuesta;
-	}
-	/**
-	 * @return the idProcesoEncuesta
-	 */
-	public Long getIdProcesoEncuesta() {
-		return idProcesoEncuesta;
-	}
-	/**
-	 * @param idProcesoEncuesta the idProcesoEncuesta to set
-	 */
-	public void setIdProcesoEncuesta(Long idProcesoEncuesta) {
-		this.idProcesoEncuesta = idProcesoEncuesta;
 	}
 	/**
 	 * @return the idPregunta
@@ -132,6 +116,42 @@ public class ImagenVO {
 	 */
 	public void setIdTipoExpediente(Long idTipoExpediente) {
 		this.idTipoExpediente = idTipoExpediente;
+	}
+	/**
+	 * @return the idProceso
+	 */
+	public Long getIdProceso() {
+		return idProceso;
+	}
+	/**
+	 * @param idProceso the idProceso to set
+	 */
+	public void setIdProceso(Long idProceso) {
+		this.idProceso = idProceso;
+	}
+	/**
+	 * @return the nuOrden
+	 */
+	public Long getNuOrden() {
+		return nuOrden;
+	}
+	/**
+	 * @param nuOrden the nuOrden to set
+	 */
+	public void setNuOrden(Long nuOrden) {
+		this.nuOrden = nuOrden;
+	}
+	/**
+	 * @return the nbNivel
+	 */
+	public String getNbNivel() {
+		return nbNivel;
+	}
+	/**
+	 * @param nbNivel the nbNivel to set
+	 */
+	public void setNbNivel(String nbNivel) {
+		this.nbNivel = nbNivel;
 	}
 	
 }

@@ -66,7 +66,7 @@ public class OrdenServicioRestController {
 	
 	@RequestMapping(value="/guardarReporteBd", method= RequestMethod.POST)
 //	@PreAuthorize("hasAnyAuthority('NUEVO_REPORTE')")
-	public ResponseEntity<OrdenServiVO> guardarOrdenServicio(@Valid @RequestBody OrdenServiVO ordenServiVO) throws NotFoundException{
+	public ResponseEntity<OrdenServiVO> guardarOrdenServicio(@RequestBody OrdenServiVO ordenServiVO) throws NotFoundException{
 		ordenServicioService.saveOrdenServicio(ordenServiVO);
 		return new ResponseEntity<OrdenServiVO>(ordenServiVO, HttpStatus.CREATED);
 	}

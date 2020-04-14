@@ -1,54 +1,64 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-
-
-</head>
-<body>
-    <div class="cont-formuarioCliente">
-		<div class="contLogoExpo">
-			<img src="static/dist/img/logoTeclo.png" class="logoRegistro">
+	<head>
+		<meta charset="utf-8">
+		<title>Insert title here</title>
+		<style>
+		    .fondo {
+		    	background-image: none;
+		    	background-color: #ecf0f5;
+			}
+			.btn-salir{
+				position: absolute;
+				top: 1rem;
+				left: 1rem;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="row cont-formuarioCliente fondo">
+<!-- 			<div class="contLogoExpo" style="margin-bottom: 0.829rem !important;"> -->
+<!-- 				<img src="static/dist/img/logoTeclo.png" class="logoRegistro"> -->
+<!-- 			</div> -->
+			<form class="formularioCliente row" name="busquedaForm" style="margin: 1.1143rem 2.243rem !important; background-color: #ffffff;">
+				<div class="tituloRegistro col-md-12" style="padding-top: 0px;padding-bottom: 0px;" >
+					<div class="col-md-2">
+<!-- 						<a type="button" href="#/" class="btn pull-left btn-salir"> -->
+<!--         					<i class="fa fa-arrow-circle-left"></i>  -->
+<!-- 					        {{'APP.Base.boton.iniciarSesion' | translate}} -->
+<!-- 					    </a> -->
+					</div>
+					<div class="col-md-8">
+						<h1 class="tituloRegistro">{{'ENCUESTA.Consulta.tituloServicio' | translate}}</h1>
+					</div>
+				</div>
+				<div class="fullScreen-icon hidden-xs ngFullScreenAnimate"
+					tooltip="{{'APP.Base.mensaje.pantallaCompleta' | translate}}"
+					tooltip-placement="bottom" ng-show="!fullScreenActive">
+					<i class="fa fa-arrows-alt" ng-click="goFullscreen()"></i>
+				</div>
+	
+				<div class="fullScreen-icon hidden-xs ngFullScreenAnimate"
+					tooltip="{{'APP.Base.mensaje.salirPantallaCompleta' | translate}}"
+					tooltip-placement="bottom" ng-show="fullScreenActive">
+					<i class="fa fa-close" ng-click="goFullscreen()"></i>
+				</div>
+				 
+				<!-- phone mask -->
+				<div class="form-group inputForm col-md-12">
+					<div class="row">
+						<div ng-if="!banderaPantalla" ng-include="'views/encuesta/consultaEncuesta.html'"></div>
+						<div ng-if="banderaPantalla" ng-include="'views/encuesta/realizarEncuesta.html'"></div>
+					</div>
+				</div>
+					<!-- /.form  group -->
+			</form>
+			<div class="copyright text-center">
+				<strong>{{'APP.Footer.derechosAutor' | translate}} &copy;
+					2017 <a href="http://teclomexicana.mx/" target="_blank">{{'APP.Footer.tecloMexicana' | translate}}</a>
+				</strong> {{'APP.Footer.derechosReservados' | translate}}.
+			</div>
 		</div>
-		<form  class="formularioCliente row" name="busquedaForm">
-			<h1 class="tituloRegistro">
-				{{'ENCUESTA.Consulta.tituloServicio' | translate}}
-			</h1>
-			<div class="fullScreen-icon hidden-xs ngFullScreenAnimate"
-				tooltip="{{'APP.Base.mensaje.pantallaCompleta' | translate}}"
-				tooltip-placement="bottom"
-				ng-show="!fullScreenActive">
-				
-				<i class="fa fa-arrows-alt" ng-click="goFullscreen()"></i>
-			
-			</div>
-			
-			<div class="fullScreen-icon hidden-xs ngFullScreenAnimate"
-				tooltip="{{'APP.Base.mensaje.salirPantallaCompleta' | translate}}"
-				tooltip-placement="bottom"
-				ng-show="fullScreenActive">
-				
-				<i class="fa fa-close" ng-click="goFullscreen()"></i>
-			
-			</div>
-			
-			<!-- phone mask -->
-			<div class="form-group inputForm">
-				
-			<div class="row" >
-				<div ng-show="!banderaPantalla"  ng-include="'views/encuesta/consultaEncuesta.html'"></div>   
-				<div ng-show="banderaPantalla" ng-include="'views/encuesta/realizarEncuesta.html'"></div>   
-			</div>
-			<!-- /.form group -->
-									
-			
-		</form>	
-		<div class="copyright text-center">
-			<strong>{{'APP.Footer.derechosAutor' | translate}} &copy; 2017 
-				<a href="http://teclomexicana.mx/" target="_blank">{{'APP.Footer.tecloMexicana' | translate}}</a>
-			</strong> {{'APP.Footer.derechosReservados' | translate}}.
-		</div>
-	</div>
-</body>
+	</body>
 </html>

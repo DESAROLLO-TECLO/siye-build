@@ -175,6 +175,8 @@
 
 <!-- Constantes -->
 <script src="static/js/constantes/constanteConfig.js"></script>
+<script src="static/js/constantes/constateTemplateExpediente.js"></script>
+
 <!-- Route -->
 <script src="static/js/config/routeConfig.js"></script>
 <!-- Event -->
@@ -281,6 +283,15 @@
 <!-- catalogoGenericoList-->
 <script src="static/js/directivas/catalogoGenericoList.js"></script>
 
+<!-- Directiva para carga de images -->
+<script src="static/js/directivas/update-image.js"></script>
+<script src="static/js/directivas/dragAndropFile.js"></script>
+<script src="static/js/directivas/ngscrollbar.js"></script>
+
+<!-- botonIncidencia-->
+<script src="static/js/directivas/botonAltaIncidencia.js"></script>
+
+
 <!--______________________________.:: SERVICES ::._______________________________________ -->
 <!-- APLICACIÓN -->
 <!-- JWT -->
@@ -329,6 +340,8 @@
 <!-- INCIDENCIA -->
 <script src="static/js/services/incidencia/altaIncidenciaService.js"></script>
 
+<!--Monitoreo y seguimiento OS -->
+<script src="static/js/services/monitoreo/seguimientoOsService.js"></script>
 
 
 <!--______________________________.:: CONTROLLERS ::._______________________________________ -->
@@ -344,7 +357,7 @@
 <!-- Footer -->
 <script src="static/js/controllers/login/footerController.js"></script>
 <!-- encuestaSatisfaccionController -->
-	<script src="static/js/controllers/encuesta/encuestaSatisfaccionController.js"></script>
+<script src="static/js/controllers/encuesta/encuestaSatisfaccionController.js"></script>
 <!-- Etapa -->
 <script src="static/js/controllers/etapa/etapaController.js"></script>
 <!-- Proceso -->
@@ -383,8 +396,20 @@
 
 <!-- Expedientes -->
 <script src="static/js/controllers/expediente/expedienteController.js"></script>
+<script src="static/js/controllers/expediente/expedienteRedirectController.js"></script>
 
 <!-- INCIDENCIA -->
 <script src="static/js/controllers/incidencia/altaIncidenciaController.js"></script>
+
+<!-- Seguimiento y monitoreo de  OS -->
+<script src="static/js/controllers/monitoreo/seguimientoOsController.js"></script>
+
+<!-- Dependencias de los informes teclo-->
+<script src="static/js/directivas/smart-table.js"></script>
+<script src="static/recursos/componentDynamic-directive.js"></script>
+<script src="static/recursos/dinamicReporteController.js"></script>
+<script src="static/recursos/formBusquedaController.js"></script>
+<script src="static/recursos/reporteConfiguracionService.js"></script>
+<script src="static/plugins/dataGridAngularjs/pagination.min.js"></script>
 
 </html>

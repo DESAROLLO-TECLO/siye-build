@@ -7,6 +7,11 @@ this.servicio = function () {
 	return $http.get(config.baseUrl + "/encuestaSatisfaccion/prueba"); 
 };
 
+this.getDetalleEncuesta = function (idEncuesta, idOrdenServicio) {
+	return $http.get(config.baseUrl + END_POINT + "/detalle", 
+	{params:{"idEncuesta": idEncuesta,"idOrdenServicio": idOrdenServicio}});
+};
+
 this.getEncuesta = function (tipoBusqueda,valor,password){
 	var idTipobusqueda = parseInt(tipoBusqueda);
 	return $http.get(config.baseUrl + END_POINT + "/consultaEncuestasSatisfaccion",
@@ -25,7 +30,7 @@ this.saveRespuestaEncuesta=function(listRespuestasVO){
 
 
 this.finalizaEncuesta=function(usuarioEncuestaVO){
-	return $http.put(config.baseUrl + END_POINT+"/finalizar",usuarioEncuestaVO);
+	return $http.put(config.baseUrl + END_POINT+"/finalizarEncuestaS",usuarioEncuestaVO);
 };
 
 this.cargarEncuesta = function (idOrdenServicio,idEncuesta) {
@@ -34,5 +39,11 @@ this.cargarEncuesta = function (idOrdenServicio,idEncuesta) {
 			params:{"idOrdenServicio": idOrdenServicio,"idEncuesta": idEncuesta}
 		});
 		};
-
+		
+//Combo Causas
+this.comboCausas = function(idOpcion){
+			return $http.get(config.baseUrl + "/catalogo/catCuasas",		
+			{params:{"idOpcion": idOpcion}	
+			});	
+		};	
 });

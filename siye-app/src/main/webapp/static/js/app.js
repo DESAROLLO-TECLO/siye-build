@@ -32,6 +32,8 @@ angular.module(appTeclo,
 		'naif.base64',
 		'ngBootstrap',
 		'daterangepicker',
-		'rw.moneymask'
+		'rw.moneymask',
+		'ui.filedrop',
+		'widget.scrollbar'
 	]
 );

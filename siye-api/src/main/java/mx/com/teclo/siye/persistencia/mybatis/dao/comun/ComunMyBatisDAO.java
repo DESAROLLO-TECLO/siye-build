@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorCompVO;
-import mx.com.teclo.siye.persistencia.vo.catalogo.InstaladorCompVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaCompVO;
 
 import java.util.List;
 
@@ -20,6 +20,6 @@ public interface ComunMyBatisDAO {
 		@Param("consPersonalizada") String consPersonalizada);
 	
 	@Select(CONS_PERSONALIZADA)
-	public List<InstaladorCompVO> consInstaladoresPersonalizada(
+	public List<PersonaCompVO> consInstaladoresPersonalizada(
 		@Param("consPersonalizada") String consPersonalizada);
 }

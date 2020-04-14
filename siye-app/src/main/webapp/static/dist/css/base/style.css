@@ -175,3 +175,14 @@
 	display: block;
 	color: #fff;
 }
+.botonIncidencia{
+	background-color: #f39c12;
+	border-color: #e08e0b;
+	text-align: center;
+	position: fixed;
+	z-index: 100;
+	width: 100px;
+	color: #fff;
+	display: block;
+	right: 0;
+}

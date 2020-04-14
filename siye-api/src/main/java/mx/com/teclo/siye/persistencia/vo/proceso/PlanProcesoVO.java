@@ -11,8 +11,10 @@ public class PlanProcesoVO {
 	private Long nuorden;
 	private Boolean stActivo;
 	
-	//Se agrega esta variable para conocer en que etapa se ecnuetra la orden de servicio
+	//Se agrega esta variable para conocer si la etapa esta activa
 	private Boolean statusProceos;
+	//variable para conocer si el proceso ya esta completo
+	private Boolean procesoCompleto;
 	
 	
 	public Boolean getStatusProceos() {
@@ -51,6 +53,14 @@ public class PlanProcesoVO {
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
 	}
+	public Boolean getProcesoCompleto() {
+		return procesoCompleto;
+	}
+	public void setProcesoCompleto(Boolean procesoCompleto) {
+		this.procesoCompleto = procesoCompleto;
+	}
+
+	
 	
 	
 	

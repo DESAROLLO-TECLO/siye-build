@@ -3,19 +3,17 @@ package mx.com.teclo.siye.persistencia.vo.catalogo;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
+public class TipoPersonaVO implements Serializable {
 
-public class InstaladorCompVO implements Serializable{
-	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6450793529068488324L;
+	private static final long serialVersionUID = 2468763049156427121L;
 	
-	private Integer idRhInstalador;
-	private String nbRhInstalador;
-	private String nbPatRhInstalador;
-	private String nbMatRhInstalador;
+	private Integer idTipoPersona;
+	private String cdTipoPersona;
+	private String nbTipoPersona;
+	private String txTipoPersona;
 	private Integer nuOrden;
 	private Boolean stActivo;
 	private Long idUsrCreacion;
@@ -23,29 +21,29 @@ public class InstaladorCompVO implements Serializable{
 	private Long idUsrModifica;
 	private Date fhModificacion;
 	
-	public Integer getIdRhInstalador() {
-		return idRhInstalador;
+	public Integer getIdTipoPersona() {
+		return idTipoPersona;
 	}
-	public void setIdRhInstalador(Integer idRhInstalador) {
-		this.idRhInstalador = idRhInstalador;
+	public void setIdTipoPersona(Integer idTipoPersona) {
+		this.idTipoPersona = idTipoPersona;
 	}
-	public String getNbRhInstalador() {
-		return nbRhInstalador;
+	public String getCdTipoPersona() {
+		return cdTipoPersona;
 	}
-	public void setNbRhInstalador(String nbRhInstalador) {
-		this.nbRhInstalador = nbRhInstalador;
+	public void setCdTipoPersona(String cdTipoPersona) {
+		this.cdTipoPersona = cdTipoPersona;
 	}
-	public String getNbPatRhInstalador() {
-		return nbPatRhInstalador;
+	public String getNbTipoPersona() {
+		return nbTipoPersona;
 	}
-	public void setNbPatRhInstalador(String nbPatRhInstalador) {
-		this.nbPatRhInstalador = nbPatRhInstalador;
+	public void setNbTipoPersona(String nbTipoPersona) {
+		this.nbTipoPersona = nbTipoPersona;
 	}
-	public String getNbMatRhInstalador() {
-		return nbMatRhInstalador;
+	public String getTxTipoPersona() {
+		return txTipoPersona;
 	}
-	public void setNbMatRhInstalador(String nbMatRhInstalador) {
-		this.nbMatRhInstalador = nbMatRhInstalador;
+	public void setTxTipoPersona(String txTipoPersona) {
+		this.txTipoPersona = txTipoPersona;
 	}
 	public Integer getNuOrden() {
 		return nuOrden;

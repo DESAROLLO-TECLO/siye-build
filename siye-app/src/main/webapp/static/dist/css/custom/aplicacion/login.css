@@ -147,7 +147,19 @@
 	z-index: 10;
 }
 
-
+#login-container #signup-btn-enc {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  color: #fff;
+  background-color: #cf0a2c;
+  border: #cf0a2c;
+  margin-top: 0.857rem !important;
+  font-size: 18px;
+}
+#login-container #signup-btn-enc:hover {
+  background-color: #e60b31;
+  border-color: #e60b31;
+}
 @media only screen and (max-width: 53em){
 	.footerLogin{
 		flex-direction: column;

@@ -24,7 +24,7 @@ public class SeccionDAOImpl extends BaseDaoHibernate<SeccionDTO> implements Secc
 		StringBuilder consulta = new StringBuilder("SELECT pregunta.ID_PREGUNTA  AS idPregunta, pregunta.TX_PREGUNTA  AS cdPregunta, pregunta.NU_MAX_IMAGENES  AS nuMaxImg" + 
 				" FROM TIE004D_EE_SECCION seccion" + 
 				"  INNER JOIN TIE005D_EE_PREGUNTAS pregunta ON (seccion.ID_SECCION = pregunta.ID_SECCION)" + 
-				"   WHERE seccion.ID_ENCUESTA ="+ idEncuesta+" AND pregunta.ST_ACTIVO = 1");
+				"   WHERE seccion.ID_ENCUESTA ="+ idEncuesta+" AND pregunta.ST_ACTIVO = 1 ORDER BY pregunta.NU_ORDEN ASC");
 		List<ExpedienteNivelPreguntaVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				 .addScalar("idPregunta",LongType.INSTANCE)
 					.addScalar("cdPregunta",StringType.INSTANCE)

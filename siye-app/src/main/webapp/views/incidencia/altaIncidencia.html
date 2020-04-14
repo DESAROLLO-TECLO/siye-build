@@ -1,34 +1,26 @@
 <head>
     <meta charset="UTF-8">
-    <style type="text/css">
-    	.nbStatus {
-			display: block;
-			border-radius: .25em;
-			width: 10px;
-			height: 30px;
-			margin: 0 auto;
-		}
-    </style>
 </head>
 <section class="content-header">
-    <h1>{{breadCrumbs.servicio}}</h1>
+    <h1>Alta</h1>
     <ol class="breadcrumb">
         <li>
             <a>
-                <i class="{{breadCrumbs.icono}}"></i>{{breadCrumbs.modulo}}
+                <i class="{{breadCrumbs.icono}}"></i>Incidencias
             </a>
         </li>
-        <li class="active">{{breadCrumbs.servicio}}</li>
+        <li class="active">Alta</li>
     </ol>
 </section>
 
 <section class="content">
+<!-- 	<boton-incidencia id-orden-serv="idOrd"></boton-incidencia> -->
     <form role="form" name="formAltaIncidencia" novalidate>
         <div class="row">
-            <div class="col-xs-12 col-md-offset-1 col-md-10">
+            <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10">
                 <div class="box box-danger">
                     <div class="box-header with-border text-center">
-                        <h3 class="box-title"> Registro de incidencia </h3>
+                        <h3 class="box-title"> Alta de Incidencia </h3>
 <!--                         <div class="box-tools pull-right"> -->
 <!--                             <button type="button" class="btn btn-box-tool" data-widget="collapse"> -->
 <!-- 								<i class="fa fa-minus"></i> -->
@@ -38,83 +30,191 @@
                     <div class="box-body">
                         <div class="row">
                         	<div class="col-md-12 text-right">
-                        		<label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelFh' | translate}} {{fechaAnio}}</label>
+                        		<label for=""> {{'ALTAINCIDENCIA.AltaIncidencia.labelFh' | translate}} {{fechaAnio}}</label>
                         	</div>
                         </div>	
                         <div class="row">
-                        	<div class="col-md-4">
-                        		<label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelFlSol' | translate}} {{fechaAnio}}</label>
-                        	</div>
-                        	<div class="col-md-4">
-                        		<label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelPl' | translate}} {{fechaAnio}}</label>
-                        	</div>
-                        	<div class="col-md-4">
-                        		<label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelMA' | translate}} {{fechaAnio}}</label>
-                        	</div>
-                        </div>	
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group" ng-class="{'has-error': formConsultaServicio.tipoBusqueda.$invalid && formConsultaServicio.tipoBusqueda.$dirty}">
-                                    <label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelTpInc' | translate}} </label>
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{'has-error': formAltaIncidencia.tipoIncidencia.$invalid && formAltaIncidencia.tipoIncidencia.$dirty}">
+                                    <label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.tpInc.label' | translate}} </label>
                                     <div class="input-group">
                                         <div class="input-group-addon">
                                             <i class="fa fa-list-ul"></i>
                                         </div>
-                                        <select class="form-control" name="tipoBusqueda" id="tipoBusqueda" ng-required="true" select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
-                                        	ng-model="parametroBusqueda.tipoBusqueda" ng-options="tipo as tipo.nbTipoBusqueda for tipo in listTipoBusqueda" ng-change="validarSelect()">
+                                        <select class="form-control" name="tipoIncidencia" id="tipoIncidencia" required select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
+                                        	catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getTpIncidencia'"
+                                        	name-save-service="'conductorService'" name-save-end-point-service="'nuevoConductor'"
+                                        	model-result="listTpIncidencia"
+											opcion-selec="registroIncidencia.tpIncidencia" ng-change="addTxDescripcion()"
+											ng-model="registroIncidencia.tpIncidencia" ng-options="tipo as tipo.nbStSeguimiento for tipo in listTpIncidencia">
 											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
 										</select>
                                     </div>
-                                    <div ng-show="formConsultaServicio.tipoBusqueda.$invalid && formConsultaServicio.tipoBusqueda.$dirty" ng-style="{color:'red'}">
-                                        <label> {{'ORDENSERVICIO.AltaServicio.seleccionadores.tipoBusqueda.validacion' | translate}} </label>
+                                    <div ng-show="formAltaIncidencia.tipoIncidencia.$invalid && formAltaIncidencia.tipoIncidencia.$dirty" ng-style="{color:'red'}">
+                                        <label> {{'ALTAINCIDENCIA.AltaIncidencia.tpInc.validacion' | translate}} </label>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group" ng-class="{'has-error': formConsultaServicio.valorBusqueda.$invalid && formConsultaServicio.valorBusqueda.$dirty}">
-                                    <label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelPriod' | translate}} </label>
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{'has-error': formAltaIncidencia.prioridad.$invalid && formAltaIncidencia.prioridad.$dirty}">
+                                    <label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.priod.label' | translate}} </label>
                                     <div class="input-group">
-                                        <span class="input-group-addon"> <i class="fa fa-pencil"> </i> </span>
-                                        <select class="form-control" name="tipoBusqueda" id="tipoBusqueda" ng-required="true" select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
-                                        	ng-model="parametroBusqueda.tipoBusqueda" ng-options="tipo as tipo.nbTipoBusqueda for tipo in listTipoBusqueda" ng-change="validarSelect()">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-list-ul"></i>
+                                        </div>
+                                        <select class="form-control" name="prioridad" id="prioridad" required select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
+                                        	catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getPrioridad'"
+                                        	name-save-service="'conductorService'" name-save-end-point-service="'nuevoConductor'"
+                                        	model-result="listPrioridad"
+											opcion-selec="registroIncidencia.prioridad" ng-change="addTxDescripcion()"
+											ng-model="registroIncidencia.prioridad" ng-options="p as p.nbStSeguimiento for p in listPrioridad">
 											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
 										</select>
                                     </div>
-                                    <div ng-show="formConsultaServicio.valorBusqueda.$invalid && formConsultaServicio.valorBusqueda.$dirty" ng-style="{color:'red'}">
-                                        <label> {{'ORDENSERVICIO.AltaServicio.seleccionadores.valor.validacion' | translate}} </label>
+                                    <div ng-show="formAltaIncidencia.prioridad.$invalid && formAltaIncidencia.prioridad.$dirty" ng-style="{color:'red'}">
+                                        <label> {{'ALTAINCIDENCIA.AltaIncidencia.priod.validacion' | translate}} </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group" ng-class="{'has-error': formAltaIncidencia.orden.$invalid && formAltaIncidencia.orden.$dirty}">
+                                    <label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.flSol.label' | translate}} </label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-list-ul"></i>
+                                        </div>
+                                        <select class="form-control" name="orden" id="orden" required select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
+                                        	catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getOrdenServicio'"
+                                        	name-save-service="'conductorService'" name-save-end-point-service="'nuevoConductor'"
+                                        	model-result="listOrden" ng-disabled="conServicio"
+											opcion-selec="registroIncidencia.orden" ng-change="addTxDescripcion()"
+											ng-model="registroIncidencia.orden" ng-options="o as o.cdOrdenServicio for o in listOrden">
+											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+										</select>
+                                    </div>
+                                    <div ng-show="formAltaIncidencia.orden.$invalid && formAltaIncidencia.orden.$dirty" ng-style="{color:'red'}">
+                                        <label> {{'ALTAINCIDENCIA.AltaIncidencia.flSol.validacion' | translate}} </label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                         	<div class="col-md-4">
-                        		<label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelTC' | translate}} {{fechaAnio}}</label>
-                        	</div>
-                        	<div class="col-md-4">
-                        		<label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.labelVin' | translate}} {{fechaAnio}}</label>
-                        	</div>
-                        </div>	
-                        <div class="row">
-                            <div class="col-md-9">
-                                <div class="form-group" ng-class="{'has-error': formConsultaServicio.tipoBusqueda.$invalid && formConsultaServicio.tipoBusqueda.$dirty}">
+                                <div class="form-group" ng-class="{'has-error': formAltaIncidencia.tecnico.$invalid && formAltaIncidencia.tecnico.$dirty}">
+                                    <label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.tecnico.label' | translate}} </label>
                                     <div class="input-group">
                                         <div class="input-group-addon">
                                             <i class="fa fa-list-ul"></i>
                                         </div>
-                                        <textarea name="textarea" rows="10" cols="50">Observaciones</textarea>
+                                        <select class="form-control" name="tecnico" id="tecnico" required select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
+                                        	catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getTecnicos'"
+                                        	name-save-service="'conductorService'" name-save-end-point-service="'nuevoConductor'"
+                                        	model-result="listTecnico"
+											opcion-selec="registroIncidencia.tecnico" ng-change="addTxDescripcion()"
+											ng-model="registroIncidencia.tecnico" ng-options="t as t.nbPersona+' '+t.nbPatPersona+' '+t.nbMatPersona for t in listTecnico">
+											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+										</select>
                                     </div>
-                                    <div ng-show="formConsultaServicio.tipoBusqueda.$invalid && formConsultaServicio.tipoBusqueda.$dirty" ng-style="{color:'red'}">
-                                        <label> {{'ORDENSERVICIO.AltaServicio.seleccionadores.tipoBusqueda.validacion' | translate}} </label>
+                                    <div ng-show="formAltaIncidencia.tecnico.$invalid && formAltaIncidencia.tecnico.$dirty" ng-style="{color:'red'}">
+                                        <label> {{'ALTAINCIDENCIA.AltaIncidencia.tecnico.validacion' | translate}} </label>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="form-group" ng-class="{'has-error': formConsultaServicio.tipoBusqueda.$invalid && formConsultaServicio.tipoBusqueda.$dirty}">
-                                    
+                        	<div class="col-md-4">
+                        		<div class="form-group" ng-class="{'has-error': formAltaIncidencia.transportista.$invalid && formAltaIncidencia.transportista.$dirty}">
+	                        		<label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.transportista.label' | translate}} </label>
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-list-ul"></i>
+										</div>
+										<select class="form-control" name="transportista" id="transportista" required select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}"
+											catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getTransportistas'" 
+											name-save-service="'conductorService'" name-save-end-point-service="'nuevoConductor'" 
+											model-result="listTransportista"
+											opcion-selec="registroIncidencia.transportista"
+											ng-model="registroIncidencia.transportista" ng-change="addTxDescripcion()" 
+											ng-options="x as x.nbConductor+' '+x.nbApepatConductor+' '+x.nbApematConductor for x in listTransportista">
+											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+										</select>
+<!-- 										<div class="input-group-btn"> -->
+<!-- 											<label  catalogo-generico-listt id="btnPersona" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></label> -->
+<!-- 										</div> -->
+									</div>
+									<div ng-show="formAltaIncidencia.transportista.$invalid && formAltaIncidencia.transportista.$dirty" ng-style="{color:'red'}">
+                                        <label> {{'ALTAINCIDENCIA.AltaIncidencia.tecnico.validacion' | translate}} </label>
+                                    </div>
+								</div>
+								
+                        	</div>
+                        	<div class="col-md-4">
+                                <div class="form-group" ng-class="{'has-error': formAltaIncidencia.modAten.$invalid && formAltaIncidencia.modAten.$dirty}">
+                                    <label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.modAten.label' | translate}} </label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-list-ul"></i>
+                                        </div>
+                                        <select class="form-control" name="modAten" id="modAten" required select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
+                                        	catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getModAten'"
+                                        	name-save-service="'conductorService'" name-save-end-point-service="'nuevoConductor'"
+                                        	model-result="listModAten"
+											opcion-selec="registroIncidencia.modAten" disabled
+											ng-model="registroIncidencia.modAten" ng-options="ma as ma.nbCentroInstalacion for ma in listModAten">
+											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+										</select>
+                                    </div>
+                                    <div ng-show="formAltaIncidencia.modAten.$invalid && formAltaIncidencia.modAten.$dirty" ng-style="{color:'red'}">
+                                        <label> {{'ALTAINCIDENCIA.AltaIncidencia.modAten.validacion' | translate}} </label>
+                                    </div>
                                 </div>
+                        	</div>
+                        </div>	
+                        <div class="row">
+                            <div class="col-md-7">
+                            	<div class="row">
+		                            <div class="col-md-12">
+		                                <div class="form-group" ng-class="{'has-error': formAltaIncidencia.descripcion.$invalid && formAltaIncidencia.descripcion.$dirty}">
+		                                    	<label for="descripcion"> *Descripción: {{contador}} Caracteres </label>
+		                                    <div class="input-group">
+		                                        <div class="input-group-addon">
+		                                            <i class="fa fa-list-ul"></i>
+		                                        </div>
+		                                        <textarea id="descripcion" name="descripcion" required capitalize ng-change="addTxDescripcion()"
+													style="resize: none;"class="form-control" rows="2" maxlength="{{totalLength}}" ng-KeyUp="longitud()"
+													ng-model="registroIncidencia.descripcion">
+												</textarea> 
+		                                    </div>
+		                                    <div ng-show="formAltaIncidencia.descripcion.$invalid && formAltaIncidencia.descripcion.$dirty" ng-style="{color:'red'}">
+		                                        <label> La descripción es requerida. </label>
+		                                    </div>
+		                                </div>
+		                         	</div>
+		                         	<div class="col-md-12">
+		                                <div class="form-group">
+		                                    	<label for=""> Vista Previa: </label>
+		                                    <div class="input-group">
+		                                        <div class="input-group-addon">
+		                                            <i class="fa fa-list-ul"></i>
+		                                        </div>
+		                                        <textarea id="txDescripcion" name="txDescripcion" readonly="true" capitalize
+													style="resize: none;"class="form-control" rows="5" ng-model="registroIncidencia.txDescripcion">
+												</textarea> 
+		                                    </div>
+		                                </div>
+		                         	</div>
+		                    	</div>
+                            </div>
+                            <div class="col-md-5">
+                                <update-image id-element-up="altaIncidencia" include="true" param-conf-sav="paramConfSav" is-incidencia="true"
+	                   				param-conf-component="paramConfiguracion" max-nu-image="{{paramConfiguracion.maxNuImage}}" list-images="listImages"></update-image>
                             </div>
                         </div>
                     </div>
+                	<div class="box-footer">
+                		<div class="col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10 center">
+					    	<button class="btn btn-danger btn-flat" ng-click="regresar()" ng-show="btnRegrear">Regresar</button>
+					    	<button class="btn btn-danger btn-flat" ng-click="guardar(true)">Guardar</button>
+					    </div>
+                	</div>
                 </div>
             </div>
         </div>

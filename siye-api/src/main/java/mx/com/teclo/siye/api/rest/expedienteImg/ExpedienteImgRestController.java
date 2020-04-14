@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
+import mx.com.teclo.arquitectura.ortogonales.responsehttp.BadRequestHttpResponse;
+import mx.com.teclo.arquitectura.ortogonales.responsehttp.ConflictHttpResponse;
 import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.siye.negocio.service.expedienteImg.ExpedienteImgService;
@@ -44,9 +47,19 @@ public class ExpedienteImgRestController {
 	
 	@PostMapping(value="/saveEvidencia")
 	//@PreAuthorize("hasAnyAuthority('GUARDAR_ALTA_EVIDENCIA')")
-	public ResponseEntity<List<ImagenVO>> saveImgExpediente(@RequestBody List<ImagenVO> expedientes) throws NotFoundException{
-		UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO(); 		
-		List<ImagenVO> respuesta = expedienteImg.saveExpediente(expedientes, usuario.getId());
+	public ResponseEntity<List<ImagenVO>> saveImgExpediente(@RequestBody List<ImagenVO> expedientes) 
+			throws NotFoundException,ConflictHttpResponse,BadRequestHttpResponse{
+		UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
+		List<ImagenVO> respuesta=null;
+		
+		try{
+			respuesta= expedienteImg.saveExpediente(expedientes, usuario.getId());
+		}catch(BadRequestHttpResponse brq){
+			throw new BadRequestHttpResponse(brq.getMessage());
+		}catch (BusinessException b) {
+			throw new ConflictHttpResponse(b.getMessage());
+		}
+		
 		return new ResponseEntity<List<ImagenVO>>(respuesta, HttpStatus.OK);
 	};
 	
@@ -62,6 +75,9 @@ public class ExpedienteImgRestController {
 	public ResponseEntity<List<ImagenVO>> deleteEvidencia(@RequestBody List<ImagenVO> expedientes) throws NotFoundException{
 		UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO(); 		
 		List<ImagenVO> respuesta = expedienteImg.delListEvidencia(expedientes, usuario.getId());
+		if(respuesta== null) {
+			throw new NotFoundException("Ocurrio un error el eliminar");
+		}
 		return new ResponseEntity<List<ImagenVO>>(respuesta, HttpStatus.OK);
 	}
 	

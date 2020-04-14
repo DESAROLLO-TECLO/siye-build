@@ -1,22 +1,35 @@
 package mx.com.teclo.siye.api.rest.catalogo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
+import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.negocio.service.catalogo.CatalogoService;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.OpcionCausaDTO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.CatTipoFechasVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
-import mx.com.teclo.siye.persistencia.vo.catalogo.InstaladorVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.OpcionCausaVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaGenericaVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioCatalogoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.StSeguimientoVO;
+import mx.com.teclo.siye.util.enumerados.RespuestaHttp;
 
 
 @RestController
@@ -49,9 +62,11 @@ public class CatalogoRestController {
 	}
 	
 	@RequestMapping(value="/getTecnicos", method = RequestMethod.GET)
-	public ResponseEntity<List<InstaladorVO>> getTecnicos() throws NotFoundException{
-		List<InstaladorVO> listaInstaladorVO = catalogoService.getTecnicos();
-		return new ResponseEntity<List<InstaladorVO>>(listaInstaladorVO, HttpStatus.OK);
+	public ResponseEntity<List<PersonaVO>> getTecnicos(
+		@RequestParam("idTipoPersona") Integer idTipoPersona
+	) throws NotFoundException{
+		List<PersonaVO> listaInstaladorVO = catalogoService.getTecnicos(idTipoPersona);
+		return new ResponseEntity<List<PersonaVO>>(listaInstaladorVO, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/getCatOrdenProceso", method =  RequestMethod.GET)
@@ -71,6 +86,63 @@ public class CatalogoRestController {
 	public ResponseEntity<List<StSeguimientoVO>> getPrioridad()  throws NotFoundException {
 		List<StSeguimientoVO> listStSeguimientoVO = catalogoService.obtenerStSeguimientoByCdTpSeguimiento("ID_PRIORIDAD");
 		return new ResponseEntity<List<StSeguimientoVO>>(listStSeguimientoVO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/getOrdenServicio", method = RequestMethod.GET)
+	public ResponseEntity<List<OrdenServicioCatalogoVO>> getOrdenServicio() throws NotFoundException {
+		List<OrdenServicioCatalogoVO> listOrdenServicioCatalogoVO = catalogoService.getOrdenServicio();
+		return new ResponseEntity<List<OrdenServicioCatalogoVO>>(listOrdenServicioCatalogoVO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/parametroCd", method = RequestMethod.GET)
+	public ResponseEntity<ConfiguracionVO> parametro(@RequestParam("cdParametro") String cdParametro) throws NotFoundException {
+		ConfiguracionVO listToReturn = catalogoService.configuracion(cdParametro);
+		if(listToReturn == null)
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		return new ResponseEntity<ConfiguracionVO>(listToReturn, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/getModAten", method = RequestMethod.GET)
+	public ResponseEntity<List<CentroInstalacionVO>> getModAten() throws NotFoundException {
+		List<CentroInstalacionVO> listCentroInstalacionVO = new ArrayList<>(); 
+		listCentroInstalacionVO.add(catalogoService.getModAten());
+		return new ResponseEntity<List<CentroInstalacionVO>>(listCentroInstalacionVO, HttpStatus.OK);
+	}
+		
+	@RequestMapping(value = "/catCuasas", method = RequestMethod.GET)
+	@Transactional
+	public ResponseEntity<List<OpcionCausaVO>> buscarCatalogo(@RequestParam("idOpcion") Long idOpcion) {
+		List<OpcionCausaDTO> opcionCausa = new ArrayList<OpcionCausaDTO>();
+		opcionCausa = catalogoService.getCatalogoCausas(idOpcion);
+		List<OpcionCausaVO> causas = ResponseConverter.converterLista(new ArrayList<>(), opcionCausa,
+				OpcionCausaVO.class);
+		return new ResponseEntity<List<OpcionCausaVO>>(causas, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value="/buscarPersona", method = RequestMethod.GET)
+	public ResponseEntity<PersonaGenericaVO> buscarPersona(@RequestParam("cdPersona") String cdPersona,@RequestParam("idTipoPersona") Integer idTipoPersona) throws NotFoundException {
+		PersonaGenericaVO personaVO = catalogoService.buscarPersona(cdPersona,idTipoPersona);
+		if(personaVO == null)
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		return new ResponseEntity<PersonaGenericaVO>(personaVO, HttpStatus.OK);
+	}
+
+
+	@RequestMapping(value = "/getCatTipoFechas", method =  RequestMethod.GET)
+	//@PreAuthorize("hasAnyAuthority('GET_CAT_RANGO_FECHAS')")
+	public ResponseEntity<List<CatTipoFechasVO>> getCatTipoFechas()  throws NotFoundException {
+		List<CatTipoFechasVO> fechas = catalogoService.getCatTipoFechas();
+		if(fechas.isEmpty()) {
+			throw new NotFoundException("No hay Rango de fechas Asignado");
+		}
+		return new ResponseEntity<List<CatTipoFechasVO>>(fechas, HttpStatus.OK);
+	}
+	
+
+	@RequestMapping(value = "/getNuMaxImgIncidencia", method =  RequestMethod.GET)
+	public ResponseEntity<List<ConfiguracionVO>> getNuMaxImgIncidencia()  throws NotFoundException {
+		List<ConfiguracionVO> listConfiguracionVO = catalogoService.configuracionIncidencia("TIE051D_NU_MAX_IMAGENES", "TIE051D_IMG_REQ");
+		return new ResponseEntity<List<ConfiguracionVO>>(listConfiguracionVO, HttpStatus.OK);
 	}
 
 }

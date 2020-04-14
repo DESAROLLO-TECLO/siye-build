@@ -1,12 +1,25 @@
 angular.module(appTeclo)
 .controller("etapaController",
-function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, etapaInfo) {
+function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, etapaInfo,encuestaService) {
 
     $scope.fechaHoy = new Date();
     $scope.stValidarCheck = false;
+
+    $scope.numMaxImg = 3;
+    $scope.listImages = [];
+    $scope.paramEtapaImg = new Object({
+        idOrdenServ: etapaInfo.data[0].idOrdenServicio,
+        cdOrdenServicio: etapaInfo.data[0].cdOrdenServicio
+    });
+    $scope.paramConfigImg = new Object({
+        maxSizeMb: 1,
+        title: "Agregar Evidencia por Etapa"
+    });
     
     if(etapaInfo != null){
         $rootScope.idOrSer = parseInt(etapaInfo.data[0].idOrdenServicio);
+        $rootScope.nomOrdenServicio = etapaInfo.data[0].cdOrdenServicio;
+        $rootScope.numOS = etapaInfo.data[0].idOrdenServicio;
         $scope.dataEtapa = new Object({
             idOrdenServicio:etapaInfo.data[0].idOrdenServicio,
             cdOrdenServicio:etapaInfo.data[0].cdOrdenServicio,
@@ -46,6 +59,7 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
         etapaService.getPlan(idPlan, idOrden).success(function(data){
             $scope.dataPlan = data;
             var dplength = $scope.dataPlan.length;
+            encuestaService.primerProceso=$scope.dataPlan[0].proceso.idProceso;
             for(var i = 0; i < dplength; i++){
                 switch($scope.dataPlan[i].proceso.cdProceso){
                     case 'INS':

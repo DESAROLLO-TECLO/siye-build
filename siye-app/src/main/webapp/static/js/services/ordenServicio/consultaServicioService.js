@@ -1,4 +1,4 @@
-angular.module(appTeclo).service('consultaServicioService', function($http, config) {
+angular.module(appTeclo).service('consultaServicioService', function($http, config, $timeout) {
 
     this.buscarTipoBusqueda = function() {
         return $http.get(config.baseUrl + "/");
@@ -44,4 +44,31 @@ angular.module(appTeclo).service('consultaServicioService', function($http, conf
             }
         });
     };
+    this.descargarReporteExcel = function(rVO) {
+        return $http({
+            method: 'POST',
+            url: config.baseUrl + "/descargaExcel",
+            data: rVO,
+            dataType: "json",
+            header: {
+                "Content-type": "application/json",
+                "Accept": "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            },
+            responseType: 'arraybuffer'
+        });
+    };
+
+    /*UTILITIES*/
+    this.downloadfile = function(file, fileName) {
+        var url = window.URL || window.webkitURL;
+        var blobUrl = url.createObjectURL(file);
+        var a = document.createElement('a');
+        a.href = blobUrl;
+        a.target = '_blank';
+        a.download = fileName;
+        document.body.appendChild(a);
+        $timeout(function() {
+            a.click();
+        }, 100);
+    }
 });

@@ -11,8 +11,8 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
-@ComponentScan( basePackages = "mx.com.teclo")
-@EntityScan(basePackages = "mx.com.teclo")
+@ComponentScan( basePackages = "mx.com")
+@EntityScan(basePackages = "mx.com")
 public class SieApiApplication {
 
 	public static void main(String[] args) {
