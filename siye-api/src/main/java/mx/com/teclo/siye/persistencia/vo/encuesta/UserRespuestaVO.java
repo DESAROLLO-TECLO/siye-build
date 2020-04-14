@@ -16,6 +16,8 @@ public class UserRespuestaVO implements Serializable {
 	private Long idIntento;
 	//nueva variable causas
 	private String causas;
+	
+	private String descripcionCausa;
 
 	/**
 	 * @return the idEncuesta
@@ -94,6 +96,15 @@ public class UserRespuestaVO implements Serializable {
 	public void setCausas(String causas) {
 		this.causas = causas;
 	}
+
+	public String getDescripcionCausa() {
+		return descripcionCausa;
+	}
+
+	public void setDescripcionCausa(String descripcionCausa) {
+		this.descripcionCausa = descripcionCausa;
+	}
+	
 	
 	
 
