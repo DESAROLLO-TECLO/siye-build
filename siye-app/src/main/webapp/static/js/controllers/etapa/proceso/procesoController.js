@@ -5,13 +5,22 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
 	$scope.idOrdenServicio=idord;
 	$scope.idProcesoActual=idpro;
     $scope.stActivarEncuesta = procesoInfo.data[3].stSatisfaccion;
-    $scope.tiempoTranscurrido = new Date();
     $scope.numOrden = $rootScope.numOS;
 
     if(procesoInfo != null){
         $scope.nombreEtapa = "Orden de Servicio: " + $rootScope.nomOrdenServicio + " - Proceso: " + procesoInfo.data[0].idProceso.nbProceso;
         $scope.dataEtapa = procesoInfo.data;
         $rootScope.nomSeguimiento = $scope.nombreEtapa;
+        $scope.tiempoTranscurrido = 0;
+        for(let i = 0; i < procesoInfo.data.length; i++){
+            let finit = procesoInfo.data[i].idEncuesta.fechaInicioEncuesta;
+            let ffin = procesoInfo.data[i].idEncuesta.fechaFinEncuesta;
+            if(finit != null && ffin != null){
+                $scope.tiempoTranscurrido += ffin - finit;
+            }else{
+                $scope.tiempoTranscurridoText = "Sin validar";
+            }
+        }
     }else{
         growl.error('No se logró recuperar el  registro solicitado', {title: '-ERROR-'});
     }
