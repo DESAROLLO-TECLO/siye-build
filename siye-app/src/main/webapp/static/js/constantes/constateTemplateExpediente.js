@@ -70,7 +70,7 @@ var includeDeseing=
 	'									</div>                                                                                                                                          '+
 	'									<div class="{{showCombo ? \'col-xs-6 col-sm-3 col-md-2\' : \' col-xs-6 col-sm-2 col-md-2\'}}">                                                  '+
 	'										<div class="form-group">                                                                                                                    '+
-	'											<label>Tamaño:</label>                                                                                                                  '+
+	'											<label>Tama&ntilde;o:</label>                                                                                                                  '+
 	'											<div class="input-group">                                                                                                               '+
 	'												{{imagenVO.size/1024/1024|number:2}} Mb                                                                                             '+
 	'											</div>																																	'+
@@ -80,13 +80,13 @@ var includeDeseing=
 	'										<div class="form-group"                                                                                                           			'+
 	'														ng-class="{\'has-error\': (formTpDocument[\'tpDoc\'+imagenVO.unic+\'\'+idElementUp].$invalid && formTpDocument[\'tpDoc\'+imagenVO.unic+\'\'+idElementUp].$dirty) }">				'+
 	'											<label>                                                                                                                                 '+
-	'												*Tipo de Documento                                                                                                                  '+
+	'												*Tipo de Documento                                                                                                            '+
 	'											</label>                                                                                                                                '+
 	'											<div class="input-group">                                                                                                               '+
 	'												<div class="input-group-addon">                                                                                                     '+
 	'													<i class="fa fa-list-alt"></i>                                                                                                  '+
 	'												</div>                                                                                                                              '+
-	'												<select class="form-control" name="tpDoc{{imagenVO.unic+idElementUp}}" id="tpDoc{{imagenVO.unic+idElementUp}}"                      '+
+	'												<select class="form-control" name="tpDoc{{imagenVO.unic+\'\'+idElementUp}}" id="tpDoc{{imagenVO.unic+\'\'+idElementUp}}"                      '+
 	'													ng-required="showCombo" select2 data-minimum-results-for-search="Infinity"                                                      '+
 	'													idioma-s2="{{currentLanguage}}" ng-model="imagenVO.tipoExpediente"                                                              '+
 	'													ng-options="tipo as tipo.nbTipoExpediente for tipo in tpDocumentList">                                                          '+

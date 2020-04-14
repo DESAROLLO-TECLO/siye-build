@@ -122,16 +122,16 @@ appt.directive('updateImage',
 			//Metodo principal que ejecuta toda la configuración inicial de la directiva
 			  async function intDirective(){
 	    		  
-				  await valdComboTpDocuemnt();
+				  await scope.valdComboTpDocuemnt();
 				  
 				  $timeout(function() {
-					  complementsDataImage();
+					  scope.complementsDataImage();
 				  },500);
 	    	
 		    	  scope.configPages();
 	    	  };
 	    	  
-	    	  function complementsDataImage(){
+	    	  scope.complementsDataImage=function(){
 	    		//se asigna un estatus a las imagenes que se obtienen de base de datos, 
 		    	  //sirve de manera local para invocar o no el servicio de eliminacion en back, y se asigna un parametro para identificacion local
 		    	  angular.forEach(scope.listImages, function(item, key) {
@@ -154,12 +154,11 @@ appt.directive('updateImage',
 		    				  for(i=0; i<a.length; i++){
 		    					  
 		    					  if(item.idTipoExpediente == a[i].idTipoExpediente){
-		    						  $timeout(function() {
+		    						 
 		    							  scope.$apply(function() {
 		    								  item.tipoExpediente =a[i];
 				    						  $("#select2-tpDoc"+item.unic+scope.idElementUp+"-container").text(item.tipoExpediente.nbTipoExpediente);
 		    								});
-		    						  },100);
 		    						  break;
 		    					  }
 		    				  }
@@ -179,7 +178,7 @@ appt.directive('updateImage',
 	    			  intDirective();
 	    		  }else if(newVaue != undefined && oldValue!= undefined){
 	    			  if(newVaue.length == oldValue.length){
-	    				  if(!isEqualsList(newVaue,oldValue))// si existen cambios
+	    				  if(!scope.isEqualsList(newVaue,oldValue))// si existen cambios
 	    					  intDirective();
 	    			  }else if(newVaue.length != oldValue.length){
 	    				  intDirective();
@@ -187,7 +186,7 @@ appt.directive('updateImage',
 	    		  }
 			  });*/
 	    	  
-	    	  isEqualsList=function(newValue,oldValue){
+	    	  scope.isEqualsList=function(newValue,oldValue){
 	    		  
 	    		  let i;
 	    		  let j;
@@ -252,14 +251,14 @@ appt.directive('updateImage',
 	    	      //fin dunciones de paginador
 	    	  
 	    	  //SE VALIDA SI SE OBTIENE TIPO DE DOCUMENTO DESDE SERVICIO
-	    	  function valdComboTpDocuemnt(){
+	    	  scope.valdComboTpDocuemnt=function(){
 		    		
 					  if(scope.paramConfComponent.listTpDocuemnt != undefined 
 							  && scope.paramConfComponent.listTpDocuemnt.length > 0){
 						  scope.showCombo=true;
 						  scope.tpDocumentList=scope.paramConfComponent.listTpDocuemnt;
 					  }else{
-						   getCatalogoTipoDocumento(); 
+						  scope.getCatalogoTipoDocumento(); 
 					  }
 	    	  }
 	    	  
@@ -272,7 +271,7 @@ appt.directive('updateImage',
  		    	  });
 	    			  
 	    		  // Si exsisten restricciones se omiten los archivos que no las cumplan
-	    		  let files=validRestrcctionsFiles(filesList);
+	    		  let files=scope.validRestrcctionsFiles(filesList);
 	    		  
 	    		// los files obtenidos se asignan a la lista enviada como parametro
 	    		  reinitListView(filesList);
@@ -287,7 +286,7 @@ appt.directive('updateImage',
  		    	  });
 	    			  
 	    		  // Si exsisten restricciones se omiten los archivos que no las cumplan
-	    		  let files=validRestrcctionsFiles(filesList);
+	    		  let files=scope.validRestrcctionsFiles(filesList);
 	    		  
 	    		// los files obtenidos se asignan a la lista enviada como parametro
 	    		  reinitListView(filesList);
@@ -303,7 +302,7 @@ appt.directive('updateImage',
 	    	  }
 	    	  
 	    	  //se vaidan las restrciones en caso de existir
-	    	  validRestrcctionsFiles=function(lisFiles){
+	    	  scope.validRestrcctionsFiles=function(lisFiles){
 	    		  if(scope.paramConfComponent != undefined){
 	    			  let errorTypeFile=false;
 	        		  let errorSizeImage=false;
@@ -374,11 +373,11 @@ appt.directive('updateImage',
 	           			  });
 	           			  
 	           			  if(scope.paramConfSav != undefined){
-	           				imagenVO=getImgVOParamInitial(imagenVO);
+	           				imagenVO= scope.getImgVOParamInitial(imagenVO);
 	           			  }
 	           			  
 		           			let unic=(scope.listImages.length+1);
-	          				imagenVO.inic=unic;
+	          				imagenVO.unic=unic;
 	          				imagenVO.name=file.name;
 	          				imagenVO.file=file;
 	          				imagenVO.type=file.type;
@@ -444,7 +443,7 @@ appt.directive('updateImage',
 		    	 showComboTpDocument:false
 		     });
 		     
-		     getImgVOParamInitial=function(imgVO){
+		     scope.getImgVOParamInitial=function(imgVO){
 		    	 
 		    	 imgVO.idOrdenServicio=scope.paramConfSav.idOrdenServ;
 		    	 imgVO.idProceso=scope.paramConfSav.idProceso;
@@ -455,7 +454,7 @@ appt.directive('updateImage',
 		    	 return imgVO;
 		     };
 		     
-		     getCatalogoTipoDocumento=function(){
+		     scope.getCatalogoTipoDocumento=function(){
 		    	 
 		    	 expedienteService.getCatTpDocumento().success(function(response){
 		    		 scope.tpDocumentList=response;
@@ -481,14 +480,17 @@ appt.directive('updateImage',
 		    	 
 		    	 let listImages=new Array();
 		    	 listImages.push(item);
-		    	 serviceSave(listImages);
+		    	 scope.serviceSave(listImages);
 		     };
 		     
 		     //metodo que se crea con alcance de controller padre, se puede invocar desde el controller
-		     scope.$parent.$parent.isValidFormImages=function(){
+		     scope.$parent.$parent.isValidFormImages=function(message){
+		    	 
 		    	 if(scope.formTpDocument.$invalid){
 		    		 	showAlert.requiredFields(scope.formTpDocument);
-		    		 	growl.error('Formulario incompleto');
+		    		 	
+		    		 	if(message != undefined && message != '')
+		    		 		growl.error(message);
 		              return false; 
 		    	 }
 		    	 
@@ -504,17 +506,17 @@ appt.directive('updateImage',
 		              return;
 		          }
 		    	 
-		    	 let listImages=getListImageToSaved();
+		    	 let listImages=scope.getListImageToSaved();
 		    	 
-		    	 serviceSave(listImages);
+		    	 scope.serviceSave(listImages);
 		    	 
 		     };
 		     
-		     serviceSave=function(listImages){
+		     scope.serviceSave=function(listImages){
 		    	 angular.forEach(listImages, function(item, key) {
 		    		 if(item.tipoExpediente != undefined)
 		    			 item.idTipoExpediente=item.tipoExpediente.idTipoExpediente;
-		    		 	item=getImgVOParamInitial(item);
+		    		 	item= scope.getImgVOParamInitial(item);
 		    	 });
 		    	 
 		    	 let service=angular.copy(expedienteService);
@@ -572,7 +574,7 @@ appt.directive('updateImage',
 		     };
 		     
 		   //Retorna la lista de images que se deberá de persistir
-		     getListImageToSaved=function(){
+		     scope.getListImageToSaved=function(){
 		    	 let listImagesSaved=[];
 		    	 angular.forEach(scope.listImages, function(item, key) {
 		    		 //se valida que no se haya enviado a back prebiamente
@@ -627,12 +629,12 @@ appt.directive('updateImage',
 			          			 
 			          			  expedienteService.deleteExpediente(imgDelete)
 				          		  .success(function(reponse){
+				          			  imgDelete=[];
 				          			growl.success('Imagenes eliminadas correctamente', { ttl: 4000 });
 				          		  }).error(function(error){
 				          			  growl.error(error, { ttl: 4000 });
 				          		  });
-			          			
-			          		  }
+			          		  	}
 			                 scope.listImages=[];
 			          		
 			          		if(imgDelete.length > 0){
@@ -648,15 +650,11 @@ appt.directive('updateImage',
 			 //Funcion que muestra el modal
 			 $(btnModal).on('click', async function() {
 				 if(scope.redirec == undefined || scope.showInModal){
-					 
+					 scope.showModalBuild=true;					 
 					 if(scope.listImages == undefined || scope.listImages.length == 0)
-						  await getImagesByLevel();
-					 scope.showModalBuild=true;
-					 $timeout(function() {
-						 $('#'+scope.idElementUp+'modalUpdateImage').modal('show');
-		     		 },200);
+						  await scope.getImagesByLevel();
 				 }else if(scope.redirec){
-					 let paramConfSav=defineConsultaImagenesNivel();
+					 let paramConfSav=scope.defineConsultaImagenesNivel();
 					 paramConfSav.locatinPrev=$location.path();
 					 paramConfSav.optionComponent=scope.paramConfComponent;
 					 paramConfSav.optionComponent.listTpDocuemnt=scope.tpDocumentList;
@@ -673,7 +671,7 @@ appt.directive('updateImage',
 				 
 	    	 });
 			 
-			 defineConsultaImagenesNivel=function(){
+			 scope.defineConsultaImagenesNivel=function(){
 				 let paramConfSav={};
 				 paramConfSav.cdOs=scope.paramConfSav.idOrdenServ;
 				 paramConfSav.cdNivel='ORDEN_SERVICIO';
@@ -683,43 +681,29 @@ appt.directive('updateImage',
 					 paramConfSav.valor=scope.paramConfSav.idPregunta;
 				 }else if(scope.paramConfSav.idEncuesta != undefined){//nivel encuesta
 					 paramConfSav.cdNivel='ENCUESTA';
-					 paramConfSav.valor=scope.paramConfSav.idPregunta;
+					 paramConfSav.valor=scope.paramConfSav.idEncuesta;
 				 }else if(scope.paramConfSav.idProceso){// nivel prceso
 					 paramConfSav.cdNivel='PROCESO';
-					 paramConfSav.valor=scope.paramConfSav.idPregunta;
+					 paramConfSav.valor=scope.paramConfSav.idProceso;
 				 }
 				 
 				 return paramConfSav;
 			 }
 			 
-			 getImagesByLevel=function(){
-				 let paramSearch=defineConsultaImagenesNivel();
+			 scope.getImagesByLevel=function(){
+				 let paramSearch=scope.defineConsultaImagenesNivel();
 				 
 				 expedienteService.getInfoOsNivel(paramSearch.cdOs,paramSearch.cdNivel,paramSearch.valor)
 					.success(function(reponse){
 						scope.listImages=reponse;
-						complementsDataImage();
+						scope.complementsDataImage();
+						$timeout(function() {
+							 $('#'+scope.idElementUp+'modalUpdateImage').modal('show');
+			     		 },500);
 				  }).error(function(e){
 					  scope.listImages=[];
-					  if(e.status != undefined){
-			    			 if(e.status.descripcion != undefined){
-				                	growl.error(e.status.descripcion,{ ttl: 4000 });
-				                }else if(e.status.message != undefined) {
-				                	growl.error(e.status.message,{ ttl: 4000 });
-				                }else if(typeof status === 'string'){
-				                	growl.error(status,{ ttl: 4000 });
-				                }else {showAlert.error('Falló la petición');} 
-			    		 }else{
-			    			 if(e.descripcion != undefined){
-				                	growl.error(e.descripcion,{ ttl: 4000 });
-				                }else if(e.message != undefined) {
-				                	growl.error(e.message,{ ttl: 4000 });
-				                }else if(typeof e === 'string'){
-				                	growl.error(e,{ ttl: 4000 });
-				                }else {showAlert.error('Falló la petición');}
-			    		 }
+					  $('#'+scope.idElementUp+'modalUpdateImage').modal('show');
 				  });
-				 
 			 }
 			 
 			 scope.cerrarModal=function(){
