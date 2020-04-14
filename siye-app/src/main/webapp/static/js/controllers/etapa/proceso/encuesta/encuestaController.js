@@ -176,7 +176,8 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
                 idPregunta: undefined,
                 idOpcion: undefined,
                 idIntento: $scope.encuestaDetalle.intentoDetalleVO.idUsuEncuIntento,
-                causas: undefined
+                causas: undefined,
+                descripcionCausa:undefined
             });
 
             objectEncuesta.idPregunta = listPreguntaSeccion[i].idPregunta;
@@ -185,6 +186,7 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
                     guardar = true
                     objectEncuesta.idOpcion = listPreguntaSeccion[i].opciones[j].idOpcion != undefined ? listPreguntaSeccion[i].opciones[j].idOpcion : 0;
                     objectEncuesta.causas=listPreguntaSeccion[i].opciones[j].causas;
+                    objectEncuesta.descripcionCausa=listPreguntaSeccion[i].opciones[j].descripcionCausa;
                 }
             }
             if (guardar) {
@@ -257,6 +259,7 @@ $scope.checkPregunta =function(opcion,respuesta){
 		{
 		for (let i in respuesta.opciones) {
 			respuesta.opciones[i].causas=null;
+			respuesta.opciones[i].descripcionCausa=null;
 	      }
 		}
 
@@ -406,8 +409,10 @@ filtroCausas = function(opcion,respuestas,cargarPreviamente){
 		}	
 	 if(cargarPreviamente)
 		 {
+		 $scope.descripcionCausa= opcion.descripcionCausa;
 	 $scope.causas=opcion.causas.split(",").map(function(item) {
 		    return parseInt(item, 10);
+	 
 	
 	 })
 	 $scope.changeComboCausa();
@@ -437,12 +442,14 @@ $scope.guardarCausa=function()
     	    	for (let i in $scope.seccionVO.preguntas[a].opciones) {
     	    		if ($scope.seccionVO.preguntas[a].opciones[i].idOpcion==$scope.opcionElejida.idOpcion) {
     	    			$scope.seccionVO.preguntas[a].opciones[i].causas=$scope.causas.toString();
+    	    			$scope.seccionVO.preguntas[a].opciones[i].descripcionCausa=$scope.descripcionCausa;
     	    	}
     	          }
 
     			
     			}
     		}
+    	$scope.descripcionCausa=undefined;
     	$("#myModal").modal('hide');//ocultamos el modal
     	}
 

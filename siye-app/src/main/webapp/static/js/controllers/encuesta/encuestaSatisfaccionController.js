@@ -353,7 +353,7 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
     // Guardar Avance por pagina
     $scope.guardaAvancePorPagina = function(numPagina) {
         if($scope.redireccionar){
-            $interval.cancel(iniciarConteo);
+//            $interval.cancel(iniciarConteo);
         };
         if (document.getElementById("myTable2"))
             document.getElementById("myTable2").scrollTop = 0;
