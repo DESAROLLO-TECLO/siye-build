@@ -209,6 +209,11 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 					var idPregunta=$scope.encuesta.secciones[i].preguntas[j].idPregunta
 					if (backOpcionMarcada.opcion.idOpcion==idOpcion&& backOpcionMarcada.pregunta.idPregunta==idPregunta) {
 						$scope.encuesta.secciones[i].preguntas[j].opciones[k].stMarcado = 0;
+						if($scope.encuesta.secciones[$scope.posicionActual].preguntas[j].stMarcado==1){
+						$scope.encuesta.secciones[$scope.posicionActual].preguntas[j].stMarcado=0;
+						$scope.preguntasContestadasEncuesta--
+						$scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas--
+						}
 						return;
 					}
 				}
@@ -353,7 +358,7 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
     // Guardar Avance por pagina
     $scope.guardaAvancePorPagina = function(numPagina) {
         if($scope.redireccionar){
-//            $interval.cancel(iniciarConteo);
+            $interval.cancel(iniciarConteo);
         };
         if (document.getElementById("myTable2"))
             document.getElementById("myTable2").scrollTop = 0;
