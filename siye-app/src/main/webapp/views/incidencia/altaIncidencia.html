@@ -17,10 +17,10 @@
 <!-- 	<boton-incidencia id-orden-serv="idOrd"></boton-incidencia> -->
     <form role="form" name="formAltaIncidencia" novalidate>
         <div class="row">
-            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10">
+            <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10">
                 <div class="box box-danger">
                     <div class="box-header with-border text-center">
-                        <h3 class="box-title"> Registro de incidencia </h3>
+                        <h3 class="box-title"> Alta de Incidencia </h3>
 <!--                         <div class="box-tools pull-right"> -->
 <!--                             <button type="button" class="btn btn-box-tool" data-widget="collapse"> -->
 <!-- 								<i class="fa fa-minus"></i> -->
@@ -86,7 +86,7 @@
                                         <select class="form-control" name="orden" id="orden" required select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
                                         	catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getOrdenServicio'"
                                         	name-save-service="'conductorService'" name-save-end-point-service="'nuevoConductor'"
-                                        	model-result="listOrden" disabled
+                                        	model-result="listOrden" ng-disabled="conServicio"
 											opcion-selec="registroIncidencia.orden" ng-change="addTxDescripcion()"
 											ng-model="registroIncidencia.orden" ng-options="o as o.cdOrdenServicio for o in listOrden">
 											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
@@ -195,7 +195,7 @@
 		                                        <div class="input-group-addon">
 		                                            <i class="fa fa-list-ul"></i>
 		                                        </div>
-		                                        <textarea id="txDescripcion" name="txDescripcion" required capitalize
+		                                        <textarea id="txDescripcion" name="txDescripcion" readonly="true" capitalize
 													style="resize: none;"class="form-control" rows="5" ng-model="registroIncidencia.txDescripcion">
 												</textarea> 
 		                                    </div>
@@ -205,7 +205,7 @@
                             </div>
                             <div class="col-md-5">
                                 <update-image id-element-up="altaIncidencia" include="true" param-conf-sav="paramConfSav" is-incidencia="true"
-	                   				param-conf-component="paramConfiguracion" list-images="listImages"></update-image>
+	                   				param-conf-component="paramConfiguracion" max-nu-image="{{paramConfiguracion.maxNuImage}}" list-images="listImages"></update-image>
                             </div>
                         </div>
                     </div>

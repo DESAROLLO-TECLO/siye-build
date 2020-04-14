@@ -19,4 +19,9 @@ angular.module(appTeclo).service('altaIncidenciaService',function($http,config) 
 	this.altaIncidencia = function(data) {
 		return $http.post(config.baseUrl + "/incidencia/altaIncidencia", data);
 	};
+	
+	this.getNuMaxImgIncidencia = function () {
+		return $http.get(config.baseUrl + "/catalogo/getNuMaxImgIncidencia");
+	};
+	
 });

@@ -1,4 +1,5 @@
 var includeDeseing=
+	'	<form name="formTpDocument" novalidate>																														 			'+
 	'	<div class="row">																														 										'+
 	'		<div class="col-xs-12 col-sm-12 col-md-12">                                                                                                                                 '+
 	'			<div class="{{isIncidencia ? \'col-xs-7 col-sm-8 col-md-8\' : \'col-xs-5 col-sm-6 col-md-8\'}}">                                                                  		'+
@@ -14,7 +15,7 @@ var includeDeseing=
 	'				</label>                                                                                                                                                            '+
 	'			</div>                                                                                                                                                                  '+
 	'			<div class="col-xs-2 col-sm-2 col-md-1" ng-hide="isIncidencia">                                                                                                         '+
-	'				<Button class="btn btn-danger pull-right" ng-click="saveImagesAll()" ng-disabled="(listImages | filter:{ isSuccess : false}).length == 0">                          '+
+	'				<Button class="btn btn-danger pull-right" ng-click="saveImagesAll(formTpDocument)" ng-disabled="(listImages | filter:{ isSuccess : false}).length == 0">                          '+
 	'					<i class="fa fa-floppy-o fa-lg" aria-hidden="true"></i>                                                                                                         '+
 	'				</Button>                                                                                                                                                           '+
 	'			</div>                                                                                                                                                                  '+
@@ -76,7 +77,27 @@ var includeDeseing=
 	'										</div>																																		'+
 	'									</div>                                                                                                                                          '+
 	'									<div class="col-xs-12 col-sm-12 col-md-3" ng-if="showCombo">                                                                                    '+
-	'										<div id="combo{{imagenVO.unic}}">                                                                                                                    '+
+	'										<div class="form-group"                                                                                                           			'+
+	'														ng-class="{\'has-error\': (formTpDocument[\'tpDoc\'+{{imagenVO.unic+idElementUp}}].$invalid && formTpDocument[\'tpDoc\'+{{imagenVO.unic+idElementUp}}].$dirty) }">				'+
+	'											<label>                                                                                                                                 '+
+	'												*Tipo de Documento                                                                                                                  '+
+	'											</label>                                                                                                                                '+
+	'											<div class="input-group">                                                                                                               '+
+	'												<div class="input-group-addon">                                                                                                     '+
+	'													<i class="fa fa-list-alt"></i>                                                                                                  '+
+	'												</div>                                                                                                                              '+
+	'												<select class="form-control" name="tpDoc{{imagenVO.unic+idElementUp}}" id="tpDoc{{imagenVO.unic+idElementUp}}"                      '+
+	'													ng-required="showCombo" select2 data-minimum-results-for-search="Infinity"                                                      '+
+	'													idioma-s2="{{currentLanguage}}" ng-model="imagenVO.tipoExpediente"                                                              '+
+	'													ng-options="tipo as tipo.nbTipoExpediente for tipo in tpDocumentList">                                                          '+
+	'													<option value="">{{\'APP.Base.mensaje.seleccioneOpcion\' | translate}}</option>                                                 '+
+	'												</select>                                                                                                                           '+
+	'											</div>                                                                                                                                  '+
+	'											<div ng-show="(formTpDocument[\'tpDoc\'+{{imagenVO.unic+idElementUp}}].$invalid && formTpDocument[\'tpDoc\'+{{imagenVO.unic+idElementUp}}].$dirty)">										'+
+    '												<span ng-style="{color:\'red\'}">																									'+
+    '    												El tipo de documento es requerido																								'+
+    '												</span>																																'+
+    '											</div>																																	'+
 	'										</div>                                                                                                                                      '+
 	'									</div>                                                                                                                                          '+
 	'									<div class="{{showCombo ? \'col-xs-12 col-sm-12 col-md-3\' : \'col-xs-12 col-sm-4 col-md-4\'}}">                                                '+
@@ -85,7 +106,7 @@ var includeDeseing=
 	'												<label>&nbsp;</label>                                                                                                               '+
 	'												<div class="input-group">                                                                                                           '+
 	'													<div ng-if="!imagenVO.isSuccess" class="{{!isIncidencia ? \'stile-puntero-pointer\' : \'\'}}">                                  '+
-	'														<label class="stile-puntero-pointer" ng-if="!isIncidencia" ng-click="saveImageItem(imagenVO)">	                                                        '+
+	'														<label class="stile-puntero-pointer" ng-if="!isIncidencia" ng-click="saveImageItem(imagenVO,formTpDocument)">	                                                        '+
 	'															<i class="fa fa-upload fa-2x style-warnning-image" aria-hidden="true"></i>                                    			'+
 	'														</label>																													'+
 	'														<label ng-if="isIncidencia">	                                                                                            '+
@@ -129,7 +150,8 @@ var includeDeseing=
 	'				</div>                                                                                                                                                              '+
 	'			</div>                                                                                                                                                                  '+
 	'		</div>                                                                                                                                                                      '+
-	'	</div>                                                                                                                                                                          ';
+	'	</div>                                                                                                                                                                          '
+	'	</form>																														 			';
 	
 var includeDeseingModal=
 	'<div ng-if="showModalBuild" class="modal fade" id="{{idElementUp}}modalUpdateImage" tabindex="-1" role="dialog" aria-hidden="true" 		'+

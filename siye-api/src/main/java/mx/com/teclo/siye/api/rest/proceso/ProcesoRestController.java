@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
+import mx.com.teclo.siye.negocio.service.catalogo.CatalogoService;
 import mx.com.teclo.siye.negocio.service.ordenServicio.VehiculoService;
 import mx.com.teclo.siye.negocio.service.proceso.ProcesoService;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.DispositivosVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.PlanProcesoVO;
@@ -40,6 +42,9 @@ public class ProcesoRestController {
 	@Autowired
 	private VehiculoService vehiculoService;
 	
+	@Autowired
+	private CatalogoService catalogoService;
+	
 	
 
 	 @RequestMapping(value = "/ordenServicioProceso", method = RequestMethod.GET)
@@ -48,12 +53,15 @@ public class ProcesoRestController {
 			@RequestParam("idSolicitud") Long idSolicitud) throws BusinessException, NotFoundException {
         try
         {
+        
         	List<OrdenServicioDTO> OrdenesServicio = new ArrayList<OrdenServicioDTO>();
         	OrdenServicioDTO  ordenServicioDTO = new OrdenServicioDTO();
         	ordenServicioDTO = procesoService.getInfoBasicaOrdenServicio(idSolicitud);
         	OrdenesServicio.add(ordenServicioDTO);
     		List<OrdenServicioProcesoVO> ordenServicioProcesoVO = ResponseConverter.converterLista(new ArrayList<>(), OrdenesServicio,
     				OrdenServicioProcesoVO.class);
+    		ConfiguracionVO listToReturn = catalogoService.configuracion("TIE026_NU_MAX_IMAGENES");
+    		ordenServicioProcesoVO.get(0).setNumMaxImagenes(Long.parseLong(listToReturn.getCdValorPConfig()));
     		return new ResponseEntity<List<OrdenServicioProcesoVO>>(ordenServicioProcesoVO, HttpStatus.OK);
 
         }catch(Exception e)
