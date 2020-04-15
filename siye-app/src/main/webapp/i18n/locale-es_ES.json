@@ -468,8 +468,8 @@
             	"validacion": "La prioridad es requerida."
             },
             "flSol": {
-            	"label": "Folio Solicitud: ",
-            	"validacion": "El folio de solicitud es requerido."
+            	"label": "Orden de Servicio: ",
+            	"validacion": "La orden de servicio es requerido."
             },
             "tecnico": {
             	"label": "Técnico: ",
