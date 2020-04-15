@@ -161,6 +161,20 @@ public class ProcesoRestController {
 				throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
 			}		
 		}
+		
+		@RequestMapping(value="/iniciarTiempoProceso", method = RequestMethod.GET)
+		public ResponseEntity<Boolean> iniciarTiempoProceso (
+			 @RequestParam(value="idOrdenServicio") long idOrdenServicio,
+			 @RequestParam(value="idProceso") long idProceso
+			) throws Exception, BusinessException, NotFoundException {
+			try {
+				Boolean correcto=procesoService.iniciarTiempoProceso(idOrdenServicio, idProceso);
+				return new ResponseEntity<Boolean>(correcto, HttpStatus.OK);
+			}catch (Exception e) {
+				e.printStackTrace();
+				throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
+			}		
+		}
 
 		
 		@RequestMapping(value="/finalizarProceso", method = RequestMethod.GET)
