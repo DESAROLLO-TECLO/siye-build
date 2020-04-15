@@ -1,9 +1,9 @@
 var includeDeseing=
-	'	<form name="formTpDocument" novalidate>																														 			'+
+	'	<form name="formTpDocument" novalidate>																														 					'+
 	'	<div class="row">																														 										'+
 	'		<div class="col-xs-12 col-sm-12 col-md-12">                                                                                                                                 '+
 	'			<div class="{{isIncidencia ? \'col-xs-7 col-sm-8 col-md-8\' : \'col-xs-5 col-sm-6 col-md-8\'}}">                                                                  		'+
-	'				<div class="col-xs-6"><label>No. Imagenes:</label>{{\' \'+listImages.length}} <span ng-show="maxNuImage != undefined"><label>de</label> {{\' \'+ maxNuImage}}</span></div>  '+
+	'				<div class="col-xs-6"><label>No. Imagenes:</label>{{\' \'+ (listImages == undefined ? 0 : listImages.length)}} <span ng-show="maxNuImage != undefined"><label>de</label> {{\' \'+ maxNuImage}}</span></div>  '+
 	'				<div class="col-xs-6"><label>Por guardar:</label>{{\' \'+((listImages | filter:{ isSuccess : false}).length)}}</div>                              					'+
 	'			</div>                                                                  																								'+
 	'			<div class="col-xs-3 col-sm-2 col-md-2">                                                                                                                                '+
@@ -15,7 +15,7 @@ var includeDeseing=
 	'				</label>                                                                                                                                                            '+
 	'			</div>                                                                                                                                                                  '+
 	'			<div class="col-xs-2 col-sm-2 col-md-1" ng-hide="isIncidencia">                                                                                                         '+
-	'				<Button class="btn btn-danger pull-right" ng-click="saveImagesAll(formTpDocument)" ng-disabled="(listImages | filter:{ isSuccess : false}).length == 0">                          '+
+	'				<Button class="btn btn-danger pull-right" ng-click="saveImagesAll(formTpDocument)" ng-disabled="(listImages | filter:{ isSuccess : false}).length == 0">            '+
 	'					<i class="fa fa-floppy-o fa-lg" aria-hidden="true"></i>                                                                                                         '+
 	'				</Button>                                                                                                                                                           '+
 	'			</div>                                                                                                                                                                  '+
@@ -29,7 +29,7 @@ var includeDeseing=
 	'			<div class="col-xs-12 col-sm-12 col-md-12"                                                                                                                              '+
 	'						ng-scrollbar scrollbar-config="{show: false}">													                                                            '+
 	'				<div class="col-xs-12 col-sm-12 col-md-12 border-div"  file-drop on-image-drop="fileDropped">                                                                       '+
-	'					<div ng-if="listImages.length == 0" id="zonaDrop{{idElementUp}}"                                                                                                '+
+	'					<div ng-if="listImages == undefined || listImages.length == 0" id="zonaDrop{{idElementUp}}"                                                                                                '+
 	'					   class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 border-punteado-div">                                                     '+
 	'						<div class="col-xs-12 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4 middleRow">                                                                         '+
 	'							<label class="stile-puntero-pointer" for="file-1{{idElementUp}}">                                                                                       '+
@@ -39,7 +39,7 @@ var includeDeseing=
 	'					</div>                                                                                                                                                          '+
 	'					<div ng-if="listImages.length > 0"		                                 												                                        '+
 	'						class="col-xs-12 col-sm-12 col-md-12">                                                                                                                      '+
-	'						<div dir-paginate="imagenVO in listImages | itemsPerPage: view.rowsPerPage">                                												'+
+	'						<div ng-repeat="imagenVO in listImages | startFromGrid: ((paramConfigPage.bigCurrentPage-1)*paramConfigPage.itemsPerPage) | limitTo: paramConfigPage.itemsPerPage">                                												'+
 	'							<div class="col-xs-12 col-sm-12 col-md-12 padding-per">                                                                                                 '+
 	'								<div class="row border-div-child">                                                                                                                  '+
 	'									<div class="{{showCombo ? \'col-xs-6 col-sm-6 col-md-2 style-parent\' : \'col-xs-6 col-sm-4 col-md-3 style-parent\'">                           '+
@@ -51,8 +51,8 @@ var includeDeseing=
 	'																																			                                        '+
 	'										<div ng-if="imagenVO.isImage">																                                                '+
 	'											<i ng-if="imagenVO.showProgress" class="fa fa-spinner fa-lg fa-pulse fa-fw" aria-hidden="true"></i>					                    '+
-	'											<img ng-if="!imagenVO.showProgress" id="img-{{idElementUp+unic}}" data-slide-to="{{imagenVO.unic}}"                                                                      '+
-	'												ng-click="showModalImg(imagenVO)"                                                                           '+
+	'											<img ng-if="!imagenVO.showProgress" id="img-{{idElementUp+unic}}" data-slide-to="{{imagenVO.unic}}"                                     '+
+	'												ng-click="showModalImg(imagenVO)"                                                                           						'+
 	'												class="stile-puntero-pointer img-img-fluid style-rep-img"                                                                           '+
 	'												ng-src="data:image/jpeg;base64, {{imagenVO.strBase64}}" />							                                                '+
 	'										</div>																				                                                        '+
@@ -70,43 +70,43 @@ var includeDeseing=
 	'									</div>                                                                                                                                          '+
 	'									<div class="{{showCombo ? \'col-xs-6 col-sm-3 col-md-2\' : \' col-xs-6 col-sm-2 col-md-2\'}}">                                                  '+
 	'										<div class="form-group">                                                                                                                    '+
-	'											<label>Tama&ntilde;o:</label>                                                                                                                  '+
+	'											<label>Tama&ntilde;o:</label>                                                                                                           '+
 	'											<div class="input-group">                                                                                                               '+
-	'												{{imagenVO.size/1024/1024|number:2}} Mb                                                                                             '+
+	'												{{imagenVO.size/1024/1024|number:3}} Mb                                                                                             '+
 	'											</div>																																	'+
 	'										</div>																																		'+
 	'									</div>                                                                                                                                          '+
 	'									<div class="col-xs-12 col-sm-12 col-md-3" ng-if="showCombo">                                                                                    '+
-	'										<div class="form-group"                                                                                                           			'+
-	'														ng-class="{\'has-error\': (formTpDocument[\'tpDoc\'+imagenVO.unic+\'\'+idElementUp].$invalid && formTpDocument[\'tpDoc\'+imagenVO.unic+\'\'+idElementUp].$dirty) }">				'+
-	'											<label>                                                                                                                                 '+
-	'												*Tipo de Documento                                                                                                            '+
-	'											</label>                                                                                                                                '+
-	'											<div class="input-group">                                                                                                               '+
-	'												<div class="input-group-addon">                                                                                                     '+
-	'													<i class="fa fa-list-alt"></i>                                                                                                  '+
-	'												</div>                                                                                                                              '+
-	'												<select class="form-control" name="tpDoc{{imagenVO.unic+\'\'+idElementUp}}" id="tpDoc{{imagenVO.unic+\'\'+idElementUp}}"                      '+
-	'													ng-required="showCombo" select2 data-minimum-results-for-search="Infinity"                                                      '+
-	'													idioma-s2="{{currentLanguage}}" ng-model="imagenVO.tipoExpediente"                                                              '+
-	'													ng-options="tipo as tipo.nbTipoExpediente for tipo in tpDocumentList">                                                          '+
-	'													<option value="">{{\'APP.Base.mensaje.seleccioneOpcion\' | translate}}</option>                                                 '+
-	'												</select>                                                                                                                           '+
-	'											</div>                                                                                                                                  '+
-	'											<div ng-show="(formTpDocument[\'tpDoc\'+imagenVO.unic+\'\'+idElementUp].$invalid && formTpDocument[\'tpDoc\'+imagenVO.unic+\'\'+idElementUp].$dirty)">										'+
-    '												<span class="help-block">																									'+
-    '    												El tipo de documento es requerido																								'+
-    '												</span>																																'+
-    '											</div>																																	'+
-	'										</div>                                                                                                                                      '+
+	'										<div class="form-group"                                                                                 									'+
+	'												ng-class="{\'has-error\': (formTpDocument[\'tpDoc\'+imagenVO.unic+\'\'+idElementUp].$invalid && formTpDocument[\'tpDoc\'+imagenVO.unic+\'\'+idElementUp].$dirty) }">									'+
+	'											<label>                                                                                         										'+
+	'												*Tipo de Documento                                                                          										'+
+	'											</label>                                                                                        										'+
+	'											<div class="input-group">                                                                       										'+
+	'												<div class="input-group-addon">                                                             										'+
+	'													<i class="fa fa-list-alt"></i>                                                          										'+
+	'												</div>                                                                                      										'+
+	'												<select ng-if="imagenVO.unic != undefined" class="form-control" name="tpDoc{{imagenVO.unic+\'\'+idElementUp}}" id="tpDoc{{imagenVO.unic+\'\'+idElementUp}}"                                            								'+
+	'													ng-required="showCombo" select2 data-minimum-results-for-search="Infinity"              										'+
+	'													idioma-s2="{{currentLanguage}}" ng-model="imagenVO.tipoExpediente"                      										'+
+	'													ng-options="tipo as tipo.nbTipoExpediente for tipo in imagenVO.tpDocumentList">         										'+
+	'													<option value="">{{\'APP.Base.mensaje.seleccioneOpcion\' | translate}}</option>         										'+
+	'												</select>                                                                                   										'+
+	'											</div>                                                                                          										'+
+	'											<div ng-show="(formTpDocument[\'tpDoc\'+imagenVO.unic+\'\'+idElementUp].$invalid && formTpDocument[\'tpDoc\'+imagenVO.unic+\'\'+idElementUp].$dirty)">													'+
+	'												<span class="help-block">																											'+
+	'													El tipo de documento es requerido																								'+
+	'												</span>																																'+
+	'											</div>																																	'+
+	'										</div>                                                                                                  									'+
 	'									</div>                                                                                                                                          '+
 	'									<div class="{{showCombo ? \'col-xs-12 col-sm-12 col-md-3\' : \'col-xs-12 col-sm-4 col-md-4\'}}">                                                '+
 	'										<div class="col-xs-6 col-sm-6 col-md-6">                                                                                                    '+
 	'											<div class="form-group">                                                                                                                '+
 	'												<label>&nbsp;</label>                                                                                                               '+
 	'												<div class="input-group">                                                                                                           '+
-	'													<div ng-if="!imagenVO.isSuccess" class="{{!isIncidencia ? \'stile-puntero-pointer\' : \'\'}}">                                  '+
-	'														<label class="stile-puntero-pointer" ng-if="!isIncidencia" ng-click="saveImageItem(imagenVO,formTpDocument)">	                                                        '+
+	'													<div ng-show="!imagenVO.isSuccess" class="{{!isIncidencia ? \'stile-puntero-pointer\' : \'\'}}">                                  '+
+	'														<label class="stile-puntero-pointer" ng-show="!isIncidencia" ng-click="saveImageItem(imagenVO,formTpDocument,(\'tpDoc\'+imagenVO.unic+\'\'+idElementUp))">	            '+
 	'															<i class="fa fa-upload fa-2x style-warnning-image" aria-hidden="true"></i>                                    			'+
 	'														</label>																													'+
 	'														<label ng-if="isIncidencia">	                                                                                            '+
@@ -136,22 +136,24 @@ var includeDeseing=
 	'					</div>                                                                                                                                                          '+
 	'				</div>                                                                                                                                                              '+
 	'				<div class="col-xs-12 col-sm-12 col-md-12">                                                                                                                         '+
-	'					<div class="col-xs-6 col-sm-6 col-md-6">                                                                                                                  		'+
+	'					<div class="col-xs-1 col-sm-6 col-md-6">                                                                                                                  		'+
 	'         			</div> 																																							'+
-	'					<div class="col-xs-6 col-sm-6 col-md-6 pull-right">                                                                                                             '+
-	'						<div class="container-fluid pull-right">																													'+
-	'							<div class="fixed-table-pagination" style="display: block;">                                                                                            '+
-	'								<div class="pull-right pagination">                                                                                                                 '+
-	'									<dir-pagination-controls class="pagination"></dir-pagination-controls>                                                  						'+
-	'								</div>                                                                                                                                              '+
-	'							</div>                                                                                                                                                  '+
-	'						</div>                                                                                                                                                      '+
+	'					<div class="col-xs-11 col-sm-6 col-md-6 pull-right">                                                                                                            '+
+	'						<uib-pagination previous-text="Anterior"																													'+                                                                                                                                                                
+	'							next-text="Siguiente"																																	'+                                                                                                                                                                               
+	'							total-items="listImages.length" num-pages="numPages" 																									'+                                                                                                                                    
+	'							ng-model="paramConfigPage.bigCurrentPage"																												'+                                                                                                                                                           
+	'							max-size="paramConfigPage.maxSize"																														'+                                                                                                                                                                  
+	'							items-per-page="paramConfigPage.itemsPerPage"																											'+                                                                                                                                                       
+	'							class="pagination-md pull-right" boundary-link-numbers="true"																							'+                                                                                                                                                  
+	'							direction-links="true" rotate="false">																													'+                                                                                                                                                              
+	'						</uib-pagination>																																			'+ 
 	'					</div>                                                                                                                                                          '+
 	'				</div>                                                                                                                                                              '+
 	'			</div>                                                                                                                                                                  '+
 	'		</div>                                                                                                                                                                      '+
-	'	</div>                                                                                                                                                                          '
-	'	</form>																														 			';
+	'	</div>                                                                                                                                                                          '+
+	'	</form>																														 													';
 	
 var includeDeseingModal=
 	'<div ng-if="showModalBuild" class="modal fade" id="{{idElementUp}}modalUpdateImage" tabindex="-1" role="dialog" aria-hidden="true" 		'+
