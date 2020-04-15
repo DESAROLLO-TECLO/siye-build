@@ -93,6 +93,9 @@ public class EncuestaDetalleDTO implements Serializable {
 
 	/*(name = "NU_TIEMPO", nullable = false, precision = 1, scale = 0)
 	private Integer nuTiempo;*/
+	
+    @Column(name = "NU_MAX_IMAGENES", nullable = false)
+    private Long nuMaxImagenes;
 
 	public EncuestaDetalleDTO() {
 	}
