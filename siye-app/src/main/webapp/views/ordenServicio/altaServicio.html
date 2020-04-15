@@ -261,9 +261,6 @@
 													
 													</div>
 											</div>
-											
-											
-											
 										</div>
 									</fieldset>
 								</div>
@@ -272,7 +269,7 @@
 <!-- 							TERMINA SEGUNDO ROW -->
 
 <!-- 							INICIA TERCER ROW -->
-<!-- 						{{incidenciaVO}} -->
+
 							<div class="row">
 								<div class="col-md-6">
 									<div class="form-group" ng-class="{'has-error': formAltaServicio.cdOrden.$invalid && formAltaServicio.cdOrden.$dirty}">
@@ -400,8 +397,6 @@
 											ng-model="rango.proveedor" required>
 										<option value="">Seleccione</option>
 										</select>
-<!-- 										{{ formAltaServicio['proveedor-'+$index].$invalid }} -->
-<!-- 										{{ formAltaServicio['proveedor-'+$index]}} -->
 									</div>
 								 <div ng-show="formAltaServicio['proveedor-'+$index].$invalid  && formAltaServicio['proveedor-'+$index].$dirty" ng-style="{color:'red'}">
                                         <label> El Nombre del proveedor es requerido </label>
