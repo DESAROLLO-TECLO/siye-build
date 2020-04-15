@@ -46,4 +46,9 @@ this.comboCausas = function(idOpcion){
 			{params:{"idOpcion": idOpcion}	
 			});	
 		};	
+		
+this.getNumPreguntasPorSeccion = function (cdParametro) {
+			return $http.get(config.baseUrl +"/catalogo/parametroCd", 
+			{params:{"cdParametro": cdParametro}});
+		};
 });

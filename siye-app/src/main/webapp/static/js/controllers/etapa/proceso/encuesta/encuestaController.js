@@ -6,7 +6,20 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     $scope.nombEncuesta = $rootScope.nomSeguimiento + " - Encuesta " + encuestaInfo.data.encuesta.nbEncuesta;
     $scope.nombSeccion = encuestaInfo.data.encuesta.secciones[0].nbSeccion;
     $scope.seccEncuesta = encuestaInfo.data.encuesta.secciones[0];
-	var backOpcionMarcada=new Object({opcion:undefined,pregunta:undefined});
+    var backOpcionMarcada=new Object({opcion:undefined,pregunta:undefined});
+    
+    $scope.numMaxImgEnc = encuestaInfo.data.usuario.proceso.nuMaxImagenes;    
+    $scope.listImagesEnc = [];
+    $scope.paramEncImg = new Object({
+        idOrdenServ: $rootScope.idOrdenServ,
+        cdOrdenServicio: $rootScope.cdOrdenServicio,
+        idProceso: $rootScope.idProceso,
+        idEncuesta: encuestaInfo.data.encuesta.idEncuesta
+    });
+    $scope.paramConfigImgEnc = new Object({
+        maxSizeMb: 1,
+        title: "Agregar Evidencia por Encuesta"
+    });
 
     $scope.objOpciones = new Object(
         {val:1,nom:'Opción 1'},
