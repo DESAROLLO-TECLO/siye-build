@@ -52,6 +52,8 @@ public interface ProcesoService {
 	Boolean finalizarProceso (Long idOrdenServicio);
 	
 	Boolean avanzarProcesoOrden (Long idOrdenServicio);
+	
+	Boolean iniciarTiempoProceso (Long idOrdenServicio, Long idProceso);
 
 
 

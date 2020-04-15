@@ -7,6 +7,7 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
     $scope.finicio = etapaInfo.data[0].fhAtencionIni;
     $scope.ffin = etapaInfo.data[0].fhAtencionFin;
     $scope.fcita = etapaInfo.data[0].fhCita;
+    $scope.idOS = $rootScope.idOrdenServ;
 
     if($scope.finicio != null && $scope.ffin != null){
         $scope.fechaHoy = $scope.finicio - $scope.ffin;

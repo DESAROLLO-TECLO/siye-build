@@ -88,7 +88,7 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 	}
 
 	@Override
-	@Async
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void cargarArchivoLote(Long idArchivoLote) throws BusinessException {
 		LOGGER.info(MessageFormat.format(MSG_INICIANDO_CARGA_MASIVA, idArchivoLote));
 
@@ -108,7 +108,7 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional
 	public void actualizarSeguimiento(Long idArchivoLote, ArchivoSeguimientoEnum seguimiento, String txLoteOdsError)
 			throws BusinessException {
 		LOGGER.info(MessageFormat.format(MSG_ACTUALIZANDO_SEGUIMIENTO, idArchivoLote));

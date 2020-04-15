@@ -5,8 +5,11 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
     $rootScope.idProceso = procesoInfo.data[0].idProceso.idProceso;
     $scope.idOrdenServicio=idord;
 	$scope.idProcesoActual=idpro;
-    $scope.stActivarEncuesta = procesoInfo.data[3].stSatisfaccion;
     $scope.numOrden = $rootScope.numOS;
+    $scope.encuestas=procesoInfo.data;
+	
+	
+	
 
     $scope.numMaxImgPro = procesoInfo.data[0].idProceso.nuMaxImagenes;    
     $scope.listImagesPro = [];
@@ -33,6 +36,9 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
             }else{
                 $scope.tiempoTranscurridoText = "Sin validar";
             }
+            if(procesoInfo.data[i].idEncuesta.cdEncuesta == "SAT02"){
+                $scope.stActivarEncuesta = procesoInfo.data[i].stSatisfaccion;
+            }
         }
     }else{
         growl.error('No se logró recuperar el  registro solicitado', {title: '-ERROR-'});
@@ -58,6 +64,7 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
     		{
     		encuestaService.primerEncuestaPrimerProceso=EncuestasInfo[0].idEncuesta.idEncuesta;
     		}
+    	encuestaService.primerEncuesta=EncuestasInfo[0].idEncuesta.idEncuesta;
     	
     }
     
