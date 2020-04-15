@@ -23,6 +23,7 @@ public class UploadServiceImpl implements UploadService {
 	private static final String MSG_PARAM_CONTENT_TYPE_NULO = "El tipo de archivo esperado no esta definido";
 	public static final String MSG_ERROR_LOTE_INEXISTENTE = "El lote {0} no existe";
 	public static final String MSG_ERROR_NOMBRE_LARGO = "El nombre de archivo {0} excede los {1} caracteres";
+	
 
 	@Autowired
 	private LayoutService layoutService;

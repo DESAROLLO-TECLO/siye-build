@@ -8,9 +8,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
@@ -27,6 +28,8 @@ import mx.com.teclo.siye.util.enumerados.SeccionLayoutEnum;
 
 @Service
 public class LayoutServiceImpl implements LayoutService {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(LayoutServiceImpl.class);
 	private static final Long ID_ORDEN_INSERCION = 5L;
 	private static final String MSG_LAYOUT_SIN_ORDEN_INSERCION = "El layout no tiene un orden de valores a insertar";
 	private static final String MSG_INSERT_PATTERN = "INSERT INTO {0}({1}) VALUES({2})";
@@ -52,6 +55,7 @@ public class LayoutServiceImpl implements LayoutService {
 	public static final String MSG_ARCHIVO_TAMANIO_REBASADO = "El tama\u00F1o del archivo excede el m\u00E1ximo de {0} MB";
 	private static final String MSG_DIRECTORIO_ORT_INDEFINIDO = "El directorio ort no ha sido especificado";
 	private static final String MSG_FALTA_FORMATO_PARA_FECHA = "Falta formato fecha para la columna exel n\u00FAmero {0}";
+	public static final String MSG_RECUPERANDO_CONFIG_MASIVA = "Recuperando la configuraci\u00F3n previa a la carga masiva del archivo {0} ";
 
 	private static final Long ID_PROCESO_CON_RECHAZO = 9L;
 
@@ -126,8 +130,9 @@ public class LayoutServiceImpl implements LayoutService {
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	@Transactional
 	public ConfigCargaMasivaVO getConfigCargaMasiva(Long idArchivoLote) throws BusinessException {
+		LOGGER.info(MessageFormat.format(MSG_RECUPERANDO_CONFIG_MASIVA, idArchivoLote));
 		ConfigCargaMasivaVO cargaMasivaVO = new ConfigCargaMasivaVO();
 
 		// lote
@@ -273,7 +278,7 @@ public class LayoutServiceImpl implements LayoutService {
 			sbVals.append(CARACTER_PIPE).append(getValorSQL(col));
 			sbTipos.append(CARACTER_PIPE).append(col.getCdTipo());
 			sbMaxs.append(CARACTER_PIPE).append(col.getNuLongitudMax());
-			if (col.getStCampoFiltro()) {
+			if (col.getStCampoFiltro()!= null && col.getStCampoFiltro()) {
 				campoFiltro = col.getCdTipo();
 				valorFiltro = getValorSQL(col);
 			}
