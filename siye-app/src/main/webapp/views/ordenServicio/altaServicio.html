@@ -21,7 +21,7 @@
 					<div class="box box-danger">
 						<div class="box-header with-border text-center">
 							<h3 class="box-title">
-								
+								Nueva orden de servicio
 							</h3>
 						</div>
 						<div class="box-body">
@@ -51,25 +51,55 @@
 
 							
 							<div class="col-md-6">
-                                <div class="form-group" ng-class="{'has-error': formConsultaServicio.valorBusqueda.$invalid && formConsultaServicio.valorBusqueda.$dirty}">
+                                <div class="form-group" ng-class="{'has-error': vehicPlaca && (cdPlacaVehiculo=='' || cdPlacaVehiculo==undefined)}">
                                     <label for="">*Placa Vehicular </label>
                                     <div class="input-group">
                                         <span class="input-group-addon"> <i class="fa fa-pencil"> </i> </span>
                                         <input type="text" ng-model="cdPlacaVehiculo" maxlength="11" name="valorBusqueda" ng-required="true" class="form-control" capitalize>
-                                        </input>
+                                        
 	                                        <span class="input-group-btn">
 							                      	<button type="button" ng-click="buscarVehculoPorPlaca(cdPlacaVehiculo)" class="btn btn-danger btn-flat" >
 							                      		Buscar
 							                      	</button>
 						                     </span>
                                     </div>
-                                    <div ng-show="formAltaServicio.valorBusqueda.$invalid && formAltaServicio.valorBusqueda.$dirty" ng-style="{color:'red'}">
-                                        <label> {{'ORDENSERVICIO.AltaServicio.seleccionadores.valor.validacion' | translate}} </label>
+                                    <div ng-show="vehicPlaca && (cdPlacaVehiculo=='' || cdPlacaVehiculo==undefined) " ng-style="{color:'red'}">
+                                        <label> El valor de la búsqueda es requerido. </label>
                                     </div>
                                 </div>
-                            </div>
-							
+                            </div>                            
 							</div>
+							 <div class="row" ng-show="mostrarAlta">
+                            	<div class="col-md-12">
+                            		<fieldset style="min-height: 0px !important;">
+                            			<legend class="scheduler-border text-center">Datos de la incidencia</legend>
+                            			<div class="row">
+                            				<div class="col-md-6">
+                            					<div class="form-group">
+                            						<label for="">Nombre de la Incidencia:</label>
+                            						<div class="input-group">
+                            							<div class="input-group-addon">
+                            								<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+                            							</div>
+                            							<input class="form-control" name="nbIncidencia" ng-model="incidencia.nbIncidencia"
+                            							type="text"  ng-disabled="true">
+                            						</div>
+                            					</div>
+                            				</div>
+                            				<div class="col-md-6">
+                            					<label for="">Descripcion de la Incidencia</label>
+                            					<div class="input-group">
+                            						<div class="input-group-addon">
+                            							<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
+                            						</div>
+                            						<textarea style="overflow:auto;resize:none;height:auto" class="form-control" name="txIncidencia" ng-model="incidencia.txIncidencia" ng-disabled="true">
+                            						</textarea>
+                            					</div>
+                            				</div>
+                            			</div>
+                            		</fieldset>
+                            	</div>
+                            </div>
 <!-- 							FIN PRIMER ROW -->
 <!-- 							INICIA SEGUNDO ROW -->
 							<div class="row">
@@ -78,44 +108,53 @@
 										<legend class="scheduler-border text-center">Datos del vehículo</legend>
 										<div class="row">
 									<div class="col-md-4">
-										<div class="form-group">
+										<div class="form-group" ng-class="{'has-error': formAltaServicio.placaVehicular.$invalid && formAltaServicio.placaVehicular.$dirty}">
 												<label for="">*Placa Vehícular:</label>
 												<div class="input-group">
 													<div class="input-group-addon">
 														<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>								
 													</div>
-													<input maxlength="11" type="text" id="placaOficial" class="form-control"
-                                            				name="placaOficial" ng-model="orden.vehiculoVO.placa"
-                                            				autocomplete="off" ng-required="true" ng-disabled="banderadeshabilitar">
+													<input maxlength="11" type="text" id="placaVehicular" class="form-control"
+                                            				name="placaVehicular" ng-model="orden.vehiculoVO.placa" capitalize
+                                            				autocomplete="off" required ng-disabled="banderadeshabilitar">
+												</div>
+												<div ng-show="formAltaServicio.placaVehicular.$invalid && formAltaServicio.placaVehicular.$dirty" ng-style="{color:'red'}">
+             										<label> El valor del plan es requerido </label>
 												</div>
 										</div>
 									</div>
 
 								<div class="col-md-4">
-									<div class="form-group">
+									<div class="form-group"  ng-class="{'has-error': formAltaServicio.codigoVin.$invalid && formAltaServicio.codigoVin.$dirty}">
 									<label for="">*Codigo VIN:</label>
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-sort-numeric-asc" arian-hidden="true"></i>
 											
 										</div>
-										<input maxlength="10" type="text" id="placaOficial" class="form-control"
-                                          	name="placaOficial" ng-model="orden.vehiculoVO.cdVIN"
-                                          	autocomplete="off" ng-required="true" ng-disabled="banderadeshabilitar">
+										<input maxlength="10" type="text" id="codigoVin" class="form-control"
+                                          	name="codigoVin" ng-model="orden.vehiculoVO.cdVIN" capitalize
+                                          	autocomplete="off" required ng-disabled="banderadeshabilitar">
+									</div>
+									<div ng-show="formAltaServicio.codigoVin.$invalid  && formAltaServicio.codigoVin.$dirty" ng-style="{color:'red'}">
+             							<label> El valor del plan es requerido </label>
 									</div>
 									</div>
 								</div>
 								
 								<div class="col-md-4">
-									<div class="form-group">
+									<div class="form-group" ng-class="{'has-error': formAltaServicio.tjCirculacion.$invalid && formAltaServicio.tjCirculacion.$dirty}">
 												<label for="">*Tarjeta de Circulación:</label>
 												<div class="input-group">
 													<div class="input-group-addon">
 														<i class="fa fa-sort-numeric-asc" irian-hidden="true"></i>
 													</div>
-													<input maxlength="10" type="text" id="placaOficial" class="form-control"
-                                            			name="placaOficial" ng-model="orden.vehiculoVO.tjtCirculacion"
-                                            				autocomplete="off" ng-required="true" ng-disabled="banderadeshabilitar">
+													<input maxlength="10" type="text" id="tjCirculacion" class="form-control"
+                                            			name="tjCirculacion" ng-model="orden.vehiculoVO.tjtCirculacion"
+                                            				autocomplete="off" required ng-disabled="banderadeshabilitar" capitalize>
+												</div>
+												<div ng-show="formAltaServicio.tjCirculacion.$invalid  && formAltaServicio.tjCirculacion.$dirty" ng-style="{color:'red'}">
+             										<label> La tarjeta de ciruclación es requerida </label>
 												</div>
 									</div>
 								</div>
@@ -124,47 +163,58 @@
 										<!-- SEGUNDA FILA -->
 										<div class="row">
 											<div class="col-md-4">
-												<label for="">*Tipo Vehiculo:</label>
+												<div class="form-group" ng-class="{'has-error': formAltaServicio.tipopVehiculo.$invalid && formAltaServicio.tipopVehiculo.$dirty}">
+													<label>*Tipo Vehiculo:</label>
 													<div class="input-group">
 														<div class="input-group-addon">
 															<i class="fa fa-list-ul"></i>
 															
 														</div>
-														<select class="form-control select2" select2 data-minimum-results-for-search="Infinity" id="tipopVehiculo"
+														<select class="form-control select2" select2  id="tipopVehiculo" name="tipopVehiculo"
 															ng-options="tpVehiculo.nbTipoVehiculo  for tpVehiculo in catalogoTipoVehiculo track by tpVehiculo.idTipoVehiculo"
 															ng-model="orden.vehiculoVO.tpVehiculo"
-															style="width:100%">
+															style="width:100%" ng-disabled="banderadeshabilitar" required>
 															<option value="">Seleccione</option>
 														</select>
+													</div>
+													<div ng-show="formAltaServicio.tipopVehiculo.$invalid && formAltaServicio.tipopVehiculo.$dirty" ng-style="{color:'red'}">
+                                        				<label> El centro de instalación es requerida </label>
+                                   					</div>
 													</div>
 											</div>
 
 								
 								<div class="col-md-4">
-									<div class="form-group">
+									<div class="form-group" ng-class="{'has-error': formAltaServicio.marca.$invalid && formAltaServicio.marca.$dirty}">
 										<label for="">*Marca:</label>
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
 											</div>
-												<input maxlength="10" type="text" id="placaOficial" class="form-control"
-                                            				name="placaOficial" ng-model="orden.vehiculoVO.marca"
-                                            				autocomplete="off" ng-required="true" ng-disabled="banderadeshabilitar">
+												<input maxlength="10" type="text" id="marca" class="form-control"
+                                            				name="marca" ng-model="orden.vehiculoVO.marca" capitalize
+                                            				autocomplete="off" required ng-disabled="banderadeshabilitar">
+										</div>
+										<div ng-show="formAltaServicio.marca.$invalid  && formAltaServicio.marca.$dirty" ng-style="{color:'red'}">
+             								<label> El valor del plan es requerido </label>
 										</div>
 									</div>
 								</div>
 
 											<div class="col-md-3">
-												<div class="form-group">
+												<div class="form-group" ng-class="{'has-error': formAltaServicio.subMarca.$invalid && formAltaServicio.subMarca.$dirty}">
 												<label form="">*Sub Marca:</label>
 												<div class="input-group">
 													<div class="input-group-addon">
 														<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
 														
 													</div>
-													<input maxlength="10" type="text" id="placaOficial" class="form-control"
-                                            				name="placaOficial" ng-model="orden.vehiculoVO.subMarca"
-                                            				autocomplete="off" ng-required="true" ng-disabled="banderadeshabilitar">
+													<input maxlength="10" type="text" id="subMarca" class="form-control"
+                                            				name="subMarca" ng-model="orden.vehiculoVO.subMarca" capitalize
+                                            				autocomplete="off" required ng-disabled="banderadeshabilitar">
+												</div>
+												<div ng-show="formAltaServicio.subMarca.$invalid  && formAltaServicio.subMarca.$dirty" ng-style="{color:'red'}">
+             										<label> El valor del plan es requerido </label>
 												</div>
 												</div>
 											</div>
@@ -173,33 +223,42 @@
 <!-- 										TERCERA FILA -->
 										<div class="row">
 												<div class="col-md-6">
-												<div class="form-group">
+												<div class="form-group" ng-class="{'has-error': formAltaServicio.cdModelo.$invalid && formAltaServicio.cdModelo.$dirty}">
 												<label form="">*Código Modelo:</label>
 												<div class="input-group">
 													<div class="input-group-addon">
 														<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
 														
 													</div>
-													<input maxlength="10" type="number" id="codigoModelo" class="form-control"
-                                            				name="cdModelo" ng-model="orden.vehiculoVO.cdModelo"  maxlength="4"
-                                            				autocomplete="off" ng-required="true" ng-disabled="banderadeshabilitar">
+													<input type="number" class="form-control"
+                                            				name="cdModelo" ng-model="orden.vehiculoVO.cdModelo"  min="4"  pattern="^[0-9]+"
+                                            				autocomplete="off" required ng-disabled="banderadeshabilitar">
+												</div>
+												<div ng-show="formAltaServicio.cdModelo.$invalid  && formAltaServicio.cdModelo.$dirty" ng-style="{color:'red'}">
+             										<label> El valor del plan es requerido </label>
 												</div>
 												</div>
 											</div>
 											
 											<div class="col-md-4">
-												<label for="">*Concesion :</label>
+											  <div class="form-group" ng-class="{'has-error': formAltaServicio.catConcesionario.$invalid && formAltaServicio.catConcesionario.$dirty}">
+												<label>*Concesion :</label>
 													<div class="input-group">
 														<div class="input-group-addon">
 															<i class="fa fa-list-ul"></i>
 															
 														</div>
-														<select class="form-control" select2 data-minimum-results-for-search="Infinity" id="catConcesionario"
+														<select class="form-control select2" select2  id="catConcesionario" name="catConcesionario"
 															ng-options="concesionaria.nbConsecion  for concesionaria in catalogoProcesos.concesionariaVO track by concesionaria.idConsecion"
-															ng-model="orden.vehiculoVO.concesionaria"
-															style="width:100%" >
+															ng-model="orden.vehiculoVO.concesionaria" required
+															style="width:100%" ng-disabled="banderadeshabilitar" >
 															<option value="">Seleccione</option>
 														</select>
+													</div>
+													<div ng-show="formAltaServicio.catConcesionario.$invalid  && formAltaServicio.catConcesionario.$dirty" ng-style="{color:'red'}">
+             												<label> El valor del plan es requerido </label>
+													</div>
+													
 													</div>
 											</div>
 											
@@ -213,35 +272,43 @@
 <!-- 							TERMINA SEGUNDO ROW -->
 
 <!-- 							INICIA TERCER ROW -->
-						{{incidenciaVO}}
+<!-- 						{{incidenciaVO}} -->
 							<div class="row">
 								<div class="col-md-6">
-									<div class="form-group">
+									<div class="form-group" ng-class="{'has-error': formAltaServicio.cdOrden.$invalid && formAltaServicio.cdOrden.$dirty}">
 										<label for="">*Orden de Servicio:</label>
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
 											</div>
-											<input type="text" class="form-control inputs" 
-											ng-model="orden.cdOrden" placeholder="" maxlength="15">
+											<input type="text" class="form-control inputs" name="cdOrden"
+											ng-model="orden.cdOrden" placeholder="" maxlength="15" required capitalize>
 										</div>
+										<div ng-show="formAltaServicio.cdOrden.$invalid  && formAltaServicio.cdOrden.$dirty" ng-style="{color:'red'}">
+                                        <label> El código de orden es requerido </label>
+                                    </div>
+										
 									</div>
-								</div>
+																	</div>
 								<div class="col-md-6">
-									<div class="form-group">
+									<div class="form-group" ng-class="{'has-error': formAltaServicio.centroI.$invalid && formAltaServicio.centroI.$dirty}">
 										<label>*Centro de Instalación</label>
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-cubes" aria-hidden="true"></i>
 											</div>
-											<select class="form-control inputs"
+											<select class="form-control select2" select2 id="centroI" name="centroI" required
 											ng-options="cntInstalacion.idCentroInstalacion as cntInstalacion.nbCentroInstalacion for cntInstalacion in catalogoProcesos.centrosInstalacion"
 											ng-model="orden.centroI">
 											<option value="">Seleccione</option>
 											</select>
-											
+											{{formAltaServicio.centroI.$invalid}}
 										</div>
+										<div ng-show="formAltaServicio.centroI.$invalid && formAltaServicio.centroI.$dirty" ng-style="{color:'red'}">
+                                        <label> El centro de instalación es requerida </label>
+                                    </div>
 									</div>
+									
 								</div>
 
 
@@ -251,40 +318,44 @@
 						
 							<div class="row">
 								<div class="col-md-6">
-									<div class="form-group">
+									<div class="form-group" ng-class="{'has-error': formAltaServicio.tpKit.$invalid && formAltaServicio.tpKit.$dirty}">
 										<label>*Tipo de Kit: </label>
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-cubes" aria-hidden="true"></i>
 											</div>
-										<select class="form-control select2" select2
+										<select class="form-control select2" select2 name="tpKit"  id="tpKit" required
 											ng-options="tpKit.idTipoKit as tpKit.nbTipoKit for tpKit in catalogoProcesos.tipoKit"
 											ng-change="buscarTipoKit(orden.tpKit)"
 											ng-model="orden.tpKit">
 										<option value="">Seleccione</option>
 										</select>
 										</div>
+									<div ng-show="formAltaServicio.tpKit.$invalid  && formAltaServicio.tpKit.$dirty" ng-style="{color:'red'}">
+                                        <label> El tipo de kit es necesario </label>
+                                    </div>
 									</div>
+
 								</div>
 								
 								<div class="col-md-6">
-									<div class="form-group">
+									<div class="form-group" ng-class="{'has-error': formAltaServicio.serieKit.$invalid && formAltaServicio.serieKit.$dirty}">
 										<label for="">*Serie de Kit:</label>
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
 											</div>
-											<input type="text" class="form-control inputs" ng-model="orden.cdKitIntalacion" placeholder="">
+											<input type="text" name="serieKit" required class="form-control inputs" ng-model="orden.cdKitIntalacion" capitalize>
 										</div>
+										<div ng-show="formAltaServicio.serieKit.$invalid  && formAltaServicio.serieKit.$dirty" ng-style="{color:'red'}">
+                                        	<label>La serie del kit es requerido</label>
+                                    	</div>
 									</div>
 								</div>
 								
 							</div>
 <!-- 							TERMINA CUARTO ROW -->
-<!-- 							{{range}} -->
-<!-- 							ng-options="proveed.idProveedor as proveed.nbProveedor for proveed in catalogoProcesos.proveedorVO" -->
-<!-- 							INICIA QUINTO ROW -->
-<!-- <div class="row" ng-repeat="rango in range track by rango.idDispositivo">  original -->
+
 						<fieldset class="scheduler-border" ng-show="filKit">
 							<legend class="scheduler-border text-center">Datos del kit</legend>
 							<div class="row" ng-repeat="rango in range track by $index">
@@ -296,46 +367,47 @@
 														<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
 														
 												</div>
-<!-- 												<input maxlength="10" type="text" id="iddisp" class="form-control" -->
-												
-<!--                                             	name="placaOficial" ng-model="rango.idDispositivo" -->
-<!--                                             	autocomplete="off" ng-required="true" ng-disabled="false" style="display:none;"> -->
-												
-												<input maxlength="10" type="text" id="nbDispositivo" class="form-control"
-                                            	name="placaOficial" ng-model="rango.nbDispositivo"
-                                            	autocomplete="off" ng-required="true" ng-disabled="true">
+												<input maxlength="100" type="text" id="nbDispositivo-{{$index}}" class="form-control"
+                                            	name="nbDispositivo-{{$index}}" ng-model="rango.nbDispositivo"
+                                            	autocomplete="off" ng-disabled="true">
 											</div>
 									</div>
 								</div>
 								
 								<div class="col-md-4" >
-												<div class="form-group">
-												<label form="">Serie Disp:</label>
-												<div class="input-group">
-													<div class="input-group-addon">
-														<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
-														
-													</div>
-													<input maxlength="10" type="text" id="cdSerie" class="form-control"
-                                            				name="placaOficial" ng-model="rango.serie"
-                                            				autocomplete="off" ng-required="true" ng-disabled="banderadeshabilitar">
+									<div class="form-group">
+										<label form="">Serie Disp:</label>
+											<div class="input-group">
+												<div class="input-group-addon">
+													<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
 												</div>
-												</div>
+												<input maxlength="10" type="text" id="cdSerie-{{$index}}" class="form-control"
+                                            				name="cdSerie-{{$index}}" ng-model="rango.serie"
+                                            				autocomplete="off"  capitalize>
+											</div>
+									</div>
 								</div>
 								<div class="col-md-4">
-								<div class="form-group">
+<!-- 								para el class siguiente  -->
+								<div class="form-group" ng-class="{'has-error': formAltaServicio['proveedor-'+$index].$invalid && formAltaServicio['proveedor-'+$index].$dirty}">
 									<label>*Proveedor: </label>
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-cubes" aria-hidden="true"></i>
 										</div>
-										<select class="form-control inputs"
+										<select class="form-control select2 select2-proveedor-container" select2 id="proveedor-{{$index}}" name="proveedor-{{$index}}"  
 											ng-options="proveed.idProveedor as proveed.nbProveedor for proveed in catalogoProcesos.proveedorVO"
-											ng-model="rango.proveedor">
+											ng-model="rango.proveedor" required>
 										<option value="">Seleccione</option>
 										</select>
+<!-- 										{{ formAltaServicio['proveedor-'+$index].$invalid }} -->
+<!-- 										{{ formAltaServicio['proveedor-'+$index]}} -->
 									</div>
+								 <div ng-show="formAltaServicio['proveedor-'+$index].$invalid  && formAltaServicio['proveedor-'+$index].$dirty" ng-style="{color:'red'}">
+                                        <label> El Nombre del proveedor es requerido </label>
+                                 </div>
 								</div>
+
 							</div>						
 							</div>
 							</fieldset>
@@ -344,52 +416,57 @@
 
 							<div class="row">
 								<div class="col-md-6">
-									<div class="form-group">
+									<div class="form-group" ng-class="{'has-error': formAltaServicio.plan.$invalid && formAltaServicio.plan.$dirty}">
 										<label>*Plan: </label>
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-cubes" aria-hidden="true"></i>
 											</div>
-											<select class="form-control inputs"
+											<select class="form-control select2" select2 id="plan" name="plan"
 											ng-options="plan.idPlan as plan.nbPlan for plan in catalogoProcesos.plan"
-											ng-model="orden.plan">
+											ng-model="orden.plan"  required >
 											<option value="">Seleccione</option>
 											</select>
-											
 										</div>
+									<div ng-show="formAltaServicio.plan.$invalid && formAltaServicio.plan.$dirty" ng-style="{color:'red'}">
+                                        <label> El valor del plan es requerido </label>
+                                    </div>
 									</div>
+
 								</div>
 								
 								<div class="col-md-6">
-									<div class="form-group">
+									<div class="form-group" ng-class="{'has-error': formAltaServicio.fhCita.$invalid && formAltaServicio.fhCita.$dirty}">
 										<label>
 											*Fecha de Cita:
 										</label>
-										<div class="input-group" datetime-picker
-											idioma-dtp="{{currentLanguage}}"
-											options="dateTimePickerOptions"
-											ng-model="orden.fhCita">
+										<div class="input-group">
 											
 											<div class="input-group-addon labelCheck">
 												<i class="fa fa-calendar-plus-o"></i>
 											</div>
-											<input class="form-control inputFecha" readonly />
+											<input id="fhCita"
+											datetime-picker
+                                            idioma-dtp="{{currentLanguage}}"
+											name="fhCita" 
+											class="form-control inputFecha"
+											ng-model="orden.fhCita" 
+											options="dateTimePickerOptions"
+											required  />
+
 										</div>
+									<div ng-show="formAltaServicio.fhCita.$invalid && formAltaServicio.fhCita.$dirty" ng-style="{color:'red'}">
+                                        <label> El valor del plan es requerido </label>
+                                    </div>
 									</div>
 								</div>
 							
 							</div>
 <!-- 							TERMINA SEXTO ROW -->
-								
-							
-<!-- 							{{ordenVO}} -->
-<!-- 							{{catalogoProcesos}} -->
-
-							
 							
 							<div class="centerCol">
 							    <span class="input-group-btn">
-						              <button type="button" ng-click="guardarOrden(range, orden)" class="btn btn-danger btn-flat" >
+						              <button ng-show="mostrarAlta"type="button" ng-click="guardarOrden(range, orden)" class="btn btn-danger btn-flat" >
 						                      		Guardar
 						              </button>
 					           </span>
