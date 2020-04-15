@@ -58,13 +58,17 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	private static final String CARACTER_COMA = ",";
 	private static final String MSG_ERROR_QUERY_INVALIDO = "El comando es inseguro para su ejecucion";
 	private static final String MSG_ERROR_INSERCION_INCOMPLETA = "Fallaron inserts de la linea {0}";
-	private static final String MSG_CONTANDO_LINEAS_CARGA_MASIVA = "Inspeccionando archivo recibido con ID {0}";
+	private static final String MSG_BLOQUEANDO_ARCHIVO = "Bloqueando archivo ID {0} para iniciar su carga masiva ";
 	private static final String MSG_LEYENDO_ARCHIVO_LOTE = "Leyendo el archivo {0} para procesar lineas";
 	private static final String MSG_ACCEDIENDO_A_LA_RUTA = "Accediendo a la ruta de {0} {1} del archivo ID {2}";
 	private static final String MSG_ERROR_LECTURA_ARCHIVO = "No fue posible iniciar el proceso del archivo {0}";
 	private static final String MSG_ERROR_CONEXION_DB = "No fue posible establecer conexion con la bd para cargar el archivo {0}";
 	private static final String MSG_ERROR_SQL = "Error al ejecutar comando SQL {0}";
-	private static final String MSG_COLS_INCORRECTAS = "Columnas desajustadas (esperadas {0}, recibidas {1})";
+	private static final String MSG_ERROR_TAMANIO_EXCEDE = "Err: Excede (max {0})";
+	private static final String MSG_ERROR_LINEA_DESAJUSTADA = "Err: Linea desajustada ({0} vs {1})";
+	private static final String MSG_ERROR_FORMATO_INVALIDO = "Err: Invalido (debe ser {0}) ";
+	private static final String MSG_ERROR_DATO_REQUERIDO = "Err: Falta dato (es requerido) ";
+	private static final String MSG_LINEA_NOK = "Err: Linea con errores";
 
 	@Autowired
 	private LayoutDAO layoutDAO;
@@ -115,23 +119,23 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 			boolean isConFooter = isConSeccionTipo(config, SeccionLayoutEnum.FOOTER);
 
 			while ((linea = reader.readLine()) != null) {
-		
+
 				if (isConHeader && reader.getLineNumber() == 1) {
 					bw.write("Resultado," + linea);
 					bw.newLine();
 					continue;
 				}
 				if (isConFooter && reader.getLineNumber() == config.getConfigLote().getNuOdsReportados()) {
-					bw.write("," + linea);
+					bw.write(CARACTER_COMA + linea);
 					bw.newLine();
 					continue;
 				}
 				try {
 					validarLinea(config, linea, CARACTER_COMA);
-					bw.write("0," + linea);
+					bw.write(CARACTER_COMA + linea);
 					bw.newLine();
-				} catch (BusinessException e) {
-					bw.write("," + e.getMessage());
+				} catch (IllegalArgumentException | BusinessException e) {
+					bw.write(e.getMessage());
 					bw.newLine();
 					continue;
 				}
@@ -201,7 +205,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void iniciarCargaMasiva(Long idArchivoLote) throws BusinessException {
-		LOGGER.info(MessageFormat.format(MSG_CONTANDO_LINEAS_CARGA_MASIVA, idArchivoLote));
+		LOGGER.info(MessageFormat.format(MSG_BLOQUEANDO_ARCHIVO, idArchivoLote));
 		LoteOrdenServicioDTO loteDTO = loteDAO.findOne(idArchivoLote);
 		Long lineas = BigDecimal.ZERO.longValue();
 		try {
@@ -222,7 +226,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		loteDTO.setFhModificacion(new Date());
 		loteDTO.setNuOdsReportados(lineas);
 		loteDAO.update(loteDTO);
-		loteDAO.flush();
+//		loteDAO.flush();
 	}
 
 	@Override
@@ -271,31 +275,32 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		return row;
 	}
 
-	private void validarLinea(ConfigCargaMasivaVO config, String linea, String separador) throws BusinessException {
+	private void validarLinea(ConfigCargaMasivaVO config, String linea, String separador)
+			throws IllegalArgumentException, BusinessException {
 
 		List<String> arrayValores = Arrays.asList(linea.split(separador));
-		int colsEsperadas = config.getTotalColsEsperadas();
+		int colsEsperadas = config.getColumnasEnArchivo().size();
 		int colsRecibidas = arrayValores.size();
 
 		StringBuilder sbErrores = new StringBuilder();
 		boolean isLineaValida = true;
+		if (colsEsperadas != colsRecibidas) {
+			throw new IllegalArgumentException(MessageFormat.format(MSG_ERROR_LINEA_DESAJUSTADA + separador + linea,
+					colsEsperadas, colsRecibidas));
+		}
 
 		for (ColumnaArchivoVO col : config.getColumnasEnArchivo()) {
-			String valor = arrayValores.get(col.getNuOrden());
+			String valor = arrayValores.get(col.getNuOrden() - 1);
 			String msgErrorCol = validarColumna(col, valor);
+
 			if (StringUtils.isNotBlank(msgErrorCol)) {
-				String resultado = StringUtils.isBlank(msgErrorCol) ? "OK" : "ERROR: " + msgErrorCol;
-				sbErrores.append(",").append(resultado);
 				isLineaValida = false;
 			}
+			sbErrores.append(separador).append(StringUtils.isBlank(msgErrorCol) ? valor : msgErrorCol);
 		}
-		if (colsEsperadas != colsRecibidas) {
-			sbErrores.append(",").append(MessageFormat.format(MSG_COLS_INCORRECTAS, colsEsperadas, colsRecibidas));
-			isLineaValida = false;
-		}
-
+		String resultado = sbErrores.toString().replaceFirst(separador, "");
 		if (!isLineaValida) {
-			throw new BusinessException(sbErrores.toString().replaceFirst(",", ""));
+			throw new BusinessException(MSG_LINEA_NOK + separador + resultado);
 		}
 
 	}
@@ -311,19 +316,20 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		StringBuilder sbErrCol = new StringBuilder();
 		boolean continuar = true;
 		if (col.getIsRequerido() && StringUtils.isBlank(valor)) {
-			sbErrCol.append("Falta dato. ");
+			sbErrCol.append(MSG_ERROR_DATO_REQUERIDO);
 			continuar = false;
 		}
 		if (continuar && valor.length() > col.getLongMax()) {
-			sbErrCol.append("Tamaño excede. ");
+			sbErrCol.append(MessageFormat.format(MSG_ERROR_TAMANIO_EXCEDE, col.getLongMax()));
 			continuar = false;
 
 		}
 		if (continuar && StringUtils.isNotBlank(col.getTipoDato())) {
 			try {
 				validarTipoObjeto(col.getTipoDato(), valor, col.getTxValorDefecto());
-			} catch (BusinessException e) {
-				sbErrCol.append("Formato inv\u00E1lido. ");
+			} catch (Exception e) {
+				String tipoTraducido = traducirTipo(col.getTipoDato(), col.getTxValorDefecto());
+				sbErrCol.append(MessageFormat.format(MSG_ERROR_FORMATO_INVALIDO, tipoTraducido));
 			}
 		}
 		return sbErrCol.toString();
@@ -356,12 +362,33 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 				if (StringUtils.isBlank(pattern)) {
 					throw new IllegalArgumentException("No hay formato para las fechas");
 				}
+
 				SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+				sdf.setLenient(false);
 				Date c = sdf.parse(valor);
 				break;
 			}
 		} catch (Exception e) {
 			throw new BusinessException("Formato inv\u00E1lido");
 		}
+	}
+
+	private String traducirTipo(String tipoDato, String formato) {
+		switch (tipoDato) {
+		case "Integer":
+			return "num\u00E9rico";
+		case "Long":
+			return "num\u00E9rico";
+		case "Boolean":
+			return "1 o 0";
+		case "Double":
+			return "decimal";
+		case "Date":
+			return "fecha " + formato;
+		default:
+			return "alfanum\u00E9ricos";
+
+		}
+
 	}
 }
