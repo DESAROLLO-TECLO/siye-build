@@ -132,6 +132,9 @@ public class EncuestaServiceImpl implements EncuestaService {
 				idVO.setStEncuesta(steVO);
 				//idVO.setNuMinConsumidos(ueiDTO.getNuMinConsumidos());
 				idVO.setIdUsuEncuIntento(ueiDTO.getIdUsuEncuIntento());
+				//se agrega fecha inicio, fecha fin
+				idVO.setFhInicio(ueiDTO.getFhInicio());
+				idVO.setFhFin(ueiDTO.getFhFin());
 			}
 			List<UsuaroEncuestaRespuestaDTO> uerListDTO = usuarioEncuestaRespuestaDAO.repuestas(ueiDTO.getIdUsuEncuIntento());
 			List<UsuarioEncuestaRespuestaVO> uerListVO = detalleIntentoService.fitroUsuarioRespuesta(uerListDTO);
@@ -496,10 +499,12 @@ public class EncuestaServiceImpl implements EncuestaService {
 				uDTO.setFhLectura(new Date());
 				usuarioEncuestaRespuestaDAO.update(uDTO);	
 			}
-			
+
 			//Se agrega apartado para agregar las causas
 			if(urVO.getCausas()!=null)
 			{
+			uDTO.setDescripcionCausa(urVO.getDescripcionCausa());
+			usuarioEncuestaRespuestaDAO.update(uDTO);
 			List<IERespCausaDTO> listCausasAnteriores= new ArrayList<IERespCausaDTO>();
 			listCausasAnteriores=iERespCausaDAO.obtenerResCausaAnterior(ueDTO.getIdUsuEncuIntento(), eDTO.getIdEncuesta(), sDTO.getIdSeccion(), pDTO.getIdPregunta());			
 			String[] causasString=urVO.getCausas().split(",");
@@ -531,6 +536,8 @@ public class EncuestaServiceImpl implements EncuestaService {
 					 }
 			}else
 			{
+				uDTO.setDescripcionCausa(null);
+				usuarioEncuestaRespuestaDAO.update(uDTO);
 				List<IERespCausaDTO> listCausasAnteriores= new ArrayList<IERespCausaDTO>();
 				listCausasAnteriores=iERespCausaDAO.obtenerResCausaAnterior(ueDTO.getIdUsuEncuIntento(), eDTO.getIdEncuesta(), sDTO.getIdSeccion(), pDTO.getIdPregunta());			
 				 if(listCausasAnteriores.size()>0)

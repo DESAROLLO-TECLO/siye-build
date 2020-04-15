@@ -1,6 +1,9 @@
 angular.module(appTeclo).controller("encuestaSatisfaccionController",
-function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,showAlert,growl, $location,encuestaSatisfaccionService) {
+function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,showAlert,growl, $location,encuestaSatisfaccionService,encuestaService) {
 	$scope.banderaPantalla=false;
+	var backOpcionMarcada=new Object({opcion:undefined,pregunta:undefined});
+	$scope.causas="";
+	$scope.object=new Object();
 	$scope.formato = '0';
 	$scope.encuesta={};
 	var idIntento=undefined;
@@ -123,11 +126,11 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 	// Inicia Encuesta
 	$scope.iniciarEncuesta=function(accion,instruccion,idUsuintento){
 		$scope.banderaPantalla=accion;
-		idIntento=idUsuintento;
+		idIntento = idUsuintento;
 		// $scope.encuesta=angular.copy(encuestaVO);
 		var pocision=$scope.posicionActual==-1?0:$scope.posicionActual;
 		$scope.cambiarPregunta(null,$scope.encuesta.secciones[pocision],instruccion);
-		$scope.iniciarConteo();
+		//$scope.iniciarConteo();
 	};
 
 	// Detectar el navegador para ajustar el contenido
@@ -161,26 +164,126 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 	}
 	
 	$scope.checkPregunta =function(opcion,respuesta){
-		var evaluaContestadas=$scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas;
-		var preguntasCont=evaluaContestadas!=undefined?evaluaContestadas:0;
-		var cambio=false;
+		var evaluaContestadas = $scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas;
+		var preguntasCont = evaluaContestadas != undefined ? evaluaContestadas:0;
+		var cambio = false;
 		
-		if(respuesta.stMarcado==undefined || respuesta.stMarcado==0  || respuesta.stMarcado==null){
-			$scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas=preguntasCont;
+		if(respuesta.stMarcado == undefined || respuesta.stMarcado == 0  || respuesta.stMarcado == null){
+			$scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas = preguntasCont;
 			$scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas++
 			$scope.preguntasContestadasEncuesta++;
 		}
+		
 		for (let i in respuesta.opciones) {
 			respuesta.opciones[i].stMarcado=0;
 		}
 		
 		for (let i in respuesta.opciones) {
-			if (angular.equals(respuesta.opciones[i],opcion)) {
-				respuesta.opciones[i].stMarcado=1;	
-				respuesta.stMarcado=1;
+			if (angular.equals(respuesta.opciones[i], opcion)) {
+				respuesta.opciones[i].stMarcado = 1;	
+				respuesta.stMarcado = 1;
 			}
 		}	
+		
+		
+		if(opcion.cdMostrarCausas)
+		{
+		filtroCausas(opcion,respuesta,false);
+		backOpcionMarcada.opcion=opcion;
+		backOpcionMarcada.pregunta=respuesta;
+		}
+		if(!opcion.cdMostrarCausas)
+			{
+			for (let i in respuesta.opciones) {
+				respuesta.opciones[i].causas=null;
+		      }
+			}
+
 	};
+	
+	$scope.uncheckOpcion=function(){
+		for (let i in $scope.encuesta.secciones) {
+			for (let j in $scope.encuesta.secciones[i].preguntas) {
+				for (const k in $scope.encuesta.secciones[i].preguntas[j].opciones) {
+					var idOpcion=$scope.encuesta.secciones[i].preguntas[j].opciones[k].idOpcion;
+					var idPregunta=$scope.encuesta.secciones[i].preguntas[j].idPregunta
+					if (backOpcionMarcada.opcion.idOpcion==idOpcion&& backOpcionMarcada.pregunta.idPregunta==idPregunta) {
+						$scope.encuesta.secciones[i].preguntas[j].opciones[k].stMarcado = 0;
+						if($scope.encuesta.secciones[$scope.posicionActual].preguntas[j].stMarcado==1){
+						$scope.encuesta.secciones[$scope.posicionActual].preguntas[j].stMarcado=0;
+						$scope.preguntasContestadasEncuesta--
+						$scope.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas--
+						}
+						return;
+					}
+				}
+			}
+		}
+	backOpcionMarcada=new Object({opcion:undefined,pregunta:undefined});
+	};
+	
+	filtroCausas = function(opcion,respuestas,cargarPreviamente){
+		$scope.opcionElejida = opcion;
+		$scope.respuestaActual = respuestas;
+		$scope.comboCausasList = [];
+		$scope.opcionMarcadaRespuesta = opcion;
+		encuestaService.comboCausas(
+			$scope.opcionMarcadaRespuesta.idOpcion
+		).success(function(datos) {
+			for (var i in datos) {
+				$scope.comboCausasList.push(datos[i].causas);
+			}	
+		 if(cargarPreviamente)
+			 {
+		 $scope.object.causas=opcion.causas.split(",").map(function(item) {
+			    return parseInt(item, 10);
+		
+		 })
+		 $scope.changeComboCausa();
+			 }
+					
+	}).error(function(datos) {
+	        $scope.error = datos;
+	    $scope.datos = {};
+	    });
+	}
+
+	$scope.guardarCausa=function(form){
+		if (form.$invalid) {
+			showAlert.requiredFields(form);
+			growl.error('Formulario Incompleto');
+	    }else{
+	    	for(let a in $scope.seccionVO.preguntas){
+	    		if ($scope.seccionVO.preguntas[a].idPregunta==$scope.respuestaActual.idPregunta){
+	    	    	for (let i in $scope.seccionVO.preguntas[a].opciones){
+	    	    		if ($scope.seccionVO.preguntas[a].opciones[i].idOpcion==$scope.opcionElejida.idOpcion) {
+	    	    			$scope.seccionVO.preguntas[a].opciones[i].causas=$scope.object.causas.toString();
+	    	    			}
+	    				}
+	    			}
+	    		}
+	    	$("#myModal").modal('hide');//ocultamos el modal
+	    	}
+	};
+
+	$scope.changeComboCausa=function(){
+		var listCausas =  $scope.object.causas;
+		$scope.nbCausa= [];
+		for(var x in listCausas ){
+		if(!isNaN(x)){
+		for(var y in $scope.comboCausasList ){
+			if(listCausas[x]==$scope.comboCausasList[y].idCausa){
+				$scope.nbCausa[x]=$scope.comboCausasList[y].nbCausa;
+					}
+				}
+			}
+		}
+	};
+
+	$scope.cargarCausas=function(opciones,respuesta){
+		if(opciones.cdMostrarCausas){
+		filtroCausas(opciones,respuesta,true);}
+	}
 	
 	// CAMBIAR PREGUNTA
 	$scope.cambiarPregunta = function(nuPagina, seccionVO, instruccion) {
@@ -362,7 +465,8 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
                 idSeccion: angular.copy(seccionVO.idSeccion),
                 idPregunta: undefined,
                 idOpcion: undefined,
-                idIntento: idIntento
+                idIntento: idIntento,
+                causas: undefined
             });
 
             objectEncuesta.idPregunta = listPreguntaSeccion[i].idPregunta;
@@ -370,6 +474,7 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
                 if (listPreguntaSeccion[i].opciones[j].stMarcado === 1) {
                     guardar = true
                     objectEncuesta.idOpcion = listPreguntaSeccion[i].opciones[j].idOpcion != undefined ? listPreguntaSeccion[i].opciones[j].idOpcion : 0;
+                    objectEncuesta.causas=listPreguntaSeccion[i].opciones[j].causas;
                 }
             }
             if (guardar) {

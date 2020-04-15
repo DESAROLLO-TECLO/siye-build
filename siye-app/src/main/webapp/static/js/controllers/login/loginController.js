@@ -28,10 +28,10 @@ angular.module(appTeclo)
 
                     btnLogin.attr('disabled', 'true');
                     var usrAplication = {
-                            "idPerfil": data.idPerfil
-                        }
-                        //storageService.setParamsValApp(data.restrictionCollection);
-                        //storageService.setUsrAplication(usrAplication);
+                        "idPerfil": data.idPerfil
+                    }
+                    storageService.setParamsValApp(data.restrictionCollection);
+                    storageService.setUsrAplication(usrAplication);
                     storageService.setToken(data.token);
                     logOutService.StartTimer();
                     $location.path('/index');

@@ -57,6 +57,7 @@ public class DetalleIntentoServiceImpl implements DetalleIntentoService{
 						for(OpcionVO oVO: pVO.getOpciones()) {
 							if(uerDTO.getOpcionesDTO() != null && oVO.getIdOpcion().equals(uerDTO.getOpcionesDTO().getIdOpcion())) {
 								oVO.setStMarcado(1);
+								oVO.setDescripcionCausa(uerDTO.getDescripcionCausa());
 								//se agrega para las causas
 								List<IERespCausaDTO> listCausasAnteriores= new ArrayList<IERespCausaDTO>();
 								listCausasAnteriores=iERespCausaDAO.obtenerResCausaAnterior(uerDTO.getId().getIdUsuEncuIntento(), uerDTO.getId().getIdEncuesta(), uerDTO.getId().getIdSeccion(), uerDTO.getId().getIdPregunta());

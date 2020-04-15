@@ -71,5 +71,27 @@ public interface CatalogoService {
 	 *metodo para consultar el catalogo de fechas 
 	 * */
 	public List<CatTipoFechasVO> getCatTipoFechas();
+	
+
+	/**
+	 * @Descripción: Método para generar folio en base a parametro de configuracion
+	 * @author Manuel Dirsio
+	 * @return String
+	 */
+	
+	//ParametrosFolioDTO getParametroById(String cdParametro);
+	public String generaFolio(String cdParametro);
+
+	/**
+	 * @Descripción: Método para extraer las opciones en incidencia
+	 * @author Estephanie Chavez
+	 * @param cdLlavePConfig1
+	 * @param cdLlavePConfig2
+	 * @param cdLlavePConfig3
+	 * @return
+	 * @throws NotFoundException
+	 */
+	public List<ConfiguracionVO> configuracionIncidencia(String cdLlavePConfig1, String cdLlavePConfig2)
+			throws NotFoundException;
 
 }

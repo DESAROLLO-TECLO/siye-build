@@ -1,10 +1,31 @@
 angular.module(appTeclo)
 .controller("etapaController",
-function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, etapaInfo) {
+function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, etapaInfo,encuestaService) {
 
-    $scope.fechaHoy = new Date();
+    $rootScope.idOrdenServ = etapaInfo.data[0].idOrdenServicio;
+    $rootScope.cdOrdenServicio = etapaInfo.data[0].cdOrdenServicio;
+    $scope.finicio = etapaInfo.data[0].fhAtencionIni;
+    $scope.ffin = etapaInfo.data[0].fhAtencionFin;
+    $scope.fcita = etapaInfo.data[0].fhCita;
+
+    if($scope.finicio != null && $scope.ffin != null){
+        $scope.fechaHoy = $scope.finicio - $scope.ffin;
+    }else{
+        $scope.fechaHoy = null;
+        $scope.fechaHoyText = "Sin Validar";
+    }
     $scope.stValidarCheck = false;
-    console.log(etapaInfo.data)
+
+    $scope.numMaxImg = etapaInfo.data[0].numMaxImagenes;
+    $scope.listImages = [];
+    $scope.paramEtapaImg = new Object({
+        idOrdenServ: $rootScope.idOrdenServ,
+        cdOrdenServicio: $rootScope.cdOrdenServicio
+    });
+    $scope.paramConfigImg = new Object({
+        maxSizeMb: 1,
+        title: "Agregar Evidencia por Etapa"
+    });
     
     if(etapaInfo != null){
         $rootScope.idOrSer = parseInt(etapaInfo.data[0].idOrdenServicio);
@@ -49,6 +70,7 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
         etapaService.getPlan(idPlan, idOrden).success(function(data){
             $scope.dataPlan = data;
             var dplength = $scope.dataPlan.length;
+            encuestaService.primerProceso=$scope.dataPlan[0].proceso.idProceso;
             for(var i = 0; i < dplength; i++){
                 switch($scope.dataPlan[i].proceso.cdProceso){
                     case 'INS':
@@ -65,7 +87,6 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
                         break;
                 }
             }
-            console.log($scope.dataPlan)
         }).error(function(error){
             console.log(error);
         });

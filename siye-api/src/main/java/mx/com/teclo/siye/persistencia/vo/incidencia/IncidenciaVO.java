@@ -1,6 +1,9 @@
 package mx.com.teclo.siye.persistencia.vo.incidencia;
 
 import java.io.Serializable;
+
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestasDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.procesos.IEprocesosDTO;
 import mx.com.teclo.siye.persistencia.vo.proceso.TipoSeguimientoVO;
 
 public class IncidenciaVO implements Serializable {
@@ -17,6 +20,8 @@ public class IncidenciaVO implements Serializable {
 	private TipoSeguimientoVO stIncidencia;
 	private TipoSeguimientoVO stAutorizacion;
 	private TipoSeguimientoVO prioridad;
+	private IEprocesosDTO iEproceso;
+	private EncuestasDTO encuesta;
 	
 	public Long getIdIncidencia() {
 		return idIncidencia;
@@ -78,5 +83,18 @@ public class IncidenciaVO implements Serializable {
 	public void setPrioridad(TipoSeguimientoVO prioridad) {
 		this.prioridad = prioridad;
 	}
+	public IEprocesosDTO getiEproceso() {
+		return iEproceso;
+	}
+	public void setiEproceso(IEprocesosDTO iEproceso) {
+		this.iEproceso = iEproceso;
+	}
+	public EncuestasDTO getEncuesta() {
+		return encuesta;
+	}
+	public void setEncuesta(EncuestasDTO encuesta) {
+		this.encuesta = encuesta;
+	}
+	
 
 }

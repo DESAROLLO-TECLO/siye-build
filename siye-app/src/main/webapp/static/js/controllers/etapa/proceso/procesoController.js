@@ -1,18 +1,39 @@
 angular.module(appTeclo)
 .controller("procesoController",
-function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,procesoInfo,idord,idpro) {
+function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,procesoInfo,idord,idpro,encuestaService) {
     
-	$scope.idOrdenServicio=idord;
+    $rootScope.idProceso = procesoInfo.data[0].idProceso.idProceso;
+    $scope.idOrdenServicio=idord;
 	$scope.idProcesoActual=idpro;
     $scope.stActivarEncuesta = procesoInfo.data[3].stSatisfaccion;
-    $scope.tiempoTranscurrido = new Date();
     $scope.numOrden = $rootScope.numOS;
-    console.log(procesoInfo.data);
+
+    $scope.numMaxImgPro = procesoInfo.data[0].idProceso.nuMaxImagenes;    
+    $scope.listImagesPro = [];
+    $scope.paramProcImg = new Object({
+        idOrdenServ: $rootScope.idOrdenServ,
+        cdOrdenServicio: $rootScope.cdOrdenServicio,
+        idProceso: $rootScope.idProceso
+    });
+    $scope.paramConfigImgPro = new Object({
+        maxSizeMb: 1,
+        title: "Agregar Evidencia por Proceso"
+    });
 
     if(procesoInfo != null){
         $scope.nombreEtapa = "Orden de Servicio: " + $rootScope.nomOrdenServicio + " - Proceso: " + procesoInfo.data[0].idProceso.nbProceso;
         $scope.dataEtapa = procesoInfo.data;
         $rootScope.nomSeguimiento = $scope.nombreEtapa;
+        $scope.tiempoTranscurrido = 0;
+        for(let i = 0; i < procesoInfo.data.length; i++){
+            let finit = procesoInfo.data[i].idEncuesta.fechaInicioEncuesta;
+            let ffin = procesoInfo.data[i].idEncuesta.fechaFinEncuesta;
+            if(finit != null && ffin != null){
+                $scope.tiempoTranscurrido += ffin - finit;
+            }else{
+                $scope.tiempoTranscurridoText = "Sin validar";
+            }
+        }
     }else{
         growl.error('No se logró recuperar el  registro solicitado', {title: '-ERROR-'});
     }
@@ -30,5 +51,16 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
             growl.error(error.message, {title: '- ERROR -'});
         });
     }
+    
+    obtenerPrimeraEncuestaPrimerProceso=function(EncuestasInfo)
+    {
+    	if(EncuestasInfo[0].idProceso.idProceso==encuestaService.primerProceso)
+    		{
+    		encuestaService.primerEncuestaPrimerProceso=EncuestasInfo[0].idEncuesta.idEncuesta;
+    		}
+    	
+    }
+    
+    obtenerPrimeraEncuestaPrimerProceso(procesoInfo.data);
     
 });

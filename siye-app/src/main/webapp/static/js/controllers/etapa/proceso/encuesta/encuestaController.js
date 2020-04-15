@@ -6,8 +6,7 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     $scope.nombEncuesta = $rootScope.nomSeguimiento + " - Encuesta " + encuestaInfo.data.encuesta.nbEncuesta;
     $scope.nombSeccion = encuestaInfo.data.encuesta.secciones[0].nbSeccion;
     $scope.seccEncuesta = encuestaInfo.data.encuesta.secciones[0];
-
-    console.log($scope.seccEncuesta);
+	var backOpcionMarcada=new Object({opcion:undefined,pregunta:undefined});
 
     $scope.objOpciones = new Object(
         {val:1,nom:'Opción 1'},
@@ -21,7 +20,6 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
         {val:9,nom:'Opción 9'},
         {val:10,nom:'Opción 10'}
     );
-	
 	
 	$scope.paramConfigPage = {
             bigCurrentPage: 1,
@@ -55,8 +53,6 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
 	
 
     $scope.preguntasContestadasEncuesta = 0;
-
-	
  
 	$scope.getNumPreguntasPorSeccion=function(cdParametro){
 		encuestaService.getNumPreguntasPorSeccion(cdParametro).success(function(data) {
@@ -108,8 +104,6 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
  				$scope.cambiarPregunta(null,$scope.encuestaDetalle.encuesta.secciones[0]);
 				//$scope.iniciarConteo();
             	 }
-             
-             
 
          } else {
              growl.warning("Sin evaluaciones por asignar", { ttl: 5000 });
@@ -183,7 +177,8 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
                 idPregunta: undefined,
                 idOpcion: undefined,
                 idIntento: $scope.encuestaDetalle.intentoDetalleVO.idUsuEncuIntento,
-                causas: undefined
+                causas: undefined,
+                descripcionCausa:undefined
             });
 
             objectEncuesta.idPregunta = listPreguntaSeccion[i].idPregunta;
@@ -192,6 +187,7 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
                     guardar = true
                     objectEncuesta.idOpcion = listPreguntaSeccion[i].opciones[j].idOpcion != undefined ? listPreguntaSeccion[i].opciones[j].idOpcion : 0;
                     objectEncuesta.causas=listPreguntaSeccion[i].opciones[j].causas;
+                    objectEncuesta.descripcionCausa=listPreguntaSeccion[i].opciones[j].descripcionCausa;
                 }
             }
             if (guardar) {
@@ -259,11 +255,14 @@ $scope.checkPregunta =function(opcion,respuesta){
 	if(opcion.cdMostrarCausas)
 	{
 	filtroCausas(opcion,respuesta,false);
+	backOpcionMarcada.opcion=opcion;
+	backOpcionMarcada.pregunta=respuesta;
 	}
 	if(!opcion.cdMostrarCausas)
 		{
 		for (let i in respuesta.opciones) {
 			respuesta.opciones[i].causas=null;
+			respuesta.opciones[i].descripcionCausa=null;
 	      }
 		}
 
@@ -357,6 +356,11 @@ $scope.finalizaEncuesta = function(tiempo) {
 $scope.testConfirmacion = function(object) {
     encuestaService.finalizaEncuesta($scope.detalleFinalEncuesta).success(function(data) {
         if (data != null) {
+    	    encuestaService.avanzarProceso(encuestaInfo.data.usuario.idOrdenServicio).success(function(data) {
+    	    }).error(function(data) {
+    	        growl.error(data.message);
+    	    });
+    	    
             $scope.paramConfigPage.segundo = 0;
             $scope.paramConfigPage.minuto = 0;
             $scope.paramConfigPage.hora = 0;
@@ -408,8 +412,10 @@ filtroCausas = function(opcion,respuestas,cargarPreviamente){
 		}	
 	 if(cargarPreviamente)
 		 {
+		 $scope.descripcionCausa= opcion.descripcionCausa;
 	 $scope.causas=opcion.causas.split(",").map(function(item) {
 		    return parseInt(item, 10);
+	 
 	
 	 })
 	 $scope.changeComboCausa();
@@ -439,12 +445,14 @@ $scope.guardarCausa=function()
     	    	for (let i in $scope.seccionVO.preguntas[a].opciones) {
     	    		if ($scope.seccionVO.preguntas[a].opciones[i].idOpcion==$scope.opcionElejida.idOpcion) {
     	    			$scope.seccionVO.preguntas[a].opciones[i].causas=$scope.causas.toString();
+    	    			$scope.seccionVO.preguntas[a].opciones[i].descripcionCausa=$scope.descripcionCausa;
     	    	}
     	          }
 
     			
     			}
     		}
+    	$scope.descripcionCausa=undefined;
     	$("#myModal").modal('hide');//ocultamos el modal
     	}
 
@@ -474,20 +482,56 @@ $scope.cargarCausas=function(opciones,respuesta)
 {
 	if(opciones.cdMostrarCausas)
 	{
-	filtroCausas(opciones,respuesta,true);
+	    filtroCausas(opciones,respuesta,true);
 	
 	}
 
+}
+
+iniciarProceso=function(statusEncuesta,idEncuesta,idOrdenServicio)
+{
+	if(statusEncuesta=="NI" && $scope.idProcesoActual==encuestaService.primerProceso
+			&& idEncuesta==encuestaService.primerEncuestaPrimerProceso )
+		{
+	    encuestaService.iniciarProceso(idOrdenServicio).success(function(data) {
+	        if (data) {
+	        growl.success("La orden de servicio inicio el proceso correctamente", { ttl: 5000 });
+	        } else {
+	            growl.success("La orden de servicio ya inicio el proceso", { ttl: 5000 });
+	        }
+	    }).error(function(data) {
+	        growl.error(data.message);
+	    });
+		}
+	
 
 }
 
+$scope.uncheckOpcion=function(){
+	for (let i in $scope.encuestaDetalle.encuesta.secciones) {
+		for (let j in $scope.encuestaDetalle.encuesta.secciones[i].preguntas) {
+			for (const k in $scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].opciones) {
+				var idOpcion=$scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].opciones[k].idOpcion;
+				var idPregunta=$scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].idPregunta
+				if (backOpcionMarcada.opcion.idOpcion==idOpcion&& backOpcionMarcada.pregunta.idPregunta==idPregunta) {
+					$scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].opciones[k].stMarcado = 0;
+					$scope.preguntasContestadasEncuesta--
+					$scope.encuestaDetalle.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas--
+					return;
+				}
+				
+			}
+		}
+	}
+backOpcionMarcada=new Object({opcion:undefined,pregunta:undefined});
+};
 
 
     
     $scope.getNumPreguntasPorSeccion('TIE019P_NU_PAGINACION');
     $scope.getNumMaxPaginacion('TIE019P_NU_MAX_PAG');
     $scope.getEncuestaOrden(encuestaInfo);
-    
+    iniciarProceso(encuestaInfo.data.intentoDetalleVO.stEncuesta.cdStEncuesta,encuestaInfo.data.encuesta.idEncuesta,encuestaInfo.data.usuario.idOrdenServicio);
     
 });
 

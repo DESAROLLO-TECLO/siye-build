@@ -2,6 +2,7 @@ package mx.com.teclo.siye.persistencia.hibernate.dao.async;
 
 import java.util.List;
 
+import mx.com.teclo.siye.persistencia.vo.async.ColumnaArchivoVO;
 import mx.com.teclo.siye.persistencia.vo.async.ColumnaVO;
 
 /**
@@ -29,7 +30,13 @@ public interface LayoutDAO {
 	 * @return
 	 */
 	List<ColumnaVO> getNbsColumnas(String tabla);
-	
-	Long ejecutarQueryConcatenado(String query);
-		
+
+	/**
+	 * Obtiene ordenadamente los nombres de las columnas a recibir en el archivo*
+	 * 
+	 * 
+	 * @return List<ColumnaArchivoVO>
+	 */
+	List<ColumnaArchivoVO> getColumnasEnArchivo();
+
 }

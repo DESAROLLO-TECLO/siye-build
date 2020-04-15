@@ -1,6 +1,7 @@
 package mx.com.teclo.siye.negocio.service.catalogo;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Formatter;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import mx.com.teclo.siye.negocio.service.ordenServicio.OrdenServicioService;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ConductorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ConfiguracionParamDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.OpcionCausasDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ParametrosFolioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.PersonaTipoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ProveedorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
@@ -32,6 +34,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConductorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConfiguracionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.OpcionCausaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ParametrosFolioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.PersonaTipoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ProveedorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.StEncuestaDTO;
@@ -120,6 +123,9 @@ public class CatalogoServiceImpl implements CatalogoService{
 	
 	@Autowired
 	private TipoFechasDAO tipoFechaDAO;
+	
+	@Autowired
+	private ParametrosFolioDAO parametrosFolioDAO;
 
 	
 	@Transactional
@@ -341,13 +347,61 @@ public class CatalogoServiceImpl implements CatalogoService{
 				e.setCdTipoFecha(fecha.getCdTipoFecha());
 				e.setNbTipoFecha(fecha.getNbTipoFecha());
 				List<String> rango = rutinas.generaRangoFechas(fecha.getIdTipoFecha());
-				e.setFechaInicio(rango.get(0));
-				e.setFechaFin(rango.get(1));
+				if(!rango.isEmpty()) {
+					e.setFechaInicio(rango.get(0));
+					e.setFechaFin(rango.get(1));					
+				}
 				respuesta.add(e);
 			}
 		}
 		
 		return respuesta;
+	}
+	
+	@Override
+	@Transactional
+	public String generaFolio(String cdParametro) {
+		String folioGenerado="";
+		Formatter fmt = new Formatter();
+		Long usuario = usuarioFirmadoService.getUsuarioFirmadoVO().getId();
+		 ParametrosFolioDTO parametroDTO = new ParametrosFolioDTO();
+		 parametroDTO= parametrosFolioDAO.obtenerFolio(cdParametro);
+		if (parametroDTO!=null) {
+			Long numeroFolio=parametroDTO.getNuFolios()+1;
+			String prefijo=parametroDTO.getNbPrefijo();
+			folioGenerado =prefijo+fmt.format("%04d",numeroFolio).toString();  
+			//ParametrosFolioDTO parametrosFolioDTO = parametrosFolioDAO.findOne(idParametro);
+			parametroDTO.setFhModificacion(new Date());
+			parametroDTO.setIdUsrModifica(usuario);
+			parametroDTO.setNuFolios(numeroFolio);
+			parametrosFolioDAO.update(parametroDTO);
+		}
+		return folioGenerado;
+	}
+	
+	@Transactional
+	@Override
+	public List<ConfiguracionVO> configuracionIncidencia(String cdLlavePConfig1, String cdLlavePConfig2) throws NotFoundException{
+		ConfiguracionVO voReturn1 = null;
+		ConfiguracionVO voReturn2 = null;
+		ConfiguracionDTO a1 =  configuracionDAO.configuracion(cdLlavePConfig1);
+		if(a1 == null)
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		
+		ConfiguracionDTO a2 =  configuracionDAO.configuracion(cdLlavePConfig2);
+		if(a2 == null)
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		
+	
+		voReturn1 = new ConfiguracionVO();
+		ResponseConverter.copiarPropriedades(voReturn1, a1);
+		voReturn2 = new ConfiguracionVO();
+		ResponseConverter.copiarPropriedades(voReturn2, a2);
+		
+		List<ConfiguracionVO> listConfiguracionVO = new ArrayList<ConfiguracionVO>();
+		listConfiguracionVO.add(voReturn1);
+		listConfiguracionVO.add(voReturn2);
+		return listConfiguracionVO;
 	}
 
 }

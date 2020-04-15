@@ -74,6 +74,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.antMatchers("/encuesta/**").permitAll()
 		.antMatchers(AUTH_WHITELIST).permitAll()
 		.antMatchers("/validacion/**").permitAll()
+		.antMatchers("/reporte/**").permitAll()
+		.antMatchers("/catalogo/**").permitAll()
 		.anyRequest()
 		.authenticated();
 		// Custom JWT based authentication

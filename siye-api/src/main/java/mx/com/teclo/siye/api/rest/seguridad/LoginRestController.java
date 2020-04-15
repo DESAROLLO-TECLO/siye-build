@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import mx.com.teclo.arquitectura.ortogonales.assembler.menu.MenuAssembler;
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
+import mx.com.teclo.arquitectura.ortogonales.persistencia.configuracion.vo.ParametroVO;
 import mx.com.teclo.arquitectura.ortogonales.persistencia.hibernate.dto.seguridad.MenusDTO;
 import mx.com.teclo.arquitectura.ortogonales.seguridad.util.TokenUtils;
 import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.AuthenticationRequestVO;
@@ -32,6 +33,7 @@ import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.arquitectura.ortogonales.service.favoritos.FavoritosService;
 import mx.com.teclo.arquitectura.ortogonales.service.menus.MenusService;
+import mx.com.teclo.arquitectura.ortogonales.service.parametro.ParametroService;
 import mx.com.teclo.arquitectura.ortogonales.service.passwordprimeruso.ContraseniaPrimerUsoService;
 
 @RestController
@@ -65,8 +67,8 @@ public class LoginRestController {
     @Value("${app.config.codigo}")
     private String codeApplication;
     
-    /*@Autowired
-	private ParametroService parametroService;*/
+    @Autowired
+	private ParametroService parametroService;
     
     
     /*@Autowired
@@ -91,8 +93,8 @@ public class LoginRestController {
 				"0",
 				"--", 
 				ParametrosBitacoraEnum.ORIGEN_W.getParametro());*/
-		//List<ParametroVO> pListVO = parametroService.getRestriccions();
-		return new ResponseEntity<AuthenticationResponseVO>(new AuthenticationResponseVO(token, favoritosService.getFavorites(), stContrasenia), HttpStatus.OK);
+		List<ParametroVO> pListVO = parametroService.getRestriccions();
+		return new ResponseEntity<AuthenticationResponseVO>(new AuthenticationResponseVO(token, favoritosService.getFavorites(), stContrasenia, pListVO, usuarioFirmado.getPerfilId()), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "refresh", method = RequestMethod.GET)

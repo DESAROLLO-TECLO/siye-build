@@ -56,8 +56,7 @@
 													<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
 												</select>
 		                                        </div>
-		                                        <div
-		                                            ng-show="formBoxBusqueda.tipoBusqueda.$error.required && formBoxBusqueda.tipoBusqueda.$dirty">
+		                                        <div ng-show="formBoxBusqueda.tipoBusqueda.$error.required && formBoxBusqueda.tipoBusqueda.$dirty">
 		                                            <span ng-style="{color:'red'}">
 		                                                El tipo de búsqueda es requerido
 		                                            </span>
@@ -103,7 +102,7 @@
      		</div>
      	<!-- SECCION PARAMETROS DE BÚSQUEDA -->
      	<!-- SECCION PARA TABLA DE RESULTADOS -->
-     		<div class="col-xs-12 col-sm-12 col-md-12">
+     		<div class="col-xs-12 col-sm-12 col-md-12" ng-if="listOrdenExpediente != undefined && listOrdenExpediente.length > 0">
                 <div class="box box-danger">
                     <div class="box-header with-border">
                      	<div class="row">
@@ -193,7 +192,7 @@
 	                    		</div>
 	                    	</div>
 	                   	</div>
-               			<update-image id-element-up="Encuesta" include="true" param-conf-sav="paramConfSav" max-nu-image="10"
+               			<update-image id-element-up="Encuesta" include="true" param-conf-sav="paramConfSav" max-nu-image="{{nuMaxImg}}"
                				param-conf-component="paramConfiguracion" list-images="listImages"></update-image>
 	                   	
 	                   

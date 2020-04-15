@@ -72,6 +72,9 @@ public class UsuaroEncuestaRespuestaDTO implements Serializable {
 
 	@Transient
 	private PreguntasDTO pregunta;
+	
+	@Column(name = "TX_OBSERVACION")
+	private String descripcionCausa;
 
 	public UsuaroEncuestaRespuestaDTOPK getUsuaroEncuestaRespuestaPK() {
 		return id;
@@ -200,5 +203,15 @@ public class UsuaroEncuestaRespuestaDTO implements Serializable {
 	public void setPregunta(PreguntasDTO pregunta) {
 		this.pregunta = pregunta;
 	}
+
+	public String getDescripcionCausa() {
+		return descripcionCausa;
+	}
+
+	public void setDescripcionCausa(String descripcionCausa) {
+		this.descripcionCausa = descripcionCausa;
+	}
+	
+	
 
 }

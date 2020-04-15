@@ -17,10 +17,10 @@
 <!-- 	<boton-incidencia id-orden-serv="idOrd"></boton-incidencia> -->
     <form role="form" name="formAltaIncidencia" novalidate>
         <div class="row">
-            <div class="col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10">
+            <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10">
                 <div class="box box-danger">
                     <div class="box-header with-border text-center">
-                        <h3 class="box-title"> Registro de incidencia </h3>
+                        <h3 class="box-title"> Alta de Incidencia </h3>
 <!--                         <div class="box-tools pull-right"> -->
 <!--                             <button type="button" class="btn btn-box-tool" data-widget="collapse"> -->
 <!-- 								<i class="fa fa-minus"></i> -->
@@ -41,7 +41,7 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-list-ul"></i>
                                         </div>
-                                        <select class="form-control" name="tipoIncidencia" id="tipoIncidencia" required select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
+                                        <select class="form-control" name="tipoIncidencia" id="tipoIncidencia" required select2 idioma-s2="{{currentLanguage}}" 
                                         	catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getTpIncidencia'"
                                         	name-save-service="'conductorService'" name-save-end-point-service="'nuevoConductor'"
                                         	model-result="listTpIncidencia"
@@ -81,16 +81,9 @@
                                     <label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.flSol.label' | translate}} </label>
                                     <div class="input-group">
                                         <div class="input-group-addon">
-                                            <i class="fa fa-list-ul"></i>
+                                            <i class="fa fa-pencil"></i>
                                         </div>
-                                        <select class="form-control" name="orden" id="orden" required select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
-                                        	catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getOrdenServicio'"
-                                        	name-save-service="'conductorService'" name-save-end-point-service="'nuevoConductor'"
-                                        	model-result="listOrden" disabled
-											opcion-selec="registroIncidencia.orden" ng-change="addTxDescripcion()"
-											ng-model="registroIncidencia.orden" ng-options="o as o.cdOrdenServicio for o in listOrden">
-											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
-										</select>
+                                        <input type="text" class="form-control" name="orden" id="orden" ng-model="registroIncidencia.orden" readonly />
                                     </div>
                                     <div ng-show="formAltaIncidencia.orden.$invalid && formAltaIncidencia.orden.$dirty" ng-style="{color:'red'}">
                                         <label> {{'ALTAINCIDENCIA.AltaIncidencia.flSol.validacion' | translate}} </label>
@@ -106,14 +99,17 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-list-ul"></i>
                                         </div>
-                                        <select class="form-control" name="tecnico" id="tecnico" required select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
-                                        	catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getTecnicos'"
-                                        	name-save-service="'conductorService'" name-save-end-point-service="'nuevoConductor'"
-                                        	model-result="listTecnico"
-											opcion-selec="registroIncidencia.tecnico" ng-change="addTxDescripcion()"
+                                        <select class="form-control" name="tecnico" id="tecnico" required select2 idioma-s2="{{currentLanguage}}" 
+                                        	catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getTecnicos'" param-busq="1"
+                                        	name-save-service="'instaladorService'" name-save-end-point-service="'nuevoInstalador'"
+                                        	model-result="listTecnico" object-id="'idPersona'" idbtn="'btnPersona'"
+											opcion-selec="registroIncidencia.tecnico" ng-change="addTxDescripcion()" name-modal="'Técnico'"
 											ng-model="registroIncidencia.tecnico" ng-options="t as t.nbPersona+' '+t.nbPatPersona+' '+t.nbMatPersona for t in listTecnico">
 											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
 										</select>
+										<div class="input-group-btn">
+											<label catalogo-generico-listt id="btnPersona" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></label>
+										</div>
                                     </div>
                                     <div ng-show="formAltaIncidencia.tecnico.$invalid && formAltaIncidencia.tecnico.$dirty" ng-style="{color:'red'}">
                                         <label> {{'ALTAINCIDENCIA.AltaIncidencia.tecnico.validacion' | translate}} </label>
@@ -127,18 +123,18 @@
 										<div class="input-group-addon">
 											<i class="fa fa-list-ul"></i>
 										</div>
-										<select class="form-control" name="transportista" id="transportista" required select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}"
+										<select class="form-control" name="transportista" id="transportista" required select2 idioma-s2="{{currentLanguage}}" 
 											catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getTransportistas'" 
 											name-save-service="'conductorService'" name-save-end-point-service="'nuevoConductor'" 
-											model-result="listTransportista"
-											opcion-selec="registroIncidencia.transportista"
+											model-result="listTransportista" object-id="'idConductor'" idbtn="'btnTransportista'" name-modal="'Transportista'"
+											opcion-selec="registroIncidencia.transportista" 
 											ng-model="registroIncidencia.transportista" ng-change="addTxDescripcion()" 
-											ng-options="x as x.nbConductor+' '+x.nbApepatConductor+' '+x.nbApematConductor for x in listTransportista">
-											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
-										</select>
-<!-- 										<div class="input-group-btn"> -->
-<!-- 											<label  catalogo-generico-listt id="btnPersona" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></label> -->
-<!-- 										</div> -->
+											ng-options="x as x.nbConductor+' '+x.nbApepatConductor+' '+x.nbApematConductor for x in listTransportista"> 
+											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option> 
+										</select> 
+										<div class="input-group-btn">
+											<label catalogo-generico-listt id="btnTransportista" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></label>
+										</div>
 									</div>
 									<div ng-show="formAltaIncidencia.transportista.$invalid && formAltaIncidencia.transportista.$dirty" ng-style="{color:'red'}">
                                         <label> {{'ALTAINCIDENCIA.AltaIncidencia.tecnico.validacion' | translate}} </label>
@@ -151,16 +147,9 @@
                                     <label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.modAten.label' | translate}} </label>
                                     <div class="input-group">
                                         <div class="input-group-addon">
-                                            <i class="fa fa-list-ul"></i>
+                                            <i class="fa fa-pencil"></i>
                                         </div>
-                                        <select class="form-control" name="modAten" id="modAten" required select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
-                                        	catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getModAten'"
-                                        	name-save-service="'conductorService'" name-save-end-point-service="'nuevoConductor'"
-                                        	model-result="listModAten"
-											opcion-selec="registroIncidencia.modAten" disabled
-											ng-model="registroIncidencia.modAten" ng-options="ma as ma.nbCentroInstalacion for ma in listModAten">
-											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
-										</select>
+                                        <input type="text" class="form-control" name="modAten" id="modAten" ng-model="registroIncidencia.modAten" readonly />
                                     </div>
                                     <div ng-show="formAltaIncidencia.modAten.$invalid && formAltaIncidencia.modAten.$dirty" ng-style="{color:'red'}">
                                         <label> {{'ALTAINCIDENCIA.AltaIncidencia.modAten.validacion' | translate}} </label>
@@ -169,45 +158,41 @@
                         	</div>
                         </div>	
                         <div class="row">
-                            <div class="col-md-7">
-                            	<div class="row">
-		                            <div class="col-md-12">
-		                                <div class="form-group" ng-class="{'has-error': formAltaIncidencia.descripcion.$invalid && formAltaIncidencia.descripcion.$dirty}">
-		                                    	<label for="descripcion"> *Descripción: {{contador}} Caracteres </label>
-		                                    <div class="input-group">
-		                                        <div class="input-group-addon">
-		                                            <i class="fa fa-list-ul"></i>
-		                                        </div>
-		                                        <textarea id="descripcion" name="descripcion" required capitalize ng-change="addTxDescripcion()"
-													style="resize: none;"class="form-control" rows="2" maxlength="{{totalLength}}" ng-KeyUp="longitud()"
-													ng-model="registroIncidencia.descripcion">
-												</textarea> 
-		                                    </div>
-		                                    <div ng-show="formAltaIncidencia.descripcion.$invalid && formAltaIncidencia.descripcion.$dirty" ng-style="{color:'red'}">
-		                                        <label> La descripción es requerida. </label>
-		                                    </div>
-		                                </div>
-		                         	</div>
-		                         	<div class="col-md-12">
-		                                <div class="form-group">
-		                                    	<label for=""> Vista Previa: </label>
-		                                    <div class="input-group">
-		                                        <div class="input-group-addon">
-		                                            <i class="fa fa-list-ul"></i>
-		                                        </div>
-		                                        <textarea id="txDescripcion" name="txDescripcion" required capitalize
-													style="resize: none;"class="form-control" rows="5" ng-model="registroIncidencia.txDescripcion">
-												</textarea> 
-		                                    </div>
-		                                </div>
-		                         	</div>
-		                    	</div>
-                            </div>
-                            <div class="col-md-5">
+                            <div class="col-md-6">
+                                <div class="form-group" ng-class="{'has-error': formAltaIncidencia.descripcion.$invalid && formAltaIncidencia.descripcion.$dirty}">
+                                    	<label for="descripcion"> *Descripción: {{contador}} Caracteres </label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-list-ul"></i>
+                                        </div>
+                                        <textarea id="descripcion" name="descripcion" required capitalize ng-change="addTxDescripcion()"
+											style="resize: none;"class="form-control" rows="5" maxlength="{{totalLength}}" ng-KeyUp="longitud()"
+											ng-model="registroIncidencia.descripcion">
+										</textarea> 
+                                    </div>
+                                    <div ng-show="formAltaIncidencia.descripcion.$invalid && formAltaIncidencia.descripcion.$dirty" ng-style="{color:'red'}">
+                                        <label> La descripción es requerida. </label>
+                                    </div>
+                                </div>
+                         	</div>
+                         	<div class="col-md-6">
+                                <div class="form-group">
+                                    	<label for=""> Vista Previa: </label>
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-list-ul"></i>
+                                        </div>
+                                        <textarea id="txDescripcion" name="txDescripcion" readonly="true" capitalize
+											style="resize: none;"class="form-control" rows="5" ng-model="registroIncidencia.txDescripcion">
+										</textarea> 
+                                    </div>
+                                </div>
+                         	</div>
+                            <div class="col-md-12">
                                 <update-image id-element-up="altaIncidencia" include="true" param-conf-sav="paramConfSav" is-incidencia="true"
-	                   				param-conf-component="paramConfiguracion" list-images="listImages"></update-image>
+	                   				param-conf-component="paramConfiguracion" max-nu-image="{{paramConfiguracion.maxNuImage}}" list-images="listImages"></update-image>
                             </div>
-                        </div>
+                     	</div>
                     </div>
                 	<div class="box-footer">
                 		<div class="col-xs-offset-1 col-xs-10 col-sm-offset-1 col-sm-10 col-md-offset-1 col-md-10 center">

@@ -1,6 +1,7 @@
 package mx.com.teclo.siye.persistencia.vo.encuesta;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoEncuestaVO;
@@ -21,6 +22,11 @@ public class EncuestaDetalleVO implements Serializable {
 	private List<SeccionVO> secciones;
 	private Integer nuCalificacionApro;
 	private Integer stActivo;
+	
+	//nuevo fechaInicioEncuesta y fechaFin
+	private Date fechaInicioEncuesta;
+	private Date fechaFinEncuesta;
+	
 	
 	public Long getIdEncuesta() {
 		return idEncuesta;
@@ -127,4 +133,22 @@ public class EncuestaDetalleVO implements Serializable {
 	public void setStActivo(Integer stActivo) {
 		this.stActivo = stActivo;
 	}
+
+	public Date getFechaInicioEncuesta() {
+		return fechaInicioEncuesta;
+	}
+
+	public void setFechaInicioEncuesta(Date fechaInicioEncuesta) {
+		this.fechaInicioEncuesta = fechaInicioEncuesta;
+	}
+
+	public Date getFechaFinEncuesta() {
+		return fechaFinEncuesta;
+	}
+
+	public void setFechaFinEncuesta(Date fechaFinEncuesta) {
+		this.fechaFinEncuesta = fechaFinEncuesta;
+	}
+	
+	
 }

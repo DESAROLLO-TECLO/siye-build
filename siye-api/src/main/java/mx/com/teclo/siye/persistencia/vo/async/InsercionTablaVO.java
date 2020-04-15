@@ -2,34 +2,35 @@ package mx.com.teclo.siye.persistencia.vo.async;
 
 public class InsercionTablaVO {
 
-	private String querySQL;
+	private String columnas;
 	private String valores;
-	private String patterns;
+	private String tipos;
 	private String maxLengths;
 	private String titulos;
 	private String piesPagina;
-	
+	private String comodines;
+	private String campoFiltro;
+	private String valorFiltro;
+	private String campoID;
+	private String insertSQL;
+	private String selectSQL;
+	private Long id;
+
 	public InsercionTablaVO() {
 	}
 
-	public InsercionTablaVO(String querySQL, String valores) {
-		this.querySQL = querySQL;
-		this.valores = valores;
-	}
-	public String getQuerySQL() {
-		return querySQL;
+	public InsercionTablaVO(String insertSQL, String selectSQL) {
+		this.insertSQL = insertSQL;
+		this.selectSQL = selectSQL;
 	}
 
-
-
-	public void setQuerySQL(String querySQL) {
-		this.querySQL = querySQL;
+	
+	public String getColumnas() {
+		return columnas;
 	}
-
-
 
 	public void setColumnas(String columnas) {
-		this.querySQL = columnas;
+		this.columnas = columnas;
 	}
 
 	public String getValores() {
@@ -38,16 +39,16 @@ public class InsercionTablaVO {
 
 	public void setValores(String valores) {
 		this.valores = valores;
-	}	
-
-	public String getPatterns() {
-		return patterns;
 	}
 
-	public void setPatterns(String patterns) {
-		this.patterns = patterns;
+	public String getTipos() {
+		return tipos;
 	}
-	
+
+	public void setTipos(String tipos) {
+		this.tipos = tipos;
+	}
+
 	public String getMaxLengths() {
 		return maxLengths;
 	}
@@ -55,8 +56,6 @@ public class InsercionTablaVO {
 	public void setMaxLengths(String maxLengths) {
 		this.maxLengths = maxLengths;
 	}
-	
-	
 
 	public String getTitulos() {
 		return titulos;
@@ -74,9 +73,67 @@ public class InsercionTablaVO {
 		this.piesPagina = piesPagina;
 	}
 
+	public String getComodines() {
+		return comodines;
+	}
+
+	public void setComodines(String comodines) {
+		this.comodines = comodines;
+	}
+
+	public String getCampoFiltro() {
+		return campoFiltro;
+	}
+
+	public void setCampoFiltro(String campoFiltro) {
+		this.campoFiltro = campoFiltro;
+	}
+
+	public String getValorFiltro() {
+		return valorFiltro;
+	}
+
+	public void setValorFiltro(String valorFiltro) {
+		this.valorFiltro = valorFiltro;
+	}
+
+	public String getInsertSQL() {
+		return insertSQL;
+	}
+
+	public void setInsertSQL(String insertSQL) {
+		this.insertSQL = insertSQL;
+	}
+
+	public String getSelectSQL() {
+		return selectSQL;
+	}
+
+	public void setSelectSQL(String selectSQL) {
+		this.selectSQL = selectSQL;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
+	public String getCampoID() {
+		return campoID;
+	}
+
+	public void setCampoID(String campoID) {
+		this.campoID = campoID;
+	}
+
 	@Override
 	public String toString() {
-		return "InsercionTablaVO [columnas=" + querySQL + ", valores=" + valores + "]";
+		return "InsercionTablaVO [columnas=" + columnas + ", valores=" + valores + "]";
 	}
+
+	
 
 }

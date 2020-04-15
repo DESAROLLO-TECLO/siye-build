@@ -1,8 +1,11 @@
 package mx.com.teclo.siye.negocio.service.async;
 
+import java.nio.file.Path;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
+import mx.com.teclo.siye.util.enumerados.TipoDirectorioStorageEnum;
 
 /**
  * Administra el copiado del archivo recibido al directorio destino configurado
@@ -21,4 +24,7 @@ public interface FileStorageService {
 	 */
 	String almacenarArchivo(MultipartFile archivoLote) throws BusinessException;
 
+	Path getRutaAlmacenamiento(TipoDirectorioStorageEnum tipoDirectorio) throws BusinessException;
+	
+	String getPrefijoNbArchivo() throws BusinessException;
 }
