@@ -52,8 +52,9 @@ public interface LayoutService {
 	 * @param idTipoLayout
 	 * @param tabla
 	 * @return
+	 * @throws BusinessException 
 	 */
-	InsercionTablaVO getNbsColumnas(String tabla);
+	InsercionTablaVO getNbsColumnas(String tabla) throws BusinessException;
 
 	/**
 	 * Obtiene los conjuntos de titulos de las columnas del header y footer y el

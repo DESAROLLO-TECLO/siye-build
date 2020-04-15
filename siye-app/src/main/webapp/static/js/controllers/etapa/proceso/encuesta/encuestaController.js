@@ -6,6 +6,37 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     $scope.nombEncuesta = $rootScope.nomSeguimiento + " - Encuesta " + encuestaInfo.data.encuesta.nbEncuesta;
     $scope.nombSeccion = encuestaInfo.data.encuesta.secciones[0].nbSeccion;
     $scope.seccEncuesta = encuestaInfo.data.encuesta.secciones[0];
+    var backOpcionMarcada=new Object({opcion:undefined,pregunta:undefined});
+    $scope.idEncuesta = encuestaInfo.data.encuesta.idEncuesta;
+    
+    $scope.numMaxImgEnc = encuestaInfo.data.usuario.proceso.nuMaxImagenes;    
+    $scope.listImagesEnc = [];
+    $scope.paramEncImg = new Object({
+        idOrdenServ: $rootScope.idOrdenServ,
+        cdOrdenServicio: $rootScope.cdOrdenServicio,
+        idProceso: $rootScope.idProceso,
+        idEncuesta: encuestaInfo.data.encuesta.idEncuesta
+    });
+    $scope.paramConfigImgEnc = new Object({
+        maxSizeMb: 1,
+        title: "Agregar Evidencia por Encuesta"
+    });
+
+    $scope.idPrgeunta = 1;
+    $scope.paramPregImg = new Object({
+        idOrdenServ: $rootScope.idOrdenServ,
+        cdOrdenServicio: $rootScope.cdOrdenServicio,
+        idProceso: $rootScope.idProceso,
+        idEncuesta: encuestaInfo.data.encuesta.idEncuesta,
+        idPregunta:  $scope.idPrgeunta
+    });
+    $scope.paramConfigImgxPreg = new Object({
+        maxSizeMb: 1,
+        title: "Agregar Evidencia por Pregunta",
+        templateButonModal: '<a href="#"> <img class="add-img-img"' +
+                            'src="static/dist/img/etapas/add.png">' +
+                            '</a>"'
+    });
 
     $scope.objOpciones = new Object(
         {val:1,nom:'Opción 1'},
@@ -134,6 +165,11 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
             var evaluaContestadas = $scope.encuestaDetalle.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas != undefined ?
                 $scope.encuestaDetalle.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas : 0;
             $scope.seccionSeleccion = seccionVO.cdSeccion;
+            for(let i=0; i < seccionVO.preguntas.length; i++){
+                let item = seccionVO.preguntas[i];
+                item.paramPregImg = angular.copy($scope.paramPregImg);
+                item.paramPregImg.idPregunta = item.idPregunta;
+            }
             $scope.seccionVO = seccionVO;
             $scope.encuestaDetalle.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas = evaluaContestadas;
             $scope.paramConfigPage.bigTotalItems = $scope.seccionVO.preguntas.length;
@@ -254,6 +290,8 @@ $scope.checkPregunta =function(opcion,respuesta){
 	if(opcion.cdMostrarCausas)
 	{
 	filtroCausas(opcion,respuesta,false);
+	backOpcionMarcada.opcion=opcion;
+	backOpcionMarcada.pregunta=respuesta;
 	}
 	if(!opcion.cdMostrarCausas)
 		{
@@ -504,6 +542,24 @@ iniciarProceso=function(statusEncuesta,idEncuesta,idOrdenServicio)
 
 }
 
+$scope.uncheckOpcion=function(){
+	for (let i in $scope.encuestaDetalle.encuesta.secciones) {
+		for (let j in $scope.encuestaDetalle.encuesta.secciones[i].preguntas) {
+			for (const k in $scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].opciones) {
+				var idOpcion=$scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].opciones[k].idOpcion;
+				var idPregunta=$scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].idPregunta
+				if (backOpcionMarcada.opcion.idOpcion==idOpcion&& backOpcionMarcada.pregunta.idPregunta==idPregunta) {
+					$scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].opciones[k].stMarcado = 0;
+					$scope.preguntasContestadasEncuesta--
+					$scope.encuestaDetalle.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas--
+					return;
+				}
+				
+			}
+		}
+	}
+backOpcionMarcada=new Object({opcion:undefined,pregunta:undefined});
+};
 
 
     

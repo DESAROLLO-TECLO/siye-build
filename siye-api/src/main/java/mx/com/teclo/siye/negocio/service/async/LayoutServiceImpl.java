@@ -10,6 +10,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
@@ -29,21 +30,28 @@ public class LayoutServiceImpl implements LayoutService {
 	private static final Long ID_ORDEN_INSERCION = 5L;
 	private static final String MSG_LAYOUT_SIN_ORDEN_INSERCION = "El layout no tiene un orden de valores a insertar";
 	private static final String MSG_INSERT_PATTERN = "INSERT INTO {0}({1}) VALUES({2})";
+	private static final String MSG_SELECT_PATTERN = "SELECT {0} FROM {1} WHERE {2} = {3}";
 	public static final String MSG_LAYOUT_VIGENTE_NULO = "No existe un layout vigente. Contacte al administrador.";
 	public static final String MSG_ERROR_LAYOUT_INEXISTENTE = "El archivo lote {0} no tiene un layout asociado";
+	public static final String NULO_SQL = "null";
 	public static final String CARACTER_COMA = ",";
+	public static final String CARACTER_DOS_PUNTOS = ",";
+	public static final String CARACTER_INTERROGACION = "?";
+	public static final String CARACTER_PIPE = "|";
+	private static final String MSG_FORMATTER_DATE = "(TO_DATE('{}',";
 	public static final String SEPARADOR_DIR = System.getProperty("file.separator");
 	public static final String SALTO_LINEA = System.getProperty("line.separator");
 	public static final String MSG_ERROR_LAYOUT_SIN_DETALLE = "El layout no tiene detalle";
 	public static final String MSG_ERROR_LAYOUT_SECCION_INCOMPLETA = "El numero de columnas ''{0}'' no coinciden con las de tipo ''{1}''";
 	private static final String MSG_LAYOUT_SIN_COLUMNAS_CONFIGURADAS = "El layout no tiene columnas configuradas";
 	private static final String MSG_LAYOUT_INCONSISTENTE = "El layout no tiene igual cantidad de columnas en sus diferentes secciones";
-	private static final String MSG_ARCHIVO_COLUMNAS_INVALIDAS = "El numero de columnas del archivo lote no coincide con el layout vigente";
+	private static final String MSG_ARCHIVO_COLUMNAS_INVALIDAS = "El n\u00FAmero de columnas del archivo lote no coincide con el layout vigente";
 	// private static final List<String> contentTypes = Arrays.asList("text/csv");
 	private static final String MSG_ARCHIVO_REGEX_NAME_NULO = "No hay una regla para validar el nombre del archivo.";
-	private static final String MSG_ARCHIVO_REGEX_NAME_INVALIDO = "El nombre del archivo es invalido.";
-	public static final String MSG_ARCHIVO_TAMANIO_REBASADO = "El tamanio del archivo excede el maximo configurado";
+	private static final String MSG_ARCHIVO_REGEX_NAME_INVALIDO = "El nombre del archivo es inv\u00E1lido.";
+	public static final String MSG_ARCHIVO_TAMANIO_REBASADO = "El tama\u00F1o del archivo excede el m\u00E1ximo de {0} MB";
 	private static final String MSG_DIRECTORIO_ORT_INDEFINIDO = "El directorio ort no ha sido especificado";
+	private static final String MSG_FALTA_FORMATO_PARA_FECHA = "Falta formato fecha para la columna exel n\u00FAmero {0}";
 
 	private static final Long ID_PROCESO_CON_RECHAZO = 9L;
 
@@ -73,7 +81,7 @@ public class LayoutServiceImpl implements LayoutService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public InsercionTablaVO getNbsColumnas(String tabla) {
+	public InsercionTablaVO getNbsColumnas(String tabla) throws BusinessException {
 
 		List<ColumnaVO> cols = layoutDAO.getNbsColumnas(tabla);
 		if (cols == null || cols.isEmpty()) {
@@ -88,14 +96,14 @@ public class LayoutServiceImpl implements LayoutService {
 
 		for (ColumnaVO col : cols) {
 			sbCols.append(CARACTER_COMA).append(col.getNbColumna());
-			sbVals.append(CARACTER_COMA).append(determinarPatronSQL(col));
+			sbVals.append(CARACTER_COMA).append(getValorSQL(col));
 			sbPatt.append(CARACTER_COMA).append(col.getCdTipo());
 			sbMaxL.append(CARACTER_COMA).append(col.getNuLongitudMax());
 		}
 
 		insertVO.setColumnas(sbCols.toString().replaceFirst(CARACTER_COMA, ""));
 		insertVO.setValores(sbVals.toString().replaceFirst(CARACTER_COMA, ""));
-		insertVO.setPatterns(sbPatt.toString().replaceFirst(CARACTER_COMA, ""));
+		insertVO.setComodines(sbPatt.toString().replaceFirst(CARACTER_COMA, ""));
 		insertVO.setMaxLengths(sbMaxL.toString().replaceFirst(CARACTER_COMA, ""));
 		return insertVO;
 	}
@@ -118,6 +126,7 @@ public class LayoutServiceImpl implements LayoutService {
 	}
 
 	@Override
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public ConfigCargaMasivaVO getConfigCargaMasiva(Long idArchivoLote) throws BusinessException {
 		ConfigCargaMasivaVO cargaMasivaVO = new ConfigCargaMasivaVO();
 
@@ -128,7 +137,7 @@ public class LayoutServiceImpl implements LayoutService {
 					MessageFormat.format(UploadServiceImpl.MSG_ERROR_LOTE_INEXISTENTE, idArchivoLote));
 		}
 
-		// orden de inserción
+		// orden de inserción en tablas
 		cargaMasivaVO.setConfigInsercion(getOrdenInsercionTablas());
 
 		// layout
@@ -144,8 +153,11 @@ public class LayoutServiceImpl implements LayoutService {
 
 		// moldes SQL
 		cargaMasivaVO.setConfigMoldesSQL(getMoldesSQLPorTbl());
-		return cargaMasivaVO;
 
+		// columnas esperadas en el archivo
+		cargaMasivaVO.setColumnasEnArchivo(layoutDAO.getColumnasEnArchivo());
+
+		return cargaMasivaVO;
 	}
 
 	@Override
@@ -156,7 +168,7 @@ public class LayoutServiceImpl implements LayoutService {
 			throw new BusinessException(MSG_LAYOUT_SIN_ORDEN_INSERCION);
 		}
 
-		return Arrays.asList(tablas.getCdValorConfig().split(","));
+		return Arrays.asList(tablas.getCdValorConfig().split(CARACTER_COMA));
 	}
 
 	@Override
@@ -172,15 +184,20 @@ public class LayoutServiceImpl implements LayoutService {
 		Map<String, InsercionTablaVO> insertQueriesMap = new HashMap<String, InsercionTablaVO>();
 
 		for (String nbTbl : tbls) {
+			String nbTabla = nbTbl.trim();
 			InsercionTablaVO colsObj;
-			InsercionTablaVO valInsertVO = getPatronValues(nbTbl.trim());
-			if (valInsertVO == null || StringUtils.isBlank(valInsertVO.getQuerySQL())) {
-				colsObj = new InsercionTablaVO(StringUtils.EMPTY, StringUtils.EMPTY);
-			} else {
-				colsObj = new InsercionTablaVO(
-						MessageFormat.format(MSG_INSERT_PATTERN, nbTbl, valInsertVO.getQuerySQL(), valInsertVO.getValores()), StringUtils.EMPTY);
-			}
-			insertQueriesMap.put(nbTbl, colsObj);
+			InsercionTablaVO valInsertVO = getConcatNbCols(nbTabla);
+
+			String insertSQL = MessageFormat.format(MSG_INSERT_PATTERN, nbTabla, valInsertVO.getColumnas(),
+					valInsertVO.getComodines());
+
+			String selectSQL = MessageFormat.format(MSG_SELECT_PATTERN, valInsertVO.getCampoID(), nbTabla,
+					valInsertVO.getCampoFiltro(), valInsertVO.getValorFiltro());
+
+			valInsertVO.setInsertSQL(insertSQL);
+			valInsertVO.setSelectSQL(selectSQL);
+
+			insertQueriesMap.put(nbTbl, valInsertVO);
 		}
 		return insertQueriesMap;
 	}
@@ -203,28 +220,6 @@ public class LayoutServiceImpl implements LayoutService {
 		} catch (IllegalArgumentException e) {
 			return rechazarArchivoInvalido;
 		}
-	}
-
-	/**
-	 * Concatena los valores predeterminados a insertar o indica la columna del
-	 * archivo lote a insertar
-	 * 
-	 * @param col
-	 * @return
-	 */
-	private String determinarPatronSQL(ColumnaVO col) {
-		String colValor = "";
-		if (col.getNuOrden() == null) {
-			colValor = StringUtils.isBlank(col.getTxValorDefecto()) ? "null" : col.getTxValorDefecto();
-		} else {
-			if (col.getCdTipo().equals("String")) {
-				colValor = "''{" + col.getNuOrden() + "}''";
-			} else {
-				colValor = "{" + col.getNuOrden() + "}";
-			}
-		}
-		return colValor;
-
 	}
 
 	/**
@@ -255,8 +250,8 @@ public class LayoutServiceImpl implements LayoutService {
 		}
 
 	}
-	
-	private InsercionTablaVO getPatronValues(String tabla) {
+
+	private InsercionTablaVO getConcatNbCols(String tabla) throws BusinessException {
 
 		List<ColumnaVO> cols = layoutDAO.getNbsColumnas(tabla);
 		if (cols == null || cols.isEmpty()) {
@@ -266,27 +261,72 @@ public class LayoutServiceImpl implements LayoutService {
 
 		StringBuilder sbCols = new StringBuilder();
 		StringBuilder sbVals = new StringBuilder();
+		StringBuilder sbMaxs = new StringBuilder();
+		StringBuilder sbTipos = new StringBuilder();
+		StringBuilder sbComodines = new StringBuilder();
+		String campoFiltro = "";
+		String valorFiltro = "";
+
 		for (ColumnaVO col : cols) {
 			sbCols.append(CARACTER_COMA).append(col.getNbColumna());
-			sbVals.append(CARACTER_COMA).append(concatenarComillaSimpleEnValorSQL(col));
-		}
+			sbComodines.append(CARACTER_COMA).append(CARACTER_INTERROGACION);
+			sbVals.append(CARACTER_PIPE).append(getValorSQL(col));
+			sbTipos.append(CARACTER_PIPE).append(col.getCdTipo());
+			sbMaxs.append(CARACTER_PIPE).append(col.getNuLongitudMax());
+			if (col.getStCampoFiltro()) {
+				campoFiltro = col.getCdTipo();
+				valorFiltro = getValorSQL(col);
+			}
 
+		}
 		insertVO.setColumnas(sbCols.toString().replaceFirst(CARACTER_COMA, ""));
-		insertVO.setValores(sbVals.toString().replaceFirst(CARACTER_COMA, ""));
+		insertVO.setComodines(sbComodines.toString().replaceFirst(CARACTER_COMA, ""));
+		insertVO.setValores(sbVals.toString().replaceFirst(CARACTER_PIPE, ""));
+		insertVO.setMaxLengths(sbMaxs.toString().replaceFirst(CARACTER_PIPE, ""));
+		insertVO.setTipos(sbTipos.toString().replaceFirst(CARACTER_PIPE, ""));
+		insertVO.setCampoFiltro(campoFiltro);
+		insertVO.setValorFiltro(valorFiltro);
+
+		String nbColumnaID = insertVO.getColumnas().substring(0, insertVO.getColumnas().indexOf(CARACTER_COMA));
+		insertVO.setCampoID(nbColumnaID);
 		return insertVO;
 	}
-	
+
 	/**
 	 * Concatena los valores predeterminados a insertar o indica la columna del
 	 * archivo lote a insertar
 	 * 
 	 * @param col
 	 * @return
+	 * @throws BusinessException
 	 */
-	private String concatenarComillaSimpleEnValorSQL(ColumnaVO col) {
+	private String getValorSQL(ColumnaVO col) throws BusinessException {
 		String colValor = "";
 		if (col.getNuOrden() == null || col.getNuOrden() == BigDecimal.ZERO.longValue()) {
-			colValor = StringUtils.isBlank(col.getTxValorDefecto()) ? "null" : col.getTxValorDefecto();
+			colValor = StringUtils.isBlank(col.getTxValorDefecto()) ? NULO_SQL : col.getTxValorDefecto();
+		} else {
+			if (col.getCdTipo().equals("Date")) {
+				colValor = "TO_DATE(''{" + col.getNuOrden() + "}'', ''" + col.getTxValorDefecto() + "'')";
+			} else {
+				colValor = "{" + col.getNuOrden() + "}";
+			}
+		}
+		return colValor;
+
+	}
+
+	/**
+	 * Concatena los valores predeterminados a insertar e indica la columna del
+	 * archivo lote a insertar
+	 * 
+	 * @param col
+	 * @return
+	 * @throws BusinessException
+	 */
+	private String determinarPxatronSQL(ColumnaVO col) throws BusinessException {
+		String colValor = "";
+		if (col.getNuOrden() == null) {
+			colValor = StringUtils.isBlank(col.getTxValorDefecto()) ? NULO_SQL : col.getTxValorDefecto();
 		} else {
 			if (col.getCdTipo().equals("String")) {
 				colValor = "''{" + col.getNuOrden() + "}''";

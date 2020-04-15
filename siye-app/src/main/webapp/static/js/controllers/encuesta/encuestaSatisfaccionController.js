@@ -1,6 +1,7 @@
 angular.module(appTeclo).controller("encuestaSatisfaccionController",
 function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,showAlert,growl, $location,encuestaSatisfaccionService,encuestaService) {
 	$scope.banderaPantalla=false;
+	var banderaUnchecked=true;
 	var backOpcionMarcada=new Object({opcion:undefined,pregunta:undefined});
 	$scope.causas="";
 	$scope.object=new Object();
@@ -19,9 +20,9 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 	};
 	$scope.paramConfigPage = {
 		bigCurrentPage : 1,
-		bigTotalItems : 12,
-		itemsPerPage : 4,
-		maxSize : 12,
+		bigTotalItems : 0,
+		itemsPerPage : 0,
+		maxSize : 0,
 		tiempoEncuesta : 0,
 		tiempoReanuda : false,
 		tiempoCorriendo : false,
@@ -191,6 +192,7 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 		filtroCausas(opcion,respuesta,false);
 		backOpcionMarcada.opcion=opcion;
 		backOpcionMarcada.pregunta=respuesta;
+		banderaUnchecked=true;
 		}
 		if(!opcion.cdMostrarCausas)
 			{
@@ -202,6 +204,7 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 	};
 	
 	$scope.uncheckOpcion=function(){
+		if (banderaUnchecked) {
 		for (let i in $scope.encuesta.secciones) {
 			for (let j in $scope.encuesta.secciones[i].preguntas) {
 				for (const k in $scope.encuesta.secciones[i].preguntas[j].opciones) {
@@ -220,6 +223,7 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 			}
 		}
 	backOpcionMarcada=new Object({opcion:undefined,pregunta:undefined});
+		}
 	};
 	
 	filtroCausas = function(opcion,respuestas,cargarPreviamente){
@@ -281,6 +285,7 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
 	};
 
 	$scope.cargarCausas=function(opciones,respuesta){
+		banderaUnchecked=false;
 		if(opciones.cdMostrarCausas){
 		filtroCausas(opciones,respuesta,true);}
 	}
@@ -532,4 +537,26 @@ function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,sh
         $scope.controllerActual = 'NA';
         $scope.banderaPantalla=false;
     };
+    
+	$scope.getNumPreguntasPorSeccion=function(cdParametro){
+		encuestaSatisfaccionService.getNumPreguntasPorSeccion(cdParametro).success(function(data) {
+		 var a=parseInt(data.cdValorPConfig);
+		 $scope.paramConfigPage.itemsPerPage=a;
+		}).error(function(data) {
+		  growl.warning(data.message);
+		});
+	};
+
+	$scope.getNumMaxPaginacion=function(cdParametro){
+		encuestaSatisfaccionService.getNumPreguntasPorSeccion(cdParametro).success(function(data) {
+		 var b=parseInt(data.cdValorPConfig);
+		 $scope.paramConfigPage.maxSize=b;
+		}).error(function(data) {
+		  growl.warning(data.message);
+		});
+	};
+	
+	$scope.getNumPreguntasPorSeccion('NU_PAGINACION_E_SATISFACCION');
+	$scope.getNumMaxPaginacion('NU_MAX_PAG_E_SATISFACCION');
+    
 });

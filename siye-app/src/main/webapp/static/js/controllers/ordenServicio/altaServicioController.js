@@ -1,7 +1,8 @@
 angular.module(appTeclo).controller('altaServicioController', function($scope,showAlert,growl, altaServicioService) {
 
 	$scope.parametroBusqueda = {};
-	$scope.orden = {};
+	$scope.orden = {fhCita: ""};
+	$scope.incidencia = {};
 	$scope.orden.vehiculoVO = {};
 	$scope.banderaVehiculo = false;
 	$scope.kitInstalacionVO = {};
@@ -13,6 +14,8 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 	$scope.filKit=false;
 	$scope.incidendiaRequerida = false;
 	$scope.parametroBusqueda.incidencia="";
+	$scope.vehicPlaca=false;
+	$scope.cdPlacaVehiculo="";
 	
 	$scope.consultTipoVehiculos = function(){
 		altaServicioService.buscarTipoVehiculos()
@@ -41,8 +44,8 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 	};
 	
 	$scope.buscarVehculoPorPlaca = function(placa){
-		  if ($scope.formAltaServicio.valorBusqueda.$invalid) {
-	            showAlert.requiredFields($scope.formAltaServicio);
+		 if ($scope.formAltaServicio.valorBusqueda.$invalid) {
+			 $scope.vehicPlaca=true;
 	            return;
 	        }
 		
@@ -57,9 +60,10 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 			$scope.orden.vehiculoVO.subMarca=$scope.vehiculoResult.nbSubMarca;
 			$scope.orden.vehiculoVO.cdModelo = $scope.vehiculoResult.cdModelo;
 			$scope.orden.vehiculoVO.concesionario = $scope.vehiculoResult.consecionario;
-//			$("#select2-catConcesionario-container").text($)
 			$scope.orden.vehiculoVO.tpVehiculo = $scope.vehiculoResult.tipoVehiculo;
 			$("#select2-tipopVehiculo-container").text($scope.vehiculoResult.tipoVehiculo.nbTipoVehiculo);
+			$scope.orden.vehiculoVO.concesionaria = $scope.vehiculoResult.consecionario;
+			$("#select2-catConcesionario-container").text($scope.vehiculoResult.consecionario.nbConsecion);
 			
 			$scope.banderaVehiculo = true;
 			$scope.banderadeshabilitar = true;
@@ -68,7 +72,10 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 		.error(function(data){
 //			$scope.vehiculoResult = {};
 //			$scope.orden = {};
+			
 			$scope.error = true;
+			$scope.orden.vehiculoVO={};
+			$scope.orden.vehiculoVO.placa = placa;
 			growl.warning("se encontro vehiculo con esa placa", { ttl: 5000 });
 			$scope.banderaVehiculo = true;
 			$scope.banderadeshabilitar = false;
@@ -76,11 +83,24 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 	};
 	
 	$scope.buscarTipoKit = function(idTpKit){
+		if(idTpKit == undefined){
+			$scope.rango.nbDispositivo="";
+			$scope.rango.nbDispositivo="";
+			$scope.filKit=false;
+			return;
+			
+		}
 		altaServicioService.buscarTipoKit(idTpKit)
 		.success(function(data){
 			$scope.tipoKitsDisp = data;
 			$scope.range=[];
 			$scope.filKit=true;
+			$scope.rango.nbDispositivo="";
+			$scope.rango.nbDispositivo="";
+			
+			for ( var i = 0; i < $scope.tipoKitsDisp.length ; i++ ) {				
+				$("#select2-proveedor-"+i+"-container").text('Seleccione');
+			}
 		
 	
 			angular.forEach($scope.tipoKitsDisp, function(value, key){
@@ -100,8 +120,35 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 		})
 	};
 	
+	var fhCurrent=moment().format("DD-MM-YYYY" );
+	var fhCurrenDate=moment(fhCurrent, "DD-MM-YYYY");
+
+	$('#fhCita').datetimepicker({ 
+		
+		 minDate: fhCurrenDate
+	});
+	    
+	
+	
+	requiredFields = function(){
+		angular.forEach($scope.formAltaServicio.$error, function (field) {
+		      	angular.forEach(field, function(errorField){
+            	errorField.$setDirty();
+            
+            })
+
+		});
+	};
 	
 	$scope.guardarOrden = function(valor, valorDos){
+		
+//		  if (valorDos && $scope.formAltaServicio.$invalid) {
+//	            showAlert.requiredFields($scope.formAltaServicio);
+//	            return;
+//	        }
+		  if($scope.formAltaServicio.$invalid){
+				requiredFields();
+			}else{
 		
 		var temp = valor.map(item =>{
 			return {
@@ -118,31 +165,58 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 			$scope.error = false;
 			growl.success("El folio " + data.cdOrden +" Correctamente", { ttl: 5000 });
 			$scope.parametroBusqueda.incidencia="";
+			$scope.orden.fhCita = null;
 			$scope.orden={};
 			$scope.ordenVO={};
-			$scope.mostrarAlta=false
+			$scope.mostrarAlta=false;
+			$scope.formAltaServicio.$setPristine(); 
+			$scope.banderaVehiculo=false;
+			$scope.filKit=false;
+			$scope.kitInstalacionVO = {};
+			$scope.cdPlacaVehiculo="";
+			$(".select2").select2();
+			$("#select2-tpKit-container").text('Seleccione');
+			$("#select2-centroI-container").text('Seleccione');
+			$("#select2-tipopVehiculo-container").text('Seleccione');
+			$("#select2-catConcesionario-container").text('Seleccione');
+			$("#select2-plan-container").text('Seleccione');
+			$scope.rango.nbDispositivo="";
+			$scope.rango.nbDispositivo="";
+			
+			for ( var i = 0; i < temp.length ; i++ ) {				
+				$("#select2-proveedor-"+i+"-container").text('Seleccione');
+			}
+			$('#fhCita').val('');
+			
+
+			$scope.formAltaServicio.$setUntouched();
 			
 		}).error(function(data){
 			$scope.error = true;
 			growl.error("No se registraron los datos", { ttl: 5000 });
 		});
 
-		
+	}
 		
 	};
+	
+	var date = new Date();
+	$scope.minDate = date.setDate((new Date()).getDate());
 	
 	$scope.buscarIncidencia = function(cdIncidenc){
 		
 		  if ($scope.formAltaServicio.incidencia.$invalid) {
-//	            showAlert.requiredFields($scope.formAltaServicio.incidencia);
 	            $scope.incidendiaRequerida=true;
 	            return;
 	        }
 		altaServicioService.buscarIncidencia(cdIncidenc).success(function(data){
 			
-			
 			$scope.incidenciaVO = data;
 			$scope.mostrarAlta= true;
+			$scope.incidencia.nbIncidencia = $scope.incidenciaVO.nbIncidencia;
+			$scope.incidencia.txIncidencia = $scope.incidenciaVO.txIncidencia;
+			console.log($scope.incidencia);
+			
 			
 		}).error(function(data){
 			growl.warning("No Existe incidencia", { ttl: 5000 });

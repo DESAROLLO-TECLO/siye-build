@@ -1,5 +1,7 @@
 package mx.com.teclo.siye.negocio.service.async;
 
+import java.text.MessageFormat;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +19,11 @@ public class UploadServiceImpl implements UploadService {
 	private static final String MSG_ARCHIVO_CONTENT_TYPE_INVALIDO = "La extensi\u00F3n del archivo lote es inv\u00E1lida";
 
 	private static final Long ID_CONTENT_TYPE = 6L;
+	private static final int MAX_LARGO_NOMBRE_ARCHIVO = 30;
 	private static final String MSG_PARAM_CONTENT_TYPE_NULO = "El tipo de archivo esperado no esta definido";
 	public static final String MSG_ERROR_LOTE_INEXISTENTE = "El lote {0} no existe";
-	
+	public static final String MSG_ERROR_NOMBRE_LARGO = "El nombre de archivo {0} excede los {1} caracteres";
+
 	@Autowired
 	private LayoutService layoutService;
 	@Autowired
@@ -28,16 +32,19 @@ public class UploadServiceImpl implements UploadService {
 	@Override
 	@Transactional
 	public void validarEstructuraBasica(MultipartFile archivoLote) throws BusinessException {
+
+		// QUE NO ESTE VACIO
 		if (archivoLote.isEmpty()) {
 			throw new BusinessException(MSG_ARCHIVO_VACIO);
 		}
-
+		// QUE HAYA UNA CONFIGURACION VIGENTE CONTRA LA CUAL SE VALIDARA EL ARCHIVO
 		TipoLayoutVO layoutVigenteVO = layoutService.getLayoutVigente();
 
 		if (layoutVigenteVO == null) {
 			throw new BusinessException(LayoutServiceImpl.MSG_LAYOUT_VIGENTE_NULO);
 		}
 
+		// VALIDAR CONTENT TYPE
 		ConfiguracionOSDTO contentTypeDTO = configuracionDAO.findOne(ID_CONTENT_TYPE);
 
 		if (contentTypeDTO == null || StringUtils.isBlank(contentTypeDTO.getCdValorConfig())) {
@@ -48,14 +55,21 @@ public class UploadServiceImpl implements UploadService {
 			throw new BusinessException(MSG_ARCHIVO_CONTENT_TYPE_INVALIDO);
 		}
 
-		if (!StringUtils.isBlank(layoutVigenteVO.getTxMascara())) {
-			// TODO: validar formato del nombre del archivo
-			// throw new BusinessException(MSG_ARCHIVO_REGEX_NAME_NULO);
+		// VALIDAR EL LARGO DEL NOMBRE
+		if (archivoLote.getOriginalFilename().length() > MAX_LARGO_NOMBRE_ARCHIVO) {
+			throw new BusinessException(MessageFormat.format(MSG_ERROR_NOMBRE_LARGO, archivoLote.getOriginalFilename(),
+					MAX_LARGO_NOMBRE_ARCHIVO));
 		}
 
-		if (layoutVigenteVO.getCdTamanioMax() != null
-				&& (archivoLote.getSize() / (1024 * 1024)) > layoutVigenteVO.getCdTamanioMax()) {
-			throw new BusinessException(LayoutServiceImpl.MSG_ARCHIVO_TAMANIO_REBASADO);
+		// VALIDAMOS QUE NO EXCEDA EN TAMANIO
+		if (layoutVigenteVO.getCdTamanioMax() != null) {
+			Long tamArchivoMB = archivoLote.getSize();
+			Long tamMaxBD = layoutVigenteVO.getCdTamanioMax() * (1024L * 1024L);
+			if (tamArchivoMB > tamMaxBD) {
+				throw new BusinessException(MessageFormat.format(LayoutServiceImpl.MSG_ARCHIVO_TAMANIO_REBASADO,
+						layoutVigenteVO.getCdTamanioMax()));
+			}
+
 		}
 	}
 
