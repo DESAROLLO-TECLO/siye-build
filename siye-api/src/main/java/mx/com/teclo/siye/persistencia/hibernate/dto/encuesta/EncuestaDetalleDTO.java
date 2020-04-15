@@ -257,6 +257,14 @@ public class EncuestaDetalleDTO implements Serializable {
 		this.nuSecciones = nuSecciones;
 	}
 
+	public Long getNuMaxImagenes() {
+		return nuMaxImagenes;
+	}
+
+	public void setNuMaxImagenes(Long nuMaxImagenes) {
+		this.nuMaxImagenes = nuMaxImagenes;
+	}
+
 	/**
 	 * @return the nuTiempo
 	 */
@@ -270,5 +278,7 @@ public class EncuestaDetalleDTO implements Serializable {
 	/*public void setNuTiempo(Integer nuTiempo) {
 		this.nuTiempo = nuTiempo;
 	}*/
+	
+	
 
 }
