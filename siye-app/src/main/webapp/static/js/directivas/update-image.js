@@ -53,7 +53,7 @@ appt.directive('updateImage',
 	      link: function(scope, $element, attrs) {
 	    	  
 	    	  scope.imagePreview=new Object();	    	  
-	    	  
+	    	  scope.listImages = scope.listImages == undefined ? [] : scope.listImages;
 	    	//Variable con la injeccion por defecto del servicio para expedientes
 	    	  var expedienteService=$injector.get('expedienteService')
 	    	  //variable de paginador
@@ -61,7 +61,7 @@ appt.directive('updateImage',
 	    		  itemsPerPage:2,
 	    		  maxSize:5,
 	    		  bigCurrentPage:1,
-	    		  bigTotalItems:scope.listImages.length,
+	    		  bigTotalItems: scope.listImages
 	    		  
 	    	  });
 	    	  

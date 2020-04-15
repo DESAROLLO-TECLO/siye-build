@@ -5,7 +5,6 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
     $rootScope.idProceso = procesoInfo.data[0].idProceso.idProceso;
     $scope.idOrdenServicio=idord;
 	$scope.idProcesoActual=idpro;
-    $scope.stActivarEncuesta = procesoInfo.data[3].stSatisfaccion;
     $scope.numOrden = $rootScope.numOS;
 
     $scope.numMaxImgPro = procesoInfo.data[0].idProceso.nuMaxImagenes;    
@@ -32,6 +31,9 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
                 $scope.tiempoTranscurrido += ffin - finit;
             }else{
                 $scope.tiempoTranscurridoText = "Sin validar";
+            }
+            if(procesoInfo.data[i].idEncuesta.cdEncuesta == "SAT02"){
+                $scope.stActivarEncuesta = procesoInfo.data[i].stSatisfaccion;
             }
         }
     }else{
