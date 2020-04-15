@@ -26,7 +26,7 @@ public interface IncidenciaService {
 	 * @return
 	 * @throws BusinessException
 	 */
-	public Boolean altaIncidencia(AltaIncidenciaVO altaIncidenciaVO) throws BusinessException;
+	public String altaIncidencia(AltaIncidenciaVO altaIncidenciaVO) throws BusinessException;
 	
 	
 	public IncidencVO incidenciaByCdIncidencia(String cdIncidenc) throws NotFoundException;

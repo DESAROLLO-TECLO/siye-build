@@ -83,7 +83,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 	
 	@Override
 	@Transactional
-	public Boolean  altaIncidencia(AltaIncidenciaVO altaIncidenciaVO)  throws BusinessException{
+	public String altaIncidencia(AltaIncidenciaVO altaIncidenciaVO)  throws BusinessException{
 		try {
 			ConfiguracionVO configuracionVO = catalogoService.configuracion("TIE051D_IMG_REQ");
 			if (configuracionVO.getCdValorPConfig() == "Si") {
@@ -96,10 +96,10 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 			e1.printStackTrace();
 		}
 		IncidenciaDTO incidenciaDTO = new IncidenciaDTO();
-		Boolean respuesta = false;
-		Boolean respuestaIncidencia = false;
-		Boolean respuestaOdsIncidencia = false;
-		Boolean respuestaFinal = false;
+		String respuesta = "";
+		String respuestaIncidencia = "";
+		String respuestaOdsIncidencia = "";
+		String respuestaFinal = "";
 		SimpleDateFormat sdf2 = new SimpleDateFormat("yy");
 		Date date = new Date();
 		String year = sdf2.format(date);
@@ -150,9 +150,15 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 
 		try {
 			incidenciaDAO.save(incidenciaDTO);
-			respuesta = true;
+			respuesta = "";
+		} catch (Exception e) {
+			respuesta = "Error al guardar la incidencia. ";
+		}
+		
+		try {
+			incidenciaDAO.save(incidenciaDTO);
 			if (altaIncidenciaVO.getListImagen() == null || altaIncidenciaVO.getListImagen().isEmpty()) {
-				respuestaIncidencia = true;
+				respuestaIncidencia = "";
 			} else {
 				respuestaIncidencia = expedienteImgService.saveImagenIncidencia(altaIncidenciaVO.getListImagen(), incidenciaDTO);
 			}
@@ -163,16 +169,17 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 				odsIncidenciaDTO.setIdOrdenServicio(ordenServicioDTO);
 				odsIncidenciaDAO.save(odsIncidenciaDTO);
 			}
-			respuestaOdsIncidencia = true;
+			respuestaOdsIncidencia = "";
 		} catch (Exception e) {
-			respuesta = false;
-			respuestaOdsIncidencia = false;
+			respuestaOdsIncidencia = "Error al guardar la relacion con la orden de servicio.";
 		}
-		if (respuesta == true && respuestaIncidencia == true && respuestaOdsIncidencia == true) {
-			respuestaFinal = true;
+		if (respuesta == "" && respuestaIncidencia == "" && respuestaOdsIncidencia == "") {
+			respuestaFinal = "Se guardo la incidencia correctamente con folio: " +  cdIncidencia;
+			
 		} else {
-			respuestaFinal = false;
-		}
+			respuestaFinal = respuesta + respuestaIncidencia + respuestaOdsIncidencia;
+			
+		} 
 		return respuestaFinal;
 	}
 	

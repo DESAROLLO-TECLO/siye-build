@@ -7,9 +7,10 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     $scope.nombSeccion = encuestaInfo.data.encuesta.secciones[0].nbSeccion;
     $scope.seccEncuesta = encuestaInfo.data.encuesta.secciones[0];
     var backOpcionMarcada=new Object({opcion:undefined,pregunta:undefined});
-    $scope.idEncuesta = encuestaInfo.data.encuesta.idEncuesta;
+    $scope.estatusEncuesta=encuestaInfo.data.intentoDetalleVO.stEncuesta.cdStEncuesta;
+    $scope.redireccionar = false;
     
-    $scope.numMaxImgEnc = encuestaInfo.data.usuario.proceso.nuMaxImagenes;    
+   //$scope.numMaxImgEnc = encuestaInfo.data.usuario.proceso.nuMaxImagenes;    
     $scope.listImagesEnc = [];
     $scope.paramEncImg = new Object({
         idOrdenServ: $rootScope.idOrdenServ,
@@ -186,7 +187,7 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     //
     $scope.guardaAvancePorPagina = function(numPagina) {
         if($scope.redireccionar){
-            $interval.cancel(iniciarConteo);
+            //$interval.cancel(iniciarConteo);
         };
         if (document.getElementById("myTable"))
             document.getElementById("myTable").scrollTop = 0;
@@ -232,9 +233,9 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
         encuestaService.saveRespuestaEncuesta(seccionContestada).success(function(data) {
             if (data == true) {
                 if ($scope.redireccionar) {
-                    $timeout(() => {
+                    //$timeout(() => {
                         $scope.regresarEncuestas()
-                    }, 1000);
+                    //}, 1000);
                 }
                 guardarSeccion = true;
                 //  growl.success("Se guardaron respuestas ",{ ttl: 5000 });
@@ -260,9 +261,9 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     
 	$scope.guardaFinalizaEncuesta=function(numPagina){
 		$scope.guardaAvancePorPagina(numPagina);
-		$timeout(() => {
+		//$timeout(() => {
 			$scope.finalizaEncuesta();
-		}, 500);
+	   //}, 500);
 	};
 
 
@@ -487,7 +488,7 @@ $scope.guardarCausa=function()
     			
     			}
     		}
-    	$scope.descripcionCausa=undefined;
+    	$scope.descripcionCausa=null;
     	$("#myModal").modal('hide');//ocultamos el modal
     	}
 
@@ -543,6 +544,10 @@ iniciarProceso=function(statusEncuesta,idEncuesta,idOrdenServicio)
 }
 
 $scope.uncheckOpcion=function(){
+	$scope.descripcionCausa=null;
+	var tieneCausas=validarGuardadoDeCausas()
+	if($scope.estatusEncuesta!="FIN" && !tieneCausas)
+		{
 	for (let i in $scope.encuestaDetalle.encuesta.secciones) {
 		for (let j in $scope.encuestaDetalle.encuesta.secciones[i].preguntas) {
 			for (const k in $scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].opciones) {
@@ -550,6 +555,8 @@ $scope.uncheckOpcion=function(){
 				var idPregunta=$scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].idPregunta
 				if (backOpcionMarcada.opcion.idOpcion==idOpcion&& backOpcionMarcada.pregunta.idPregunta==idPregunta) {
 					$scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].opciones[k].stMarcado = 0;
+					$scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].stMarcado=0;
+					$scope.descripcionCausa=null;
 					$scope.preguntasContestadasEncuesta--
 					$scope.encuestaDetalle.encuesta.secciones[$scope.posicionActual].nuPreguntasContestadas--
 					return;
@@ -559,12 +566,86 @@ $scope.uncheckOpcion=function(){
 		}
 	}
 backOpcionMarcada=new Object({opcion:undefined,pregunta:undefined});
+		}
 };
+
+validarGuardadoDeCausas=function()
+{
+	var tieneCausas=false
+	for (let i in $scope.encuestaDetalle.encuesta.secciones) {
+		for (let j in $scope.encuestaDetalle.encuesta.secciones[i].preguntas) {
+			for (const k in $scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].opciones) {
+				var idOpcion=$scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].opciones[k].idOpcion;
+				var idPregunta=$scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].idPregunta
+				if (backOpcionMarcada.opcion.idOpcion==idOpcion&& backOpcionMarcada.pregunta.idPregunta==idPregunta) {
+		              if($scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].opciones[k].causas)
+	            	  {
+	            	  tieneCausas=true
+	            	  }
+				}
+				
+			}
+		}
+	}
+	return tieneCausas;
+	
+};
+
+$scope.pausarEncuesta = function(nuPagina, tiempo) {
+    //$scope.saveTiempo(tiempo)
+    $scope.redireccionar = true;
+    showAlert.confirmacion("¿Desea guardar la evaluación?", $scope.guardaAvancePorPagina, nuPagina, $scope.testCancelConfirmacion2);
+
+};
+
+$scope.regresarEncuestas = function() {
+	$location.path('/etapas/proceso/'+$scope.idProcesoActual+'/'+$scope.encuestaDetalle.usuario.idOrdenServicio);
+    /*$scope.controllerActual = 'NA';
+    $location.path("/encuestas");
+    //$scope.redireccionar=false;*/
+
+};
+
+$scope.regresarEncuestas2 = function() {
+	 $scope.redireccionar = false;
+};
+
+$scope.getPermiteGuardarAvance=function(cdParametro){
+	encuestaService.getNumPreguntasPorSeccion(cdParametro).success(function(data) {
+	 $scope.banderaPermiteGuardarAvance=data.cdValorPConfig;
+	}).error(function(data) {
+	  growl.warning(data.message);
+	});
+};
+
+iniciarProcesoIndividual=function(statusEncuesta,idEncuesta,idOrdenServicio)
+{
+	if(statusEncuesta=="NI" && $scope.idProcesoActual!=encuestaService.primerProceso
+			&& idEncuesta==encuestaService.primerEncuesta )
+		{
+	    encuestaService.iniciarTiempoProceso(idOrdenServicio,$scope.idProcesoActual).success(function(data) {
+	        if (data) {
+	        growl.success("Inicio el proceso correctamente", { ttl: 5000 });
+	        } else {
+	            growl.success("Ya inicio el proceso", { ttl: 5000 });
+	        }
+	    }).error(function(data) {
+	        growl.error(data.message);
+	    });
+		}
+	
+
+}
+
+iniciarProcesoIndividual(encuestaInfo.data.intentoDetalleVO.stEncuesta.cdStEncuesta,encuestaInfo.data.encuesta.idEncuesta,encuestaInfo.data.usuario.idOrdenServicio);
+
+
 
 
     
     $scope.getNumPreguntasPorSeccion('TIE019P_NU_PAGINACION');
     $scope.getNumMaxPaginacion('TIE019P_NU_MAX_PAG');
+    $scope.getPermiteGuardarAvance('PERMITIR_GUARDAR_AVANCE');
     $scope.getEncuestaOrden(encuestaInfo);
     iniciarProceso(encuestaInfo.data.intentoDetalleVO.stEncuesta.cdStEncuesta,encuestaInfo.data.encuesta.idEncuesta,encuestaInfo.data.usuario.idOrdenServicio);
     

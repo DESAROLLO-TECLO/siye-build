@@ -164,6 +164,7 @@
 																								ng-if="!opciones.cdMostrarCausas || (opciones.cdMostrarCausas && opciones.causas)"
 																								style="display: inline-block;">
 																								<label class="content-input"> <input
+																									ng-disabled="estatusEncuesta=='FIN'"
 																									type="radio" name="{{respuesta.txPregunta}}"
 																									id="{{opciones.idOpcion}}" ng-value=1
 																									ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
@@ -176,6 +177,7 @@
 																								ng-if="opciones.cdMostrarCausas && !opciones.causas"
 																								style="display: inline-block;">
 																								<label class="content-input"> <input
+																									ng-disabled="estatusEncuesta=='FIN'"
 																									type="radio" name="{{respuesta.txPregunta}}"
 																									id="{{opciones.idOpcion}}" ng-value=1
 																									ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
@@ -333,7 +335,8 @@
 																					ng-required="true" data-max-options="5"
 																					ng-model="causas" name="causa" id="causa"
 																					ng-change="changeComboCausa()"
-																					ng-options="sp.idCausa as sp.nbCausa for sp in comboCausasList">
+																					ng-options="sp.idCausa as sp.nbCausa for sp in comboCausasList"
+																					ng-disabled="estatusEncuesta=='FIN'">
 
 																				</select>
 																			</div>
@@ -349,8 +352,9 @@
 																			ng-disabled="true" style="resize: none;">{{nbCausa+""}}</textarea>
 																	</div>
 																	<div class="col-md-12">
-																		<label> *Descripción: </label>
+																		<label> Descripción: </label>
 																		<textarea ng-model="descripcionCausa"
+																			ng-disabled="estatusEncuesta=='FIN'"
 																			class="form-control" rows="4"></textarea>
 																	</div>
 																</div>
@@ -359,6 +363,7 @@
 																<!--  <button type="button" class="btn btn-default"
 																	data-dismiss="modal">Salir sin guardar</button>-->
 																<button type="button" class="btn btn-primary"
+																	ng-disabled="estatusEncuesta=='FIN'"
 																	ng-click="guardarCausa()">Guardar</button>
 															</div>
 														</div>
@@ -368,11 +373,16 @@
 											<br>
 											<div class="row">
 												<div class="col-md-6">
-													<!--
+
+
 													<div style="float: left;">
-														<button type="button" class="btn btn-danger">Regresar</button>
+														
+														<button class="btn btn-danger" ng-show="estatusEncuesta=='FIN'"
+															ng-click="regresarEncuestas() ">
+															<div style="display: block;">Regresar</div>
+														</button>
 													</div>
-													-->
+
 
 												</div>
 												<div class="col-md-6">
@@ -389,8 +399,28 @@
 																</a>
 															</div>
 															<button class="btn btn-danger w-100 mb-2"
+																ng-disabled="estatusEncuesta=='FIN'"
 																ng-click="guardaFinalizaEncuesta(paramConfigPage.bigCurrentPage) ">
 																<div style="display: block;">Finalizar</div>
+															</button>
+														</div>
+														<div
+															ng-if="preguntasContestadasEncuesta!=encuestaDetalle.encuesta.nuPreguntas && banderaPermiteGuardarAvance=='VERDADERO'"
+															class="w-100">
+															<div style="display: block; margin: 0 auto;"
+																ng-if="myVar">
+																<a href="#" data-toggle="tooltipinfo"
+																	data-placement="right"
+																	title="Pausar la evaluación y continuar en otro momento"
+																	aria-disabled="true"> <i
+																	class="glyphicon glyphicon-question-sign toolTipInfo"></i>
+																</a>
+															</div>
+															<button id="guardarAvance"
+																class="btn btn-danger w-100 mb-2"
+																ng-click="pausarEncuesta(paramConfigPage.bigCurrentPage,paramConfigPage.tiempoEncuesta)">
+																<div style="display: block;">Guardar Avance Y
+																	Salir</div>
 															</button>
 														</div>
 													</div>
