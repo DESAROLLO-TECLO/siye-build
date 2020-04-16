@@ -49,7 +49,7 @@ public class LayoutServiceImpl implements LayoutService {
 	private static final String MSG_LAYOUT_SIN_COLUMNAS_CONFIGURADAS = "El layout no tiene columnas configuradas";
 	private static final String MSG_LAYOUT_INCONSISTENTE = "El layout no tiene igual cantidad de columnas en sus diferentes secciones";
 	private static final String MSG_ARCHIVO_COLUMNAS_INVALIDAS = "El n\u00FAmero de columnas del archivo lote no coincide con el layout vigente";
-	// private static final List<String> contentTypes = Arrays.asList("text/csv");
+
 	private static final String MSG_ARCHIVO_REGEX_NAME_NULO = "No hay una regla para validar el nombre del archivo.";
 	private static final String MSG_ARCHIVO_REGEX_NAME_INVALIDO = "El nombre del archivo es inv\u00E1lido.";
 	public static final String MSG_ARCHIVO_TAMANIO_REBASADO = "El tama\u00F1o del archivo excede el m\u00E1ximo de {0} MB";
@@ -190,14 +190,14 @@ public class LayoutServiceImpl implements LayoutService {
 
 		for (String nbTbl : tbls) {
 			String nbTabla = nbTbl.trim();
-			InsercionTablaVO colsObj;
+			
 			InsercionTablaVO valInsertVO = getConcatNbCols(nbTabla);
 
 			String insertSQL = MessageFormat.format(MSG_INSERT_PATTERN, nbTabla, valInsertVO.getColumnas(),
 					valInsertVO.getComodines());
-
+			
 			String selectSQL = MessageFormat.format(MSG_SELECT_PATTERN, valInsertVO.getCampoID(), nbTabla,
-					valInsertVO.getCampoFiltro(), valInsertVO.getValorFiltro());
+					valInsertVO.getColumnaFiltro().getNbColumna(), CARACTER_INTERROGACION);
 
 			valInsertVO.setInsertSQL(insertSQL);
 			valInsertVO.setSelectSQL(selectSQL);
@@ -269,8 +269,7 @@ public class LayoutServiceImpl implements LayoutService {
 		StringBuilder sbMaxs = new StringBuilder();
 		StringBuilder sbTipos = new StringBuilder();
 		StringBuilder sbComodines = new StringBuilder();
-		String campoFiltro = "";
-		String valorFiltro = "";
+		ColumnaVO columnaFiltro = new ColumnaVO();
 
 		for (ColumnaVO col : cols) {
 			sbCols.append(CARACTER_COMA).append(col.getNbColumna());
@@ -278,19 +277,19 @@ public class LayoutServiceImpl implements LayoutService {
 			sbVals.append(CARACTER_PIPE).append(getValorSQL(col));
 			sbTipos.append(CARACTER_PIPE).append(col.getCdTipo());
 			sbMaxs.append(CARACTER_PIPE).append(col.getNuLongitudMax());
-			if (col.getStCampoFiltro()!= null && col.getStCampoFiltro()) {
-				campoFiltro = col.getCdTipo();
-				valorFiltro = getValorSQL(col);
+			if (col.getStCampoFiltro()!= null && col.getStCampoFiltro()) {				
+				columnaFiltro.setNbColumna(col.getNbColumna());
+				columnaFiltro.setNuOrden(col.getNuOrden());
+				columnaFiltro.setCdTipo(col.getCdTipo());
+				columnaFiltro.setTxValorDefecto(getValorSQL(col));
 			}
-
 		}
 		insertVO.setColumnas(sbCols.toString().replaceFirst(CARACTER_COMA, ""));
 		insertVO.setComodines(sbComodines.toString().replaceFirst(CARACTER_COMA, ""));
 		insertVO.setValores(sbVals.toString().replaceFirst(CARACTER_PIPE, ""));
 		insertVO.setMaxLengths(sbMaxs.toString().replaceFirst(CARACTER_PIPE, ""));
 		insertVO.setTipos(sbTipos.toString().replaceFirst(CARACTER_PIPE, ""));
-		insertVO.setCampoFiltro(campoFiltro);
-		insertVO.setValorFiltro(valorFiltro);
+		insertVO.setColumnaFiltro(columnaFiltro);
 
 		String nbColumnaID = insertVO.getColumnas().substring(0, insertVO.getColumnas().indexOf(CARACTER_COMA));
 		insertVO.setCampoID(nbColumnaID);

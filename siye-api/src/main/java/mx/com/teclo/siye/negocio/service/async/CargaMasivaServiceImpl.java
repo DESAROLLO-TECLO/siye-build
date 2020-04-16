@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.naming.NamingException;
 
@@ -68,6 +70,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	private static final String MSG_ERROR_LINEA_DESAJUSTADA = "Err: Linea desajustada ({0} vs {1})";
 	private static final String MSG_ERROR_FORMATO_INVALIDO = "Err: Invalido (debe ser {0}) ";
 	private static final String MSG_ERROR_DATO_REQUERIDO = "Err: Falta dato (es requerido) ";
+	private static final String MSG_ERROR_BD_ODS = "Err: Inserci\u00F3n ODS fallida ";
 	private static final String MSG_LINEA_NOK = "Err: Linea con errores";
 
 	@Autowired
@@ -131,17 +134,22 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 					continue;
 				}
 				try {
-					validarLinea(config, linea, CARACTER_COMA);
-					bw.write(CARACTER_COMA + linea);
-					bw.newLine();
+					validarLinea(config, linea, CARACTER_COMA);					
 				} catch (IllegalArgumentException | BusinessException e) {
 					bw.write(e.getMessage());
 					bw.newLine();
 					continue;
 				}
-
+				Long idODS= 0L;
+				try {
+					idODS = insertarEnTablas(config, linea, CARACTER_COMA, con);
+					bw.write(idODS.toString()+CARACTER_COMA + linea);
+					bw.newLine();
+				}catch (Exception e) {					
+					bw.write(MSG_ERROR_BD_ODS+CARACTER_COMA + linea);
+					bw.newLine();
+				}
 			}
-
 			bw.flush();
 			fr.close();
 			fw.close();
@@ -166,19 +174,51 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 
 	}
 
-	private String formatearSQL(String molde, String linea, String separador) {
-		String nvaLineaValores = separador + linea;
-		String[] arrayValores = nvaLineaValores.split(separador);
-		String query = "";
+	private Long insertarEnTablas(ConfigCargaMasivaVO config, String linea, String separador, Connection con) {
+		HashMap<String, Long> mapaIds = new HashMap<String, Long>();
 		try {
-			query = MessageFormat.format(molde, arrayValores);
+			mapaIds = obtenerIDsTblsRef(config, linea, separador, con);
 		} catch (Exception e) {
-			query = molde;
+			return 0L;
 		}
-		if (StringUtils.isBlank(query)) {
-			query = molde;
+
+		LOGGER.info("------referencias---------------");
+		for (Entry<String, Long> referenciaTbl : mapaIds.entrySet()) {			
+			LOGGER.info(referenciaTbl.getKey()+" "+ referenciaTbl.getValue());			
 		}
-		return query;
+		
+		return 0L;
+	}
+
+	private HashMap<String, Long> obtenerIDsTblsRef(ConfigCargaMasivaVO config, String linea, String separador,
+			Connection con) throws BusinessException {
+		HashMap<String, Long> mapaIds = new HashMap<String, Long>();
+		List<String> nbTbls = config.getConfigInsercion();
+		String nbUltTbl = nbTbls.get(nbTbls.size() - BigDecimal.ONE.intValue());
+		List<String> listaValores = Arrays.asList(linea.split(separador));
+		for (String nbTbl : nbTbls) {
+			try {
+				InsercionTablaVO configSQL = config.getConfigMoldesSQL().get(nbTbl);
+				if (!nbTbl.trim().equals(nbUltTbl)) {
+					String querySelect = configSQL.getSelectSQL();
+					String queryInsert = configSQL.getInsertSQL();
+					PreparedStatement stmt = con.prepareStatement(querySelect);
+					stmt.setString(1, listaValores
+							.get((int) (configSQL.getColumnaFiltro().getNuOrden() - BigDecimal.ONE.intValue())));
+					ResultSet resultSet = stmt.executeQuery();
+					if (resultSet.next()) {
+						mapaIds.put(nbTbl, resultSet.getLong(1));
+					} else {
+						LOGGER.info(queryInsert);
+						mapaIds.put(nbTbl, 0L);
+					}
+				}
+
+			} catch (SQLException e) {
+				mapaIds.put(nbTbl, null);
+			}
+		}
+		return mapaIds;
 
 	}
 
@@ -389,6 +429,22 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 			return "alfanum\u00E9ricos";
 
 		}
+
+	}
+
+	private String formatearSQL(String molde, String linea, String separador) {
+		String nvaLineaValores = separador + linea;
+		String[] arrayValores = nvaLineaValores.split(separador);
+		String query = "";
+		try {
+			query = MessageFormat.format(molde, arrayValores);
+		} catch (Exception e) {
+			query = molde;
+		}
+		if (StringUtils.isBlank(query)) {
+			query = molde;
+		}
+		return query;
 
 	}
 }
