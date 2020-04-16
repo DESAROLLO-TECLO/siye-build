@@ -10,8 +10,8 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.naming.NamingException;
@@ -144,7 +145,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 					bw.write(idODS.toString() + CARACTER_COMA + linea);
 					bw.newLine();
 				} catch (Exception e) {
-					bw.write(MSG_ERROR_BD_ODS + CARACTER_COMA + linea);
+					bw.write(BigDecimal.ZERO.longValue() + CARACTER_COMA + e.getMessage());
 					bw.newLine();
 				}
 			}
@@ -172,7 +173,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 
 	}
 
-	private Long insertarEnTablas(ConfigCargaMasivaVO config, String linea, String separador, Connection con) {
+	private Long insertarEnTablas(ConfigCargaMasivaVO config, String linea, String separador, Connection con) throws BusinessException {
 		HashMap<String, Long> mapaIds = new HashMap<String, Long>();
 		try {
 			mapaIds = obtenerIDsTblsRef(config, linea, separador, con);
@@ -180,10 +181,21 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 			return 0L;
 		}
 
-		LOGGER.info("------referencias---------------");
-//		for (Entry<String, Long> referenciaTbl : mapaIds.entrySet()) {
-//			LOGGER.info(referenciaTbl.getKey() + " " + referenciaTbl.getValue());
-//		}
+		String lineaResultado = linea;
+		
+		boolean isExitoso = true;
+		for (Entry<String, Long> referenciaTbl : mapaIds.entrySet()) {
+			if(referenciaTbl.getValue() == null) {
+				lineaResultado = lineaResultado.replace(DOS_PUNTOS+referenciaTbl.getKey(), "Err: Registro rechazado");
+				isExitoso=false;
+			}else if(referenciaTbl.getValue().longValue() == BigDecimal.ZERO.longValue()) {
+				lineaResultado = lineaResultado.replace(DOS_PUNTOS+referenciaTbl.getKey(), "Err: Inexistente (no encontrado)");
+				isExitoso=false;
+			}			
+		}
+		if(!isExitoso) {
+			throw new BusinessException(lineaResultado);
+		}
 
 		return 0L;
 	}
@@ -196,38 +208,28 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		for (TablaDestinoVO nbTbl : nbTbls) {
 			try {
 				InsercionTablaVO configSQL = config.getConfigMoldesSQL().get(nbTbl.getNbTabla());
-				Long idTblReferenciada = 0L;
 				if (!nbTbl.getIsTblBase()) {
 					String querySelect = formatearSQL(configSQL.getSelectSQL(), linea, separador);
 					String queryInsert = formatearSQL(configSQL.getInsertSQL(), linea, separador);
-
-					LOGGER.info(querySelect);
-					if(!nbTbl.getIsReadOnly()) {
-						LOGGER.info(queryInsert);
-					}
-					
-
 					PreparedStatement stmt = con.prepareStatement(querySelect);
-					stmt.setString(1, listaValores
-							.get((int) (configSQL.getColumnaFiltro().getNuOrden() - BigDecimal.ONE.intValue())));
 					ResultSet resultSet = stmt.executeQuery();
-
 					if (resultSet.next()) {
-						idTblReferenciada = resultSet.getLong(1);
+						mapaIds.put(nbTbl.getNbTabla(), resultSet.getLong(1));
 					} else {
-						if (nbTbl.getIsReadOnly()) {
-							//LOGGER.info(queryInsert);
-							idTblReferenciada = 0L;
-						} else {
-							stmt = con.prepareStatement(queryInsert, Statement.RETURN_GENERATED_KEYS);
+						Long idGenerado = 0L;
+						if (!nbTbl.getIsReadOnly()) {
+							LOGGER.debug(queryInsert);
+							stmt = con.prepareStatement(queryInsert, new String[] { "ID_VEHICULO" });
 							stmt.executeUpdate();
-							resultSet = stmt.getGeneratedKeys();
-							if (resultSet.next()) {
-								idTblReferenciada = resultSet.getLong(1);
+							ResultSet generatedKeys = stmt.getGeneratedKeys();
+							if (null != generatedKeys) {
+								Map<Object, Object> m = resultSetToArrayMap(generatedKeys);
+								BigDecimal id = (BigDecimal) m.get("value");
+								mapaIds.put(nbTbl.getNbTabla(), id.longValue());
 							}
 						}
+						mapaIds.put(nbTbl.getNbTabla(), idGenerado);
 					}
-					mapaIds.put(nbTbl.getNbTabla(), idTblReferenciada);
 				}
 			} catch (SQLException e) {
 				mapaIds.put(nbTbl.getNbTabla(), null);
@@ -235,6 +237,20 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		}
 		return mapaIds;
 
+	}
+
+	private Map<Object, Object> resultSetToArrayMap(ResultSet rs) throws SQLException {
+		ResultSetMetaData md = rs.getMetaData();
+		int columns = md.getColumnCount();
+		LinkedHashMap<Object, Object> row = null;
+		while (rs.next()) {
+			row = new LinkedHashMap<Object, Object>();
+			for (int i = 1; i <= columns; ++i) {
+				row.put("key", md.getColumnName(i));
+				row.put("value", rs.getObject(i));
+			}
+		}
+		return row;
 	}
 
 	public static int countLines(File aFile) throws IOException {
