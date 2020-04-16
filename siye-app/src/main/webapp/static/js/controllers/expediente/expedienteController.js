@@ -1,5 +1,5 @@
 angular.module(appTeclo).controller('expedienteController',
-    function($rootScope,$scope,$timeout,$filter,showAlert,growl,expedienteService)
+    function($scope,$timeout,$filter,showAlert,growl,expedienteService)
     {
 
 	const MENSAJE='Seleccione una opción';
@@ -74,7 +74,9 @@ angular.module(appTeclo).controller('expedienteController',
           }
 		  
 		  expedienteService.getInfoOs(tpBusqueda.cdTipoBusqueda,valor).success(function(response) {
-		  		$scope.listOrdenExpediente = response;
+			  resetFom();
+			  
+			  $scope.listOrdenExpediente = response;
 				$scope.expedienteImg=$scope.listOrdenExpediente[0];
 				$scope.catalogosRelacoinados.catProceso = response[0].procesos;  
 				$scope.nuMaxImg=response[0].nuMaxImg;
@@ -88,12 +90,31 @@ angular.module(appTeclo).controller('expedienteController',
 				$scope.paramConfSav.idOrdenServ=response[0].idOrdenServicio;
 				$scope.paramConfSav.cdOrdenServicio=response[0].cdOrdenServicio;
           }).error(function(e) {
-        	  $scope.listOrdenExpediente=[];
-        	  $scope.expedienteImg=new Object();
+        	  resetFom();
               if(e !== null) {showAlert.error(`Ocurrió un error en la petición ${e.message}`);}
               else {showAlert.error('Falló la petición');}
           });
 		  
+	  };
+	  
+	  resetFom=function(){
+		  	$scope.nuMaxImg=null;
+			$scope.listImages = [];
+			$scope.catalogosRelacoinados.catEncuesta=null;
+			$scope.catalogosRelacoinados.catPregunta=null;
+			$scope.expedienteImg.proceso=undefined;
+			$scope.expedienteImg.encuesta=undefined;
+			$scope.expedienteImg.pregunta=undefined;					
+			$("#select2-proceso-container").text(MENSAJE);
+			$("#select2-encuesta-container").text(MENSAJE);
+			$("#select2-pregunta-container").text(MENSAJE);
+			$scope.paramConfSav.idProceso=null;
+			$scope.paramConfSav.idEncuesta=null;
+			$scope.paramConfSav.idPregunta=null;
+			$scope.paramConfSav.idOrdenServ=null;
+			$scope.paramConfSav.cdOrdenServicio=null;
+			$scope.listOrdenExpediente=[];
+      	  	$scope.expedienteImg=new Object();
 	  };
 	  
 	  $scope.confirmChanged=function(message){//metodo que muestra una alerta indicando que  hay imagenes sin guardar
@@ -115,11 +136,14 @@ angular.module(appTeclo).controller('expedienteController',
 	  /**
 	   * METODOS PARA LA NUEVA FUNCONALIDAD COMBOS
 	   */
+	     
 	  $scope.changedComboDependiente=function(itemSelected, nivel){
+		  
 		  if(itemSelected!=undefined){
 			let temp= [];
 			  switch(nivel){
 				  case 'proceso':
+					  
 					  $scope.paramConfSav.idProceso=itemSelected.idProceso;
 					  $scope.paramConfSav.idEncuesta=null;
 					  $scope.paramConfSav.idPregunta=null;	
@@ -137,6 +161,7 @@ angular.module(appTeclo).controller('expedienteController',
 					  }
 					  break;
 				  case 'encuesta':
+					  
 					  $scope.nuMaxImg=itemSelected.nuMaxImg;
 					  $scope.paramConfSav.idEncuesta=itemSelected.idEncuesta;
 					  $scope.paramConfSav.idPregunta=null;
@@ -154,6 +179,7 @@ angular.module(appTeclo).controller('expedienteController',
 					  break;
 
 				  case 'pregunta':
+					  
 					  $scope.nuMaxImg=itemSelected.nuMaxImg;
 					  $scope.paramConfSav.idPregunta=itemSelected.idPregunta;
 					  
