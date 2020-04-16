@@ -3,6 +3,7 @@ package mx.com.teclo.siye.persistencia.vo.incidencia;
 import java.io.Serializable;
 import java.util.List;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.StSeguimientoVO;
 
 public class AltaIncidenciaVO implements Serializable {
@@ -18,6 +19,7 @@ public class AltaIncidenciaVO implements Serializable {
 	private Long idEncuesta;
 	private Long idOrdenServicio;
 	private Long idPregunta;
+	private CentroInstalacionVO centroInstalacion;
 	
 	public String getOrdenServicio() {
 		return ordenServicio;
@@ -73,6 +75,13 @@ public class AltaIncidenciaVO implements Serializable {
 	public void setIdPregunta(Long idPregunta) {
 		this.idPregunta = idPregunta;
 	}
+	public CentroInstalacionVO getCentroInstalacion() {
+		return centroInstalacion;
+	}
+	public void setCentroInstalacion(CentroInstalacionVO centroInstalacion) {
+		this.centroInstalacion = centroInstalacion;
+	}
+	
 	
 		
 }
