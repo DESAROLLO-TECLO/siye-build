@@ -2,6 +2,7 @@ package mx.com.teclo.siye.negocio.service.async;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -23,12 +24,13 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.configuracion.ConfiguracionO
 import mx.com.teclo.siye.persistencia.vo.async.ColumnaVO;
 import mx.com.teclo.siye.persistencia.vo.async.ConfigCargaMasivaVO;
 import mx.com.teclo.siye.persistencia.vo.async.InsercionTablaVO;
+import mx.com.teclo.siye.persistencia.vo.async.TablaDestinoVO;
 import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
 import mx.com.teclo.siye.util.enumerados.SeccionLayoutEnum;
 
 @Service
 public class LayoutServiceImpl implements LayoutService {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(LayoutServiceImpl.class);
 	private static final Long ID_ORDEN_INSERCION = 5L;
 	private static final String MSG_LAYOUT_SIN_ORDEN_INSERCION = "El layout no tiene un orden de valores a insertar";
@@ -38,7 +40,7 @@ public class LayoutServiceImpl implements LayoutService {
 	public static final String MSG_ERROR_LAYOUT_INEXISTENTE = "El archivo lote {0} no tiene un layout asociado";
 	public static final String NULO_SQL = "null";
 	public static final String CARACTER_COMA = ",";
-	public static final String CARACTER_DOS_PUNTOS = ",";
+	public static final String CARACTER_DOS_PUNTOS = ":";
 	public static final String CARACTER_INTERROGACION = "?";
 	public static final String CARACTER_PIPE = "|";
 	private static final String MSG_FORMATTER_DATE = "(TO_DATE('{}',";
@@ -157,7 +159,7 @@ public class LayoutServiceImpl implements LayoutService {
 		validarCantidadColumnas(cargaMasivaVO.getConfigSecciones());
 
 		// moldes SQL
-		cargaMasivaVO.setConfigMoldesSQL(getMoldesSQLPorTbl());
+		cargaMasivaVO.setConfigMoldesSQL(getMoldesSQLPorTbl(cargaMasivaVO.getConfigInsercion()));
 
 		// columnas esperadas en el archivo
 		cargaMasivaVO.setColumnasEnArchivo(layoutDAO.getColumnasEnArchivo());
@@ -167,42 +169,52 @@ public class LayoutServiceImpl implements LayoutService {
 
 	@Override
 	@Transactional
-	public List<String> getOrdenInsercionTablas() throws BusinessException {
-		ConfiguracionOSDTO tablas = configuracionDAO.findOne(ID_ORDEN_INSERCION);
-		if (tablas == null || StringUtils.isBlank(tablas.getCdValorConfig())) {
+	public List<TablaDestinoVO> getOrdenInsercionTablas() throws BusinessException {
+		ConfiguracionOSDTO configInsercionTbls = configuracionDAO.findOne(ID_ORDEN_INSERCION);
+		if (configInsercionTbls == null || StringUtils.isBlank(configInsercionTbls.getCdValorConfig())
+				|| configInsercionTbls.getCdValorConfig().indexOf(CARACTER_COMA + CARACTER_COMA) > 0) {
 			throw new BusinessException(MSG_LAYOUT_SIN_ORDEN_INSERCION);
 		}
+		List<TablaDestinoVO> tablasDestino = new ArrayList<TablaDestinoVO>();
+		List<String> nbTablas = Arrays.asList(configInsercionTbls.getCdValorConfig().split(CARACTER_COMA));
+		for (String nombreTbl : nbTablas) {
+			String nombreOriginal = nombreTbl.trim();
+			String nombreFinal = nombreOriginal;
+			boolean isReadOnly = Boolean.TRUE.booleanValue();
+			if (nombreOriginal.startsWith(CARACTER_DOS_PUNTOS)) {
+				isReadOnly = Boolean.FALSE.booleanValue();
+				nombreFinal = nombreOriginal.replace(CARACTER_DOS_PUNTOS, "");
+			}
 
-		return Arrays.asList(tablas.getCdValorConfig().split(CARACTER_COMA));
+			TablaDestinoVO tblDestino = new TablaDestinoVO();
+			tblDestino.setNbTabla(nombreFinal);
+			tblDestino.setIsReadOnly(isReadOnly);
+			tblDestino.setIsTblBase(Boolean.FALSE.booleanValue());
+			tablasDestino.add(tblDestino);
+		}
+		tablasDestino.get(nbTablas.size() - 1).setIsTblBase(Boolean.TRUE.booleanValue());
+		return tablasDestino;
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Map<String, InsercionTablaVO> getMoldesSQLPorTbl() throws BusinessException {
+	public Map<String, InsercionTablaVO> getMoldesSQLPorTbl(List<TablaDestinoVO> tbls) throws BusinessException {
 
-		ConfiguracionOSDTO tablas = configuracionDAO.findOne(ID_ORDEN_INSERCION);
-		if (tablas == null || StringUtils.isBlank(tablas.getCdValorConfig())) {
+		if (tbls == null || tbls.isEmpty()) {
 			throw new BusinessException(MSG_LAYOUT_SIN_ORDEN_INSERCION);
 		}
 
-		List<String> tbls = Arrays.asList(tablas.getCdValorConfig().split(CARACTER_COMA));
 		Map<String, InsercionTablaVO> insertQueriesMap = new HashMap<String, InsercionTablaVO>();
-
-		for (String nbTbl : tbls) {
-			String nbTabla = nbTbl.trim();
-			
-			InsercionTablaVO valInsertVO = getConcatNbCols(nbTabla);
-
-			String insertSQL = MessageFormat.format(MSG_INSERT_PATTERN, nbTabla, valInsertVO.getColumnas(),
+		for (TablaDestinoVO nbTbl : tbls) {
+			InsercionTablaVO valInsertVO = getConcatNbCols(nbTbl.getNbTabla());
+			String insertSQL = MessageFormat.format(MSG_INSERT_PATTERN, nbTbl.getNbTabla(), valInsertVO.getColumnas(),
 					valInsertVO.getComodines());
-			
-			String selectSQL = MessageFormat.format(MSG_SELECT_PATTERN, valInsertVO.getCampoID(), nbTabla,
-					valInsertVO.getColumnaFiltro().getNbColumna(), CARACTER_INTERROGACION);
-
+			String selectSQL = MessageFormat.format(MSG_SELECT_PATTERN, valInsertVO.getCampoID(), nbTbl.getNbTabla(),
+					valInsertVO.getColumnaFiltro().getNbColumna(), valInsertVO.getColumnaFiltro().getTxValorDefecto());
 			valInsertVO.setInsertSQL(insertSQL);
 			valInsertVO.setSelectSQL(selectSQL);
 
-			insertQueriesMap.put(nbTbl, valInsertVO);
+			insertQueriesMap.put(nbTbl.getNbTabla(), valInsertVO);
 		}
 		return insertQueriesMap;
 	}
@@ -273,11 +285,11 @@ public class LayoutServiceImpl implements LayoutService {
 
 		for (ColumnaVO col : cols) {
 			sbCols.append(CARACTER_COMA).append(col.getNbColumna());
-			sbComodines.append(CARACTER_COMA).append(CARACTER_INTERROGACION);
+			sbComodines.append(CARACTER_COMA).append(getValorSQL(col));
 			sbVals.append(CARACTER_PIPE).append(getValorSQL(col));
 			sbTipos.append(CARACTER_PIPE).append(col.getCdTipo());
 			sbMaxs.append(CARACTER_PIPE).append(col.getNuLongitudMax());
-			if (col.getStCampoFiltro()!= null && col.getStCampoFiltro()) {				
+			if (col.getStCampoFiltro() != null && col.getStCampoFiltro()) {
 				columnaFiltro.setNbColumna(col.getNbColumna());
 				columnaFiltro.setNuOrden(col.getNuOrden());
 				columnaFiltro.setCdTipo(col.getCdTipo());
@@ -307,10 +319,10 @@ public class LayoutServiceImpl implements LayoutService {
 	private String getValorSQL(ColumnaVO col) throws BusinessException {
 		String colValor = "";
 		if (col.getNuOrden() == null || col.getNuOrden() == BigDecimal.ZERO.longValue()) {
-			colValor = StringUtils.isBlank(col.getTxValorDefecto()) ? NULO_SQL : col.getTxValorDefecto();
+			colValor = StringUtils.isBlank(col.getTxValorDefecto()) ? "null" : col.getTxValorDefecto();
 		} else {
-			if (col.getCdTipo().equals("Date")) {
-				colValor = "TO_DATE(''{" + col.getNuOrden() + "}'', ''" + col.getTxValorDefecto() + "'')";
+			if (col.getCdTipo().equals("String")) {
+				colValor = "''{" + col.getNuOrden() + "}''";
 			} else {
 				colValor = "{" + col.getNuOrden() + "}";
 			}

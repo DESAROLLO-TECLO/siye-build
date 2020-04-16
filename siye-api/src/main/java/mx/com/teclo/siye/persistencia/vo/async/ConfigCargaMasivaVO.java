@@ -9,7 +9,7 @@ public class ConfigCargaMasivaVO {
 	private LoteOrdenServicioVO configLote;
 	private TipoLayoutVO configLayout;
 	private Map<String, List<ColumnaVO>> configSecciones;
-	private List<String> configInsercion;
+	private List<TablaDestinoVO> configInsercion;
 	private Map<String, InsercionTablaVO> configMoldesSQL;
 	private int totalColsEsperadas;
 	private List<ColumnaArchivoVO> columnasEnArchivo;
@@ -23,10 +23,10 @@ public class ConfigCargaMasivaVO {
 	public TipoLayoutVO getConfigLayout() {
 		return configLayout;
 	}	
-	public List<String> getConfigInsercion() {
+	public List<TablaDestinoVO> getConfigInsercion() {
 		return configInsercion;
 	}
-	public void setConfigInsercion(List<String> configInsercion) {
+	public void setConfigInsercion(List<TablaDestinoVO> configInsercion) {
 		this.configInsercion = configInsercion;
 	}
 	public void setConfigLayout(TipoLayoutVO configLayout) {
