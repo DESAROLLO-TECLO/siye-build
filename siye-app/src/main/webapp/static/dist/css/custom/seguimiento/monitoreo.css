@@ -1,0 +1,90 @@
+#mynetwork, #eventSpan {
+	width: 100%;
+	height: 25rem;
+	/* 	border: 1px solid #444444; */
+	background-color: #ecf0f1;
+}
+
+#infoNetwork {
+	width: 100%;
+	height: 5rem;
+	/* 	border: 1px solid #444444; */
+	border-top: none;
+	background-color: #dae3e4;
+}
+
+.nav-tabs {
+	margin-left: 5px;
+}
+
+.nav-tabs>li.active {
+	z-index: 100;
+}
+
+.nav-tabs>li.tabBox {
+	margin-bottom: -0.35rem;
+}
+
+.nav-tabs>li.border-box a {
+	border-left: .25rem solid #cf0a2c;
+	border-top: .25rem solid #cf0a2c;
+	border-right: .25rem solid #cf0a2c;
+	border-radius: .7rem .7rem 0 0;
+}
+
+.nav-tabs>li.border-box a:hover {
+	border-left: .25rem solid #cf0a2c;
+	border-top: .25rem solid #cf0a2c;
+	border-right: .25rem solid #cf0a2c;
+}
+
+.nav-tabs>li a {
+	color: #ababab;
+	background: #f7f7f7;
+	border-color: #eeeeee #eeeeee #ddd;
+}
+
+.nav-tabs>li a:hover {
+	background-color: #fff;
+}
+
+.imgExport {
+	width: 2.4rem;
+}
+
+.roundMode {
+	border-radius: 50%;
+	width: 3.3rem;
+	height: 3.3rem;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, .3);
+}
+
+.timeline>.time-label>span.bg-dates {
+	background-color: #cf0a2c;
+	color: #ecf0f1;
+}
+
+.timeline>li>.fa.nodesTimeline {
+	width: 2.8rem;
+	height: 2.8rem;
+/* 	background-color: #00BFA5; */
+	padding-top: 0.16rem;
+	margin-left: -.3rem;
+}
+
+.timeline-header p {
+	font-size: 1rem;
+}
+.timeline-header p.badge {
+	background-color: #fbeef1;
+	color: #cc4865;
+}
+
+img.imgNodes {
+	width: 2.5rem;
+	height: 2.5rem;
+}
+
+.scrollDetail{
+	height: calc(100vh - 25rem) !important;
+}

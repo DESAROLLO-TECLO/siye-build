@@ -34,6 +34,7 @@ angular.module(appTeclo,
 		'daterangepicker',
 		'rw.moneymask',
 		'ui.filedrop',
-		'widget.scrollbar'
+		'widget.scrollbar',
+		'bootstrapLightbox'
 	]
 );
