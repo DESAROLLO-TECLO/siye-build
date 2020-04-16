@@ -16,6 +16,7 @@ public class OpcionVO implements Serializable {
 	// nuevo
 	private Boolean cdMostrarCausas;
 	private String causas;
+	private String descripcionCausa;
 
 	public Long getIdOpcion() {
 		return idOpcion;
@@ -99,6 +100,14 @@ public class OpcionVO implements Serializable {
 
 	public void setCausas(String causas) {
 		this.causas = causas;
+	}
+
+	public String getDescripcionCausa() {
+		return descripcionCausa;
+	}
+
+	public void setDescripcionCausa(String descripcionCausa) {
+		this.descripcionCausa = descripcionCausa;
 	}
 
 

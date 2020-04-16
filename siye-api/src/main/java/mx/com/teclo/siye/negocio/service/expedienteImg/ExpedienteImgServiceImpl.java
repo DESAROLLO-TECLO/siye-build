@@ -14,6 +14,7 @@ import mx.com.teclo.arquitectura.ortogonales.responsehttp.BadRequestHttpResponse
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
 import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
+import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.negocio.service.catalogo.CatalogoService;
 import mx.com.teclo.siye.persistencia.hibernate.dao.configuracion.ConfiguracionOSDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestasDAO;
@@ -444,8 +445,8 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 	
 	@Override
 	@Transactional
-	public Boolean saveImagenIncidencia(List<ImagenVO> listImagenVO, IncidenciaDTO incidenciaDTO) throws BusinessException {
-		Boolean respuesta = false;
+	public String saveImagenIncidencia(List<ImagenVO> listImagenVO, IncidenciaDTO incidenciaDTO) throws BusinessException {
+		String respuesta = "";
 		ConfiguracionVO configuracionVO;
 		try {
 			configuracionVO = catalogoService.configuracion("TIE051D_NU_MAX_IMAGENES");
@@ -459,23 +460,26 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 					if (imagenVO.getLbExpedienteODS() != null && imagenVO.getNbExpedienteODS() != null && imagenVO.getNbExpedienteODS() != "" &&
 							imagenVO.getCdTipoArchivo() != null	&& imagenVO.getCdTipoArchivo() != "") {
 						UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
-						ExpedientesImgDTO incidencia = new ExpedientesImgDTO();
-						incidencia.setNbExpedienteODS(imagenVO.getNbExpedienteODS());
-						incidencia.setCdTipoArchivo(imagenVO.getCdTipoArchivo());
-						incidencia.setLbExpedienteODS(imagenVO.getLbExpedienteODS());
-						incidencia.setIncidencia(incidenciaDTO);
-						incidencia.setNuOrden(null);
-						incidencia.setCdTipoArchivo(imagenVO.getCdTipoArchivo());
-						incidencia.setStActivo(true);
-						incidencia.setFhCreacion(new Date());
-						incidencia.setIdUsrCreacion(usuario.getId());
-						incidencia.setFhModifica(new Date());
-						incidencia.setIdUsrModifica(usuario.getId());
+						ExpedientesImgDTO expedientesImgDTO = new ExpedientesImgDTO();
+						expedientesImgDTO.setNbExpedienteODS(imagenVO.getNbExpedienteODS());
+						expedientesImgDTO.setCdTipoArchivo(imagenVO.getCdTipoArchivo());
+						expedientesImgDTO.setLbExpedienteODS(imagenVO.getLbExpedienteODS());
+						expedientesImgDTO.setIncidencia(incidenciaDTO);
+						expedientesImgDTO.setNuOrden(null);
+						expedientesImgDTO.setCdTipoArchivo(imagenVO.getCdTipoArchivo());
+						expedientesImgDTO.setStActivo(true);
+						expedientesImgDTO.setFhCreacion(new Date());
+						expedientesImgDTO.setIdUsrCreacion(usuario.getId());
+						expedientesImgDTO.setFhModifica(new Date());
+						expedientesImgDTO.setIdUsrModifica(usuario.getId());
+						TipoExpedienteDTO tipoExpedienteDTO = tipoExpedienteDAO.findOne(imagenVO.getTipoExpediente().getIdTipoExpediente());
+//						tipoExpedienteDTO = ResponseConverter.copiarPropiedadesFull(imagenVO.getTipoExpediente(), TipoExpedienteDTO.class);
+						expedientesImgDTO.setTipoExpediente(tipoExpedienteDTO);
 						try {
-							expedienteImgDAO.save(incidencia);
-							respuesta = true;
+							expedienteImgDAO.save(expedientesImgDTO);
+							respuesta = "";
 						} catch (Exception e) {
-							return false;
+							return "Error al guardar la imagen incidencia. ";
 						}
 					}
 				}

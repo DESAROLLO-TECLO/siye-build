@@ -2,14 +2,26 @@ angular.module(appTeclo)
 .controller("etapaController",
 function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, etapaInfo,encuestaService) {
 
-    $scope.fechaHoy = new Date();
+    $rootScope.idOrdenServ = etapaInfo.data[0].idOrdenServicio;
+    $rootScope.cdOrdenServicio = etapaInfo.data[0].cdOrdenServicio;
+    $scope.finicio = etapaInfo.data[0].fhAtencionIni;
+    $scope.ffin = etapaInfo.data[0].fhAtencionFin;
+    $scope.fcita = etapaInfo.data[0].fhCita;
+    $scope.idOS = $rootScope.idOrdenServ;
+
+    if($scope.finicio != null && $scope.ffin != null){
+        $scope.fechaHoy = $scope.finicio - $scope.ffin;
+    }else{
+        $scope.fechaHoy = null;
+        $scope.fechaHoyText = "Sin Validar";
+    }
     $scope.stValidarCheck = false;
 
-    $scope.numMaxImg = 3;
+    $scope.numMaxImg = etapaInfo.data[0].numMaxImagenes;
     $scope.listImages = [];
     $scope.paramEtapaImg = new Object({
-        idOrdenServ: etapaInfo.data[0].idOrdenServicio,
-        cdOrdenServicio: etapaInfo.data[0].cdOrdenServicio
+        idOrdenServ: $rootScope.idOrdenServ,
+        cdOrdenServicio: $rootScope.cdOrdenServicio
     });
     $scope.paramConfigImg = new Object({
         maxSizeMb: 1,

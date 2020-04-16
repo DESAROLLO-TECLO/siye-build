@@ -35,7 +35,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 	private static final String MSG_ERROR_IO = "Hubo un error al guardar el archivo";
 	private static final String MSG_ERROR_PATTER_FILE_PREFIX_NULO = "No hay un patron de fecha prefijo definido";
 	private static final String MSG_ERROR_PATTER_FILE_PREFIX_INVALIDO = "El patron de fecha prefijo es invalido";
-	private static final String FILE_SEPARATOR = System.getProperty("file.separator");
+	public static final String FILE_SEPARATOR = System.getProperty("file.separator");
 
 	@Autowired
 	private ConfiguracionOSDAO configuracionDAO;
@@ -73,7 +73,9 @@ public class FileStorageServiceImpl implements FileStorageService {
 		return directorioToAlmacenamiento;
 	}
 
-	private String getPrefijoNbArchivo() throws BusinessException {
+	@Override
+	@Transactional	
+	public String getPrefijoNbArchivo() throws BusinessException {
 		ConfiguracionOSDTO configPrefijoDTO = configuracionDAO.findOne(ID_PARAMETRO_PREFIJO_ARCHIVO_ORT);
 		if (configPrefijoDTO == null
 				|| org.apache.commons.lang3.StringUtils.isBlank(configPrefijoDTO.getCdValorConfig())) {
@@ -85,6 +87,10 @@ public class FileStorageServiceImpl implements FileStorageService {
 		} catch (IllegalArgumentException e) {
 			throw new BusinessException(MSG_ERROR_PATTER_FILE_PREFIX_INVALIDO);
 		}
+	}	
+	public static String extraerNbFinal(String nombreFinal) {
+		Path directorioToAlmacenamiento = Paths.get(nombreFinal);
+		return directorioToAlmacenamiento.getFileName().toString();
 	}
 
 }

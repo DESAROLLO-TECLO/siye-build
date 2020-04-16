@@ -14,6 +14,6 @@ public interface SeguimientoOsService {
 	 * @param Long idUsuario 
 	 * @return List<>
 	 * metodo para obener el seguimiento de las os por centro de isntalación*/
-	public List<SeguimientoOrdenServicioVO> getSeguimientoOrdenServicio(Long idSupervisor, List<String> columnas, String fInicio, String fFin);
+	public List<SeguimientoOrdenServicioVO> getSeguimientoOrdenServicio(Long idSupervisor, List<String> columnas, List<String> colOmitidas, String fInicio, String fFin);
 
 }
