@@ -95,7 +95,7 @@
 					<div class="box-footer">
 						<div class="row">
 							<div class="col-md-4">
-								<a type="button" ng-click="regresar()" class="btn pull-left">
+								<a type="button" ng-click="regresarDesdeLineaTiempo()" class="btn pull-left">
 									<i class="fa fa-arrow-circle-left"></i>
 									{{'APP.Base.boton.regresar' | translate}}
 								</a>
@@ -105,6 +105,7 @@
 				</div>
 			</div>
 		</div>
+
 		<div class="row" ng-show="viewMode=='d'">
 			<!-- Cuadro de consulta de impugnacion -->
 			<div class="col-md-10 col-md-offset-1">
@@ -324,7 +325,6 @@
 				</div>
 			</div>
 		</div>
-
 	</section>
 	<script type="text/javascript">
 		$('.botonF1').hover(function() {
