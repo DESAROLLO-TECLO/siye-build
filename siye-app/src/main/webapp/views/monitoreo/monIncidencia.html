@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    	<title></title>
+	</head>
+	<body>
+		<section class="content-header">
+			<h1>Incidencias</h1>
+			<ol class="breadcrumb">
+				<li>
+					<a><i class="{{breadCrumbs.icono}}"></i>Monitoreo </a>
+				</li>
+				<li class="active">Incidencias</li>
+			</ol>
+		</section>
+		
+		<!-- Formulario de busqueda -->
+	    <section class="content">
+	        <div class="row centerCol">
+	            <div class="col-sm-12 col-md-8">
+	                <div class="box box-danger">
+	                    <form name="formBoxBusqueda" novalidate>
+	                        <div class="box-header with-border text-center">
+	                            <h3 class="box-title">{{ 'APP.Base.boxBusqueda.tituloBox' | translate}}</h3>
+	                            <div class="box-tools pull-right">
+	                                <button class="btn btn-box-tool" type="button" id="btnAlmacen" data-widget="collapse">
+	                                    <i class="fa fa-minus"></i>
+	                                </button>
+	                            </div>
+	                        </div>
+	                        <div class="box-body">
+	                            <div class="row">
+<!-- 	                                <div class="col-md-6"> -->
+<!-- 	                                    <div class="form-group" -->
+<!-- 	                                        ng-class="{'has-error': (formBoxBusqueda.tipoBusqueda.$invalid && formBoxBusqueda.tipoBusqueda.$dirty) }"> -->
+<!-- 	                                        <label> -->
+<!-- 	                                            *{{'MONITOREO.busqueda.tipoBusqueda.label' | translate}} -->
+<!-- 	                                        </label> -->
+<!-- 	                                        <div class="input-group"> -->
+<!-- 	                                            <div class="input-group-addon"> -->
+<!-- 	                                                <i class="fa fa-list-alt"></i> -->
+<!-- 	                                            </div> -->
+<!-- 	                                            <select class="form-control" name="tipoBusqueda" id="tipoBusqueda" -->
+<!-- 	                                                select-picker multiple idioma-sp="{{currentLanguage}}" -->
+<!-- 	                                                data-actions-box="true"  -->
+<!-- 	                                                data-selected-text-format="count > 2" -->
+<!-- 	                                                ng-model="params.colSeleccionada" -->
+<!-- 	                                                ng-required="true" -->
+<!-- 	                                                ng-options="sp as sp.txTipoBusqueda for sp in catTipoBusqueda"> -->
+<!-- 	                                            </select> -->
+<!-- 	                                        </div> -->
+<!-- 	                                        <div -->
+<!-- 	                                            ng-show="formBoxBusqueda.tipoBusqueda.$error.required && formBoxBusqueda.tipoBusqueda.$dirty"> -->
+<!-- 	                                            <span ng-style="{color:'red'}"> -->
+<!-- 	                                                {{'MONITOREO.busqueda.tipoBusqueda.validacion' | translate}} -->
+<!-- 	                                            </span> -->
+<!-- 	                                        </div> -->
+<!-- 	                                    </div> -->
+<!-- 	                                </div> -->
+	                                <div class="col-md-6">
+	                                    <div class="form-group">
+	                                        <label>
+	                                            *{{'MONITOREO.busqueda.rangoFechas.label' | translate}}
+	                                        </label>
+	                                        <div class="input-group">
+	                                            <div class="input-group-addon labelCheck">
+	                                                <i class="fa fa-calendar-plus-o"></i>
+	                                            </div>
+	                                            <input date-range-picker class="form-control date-picker" type="text"
+	                                                    ng-model="rangoFechas.date" 
+	                                                    options="rangoFechas.options"/>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                            </div>
+	                            <!-- renglon de opociones -->
+	                            <div class="box-footer">
+	                                <div class="row center">
+	                                    <button class="btn btn-danger" ng-click="corteDiario()">
+	                                        {{'MONITOREO.busqueda.corte' | translate}}
+	                                    </button>
+	                                    <button class="btn btn-danger" ng-click="consultaOS(formBoxBusqueda, params)">
+	                                        {{'APP.Base.boton.buscar' | translate}}
+	                                    </button>
+	                                </div>
+	                            </div>
+	                        </div>
+	                    </form>
+	                </div>
+	            </div>
+	        </div>
+	    </section>
+	    <!-- final formulario de busqueda -->
+	</body>
+</html>
