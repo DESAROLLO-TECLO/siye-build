@@ -33,15 +33,5 @@ public interface CargaMasivaService {
 	 */
 	void procesarLineas(ConfigCargaMasivaVO config) throws BusinessException;
 
-	/**
-	 * Recibe un query insert para ejecutarlo
-	 * 
-	 * @param insertQuery
-	 * @param linea       Valores tomada del archivo lote
-	 * @return
-	 * @throws BusinessException
-	 */
-	List<Long> ejecutarSQL(List<String> queries, boolean isModoSelect) throws BusinessException, HibernateException;
-
 	
 }

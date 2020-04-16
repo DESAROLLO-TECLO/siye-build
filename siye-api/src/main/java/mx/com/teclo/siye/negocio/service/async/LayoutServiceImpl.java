@@ -323,7 +323,10 @@ public class LayoutServiceImpl implements LayoutService {
 		} else {
 			if (col.getCdTipo().equals("String")) {
 				colValor = "''{" + col.getNuOrden() + "}''";
-			} else {
+			}else if(col.getCdTipo().equals("Date")){
+				colValor = "TO_DATE(''{" + col.getNuOrden() + "}'' \\, ''"+col.getTxValorDefecto()+ "'')";
+			}
+			else {
 				colValor = "{" + col.getNuOrden() + "}";
 			}
 		}
