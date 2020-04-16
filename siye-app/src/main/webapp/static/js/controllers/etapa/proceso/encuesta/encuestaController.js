@@ -9,6 +9,9 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     var backOpcionMarcada=new Object({opcion:undefined,pregunta:undefined});
     $scope.estatusEncuesta=encuestaInfo.data.intentoDetalleVO.stEncuesta.cdStEncuesta;
     $scope.redireccionar = false;
+    $scope.ordSer = $rootScope.idOrdenServ;
+    $scope.idProc = $rootScope.idProceso;
+    $scope.idEnc = encuestaInfo.data.encuesta.idEncuesta;
     
    //$scope.numMaxImgEnc = encuestaInfo.data.usuario.proceso.nuMaxImagenes;
    console.log(encuestaInfo.data)    
