@@ -22,6 +22,7 @@ public class EncuestaDetalleVO implements Serializable {
 	private List<SeccionVO> secciones;
 	private Integer nuCalificacionApro;
 	private Integer stActivo;
+	private Long nuMaxImagenes;
 	
 	//nuevo fechaInicioEncuesta y fechaFin
 	private Date fechaInicioEncuesta;
@@ -148,6 +149,14 @@ public class EncuestaDetalleVO implements Serializable {
 
 	public void setFechaFinEncuesta(Date fechaFinEncuesta) {
 		this.fechaFinEncuesta = fechaFinEncuesta;
+	}
+
+	public Long getNuMaxImagenes() {
+		return nuMaxImagenes;
+	}
+
+	public void setNuMaxImagenes(Long nuMaxImagenes) {
+		this.nuMaxImagenes = nuMaxImagenes;
 	}
 	
 	
