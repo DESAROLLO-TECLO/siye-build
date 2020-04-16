@@ -10,7 +10,8 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     $scope.estatusEncuesta=encuestaInfo.data.intentoDetalleVO.stEncuesta.cdStEncuesta;
     $scope.redireccionar = false;
     
-   //$scope.numMaxImgEnc = encuestaInfo.data.usuario.proceso.nuMaxImagenes;    
+   //$scope.numMaxImgEnc = encuestaInfo.data.usuario.proceso.nuMaxImagenes;
+   console.log(encuestaInfo.data)    
     $scope.listImagesEnc = [];
     $scope.paramEncImg = new Object({
         idOrdenServ: $rootScope.idOrdenServ,
