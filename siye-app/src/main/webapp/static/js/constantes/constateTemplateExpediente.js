@@ -39,7 +39,7 @@ var includeDeseing=
 	'					</div>                                                                                                                                                          '+
 	'					<div ng-if="listImages.length > 0"		                                 												                                        '+
 	'						class="col-xs-12 col-sm-12 col-md-12">                                                                                                                      '+
-	'						<div ng-repeat="imagenVO in listImages | startFromGrid: ((paramConfigPage.bigCurrentPage-1)*paramConfigPage.itemsPerPage) | limitTo: paramConfigPage.itemsPerPage">                                												'+
+	'						<div ng-repeat="imagenVO in listImages  | startFromGrid: ((paramConfigPage.bigCurrentPage-1)*paramConfigPage.itemsPerPage) | limitTo: paramConfigPage.itemsPerPage">                                												'+
 	'							<div class="col-xs-12 col-sm-12 col-md-12 padding-per">                                                                                                 '+
 	'								<div class="row border-div-child">                                                                                                                  '+
 	'									<div class="{{showCombo ? \'col-xs-6 col-sm-6 col-md-2 style-parent\' : \'col-xs-6 col-sm-4 col-md-3 style-parent\'">                           '+
@@ -80,7 +80,7 @@ var includeDeseing=
 	'										<div class="form-group"                                                                                 									'+
 	'												ng-class="{\'has-error\': (formTpDocument[\'tpDoc\'+imagenVO.unic+\'\'+idElementUp].$invalid && formTpDocument[\'tpDoc\'+imagenVO.unic+\'\'+idElementUp].$dirty) }">									'+
 	'											<label>                                                                                         										'+
-	'												*Tipo de Documento                                                                          										'+
+	'												*Tipo de Documento:                                                                          										'+
 	'											</label>                                                                                        										'+
 	'											<div class="input-group">                                                                       										'+
 	'												<div class="input-group-addon">                                                             										'+
@@ -193,7 +193,7 @@ var includeCarouselModal=
 	'						<div class="carousel-inner" role="listbox">                                                                                     '+
 	' 							<div class="col-md-10 col-md-offset-1 middleRow"> 																			'+
 	'								<div class="item active">                                                                                               '+
-	'									<img id="img-{{idElementUp+imagePreview.unic}}" alt="{{imagePreview.name}}"                                         '+
+	'									<img style="max-width: 100%;" id="img-{{idElementUp+imagePreview.unic}}" alt="{{imagePreview.name}}"                                         '+
 	'											ng-src="data:image/png;base64, {{imagePreview.strBase64}}" />                                               '+
 	'									<div class="carousel-caption">                                                                                      '+
 	'										{{imagePreview.name.length > 17 ? (imagePreview.name.substr(0,17)+\'...\') : imagePreview.name}}                '+
