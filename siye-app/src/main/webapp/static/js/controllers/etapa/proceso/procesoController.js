@@ -7,6 +7,7 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
 	$scope.idProcesoActual=idpro;
     $scope.numOrden = $rootScope.numOS;
     $scope.encuestas=procesoInfo.data;
+    $scope.formato = '0';
 	
 	
 	
@@ -36,13 +37,30 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
             }else{
                 $scope.tiempoTranscurridoText = "Sin validar";
             }
-            if(procesoInfo.data[i].idEncuesta.cdEncuesta == "SAT02"){
+            if(procesoInfo.data[i].idEncuesta.cdEncuesta == "SAT02"|| procesoInfo.data[i].idEncuesta.cdEncuesta == "SAT01"){
                 $scope.stActivarEncuesta = procesoInfo.data[i].stSatisfaccion;
             }
+
         }
     }else{
         growl.error('No se logró recuperar el  registro solicitado', {title: '-ERROR-'});
     }
+    
+      cambiaTiempo = function(tiempoTranscurridoFormato) {
+    	    if(tiempoTranscurridoFormato)
+    		{
+    	  	  var ms = tiempoTranscurridoFormato % 1000;
+    	  	tiempoTranscurridoFormato = (tiempoTranscurridoFormato - ms) / 1000;
+    		  var secs = tiempoTranscurridoFormato % 60;
+    		  tiempoTranscurridoFormato = (tiempoTranscurridoFormato - secs) / 60;
+    		  var mins = tiempoTranscurridoFormato % 60;
+    		  var hrs = (tiempoTranscurridoFormato - mins) / 60
+
+        $scope.segundo = secs;
+        $scope.minuto = mins;
+        $scope.hora = hrs;
+    		}
+    };
 
     $scope.activarEncuesta = function(idEncuesta){
         $scope.stActivarEncuesta = !$scope.stActivarEncuesta;
@@ -69,5 +87,6 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
     }
     
     obtenerPrimeraEncuestaPrimerProceso(procesoInfo.data);
+    cambiaTiempo($scope.tiempoTranscurrido);
     
 });

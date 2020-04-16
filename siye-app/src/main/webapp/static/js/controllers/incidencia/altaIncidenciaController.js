@@ -108,7 +108,9 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
 		$scope.registroIncidencia.txDescripcion = tpIncidencia + prioridad + orden + tecnico + transportista + modulo + descripcion;
 	}
     $scope.guardar = function(ban) {
-        if (ban && $scope.formAltaIncidencia.$invalid && !$scope.isValidFormImages()) {
+    	$scope.listImages=$scope.getValueListImageDirective();
+        
+    	if (ban && $scope.formAltaIncidencia.$invalid && !$scope.isValidFormImages()) {
             showAlert.requiredFields($scope.formAltaIncidencia);
             growl.warning("Formulario incompleto.", { ttl: 5000 });
             return;
@@ -140,6 +142,7 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
         		$("#select2-tecnico-container").text('Seleccione una opción');
         		$("#select2-transportista-container").text('Seleccione una opción');
         		$scope.listImages = [];
+        		$scope.updateViewDirective($scope.listImages);//  actualiza la vista de la directiva
         		ejecutarDespues(2);
             }else
             	growl.warning("No se pudo realizar el alta de la incidencia", { ttl: 5000 });
@@ -154,7 +157,7 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
     
     $scope.regresar = function (){
 //    	console.log(p.replace('-', '/'));
-    	$location.path(dataInfo.urlActual.replace('-', '/'));
+    	$location.path(dataInfo.urlActual.replace(/-/g, '/'));
     }
 //    $scope.guardar(false);
     getParamIncidencia();

@@ -7,6 +7,7 @@ import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.siye.persistencia.vo.async.ColumnaVO;
 import mx.com.teclo.siye.persistencia.vo.async.ConfigCargaMasivaVO;
 import mx.com.teclo.siye.persistencia.vo.async.InsercionTablaVO;
+import mx.com.teclo.siye.persistencia.vo.async.TablaDestinoVO;
 import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
 
 /**
@@ -73,7 +74,7 @@ public interface LayoutService {
 	 * @return
 	 * @throws BusinessException
 	 */
-	List<String> getOrdenInsercionTablas() throws BusinessException;
+	List<TablaDestinoVO> getOrdenInsercionTablas() throws BusinessException;
 
 	/**
 	 * Obtiene la bandera configurada para saber si se deben registrar archivos
@@ -86,9 +87,10 @@ public interface LayoutService {
 
 	/**
 	 * Genera de forma din&aacute;mica  los comandos SQL para insertar la informacion del archivo
+	 * @param List<TablaDestinoVO> tablas que ser&aacute;n consultadas o insertadas con la carga masiva
 	 * @return
 	 * @throws BusinessException
 	 */
-	Map<String, InsercionTablaVO> getMoldesSQLPorTbl() throws BusinessException;
+	Map<String, InsercionTablaVO> getMoldesSQLPorTbl(List<TablaDestinoVO> tablas) throws BusinessException;
 
 }
