@@ -120,6 +120,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController', function (
             modal.element.modal();
         });
     };
+
     
     initController();
     
