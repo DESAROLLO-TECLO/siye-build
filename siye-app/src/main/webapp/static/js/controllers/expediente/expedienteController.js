@@ -1,14 +1,12 @@
 angular.module(appTeclo).controller('expedienteController',
-    function($rootScope,$scope,$timeout,$filter,showAlert,growl,expedienteService,FileUploader)
+    function($rootScope,$scope,$timeout,$filter,showAlert,growl,expedienteService)
     {
 
 	const MENSAJE='Seleccione una opción';
 	//Objeto para la configuracion de la directiva de carga de imagenes
 	$scope.listImages=new Array();
 	$scope.nuMaxImg=10;
-	$scope.listImagesDos=new Array();
-	$scope.fileUploader=new FileUploader();
-	
+
 	$scope.paramConfSav= new Object({
 		idOrdenServ: null, 			 
 		idProceso: null,   			
@@ -41,9 +39,6 @@ angular.module(appTeclo).controller('expedienteController',
 	  //lista de Ordenes de servicio
 	  $scope.listOrdenExpediente=new Array();
 	 
-	  //liata para modificar y manipular la vista padre sin afectar la lista orginal
-	  $scope.listImagesClasifiView=new Array();
-     
 	//metodo que regresa una lista mediante un nombre de atributo (nameAtributo) especificado y un filtro (value) 
 	  getListByFilter=function(nameAtributo,value,listItems){
 		  
@@ -71,7 +66,7 @@ angular.module(appTeclo).controller('expedienteController',
  */
 	  //Se otiene los datos obtenidos de base de datos por tipo de busqueda
 	  $scope.getDataOrdenServicio= function(tpBusqueda,valor,form){
-		  
+		 
 		  if (form.$invalid) {
               showAlert.requiredFields(form);
               growl.error('Formulario incompleto');
@@ -83,8 +78,12 @@ angular.module(appTeclo).controller('expedienteController',
 				$scope.expedienteImg=$scope.listOrdenExpediente[0];
 				$scope.catalogosRelacoinados.catProceso = response[0].procesos;  
 				$scope.nuMaxImg=response[0].nuMaxImg;
-				if(response[0].imagenes != undefined)
-					$scope.listImages = response[0].imagenes;
+				if(response[0].imagenes != undefined){
+					if($scope.updateViewDirective != undefined) 
+						$scope.updateViewDirective(response[0].imagenes);// metodo se encuntra en la directoa update-image
+					 
+					 $scope.listImages = response[0].imagenes;
+				}
 				
 				$scope.paramConfSav.idOrdenServ=response[0].idOrdenServicio;
 				$scope.paramConfSav.cdOrdenServicio=response[0].cdOrdenServicio;
@@ -97,6 +96,22 @@ angular.module(appTeclo).controller('expedienteController',
 		  
 	  };
 	  
+	  $scope.confirmChanged=function(message){//metodo que muestra una alerta indicando que  hay imagenes sin guardar
+	    	 showAlert.confirmacion(message,
+             confirm = function(){
+             	let i;
+             	for(i=0; i<scope.listImages.length; i++){
+             		let imagenVO=scope.listImages[i];
+             		if(!imagenVO.isSuccess){
+             			scope.listImages.splice(i,1);
+             			i--;
+	          			}
+             	}	                	
+             }, cancelaNotificar =function (){
+                 return;
+             }); 
+	     };
+	  
 	  /**
 	   * METODOS PARA LA NUEVA FUNCONALIDAD COMBOS
 	   */
@@ -108,41 +123,52 @@ angular.module(appTeclo).controller('expedienteController',
 					  $scope.paramConfSav.idProceso=itemSelected.idProceso;
 					  $scope.paramConfSav.idEncuesta=null;
 					  $scope.paramConfSav.idPregunta=null;	
-					  $scope.nuMaxImg=itemSelected.nuMaxImg;
-					temp = reducirLisImagenes($scope.listImages, 'proceso');
-					  if(itemSelected.imagenes!=null){
-						$scope.listImages= temp.concat(itemSelected.imagenes);
-					  }
-					  if(itemSelected.listImageClasif.length>0){
+					  $scope.nuMaxImg=itemSelected.nuMaxImg;					  
+					  
+					  if(itemSelected.imagenes == undefined)
+						  itemSelected.imagenes=[];
+					  
+					  $scope.updateViewDirective(itemSelected.imagenes);// metodo se encuntra en la directoa update-image
+					  
+					  $scope.listImages= itemSelected.imagenes;
+					  
+					  if(itemSelected.listImageClasif.length > 0){
 						$scope.catalogosRelacoinados.catEncuesta = itemSelected.listImageClasif;
 					  }
 					  break;
 				  case 'encuesta':
 					  $scope.nuMaxImg=itemSelected.nuMaxImg;
 					  $scope.paramConfSav.idEncuesta=itemSelected.idEncuesta;
-					  $scope.paramConfSav.idPregunta=null;	
-					temp = reducirLisImagenes($scope.listImages, 'encuesta');
-					if(itemSelected.imagenes!=null){
-						$scope.listImages = temp.concat(itemSelected.imagenes);
-					  }
+					  $scope.paramConfSav.idPregunta=null;
+					  
+					  if(itemSelected.imagenes == undefined)
+						  itemSelected.imagenes=[];
+					  
+					  $scope.updateViewDirective(itemSelected.imagenes);// metodo se encuntra en la directoa update-image
+					  $scope.listImages = itemSelected.imagenes;
+					  
 					  if(itemSelected.listImageClasif.length>0){
 						$scope.catalogosRelacoinados.catPregunta = itemSelected.listImageClasif;
 					  }	 
+					  
 					  break;
 
 				  case 'pregunta':
 					  $scope.nuMaxImg=itemSelected.nuMaxImg;
 					  $scope.paramConfSav.idPregunta=itemSelected.idPregunta;
-					temp = reducirLisImagenes($scope.listImages, 'pregunta');
-					if(itemSelected.imagenes!=null){
-						$scope.listImages = temp.concat(itemSelected.imagenes);
-					}
+					  
+					  if(itemSelected.imagenes == undefined)
+						  itemSelected.imagenes=[];
+					  
+					  $scope.updateViewDirective(itemSelected.imagenes);// metodo se encuntra en la directoa update-image
+					  $scope.listImages = itemSelected.imagenes;					  
 					  break;
 			  }
 		  }else{
 			  switch(nivel){
 				case 'proceso':
-					$scope.listImages = reducirLisImagenes($scope.listImages, 'proceso');
+					$scope.nuMaxImg=$scope.expedienteImg.nuMaxImg;
+					$scope.listImages = $scope.expedienteImg.imagenes;
 					$scope.catalogosRelacoinados.catEncuesta=null;
 					$scope.catalogosRelacoinados.catPregunta=null;
 					$scope.expedienteImg.proceso=undefined;
@@ -150,58 +176,32 @@ angular.module(appTeclo).controller('expedienteController',
 					$scope.expedienteImg.pregunta=undefined;					
 					$("#select2-proceso-container").text(MENSAJE);
 					$("#select2-encuesta-container").text(MENSAJE);
-					$("#select2-pregunta-container").text(MENSAJE);				
+					$("#select2-pregunta-container").text(MENSAJE);
+					$scope.paramConfSav.idProceso=null;
+					$scope.paramConfSav.idEncuesta=null;
+					$scope.paramConfSav.idPregunta=null;	
 					break;
 
 				case 'encuesta':
-					$scope.listImages = reducirLisImagenes($scope.listImages, 'encuesta');
+					
+					$scope.listImages=$scope.expedienteImg.proceso.imagenes;
 					$scope.catalogosRelacoinados.catPregunta=null;
 					$scope.expedienteImg.encuesta=undefined;
 					$scope.expedienteImg.pregunta=undefined;
 					$("#select2-encuesta-container").text(MENSAJE);
 					$("#select2-pregunta-container").text(MENSAJE);
+					$scope.paramConfSav.idEncuesta=null;
+					$scope.paramConfSav.idPregunta=null;
 					break;
 
 				case 'pregunta':
-					$scope.listImages = reducirLisImagenes($scope.listImages, 'pregunta');
+					$scope.listImages = $scope.expedienteImg.encuesta.listImageClasif.imagenes;
 					$scope.expedienteImg.pregunta=undefined;
 					$("#select2-pregunta-container").text(MENSAJE);
-					break; 
+					$scope.paramConfSav.idPregunta=null;
+					break;
 			  }
 		  }
-	  };
-
-	  reducirLisImagenes = function(listaImagenes, nivel){
-		  let tamanoLista = listaImagenes.length;
-		  let respuesta = new Array();
-		  let temp = [];
-
-		  switch(nivel){
-			  case 'proceso':
-				for(let x=0; x<tamanoLista; x++){
-					if(listaImagenes[x].idOrdenServicio==null && listaImagenes[x].idOdsEncuesta==null && listaImagenes[x].idPregunta==null){
-						respuesta = respuesta.concat(listaImagenes[x]);
-					}
-				}
-				  break;
-
-			  case 'encuesta':
-				for(let x=0; x<tamanoLista; x++){
-					if(listaImagenes[x].idOrdenServicio!=null && listaImagenes[x].idOdsEncuesta==null){
-						respuesta = respuesta.concat(listaImagenes[x]);
-					}
-				}
-				  break
-			 
-			  case 'pregunta':
-				for(let x=0; x<tamanoLista; x++){
-					if(listaImagenes[x].idPregunta==null){
-						respuesta = respuesta.concat(listaImagenes[x]);
-					}
-				}
-				  break;
-		  }
-		  return respuesta;
 	  };
 
     });

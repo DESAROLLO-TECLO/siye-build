@@ -23,7 +23,7 @@ angular.module(appTeclo).controller('expedienteRedirectController',
 			.success(function(reponse){
 				$scope.listImages=reponse;
 		  }).error(function(e){
-			  if(e.status != null){
+			  if(e.status != undefined){
 	    			 if(e.status.descripcion != undefined){
 		                	growl.error(e.status.descripcion,{ ttl: 4000 });
 		                }else if(e.status.message != undefined) {
@@ -40,7 +40,7 @@ angular.module(appTeclo).controller('expedienteRedirectController',
 		                	growl.error(e,{ ttl: 4000 });
 		                }else {showAlert.error('Falló la petición');}
 	    		 }
-		  });;
+		  });
 	};
 	
 	getImagesByLevel();

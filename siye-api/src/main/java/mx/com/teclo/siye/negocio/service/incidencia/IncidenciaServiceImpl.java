@@ -14,10 +14,18 @@ import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.negocio.service.catalogo.CatalogoService;
 import mx.com.teclo.siye.negocio.service.expedienteImg.ExpedienteImgService;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.OdsIncidenciaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.procesos.IEProcesosDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.OdsIncidenciaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.procesos.IEprocesosDTO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteImgVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.AltaIncidenciaVO;
@@ -42,6 +50,18 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 	@Autowired
 	private CatalogoService catalogoService;
 	
+	@Autowired
+	private EncuestasDAO encuestasDAO;
+	
+	@Autowired
+	private OdsIncidenciaDAO odsIncidenciaDAO;
+	
+	@Autowired
+	private IEProcesosDAO iEProcesosDAO;
+	
+	@Autowired
+	private OrdenServicioDAO ordenServicioDAO;
+	
 	private static final String MSG_ERROR_INCIDENCIA_NULA = "No se encontraron incidencias";
 	private static final String MSG_ERROR_IMAGEN_NULA = "La imagen esta vac\u00EDa";
 	private static final String MSG_ERROR_DESCRIPCION_NULA = "La descripci\u00f3n esta vac\u00EDa";
@@ -63,7 +83,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 	
 	@Override
 	@Transactional
-	public Boolean  altaIncidencia(AltaIncidenciaVO altaIncidenciaVO)  throws BusinessException{
+	public String altaIncidencia(AltaIncidenciaVO altaIncidenciaVO)  throws BusinessException{
 		try {
 			ConfiguracionVO configuracionVO = catalogoService.configuracion("TIE051D_IMG_REQ");
 			if (configuracionVO.getCdValorPConfig() == "Si") {
@@ -76,9 +96,10 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 			e1.printStackTrace();
 		}
 		IncidenciaDTO incidenciaDTO = new IncidenciaDTO();
-		Boolean respuesta = false;
-		Boolean respuestaIncidencia = false;
-		Boolean respuestaFinal = false;
+		String respuesta = "";
+		String respuestaIncidencia = "";
+		String respuestaOdsIncidencia = "";
+		String respuestaFinal = "";
 		SimpleDateFormat sdf2 = new SimpleDateFormat("yy");
 		Date date = new Date();
 		String year = sdf2.format(date);
@@ -109,6 +130,8 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		StSeguimientoDTO stSeguimiento = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NUEVO");
 		StSeguimientoDTO tpIncidenciaDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getTpIncidencia().getCdStSeguimiento());
 		StSeguimientoDTO prioridadDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getPrioridad().getCdStSeguimiento());
+		IEprocesosDTO procesoDTO = iEProcesosDAO.consultarProcesoByidProceso(altaIncidenciaVO.getIdProceso());
+		EncuestasDTO encuestasDTO = encuestasDAO.encuestaIntento(altaIncidenciaVO.getIdEncuesta());
 		incidenciaDTO.setCdIncidencia(cdIncidencia);
 		incidenciaDTO.setNbIncidencia(nbIncidencia);
 		incidenciaDTO.setTxIncidencia(altaIncidenciaVO.getDescripcion());
@@ -122,22 +145,41 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		incidenciaDTO.setStAutorizacion(stAutorizacionDTO);
 		incidenciaDTO.setPrioridad(prioridadDTO);
 		incidenciaDTO.setStSeguimiento(stSeguimiento);
+		incidenciaDTO.setEncuesta(encuestasDTO);
+		incidenciaDTO.setiEproceso(procesoDTO);
+
 		try {
 			incidenciaDAO.save(incidenciaDTO);
-			respuesta = true;
+			respuesta = "";
+		} catch (Exception e) {
+			respuesta = "Error al guardar la incidencia. ";
+		}
+		
+		try {
+			incidenciaDAO.save(incidenciaDTO);
 			if (altaIncidenciaVO.getListImagen() == null || altaIncidenciaVO.getListImagen().isEmpty()) {
-				respuestaIncidencia = true;
+				respuestaIncidencia = "";
 			} else {
 				respuestaIncidencia = expedienteImgService.saveImagenIncidencia(altaIncidenciaVO.getListImagen(), incidenciaDTO);
 			}
+			if (altaIncidenciaVO.getIdOrdenServicio() != null && altaIncidenciaVO.getIdOrdenServicio() != 0 ) {
+				OrdenServicioDTO ordenServicioDTO = ordenServicioDAO.obtenerOrdenServicio(altaIncidenciaVO.getIdOrdenServicio());
+				OdsIncidenciaDTO odsIncidenciaDTO = new OdsIncidenciaDTO();
+				odsIncidenciaDTO.setIdIncidencia(incidenciaDTO);
+				odsIncidenciaDTO.setIdOrdenServicio(ordenServicioDTO);
+				odsIncidenciaDAO.save(odsIncidenciaDTO);
+			}
+			respuestaOdsIncidencia = "";
 		} catch (Exception e) {
-			respuesta = false;
+			respuestaOdsIncidencia = "Error al guardar la relacion con la orden de servicio.";
 		}
-		if (respuesta == true && respuestaIncidencia == true) {
-			respuestaFinal = true;
+		if (respuesta == "" && respuestaIncidencia == "" && respuestaOdsIncidencia == "") {
+			respuestaFinal = "Se guardo la incidencia correctamente con folio: " +  cdIncidencia;
+			
 		} else {
-			respuestaFinal = false;
-		}
+			respuestaFinal = respuesta + respuestaIncidencia + respuestaOdsIncidencia;
+			
+		} 
 		return respuestaFinal;
 	}
 	

@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,7 +36,8 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 	private static final String MSG_ARCHIVO_NULO = "El archivo lote no fue recibido";
 	private static final String INSERT_INTO = "INSERT INTO ";
 	private static final String MSG_ERROR_QUERIES_INCOMPLETOS = "No se generaron todos los comandos SQL para procesar el archivo ID {0}";
-	private static final String MSG_CONFIG_CARGA_MASIVA_EXITOSA = "Preparando la carga del archivo ID {0}";
+	private static final String MSG_CONFIG_CARGA_MASIVA_EXITOSA = "Configuracion completa del archivo ID {0}";
+	private static final String MSG_INICIANDO_CARGA_MASIVA = "Iniciando la carga masiva del archivo ID {0}";
 	private static final String MSG_ACTUALIZANDO_SEGUIMIENTO = "El archivo ID {0} sera actualizado en su seguimiento";
 
 	@Autowired
@@ -62,28 +64,33 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 	@Override
 	@Transactional
 	public Long registrarArchivoLote(MultipartFile archivoLote) throws BusinessException {
+		String errorArchivo = null;
+
 		if (archivoLote == null) {
 			throw new BusinessException(MSG_ARCHIVO_NULO);
 		}
 		boolean isProcesoConRechazo = layoutService.getIsProcesoConRechazo();
+
 		try {
 			uploadService.validarEstructuraBasica(archivoLote);
-		} catch (BusinessException e) {
+		} catch (Exception e) {
 			if (isProcesoConRechazo) {
 				throw e;
 			} else {
-				crearLote(archivoLote.getOriginalFilename(), e.getMessage());
+				errorArchivo = e.getMessage();
 			}
 		}
+
 		String nombreArchivo = storageService.almacenarArchivo(archivoLote);
-		Long idArchivoLote = crearLote(nombreArchivo, null);
+		Long idArchivoLote = crearLote(nombreArchivo, errorArchivo);
 		return idArchivoLote;
 
 	}
 
 	@Override
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void cargarArchivoLote(Long idArchivoLote) throws BusinessException {
+		LOGGER.info(MessageFormat.format(MSG_INICIANDO_CARGA_MASIVA, idArchivoLote));
 
 		cargaMasivaService.iniciarCargaMasiva(idArchivoLote);
 
@@ -101,7 +108,7 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 	}
 
 	@Override
-	@Async
+	@Transactional
 	public void actualizarSeguimiento(Long idArchivoLote, ArchivoSeguimientoEnum seguimiento, String txLoteOdsError)
 			throws BusinessException {
 		LOGGER.info(MessageFormat.format(MSG_ACTUALIZANDO_SEGUIMIENTO, idArchivoLote));
@@ -111,7 +118,6 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 		loteDTOrdenServicioDTO.setTxLoteOds(txLoteOdsError);
 		loteDTOrdenServicioDTO.setFhModificacion(new Date());
 		loteDAO.update(loteDTOrdenServicioDTO);
-
 	}
 
 	@Override
@@ -132,7 +138,7 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 	public Long crearLote(String nombreFinal, String error) {
 		LoteOrdenServicioDTO loteDTO = new LoteOrdenServicioDTO();
 		loteDTO.setNbLoteOds(nombreFinal);
-		loteDTO.setNbArchivoFinal(nombreFinal);
+		loteDTO.setNbArchivoFinal(FileStorageServiceImpl.extraerNbFinal(nombreFinal));
 		loteDTO.setCdLoteOds(TIPO_ARCHIVO_ORT);
 		loteDTO.setIdUsrCreacion(1L);
 		loteDTO.setFhCreacion(new Date());
@@ -155,17 +161,25 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 
 	}
 
+	/**
+	 * Verifica que existan los comandos insert y select por cada tabla
+	 * 
+	 * @param configCargaMasivaVO
+	 * @return
+	 * @throws BusinessException
+	 */
 	private boolean isMapaSQLValido(ConfigCargaMasivaVO configCargaMasivaVO) throws BusinessException {
 		int totalTablas = configCargaMasivaVO.getConfigInsercion().size();
 		int totalQueries = 0;
 		for (Map.Entry<String, InsercionTablaVO> entry : configCargaMasivaVO.getConfigMoldesSQL().entrySet()) {
 			InsercionTablaVO value = entry.getValue();
-			if (StringUtils.isNotBlank(value.getQuerySQL()) && value.getQuerySQL().startsWith(INSERT_INTO)) {
+			if (StringUtils.isNotBlank(value.getInsertSQL()) && value.getInsertSQL().startsWith(INSERT_INTO)) {
 				totalQueries++;
 			}
 		}
 		return totalTablas == totalQueries;
 
 	}
+	
 
 }

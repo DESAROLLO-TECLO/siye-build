@@ -18,7 +18,7 @@
     </section>
 
     <!-- Incidencia -->
-    <boton-incidencia id-orden="" id-proceso="" id-encuesta="" id-pregunta=""></boton-incidencia>
+    <boton-incidencia id-orden="{idOS}" id-proceso="" id-encuesta="" id-pregunta=""></boton-incidencia>
 
     <!-- información gral de solicitud -->
     <section class="content">
@@ -37,7 +37,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row">
-                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <div class="col-md-3 col-sm-4 col-xs-6">
                                         <div class="form-group">
                                             <label ng-if="dataEtapa.transportista != null ">
                                                 Transportista: 
@@ -53,13 +53,30 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 col-sm-6 col-xs-6">
+                                    <div class="col-md-3 col-sm-4 col-xs-6">
+                                        <div class="form-group">
+                                            <label>
+                                                Cita Programada: 
+                                                <span class="etapa-texto">
+                                                    {{fcita | date:" dd / MM / yyyy - HH:MM"}}
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-4 col-xs-6">
                                         <div class="form-group" style="display: block; float:right;">
                                             <span class="glyphicon glyphicon glyphicon-time" aria-hidden="true"></span>
                                             <label>
-                                                <span class="etapa-texto">
-                                                    Fecha: {{fechaHoy | date:" dd / MM / yyyy"}}
-                                                </span>
+                                                <div ng-if="fechaHoy != null">
+                                                    <span class="etapa-texto">
+                                                        Fecha: {{fechaHoy | date:" dd / MM / yyyy - hh:mm:ss"}}
+                                                    </span>
+                                                </div>
+                                                <div ng-if="fechaHoy == null">
+                                                    <span class="etapa-texto">
+                                                        {{fechaHoyText}}
+                                                    </span>
+                                                </div>
                                             </label>
                                         </div>
                                     </div>

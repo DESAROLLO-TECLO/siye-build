@@ -3,11 +3,12 @@ package mx.com.teclo.siye.persistencia.vo.seguimientoOs;
 import java.util.List;
 
 public class SeguimientoOrdenServicioVO {
+	private Long idCentroInstalacion;
 	private String nbModulo;
 	private Long nuEnCurso;
 	private Long nuCompleta;
 	private Long nuProgramado;
-	private Long nuNoPRogramado;
+	private Long nuNoProgramado;
 	private Long nuIncidencias;
 	private List<OrdenServcioDetalleVO> detalleOrdenServicio;
 	/**
@@ -61,14 +62,14 @@ public class SeguimientoOrdenServicioVO {
 	/**
 	 * @return the nuNoPRogramado
 	 */
-	public Long getNuNoPRogramado() {
-		return nuNoPRogramado;
+	public Long getNuNoProgramado() {
+		return nuNoProgramado;
 	}
 	/**
 	 * @param nuNoPRogramado the nuNoPRogramado to set
 	 */
-	public void setNuNoPRogramado(Long nuNoPRogramado) {
-		this.nuNoPRogramado = nuNoPRogramado;
+	public void setNuNoPRogramado(Long nuNoProgramado) {
+		this.nuNoProgramado = nuNoProgramado;
 	}
 	/**
 	 * @return the nuIncidencias
@@ -93,6 +94,18 @@ public class SeguimientoOrdenServicioVO {
 	 */
 	public void setDetalleOrdenServicio(List<OrdenServcioDetalleVO> detalleOrdenServicio) {
 		this.detalleOrdenServicio = detalleOrdenServicio;
+	}
+	/**
+	 * @return the idCentroInstalacion
+	 */
+	public Long getIdCentroInstalacion() {
+		return idCentroInstalacion;
+	}
+	/**
+	 * @param idCentroInstalacion the idCentroInstalacion to set
+	 */
+	public void setIdCentroInstalacion(Long idCentroInstalacion) {
+		this.idCentroInstalacion = idCentroInstalacion;
 	}
 	
 	

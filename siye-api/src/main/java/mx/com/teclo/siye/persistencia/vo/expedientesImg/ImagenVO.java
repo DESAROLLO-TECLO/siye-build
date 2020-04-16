@@ -1,5 +1,7 @@
 package mx.com.teclo.siye.persistencia.vo.expedientesImg;
 
+import mx.com.teclo.siye.persistencia.vo.tipoExpediente.TipoExpedienteVO;
+
 public class ImagenVO {
 	
 	private Long idExpedienteODS;
@@ -14,6 +16,7 @@ public class ImagenVO {
 	private String cdTipoArchivo;
 	private byte[] lbExpedienteODS;
 	private String nbNivel;
+	private TipoExpedienteVO tipoExpediente;
 	
 	/**
 	 * @return the idExpedienteODS
@@ -152,6 +155,12 @@ public class ImagenVO {
 	 */
 	public void setNbNivel(String nbNivel) {
 		this.nbNivel = nbNivel;
+	}
+	public TipoExpedienteVO getTipoExpediente() {
+		return tipoExpediente;
+	}
+	public void setTipoExpediente(TipoExpedienteVO tipoExpediente) {
+		this.tipoExpediente = tipoExpediente;
 	}
 	
 }

@@ -33,11 +33,11 @@ public class IncidenciaRestController {
 	}
 	
 	
-	@RequestMapping(value = "/altaIncidencia", method = RequestMethod.POST)
+	@RequestMapping(value = "/altaIncidencia", method = RequestMethod.POST, produces = "text/plain")
 	@PreAuthorize("hasAnyAuthority('ALTA_INCIDENCIA')")
-	public Boolean altaIncidencia(@RequestBody AltaIncidenciaVO altaIncidenciaVO) throws BusinessException{
-		return incidenciaService.altaIncidencia(altaIncidenciaVO);
-		 
+	public ResponseEntity<String> altaIncidencia(@RequestBody AltaIncidenciaVO altaIncidenciaVO) throws BusinessException{
+		String resp = incidenciaService.altaIncidencia(altaIncidenciaVO);
+		return new ResponseEntity<String>(resp, HttpStatus.OK);
 		
 	}
 	

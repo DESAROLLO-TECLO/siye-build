@@ -8,10 +8,11 @@
 					<div class="row">
 						<div class="col-md-10 col-md-offset-1">
 								<!--  -->
-						<form role="form" name="formBusqueda">
+							
+						<form ng-if="flagBusqueda" role="form" name="formBusqueda">
 						<div class="col-md-12">
 									<div class="form-group" ng-class="{'has-error': formBusqueda.cdBusqueda.$invalid && formBusqueda.cdBusqueda.$dirty}">
-										<label for="">*Codigo Usuario:</label>
+										<label for="">*Folio Usuario:</label>
 										<div class="input-group">
 											<span class="input-group-addon">
 											<i class="fa fa-pencil"></i>
@@ -26,7 +27,7 @@
 											</span>
 										</div>
 									<div ng-show="formBusqueda.cdBusqueda.$invalid && formBusqueda.cdBusqueda.$dirty" ng-style="{color:'red'}">
-                                        <span>El Codigo es Requerido</span>
+                                        <span>El Folio es Requerido</span>
                                     </div>
 									</div>
 								
@@ -39,7 +40,7 @@
 									<div class="form-group"
 										ng-class="{'has-error': formObject.nombre.$invalid && formObject.nombre.$dirty}">
 										<label>
-											*Nombre </label>
+											*Nombre: </label>
 										<div class="input-group">
 											<span class="input-group-addon"><i class="fa fa-user"></i></span>
 											<input  ng-disabled ="flagDisableInput" type="text" class="form-control" name="nombre" capitalize 
@@ -58,7 +59,7 @@
 									<div class="form-group"
 										ng-class="{'has-error': formObject.aPaterno.$invalid && formObject.aPaterno.$dirty}">
 										<label>
-											Apellido Paterno </label>
+											Apellido Paterno: </label>
 										<div class="input-group">
 											<span class="input-group-addon"><i
 												class="fa fa-user"></i></span> <input  ng-disabled ="flagDisableInput"  type="text" capitalize 
@@ -78,7 +79,7 @@
 									<div class="form-group"
 										ng-class="{'has-error': formObject.aMaterno.$invalid && formObject.aMaterno.$dirty}">
 										<label>
-											*Apellido Materno </label>
+											*Apellido Materno: </label>
 										<div class="input-group">
 											<span class="input-group-addon"><i
 												class="fa fa-user"></i></span> <input  ng-disabled ="flagDisableInput" type="text" capitalize

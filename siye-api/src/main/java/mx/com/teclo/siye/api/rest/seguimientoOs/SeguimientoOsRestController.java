@@ -31,10 +31,11 @@ public class SeguimientoOsRestController {
 	@GetMapping(value="/getSeguimientoOS")
 	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
 	public ResponseEntity<List<SeguimientoOrdenServicioVO>> getSeguimientoOs(@RequestParam(value ="columnas") List<String> columnas,
-														               @RequestParam(value ="fechaInicio") String fechaInicio,
-														               @RequestParam(value ="fechaFin") String fechaFin) throws NotFoundException{	
+			                                                                 @RequestParam(value ="colOmitidas", required=false) List<String> colOmitidas,
+			                                                                 @RequestParam(value ="fechaInicio") String fechaInicio,
+			                                                                 @RequestParam(value ="fechaFin") String fechaFin) throws NotFoundException{	
 		UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
-		List<SeguimientoOrdenServicioVO> respuesta = seguimientoService.getSeguimientoOrdenServicio(usuario.getId(), columnas, fechaInicio, fechaFin);
+		List<SeguimientoOrdenServicioVO> respuesta = seguimientoService.getSeguimientoOrdenServicio(usuario.getId(), columnas, colOmitidas, fechaInicio, fechaFin);
 		if(respuesta.isEmpty()) {
 			throw new NotFoundException("No hay información");
 		}

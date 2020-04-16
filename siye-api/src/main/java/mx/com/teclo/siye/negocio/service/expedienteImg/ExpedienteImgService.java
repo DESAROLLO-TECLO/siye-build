@@ -55,5 +55,5 @@ public interface ExpedienteImgService {
 	 * @return Boolean
 	 * Metodo para guardar las imagenes provenientes de las incidencias
 	 */
-	public Boolean saveImagenIncidencia(List<ImagenVO> listImagenVO, IncidenciaDTO incidenciaDTO) throws BusinessException ;
+	public String saveImagenIncidencia(List<ImagenVO> listImagenVO, IncidenciaDTO incidenciaDTO) throws BusinessException ;
 }
