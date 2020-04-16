@@ -107,3 +107,6 @@
 /* ----------- M�DULO: Edición de servicio ----------- */
 
 @import url('custom/servicio/servicio.css');
+
+/* ----------- M�DULO: SEGUIMIENTO ----------- */
+@import url('custom/seguimiento/monitoreo.css');
