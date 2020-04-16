@@ -33,7 +33,7 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
             let finit = procesoInfo.data[i].idEncuesta.fechaInicioEncuesta;
             let ffin = procesoInfo.data[i].idEncuesta.fechaFinEncuesta;
             if(finit != null && ffin != null){
-                $scope.tiempoTranscurrido += ffinzz - finit;
+                $scope.tiempoTranscurrido += ffin - finit;
             }else{
                 $scope.tiempoTranscurridoText = "Sin validar";
             }
