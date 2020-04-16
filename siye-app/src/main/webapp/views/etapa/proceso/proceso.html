@@ -40,15 +40,16 @@
                                 <div class="form-group">
                                     <span class="glyphicon glyphicon glyphicon-time" aria-hidden="true"></span>
                                     <label>
-                                        <div ng-if="tiempoTranscurrido != null">
+                                        <div ng-if="tiempoTranscurrido >0">
                                             <span class="etapa-texto">
-                                                Tiempo Transcurrido: {{tiempoTranscurrido | date:"hh:mm:ss"}} : {{tiempoTranscurrido}}
+                                                Tiempo Transcurrido: {{hora<10?formato:''}}{{hora}}:{{minuto<10?formato:''}}{{minuto}}:{{segundo<10?formato:''}}{{segundo}}
+                                            
                                             </span>
                                         </div>
-                                        <div ng-if="tiempoTranscurrido == null">
+                                        <div ng-if="tiempoTranscurrido == 0">
                                             <span class="etapa-texto">
                                                 {{tiempoTranscurridoText}}
-                                            </span>
+                                               </span>
                                         </div>
                                     </label>
                                     

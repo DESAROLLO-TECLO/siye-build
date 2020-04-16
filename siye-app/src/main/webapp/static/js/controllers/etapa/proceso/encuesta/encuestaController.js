@@ -13,8 +13,7 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     $scope.idProc = $rootScope.idProceso;
     $scope.idEnc = encuestaInfo.data.encuesta.idEncuesta;
     
-   //$scope.numMaxImgEnc = encuestaInfo.data.usuario.proceso.nuMaxImagenes;
-   console.log(encuestaInfo.data)    
+   $scope.numMaxImgEnc = encuestaInfo.data.encuesta.nuMaxImagenes;    
     $scope.listImagesEnc = [];
     $scope.paramEncImg = new Object({
         idOrdenServ: $rootScope.idOrdenServ,
