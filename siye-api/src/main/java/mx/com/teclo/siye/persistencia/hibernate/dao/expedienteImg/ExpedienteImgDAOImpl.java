@@ -108,7 +108,7 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 				"LB_EXPEDIENTE_ODS AS lbExpedienteODS, " +
 				"ID_TIPO_EXPEDIENTE AS idTipoExpediente "+
 				" FROM TIE050D_IE_EXPEDIENTES_IMG" + 
-				"   WHERE ID_ORDEN_SERVICIO=:OrdenServicio AND ID_PROCESO=:idEncuesta AND ID_PREGUNTA IS NULL AND ST_ACTIVO=1 "+
+				"   WHERE ID_ORDEN_SERVICIO=:OrdenServicio AND ID_ODS_ENCUESTA=:idEncuesta AND ID_PREGUNTA IS NULL AND ST_ACTIVO=1 "+
 				"ORDER BY NU_ORDEN ASC");
 		 List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				 .addScalar("idExpedienteODS", LongType.INSTANCE)
