@@ -182,7 +182,16 @@
                 "noProgramada":"No Programadas",
                 "incidencia":"Incidencias"
             }
-
+        },
+        "detalleOs":{
+            "titulo":{
+                "ordenServicio":"ORDEN SERVICIO",
+                "nuPlaca":"PLACA",
+                "txEtapa":"ETAPA",
+                "txProceso":"PROCESO",
+                "txIncidensia":"INCIDENCIA",
+                "txEstado":"ESTADO"
+            }
         }
     },
     "ADMINISTRACION": {

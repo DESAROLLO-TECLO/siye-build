@@ -6,10 +6,12 @@ angular.module(appTeclo).service("seguimientoOsService", function($http, config)
 	
 
 	this.getInfoOsByRangoFechas = function(parametros){
-		return $http.get(config.baseUrl + END_POINT + "/getTotalOs",{
-			params:{"fechaInicio":parametros.fechaInicio
-				   ,"fechaFin":parametros.fechaFin
-				   ,"columnas":parametros.almacen
+		return $http.get(config.baseUrl + END_POINT + "/getSeguimientoOS",{
+			params:{"fechaInicio":parametros.fechaInicio,
+				    "fechaFin":parametros.fechaFin,
+					"columnas":parametros.columnas,
+					"colOmitidas":parametros.colOmitidas
+
 				}});
 	};
 
