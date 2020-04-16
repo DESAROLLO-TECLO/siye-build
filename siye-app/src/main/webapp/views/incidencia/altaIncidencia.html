@@ -30,7 +30,7 @@
                     <div class="box-body">
                         <div class="row">
                         	<div class="col-md-12 text-right">
-                        		<label for=""> {{'ALTAINCIDENCIA.AltaIncidencia.labelFh' | translate}} {{fechaAnio}}</label>
+                        		<h5><label for=""> {{'ALTAINCIDENCIA.AltaIncidencia.labelFh' | translate}} {{fechaAnio | date:'dd/MM/yyyy HH:mm:ss'}}</label></h5>
                         	</div>
                         </div>	
                         <div class="row">
@@ -188,7 +188,7 @@
                                     </div>
                                 </div>
                          	</div>
-                            <div class="col-md-12">
+                            <div class="col-xs-12 col-sm-12 col-md-offset-1 col-md-10">
                                 <update-image id-element-up="altaIncidencia" include="true" param-conf-sav="paramConfSav" is-incidencia="true"
 	                   				param-conf-component="paramConfiguracion" max-nu-image="{{paramConfiguracion.maxNuImage}}" list-images="listImages"></update-image>
                             </div>

@@ -6,6 +6,10 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
     $scope.idOrdenServicio=idord;
 	$scope.idProcesoActual=idpro;
     $scope.numOrden = $rootScope.numOS;
+    $scope.encuestas=procesoInfo.data;
+	
+	
+	
 
     $scope.numMaxImgPro = procesoInfo.data[0].idProceso.nuMaxImagenes;    
     $scope.listImagesPro = [];
@@ -60,6 +64,7 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
     		{
     		encuestaService.primerEncuestaPrimerProceso=EncuestasInfo[0].idEncuesta.idEncuesta;
     		}
+    	encuestaService.primerEncuesta=EncuestasInfo[0].idEncuesta.idEncuesta;
     	
     }
     
