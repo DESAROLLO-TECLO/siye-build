@@ -2,13 +2,14 @@ angular.module(appTeclo).service("monIncidenciaService", function($http, config)
 	
 	const END_POINT="/monitoreo";
 	
-	this.getInfoOsByRangoFechas = function(parametros){
+	this.getInfoOsByRangoFechas = function(parametros, opcion){
 		return $http.get(config.baseUrl + END_POINT + "/getMonIncidencias",{
 			params:{
 				"fechaInicio"	: parametros.fechaInicio,
 				"fechaFin"		: parametros.fechaFin,
 				"tipoBusqueda"	: parametros.tipobusqueda,
-				"valor"			: parametros.valor
+				"valor"			: parametros.valor,
+				"opcion"		: opcion
 			}
 		});
 	};
