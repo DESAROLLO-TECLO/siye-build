@@ -266,14 +266,15 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 			try {
 				InsercionTablaVO configSQL = config.getConfigMoldesSQL().get(nbTbl.getNbTabla());
 				if (!nbTbl.getIsTblBase()) {
+					Long idGenerado = 0L;
 					String querySelect = formatearSQL(configSQL.getSelectSQL(), linea, separador);
 					String queryInsert = formatearSQL(configSQL.getInsertSQL(), linea, separador);
 					PreparedStatement stmt = con.prepareStatement(querySelect);
 					ResultSet resultSet = stmt.executeQuery();
 					if (resultSet.next()) {
-						mapaIds.put(nbTbl.getNbTabla(), resultSet.getLong(1));
-					} else {
-						Long idGenerado = 0L;
+						//mapaIds.put(nbTbl.getNbTabla(), resultSet.getLong(1));
+						idGenerado = resultSet.getLong(1);
+					} else {						
 						if (!nbTbl.getIsReadOnly()) {
 							LOGGER.debug(queryInsert);
 							stmt = con.prepareStatement(queryInsert,
@@ -283,11 +284,13 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 							if (null != generatedKeys) {
 								Map<Object, Object> m = resultSetToArrayMap(generatedKeys);
 								BigDecimal id = (BigDecimal) m.get("value");
-								mapaIds.put(nbTbl.getNbTabla(), id.longValue());
+								//mapaIds.put(nbTbl.getNbTabla(), id.longValue());
+								idGenerado = id.longValue();
 							}
 						}
-						mapaIds.put(nbTbl.getNbTabla(), idGenerado);
+						
 					}
+					mapaIds.put(nbTbl.getNbTabla(), idGenerado);
 				}
 			} catch (SQLException e) {
 				mapaIds.put(nbTbl.getNbTabla(), null);
