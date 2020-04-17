@@ -2,11 +2,8 @@ package mx.com.teclo.siye.negocio.service.async;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.naming.NamingException;
-
-import org.hibernate.HibernateException;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.siye.persistencia.vo.async.ConfigCargaMasivaVO;

@@ -3,7 +3,7 @@ package mx.com.teclo.siye.persistencia.vo.async;
 public class ColumnaVO {
 	private String nbColumna;
 	private String cdTipo;
-	private Long nuOrden;
+	private Integer nuOrden;
 	private String txValorDefecto;
 	private Integer nuLongitudMax;
 	private Boolean stCampoFiltro;
@@ -20,10 +20,10 @@ public class ColumnaVO {
 	public void setCdTipo(String cdTipo) {
 		this.cdTipo = cdTipo;
 	}
-	public Long getNuOrden() {
+	public Integer getNuOrden() {
 		return nuOrden;
 	}
-	public void setNuOrden(Long nuOrden) {
+	public void setNuOrden(Integer nuOrden) {
 		this.nuOrden = nuOrden;
 	}
 	public String getTxValorDefecto() {

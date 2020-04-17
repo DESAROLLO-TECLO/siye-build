@@ -28,12 +28,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
-import mx.com.teclo.siye.persistencia.hibernate.dao.async.LayoutDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.async.TipoLayoutDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.LoteOrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
@@ -54,27 +54,18 @@ import mx.com.tecloreporte.jar.utils.comun.ConnectionUtilBd;
 @Service
 public class CargaMasivaServiceImpl implements CargaMasivaService {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CargaMasivaServiceImpl.class);
-	private static final String STRING_PATTERN_INSERT = "INSERT INTO ";
-	private static final String PIPE = "|";
-	private static final String DOS_PUNTOS = ":";
-	private static final String CARACTER_COMA = ",";
-	private static final String MSG_ERROR_QUERY_INVALIDO = "El comando es inseguro para su ejecucion";
-	private static final String MSG_ERROR_INSERCION_INCOMPLETA = "Fallaron inserts de la linea {0}";
 	private static final String MSG_BLOQUEANDO_ARCHIVO = "Bloqueando archivo ID {0} para iniciar su carga masiva ";
 	private static final String MSG_LEYENDO_ARCHIVO_LOTE = "Leyendo el archivo {0} para procesar lineas";
 	private static final String MSG_ACCEDIENDO_A_LA_RUTA = "Accediendo a la ruta de {0} {1} del archivo ID {2}";
 	private static final String MSG_ERROR_LECTURA_ARCHIVO = "No fue posible iniciar el proceso del archivo {0}";
-	private static final String MSG_ERROR_CONEXION_DB = "No fue posible establecer conexion con la bd para cargar el archivo {0}";
 	private static final String MSG_ERROR_SQL = "Error al ejecutar comando SQL {0}";
-	private static final String MSG_ERROR_TAMANIO_EXCEDE = "Err: Excede (max {0})";
-	private static final String MSG_ERROR_LINEA_DESAJUSTADA = "Err: Linea desajustada ({0} vs {1})";
-	private static final String MSG_ERROR_FORMATO_INVALIDO = "Err: Invalido (debe ser {0}) ";
-	private static final String MSG_ERROR_DATO_REQUERIDO = "Err: Falta dato (es requerido) ";
-	private static final String MSG_ERROR_BD_ODS = "Err: Inserci\u00F3n ODS fallida ";
-	private static final String MSG_LINEA_NOK = "Err: Linea con errores";
+	private static final String MSG_ERROR_TAMANIO_EXCEDE = "Err: Excede +{0} ";
+	private static final String MSG_ERROR_LINEA_DESAJUSTADA = "Err: Excede +{0} columnas";
+	private static final String MSG_ERROR_FORMATO_INVALIDO = "Err: No es {0}";
+	private static final String MSG_ERROR_DATO_REQUERIDO = "Err: Requerido ";
+	private static final String MSG_LINEA_NOK = "0";
+	private static final String TIE025D_IE_LOTE_ODS = ":TIE025D_IE_LOTE_ODS";
 
-	@Autowired
-	private LayoutDAO layoutDAO;
 	@Autowired
 	private TipoLayoutDAO tipoLayoutDAO;
 	@Autowired
@@ -82,14 +73,10 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	@Autowired
 	private StSeguimientoDAO seguimientoDAO;
 	@Autowired
-	private LayoutService layoutService;
-	@Autowired
-	private FileStorageService fileStorageService;
-
-	@Autowired
 	private ConnectionUtilBd conection;
 
 	@Override
+	@Async
 	public void procesarLineas(ConfigCargaMasivaVO config) throws BusinessException {
 		Connection con = null;
 		try {
@@ -127,12 +114,12 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 					continue;
 				}
 				if (isConFooter && reader.getLineNumber() == config.getConfigLote().getNuOdsReportados()) {
-					bw.write(CARACTER_COMA + linea);
+					bw.write(LayoutServiceImpl.CARACTER_COMA + linea);
 					bw.newLine();
 					continue;
 				}
 				try {
-					validarLinea(config, linea, CARACTER_COMA);
+					validarLinea(config, linea, LayoutServiceImpl.CARACTER_COMA);
 				} catch (IllegalArgumentException | BusinessException e) {
 					bw.write(e.getMessage());
 					bw.newLine();
@@ -140,11 +127,11 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 				}
 				Long idODS = 0L;
 				try {
-					idODS = insertarEnTablas(config, linea, CARACTER_COMA, con);
-					bw.write(idODS.toString() + CARACTER_COMA + linea);
+					idODS = insertarEnTablas(config, linea, LayoutServiceImpl.CARACTER_COMA, con);
+					bw.write(idODS.toString() + LayoutServiceImpl.CARACTER_COMA + linea);
 					bw.newLine();
 				} catch (Exception e) {
-					bw.write(BigDecimal.ZERO.longValue() + CARACTER_COMA + e.getMessage());
+					bw.write(BigDecimal.ZERO.longValue() + LayoutServiceImpl.CARACTER_COMA + e.getMessage());
 					bw.newLine();
 				}
 			}
@@ -171,6 +158,17 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 
 	}
 
+	/**
+	 * Busca registros por un campo filtro y recupera el ID para despu&eacute;s
+	 * reemplazarlo en el insert de la orden de servicio y ejecutar el comando SQL
+	 * 
+	 * @param config
+	 * @param linea
+	 * @param separador
+	 * @param con
+	 * @return
+	 * @throws BusinessException
+	 */
 	private Long insertarEnTablas(ConfigCargaMasivaVO config, String linea, String separador, Connection con)
 			throws BusinessException {
 		HashMap<String, Long> mapaIds = new HashMap<String, Long>();
@@ -180,50 +178,58 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 			return 0L;
 		}
 
-		String lineaResultado = linea;
+		String[] arrVal = linea.split(separador);
 
 		boolean isExitoso = true;
-		for (Entry<String, Long> referenciaTbl : mapaIds.entrySet()) {
-			if (referenciaTbl.getValue() == null) {
-				lineaResultado = lineaResultado.replace(DOS_PUNTOS + referenciaTbl.getKey(), "Err: Guardado fallido");
+		for (Entry<String, Long> refTbl : mapaIds.entrySet()) {
+			ColumnaVO campoFiltro = config.getConfigMoldesSQL().get(refTbl.getKey()).getColumnaFiltro();
+			int ordenColumna = campoFiltro.getNuOrden();
+			int ordenEnArray = ordenColumna == 0 ? 0 : ordenColumna -1;
+			if (refTbl.getValue() == null) {
+				arrVal[ordenEnArray] = "Err: Error en BD";
 				isExitoso = false;
-			} else if (referenciaTbl.getValue().longValue() == BigDecimal.ZERO.longValue()) {
-				lineaResultado = lineaResultado.replace(DOS_PUNTOS + referenciaTbl.getKey(),
-						"Err: Inexistente (no encontrado)");
+			} else if (refTbl.getValue().longValue() == BigDecimal.ZERO.longValue()) {				
+				arrVal[ordenEnArray] = "Err: No encontrado";
 				isExitoso = false;
 			}
 		}
 		if (!isExitoso) {
-			throw new BusinessException("Err: Datos referidos no encontrados");
+			String arrLinea = Arrays.toString(arrVal);
+			throw new BusinessException(arrLinea);
 		}
+
 		List<TablaDestinoVO> nbTbls = config.getConfigInsercion();
 		TablaDestinoVO ultimaTabla = nbTbls.get(nbTbls.size() - BigDecimal.ONE.intValue());
 
 		InsercionTablaVO configSQL = config.getConfigMoldesSQL().get(ultimaTabla.getNbTabla());
 		String queryInsert = new String(configSQL.getInsertSQL());
-		LOGGER.debug("Q1 original "+queryInsert);
-		
+		LOGGER.debug("Q1 original " + queryInsert);
+
 		for (Entry<String, Long> tblRef : mapaIds.entrySet()) {
-			queryInsert = queryInsert.replace(DOS_PUNTOS+tblRef.getKey(), tblRef.getValue().toString());			
+			queryInsert = queryInsert.replace(LayoutServiceImpl.CARACTER_DOS_PUNTOS + tblRef.getKey(),
+					tblRef.getValue().toString());
 		}
-		
+
+		// Aplicamos en duro el id del lote
+		queryInsert = queryInsert.replace(TIE025D_IE_LOTE_ODS, config.getConfigLote().getIdLoteOds().toString());
+
 		queryInsert = formatearSQL(queryInsert, linea, separador);
-		LOGGER.debug("Q2 aplicado formatearSQL "+queryInsert);
-		
-		queryInsert = queryInsert.replace("\\,",",");
-		LOGGER.debug("Q3 removiendo slash "+queryInsert);
-		
+		LOGGER.debug("Q2 aplicado formatearSQL " + queryInsert);
+
+		queryInsert = queryInsert.replace("\\,", ",");
+		LOGGER.debug("Q3 removiendo slash " + queryInsert);
+
 		configSQL.setInsertSQL(queryInsert);
-		//Long id = insertarOrdenServicio(config, linea, separador, con);
-				
+		// Long id = insertarOrdenServicio(config, linea, separador, con);
+
 		LOGGER.info("Insertando ODS");
 		Long idGenerado = 0L;
-		
-		String campoID = configSQL.getCampoID();
-		
+
+		String campoID = configSQL.getCampoID().getNbColumna();
+
 		try {
-			LOGGER.debug("Q4 previo a la busqueda "+queryInsert);
-			
+			LOGGER.debug("Q4 previo a la busqueda " + queryInsert);
+
 			PreparedStatement stmt = con.prepareStatement(queryInsert);
 			stmt = con.prepareStatement(queryInsert, new String[] { campoID });
 			stmt.executeUpdate();
@@ -241,6 +247,17 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		return idGenerado;
 	}
 
+	/**
+	 * Obtiene el mapa de identificadores de los registros a los que hace referencia
+	 * la orden de servicio que ser&aacute; insertada
+	 * 
+	 * @param config
+	 * @param linea
+	 * @param separador
+	 * @param con
+	 * @return
+	 * @throws BusinessException
+	 */
 	private HashMap<String, Long> obtenerIDsTblsRef(ConfigCargaMasivaVO config, String linea, String separador,
 			Connection con) throws BusinessException {
 		HashMap<String, Long> mapaIds = new HashMap<String, Long>();
@@ -259,7 +276,8 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 						Long idGenerado = 0L;
 						if (!nbTbl.getIsReadOnly()) {
 							LOGGER.debug(queryInsert);
-							stmt = con.prepareStatement(queryInsert, new String[] { configSQL.getCampoID() });
+							stmt = con.prepareStatement(queryInsert,
+									new String[] { configSQL.getCampoID().getNbColumna() });
 							stmt.executeUpdate();
 							ResultSet generatedKeys = stmt.getGeneratedKeys();
 							if (null != generatedKeys) {
@@ -279,6 +297,13 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 
 	}
 
+	/**
+	 * Recupera los datos del resultado de la ejecuci&oacute;n de un comando SQL
+	 * 
+	 * @param rs
+	 * @return
+	 * @throws SQLException
+	 */
 	private Map<Object, Object> resultSetToArrayMap(ResultSet rs) throws SQLException {
 		ResultSetMetaData md = rs.getMetaData();
 		int columns = md.getColumnCount();
@@ -293,6 +318,13 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		return row;
 	}
 
+	/**
+	 * Cuenta las l&iacute;neas de un archivo
+	 * 
+	 * @param aFile
+	 * @return
+	 * @throws IOException
+	 */
 	public static int countLines(File aFile) throws IOException {
 		LineNumberReader reader = null;
 		try {
@@ -308,6 +340,14 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		}
 	}
 
+	/**
+	 * Regresa verdadero si se espera encontrar una l&iacute;nea de t&iacute;tulos o
+	 * resumen en el csv (header y footer)
+	 * 
+	 * @param config
+	 * @param seccionTipo
+	 * @return
+	 */
 	private boolean isConSeccionTipo(ConfigCargaMasivaVO config, SeccionLayoutEnum seccionTipo) {
 		List<ColumnaVO> cols = config.getConfigSecciones().get(seccionTipo.getCdIndicadorReg());
 		return (cols != null && !cols.isEmpty());
@@ -337,23 +377,19 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		loteDTO.setFhModificacion(new Date());
 		loteDTO.setNuOdsReportados(lineas);
 		loteDAO.update(loteDTO);
-//		loteDAO.flush();
+		loteDAO.flush();
 	}
 
-	private HashMap<String, InsercionTablaVO> generarQueriesSQL(ConfigCargaMasivaVO config, String linea) {
-		HashMap<String, InsercionTablaVO> map = new LinkedHashMap<>();
-		for (TablaDestinoVO nbTabla : config.getConfigInsercion()) {
-			InsercionTablaVO insercionTablaVO = config.getConfigMoldesSQL().get(nbTabla.getNbTabla());
-			String selectFormateado = formatearSQL(insercionTablaVO.getSelectSQL(), linea,
-					LayoutServiceImpl.CARACTER_COMA);
-			String insertFormateado = formatearSQL(insercionTablaVO.getInsertSQL(), linea,
-					LayoutServiceImpl.CARACTER_COMA);
-
-			map.put(nbTabla.getNbTabla(), new InsercionTablaVO(insertFormateado, selectFormateado));
-		}
-		return map;
-	}
-
+	/**
+	 * Valida tama&ntilde;o, longitud y formato de todas las columnas de una
+	 * l&iacute;nea
+	 * 
+	 * @param config
+	 * @param linea
+	 * @param separador
+	 * @throws IllegalArgumentException
+	 * @throws BusinessException
+	 */
 	private void validarLinea(ConfigCargaMasivaVO config, String linea, String separador)
 			throws IllegalArgumentException, BusinessException {
 
@@ -385,7 +421,8 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	}
 
 	/**
-	 * Valida si falta un dato, si excede tama&ntilde;o o es formato inv&aacute;lido
+	 * Valida por columna si falta un dato, si excede tama&ntilde;o o es formato
+	 * inv&aacute;lido
 	 * 
 	 * @param col
 	 * @param valor
@@ -415,7 +452,8 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	}
 
 	/**
-	 * Comprueba que el dato recibido es convertible al tipo objeto java deseado
+	 * Comprueba que el dato recibido es convertible al tipo objeto java configurado
+	 * en BD
 	 * 
 	 * @param tipo
 	 * @param valor
@@ -444,7 +482,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 
 				SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 				sdf.setLenient(false);
-				Date c = sdf.parse(valor);
+				sdf.parse(valor);
 				break;
 			}
 		} catch (Exception e) {
@@ -452,6 +490,13 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		}
 	}
 
+	/**
+	 * Reemplaza el tipo dato java por uno reconocido por un usuario no t&eacute;cnico
+	 * 
+	 * @param tipoDato
+	 * @param formato
+	 * @return
+	 */
 	private String traducirTipo(String tipoDato, String formato) {
 		switch (tipoDato) {
 		case "Integer":
@@ -471,6 +516,14 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 
 	}
 
+	/**
+	 * Sustituye en el query molde el valor que le corresponde por columna
+	 * 
+	 * @param molde
+	 * @param linea
+	 * @param separador
+	 * @return
+	 */
 	private String formatearSQL(String molde, String linea, String separador) {
 		String nvaLineaValores = separador + linea;
 		String[] arrayValores = nvaLineaValores.split(separador);
@@ -484,36 +537,6 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 			query = molde;
 		}
 		return query;
-
-	}
-
-	private Long insertarOrdenServicio(ConfigCargaMasivaVO config, String linea, String separador, Connection con) throws BusinessException {
-		LOGGER.info("Insertat ODS");
-		Long idGenerado = 0L;
-		List<TablaDestinoVO> nbTbls = config.getConfigInsercion();
-		TablaDestinoVO ultimaTabla = nbTbls.get(nbTbls.size() - 1);
-
-		InsercionTablaVO configSQL = config.getConfigMoldesSQL().get(ultimaTabla.getNbTabla());
-		String queryInsert = formatearSQL(configSQL.getInsertSQL(), linea, separador);
-	
-		String campoID = configSQL.getCampoID();
-		LOGGER.info("Q4 previo a la busqueda "+queryInsert);
-		try {
-			PreparedStatement stmt = con.prepareStatement(queryInsert);
-			stmt = con.prepareStatement(queryInsert, new String[] { campoID });
-			stmt.executeUpdate();
-			ResultSet generatedKeys = stmt.getGeneratedKeys();
-			if (null != generatedKeys) {
-				Map<Object, Object> m = resultSetToArrayMap(generatedKeys);
-				BigDecimal id = (BigDecimal) m.get("value");
-				idGenerado = id.longValue();
-			}
-		} catch (SQLException e) {
-			LOGGER.error(e.getMessage());
-			throw new BusinessException("Err: Guardado fallido");
-		}
-
-		return idGenerado;
 
 	}
 }
