@@ -93,6 +93,9 @@ public class EncuestaDetalleDTO implements Serializable {
 
 	/*(name = "NU_TIEMPO", nullable = false, precision = 1, scale = 0)
 	private Integer nuTiempo;*/
+	
+    @Column(name = "NU_MAX_IMAGENES", nullable = false)
+    private Long nuMaxImagenes;
 
 	public EncuestaDetalleDTO() {
 	}
@@ -254,6 +257,14 @@ public class EncuestaDetalleDTO implements Serializable {
 		this.nuSecciones = nuSecciones;
 	}
 
+	public Long getNuMaxImagenes() {
+		return nuMaxImagenes;
+	}
+
+	public void setNuMaxImagenes(Long nuMaxImagenes) {
+		this.nuMaxImagenes = nuMaxImagenes;
+	}
+
 	/**
 	 * @return the nuTiempo
 	 */
@@ -267,5 +278,7 @@ public class EncuestaDetalleDTO implements Serializable {
 	/*public void setNuTiempo(Integer nuTiempo) {
 		this.nuTiempo = nuTiempo;
 	}*/
+	
+	
 
 }

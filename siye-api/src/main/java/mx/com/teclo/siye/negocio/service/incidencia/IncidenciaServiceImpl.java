@@ -17,12 +17,14 @@ import mx.com.teclo.siye.negocio.service.expedienteImg.ExpedienteImgService;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.OdsIncidenciaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.CentroInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.procesos.IEProcesosDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.OdsIncidenciaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesos.IEprocesosDTO;
@@ -31,6 +33,7 @@ import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.AltaIncidenciaVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.IncidencVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.IncidenciaVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
 
 @Service
 public class IncidenciaServiceImpl implements IncidenciaService {
@@ -62,6 +65,9 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 	@Autowired
 	private OrdenServicioDAO ordenServicioDAO;
 	
+	@Autowired
+	private CentroInstalacionDAO centroInstalacionDAO;
+	
 	private static final String MSG_ERROR_INCIDENCIA_NULA = "No se encontraron incidencias";
 	private static final String MSG_ERROR_IMAGEN_NULA = "La imagen esta vac\u00EDa";
 	private static final String MSG_ERROR_DESCRIPCION_NULA = "La descripci\u00f3n esta vac\u00EDa";
@@ -83,7 +89,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 	
 	@Override
 	@Transactional
-	public Boolean  altaIncidencia(AltaIncidenciaVO altaIncidenciaVO)  throws BusinessException{
+	public String altaIncidencia(AltaIncidenciaVO altaIncidenciaVO)  throws BusinessException{
 		try {
 			ConfiguracionVO configuracionVO = catalogoService.configuracion("TIE051D_IMG_REQ");
 			if (configuracionVO.getCdValorPConfig() == "Si") {
@@ -96,10 +102,10 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 			e1.printStackTrace();
 		}
 		IncidenciaDTO incidenciaDTO = new IncidenciaDTO();
-		Boolean respuesta = false;
-		Boolean respuestaIncidencia = false;
-		Boolean respuestaOdsIncidencia = false;
-		Boolean respuestaFinal = false;
+		String respuesta = "";
+		String respuestaIncidencia = "";
+		String respuestaOdsIncidencia = "";
+		String respuestaFinal = "";
 		SimpleDateFormat sdf2 = new SimpleDateFormat("yy");
 		Date date = new Date();
 		String year = sdf2.format(date);
@@ -149,10 +155,20 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		incidenciaDTO.setiEproceso(procesoDTO);
 
 		try {
+			CentroInstalacionVO centroInstalacionVO = catalogoService.getModAten();
+			CentroInstalacionDTO centroInstalacionDTO = new CentroInstalacionDTO();
+			centroInstalacionDTO = centroInstalacionDAO.findOne(centroInstalacionVO.getIdCentroInstalacion());
+			incidenciaDTO.setCentroInstalacion(centroInstalacionDTO);
 			incidenciaDAO.save(incidenciaDTO);
-			respuesta = true;
+			respuesta = "";
+		} catch (Exception e) {
+			respuesta = "Error al guardar la incidencia. ";
+		}
+		
+		try {
+			incidenciaDAO.save(incidenciaDTO);
 			if (altaIncidenciaVO.getListImagen() == null || altaIncidenciaVO.getListImagen().isEmpty()) {
-				respuestaIncidencia = true;
+				respuestaIncidencia = "";
 			} else {
 				respuestaIncidencia = expedienteImgService.saveImagenIncidencia(altaIncidenciaVO.getListImagen(), incidenciaDTO);
 			}
@@ -163,16 +179,17 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 				odsIncidenciaDTO.setIdOrdenServicio(ordenServicioDTO);
 				odsIncidenciaDAO.save(odsIncidenciaDTO);
 			}
-			respuestaOdsIncidencia = true;
+			respuestaOdsIncidencia = "";
 		} catch (Exception e) {
-			respuesta = false;
-			respuestaOdsIncidencia = false;
+			respuestaOdsIncidencia = "Error al guardar la relacion con la orden de servicio.";
 		}
-		if (respuesta == true && respuestaIncidencia == true && respuestaOdsIncidencia == true) {
-			respuestaFinal = true;
+		if (respuesta == "" && respuestaIncidencia == "" && respuestaOdsIncidencia == "") {
+			respuestaFinal = "Se guardo la incidencia correctamente con folio: " +  cdIncidencia;
+			
 		} else {
-			respuestaFinal = false;
-		}
+			respuestaFinal = respuesta + respuestaIncidencia + respuestaOdsIncidencia;
+			
+		} 
 		return respuestaFinal;
 	}
 	

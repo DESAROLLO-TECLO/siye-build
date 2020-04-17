@@ -66,8 +66,20 @@ public class OrdenServicioRestController {
 	
 	@RequestMapping(value="/guardarReporteBd", method= RequestMethod.POST)
 //	@PreAuthorize("hasAnyAuthority('NUEVO_REPORTE')")
-	public ResponseEntity<OrdenServiVO> guardarOrdenServicio(@RequestBody OrdenServiVO ordenServiVO) throws NotFoundException{
-		ordenServicioService.saveOrdenServicio(ordenServiVO);
-		return new ResponseEntity<OrdenServiVO>(ordenServiVO, HttpStatus.CREATED);
+	public ResponseEntity<OrdenServiVO> guardarOrdenServicio(
+		@RequestBody OrdenServiVO ordenServiVO
+	)throws Exception, BusinessException, NotFoundException{
+		String mensajeErr = "";
+		try {
+			ordenServicioService.saveOrdenServicio(ordenServiVO);
+			return new ResponseEntity<OrdenServiVO>(ordenServiVO, HttpStatus.CREATED);
+		} catch (Exception e) {
+			if(mensajeErr != null && !mensajeErr.isEmpty() && !mensajeErr.equals(null)) {
+				throw new NotFoundException(mensajeErr);
+			} else {
+				e.printStackTrace();
+				throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
+			}
+		}
 	}
 }

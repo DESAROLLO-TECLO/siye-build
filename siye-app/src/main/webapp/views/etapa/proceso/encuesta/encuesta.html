@@ -19,8 +19,7 @@
 	</section>
 
 	<!-- Incidencia -->
-	<boton-incidencia id-orden="" id-proceso="" id-encuesta=""
-		id-pregunta=""></boton-incidencia>
+	<boton-incidencia ng-click="guardaAvancePorPagina(paramConfigPage.bigCurrentPage)" id-orden="ordSer" id-proceso="idProc" id-encuesta="idEnc"></boton-incidencia>
 
 	<section class="content">
 		<div class="row">
@@ -32,6 +31,19 @@
 						</div>
 						<div class="panel-body">
 							<div class="row">
+							                            <div class="col-md-6 col-sm-6 ">
+                                <div class="form-group">
+                                    <span class="glyphicon glyphicon glyphicon-time" aria-hidden="true"></span>
+                                    <label>
+                                        <div ng-if="tiempoTranscurridoEncuesta >0">
+                                            <span class="etapa-texto">
+                                                Tiempo Transcurrido: {{horas<10?formato:''}}{{horas}}:{{minutos<10?formato:''}}{{minutos}}:{{segundos<10?formato:''}}{{segundos}}
+                                            </span>
+                                        </div>
+                                    </label>
+                                    
+                                </div>
+                            </div>
 								<div class="col-md-12">
 									<div class="row">
 										<div class="col-md-5">
@@ -76,10 +88,9 @@
 
 										<div class="col-md-2">
 											<div style="float: right;">
-												<a class="btn btn-primary" href="#" role="button"> <span
-													class="glyphicon glyphicon-picture" aria-hidden="true"></span>
-													Agregar Evidencia
-												</a>
+												<update-image id-element-up="Encuesta" show-in-modal="true"
+													param-conf-sav="paramEncImg" max-nu-image="{{numMaxImgEnc}}"
+													param-conf-component="paramConfigImgEnc" list-images="{{listImagesEnc}}"></update-image>
 											</div>
 										</div>
 									</div>
@@ -165,6 +176,7 @@
 																								ng-if="!opciones.cdMostrarCausas || (opciones.cdMostrarCausas && opciones.causas)"
 																								style="display: inline-block;">
 																								<label class="content-input"> <input
+																									ng-disabled="estatusEncuesta=='FIN'"
 																									type="radio" name="{{respuesta.txPregunta}}"
 																									id="{{opciones.idOpcion}}" ng-value=1
 																									ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
@@ -177,6 +189,7 @@
 																								ng-if="opciones.cdMostrarCausas && !opciones.causas"
 																								style="display: inline-block;">
 																								<label class="content-input"> <input
+																									ng-disabled="estatusEncuesta=='FIN'"
 																									type="radio" name="{{respuesta.txPregunta}}"
 																									id="{{opciones.idOpcion}}" ng-value=1
 																									ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
@@ -211,9 +224,10 @@
 																				</div>
 																				<div class="col-md-1 col-sm-1 col-xs-6">
 																					<div class="media add-img">
-																						<a href="#"> <img class="add-img-img"
-																							src="static/dist/img/etapas/add.png">
-																						</a>
+																						<update-image id-element-up="Pregunta{{respuesta.idPregunta}}" show-in-modal="true"
+																							param-conf-sav="respuesta.paramPregImg" max-nu-image="{{respuesta.nuMaxImagenes}}"
+																							param-conf-component="paramConfigImgxPreg" list-images="{{respuesta.listImagesxPreg}}">
+																						</update-image>
 																					</div>
 																				</div>
 																			</div>
@@ -333,7 +347,8 @@
 																					ng-required="true" data-max-options="5"
 																					ng-model="causas" name="causa" id="causa"
 																					ng-change="changeComboCausa()"
-																					ng-options="sp.idCausa as sp.nbCausa for sp in comboCausasList">
+																					ng-options="sp.idCausa as sp.nbCausa for sp in comboCausasList"
+																					ng-disabled="estatusEncuesta=='FIN'">
 
 																				</select>
 																			</div>
@@ -349,8 +364,9 @@
 																			ng-disabled="true" style="resize: none;">{{nbCausa+""}}</textarea>
 																	</div>
 																	<div class="col-md-12">
-																		<label> *Descripción: </label>
+																		<label> Descripción: </label>
 																		<textarea ng-model="descripcionCausa"
+																			ng-disabled="estatusEncuesta=='FIN'"
 																			class="form-control" rows="4"></textarea>
 																	</div>
 																</div>
@@ -359,6 +375,7 @@
 																<!--  <button type="button" class="btn btn-default"
 																	data-dismiss="modal">Salir sin guardar</button>-->
 																<button type="button" class="btn btn-primary"
+																	ng-disabled="estatusEncuesta=='FIN'"
 																	ng-click="guardarCausa()">Guardar</button>
 															</div>
 														</div>
@@ -368,11 +385,16 @@
 											<br>
 											<div class="row">
 												<div class="col-md-6">
-													<!--
+
+
 													<div style="float: left;">
-														<button type="button" class="btn btn-danger">Regresar</button>
+														
+														<button class="btn btn-danger" ng-show="estatusEncuesta=='FIN'"
+															ng-click="regresarEncuestas() ">
+															<div style="display: block;">Regresar</div>
+														</button>
 													</div>
-													-->
+
 
 												</div>
 												<div class="col-md-6">
@@ -389,8 +411,28 @@
 																</a>
 															</div>
 															<button class="btn btn-danger w-100 mb-2"
+																ng-disabled="estatusEncuesta=='FIN'"
 																ng-click="guardaFinalizaEncuesta(paramConfigPage.bigCurrentPage) ">
 																<div style="display: block;">Finalizar</div>
+															</button>
+														</div>
+														<div
+															ng-if="preguntasContestadasEncuesta!=encuestaDetalle.encuesta.nuPreguntas && banderaPermiteGuardarAvance=='VERDADERO'"
+															class="w-100">
+															<div style="display: block; margin: 0 auto;"
+																ng-if="myVar">
+																<a href="#" data-toggle="tooltipinfo"
+																	data-placement="right"
+																	title="Pausar la evaluación y continuar en otro momento"
+																	aria-disabled="true"> <i
+																	class="glyphicon glyphicon-question-sign toolTipInfo"></i>
+																</a>
+															</div>
+															<button id="guardarAvance"
+																class="btn btn-danger w-100 mb-2"
+																ng-click="pausarEncuesta(paramConfigPage.bigCurrentPage,paramConfigPage.tiempoEncuesta)">
+																<div style="display: block;">Guardar Avance Y
+																	Salir</div>
 															</button>
 														</div>
 													</div>

@@ -33,6 +33,7 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
 		c.createAlias("vehiculo", "vehiculo");
 		c.createAlias("centroInstalacion", "centroInstalacion");
+		c.add(Restrictions.sqlRestriction("trunc(FH_CITA) = trunc(?)", new Date(), org.hibernate.type.StandardBasicTypes.DATE));
 		c.add(Restrictions.eq("vehiculo.cdPlacaVehiculo", valor));
 		c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
 		c.add(Restrictions.eq("stActivo", true));
@@ -44,6 +45,7 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 	public List<OrdenServicioDTO> consultaOrdenByOrdenServicio(String valor, Long idCentroInstalacion) {
 		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
 		c.createAlias("centroInstalacion", "centroInstalacion");
+		c.add(Restrictions.sqlRestriction("trunc(FH_CITA) = trunc(?)", new Date(), org.hibernate.type.StandardBasicTypes.DATE));
 		c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
 		c.add(Restrictions.eq("cdOrdenServicio", valor));
 		c.add(Restrictions.eq("stActivo", true));
@@ -56,6 +58,7 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
 		c.createAlias("vehiculo", "vehiculo");
 		c.createAlias("centroInstalacion", "centroInstalacion");
+		c.add(Restrictions.sqlRestriction("trunc(FH_CITA) = trunc(?)", new Date(), org.hibernate.type.StandardBasicTypes.DATE));
 		c.add(Restrictions.eq("vehiculo.cdVin", valor));
 		c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
 		c.add(Restrictions.eq("stActivo", true));

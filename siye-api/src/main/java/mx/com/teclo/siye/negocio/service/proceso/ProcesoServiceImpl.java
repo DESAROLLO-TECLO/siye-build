@@ -134,6 +134,9 @@ public class ProcesoServiceImpl implements ProcesoService {
         	ordenServicioDTO=getInfoBasicaOrdenServicio(idSolicitud);
 			for(PlanProcesoVO actual:plan)
 			{
+				actual.getProceso().setFechaInicioProceso(obtenerFechaInicioProceso(actual.getProceso().getIdProceso(),idSolicitud));
+				actual.getProceso().setFechaFinProceso(obtenerFechaFinProceso(actual.getProceso().getIdProceso(),idSolicitud));
+
                  if(banderaMostrarContestados)
                  { 
                 	 if(actual.getProceso().getIdProceso()<=(ordenServicioDTO.getProceso()!=null?ordenServicioDTO.getProceso().getIdProceso():procesoEncuestaDTO.get(0).getIdProceso().getIdProceso()))
@@ -400,7 +403,7 @@ public class ProcesoServiceImpl implements ProcesoService {
                 orden.setEncuesta(encuestasDAO.findOne(procesoEncuestasSiguiente.get(0).getIdEncuesta().getIdEncuesta()));
                 ordenServicioDAO.update(orden);
                 //validar si se iniciara cuando termine la ultima encuesta del anterior proceso o al inicar la primera encuesta de este proceso
-                servicioEncuestasMyBatisDAO.iniciarProceso(idOrdenServicio, procesoSiguiente);
+                //servicioEncuestasMyBatisDAO.iniciarProceso(idOrdenServicio, procesoSiguiente);
 			}else
 			{
 				orden.setStSeguimiento(stSeguimientoDAO.obtenerStSeguimientoByCodigo("FINALIZADO"));
@@ -437,6 +440,12 @@ public class ProcesoServiceImpl implements ProcesoService {
 			return servicioEncuestasMyBatisDAO.getFechaFinEncuesta(idOdsEncuesta);
 		}
 	
+		@Override
+		@Transactional
+		public Boolean iniciarTiempoProceso (Long idOrdenServicio, Long idProceso)
+		{
+			return servicioEncuestasMyBatisDAO.iniciarProceso(idOrdenServicio, idProceso);
+		}
 		
 
 }

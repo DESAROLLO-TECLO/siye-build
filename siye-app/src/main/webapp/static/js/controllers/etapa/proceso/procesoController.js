@@ -5,8 +5,13 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
     $rootScope.idProceso = procesoInfo.data[0].idProceso.idProceso;
     $scope.idOrdenServicio=idord;
 	$scope.idProcesoActual=idpro;
-    $scope.stActivarEncuesta = procesoInfo.data[3].stSatisfaccion;
     $scope.numOrden = $rootScope.numOS;
+    $scope.encuestas=procesoInfo.data;
+    $scope.formato = '0';
+    $scope.tiempoTranscurridoText = "Sin Iniciar";
+	
+	
+	
 
     $scope.numMaxImgPro = procesoInfo.data[0].idProceso.nuMaxImagenes;    
     $scope.listImagesPro = [];
@@ -25,18 +30,41 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
         $scope.dataEtapa = procesoInfo.data;
         $rootScope.nomSeguimiento = $scope.nombreEtapa;
         $scope.tiempoTranscurrido = 0;
-        for(let i = 0; i < procesoInfo.data.length; i++){
-            let finit = procesoInfo.data[i].idEncuesta.fechaInicioEncuesta;
-            let ffin = procesoInfo.data[i].idEncuesta.fechaFinEncuesta;
+        
+        	let parcial=new Date();
+            let finit = procesoInfo.data[0].fechaInicioProceso;
+            let ffin = procesoInfo.data[0].fechaFinProceso;
             if(finit != null && ffin != null){
                 $scope.tiempoTranscurrido += ffin - finit;
-            }else{
-                $scope.tiempoTranscurridoText = "Sin validar";
+            }else if(finit != null)
+            {
+            	$scope.tiempoTranscurrido += parcial-finit;
             }
+            for(let i = 0; i < procesoInfo.data.length; i++){
+            if(procesoInfo.data[i].idEncuesta.cdEncuesta == "SAT02"|| procesoInfo.data[i].idEncuesta.cdEncuesta == "SAT01"){
+                $scope.stActivarEncuesta = procesoInfo.data[i].stSatisfaccion;
+            }
+
         }
     }else{
         growl.error('No se logró recuperar el  registro solicitado', {title: '-ERROR-'});
     }
+    
+      cambiaTiempo = function(tiempoTranscurridoFormato) {
+    	    if(tiempoTranscurridoFormato)
+    		{
+    	  	  var ms = tiempoTranscurridoFormato % 1000;
+    	  	tiempoTranscurridoFormato = (tiempoTranscurridoFormato - ms) / 1000;
+    		  var secs = tiempoTranscurridoFormato % 60;
+    		  tiempoTranscurridoFormato = (tiempoTranscurridoFormato - secs) / 60;
+    		  var mins = tiempoTranscurridoFormato % 60;
+    		  var hrs = (tiempoTranscurridoFormato - mins) / 60
+
+        $scope.segundo = secs;
+        $scope.minuto = mins;
+        $scope.hora = hrs;
+    		}
+    };
 
     $scope.activarEncuesta = function(idEncuesta){
         $scope.stActivarEncuesta = !$scope.stActivarEncuesta;
@@ -58,9 +86,11 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
     		{
     		encuestaService.primerEncuestaPrimerProceso=EncuestasInfo[0].idEncuesta.idEncuesta;
     		}
+    	encuestaService.primerEncuesta=EncuestasInfo[0].idEncuesta.idEncuesta;
     	
     }
     
     obtenerPrimeraEncuestaPrimerProceso(procesoInfo.data);
+    cambiaTiempo($scope.tiempoTranscurrido);
     
 });

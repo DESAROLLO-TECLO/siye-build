@@ -4,6 +4,9 @@ function($http, config, $rootScope) {
 	
     primerProceso=undefined;
     primerEncuestaPrimerProceso=undefined;
+	primerEncuesta=undefined;
+    
+
 
 
     this.getInfoEncuesta = function(idEncuesta,idOrden){
@@ -59,6 +62,15 @@ function($http, config, $rootScope) {
         return $http.get(config.baseUrl + "/proceso/avanzarEncuestaProceso", {
             params:{
                 "idOrdenServicio": idOrden
+            }
+        });
+    };
+    
+    this.iniciarTiempoProceso = function(idOrden,idProceso){
+        return $http.get(config.baseUrl + "/proceso/iniciarTiempoProceso", {
+            params:{
+                "idOrdenServicio": idOrden,
+                "idProceso": idProceso
             }
         });
     };
