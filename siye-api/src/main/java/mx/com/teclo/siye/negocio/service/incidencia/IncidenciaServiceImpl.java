@@ -17,12 +17,14 @@ import mx.com.teclo.siye.negocio.service.expedienteImg.ExpedienteImgService;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.OdsIncidenciaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.CentroInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.procesos.IEProcesosDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.OdsIncidenciaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesos.IEprocesosDTO;
@@ -31,6 +33,7 @@ import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.AltaIncidenciaVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.IncidencVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.IncidenciaVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
 
 @Service
 public class IncidenciaServiceImpl implements IncidenciaService {
@@ -61,6 +64,9 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 	
 	@Autowired
 	private OrdenServicioDAO ordenServicioDAO;
+	
+	@Autowired
+	private CentroInstalacionDAO centroInstalacionDAO;
 	
 	private static final String MSG_ERROR_INCIDENCIA_NULA = "No se encontraron incidencias";
 	private static final String MSG_ERROR_IMAGEN_NULA = "La imagen esta vac\u00EDa";
@@ -149,6 +155,10 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		incidenciaDTO.setiEproceso(procesoDTO);
 
 		try {
+			CentroInstalacionVO centroInstalacionVO = catalogoService.getModAten();
+			CentroInstalacionDTO centroInstalacionDTO = new CentroInstalacionDTO();
+			centroInstalacionDTO = centroInstalacionDAO.findOne(centroInstalacionVO.getIdCentroInstalacion());
+			incidenciaDTO.setCentroInstalacion(centroInstalacionDTO);
 			incidenciaDAO.save(incidenciaDTO);
 			respuesta = "";
 		} catch (Exception e) {

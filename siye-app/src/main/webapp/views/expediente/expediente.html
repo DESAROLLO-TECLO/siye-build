@@ -42,7 +42,7 @@
 		                                    <div class="form-group"
 		                                        ng-class="{'has-error': (formBoxBusqueda.tipoBusqueda.$invalid && formBoxBusqueda.tipoBusqueda.$dirty) }">
 		                                        <label>
-		                                            *Tipo de Búsqueda
+		                                            *Tipo de Búsqueda:
 		                                        </label>
 		
 		                                        <div class="input-group">
@@ -65,11 +65,11 @@
 		                                	<div class="form-group"
 		                                        ng-class="{'has-error': (formBoxBusqueda.valor.$invalid && formBoxBusqueda.valor.$dirty) }">
 		                                        <label>
-		                                            *Valor de Búsqueda
+		                                            *Valor de Búsqueda:
 		                                        </label>
 		                                        <div class="input-group">
 		                                            <div class="input-group-addon">
-		                                                <i class="fa fa-calendar"></i>
+		                                                <i class="fa fa fa-search"></i>
 		                                            </div>
 		                                            <input class="form-control" id="valor" type="text" ng-required="busqueda.tpBusqueda != undefined"
 		                                                name="valor" idioma-dp="{{currentLanguage}}"
@@ -100,7 +100,7 @@
      		</div>
      	<!-- SECCION PARAMETROS DE BÚSQUEDA -->
      	<!-- SECCION PARA TABLA DE RESULTADOS -->
-     		<div class="col-xs-12 col-sm-12 col-md-12" ng-if="listOrdenExpediente != undefined && listOrdenExpediente.length > 0">
+     		<div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="box box-danger">
                     <div class="box-header with-border">
                      	<div class="row">
@@ -128,7 +128,7 @@
             					<div class="col-xs-12 col-ms-12 col-md-4">
             						<div class="form-group">
 										<label>
-											Proceso
+											Proceso:
 										</label>
 										<div class="input-group">
 											<div class="input-group-addon">
@@ -149,7 +149,7 @@
             					<div class="col-xs-12 col-ms-12 col-md-4">
 									<div class="form-group">
 										<label>
-											Encuesta
+											Encuesta:
 										</label>
 										<div class="input-group">
 											<div class="input-group-addon">
@@ -170,7 +170,7 @@
 								<div class="col-xs-12 col-ms-12 col-md-4">
 									<div class="form-group">
 										<label>
-											Pregunta
+											Pregunta:
 										</label>
 										<div class="input-group">
 											<div class="input-group-addon">
@@ -194,7 +194,6 @@
                			<update-image id-element-up="Encuesta" include="true" param-conf-sav="paramConfSav" max-nu-image="{{nuMaxImg}}"
                				param-conf-component="paramConfiguracion" list-images="{{listImages}}"></update-image>
 	                   	
-	                   
             			<div class="row">
         					<div class="col-xs-12 col-sm-12 col-md-12">
         						&nbsp;

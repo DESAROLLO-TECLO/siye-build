@@ -8,6 +8,7 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
     $scope.numOrden = $rootScope.numOS;
     $scope.encuestas=procesoInfo.data;
     $scope.formato = '0';
+    $scope.tiempoTranscurridoText = "Sin Iniciar";
 	
 	
 	
@@ -29,14 +30,17 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
         $scope.dataEtapa = procesoInfo.data;
         $rootScope.nomSeguimiento = $scope.nombreEtapa;
         $scope.tiempoTranscurrido = 0;
-        for(let i = 0; i < procesoInfo.data.length; i++){
-            let finit = procesoInfo.data[i].idEncuesta.fechaInicioEncuesta;
-            let ffin = procesoInfo.data[i].idEncuesta.fechaFinEncuesta;
+        
+        	let parcial=new Date();
+            let finit = procesoInfo.data[0].fechaInicioProceso;
+            let ffin = procesoInfo.data[0].fechaFinProceso;
             if(finit != null && ffin != null){
                 $scope.tiempoTranscurrido += ffin - finit;
-            }else{
-                $scope.tiempoTranscurridoText = "Sin validar";
+            }else if(finit != null)
+            {
+            	$scope.tiempoTranscurrido += parcial-finit;
             }
+            for(let i = 0; i < procesoInfo.data.length; i++){
             if(procesoInfo.data[i].idEncuesta.cdEncuesta == "SAT02"|| procesoInfo.data[i].idEncuesta.cdEncuesta == "SAT01"){
                 $scope.stActivarEncuesta = procesoInfo.data[i].stSatisfaccion;
             }

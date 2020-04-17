@@ -18,6 +18,11 @@ public class ProcesoVO {
 	private Date fhModificacion;
 	private Long nuMaxImagenes;
 	
+	//se agrega variables para fecha de inicio primer proceso y fecha fin ultimo procesos
+	
+    private Date fechaInicioProceso;
+	private Date fechaFinProceso;
+	
 	public Long getIdProceso() {
 		return idProceso;
 	}
@@ -77,6 +82,18 @@ public class ProcesoVO {
 	}
 	public void setNuMaxImagenes(Long nuMaxImagenes) {
 		this.nuMaxImagenes = nuMaxImagenes;
+	}
+	public Date getFechaInicioProceso() {
+		return fechaInicioProceso;
+	}
+	public void setFechaInicioProceso(Date fechaInicioProceso) {
+		this.fechaInicioProceso = fechaInicioProceso;
+	}
+	public Date getFechaFinProceso() {
+		return fechaFinProceso;
+	}
+	public void setFechaFinProceso(Date fechaFinProceso) {
+		this.fechaFinProceso = fechaFinProceso;
 	}
 	
 	

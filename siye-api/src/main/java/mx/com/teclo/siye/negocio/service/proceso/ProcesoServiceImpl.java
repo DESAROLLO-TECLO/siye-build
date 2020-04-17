@@ -134,6 +134,9 @@ public class ProcesoServiceImpl implements ProcesoService {
         	ordenServicioDTO=getInfoBasicaOrdenServicio(idSolicitud);
 			for(PlanProcesoVO actual:plan)
 			{
+				actual.getProceso().setFechaInicioProceso(obtenerFechaInicioProceso(actual.getProceso().getIdProceso(),idSolicitud));
+				actual.getProceso().setFechaFinProceso(obtenerFechaFinProceso(actual.getProceso().getIdProceso(),idSolicitud));
+
                  if(banderaMostrarContestados)
                  { 
                 	 if(actual.getProceso().getIdProceso()<=(ordenServicioDTO.getProceso()!=null?ordenServicioDTO.getProceso().getIdProceso():procesoEncuestaDTO.get(0).getIdProceso().getIdProceso()))

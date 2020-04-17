@@ -66,7 +66,7 @@
                         <br>
                         <div class="row">
                             <div class="col-sm-6 col-md-3" ng-repeat="item in dataEtapa">
-                                <div ng-if="item.idEncuesta.nbEncuesta != 'Satisfacción'">
+                                <div ng-if="item.idEncuesta.cdEncuesta != 'SAT02' && item.idEncuesta.cdEncuesta != 'SAT01'">
                                     <a ng-class="{'inactiv-click' : item.stActivaMostrar == false}" 
                                     href="#/etapas/proceso/encuesta/{{item.idEncuesta.idEncuesta}}/{{idOrdenServicio}}/{{idProcesoActual}}" 
                                     data-toggle="tooltip" data-placement="bottom" title="{{item.idEncuesta.txEncuesta}}" >
@@ -81,7 +81,7 @@
                                         </div>
                                     </a>
                                 </div>
-                                <div ng-if="item.idEncuesta.nbEncuesta == 'Satisfacción'">
+                                <div ng-if="item.idEncuesta.cdEncuesta == 'SAT02' || item.idEncuesta.cdEncuesta == 'SAT01'">
                                     <div class="dash-info" ng-class="{'color-fondo-contestado': item.stRespondida == true, 'color-fondo-desactivado': item.stActivaMostrar == false, 'color-fondo': item.stActivaMostrar == true}">
                                         <div class="dash-img">
                                             <img class="dash-img-img" 

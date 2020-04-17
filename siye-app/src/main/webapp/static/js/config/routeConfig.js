@@ -256,5 +256,10 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         templateUrl: "views/monitoreo/detalleSeguimientoOS.html",
         controller: "detalleSeguimientoOsController"
     });
-
+    
+    // Monitoreo Incidencias 
+    $routeProvider.when("/monIncidencia", {
+        templateUrl: "views/monitoreo/monIncidencia.html",
+        controller: "monIncidenciaController"
+    });
 });
