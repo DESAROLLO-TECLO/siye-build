@@ -12,6 +12,22 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     $scope.ordSer = $rootScope.idOrdenServ;
     $scope.idProc = $rootScope.idProceso;
     $scope.idEnc = encuestaInfo.data.encuesta.idEncuesta;
+    $scope.formato = '0';
+    $scope.tiempoTranscurridoEncuesta = 0;
+    var iniciarConteo = undefined;
+    
+ 
+    	let parcial=new Date();
+        let finit = encuestaInfo.data.intentoDetalleVO.fhInicio;
+        let ffin =  encuestaInfo.data.intentoDetalleVO.fhFin;
+        if(finit != null && ffin != null){
+            $scope.tiempoTranscurridoEncuesta += ffin - finit;
+        }else if(finit != null)
+        {
+        	$scope.tiempoTranscurridoEncuesta += parcial-finit;
+        }
+
+    
     
    $scope.numMaxImgEnc = encuestaInfo.data.encuesta.nuMaxImagenes;    
     $scope.listImagesEnc = [];
@@ -237,7 +253,9 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
             if (data == true) {
                 if ($scope.redireccionar) {
                     //$timeout(() => {
+                	$scope.flagTimer=false;
                         $scope.regresarEncuestas()
+                        
                     //}, 1000);
                 }
                 guardarSeccion = true;
@@ -395,6 +413,7 @@ $scope.finalizaEncuesta = function(tiempo) {
 $scope.testConfirmacion = function(object) {
     encuestaService.finalizaEncuesta($scope.detalleFinalEncuesta).success(function(data) {
         if (data != null) {
+        	$scope.flagTimer = false;
     	    encuestaService.avanzarProceso(encuestaInfo.data.usuario.idOrdenServicio).success(function(data) {
     	    }).error(function(data) {
     	        growl.error(data.message);
@@ -640,6 +659,84 @@ iniciarProcesoIndividual=function(statusEncuesta,idEncuesta,idOrdenServicio)
 
 }
 
+$scope.iniciarConteo = function() {
+    if($scope.estatusEncuesta!="FIN")
+    	{
+    	$scope.flagTimer=true;	
+    iniciarConteo = $interval($scope.observaTiempo, 1000);
+    	}
+    else
+{
+    cambiaTiempoEncuesta($scope.tiempoTranscurridoEncuesta);
+}
+
+};
+
+$scope.observaTiempo = function() {
+	if($scope.flagTimer)
+		{
+        	$scope.tiempoTranscurridoEncuesta+=1000;
+            cambiaTiempoEncuesta($scope.tiempoTranscurridoEncuesta);
+		}else
+			$interval.cancel(iniciarConteo);
+            	
+};
+
+cambiaTiempoEncuesta = function(tiempoTranscurridoFormato) {
+    if(tiempoTranscurridoFormato)
+	{
+  	  var ms = tiempoTranscurridoFormato % 1000;
+  	tiempoTranscurridoFormato = (tiempoTranscurridoFormato - ms) / 1000;
+	  var secs = tiempoTranscurridoFormato % 60;
+	  tiempoTranscurridoFormato = (tiempoTranscurridoFormato - secs) / 60;
+	  var mins = tiempoTranscurridoFormato % 60;
+	  var hrs = (tiempoTranscurridoFormato - mins) / 60
+
+$scope.segundos = secs;
+$scope.minutos = mins;
+$scope.horas = hrs;
+	}
+};
+
+var startWatchingTimer = $timeout(startWatchingForLocationChanges, 0, false);
+
+$scope.$on("$locationChangeSuccess", function handleLocationChangeSuccessEvent(event) {
+    $scope.currentLocation = $location.url();
+});
+
+var stopWatchingLocation = null;
+
+/*$scope.showConfirmacionSaliryLiberar = function(messageTo, action) {
+    ModalService.showModal({
+        templateUrl: 'views/templatemodal/templateModalConfirmacion.html',
+        controller: 'mensajeModalController',
+        inputs: { message: messageTo }
+    }).then(function(modal) {
+        modal.element.modal();
+        modal.close.then(function handleResolve(result) {
+            if (result) {
+                $location.path(targetPath)
+                    .search(targetSearch)
+                    .hash(targetHash);
+
+                stopWatchingLocation();
+
+                $scope.$applyAsync(startWatchingForLocationChanges);
+                action();
+            }
+        });
+    });
+};*/
+
+
+function handleLocationChangeStartEvent(event) {
+            $interval.cancel(iniciarConteo);
+};
+
+function startWatchingForLocationChanges() {
+    stopWatchingLocation = $scope.$on("$locationChangeStart", handleLocationChangeStartEvent);
+}
+
 iniciarProcesoIndividual(encuestaInfo.data.intentoDetalleVO.stEncuesta.cdStEncuesta,encuestaInfo.data.encuesta.idEncuesta,encuestaInfo.data.usuario.idOrdenServicio);
 
 
@@ -651,6 +748,7 @@ iniciarProcesoIndividual(encuestaInfo.data.intentoDetalleVO.stEncuesta.cdStEncue
     $scope.getPermiteGuardarAvance('PERMITIR_GUARDAR_AVANCE');
     $scope.getEncuestaOrden(encuestaInfo);
     iniciarProceso(encuestaInfo.data.intentoDetalleVO.stEncuesta.cdStEncuesta,encuestaInfo.data.encuesta.idEncuesta,encuestaInfo.data.usuario.idOrdenServicio);
+    $scope.iniciarConteo();
     
 });
 
