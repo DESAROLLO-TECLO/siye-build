@@ -49,7 +49,7 @@ public class LayoutDTO implements Serializable {
 	private String txValorDefecto;
 
 	@Column(name = "NU_ORDEN_REGISTRO")
-	private Long nuOrdenRegistro;
+	private Integer nuOrdenRegistro;
 
 	@Column(name = "TX_DESCRIPCION")
 	private String txDescripcion;
@@ -153,11 +153,11 @@ public class LayoutDTO implements Serializable {
 		this.txValorDefecto = txValorDefecto;
 	}
 
-	public Long getNuOrdenRegistro() {
+	public Integer getNuOrdenRegistro() {
 		return nuOrdenRegistro;
 	}
 
-	public void setNuOrdenRegistro(Long nuOrdenRegistro) {
+	public void setNuOrdenRegistro(Integer nuOrdenRegistro) {
 		this.nuOrdenRegistro = nuOrdenRegistro;
 	}
 

@@ -24,7 +24,7 @@ import mx.com.teclo.siye.util.enumerados.SeccionLayoutEnum;
 
 @Repository
 public class LayoutDAOImpl extends BaseDaoHibernate<LayoutDTO> implements LayoutDAO {
-	private static final String QUERY_GET_NBS_COLUMNAS = "SELECT d.NB_CAMPO as nbColumna, NVL(l.NU_ORDEN_REGISTRO, 0) AS nuOrden, NVL(l.CD_TIPO_DATO, CASE WHEN D.NB_CAMPO LIKE 'ST%' THEN 'Boolean' WHEN D.NB_CAMPO LIKE 'ID%' THEN 'Long' WHEN D.NB_CAMPO LIKE 'FH%' THEN 'Date' ELSE 'String' END) AS cdTipo, d.TX_VALOR_DEFECTO as txValorDefecto, NVL(l.NU_LONGITUD_MAX, d.NU_LONGITUD) AS nuLongitudMax, d.ST_CAMPO_FILTRO AS stCampoFiltro FROM TIE055C_IE_LAYOUT l RIGHT OUTER JOIN TIE056C_IE_TABLA_DESTINO d ON l.ID_TABLA_DESTINO = d.ID_TABLA_DESTINO WHERE d.NB_TABLA = :nbTabla AND d.ST_ACTIVO = 1 AND (d.ST_PERMITE_NULO = 0 OR l.ID_TABLA_DESTINO IS NOT NULL)";
+	private static final String QUERY_GET_NBS_COLUMNAS = "SELECT d.NB_CAMPO as nbColumna, NVL(l.NU_ORDEN_REGISTRO, 0) AS nuOrden, NVL(l.CD_TIPO_DATO, CASE WHEN D.NB_CAMPO LIKE 'ST%' THEN 'Boolean' WHEN D.NB_CAMPO LIKE 'ID%' THEN 'Long' WHEN D.NB_CAMPO LIKE 'FH%' THEN 'Date' ELSE 'String' END) AS cdTipo, d.TX_VALOR_DEFECTO as txValorDefecto, NVL(l.NU_LONGITUD_MAX, d.NU_LONGITUD) AS nuLongitudMax, d.ST_CAMPO_FILTRO AS stCampoFiltro FROM TIE055C_IE_LAYOUT l RIGHT OUTER JOIN TIE056C_IE_TABLA_DESTINO d ON l.ID_TABLA_DESTINO = d.ID_TABLA_DESTINO WHERE d.NB_TABLA = :nbTabla AND d.ST_ACTIVO = 1 AND (d.ST_PERMITE_NULO = 0 OR l.ID_TABLA_DESTINO IS NOT NULL) ORDER BY d.ID_TABLA_DESTINO";
 	private static final String QUERY_GET_COLUMNAS_EN_ARCHIVO = "SELECT l.ID_CAMPO AS idCampo, l.NB_CAMPO AS nbCampo, l.NU_ORDEN_REGISTRO AS nuOrden, l.CD_TIPO_DATO AS tipoDato, l.NU_LONGITUD_MAX AS longMax, l.ST_REQUERIDO AS isRequerido, d.TX_VALOR_DEFECTO AS txValorDefecto FROM TIE055C_IE_LAYOUT l INNER JOIN TIE057C_IE_TIPO_LAYOUT t ON l.ID_TIPO_LAYOUT = t.ID_TIPO_LAYOUT LEFT OUTER JOIN TIE056C_IE_TABLA_DESTINO d ON l.ID_TABLA_DESTINO = d.ID_TABLA_DESTINO WHERE t.ST_VIGENTE =1 AND t.ST_ACTIVO =1 AND l.CD_INDICADOR_REG='D' ORDER BY l.NU_ORDEN_REGISTRO";
 	private static final Logger LOGGER = LoggerFactory.getLogger(LayoutDAOImpl.class);
 
@@ -55,7 +55,7 @@ public class LayoutDAOImpl extends BaseDaoHibernate<LayoutDTO> implements Layout
 	public List<ColumnaVO> getNbsColumnas(String tabla) {
 		SQLQuery query = (SQLQuery) getCurrentSession().createSQLQuery(QUERY_GET_NBS_COLUMNAS);
 		query.setString("nbTabla", tabla);
-		return query.addScalar("nbColumna", StringType.INSTANCE).addScalar("nuOrden", LongType.INSTANCE)
+		return query.addScalar("nbColumna", StringType.INSTANCE).addScalar("nuOrden", IntegerType.INSTANCE)
 				.addScalar("cdTipo", StringType.INSTANCE).addScalar("txValorDefecto", StringType.INSTANCE)
 				.addScalar("nuLongitudMax", IntegerType.INSTANCE)
 				.addScalar("stCampoFiltro", BooleanType.INSTANCE)

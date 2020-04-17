@@ -9,7 +9,7 @@ public class InsercionTablaVO {
 	private String titulos;
 	private String piesPagina;
 	private String comodines;
-	private String campoID;
+	private ColumnaVO campoID;
 	private String insertSQL;
 	private String selectSQL;
 	private ColumnaVO columnaFiltro;
@@ -104,11 +104,11 @@ public class InsercionTablaVO {
 		this.id = id;
 	}
 
-	public String getCampoID() {
+	public ColumnaVO getCampoID() {
 		return campoID;
 	}
 
-	public void setCampoID(String campoID) {
+	public void setCampoID(ColumnaVO campoID) {
 		this.campoID = campoID;
 	}
 
