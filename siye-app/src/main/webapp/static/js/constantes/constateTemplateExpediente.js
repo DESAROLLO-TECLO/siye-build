@@ -2,24 +2,24 @@ var includeDeseing=
 	'	<form name="formTpDocument" novalidate>																														 					'+
 	'	<div class="row">																														 										'+
 	'		<div class="col-xs-12 col-sm-12 col-md-12">                                                                                                                                 '+
-	'			<div class="{{isIncidencia ? \'col-xs-7 col-sm-8 col-md-8\' : \'col-xs-5 col-sm-6 col-md-8\'}}">                                                                  		'+
+	'			<div class="{{isIncidencia ? \'col-xs-12 col-sm-8 col-md-8\' : \'col-xs-12 col-sm-6 col-md-8\'}}">                                                                  		'+
 	'				<div class="col-xs-6"><label>No. Imagenes:</label>{{\' \'+ (listImages == undefined ? 0 : listImages.length)}} <span ng-show="maxNuImage != undefined"><label>de</label> {{\' \'+ maxNuImage}}</span></div>  '+
 	'				<div class="col-xs-6"><label>Por guardar:</label>{{\' \'+((listImages | filter:{ isSuccess : false}).length)}}</div>                              					'+
 	'			</div>                                                                  																								'+
-	'			<div class="col-xs-3 col-sm-2 col-md-2">                                                                                                                                '+
+	'			<div class="col-xs-4 col-sm-2 col-md-2">                                                                                                                                '+
 	'				<input type="file"  ng-show="false"                                                                            				                                        '+
-	'					 id="file-1{{idElementUp}}"  onchange="angular.element(this).scope().getFilesFromInput(this)" 							                                        '+
+	'					 id="file-1{{idElementUp}}"  custom-on-change handler="getFilesFromInput(params)"							                                        '+
 	'					class="inputfile inputfile-1" multiple />                                                                                                                       '+
 	'				<label for="file-1{{idElementUp}}" capture="camera" class="btn btn-danger  pull-right">                                                                             '+
 	'					<i class="fa fa-camera fa-lg" aria-hidden="true"></i>                                                                                                           '+
 	'				</label>                                                                                                                                                            '+
 	'			</div>                                                                                                                                                                  '+
-	'			<div class="col-xs-2 col-sm-2 col-md-1" ng-hide="isIncidencia">                                                                                                         '+
+	'			<div class="col-xs-4 col-sm-2 col-md-1" ng-hide="isIncidencia">                                                                                                         '+
 	'				<Button class="btn btn-danger pull-right" ng-click="saveImagesAll(formTpDocument)" ng-disabled="(listImages | filter:{ isSuccess : false}).length == 0">            '+
 	'					<i class="fa fa-floppy-o fa-lg" aria-hidden="true"></i>                                                                                                         '+
 	'				</Button>                                                                                                                                                           '+
 	'			</div>                                                                                                                                                                  '+
-	'			<div class="col-xs-2 col-sm-2 {{isIncidencia ? \'col-md-2\' : \'col-md-1\'}}">                                                                                          '+
+	'			<div class="col-xs-4 col-sm-2 {{isIncidencia ? \'col-md-2\' : \'col-md-1\'}}">                                                                                          '+
 	'				<Button class="btn btn-danger pull-right" ng-click="cancelAllImage()" ng-disabled="listImages.length == 0">                                                         '+
 	'					<i class="fa fa-trash fa-lg" aria-hidden="true"></i>                                                                                                            '+
 	'				</Button>                                                                                                                                                           '+
@@ -60,7 +60,7 @@ var includeDeseing=
 	'											<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>                                                                                '+
 	'										</div>                                                                                                                                      '+
 	'									</div>                                                                                                                                          '+
-	'									<div class="{{showCombo ? \'col-xs-6 col-sm-3 col-md-2\' : \' col-xs-6 col-sm-2 col-md-2\'}}">                                                  '+
+	'									<div class="{{showCombo ? \'col-xs-6 col-sm-3 col-md-2\' : \' col-xs-6 col-sm-2 col-md-2\'}} col-per-grid">                                                  '+
 	'										<div class="form-group">                                                                                                                    '+
 	'											<label>Nombre:</label>                                                                                                                  '+
 	'											<div class="input-group">                                                                                                               '+
@@ -68,7 +68,7 @@ var includeDeseing=
 	'											</div>																																	'+
 	'										</div>																																		'+
 	'									</div>                                                                                                                                          '+
-	'									<div class="{{showCombo ? \'col-xs-6 col-sm-3 col-md-2\' : \' col-xs-6 col-sm-2 col-md-2\'}}">                                                  '+
+	'									<div class="{{showCombo ? \'col-xs-6 col-sm-3 col-md-2\' : \' col-xs-6 col-sm-2 col-md-2\'}} col-per-grid">                                                  '+
 	'										<div class="form-group">                                                                                                                    '+
 	'											<label>Tama&ntilde;o:</label>                                                                                                           '+
 	'											<div class="input-group">                                                                                                               '+
