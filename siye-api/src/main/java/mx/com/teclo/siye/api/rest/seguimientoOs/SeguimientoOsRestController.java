@@ -14,6 +14,8 @@ import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.siye.negocio.service.seguimientoOs.SeguimientoOsService;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServicioDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesoDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.SeguimientoOrdenServicioVO;
 
 @RestController
@@ -42,5 +44,33 @@ public class SeguimientoOsRestController {
 		
 		return new ResponseEntity<List<SeguimientoOrdenServicioVO>>(respuesta, HttpStatus.OK);
 	};
+	
+	
+	@GetMapping(value="/getProcesos")
+	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
+	public ResponseEntity<OrdenServicioDetalleVO> getDetalleByEtapas(@RequestParam(value ="idOrden") Long nurdenServicio) throws NotFoundException{	
+		OrdenServicioDetalleVO respuesta = seguimientoService.getDetalleByEtapas(nurdenServicio);
+		if(respuesta==null) {
+			throw new NotFoundException("No hay información");
+		}
+		
+		return new ResponseEntity<OrdenServicioDetalleVO>(respuesta, HttpStatus.OK);
+	};
+	
+	
+	@GetMapping(value="/getDetalleProceso")
+	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
+	public ResponseEntity<ProcesoDetalleVO> getDetalleProceso(@RequestParam(value ="idOrden") Long idOrdenServicio,
+															  @RequestParam(value ="idProceso") Long idProceso) throws NotFoundException{	
+		ProcesoDetalleVO respuesta = seguimientoService.getDetalleProceso(idOrdenServicio, idProceso);
+		if(respuesta==null) {
+			throw new NotFoundException("No hay información");
+		}
+		
+		return new ResponseEntity<ProcesoDetalleVO>(respuesta, HttpStatus.OK);
+	};
+	
+	
+	
 
 }

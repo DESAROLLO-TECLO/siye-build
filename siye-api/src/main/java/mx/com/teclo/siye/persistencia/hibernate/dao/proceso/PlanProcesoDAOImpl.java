@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelProcesoVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesoDetalleVO;
 
 @Repository
 public class PlanProcesoDAOImpl extends BaseDaoHibernate<PlanProcesoDTO> implements PlanProcesoDAO {
@@ -149,6 +150,36 @@ public class PlanProcesoDAOImpl extends BaseDaoHibernate<PlanProcesoDTO> impleme
 				.addScalar("cdProceso",StringType.INSTANCE)
 				.addScalar("nuMaxImg",LongType.INSTANCE)
 				.setResultTransformer(Transformers.aliasToBean(ExpedienteNivelProcesoVO.class)).list();
+		return respuesta;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ProcesoDetalleVO> getEtapasParaSeguimiento(Long idPlan) {
+		StringBuilder consulta = new StringBuilder("SELECT pp.ID_PROCESO AS idProceso, proceso.TX_PROCESO AS nbProceso" + 
+				"   FROM TIE036D_IE_PLAN_PROCESO pp" + 
+				"     INNER JOIN TIE035C_IE_PROCESOS proceso ON (pp.ID_PROCESO  = proceso.ID_PROCESO)" + 
+				"     WHERE pp.ID_PLAN ="+ idPlan +" AND pp.ST_ACTIVO =1 AND proceso.ST_ACTIVO =1 ORDER BY proceso.ID_PROCESO ASC");
+		List<ProcesoDetalleVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
+				.addScalar("idProceso",LongType.INSTANCE)
+				.addScalar("nbProceso",StringType.INSTANCE)
+				.setResultTransformer(Transformers.aliasToBean(ProcesoDetalleVO.class)).list();
+		return respuesta;
+	}
+
+	@Override
+	public ProcesoDetalleVO getDetalleProceso(Long idOrdenServicio, Long idProceso) {
+		StringBuilder consulta = new StringBuilder("SELECT tdop.ID_PROCESO AS idProceso, FH_INI_PROCESO AS fhInicio, FH_FIN_PROCESO AS fhFin,"
+				+"tcip.TX_PROCESO  AS nbProceson"
+				+" FROM TIE065D_ODS_PROCESOS tdop " 
+				+"  INNER JOIN TIE035C_IE_PROCESOS tcip ON (tdop.ID_PROCESO = tcip.ID_PROCESO)"
+				+" WHERE tdop.ID_ORDEN_SERVICIO =:idOrdenServicio AND tdop.ID_PROCESO =:idProceso AND tdop.ST_ACTIVO =1");
+		ProcesoDetalleVO respuesta =  (ProcesoDetalleVO) getCurrentSession().createSQLQuery(consulta.toString())
+				.addScalar("idProceso",LongType.INSTANCE)
+				.addScalar("fhInicio",LongType.INSTANCE)
+				.addScalar("fhFin",LongType.INSTANCE)
+				.addScalar("nbProceson",LongType.INSTANCE)
+				.setResultTransformer(Transformers.aliasToBean(ProcesoDetalleVO.class)).uniqueResult();
 		return respuesta;
 	}
 
