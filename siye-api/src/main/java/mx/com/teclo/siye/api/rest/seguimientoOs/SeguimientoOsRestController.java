@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
@@ -43,11 +44,22 @@ public class SeguimientoOsRestController {
 		return new ResponseEntity<List<SeguimientoOrdenServicioVO>>(respuesta, HttpStatus.OK);
 	};
 	
-//	@GetMapping(value="/getSeguimientoOS")
-//	public ResponseEntity<String> getIncidenciasOs(){
-//		
-//		
-//		String respuesta = null;
-//		return new ResponseEntity<String>(respuesta, HttpStatus.OK);
-//	};
+	@GetMapping(value="/getMonIncidencias")
+	public ResponseEntity<String> getIncidenciasOs(
+		@RequestParam(value ="fechaInicio") String fechaInicio,
+		@RequestParam(value ="fechaFin") String fechaFin
+	) throws Exception, BusinessException, NotFoundException {
+		String mensajeErr = "";
+		try {
+			String respuesta = null;
+			return new ResponseEntity<String>(respuesta, HttpStatus.OK);
+		} catch (Exception e) {
+			if(mensajeErr != null && !mensajeErr.isEmpty() && !mensajeErr.equals(null)) {
+				throw new NotFoundException(mensajeErr);
+			} else {
+				e.printStackTrace();
+				throw new NotFoundException("¡Ha ocurrido un imprevisto! , porfavor contacte al administrador");
+			}
+		}
+	};
 }
