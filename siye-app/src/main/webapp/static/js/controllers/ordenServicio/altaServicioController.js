@@ -14,8 +14,9 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 	$scope.filKit=false;
 	$scope.incidendiaRequerida = false;
 	$scope.parametroBusqueda.incidencia="";
-	$scope.vehicPlaca=false;
 	$scope.cdPlacaVehiculo="";
+	$scope.vehicPlaca=false;
+	
 	
 	$scope.consultTipoVehiculos = function(){
 		altaServicioService.buscarTipoVehiculos()
@@ -108,8 +109,8 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 			angular.forEach($scope.tipoKitsDisp, function(value, key){
 				$scope.range.push(value.dispositivo);
 			});
-				
-			$scope.error = true;
+			$scope.formAltaServicio.$setPristine();
+			$scope.error = false;
 		})
 		.error(function(data){
 			$scope.tipoKitsDisp = [];
@@ -158,6 +159,7 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 			$scope.error = false;
 			growl.success("Se ha generado una nueva orden de servicio con folio " + data.cdOrden , { ttl: 5000 });
 			$scope.parametroBusqueda.incidencia="";
+			$scope.cdPlacaVehiculo="";
 			$scope.orden.fhCita = null;
 			$scope.orden={};
 			$scope.ordenVO={};
@@ -166,7 +168,6 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 			$scope.banderaVehiculo=false;
 			$scope.filKit=false;
 			$scope.kitInstalacionVO = {};
-			$scope.cdPlacaVehiculo="";
 			$(".select2").select2();
 			$("#select2-tpKit-container").text('Seleccione');
 			$("#select2-centroI-container").text('Seleccione');
