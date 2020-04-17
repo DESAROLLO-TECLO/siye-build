@@ -32,7 +32,6 @@ public class UsuarioRestController {
 	
 //	OBTENER USUARIOS POR PARÁMETRO
 	@RequestMapping(method = RequestMethod.GET)
-	@PreAuthorize("hasAnyAuthority('BUSCA_USUARIOS_PARAM')")
 	public ResponseEntity<List<UsuarioVO>> findUsersByParams(@RequestParam("parameter") String parameter,
 			@RequestParam("value") String value	) {
 
