@@ -132,10 +132,10 @@
 										</label>
 										<div class="input-group">
 											<div class="input-group-addon">
-												<i class="fa fa-list-alt"></i>
+												<i class="fa fa-cogs"></i>
 											</div>
 											<select class="form-control" name="proceso" id="proceso" 
-												ng-required="true" select2 data-minimum-results-for-search="Infinity" 
+												ng-required="true" select2 
 												idioma-s2="{{currentLanguage}}" 
 												ng-model="expedienteImg.proceso" 
 												ng-change="changedComboDependiente(expedienteImg.proceso,'proceso')"
@@ -153,10 +153,10 @@
 										</label>
 										<div class="input-group">
 											<div class="input-group-addon">
-												<i class="fa fa-list-alt"></i>
+												<i class="fa fa-address-book-o"></i>
 											</div>
 											<select class="form-control" name="encuesta" id="encuesta"
-												ng-required="true" select2 data-minimum-results-for-search="Infinity" 
+												ng-required="true" select2 
 												idioma-s2="{{currentLanguage}}" 
 												ng-model="expedienteImg.encuesta.listImageClasif"
 												ng-change="changedComboDependiente(expedienteImg.encuesta.listImageClasif,'encuesta')" 
@@ -191,7 +191,7 @@
             				</div>
             			</div>
                			
-               			<update-image id-element-up="Encuesta" include="true" param-conf-sav="paramConfSav" max-nu-image="10"
+               			<update-image id-element-up="Encuesta" include="true" param-conf-sav="paramConfSav" max-nu-image="{{nuMaxImg}}"
                				param-conf-component="paramConfiguracion" list-images="{{listImages}}"></update-image>
 	                   	
 	                   
