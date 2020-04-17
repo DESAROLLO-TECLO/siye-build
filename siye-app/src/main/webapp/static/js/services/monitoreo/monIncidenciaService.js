@@ -9,7 +9,7 @@ angular.module(appTeclo).service("monIncidenciaService", function($http, config)
 				"fechaFin"		: parametros.fechaFin,
 				"tipoBusqueda"	: parametros.tipobusqueda,
 				"valor"			: parametros.valor,
-				"opcion"		: opcion
+				"opcion"		: opcion 
 			}
 		});
 	};
