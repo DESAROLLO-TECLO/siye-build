@@ -42,5 +42,12 @@ public class SeguimientoOsRestController {
 		
 		return new ResponseEntity<List<SeguimientoOrdenServicioVO>>(respuesta, HttpStatus.OK);
 	};
-
+	
+//	@GetMapping(value="/getSeguimientoOS")
+//	public ResponseEntity<String> getIncidenciasOs(){
+//		
+//		
+//		String respuesta = null;
+//		return new ResponseEntity<String>(respuesta, HttpStatus.OK);
+//	};
 }
