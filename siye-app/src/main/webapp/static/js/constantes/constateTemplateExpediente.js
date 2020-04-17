@@ -101,8 +101,8 @@ var includeDeseing=
 	'										</div>                                                                                                  									'+
 	'									</div>                                                                                                                                          '+
 	'									<div class="{{showCombo ? \'col-xs-12 col-sm-12 col-md-3\' : \'col-xs-12 col-sm-4 col-md-4\'}}">                                                '+
-	'										<div class="col-xs-6 col-sm-6 col-md-6">                                                                                                    '+
-	'											<div class="form-group">                                                                                                                '+
+	'										<div class="col-xs-6 col-sm-6 col-md-6 middleRow">                                                                                                    '+
+	'											<div class="form-group middleRow">                                                                                                                '+
 	'												<label>&nbsp;</label>                                                                                                               '+
 	'												<div class="input-group">                                                                                                           '+
 	'													<div ng-show="!imagenVO.isSuccess" class="{{!isIncidencia ? \'stile-puntero-pointer\' : \'\'}}">                                  '+
@@ -119,8 +119,8 @@ var includeDeseing=
 	'												</div>                                                                                                                              '+
 	'											</div>                                                                                                                                  '+
 	'										</div>                                                                                                                                      '+
-	'										<div class="col-xs-6 col-sm-6 col-md-6">                                                                                                    '+
-	'											<div class="form-group">                                                                                                                '+
+	'										<div class="col-xs-6 col-sm-6 col-md-6 middleRow">                                                                                                    '+
+	'											<div class="form-group middleRow">                                                                                                                '+
 	'												<label>&nbsp;</label>                                                                                                               '+
 	'												<div class="input-group">                                                                                                           '+
 	'													<label class="stile-puntero-pointer" ng-click="cancelUploadeImageItem(imagenVO)">                                               '+
