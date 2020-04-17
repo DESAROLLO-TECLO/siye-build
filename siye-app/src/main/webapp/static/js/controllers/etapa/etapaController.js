@@ -15,7 +15,7 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
     	let parcial=new Date();
     	$scope.tiempoTranscurridoOrden=0;
         let finit =  etapaInfo.data[0].fhAtencionIni;
-        let ffin =   etapaInfo.data[0].hAtencionFin;
+        let ffin =   etapaInfo.data[0].fhAtencionFin;
         if(finit != null && ffin != null){
             $scope.tiempoTranscurridoOrden += ffin - finit;
         }else if(finit != null)

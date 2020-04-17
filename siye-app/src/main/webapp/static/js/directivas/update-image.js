@@ -262,13 +262,13 @@ appt.directive('updateImage',
 	    	  
 	    	  //SE VALIDA SI SE OBTIENE TIPO DE DOCUMENTO DESDE SERVICIO
 	    	  scope.valdComboTpDocuemnt=function(){
-		    		
+	    		  scope.showCombo=false;
 					  if(scope.paramConfComponent.listTpDocuemnt != undefined 
 							  && scope.paramConfComponent.listTpDocuemnt.length > 0){
 						  scope.showCombo=true;
 						  scope.tpDocumentList=scope.paramConfComponent.listTpDocuemnt;
 					  }else{
-						  scope.getCatalogoTipoDocumento(); 
+						  scope.getCatalogoTipoDocumento();
 					  }
 	    	  }
 	    	  
@@ -285,18 +285,17 @@ appt.directive('updateImage',
 	    		  
 	    		// los files obtenidos se asignan a la lista enviada como parametro
 	    		  scope.reinitListView(files);
-	    		  
 	    	  };
 	    	  
 	    	//Se obtienen los archivos en onjetoFiles se ejecuta cuando el componente input file detecta cambios, este componenete esta en el template
 	    	  scope.getFilesFromInput=function(inputFiles){
-	    		  let filesList=[];
+	    		  /*let filesList=[];
     			  angular.forEach(inputFiles.files, function(item, key) {
     				  filesList.push(item);
- 		    	  });
+ 		    	  });*/
 	    			  
 	    		  // Si exsisten restricciones se omiten los archivos que no las cumplan
-	    		  let files=scope.validRestrcctionsFiles(filesList);
+	    		  let files=scope.validRestrcctionsFiles(inputFiles);
 	    		  
 	    		// los files obtenidos se asignan a la lista enviada como parametro
 	    		  scope.reinitListView(files);
@@ -468,15 +467,22 @@ appt.directive('updateImage',
 		     scope.getCatalogoTipoDocumento=function(){
 		    	 
 		    	 expedienteService.getCatTpDocumento().success(function(response){
+		    		 
 		    		 scope.tpDocumentList=response;
 		    		 scope.showCombo=true;
+		    		 if(response == undefined || response.length == 0)
+		    			 scope.showCombo=false;
+		    		 
 		    	 }).error(function (error){
-		    		 scope.showCombo=false;
 		    		 if(scope.paramConfComponent.listTpDocuemnt != undefined 
-		    				 && scope.paramConfComponent.listTpDocuemnt.length > 0)
+		    				 && scope.paramConfComponent.listTpDocuemnt.length > 0){
 		    			 scope.tpDocumentList=scope.paramConfComponent.listTpDocuemnt;
-		    		 else
+		    			 scope.showCombo=true;
+		    		 }else{
+		    			 scope.showCombo=false;
 		    			 scope.tpDocumentList=[];
+		    		 }
+		    			 
 		    	 });
 		     };
 		     
@@ -843,6 +849,34 @@ appt.directive('updateImage',
 	   }
 	};    
 });
+
+appt.directive('customOnChange', [function() {
+    'use strict';
+
+    return {
+        restrict: "A",
+
+        scope: {
+            handler: '&'
+        },
+        link: function(scope, element){
+
+            element.change(function(event){
+                scope.$apply(function(){
+                    let files=element[0].files;
+                    let filesResult=[];
+                    let i;
+                    for(i=0; i<files.length; i++){
+                    	filesResult.push(files[i]);
+                    }
+                    let onject={params: filesResult};
+                    scope.handler(onject);
+                });
+            });
+        }
+
+    };
+}]);
 
 appt.filter('startFromGrid', function() {
 		var lastInput=null;

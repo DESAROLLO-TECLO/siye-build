@@ -26,4 +26,16 @@ public class DispositivosDAOImpl extends BaseDaoHibernate<KitDispositivoDTO> imp
 		return (List<KitDispositivoDTO>) criteria.list();
 	}
 
+	@Override
+	public KitDispositivoDTO getByDispositivo(Long idDisp) {
+		Criteria criteria = getCurrentSession().createCriteria(KitDispositivoDTO.class);
+		criteria.createAlias("dispositivo", "dispositivo");
+				
+		criteria.add(Restrictions.eq("dispositivo.stActivo", true));
+		criteria.add(Restrictions.eq("dispositivo.idDispositivo", idDisp));
+		
+		
+		return (KitDispositivoDTO) criteria.uniqueResult();
+	}
+
 }
