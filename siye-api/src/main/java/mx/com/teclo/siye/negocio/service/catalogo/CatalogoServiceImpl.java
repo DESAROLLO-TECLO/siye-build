@@ -25,6 +25,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoFechasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoKitDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoVehiculoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.VehiculoConductorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.CentroInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.ConcesionariaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstalacionDAO;
@@ -40,6 +41,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ProveedorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.StEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.TipoFechasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.TipoKitDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.VehiculoConductorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.ConsecionarioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDTO;
@@ -59,6 +61,7 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.ProveedorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoKitVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.VehiculoConductorVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.KitInstalacionVO;
@@ -126,7 +129,10 @@ public class CatalogoServiceImpl implements CatalogoService{
 	
 	@Autowired
 	private ParametrosFolioDAO parametrosFolioDAO;
-
+	
+	@Autowired
+	private VehiculoConductorDAO vehiculoConductorDAO;
+ 
 	
 	@Transactional
 	@Override
@@ -402,6 +408,30 @@ public class CatalogoServiceImpl implements CatalogoService{
 		listConfiguracionVO.add(voReturn1);
 		listConfiguracionVO.add(voReturn2);
 		return listConfiguracionVO;
+	}
+	
+	@Transactional
+	@Override
+	public List<ConductorVO> getTransportistasVehiculo(Long idVehiculo) throws NotFoundException {
+
+		
+		List<VehiculoConductorDTO> vehiculoConductor = vehiculoConductorDAO.getTransportistas(idVehiculo);
+		if(vehiculoConductor.isEmpty())
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		List<VehiculoConductorVO> listaVehiculoConductor = ResponseConverter.converterLista(new ArrayList<>(), vehiculoConductor, VehiculoConductorVO.class);
+		List<ConductorVO> listaConductorVO = new ArrayList<ConductorVO>();	
+		for (VehiculoConductorVO actual : listaVehiculoConductor) {
+			ConductorVO conductorVO = new ConductorVO();
+			conductorVO.setIdConductor(actual.getConductor().getIdConductor());
+			conductorVO.setNbConductor(actual.getConductor().getNbConductor());
+			conductorVO.setNbApepatConductor(actual.getConductor().getNbApepatConductor());
+			conductorVO.setNbApematConductor(actual.getConductor().getNbApematConductor());
+			
+			listaConductorVO.add(conductorVO);
+		}
+		
+		
+		return listaConductorVO;
 	}
 
 }

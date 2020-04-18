@@ -93,5 +93,7 @@ public interface CatalogoService {
 	 */
 	public List<ConfiguracionVO> configuracionIncidencia(String cdLlavePConfig1, String cdLlavePConfig2)
 			throws NotFoundException;
+	
+	public List<ConductorVO> getTransportistasVehiculo(Long idVehiculo) throws NotFoundException;
 
 }
