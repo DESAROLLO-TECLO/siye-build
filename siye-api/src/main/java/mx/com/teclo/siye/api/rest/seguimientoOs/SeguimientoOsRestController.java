@@ -33,7 +33,7 @@ public class SeguimientoOsRestController {
 	private SeguimientoOsService seguimientoService;
 	
 	@Autowired
-	private MonitoreoIncidenciaService MonInciService;
+	private MonitoreoIncidenciaService monitoreoIncidenciaService;
 	
 	
 	@GetMapping(value="/getSeguimientoOS")
@@ -82,11 +82,18 @@ public class SeguimientoOsRestController {
 	@GetMapping(value="/getMonIncidencias")
 	public ResponseEntity<String> getIncidenciasOs(
 		@RequestParam(value ="fechaInicio") String fechaInicio,
-		@RequestParam(value ="fechaFin") String fechaFin
+		@RequestParam(value ="fechaFin") String fechaFin,
+		@RequestParam(value ="tipoBusqueda") Integer tipoBusqueda,
+		@RequestParam(value ="valor") String valor,
+		@RequestParam(value ="opcion") Integer opcion
 	) throws Exception, BusinessException, NotFoundException {
 		String mensajeErr = "";
 		try {
 			String respuesta = null;
+			UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
+			monitoreoIncidenciaService.getMonIncidencias(usuario.getId(), fechaInicio, fechaFin, tipoBusqueda, valor, opcion, mensajeErr);
+			
+			
 			return new ResponseEntity<String>(respuesta, HttpStatus.OK);
 		} catch (Exception e) {
 			if(mensajeErr != null && !mensajeErr.isEmpty() && !mensajeErr.equals(null)) {
@@ -97,9 +104,10 @@ public class SeguimientoOsRestController {
 			}
 		}
 	};
+	
 	@RequestMapping(value = "/incidenciaByIdOrden", method = RequestMethod.GET)
 	public ResponseEntity<OrdenIncidenciaDetalleVO> getIncidenciasByIdOrden(@RequestParam(value="idOrden", required=true) Long idOrden,@RequestParam(value="idPlan", required=true) Long idPlan) throws NotFoundException{
-		OrdenIncidenciaDetalleVO incidenciaDTO = MonInciService.incidenciaByOS(idOrden, idPlan);
+		OrdenIncidenciaDetalleVO incidenciaDTO = monitoreoIncidenciaService.incidenciaByOS(idOrden, idPlan);
 		return new ResponseEntity<OrdenIncidenciaDetalleVO>(incidenciaDTO, HttpStatus.OK);
 	}
 	

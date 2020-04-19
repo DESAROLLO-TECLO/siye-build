@@ -42,10 +42,15 @@ public class MonitoreoIncidenciaServiceImpl implements MonitoreoIncidenciaServic
 	@Transactional
 	@Override
 	public void getMonIncidencias(
-			String mensajeErr
+		Long idSupervisor, String fechaInicio, String fechaFin, 
+		Integer tipoBusqueda, String valor, Integer opcion, 
+		String mensajeErr
 	) throws Exception, BusinessException, NotFoundException {
 		try {
-		//Long idSupervisor, List<String> columnas,List<String> colOmitidas, String fInicio, String fFin
+			List<Long> idsCentroInstalacion = gerenteSupervisorDAO.getIdCentroInstalacion(idSupervisor);
+			if(!idsCentroInstalacion.isEmpty()) {
+				
+			}
 		//List<SeguimientoOrdenServicioVO>
 		} catch (Exception e) {
 			if(mensajeErr != null && !mensajeErr.isEmpty() && !mensajeErr.equals(null)) {
@@ -56,6 +61,7 @@ public class MonitoreoIncidenciaServiceImpl implements MonitoreoIncidenciaServic
 			}
 		}
 	};
+	
 	@Override
 	@Transactional
 	public OrdenIncidenciaDetalleVO incidenciaByOS(Long idOrden,Long idPlan) throws NotFoundException {
