@@ -25,7 +25,7 @@ public class VehiculoConductorDAOImpl extends BaseDaoHibernate<VehiculoConductor
 		criteria.createAlias("vehiculo", "vehiculo");
 		criteria.add(Restrictions.eq("vehiculo.idVehiculo", idVehiculo));
 		criteria.add(Restrictions.eq("stActivo", true));
-		criteria.addOrder(Order.asc("nuOrden"));
+		criteria.addOrder(Order.desc("nuOrden"));
 		return (List<VehiculoConductorDTO>)criteria.list();
 
 	}
