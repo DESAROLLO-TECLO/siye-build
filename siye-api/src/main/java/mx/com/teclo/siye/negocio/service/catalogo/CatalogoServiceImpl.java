@@ -22,6 +22,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ParametrosFolioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.PersonaTipoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ProveedorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TblCatalogosDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoFechasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoKitDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoVehiculoDAO;
@@ -39,6 +40,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ParametrosFolioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.PersonaTipoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ProveedorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.StEncuestaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.TblCatalogosDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.TipoFechasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.TipoKitDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.VehiculoConductorDTO;
@@ -59,6 +61,7 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaTipoVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ProveedorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.TblCatalogosVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoKitVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.VehiculoConductorVO;
@@ -132,6 +135,9 @@ public class CatalogoServiceImpl implements CatalogoService{
 	
 	@Autowired
 	private VehiculoConductorDAO vehiculoConductorDAO;
+
+	@Autowired
+	private TblCatalogosDAO tblCatalogosDAO;
  
 	
 	@Transactional
@@ -433,5 +439,16 @@ public class CatalogoServiceImpl implements CatalogoService{
 		
 		return listaConductorVO;
 	}
+	
+	@Transactional
+	@Override
+	public List<TblCatalogosVO> getTblCatalogos() throws NotFoundException{
+		List<TblCatalogosDTO> listTblCatalogosDTO =  tblCatalogosDAO.getTblCatalogos();
+		if(listTblCatalogosDTO.isEmpty())
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		List<TblCatalogosVO> listTblCatalogosVO = ResponseConverter.converterLista(new ArrayList<>(), listTblCatalogosDTO, TblCatalogosVO.class);
+		return listTblCatalogosVO;
+	}
+	
 
 }
