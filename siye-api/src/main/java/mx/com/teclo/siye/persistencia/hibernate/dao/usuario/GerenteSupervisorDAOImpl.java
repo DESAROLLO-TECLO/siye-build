@@ -29,8 +29,8 @@ public class GerenteSupervisorDAOImpl extends BaseDaoHibernate<GerenteSupervisor
 	public List<Long> getIdCentroInstalacion(Long idSupervisor) {
 		Criteria c = getCurrentSession().createCriteria(GerenteSupervisorDTO.class);
 		c.createAlias("centroInstalacion", "CI");
-		Criterion gerente = Restrictions.eq("supervisor", idSupervisor);
-        Criterion supervisor = Restrictions.eq("name", idSupervisor);
+		Criterion gerente = Restrictions.eq("gerente", idSupervisor);
+        Criterion supervisor = Restrictions.eq("supervisor", idSupervisor);
         LogicalExpression orExp = Restrictions.or(gerente, supervisor);
         c.add(orExp);
 		c.add(Restrictions.eq("stActivo", Boolean.TRUE));
