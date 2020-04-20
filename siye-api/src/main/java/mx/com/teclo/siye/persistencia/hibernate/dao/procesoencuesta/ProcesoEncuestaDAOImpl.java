@@ -3,6 +3,7 @@ package mx.com.teclo.siye.persistencia.hibernate.dao.procesoencuesta;
 import java.util.List;
 
 import org.hibernate.transform.Transformers;
+import org.hibernate.type.DoubleType;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
 import org.hibernate.Criteria;
@@ -47,6 +48,7 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 		return respuesta;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<EncuestaDetalleDTO> getEncuestaByIdOrden(Long idProceso) {
 		String hql = "SELECT  enc "
@@ -66,7 +68,9 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 	public List<EncuestaDetalleVO> getDetalleEncuesta(Long idOrdenServicio, Long idProceso) {
 		StringBuilder consulta = new StringBuilder("SELECT tdipe.ID_ENCUESTA  AS idEncuesta, encuesta.NB_ENCUESTA AS nbEncuesta," 
 	            +"tdeuei.FH_INICIO  AS fhInicio, tdeuei.FH_FIN AS fhFin, tdeuei.NU_PREGUNTAS||'/'||tdeuei.NU_PREGUNTAS_CORRECTAS AS preguntas," 
-				+"st.NB_ST_ENCUESTA AS estatus" 
+				+"st.NB_ST_ENCUESTA AS estatus,"
+	            +"CASE tdeuei.ID_ST_CALIFICACION WHEN 3 THEN 0.0"
+				+"  ELSE tdeuei.NU_PREGUNTAS /(tdeuei.NU_PREGUNTAS_CORRECTAS + tdeuei.NU_PREGUNTAS_INCORR + tdeuei.NU_PREGUNTAS_VACIAS)*100 END AS nuPorcentaje"
 	            +" FROM TIE037D_IE_PROCESO_ENCUESTA tdipe" 
 				+"    INNER JOIN TIE001D_EE_ENCUESTAS encuesta ON (tdipe.ID_ENCUESTA = encuesta.ID_ENCUESTA)" 
 				+"    INNER JOIN TIE002D_EE_ODS_ENCUESTA tdeoe ON (encuesta.ID_ENCUESTA = tdeoe.ID_ENCUESTA)" 
@@ -81,6 +85,7 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				.addScalar("fhFin", StringType.INSTANCE)
 				.addScalar("preguntas", StringType.INSTANCE)
 				.addScalar("estatus", StringType.INSTANCE)
+				.addScalar("nuPorcentaje",DoubleType.INSTANCE)
 				.setParameter("idOrdenServicio", idOrdenServicio)
 				.setParameter("idProceso", idProceso)
 				.setResultTransformer(Transformers.aliasToBean(EncuestaDetalleVO.class)).list();
