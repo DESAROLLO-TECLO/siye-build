@@ -6,6 +6,7 @@ angular.module(appTeclo).controller('expedienteController',
 	//Objeto para la configuracion de la directiva de carga de imagenes
 	$scope.listImages=new Array();
 	$scope.nuMaxImg=10;
+	var optionBacupSelected={itemSelected:null, nivel:null};
 
 	$scope.paramConfSav= new Object({
 		idOrdenServ: null, 			 
@@ -80,12 +81,14 @@ angular.module(appTeclo).controller('expedienteController',
 				$scope.expedienteImg=$scope.listOrdenExpediente[0];
 				$scope.catalogosRelacoinados.catProceso = response[0].procesos;  
 				$scope.nuMaxImg=response[0].nuMaxImg;
-				if(response[0].imagenes != undefined){
-					if($scope.updateViewDirective != undefined) 
-						$scope.updateViewDirective(response[0].imagenes);// metodo se encuntra en la directoa update-image
+				
+				if(response[0].imagenes == undefined)
+					response[0].imagenes=[];
+				
+				if($scope.updateViewDirective != undefined) 
+					$scope.updateViewDirective(response[0].imagenes);// metodo se encuntra en la directoa update-image
 					 
-					 $scope.listImages = response[0].imagenes;
-				}
+				$scope.listImages = response[0].imagenes;				
 				
 				$scope.paramConfSav.idOrdenServ=response[0].idOrdenServicio;
 				$scope.paramConfSav.cdOrdenServicio=response[0].cdOrdenServicio;
@@ -117,18 +120,13 @@ angular.module(appTeclo).controller('expedienteController',
       	  	$scope.expedienteImg=new Object();
 	  };
 	  
-	  $scope.confirmChanged=function(message){//metodo que muestra una alerta indicando que  hay imagenes sin guardar
-	    	 showAlert.confirmacion(message,
+	  $scope.confirmChanged=function(){//metodo que muestra una alerta indicando que  hay imagenes sin guardar
+	    	 showAlert.confirmacion('Se ha detectado imagenes sin guardar, ¿Desea continuar?',
              confirm = function(){
-             	let i;
-             	for(i=0; i<scope.listImages.length; i++){
-             		let imagenVO=scope.listImages[i];
-             		if(!imagenVO.isSuccess){
-             			scope.listImages.splice(i,1);
-             			i--;
-	          			}
-             	}	                	
+	    		 $scope.listImages=[];
+	    		 $scope.updateViewDirective($scope.listImages);
              }, cancelaNotificar =function (){
+            	 aplicarCambio(itemSelected, nivel);
                  return;
              }); 
 	     };
@@ -138,96 +136,141 @@ angular.module(appTeclo).controller('expedienteController',
 	   */
 	     
 	  $scope.changedComboDependiente=function(itemSelected, nivel){
+		  /*optionBacupSelected.itemSelected=itemSelected;
+		  optionBacupSelected.nivel=angular.copy(nivel);
 		  
-		  if(itemSelected!=undefined){
-			let temp= [];
-			  switch(nivel){
-				  case 'proceso':
-					  
-					  $scope.paramConfSav.idProceso=itemSelected.idProceso;
-					  $scope.paramConfSav.idEncuesta=null;
-					  $scope.paramConfSav.idPregunta=null;	
-					  $scope.nuMaxImg=itemSelected.nuMaxImg;					  
-					  
-					  if(itemSelected.imagenes == undefined)
-						  itemSelected.imagenes=[];
-					  
-					  $scope.updateViewDirective(itemSelected.imagenes);// metodo se encuntra en la directoa update-image
-					  
-					  $scope.listImages= itemSelected.imagenes;
-					  
-					  if(itemSelected.listImageClasif.length > 0){
-						$scope.catalogosRelacoinados.catEncuesta = itemSelected.listImageClasif;
-					  }
-					  break;
-				  case 'encuesta':
-					  
-					  $scope.nuMaxImg=itemSelected.nuMaxImg;
-					  $scope.paramConfSav.idEncuesta=itemSelected.idEncuesta;
-					  $scope.paramConfSav.idPregunta=null;
-					  
-					  if(itemSelected.imagenes == undefined)
-						  itemSelected.imagenes=[];
-					  
-					  $scope.updateViewDirective(itemSelected.imagenes);// metodo se encuntra en la directoa update-image
-					  $scope.listImages = itemSelected.imagenes;
-					  
-					  if(itemSelected.listImageClasif.length>0){
-						$scope.catalogosRelacoinados.catPregunta = itemSelected.listImageClasif;
-					  }	 
-					  
-					  break;
-
-				  case 'pregunta':
-					  
-					  $scope.nuMaxImg=itemSelected.nuMaxImg;
-					  $scope.paramConfSav.idPregunta=itemSelected.idPregunta;
-					  
-					  if(itemSelected.imagenes == undefined)
-						  itemSelected.imagenes=[];
-					  
-					  $scope.updateViewDirective(itemSelected.imagenes);// metodo se encuntra en la directoa update-image
-					  $scope.listImages = itemSelected.imagenes;					  
-					  break;
-			  }
-		  }else{
-			  switch(nivel){
-				case 'proceso':
-					$scope.nuMaxImg=$scope.expedienteImg.nuMaxImg;
-					$scope.listImages = $scope.expedienteImg.imagenes;
-					$scope.catalogosRelacoinados.catEncuesta=null;
-					$scope.catalogosRelacoinados.catPregunta=null;
-					$scope.expedienteImg.proceso=undefined;
-					$scope.expedienteImg.encuesta=undefined;
-					$scope.expedienteImg.pregunta=undefined;					
-					$("#select2-proceso-container").text(MENSAJE);
-					$("#select2-encuesta-container").text(MENSAJE);
-					$("#select2-pregunta-container").text(MENSAJE);
-					$scope.paramConfSav.idProceso=null;
-					$scope.paramConfSav.idEncuesta=null;
-					$scope.paramConfSav.idPregunta=null;	
-					break;
-
-				case 'encuesta':
-					
-					$scope.listImages=$scope.expedienteImg.proceso.imagenes;
-					$scope.catalogosRelacoinados.catPregunta=null;
-					$scope.expedienteImg.encuesta=undefined;
-					$scope.expedienteImg.pregunta=undefined;
-					$("#select2-encuesta-container").text(MENSAJE);
-					$("#select2-pregunta-container").text(MENSAJE);
-					$scope.paramConfSav.idEncuesta=null;
-					$scope.paramConfSav.idPregunta=null;
-					break;
-
-				case 'pregunta':
-					$scope.listImages = $scope.expedienteImg.encuesta.listImageClasif.imagenes;
-					$scope.expedienteImg.pregunta=undefined;
-					$("#select2-pregunta-container").text(MENSAJE);
-					$scope.paramConfSav.idPregunta=null;
-					break;
-			  }
+		  let i;
+		  let existImgNotSaved=false;
+		  for(i=0; i<$scope.listImages.length; i++){
+			if($scope.listImages[i].isSuccess == false){
+				existImgNotSaved=true;
+				break;
+			}
 		  }
+		  
+		  if(existImgNotSaved){
+			  $scope.expedienteImg.pregunta.listImageClasif=agular.copyoptionBacupSelected.itemSelected;
+			  $scope.confirmChanged();
+		  }else{
+			  aplicarCambio(itemSelected, nivel);
+		  }*/
+		  
+		  
+		  aplicarCambio(itemSelected, nivel);
+		  
 	  };
+	  
+	  aplicarCambio=function(itemSelected, nivel){
+		  if(itemSelected!=undefined){
+				let temp= [];
+				  switch(nivel){
+					  case 'proceso':
+						  
+						  $scope.paramConfSav.idProceso=itemSelected.idProceso;
+						  $scope.paramConfSav.idEncuesta=null;
+						  $scope.paramConfSav.idPregunta=null;	
+						  $scope.nuMaxImg=itemSelected.nuMaxImg;					  
+						  
+						  if(itemSelected.imagenes == undefined)
+							  itemSelected.imagenes=[];
+						  
+						  $scope.listImages= angular.copy(itemSelected.imagenes);
+						  
+						  $scope.updateViewDirective($scope.listImages);// metodo se encuntra en la directoa update-image
+						  
+						  if(itemSelected.listImageClasif.length > 0){
+							$scope.catalogosRelacoinados.catEncuesta = itemSelected.listImageClasif;
+						  }
+						  break;
+					  case 'encuesta':
+						  
+						  $scope.nuMaxImg=itemSelected.nuMaxImg;
+						  $scope.paramConfSav.idEncuesta=itemSelected.idEncuesta;
+						  $scope.paramConfSav.idPregunta=null;
+						  
+						  if(itemSelected.imagenes == undefined)
+							  itemSelected.imagenes=[];
+						  
+						  $scope.listImages= angular.copy(itemSelected.imagenes);
+						  
+						  $scope.updateViewDirective($scope.listImages);// metodo se encuntra en la directoa update-image
+						  
+						  if(itemSelected.listImageClasif.length>0){
+							$scope.catalogosRelacoinados.catPregunta = itemSelected.listImageClasif;
+						  }	 
+						  
+						  break;
+
+					  case 'pregunta':
+						  
+						  $scope.nuMaxImg=itemSelected.nuMaxImg;
+						  $scope.paramConfSav.idPregunta=itemSelected.idPregunta;
+						  
+						  if(itemSelected.imagenes == undefined)
+							  itemSelected.imagenes=[];
+						  
+						  $scope.listImages= angular.copy(itemSelected.imagenes);
+						  
+						  $scope.updateViewDirective($scope.listImages);// metodo se encuntra en la directoa update-image
+						  break;
+				  }
+			  }else{
+				  switch(nivel){
+					case 'proceso':
+						$scope.nuMaxImg=$scope.expedienteImg.nuMaxImg;
+						
+						if($scope.expedienteImg.imagenes == undefined)
+							$scope.expedienteImg.imagenes=[];
+						
+						$scope.listImages = angular.copy($scope.expedienteImg.imagenes);
+						
+						$scope.updateViewDirective($scope.expedienteImg.imagenes);
+						
+						$scope.catalogosRelacoinados.catEncuesta=null;
+						$scope.catalogosRelacoinados.catPregunta=null;
+						$scope.expedienteImg.proceso=undefined;
+						$scope.expedienteImg.encuesta=undefined;
+						$scope.expedienteImg.pregunta=undefined;					
+						$("#select2-proceso-container").text(MENSAJE);
+						$("#select2-encuesta-container").text(MENSAJE);
+						$("#select2-pregunta-container").text(MENSAJE);
+						$scope.paramConfSav.idProceso=null;
+						$scope.paramConfSav.idEncuesta=null;
+						$scope.paramConfSav.idPregunta=null;	
+						break;
+
+					case 'encuesta':
+						
+						if($scope.expedienteImg.proceso.imagenes == undefined)
+							$scope.expedienteImg.proceso.imagenes=[];
+						
+						$scope.listImages = angular.copy($scope.expedienteImg.proceso.imagenes);
+						
+						$scope.updateViewDirective($scope.listImages);
+						
+						$scope.catalogosRelacoinados.catPregunta=null;
+						$scope.expedienteImg.encuesta=undefined;
+						$scope.expedienteImg.pregunta=undefined;
+						$("#select2-encuesta-container").text(MENSAJE);
+						$("#select2-pregunta-container").text(MENSAJE);
+						$scope.paramConfSav.idEncuesta=null;
+						$scope.paramConfSav.idPregunta=null;
+						break;
+
+					case 'pregunta':
+						if($scope.expedienteImg.encuesta.listImageClasif.imagenes == undefined)
+							$scope.expedienteImg.encuesta.listImageClasif.imagenes=[];
+						
+						$scope.listImages = angular.copy($scope.expedienteImg.encuesta.listImageClasif.imagenes);
+						
+						$scope.updateViewDirective($scope.listImages);
+						
+						$scope.expedienteImg.pregunta=undefined;
+						$("#select2-pregunta-container").text(MENSAJE);
+						$scope.paramConfSav.idPregunta=null;
+						break;
+				  }
+			  }
+	  }
 
     });

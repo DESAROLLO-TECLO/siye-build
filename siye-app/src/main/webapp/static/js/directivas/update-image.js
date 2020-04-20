@@ -515,7 +515,8 @@ appt.directive('updateImage',
 		     };
 		     
 		     //METODO QUE CON ALCANCE DESDE EL CONTROLADOR PADRE, PERMITE COMPLEMENTAR LA LISTA DE IMAGENES DESDE EL CONTROLER
-		     scope.$parent.$parent.updateViewDirective = function(listImages){
+		     scope.$parent.$parent.updateViewDirective = function(inListImages){
+		    	 let listImages=angular.copy(inListImages);
 		    	  angular.forEach(listImages, function(item, key) {
 		    		  item.unic=(key+1);
 		    		  item.strBase64=item.lbExpedienteODS;
@@ -539,7 +540,7 @@ appt.directive('updateImage',
 		    						  item.tipoExpediente = a[i];
 		    						  $timeout(function() {
 		    							  $("#select2-tpDoc"+item.unic+''+scope.idElementUp+"-container").text(item.tipoExpediente.nbTipoExpediente);
-		    						  },100);
+		    						  },300);
 		    						  break;
 		    					  }
 		    				  }
@@ -550,7 +551,7 @@ appt.directive('updateImage',
 		    		  }
 		    	  });
 		    	  
-		    	  scope.listImages=angular.copy(listImages);
+		    	  scope.listImages=listImages;
 		     };
 		     
 		     scope.$parent.$parent.getValueListImageDirective=function(){
