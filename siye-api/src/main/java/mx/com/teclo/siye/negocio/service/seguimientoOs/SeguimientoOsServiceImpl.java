@@ -14,6 +14,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanProcesoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.procesoencuesta.ProcesoEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServcioDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServicioDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesoDetalleVO;
@@ -180,20 +181,28 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 
 	@Transactional
 	@Override
-	public ProcesoDetalleVO getDetalleProceso(Long idOrdenServicio, Long idProceso) {
+	public List<ProcesoDetalleVO> getDetalleProceso(Long idOrdenServicio, Long idProceso) {
 		// Consultar el estatus del proceso de la os en especifico
-		ProcesoDetalleVO respuesta = planProcesoDAO.getDetalleProceso(idOrdenServicio, idProceso);
+		List<ProcesoDetalleVO> lstProcesos = planProcesoDAO.getDetalleProceso(idOrdenServicio, idProceso);
 		
-		if(respuesta!=null) {
-			//consultar lista de imagenes de evidencia nivel PROCESO 
-			respuesta.setImagenes(expedienteImgDAO.getImgByProceso(idOrdenServicio, idProceso));
-			
-			//Consulta de encuestas y evidencias 
-			
-			
-
+		if(!lstProcesos.isEmpty()) {
+			for(ProcesoDetalleVO proceso: lstProcesos) {
+				//consultar lista de imagenes de evidencia nivel PROCESO 
+				proceso.setImagenes(expedienteImgDAO.getImgByProceso(idOrdenServicio, idProceso));
+				
+				//Consulta de encuestas y evidencias 
+				List<EncuestaDetalleVO> lstEncuesta =  procesoEncuestaDAO.getDetalleEncuesta(idOrdenServicio, idProceso);
+				if(!lstEncuesta.isEmpty()) {
+					for(EncuestaDetalleVO encuesta: lstEncuesta) {
+						// consultar evidencias a nivel de encuesta 
+						encuesta.setImagenes(expedienteImgDAO.getImgByEncuesta(idOrdenServicio, encuesta.getIdEncuesta()));
+					}
+					proceso.setEncuestas(lstEncuesta);
+				}
+				
+			}
 		}
-		return respuesta;
+		return lstProcesos;
 	}
 
 }

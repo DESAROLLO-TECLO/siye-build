@@ -30,8 +30,8 @@ public interface SeguimientoOsService {
 	 * @author Maverick
 	 * @param idOrdenServicio
 	 * @param idProceso
-	 * @return ProcesoDetalleVO
+	 * @return List<ProcesoDetalleVO>
 	 *  Metodo para consultar, el acance de una Os en especifico  */
-	public ProcesoDetalleVO getDetalleProceso(Long idOrdenServicio, Long idProceso);
+	public List<ProcesoDetalleVO> getDetalleProceso(Long idOrdenServicio, Long idProceso);
 
 }
