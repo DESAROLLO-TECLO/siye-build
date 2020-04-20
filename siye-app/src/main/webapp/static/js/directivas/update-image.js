@@ -54,7 +54,7 @@ appt.directive('updateImage',
 	    	   var listImg = scope.$eval(attrs.listImages);
 	    	   
 	    	   scope.listImages=listImg == undefined ? [] : listImg;
-	    	  
+	    	   scope.listFiles=new Array();
 	    	  scope.imagePreview=new Object();	    	  
 	    	  
 	    	//Variable con la injeccion por defecto del servicio para expedientes
@@ -137,128 +137,40 @@ appt.directive('updateImage',
 				  
 				  $timeout(function() {
 					  scope.complementsDataImage();
-				  },500);
-	    	
-		    	  scope.configPages();
+				  },350);
 	    	  };
 	    	  
 	    	  scope.complementsDataImage=function(){
 	    		//se asigna un estatus a las imagenes que se obtienen de base de datos, 
 		    	  //sirve de manera local para invocar o no el servicio de eliminacion en back, y se asigna un parametro para identificacion local
 		    	  angular.forEach(scope.listImages, function(item, key) {
-		    		  item.unic=(key+1);
-		    		  item.strBase64=item.lbExpedienteODS;
-		    		  
-		    		  if(item.idExpedienteODS != undefined){
-		    			  item.isSuccess=true;
-		    			  let file= scope.urltoFile(item.lbExpedienteODS, item.nbExpedienteODS, item.cdTipoArchivo);
-		    			  item.name=file.name;
-		    			  item.size=file.size;
-		    			  item.tpDocumentList=angular.copy(scope.tpDocumentList);
-		    			  let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(item.cdTipoArchivo) !== -1);
-		    			  item.isImage=isImg;
-		    			  
-		    			  // SE VALIDA SI TIENE UN TP DE DOCUMENTO PREBIAMENTE ASIGNADO
-		    			  if(item.idTipoExpediente != undefined){
-		    				  let i;
-		    				  let a=item.tpDocumentList;
-		    				  for(i=0; i<a.length; i++){
-		    					  
-		    					  if(item.idTipoExpediente == a[i].idTipoExpediente){
-		    						  item.tipoExpediente = a[i];
-		    						  $timeout(function() {
-		    							  $("#select2-tpDoc"+item.unic+''+scope.idElementUp+"-container").text(item.tipoExpediente.nbTipoExpediente);
-		    						  },500);
-		    						  break;
-		    					  }
-		    				  }
-		    			  }
-		    			  
-		    		  }else{
-		    			  item.isSuccess=false;
-		    		  }
+		    		  let file= scope.urltoFile(item.lbExpedienteODS, item.nbExpedienteODS, item.cdTipoArchivo);
+		    		  file.unic=(key+1);
+		    		  file.strBase64=item.lbExpedienteODS;
+		    		  file.tpDocumentList=angular.copy(scope.tpDocumentList);
+		    		  let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(item.cdTipoArchivo) !== -1);
+		    		  file.isImage=isImg;
+		    		  file.isSuccess = item.idExpedienteODS != undefined;
+
+		    		// SE VALIDA SI TIENE UN TP DE DOCUMENTO PREBIAMENTE ASIGNADO
+		    		  if(item.idTipoExpediente != undefined){
+	    				  let i;
+	    				  let a=file.tpDocumentList;
+	    				  for(i=0; i<a.length; i++){
+	    					  
+	    					  if(item.idTipoExpediente == a[i].idTipoExpediente){
+	    						  file.tipoExpediente = a[i];
+	    						  $timeout(function() {
+	    							  $("#select2-tpDoc"+item.unic+''+scope.idElementUp+"-container").text(item.tipoExpediente.nbTipoExpediente);
+	    						  },350);
+	    						  break;
+	    					  }
+	    				  }
+	    			  }
+		    		  //hasta aqui control Z
+		    		  scope.listFiles.push(file);
 		    	  });
 	    	  };
-	    	  
-	    	  /*scope.$watch('listImages', function(newVaue,oldValue) {
-	    		  
-	    		  if(newVaue == undefined && oldValue != undefined){
-	    			  scope.listImages=new Array();
-	    		  }else if(newVaue != undefined && oldValue== undefined){
-	    			  intDirective();
-	    		  }else if(newVaue != undefined && oldValue!= undefined){
-	    			  if(newVaue.length == oldValue.length){
-	    				  if(!scope.isEqualsList(newVaue,oldValue))// si existen cambios
-	    					  intDirective();
-	    			  }else if(newVaue.length != oldValue.length){
-	    				  intDirective();
-	    			  }
-	    		  }
-			  });*/
-	    	  
-	    	  scope.isEqualsList=function(newValue,oldValue){
-	    		  
-	    		  let i;
-	    		  let j;
-	    		  for(i=0; i<newValue.length; i++){
-	    			  let itemNew=newValue[i];
-	    			  let isEquelItem=false;
-	    			  for(j=0; j<oldValue; j++){
-	    				  let itemOld=oldValue[j];
-	    				  	if(itemOld.idExpedienteODS == itemNew.idExpedienteODS)
-	    				  		if(itemOld.idOrdenServicio == itemNew.idOrdenServicio)
-	    				  			if(itemOld.idOdsEncuesta == itemNew.idOdsEncuesta)
-	    				  				if(itemOld.idProceso == itemNew.idProceso)
-	    				  					if(itemOld.idPregunta == itemNew.idPregunta)
-	    				  						if(itemOld.idIncidencia == itemNew.idIncidencia)
-	    				  							if(itemOld.idTipoExpediente == itemNew.idTipoExpediente)
-	    				  								if(itemOld.nbExpedienteODS == itemNew.nbExpedienteODS)
-	    				  									if(itemOld.cdTipoArchivo == itemNew.cdTipoArchivo)
-	    				  										if(itemOld.lbExpedienteODS == itemNew.lbExpedienteODS)
-	    				  											isEquelItem=true;	    					
-	    			  }
-	    			  if(!isEquelItem)
-	    				  return false;
-	    		  }
-	    		  
-	    		  return true;
-	    	  }
-	    	  
-	    	  
-	    	  
-	    	  //funcion para iniciar el paginador
-	    	  scope.configPages = function() {
-	    	        scope.viewPag.pages.length = 0;
-	    	        var ini = scope.viewPag.currentPage - 4;
-	    	        var fin = scope.viewPag.currentPage + 5;
-	    	        if (ini < 1) {
-	    	          ini = 1;
-	    	          if (Math.ceil(scope.listImages.length / scope.viewPag.pageSize) > 10)
-	    	            fin = 10;
-	    	          else
-	    	            fin = Math.ceil(scope.listImages.length / scope.viewPag.pageSize);
-	    	        } else {
-	    	          if (ini >= Math.ceil(scope.listImages.length / scope.viewPag.pageSize) - 10) {
-	    	            ini = Math.ceil(scope.listImages.length / scope.viewPag.pageSize) - 10;
-	    	            fin = Math.ceil(scope.listImages.length / scope.viewPag.pageSize);
-	    	          }
-	    	        }
-	    	        if (ini < 1) ini = 1;
-	    	        for (var i = ini; i <= fin; i++) {
-	    	          scope.viewPag.pages.push({
-	    	            no: i
-	    	          });
-	    	        }
-
-	    	        if (scope.viewPag.currentPage >= scope.viewPag.pages.length)
-	    	          scope.viewPag.currentPage = scope.viewPag.pages.length - 1;
-	    	  };
-	    	  
-	    	  scope.setPage = function(index) {
-	    	        scope.viewPag.currentPage = index - 1;
-	    	      };
-	    	  
-	    	      //fin dunciones de paginador
 	    	  
 	    	  //SE VALIDA SI SE OBTIENE TIPO DE DOCUMENTO DESDE SERVICIO
 	    	  scope.valdComboTpDocuemnt=function(){
@@ -289,10 +201,6 @@ appt.directive('updateImage',
 	    	  
 	    	//Se obtienen los archivos en onjetoFiles se ejecuta cuando el componente input file detecta cambios, este componenete esta en el template
 	    	  scope.getFilesFromInput=function(inputFiles){
-	    		  /*let filesList=[];
-    			  angular.forEach(inputFiles.files, function(item, key) {
-    				  filesList.push(item);
- 		    	  });*/
 	    			  
 	    		  // Si exsisten restricciones se omiten los archivos que no las cumplan
 	    		  let files=scope.validRestrcctionsFiles(inputFiles);
@@ -304,10 +212,6 @@ appt.directive('updateImage',
 	    	  scope.reinitListView=function(filesList){
 	    		// los files obtenidos se asignan a la lista enviada como parametro
 	    		  scope.addImgesToLisViewBiding(filesList);
-	    		  scope.viewPag.currentPage=0;
-	    		  scope.viewPag.pageSize=2;
-	    		  scope.viewPag.pages=[];
-	    		  scope.configPages();
 	    	  }
 	    	  
 	    	  //se vaidan las restrciones en caso de existir
@@ -340,7 +244,7 @@ appt.directive('updateImage',
 	        		  }
 	        		  
 	        		  if(errorSizeImage){
-	    					msj+=' el tamaño minimo ('+scope.paramConfComponent.maxSizeMb+' MB)';
+	    					msj+=' el tamaño maxímo ('+scope.paramConfComponent.maxSizeMb+' MB)';
 	    			  }
 	        		  if(errorTypeFile){
 	        			  errorTypeFile=true;
@@ -361,48 +265,27 @@ appt.directive('updateImage',
 	    			  let i;
 	        		  for(i=0; i<files.length; i++){
 	        			  
-	        			  if(scope.maxNuImage != undefined && scope.listImages.length >= scope.maxNuImage){
+	        			  if(scope.maxNuImage != undefined && scope.listFiles.length >= scope.maxNuImage){
 	        				  growl.warning('Algunas archivos no se adjuntaron se llego al limite de archivos', {ttl: 4000});
 	        				  break;
 	        			  }
 	        			  
 	        			  let file=files[i];
-	        			  
-	        			  let imagenVO=new Object({
-	           				  'idOrdenServicio' :	null,
-	           				  'idProceso' 		:	null,
-	           				  'idOdsEncuesta' 	:	null,
-	           				  'idPregunta' 		:	null,
-	           				  'idIncidencia' 	:	null,
-	           				  'nbExpedienteODS'	:	file.name,
-	           				  'cdTipoArchivo'	:	file.type.slice(file.type.lastIndexOf('/') + 1),
-	           				  'lbExpedienteODS'	:	null,
-	           				  'tpDocumentList'  :	angular.copy(scope.tpDocumentList),
-	           				  'idTipoExpediente':	null
-	           			  });
 	           			  
-	           			  if(scope.paramConfSav != undefined){
-	           				imagenVO= scope.getImgVOParamInitial(imagenVO);
-	           			  }
-	           			  
-		           			let unic=(scope.listImages.length+1);
-	          				imagenVO.unic=unic;
-	          				imagenVO.name=file.name;
-	          				imagenVO.file=file;
-	          				imagenVO.type=file.type;
-	          				imagenVO.size=file.size;
-	          				imagenVO.isSuccess=false;
-	          				let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(imagenVO.cdTipoArchivo) !== -1);
-	          				imagenVO.isImage=isImg;
-	          				imagenVO.showProgress=true;
-	          				scope.logobs64(file,imagenVO);
+	           			let unic=(scope.listFiles.length+1);
+	           			file.unic=unic;
+	           			file.isSuccess=false;
+	           			let type = '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
+          				let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1);
+          				file.isImage=isImg;
+          				file.showProgress=true;
 		          		
-		          		if(scope.listImages==undefined){
-          					scope.listImages=new Array();
+		          		if(scope.listFiles==undefined){
+          					scope.listFiles=new Array();
           				}
           				
           				//se agrega a la lista envida siempre al inicio
-          				scope.listImages.unshift(imagenVO);
+          				scope.listFiles.unshift(file);
 	        		  }
 	    		  }
 	    	  };
