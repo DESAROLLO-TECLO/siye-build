@@ -6,6 +6,7 @@ import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDao;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestaDetalleDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelEncuestaVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
 
 public interface ProcesoEncuestaDAO extends BaseDao<ProcesoEncuestaDTO>{
 	
@@ -25,6 +26,15 @@ public interface ProcesoEncuestaDAO extends BaseDao<ProcesoEncuestaDTO>{
 	 * David Guerra
 	 */
 	public List<ProcesoEncuestaDTO> obtenerEncuestasProceso(Long idProceso);
+	
+	/* @Author Maverick
+	 * @param idProceso
+	 * @param idOrdenSerivicio
+	 * @return List<EncuestaDetalleVO>
+	 *metodo para consultar el avance de las encuestas de una os y proceso en especifico
+	 * */
+	public List<EncuestaDetalleVO> getDetalleEncuesta(Long idOrdenServicio, Long idProceso);
+	
 
 	/**
 	 * Descripciónn: Obtiene una lista de encuestas por id de proceso

@@ -45,6 +45,6 @@ public interface PlanProcesoDAO extends BaseDao<PlanProcesoDTO> {
 	 * @return List<ProcesoDetalleVO>
 	 * Maverick
 	 */
-	public ProcesoDetalleVO getDetalleProceso(Long idOrdenServicio, Long idProceso);
+	public List<ProcesoDetalleVO> getDetalleProceso(Long idOrdenServicio, Long idProceso);
 
 }

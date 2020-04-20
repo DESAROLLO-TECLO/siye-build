@@ -24,6 +24,7 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.OpcionCausaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaGenericaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.TblCatalogosVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
@@ -152,4 +153,11 @@ public class CatalogoRestController {
 		return new ResponseEntity<List<ConductorVO>>(listaConductorVO, HttpStatus.OK);
 
      }
+	
+	@RequestMapping(value = "/buscaCatalogosActivos", method = RequestMethod.GET)
+	public ResponseEntity<List<TblCatalogosVO>> buscaCatalogosActivos()  throws NotFoundException {
+		List<TblCatalogosVO> listTblCatalogosVO = catalogoService.getTblCatalogos();
+		return new ResponseEntity<List<TblCatalogosVO>>(listTblCatalogosVO, HttpStatus.OK);
+	}
+	
 }

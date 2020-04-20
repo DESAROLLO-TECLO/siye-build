@@ -67,14 +67,13 @@ public class SeguimientoOsRestController {
 	
 	@GetMapping(value="/getDetalleProceso")
 	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
-	public ResponseEntity<ProcesoDetalleVO> getDetalleProceso(@RequestParam(value ="idOrden") Long idOrdenServicio,
+	public ResponseEntity<List<ProcesoDetalleVO>> getDetalleProceso(@RequestParam(value ="idOrden") Long idOrdenServicio,
 															  @RequestParam(value ="idProceso") Long idProceso) throws NotFoundException{	
-		ProcesoDetalleVO respuesta = seguimientoService.getDetalleProceso(idOrdenServicio, idProceso);
-		if(respuesta==null) {
+		List<ProcesoDetalleVO> respuesta = seguimientoService.getDetalleProceso(idOrdenServicio, idProceso);
+		if(respuesta.isEmpty()) {
 			throw new NotFoundException("No hay información");
 		}
-		
-		return new ResponseEntity<ProcesoDetalleVO>(respuesta, HttpStatus.OK);
+		return new ResponseEntity<List<ProcesoDetalleVO>>(respuesta, HttpStatus.OK);
 	};
 	
 	
