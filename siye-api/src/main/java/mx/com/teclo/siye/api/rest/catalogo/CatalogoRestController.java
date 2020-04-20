@@ -24,6 +24,7 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.OpcionCausaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaGenericaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.TblCatalogosVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
@@ -144,5 +145,19 @@ public class CatalogoRestController {
 		List<ConfiguracionVO> listConfiguracionVO = catalogoService.configuracionIncidencia("TIE051D_NU_MAX_IMAGENES", "TIE051D_IMG_REQ");
 		return new ResponseEntity<List<ConfiguracionVO>>(listConfiguracionVO, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value="/getTransportistasVehiculo", method = RequestMethod.GET)
+	public ResponseEntity<List<ConductorVO>> getTransportistasVehiculo(@RequestParam("idVehiculo") Long idVehiculo)
+		throws NotFoundException{
+		List<ConductorVO> listaConductorVO = catalogoService.getTransportistasVehiculo(idVehiculo);
+		return new ResponseEntity<List<ConductorVO>>(listaConductorVO, HttpStatus.OK);
 
+     }
+	
+	@RequestMapping(value = "/buscaCatalogosActivos", method = RequestMethod.GET)
+	public ResponseEntity<List<TblCatalogosVO>> buscaCatalogosActivos()  throws NotFoundException {
+		List<TblCatalogosVO> listTblCatalogosVO = catalogoService.getTblCatalogos();
+		return new ResponseEntity<List<TblCatalogosVO>>(listTblCatalogosVO, HttpStatus.OK);
+	}
+	
 }

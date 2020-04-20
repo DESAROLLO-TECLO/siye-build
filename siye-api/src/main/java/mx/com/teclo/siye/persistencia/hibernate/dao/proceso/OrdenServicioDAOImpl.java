@@ -132,6 +132,7 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 	@SuppressWarnings("unchecked")
 	public List<OrdenServcioDetalleVO> getDetalleOS(Long idCentroInstalacion, String fechaInicio, String fechaFin) {
 		StringBuilder consulta = new StringBuilder("SELECT" + 
+				"   OS.ID_ORDEN_SERVICIO AS idOrdenServicio, "+
 				"	OS.CD_ORDEN_SERVICIO AS nuOrdenServicio," + 
 				"	OS.FH_ATENCION_INI AS fechaAtencion," + 
 				"	CONC.NB_CONCESION AS txTransportista," + 
@@ -163,6 +164,7 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 				"	AND TRUNC(OS.FH_CITA) BETWEEN TO_DATE('"+fechaInicio+"','dd/MM/yyyy')  AND TO_DATE('"+ fechaFin+"','dd/MM/yyyy')" + 
 				" ORDER BY OS.CD_ORDEN_SERVICIO, OS.FH_CITA DESC");		
 		List<OrdenServcioDetalleVO> detalleEntrada = getCurrentSession().createSQLQuery(consulta.toString())
+				.addScalar("idOrdenServicio", LongType.INSTANCE)
 				.addScalar("nuOrdenServicio",StringType.INSTANCE)
 				.addScalar("fechaAtencion",StringType.INSTANCE)
 				.addScalar("txTransportista",StringType.INSTANCE)

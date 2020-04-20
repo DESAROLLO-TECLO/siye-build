@@ -2,6 +2,7 @@ package mx.com.teclo.siye.persistencia.vo.seguimientoOs;
 
 public class OrdenServcioDetalleVO {
 
+	private Long idOrdenServicio;
 	private String nuOrdenServicio;
 	private String fechaAtencion;
 	private String txTransportista;
@@ -146,6 +147,18 @@ public class OrdenServcioDetalleVO {
 	 */
 	public void setTxTecnicoInstalacion(String txTecnicoInstalacion) {
 		this.txTecnicoInstalacion = txTecnicoInstalacion;
+	}
+	/**
+	 * @return the idOrdenServicio
+	 */
+	public Long getIdOrdenServicio() {
+		return idOrdenServicio;
+	}
+	/**
+	 * @param idOrdenServicio the idOrdenServicio to set
+	 */
+	public void setIdOrdenServicio(Long idOrdenServicio) {
+		this.idOrdenServicio = idOrdenServicio;
 	}
 	
 }
