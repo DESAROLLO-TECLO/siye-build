@@ -120,6 +120,21 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
 		}
 };
 
+consultarTransportistas = function(){
+    var idVeh = $scope.dataEtapa.vehiculo.idVehiculo;
+    if(idVeh != null ){
+        etapaService.getTransportistasVehiculo(idVeh).success(function(data){
+            $scope.transportista = data;
+            console.log(data);
+        }).error(function(error){
+            console.log(error);
+            $scope.transportista = "No se Encontraron Transportistas";
+        });
+    }
+};
+
+consultarTransportistas();
+
     consultaPlan();
     cambiaTiempo($scope.tiempoTranscurridoOrden);
 
