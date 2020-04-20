@@ -8,9 +8,16 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import mx.com.teclo.siye.persistencia.hibernate.dao.expedienteImg.ExpedienteImgDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanProcesoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.procesoencuesta.ProcesoEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServcioDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServicioDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesoDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.SeguimientoOrdenServicioVO;
 
 @Service
@@ -21,6 +28,16 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 	
 	@Autowired
 	private OrdenServicioDAO ordenServicioDAO;
+	
+	@Autowired
+	private ExpedienteImgDAO expedienteImgDAO;
+	
+	@Autowired
+	private PlanProcesoDAO planProcesoDAO;
+
+	@Autowired
+	private ProcesoEncuestaDAO procesoEncuestaDAO;
+	
 
 	private final String ENCURSO = "EN_CURSO", COMPLETA = "COMPLETADAS", PROGRAMADA = "PROGRAMADA",
 						 NOPROGRAMADA = "NO_PROGRAMADA", INCIDENCIA = "INCIDENCIAS";
@@ -137,6 +154,55 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 			}
 		}
 		return consulta;
+	}
+
+	
+	@Transactional
+	@Override
+	public OrdenServicioDetalleVO getDetalleByEtapas(Long idOrdenServicio) {
+		OrdenServicioDetalleVO respuesta = new OrdenServicioDetalleVO();	
+		// consultar OS 
+		OrdenServicioDTO OrdenServicioDTO = ordenServicioDAO.findOne(idOrdenServicio);
+		if(OrdenServicioDTO!=null) {
+			respuesta.setIdOrdenServicio(idOrdenServicio);
+			respuesta.setCdOrdenServicio(OrdenServicioDTO.getCdOrdenServicio());
+			respuesta.setEvidencias(expedienteImgDAO.getImagenOS(idOrdenServicio, " AND ID_INCIDENCIA IS NULL ORDER BY NU_ORDEN ASC"));
+			respuesta.setIncidencias(expedienteImgDAO.getImagenOS(idOrdenServicio, " AND ID_INCIDENCIA IS NOT NULL ORDER BY NU_ORDEN ASC"));
+			respuesta.setEstatus(OrdenServicioDTO.getStSeguimiento().getNbStSeguimiento());
+			respuesta.setNuPorcentaje(0.0);
+			List<ProcesoDetalleVO> etapas = planProcesoDAO.getEtapasParaSeguimiento(OrdenServicioDTO.getPlan().getIdPlan());
+			if(!etapas.isEmpty()) {
+				respuesta.setProcesos(etapas);
+			}
+		}
+		
+		return respuesta;
+	}
+
+	@Transactional
+	@Override
+	public List<ProcesoDetalleVO> getDetalleProceso(Long idOrdenServicio, Long idProceso) {
+		// Consultar el estatus del proceso de la os en especifico
+		List<ProcesoDetalleVO> lstProcesos = planProcesoDAO.getDetalleProceso(idOrdenServicio, idProceso);
+		
+		if(!lstProcesos.isEmpty()) {
+			for(ProcesoDetalleVO proceso: lstProcesos) {
+				//consultar lista de imagenes de evidencia nivel PROCESO 
+				proceso.setImagenes(expedienteImgDAO.getImgByProceso(idOrdenServicio, idProceso));
+				
+				//Consulta de encuestas y evidencias 
+				List<EncuestaDetalleVO> lstEncuesta =  procesoEncuestaDAO.getDetalleEncuesta(idOrdenServicio, idProceso);
+				if(!lstEncuesta.isEmpty()) {
+					for(EncuestaDetalleVO encuesta: lstEncuesta) {
+						// consultar evidencias a nivel de encuesta 
+						encuesta.setImagenes(expedienteImgDAO.getImgByEncuesta(idOrdenServicio, encuesta.getIdEncuesta()));
+					}
+					proceso.setEncuestas(lstEncuesta);
+				}
+				
+			}
+		}
+		return lstProcesos;
 	}
 
 }

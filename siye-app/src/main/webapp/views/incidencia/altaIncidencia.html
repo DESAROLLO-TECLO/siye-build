@@ -94,18 +94,18 @@
                         <div class="row">
                         	<div class="col-md-4">
                                 <div class="form-group" ng-class="{'has-error': formAltaIncidencia.tecnico.$invalid && formAltaIncidencia.tecnico.$dirty}">
-                                    <label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.tecnico.label' | translate}} </label>
+                                    <label for=""> {{'ALTAINCIDENCIA.AltaIncidencia.tecnico.label' | translate}} </label>
                                     <div class="input-group">
                                         <div class="input-group-addon">
                                             <i class="fa fa-list-ul"></i>
                                         </div>
-                                        <select class="form-control" name="tecnico" id="tecnico" required select2 idioma-s2="{{currentLanguage}}" 
-                                        	catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getTecnicos'" param-busq="1"
-                                        	name-save-service="'instaladorService'" name-save-end-point-service="'nuevoInstalador'"
-                                        	model-result="listTecnico" object-id="'idPersona'" idbtn="'btnPersona'"
-											opcion-selec="registroIncidencia.tecnico" ng-change="addTxDescripcion()" name-modal="'Técnico'"
-											ng-model="registroIncidencia.tecnico" ng-options="t as t.nbPersona+' '+t.nbPatPersona+' '+t.nbMatPersona for t in listTecnico">
-											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+                                        <select class="form-control" name="tecnico" id="tecnico" select2 idioma-s2="{{currentLanguage}}" 
+                                        	catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getTecnicos'" param-busq="1" 
+                                        	name-save-service="'instaladorService'" name-save-end-point-service="'nuevoInstalador'" 
+                                        	model-result="listTecnico" object-id="'idPersona'" idbtn="'btnPersona'" name-modal="'Técnico'" 
+											opcion-selec="registroIncidencia.tecnico" 
+											ng-model="registroIncidencia.tecnico" ng-options="x as x.nbPersona+' '+x.nbPatPersona+' '+x.nbMatPersona+' ('+x.cdPersona+')' for x in listTecnico"> 
+											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option> 
 										</select>
 										<div class="input-group-btn">
 											<label catalogo-generico-listt id="btnPersona" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></label>
@@ -118,17 +118,17 @@
                             </div>
                         	<div class="col-md-4">
                         		<div class="form-group" ng-class="{'has-error': formAltaIncidencia.transportista.$invalid && formAltaIncidencia.transportista.$dirty}">
-	                        		<label for=""> *{{'ALTAINCIDENCIA.AltaIncidencia.transportista.label' | translate}} </label>
+	                        		<label for=""> {{'ALTAINCIDENCIA.AltaIncidencia.transportista.label' | translate}} </label>
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-list-ul"></i>
 										</div>
-										<select class="form-control" name="transportista" id="transportista" required select2 idioma-s2="{{currentLanguage}}" 
+										<select class="form-control" name="transportista" id="transportista" select2 idioma-s2="{{currentLanguage}}" 
 											catalogo-generico-list name-consult-service="'catalogoGenericoService'" name-consult-end-point-service="'getTransportistas'" 
 											name-save-service="'conductorService'" name-save-end-point-service="'nuevoConductor'" 
 											model-result="listTransportista" object-id="'idConductor'" idbtn="'btnTransportista'" name-modal="'Transportista'"
 											opcion-selec="registroIncidencia.transportista" 
-											ng-model="registroIncidencia.transportista" ng-change="addTxDescripcion()" 
+											ng-model="registroIncidencia.transportista" 
 											ng-options="x as x.nbConductor+' '+x.nbApepatConductor+' '+x.nbApematConductor for x in listTransportista"> 
 											<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option> 
 										</select> 
@@ -190,7 +190,7 @@
                          	</div>
                             <div class="col-xs-12 col-sm-12 col-md-offset-1 col-md-10">
                                 <update-image id-element-up="altaIncidencia" include="true" param-conf-sav="paramConfSav" is-incidencia="true"
-	                   				param-conf-component="paramConfiguracion" max-nu-image="{{paramConfiguracion.maxNuImage}}" list-images="listImages"></update-image>
+	                   				param-conf-component="paramConfiguracion" max-nu-image="{{paramConfiguracion.maxNuImage}}" list-images="{{listImages}}"></update-image>
                             </div>
                      	</div>
                     </div>

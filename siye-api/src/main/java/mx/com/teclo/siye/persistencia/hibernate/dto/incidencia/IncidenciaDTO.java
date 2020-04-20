@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestasDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesos.IEprocesosDTO;
 
@@ -80,6 +81,10 @@ public class IncidenciaDTO implements Serializable {
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_ENCUESTA", referencedColumnName="ID_ENCUESTA")
 	private EncuestasDTO encuesta;
+
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	@JoinColumn(name="ID_CENTRO_INSTALACION", referencedColumnName="ID_CENTRO_INSTALACION")
+	private CentroInstalacionDTO centroInstalacion;
 
 	public Long getIdIncidencia() {
 		return idIncidencia;
@@ -208,5 +213,14 @@ public class IncidenciaDTO implements Serializable {
 	public void setEncuesta(EncuestasDTO encuesta) {
 		this.encuesta = encuesta;
 	}
+
+	public CentroInstalacionDTO getCentroInstalacion() {
+		return centroInstalacion;
+	}
+
+	public void setCentroInstalacion(CentroInstalacionDTO centroInstalacion) {
+		this.centroInstalacion = centroInstalacion;
+	}
+	
 
 }

@@ -245,10 +245,21 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         }
     });
 
-    //Seguimiento 
+    // Seguimiento 
     $routeProvider.when("/seguimientoOS", {
         templateUrl: "views/monitoreo/seguimiento.html",
         controller: "seguimientoOsController"
     });
 
+    // Linea de tiempo 
+    $routeProvider.when("/detSegimientoOS", {
+        templateUrl: "views/monitoreo/detalleSeguimientoOS.html",
+        controller: "detalleSeguimientoOsController"
+    });
+    
+    // Monitoreo Incidencias 
+    $routeProvider.when("/monIncidencia", {
+        templateUrl: "views/monitoreo/monIncidencia.html",
+        controller: "monIncidenciaController"
+    });
 });

@@ -2,11 +2,8 @@ package mx.com.teclo.siye.negocio.service.async;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.naming.NamingException;
-
-import org.hibernate.HibernateException;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.siye.persistencia.vo.async.ConfigCargaMasivaVO;
@@ -32,16 +29,6 @@ public interface CargaMasivaService {
 	 * @throws SQLException 
 	 */
 	void procesarLineas(ConfigCargaMasivaVO config) throws BusinessException;
-
-	/**
-	 * Recibe un query insert para ejecutarlo
-	 * 
-	 * @param insertQuery
-	 * @param linea       Valores tomada del archivo lote
-	 * @return
-	 * @throws BusinessException
-	 */
-	List<Long> ejecutarSQL(List<String> queries, boolean isModoSelect) throws BusinessException, HibernateException;
 
 	
 }

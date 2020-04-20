@@ -9,11 +9,10 @@ public class InsercionTablaVO {
 	private String titulos;
 	private String piesPagina;
 	private String comodines;
-	private String campoFiltro;
-	private String valorFiltro;
-	private String campoID;
+	private ColumnaVO campoID;
 	private String insertSQL;
 	private String selectSQL;
+	private ColumnaVO columnaFiltro;
 	private Long id;
 
 	public InsercionTablaVO() {
@@ -24,7 +23,6 @@ public class InsercionTablaVO {
 		this.selectSQL = selectSQL;
 	}
 
-	
 	public String getColumnas() {
 		return columnas;
 	}
@@ -81,22 +79,7 @@ public class InsercionTablaVO {
 		this.comodines = comodines;
 	}
 
-	public String getCampoFiltro() {
-		return campoFiltro;
-	}
-
-	public void setCampoFiltro(String campoFiltro) {
-		this.campoFiltro = campoFiltro;
-	}
-
-	public String getValorFiltro() {
-		return valorFiltro;
-	}
-
-	public void setValorFiltro(String valorFiltro) {
-		this.valorFiltro = valorFiltro;
-	}
-
+	
 	public String getInsertSQL() {
 		return insertSQL;
 	}
@@ -120,20 +103,26 @@ public class InsercionTablaVO {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	public String getCampoID() {
+
+	public ColumnaVO getCampoID() {
 		return campoID;
 	}
 
-	public void setCampoID(String campoID) {
+	public void setCampoID(ColumnaVO campoID) {
 		this.campoID = campoID;
+	}
+
+	public ColumnaVO getColumnaFiltro() {
+		return columnaFiltro;
+	}
+
+	public void setColumnaFiltro(ColumnaVO columnaFiltro) {
+		this.columnaFiltro = columnaFiltro;
 	}
 
 	@Override
 	public String toString() {
 		return "InsercionTablaVO [columnas=" + columnas + ", valores=" + valores + "]";
 	}
-
-	
 
 }

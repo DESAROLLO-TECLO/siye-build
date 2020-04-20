@@ -33,5 +33,14 @@ public class CentroInstalacionDAOImpl extends BaseDaoHibernate<CentroInstalacion
 		c.add(Restrictions.eq("idCentroInstalacion", centroIn));
 		return (CentroInstalacionDTO)c.uniqueResult();
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CentroInstalacionDTO> obtenerCentroInstalacionVisible(Long value) {
+		Criteria c = getCurrentSession().createCriteria(CentroInstalacionDTO.class);
+		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("stCentroInstalacion", value));
+		return (List<CentroInstalacionDTO>) c.list();
+	}
 
 }

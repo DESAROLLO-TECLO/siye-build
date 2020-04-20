@@ -10,6 +10,7 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaGenericaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.TblCatalogosVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
@@ -93,5 +94,25 @@ public interface CatalogoService {
 	 */
 	public List<ConfiguracionVO> configuracionIncidencia(String cdLlavePConfig1, String cdLlavePConfig2)
 			throws NotFoundException;
+	
+	public List<ConductorVO> getTransportistasVehiculo(Long idVehiculo) throws NotFoundException;
+	
+	/**
+	 * @Descripción: Método para obtener la lista de catalogos
+	 * @author Estephanie Chavez
+	 * @return List<TblCatalogosDTO>
+	 * @throws NotFoundException
+	 */
+	public List<TblCatalogosVO> getTblCatalogos() throws NotFoundException;
+	
+	/**
+	 * @Descripción: Método para obtener la lista de CentroInstalacion
+	 * @author Estephanie Chavez
+	 * @param cdTipoBusqueda
+	 * @param valor
+	 * @return
+	 * @throws NotFoundException
+	 */
+	public List<CentroInstalacionVO>consultaCentroIntalacion(String cdTipoBusqueda,Long valor) throws NotFoundException;
 
 }

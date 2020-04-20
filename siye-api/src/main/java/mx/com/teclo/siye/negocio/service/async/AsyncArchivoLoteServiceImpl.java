@@ -88,6 +88,7 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 	}
 
 	@Override
+	@Async
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void cargarArchivoLote(Long idArchivoLote) throws BusinessException {
 		LOGGER.info(MessageFormat.format(MSG_INICIANDO_CARGA_MASIVA, idArchivoLote));
@@ -109,6 +110,7 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 
 	@Override
 	@Transactional
+	@Async
 	public void actualizarSeguimiento(Long idArchivoLote, ArchivoSeguimientoEnum seguimiento, String txLoteOdsError)
 			throws BusinessException {
 		LOGGER.info(MessageFormat.format(MSG_ACTUALIZANDO_SEGUIMIENTO, idArchivoLote));
@@ -118,6 +120,7 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 		loteDTOrdenServicioDTO.setTxLoteOds(txLoteOdsError);
 		loteDTOrdenServicioDTO.setFhModificacion(new Date());
 		loteDAO.update(loteDTOrdenServicioDTO);
+		loteDAO.flush();
 	}
 
 	@Override
@@ -180,6 +183,5 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 		return totalTablas == totalQueries;
 
 	}
-	
 
 }

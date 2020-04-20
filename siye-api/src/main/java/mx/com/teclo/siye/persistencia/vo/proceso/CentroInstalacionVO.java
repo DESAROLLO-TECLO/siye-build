@@ -27,6 +27,7 @@ public class CentroInstalacionVO implements Serializable {
 	private String hrAtencionFin;
 	private Long nuOrden;
 	private Boolean stActivo;
+	private Long stCentroInstalcion;
 
 	public Long getIdCentroInstalacion() {
 		return idCentroInstalacion;
@@ -139,5 +140,14 @@ public class CentroInstalacionVO implements Serializable {
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
 	}
+
+	public Long getStCentroInstalcion() {
+		return stCentroInstalcion;
+	}
+
+	public void setStCentroInstalcion(Long stCentroInstalcion) {
+		this.stCentroInstalcion = stCentroInstalcion;
+	}
+	
 
 }

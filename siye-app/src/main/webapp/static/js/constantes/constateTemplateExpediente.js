@@ -2,24 +2,24 @@ var includeDeseing=
 	'	<form name="formTpDocument" novalidate>																														 					'+
 	'	<div class="row">																														 										'+
 	'		<div class="col-xs-12 col-sm-12 col-md-12">                                                                                                                                 '+
-	'			<div class="{{isIncidencia ? \'col-xs-7 col-sm-8 col-md-8\' : \'col-xs-5 col-sm-6 col-md-8\'}}">                                                                  		'+
+	'			<div class="{{isIncidencia ? \'col-xs-12 col-sm-8 col-md-8\' : \'col-xs-12 col-sm-6 col-md-8\'}}">                                                                  		'+
 	'				<div class="col-xs-6"><label>No. Imagenes:</label>{{\' \'+ (listImages == undefined ? 0 : listImages.length)}} <span ng-show="maxNuImage != undefined"><label>de</label> {{\' \'+ maxNuImage}}</span></div>  '+
 	'				<div class="col-xs-6"><label>Por guardar:</label>{{\' \'+((listImages | filter:{ isSuccess : false}).length)}}</div>                              					'+
 	'			</div>                                                                  																								'+
-	'			<div class="col-xs-3 col-sm-2 col-md-2">                                                                                                                                '+
+	'			<div class="col-xs-4 col-sm-2 col-md-2">                                                                                                                                '+
 	'				<input type="file"  ng-show="false"                                                                            				                                        '+
-	'					 id="file-1{{idElementUp}}"  onchange="angular.element(this).scope().getFilesFromInput(this)" 							                                        '+
+	'					 id="file-1{{idElementUp}}"  custom-on-change handler="getFilesFromInput(params)"							                                        '+
 	'					class="inputfile inputfile-1" multiple />                                                                                                                       '+
 	'				<label for="file-1{{idElementUp}}" capture="camera" class="btn btn-danger  pull-right">                                                                             '+
 	'					<i class="fa fa-camera fa-lg" aria-hidden="true"></i>                                                                                                           '+
 	'				</label>                                                                                                                                                            '+
 	'			</div>                                                                                                                                                                  '+
-	'			<div class="col-xs-2 col-sm-2 col-md-1" ng-hide="isIncidencia">                                                                                                         '+
+	'			<div class="col-xs-4 col-sm-2 col-md-1" ng-hide="isIncidencia">                                                                                                         '+
 	'				<Button class="btn btn-danger pull-right" ng-click="saveImagesAll(formTpDocument)" ng-disabled="(listImages | filter:{ isSuccess : false}).length == 0">            '+
 	'					<i class="fa fa-floppy-o fa-lg" aria-hidden="true"></i>                                                                                                         '+
 	'				</Button>                                                                                                                                                           '+
 	'			</div>                                                                                                                                                                  '+
-	'			<div class="col-xs-2 col-sm-2 {{isIncidencia ? \'col-md-2\' : \'col-md-1\'}}">                                                                                          '+
+	'			<div class="col-xs-4 col-sm-2 {{isIncidencia ? \'col-md-2\' : \'col-md-1\'}}">                                                                                          '+
 	'				<Button class="btn btn-danger pull-right" ng-click="cancelAllImage()" ng-disabled="listImages.length == 0">                                                         '+
 	'					<i class="fa fa-trash fa-lg" aria-hidden="true"></i>                                                                                                            '+
 	'				</Button>                                                                                                                                                           '+
@@ -39,16 +39,10 @@ var includeDeseing=
 	'					</div>                                                                                                                                                          '+
 	'					<div ng-if="listImages.length > 0"		                                 												                                        '+
 	'						class="col-xs-12 col-sm-12 col-md-12">                                                                                                                      '+
-	'						<div ng-repeat="imagenVO in listImages | startFromGrid: ((paramConfigPage.bigCurrentPage-1)*paramConfigPage.itemsPerPage) | limitTo: paramConfigPage.itemsPerPage">                                												'+
+	'						<div ng-repeat="imagenVO in listImages  | startFromGrid: ((paramConfigPage.bigCurrentPage-1)*paramConfigPage.itemsPerPage) | limitTo: paramConfigPage.itemsPerPage">                                												'+
 	'							<div class="col-xs-12 col-sm-12 col-md-12 padding-per">                                                                                                 '+
 	'								<div class="row border-div-child">                                                                                                                  '+
-	'									<div class="{{showCombo ? \'col-xs-6 col-sm-6 col-md-2 style-parent\' : \'col-xs-6 col-sm-4 col-md-3 style-parent\'">                           '+
-	'										<label class="containerCheck" ng-if="paramConfiguracion.showComponentCopy">                                                                 '+
-	'											<input id="{{idElementUp+imagenVO.unic}}inputUload" type="checkbox" ng-checked="imagenVO.isCopy"                                        '+
-	'												ng-false-value="false" ng-true-value="true" ng-model="fileItem.isCopy">                                                             '+
-	'											<span class="checkmark"></span>                                                                                                         '+
-	'										</label>                                                                                                                                    '+
-	'																																			                                        '+
+	'									<div class="{{showCombo ? \'col-xs-4 col-sm-2 col-md-2 style-parent\' : \'col-xs-6 col-sm-4 col-md-3 style-parent\'}}">                           '+
 	'										<div ng-if="imagenVO.isImage">																                                                '+
 	'											<i ng-if="imagenVO.showProgress" class="fa fa-spinner fa-lg fa-pulse fa-fw" aria-hidden="true"></i>					                    '+
 	'											<img ng-if="!imagenVO.showProgress" id="img-{{idElementUp+unic}}" data-slide-to="{{imagenVO.unic}}"                                     '+
@@ -60,7 +54,7 @@ var includeDeseing=
 	'											<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>                                                                                '+
 	'										</div>                                                                                                                                      '+
 	'									</div>                                                                                                                                          '+
-	'									<div class="{{showCombo ? \'col-xs-6 col-sm-3 col-md-2\' : \' col-xs-6 col-sm-2 col-md-2\'}}">                                                  '+
+	'									<div class="{{showCombo ? \'col-xs-4 col-sm-5 col-md-2\' : \' col-xs-6 col-sm-2 col-md-2\'}}">                                                  '+
 	'										<div class="form-group">                                                                                                                    '+
 	'											<label>Nombre:</label>                                                                                                                  '+
 	'											<div class="input-group">                                                                                                               '+
@@ -68,7 +62,7 @@ var includeDeseing=
 	'											</div>																																	'+
 	'										</div>																																		'+
 	'									</div>                                                                                                                                          '+
-	'									<div class="{{showCombo ? \'col-xs-6 col-sm-3 col-md-2\' : \' col-xs-6 col-sm-2 col-md-2\'}}">                                                  '+
+	'									<div class="{{showCombo ? \'col-xs-4 col-sm-5 col-md-2\' : \' col-xs-6 col-sm-2 col-md-2\'}}">                                                  '+
 	'										<div class="form-group">                                                                                                                    '+
 	'											<label>Tama&ntilde;o:</label>                                                                                                           '+
 	'											<div class="input-group">                                                                                                               '+
@@ -80,7 +74,7 @@ var includeDeseing=
 	'										<div class="form-group"                                                                                 									'+
 	'												ng-class="{\'has-error\': (formTpDocument[\'tpDoc\'+imagenVO.unic+\'\'+idElementUp].$invalid && formTpDocument[\'tpDoc\'+imagenVO.unic+\'\'+idElementUp].$dirty) }">									'+
 	'											<label>                                                                                         										'+
-	'												*Tipo de Documento                                                                          										'+
+	'												*Tipo de Documento:                                                                          										'+
 	'											</label>                                                                                        										'+
 	'											<div class="input-group">                                                                       										'+
 	'												<div class="input-group-addon">                                                             										'+
@@ -102,7 +96,7 @@ var includeDeseing=
 	'									</div>                                                                                                                                          '+
 	'									<div class="{{showCombo ? \'col-xs-12 col-sm-12 col-md-3\' : \'col-xs-12 col-sm-4 col-md-4\'}}">                                                '+
 	'										<div class="col-xs-6 col-sm-6 col-md-6">                                                                                                    '+
-	'											<div class="form-group">                                                                                                                '+
+	'											<div class="form-group float-rigth-icon">                                                                                                                '+
 	'												<label>&nbsp;</label>                                                                                                               '+
 	'												<div class="input-group">                                                                                                           '+
 	'													<div ng-show="!imagenVO.isSuccess" class="{{!isIncidencia ? \'stile-puntero-pointer\' : \'\'}}">                                  '+
@@ -120,7 +114,7 @@ var includeDeseing=
 	'											</div>                                                                                                                                  '+
 	'										</div>                                                                                                                                      '+
 	'										<div class="col-xs-6 col-sm-6 col-md-6">                                                                                                    '+
-	'											<div class="form-group">                                                                                                                '+
+	'											<div class="form-group float-left-icon">                                                                                                                '+
 	'												<label>&nbsp;</label>                                                                                                               '+
 	'												<div class="input-group">                                                                                                           '+
 	'													<label class="stile-puntero-pointer" ng-click="cancelUploadeImageItem(imagenVO)">                                               '+
@@ -193,7 +187,7 @@ var includeCarouselModal=
 	'						<div class="carousel-inner" role="listbox">                                                                                     '+
 	' 							<div class="col-md-10 col-md-offset-1 middleRow"> 																			'+
 	'								<div class="item active">                                                                                               '+
-	'									<img id="img-{{idElementUp+imagePreview.unic}}" alt="{{imagePreview.name}}"                                         '+
+	'									<img style="max-width: 100%;" id="img-{{idElementUp+imagePreview.unic}}" alt="{{imagePreview.name}}"                                         '+
 	'											ng-src="data:image/png;base64, {{imagePreview.strBase64}}" />                                               '+
 	'									<div class="carousel-caption">                                                                                      '+
 	'										{{imagePreview.name.length > 17 ? (imagePreview.name.substr(0,17)+\'...\') : imagePreview.name}}                '+
