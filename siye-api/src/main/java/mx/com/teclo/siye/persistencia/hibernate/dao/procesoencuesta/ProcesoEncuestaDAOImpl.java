@@ -6,11 +6,13 @@ import org.hibernate.transform.Transformers;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestaDetalleDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
@@ -43,6 +45,20 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				.addScalar("nuMaxImg", LongType.INSTANCE)
 				.setResultTransformer(Transformers.aliasToBean(ExpedienteNivelEncuestaVO.class)).list();
 		return respuesta;
+	}
+	
+	@Override
+	public List<EncuestaDetalleDTO> getEncuestaByIdOrden(Long idProceso) {
+		String hql = "SELECT  enc "
+				+ "FROM EncuestaDetalleDTO as enc, "
+				+ "ProcesoEncuestaDTO as proenc "
+				+ "WHERE enc.idEncuesta = proenc.idEncuesta.idEncuesta "
+				+ "and proenc.idProceso.idProceso=:idProceso "
+				+ "and enc.stActivo=1";
+			
+		Query query = getCurrentSession().createQuery(hql);
+		query.setParameter("idProceso", idProceso);
+		return query.list();	
 	}
 
 	@SuppressWarnings("unchecked")

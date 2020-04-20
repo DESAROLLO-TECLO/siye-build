@@ -180,3 +180,18 @@ img.foto-evidencia-1 {
     width: 100%;
   }
 }
+
+@media only screen and (max-width: 766px){
+  .fa-2x{	
+    font-size:  3em !important;
+  }
+}
+
+.float-rigth-icon{
+	float:right;
+}
+
+.float-left-icon{
+	float:left;
+}
+

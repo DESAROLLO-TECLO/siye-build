@@ -144,5 +144,12 @@ public class CatalogoRestController {
 		List<ConfiguracionVO> listConfiguracionVO = catalogoService.configuracionIncidencia("TIE051D_NU_MAX_IMAGENES", "TIE051D_IMG_REQ");
 		return new ResponseEntity<List<ConfiguracionVO>>(listConfiguracionVO, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value="/getTransportistasVehiculo", method = RequestMethod.GET)
+	public ResponseEntity<List<ConductorVO>> getTransportistasVehiculo(@RequestParam("idVehiculo") Long idVehiculo)
+		throws NotFoundException{
+		List<ConductorVO> listaConductorVO = catalogoService.getTransportistasVehiculo(idVehiculo);
+		return new ResponseEntity<List<ConductorVO>>(listaConductorVO, HttpStatus.OK);
 
+     }
 }

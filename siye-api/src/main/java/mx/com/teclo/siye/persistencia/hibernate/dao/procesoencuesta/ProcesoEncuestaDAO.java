@@ -3,6 +3,7 @@ package mx.com.teclo.siye.persistencia.hibernate.dao.procesoencuesta;
 import java.util.List;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDao;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestaDetalleDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
@@ -35,5 +36,12 @@ public interface ProcesoEncuestaDAO extends BaseDao<ProcesoEncuestaDTO>{
 	public List<EncuestaDetalleVO> getDetalleEncuesta(Long idOrdenServicio, Long idProceso);
 	
 
+	/**
+	 * Descripciónn: Obtiene una lista de encuestas por id de proceso
+	 * @author Mannuel
+	 * @param idProceso
+	 * @return List<EncuestaDetalleDTO> 
+	 * */
+	public List<EncuestaDetalleDTO> getEncuestaByIdOrden(Long idProceso);
 
 }
