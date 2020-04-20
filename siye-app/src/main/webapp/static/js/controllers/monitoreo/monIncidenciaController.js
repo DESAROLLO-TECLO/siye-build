@@ -1,6 +1,6 @@
 angular.module(appTeclo).controller('monIncidenciaController', 
 	function ($rootScope, $scope, $location, $document, showAlert, growl, catalogoGenericoService, seguimientoOsService, detalleSeguimientoOsService) {
-	
+	//monIncidenciaService
 	$scope.rangoFechas = {
         date: {
             startDate: moment().endOf('day'),
@@ -17,6 +17,14 @@ angular.module(appTeclo).controller('monIncidenciaController',
             },
             ranges: {}
         }
+    };
+	
+	$scope.params = {
+        colSeleccionada: [],
+        columnas: [],
+        colOmitidas: [],
+        fechaInicio: moment().endOf('day').format('DD/MM/YYYY'),
+        fechaFin: moment().endOf('day').format('DD/MM/YYYY')
     };
 	
 	getRangoFechas = function () {
