@@ -34,4 +34,11 @@ public interface CentroInstalacionDAO extends BaseDao<CentroInstalacionDTO> {
 	
 	public CentroInstalacionDTO centroIns(Long centroIn);
 	
+	/**
+	 * Obtiene todos los centros de instalacion visibles
+	 * 
+	 * @return List<CentroInstalacionDTO>
+	 */
+	public List<CentroInstalacionDTO> obtenerCentroInstalacionVisible(Long value);
+	
 }

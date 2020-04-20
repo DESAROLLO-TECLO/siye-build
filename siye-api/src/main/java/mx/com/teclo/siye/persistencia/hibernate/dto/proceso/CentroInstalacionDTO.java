@@ -52,6 +52,8 @@ public class CentroInstalacionDTO implements Serializable {
 	private Long idUsrModifica;
 	@Column(name = "FH_MODIFICACION")	
 	private Date fhModificacion;
+	@Column(name = "ST_CENTRO_INSTALACION")	
+	private Long stCentroInstalcion;
 	
 	public Long getIdCentroInstalacion() {
 		return idCentroInstalacion;
@@ -161,9 +163,12 @@ public class CentroInstalacionDTO implements Serializable {
 	public void setFhModificacion(Date fhModificacion) {
 		this.fhModificacion = fhModificacion;
 	}
-	
-	
-
+	public Long getStCentroInstalcion() {
+		return stCentroInstalcion;
+	}
+	public void setStCentroInstalcion(Long stCentroInstalcion) {
+		this.stCentroInstalcion = stCentroInstalcion;
+	}
 
 
 }
