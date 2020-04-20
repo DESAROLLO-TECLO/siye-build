@@ -18,6 +18,7 @@ import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService
 import mx.com.teclo.siye.negocio.service.monitoreoInicidencia.MonitoreoIncidenciaService;
 import mx.com.teclo.siye.negocio.service.seguimientoOs.SeguimientoOsService;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenIncidenciaDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.MonitoreoIncidenciasVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServicioDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesoDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.SeguimientoOrdenServicioVO;
@@ -80,7 +81,7 @@ public class SeguimientoOsRestController {
 	
 
 	@GetMapping(value="/getMonIncidencias")
-	public ResponseEntity<String> getIncidenciasOs(
+	public ResponseEntity<List<MonitoreoIncidenciasVO>> getIncidenciasOs(
 		@RequestParam(value ="fechaInicio") String fechaInicio,
 		@RequestParam(value ="fechaFin") String fechaFin,
 		@RequestParam(value ="tipoBusqueda") Integer tipoBusqueda,
@@ -89,12 +90,10 @@ public class SeguimientoOsRestController {
 	) throws Exception, BusinessException, NotFoundException {
 		String mensajeErr = "";
 		try {
-			String respuesta = null;
 			UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
-			monitoreoIncidenciaService.getMonIncidencias(usuario.getId(), fechaInicio, fechaFin, tipoBusqueda, valor, opcion, mensajeErr);
+			List<MonitoreoIncidenciasVO> respuesta = monitoreoIncidenciaService.getMonIncidencias(usuario.getId(), fechaInicio, fechaFin, tipoBusqueda, valor, opcion, mensajeErr);
 			
-			
-			return new ResponseEntity<String>(respuesta, HttpStatus.OK);
+			return new ResponseEntity<List<MonitoreoIncidenciasVO>>(respuesta, HttpStatus.OK);
 		} catch (Exception e) {
 			if(mensajeErr != null && !mensajeErr.isEmpty() && !mensajeErr.equals(null)) {
 				throw new NotFoundException(mensajeErr);
