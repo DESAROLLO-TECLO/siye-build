@@ -83,6 +83,12 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
             }
         }
     });
+    
+    $routeProvider.when("/catalogos", {
+    	templateUrl: "views/administracion/catalogos.html",
+        controller: "catalogoController"
+    	
+    });
     /*___________________________________________________________
     ________** FIN -> ADMINISTRACIÓN CONTROLLERS ** ___________*/
 
