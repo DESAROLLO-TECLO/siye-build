@@ -16,7 +16,8 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServcioDetalleVO;
-import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServicioDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesosOrdenServicioDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesoDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.SeguimientoOrdenServicioVO;
 
@@ -159,8 +160,8 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 	
 	@Transactional
 	@Override
-	public OrdenServicioDetalleVO getDetalleByEtapas(Long idOrdenServicio) {
-		OrdenServicioDetalleVO respuesta = new OrdenServicioDetalleVO();	
+	public ProcesosOrdenServicioDetalleVO getDetalleByEtapas(Long idOrdenServicio) {
+		ProcesosOrdenServicioDetalleVO respuesta = new ProcesosOrdenServicioDetalleVO();	
 		// consultar OS 
 		OrdenServicioDTO OrdenServicioDTO = ordenServicioDAO.findOne(idOrdenServicio);
 		if(OrdenServicioDTO!=null) {
@@ -170,7 +171,7 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 			respuesta.setIncidencias(expedienteImgDAO.getImagenOS(idOrdenServicio, " AND ID_INCIDENCIA IS NOT NULL ORDER BY NU_ORDEN ASC"));
 			respuesta.setEstatus(OrdenServicioDTO.getStSeguimiento().getNbStSeguimiento());
 			respuesta.setNuPorcentaje(0.0);
-			List<ProcesoDetalleVO> etapas = planProcesoDAO.getEtapasParaSeguimiento(OrdenServicioDTO.getPlan().getIdPlan());
+			List<ProcesoDetalleVO> etapas = planProcesoDAO.getEtapasParaSeguimiento(idOrdenServicio);
 			if(!etapas.isEmpty()) {
 				respuesta.setProcesos(etapas);
 			}
@@ -203,6 +204,13 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 			}
 		}
 		return lstProcesos;
+	}
+
+	@Transactional
+	@Override
+	public List<PreguntasDetalleVO> getDetallePregunta(Long idOrdenServicio, Long idEncuesta) {
+		List<PreguntasDetalleVO> respuesta = procesoEncuestaDAO.getSeguimientoDetallePregunta(idOrdenServicio, idEncuesta);
+		return respuesta;
 	}
 
 }

@@ -19,8 +19,9 @@ import mx.com.teclo.siye.negocio.service.monitoreoInicidencia.MonitoreoIncidenci
 import mx.com.teclo.siye.negocio.service.seguimientoOs.SeguimientoOsService;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenIncidenciaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.MonitoreoIncidenciasVO;
-import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServicioDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesoDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesosOrdenServicioDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.SeguimientoOrdenServicioVO;
 
 @RestController
@@ -55,13 +56,13 @@ public class SeguimientoOsRestController {
 
 	@GetMapping(value="/getProcesos")
 	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
-	public ResponseEntity<OrdenServicioDetalleVO> getDetalleByEtapas(@RequestParam(value ="idOrden") Long nurdenServicio) throws NotFoundException{	
-		OrdenServicioDetalleVO respuesta = seguimientoService.getDetalleByEtapas(nurdenServicio);
+	public ResponseEntity<ProcesosOrdenServicioDetalleVO> getDetalleByEtapas(@RequestParam(value ="idOrden") Long nurdenServicio) throws NotFoundException{	
+		ProcesosOrdenServicioDetalleVO respuesta = seguimientoService.getDetalleByEtapas(nurdenServicio);
 		if(respuesta==null) {
 			throw new NotFoundException("No hay información");
 		}
 		
-		return new ResponseEntity<OrdenServicioDetalleVO>(respuesta, HttpStatus.OK);
+		return new ResponseEntity<ProcesosOrdenServicioDetalleVO>(respuesta, HttpStatus.OK);
 	};
 	
 	
@@ -108,5 +109,17 @@ public class SeguimientoOsRestController {
 		OrdenIncidenciaDetalleVO incidenciaDTO = monitoreoIncidenciaService.incidenciaByOS(idOrden, idPlan);
 		return new ResponseEntity<OrdenIncidenciaDetalleVO>(incidenciaDTO, HttpStatus.OK);
 	}
+	
+	
+	@GetMapping(value="/getDetallePregunta")
+	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
+	public ResponseEntity<List<PreguntasDetalleVO>> getDetallePregunta(@RequestParam(value ="idOrden") Long idOrdenServicio,
+															         @RequestParam(value ="idEncuesta") Long idEncuesta) throws NotFoundException{	
+		List<PreguntasDetalleVO> respuesta = seguimientoService.getDetallePregunta(idOrdenServicio, idEncuesta);
+		if(respuesta.isEmpty()) {
+			throw new NotFoundException("No hay preguntas con respuesta");
+		}
+		return new ResponseEntity<List<PreguntasDetalleVO>>(respuesta, HttpStatus.OK);
+	};
 	
 }

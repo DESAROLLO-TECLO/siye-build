@@ -17,6 +17,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestaDetalleDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
 
 @Repository
 public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO> implements ProcesoEncuestaDAO {
@@ -88,6 +89,36 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				.addScalar("nuPorcentaje",DoubleType.INSTANCE)
 				.setParameter("idOrdenServicio", idOrdenServicio)
 				.setParameter("idProceso", idProceso)
+				.setResultTransformer(Transformers.aliasToBean(EncuestaDetalleVO.class)).list();
+		return respuesta;
+	}
+
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<PreguntasDetalleVO> getSeguimientoDetallePregunta(Long idOrdenServicio, Long idEncuesta) {
+		StringBuilder consulta = new StringBuilder("SELECT "
+				+" tdeoe.ID_ORDEN_SERVICIO AS idOrdenServicio,"
+				+" tdeoe.ID_ENCUESTA  AS idEncuesta,"
+				+" pre.ID_PREGUNTA  AS idPegunta,"
+				+" pre.TX_PREGUNTA AS txPregunta,"
+				+" opciones.TX_OPCION AS txRespuesta "
+				+"FROM TIE002D_EE_ODS_ENCUESTA tdeoe"
+				+"  INNER JOIN TIE006D_EE_USU_ENCU_INTEN intent ON (tdeoe.ID_ODS_ENCUESTA = intent.ID_ODS_ENCUESTA)"
+				+"  INNER JOIN TIE003D_EE_USU_ENC_RESP resp ON (intent.ID_USU_ENCU_INTENTO = resp.ID_USU_ENCU_INTENTO)"
+				+"  INNER JOIN TIE007D_EE_OPCIONES opciones ON (resp.ID_OPCION  = opciones.ID_OPCION)"
+				+"  INNER JOIN TIE005D_EE_PREGUNTAS pre ON (resp.ID_PREGUNTA = pre.ID_PREGUNTA)"
+				+"WHERE tdeoe.ST_ACTIVO =1 AND intent.ST_ACTIVO =1 AND resp.ST_ACTIVO =1 AND pre.ST_ACTIVO =1 "
+				+"  AND tdeoe.ID_ORDEN_SERVICIO =:idOrdenServicio AND tdeoe.ID_ENCUESTA =:idEncuesta "
+				+"ORDER BY pre.ID_PREGUNTA");
+		List<PreguntasDetalleVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
+				.addScalar("idOrdenServicio",LongType.INSTANCE)
+				.addScalar("idEncuesta", LongType.INSTANCE)
+				.addScalar("idPegunta", LongType.INSTANCE)
+				.addScalar("txPregunta", StringType.INSTANCE)				
+				.addScalar("txRespuesta", StringType.INSTANCE)
+				.setParameter("idOrdenServicio", idOrdenServicio)
+				.setParameter("idEncuesta", idEncuesta)
 				.setResultTransformer(Transformers.aliasToBean(EncuestaDetalleVO.class)).list();
 		return respuesta;
 	}

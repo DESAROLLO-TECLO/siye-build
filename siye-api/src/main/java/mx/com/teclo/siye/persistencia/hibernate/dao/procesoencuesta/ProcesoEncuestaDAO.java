@@ -7,6 +7,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestaDetalleDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
 
 public interface ProcesoEncuestaDAO extends BaseDao<ProcesoEncuestaDTO>{
 	
@@ -43,5 +44,15 @@ public interface ProcesoEncuestaDAO extends BaseDao<ProcesoEncuestaDTO>{
 	 * @return List<EncuestaDetalleDTO> 
 	 * */
 	public List<EncuestaDetalleDTO> getEncuestaByIdOrden(Long idProceso);
+	
+	
+	/**
+	 * Descripción: obtiene las preguntas por encuesta con su respuesta 
+	 * @author Maverick
+	 * @param idOrdenServicio
+	 * @param idEncuestaa
+	 * @return List<PreguntasDetalleVO> 
+	 * */
+	public List<PreguntasDetalleVO> getSeguimientoDetallePregunta(Long idOrdenServicio, Long idEncuesta);
 
 }
