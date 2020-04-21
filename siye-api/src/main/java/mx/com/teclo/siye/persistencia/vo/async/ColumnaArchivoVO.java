@@ -8,7 +8,7 @@ public class ColumnaArchivoVO {
 	private String tipoDato;
 	private Integer longMax;
 	private Boolean isRequerido;
-	private String txValorDefecto;
+	private String txMascara;
 	
 	public Long getIdCampo() {
 		return idCampo;
@@ -46,12 +46,13 @@ public class ColumnaArchivoVO {
 	public void setIsRequerido(Boolean isRequerido) {
 		this.isRequerido = isRequerido;
 	}
-	public String getTxValorDefecto() {
-		return txValorDefecto;
+	public String getTxMascara() {
+		return txMascara;
 	}
-	public void setTxValorDefecto(String txValorDefecto) {
-		this.txValorDefecto = txValorDefecto;
+	public void setTxMascara(String txMascara) {
+		this.txMascara = txMascara;
 	}
+	
 	
 	
 }
