@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.negocio.service.proceso.ProcesoService;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.MonitoreoIncidenciasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.procesoencuesta.ProcesoEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestaDetalleDTO;
@@ -22,6 +24,7 @@ import mx.com.teclo.siye.persistencia.vo.monitoreo.EncuestaDetaVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.IncidenciaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenIncidenciaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.ProcesoDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.MonitoreoIncidenciasVO;
 
 @Service
 public class MonitoreoIncidenciaServiceImpl implements MonitoreoIncidenciaService{
@@ -37,20 +40,36 @@ public class MonitoreoIncidenciaServiceImpl implements MonitoreoIncidenciaServic
 	@Autowired
 	private ProcesoService procesoService;	
 	
+	@Autowired
+	MonitoreoIncidenciasDAO monitoreoIncidenciasDAO;
+	
 	private static final String MSG_ERROR_PROCESO_NULO = "No se encontraron procesos";
 	
 	@Transactional
 	@Override
-	public void getMonIncidencias(
+	public List<MonitoreoIncidenciasVO> getMonIncidencias(
 		Long idSupervisor, String fechaInicio, String fechaFin, 
 		Integer tipoBusqueda, String valor, Integer opcion, 
 		String mensajeErr
 	) throws Exception, BusinessException, NotFoundException {
 		try {
 			List<Long> idsCentroInstalacion = gerenteSupervisorDAO.getIdCentroInstalacion(idSupervisor);
+			List<MonitoreoIncidenciasVO> listaMonitoreoIncidenciasVO= null;
 			if(!idsCentroInstalacion.isEmpty()) {
-				
+				switch (opcion) {
+					case 1:
+						//Consulta por general de centros de atencion
+						listaMonitoreoIncidenciasVO = monitoreoIncidenciasDAO.getInfoSeguimientoGeneral(fechaInicio, fechaFin, idsCentroInstalacion);
+						break;
+					case 2:
+						//Consulta por centro de reparto
+						break;
+					default: break;
+				}
+			}else {
+				mensajeErr = "";
 			}
+			return listaMonitoreoIncidenciasVO;
 		//List<SeguimientoOrdenServicioVO>
 		} catch (Exception e) {
 			if(mensajeErr != null && !mensajeErr.isEmpty() && !mensajeErr.equals(null)) {

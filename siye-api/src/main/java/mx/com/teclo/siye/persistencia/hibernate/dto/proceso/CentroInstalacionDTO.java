@@ -5,8 +5,11 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -16,42 +19,46 @@ public class CentroInstalacionDTO implements Serializable {
 	private static final long serialVersionUID = 4814258386727191940L;
 	
 	@Id
-	@Column(name = "ID_CENTRO_INSTALACION", unique = true, nullable = false)
+	@SequenceGenerator(name = "sqIE029cIECentrosI", sequenceName="SQIE029C_IE_CENTROS_I", allocationSize=1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqIE029cIECentrosI")
+	@Column(name = "ID_CENTRO_INSTALACION", unique = true, nullable = false, precision = 4, scale = 0)
 	private Long idCentroInstalacion;
-	@Column(name = "CD_CENTRO_INSTALACION")
+	@Column(name = "CD_CENTRO_INSTALACION", nullable = false, length = 15)
 	private String cdCentroInstalacion;
-	@Column(name = "NB_CENTRO_INSTALACION")
+	@Column(name = "NB_CENTRO_INSTALACION", nullable = false, length = 100)
 	private String nbCentroInstalacion;
-	@Column(name = "NB_CALLE")
+	@Column(name = "NB_CALLE", nullable = true, length = 50)
 	private String nbCalle;
-	@Column(name = "NU_EXTERIOR")
+	@Column(name = "NU_EXTERIOR", nullable = true, length = 10)
 	private String nuExterior;
-	@Column(name = "NB_ENTRE_CALLE")
+	@Column(name = "NB_ENTRE_CALLE", nullable = true, length = 50)
 	private String nbEntreCalle;
-	@Column(name = "NB_Y_CALLE")
+	@Column(name = "NB_Y_CALLE", nullable = true, length = 50)
 	private String nbYCalle;
-	@Column(name = "NB_COLONIA")
+	@Column(name = "NB_COLONIA", nullable = true, length = 50)
 	private String nbColonia;
-	@Column(name = "NB_ALCALDIA")
+	@Column(name = "NB_ALCALDIA", nullable = true, length = 50)
 	private String nbAlcaldia;
-	@Column(name = "NB_DIAS_ATENCION")
+	@Column(name = "NB_DIAS_ATENCION", nullable = true, length = 90)
 	private String nbDiasAtencion;
-	@Column(name = "HR_ATENCION_INI")
+	@Column(name = "HR_ATENCION_INI", nullable = true, length = 8)
 	private String hrAtencionIni;
-	@Column(name = "HR_ATENCION_FIN")
+	@Column(name = "HR_ATENCION_FIN", nullable = true, length = 8)
 	private String hrAtencionFin;
-	@Column(name = "NU_ORDEN")	
+	@Column(name = "NU_ORDEN", nullable = true, precision = 4, scale = 0)	
 	private Long nuOrden;
-	@Column(name = "ST_ACTIVO")
+	@Column(name = "ST_ACTIVO", nullable = false, precision = 1, scale = 0)
 	private Boolean stActivo;
-	@Column(name = "ID_USR_CREACION")
+	@Column(name = "ID_USR_CREACION", nullable = false, precision = 7, scale = 0)
 	private Long idUsrCreacion;
-	@Column(name = "FH_CREACION")	
+	@Column(name = "FH_CREACION", nullable = false)
 	private Date fhCreacion;
-	@Column(name = "ID_USR_MODIFICA")
+	@Column(name = "ID_USR_MODIFICA", nullable = false, precision = 7, scale = 0)
 	private Long idUsrModifica;
-	@Column(name = "FH_MODIFICACION")	
+	@Column(name = "FH_MODIFICACION", nullable = false)
 	private Date fhModificacion;
+	@Column(name = "ST_CENTRO_INSTALACION")	
+	private Long stCentroInstalcion;
 	
 	public Long getIdCentroInstalacion() {
 		return idCentroInstalacion;
@@ -161,9 +168,12 @@ public class CentroInstalacionDTO implements Serializable {
 	public void setFhModificacion(Date fhModificacion) {
 		this.fhModificacion = fhModificacion;
 	}
-	
-	
-
+	public Long getStCentroInstalcion() {
+		return stCentroInstalcion;
+	}
+	public void setStCentroInstalcion(Long stCentroInstalcion) {
+		this.stCentroInstalcion = stCentroInstalcion;
+	}
 
 
 }
