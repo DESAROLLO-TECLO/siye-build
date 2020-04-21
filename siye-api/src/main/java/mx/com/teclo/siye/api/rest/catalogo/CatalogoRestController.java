@@ -160,4 +160,11 @@ public class CatalogoRestController {
 		return new ResponseEntity<List<TblCatalogosVO>>(listTblCatalogosVO, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value = "/consultaCentroIntalacion", method = RequestMethod.GET)
+	public ResponseEntity<List<CentroInstalacionVO>> consultaCentroIntalacion(@RequestParam(value="cdTipoBusqueda") String cdTipoBusqueda, @RequestParam(value="valor") Long valor) throws NotFoundException {
+		List<CentroInstalacionVO> listCentroInstalacionVO = catalogoService.consultaCentroIntalacion(cdTipoBusqueda, valor);
+		return new ResponseEntity<List<CentroInstalacionVO>>(listCentroInstalacionVO, HttpStatus.OK);
+	}
+
+	
 }

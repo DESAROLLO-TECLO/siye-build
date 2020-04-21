@@ -104,5 +104,15 @@ public interface CatalogoService {
 	 * @throws NotFoundException
 	 */
 	public List<TblCatalogosVO> getTblCatalogos() throws NotFoundException;
+	
+	/**
+	 * @Descripción: Método para obtener la lista de CentroInstalacion
+	 * @author Estephanie Chavez
+	 * @param cdTipoBusqueda
+	 * @param valor
+	 * @return
+	 * @throws NotFoundException
+	 */
+	public List<CentroInstalacionVO>consultaCentroIntalacion(String cdTipoBusqueda,Long valor) throws NotFoundException;
 
 }
