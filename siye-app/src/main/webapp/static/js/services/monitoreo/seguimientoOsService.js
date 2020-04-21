@@ -11,7 +11,6 @@ angular.module(appTeclo).service("seguimientoOsService", function($http, config)
 				    "fechaFin":parametros.fechaFin,
 					"columnas":parametros.columnas,
 					"colOmitidas":parametros.colOmitidas
-
 				}});
 	};
 
