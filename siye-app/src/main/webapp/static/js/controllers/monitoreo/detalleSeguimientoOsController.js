@@ -60,7 +60,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
     };
     
     function  showAlert(){
-    	growl.error('Awevo entro culo');
+    	growl.error('Entro al evento');
     };
     
     crearNodo = function (proeceso) {
@@ -149,10 +149,8 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
         
         data = {
                 nodes: nodes,
-                  edges: edges,
-                  event: showAlert()
+                  edges: edges
           };
-        
         
         options = {
                 physics:{enabled: false},
@@ -161,7 +159,8 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                   font:{color:'#2c3e50', size: pxDf, face: fontFamily, background: 'none', strokeWidth: 0, strokeColor: '#cc4865', align: 'center'}
                 },
                 edges: {color: '#cc4865', width: 1.5},
-                  interaction:{dragNodes:false,  hover:true, tooltipDelay:100}
+                  interaction:{dragNodes:false,  hover:true, tooltipDelay:100},
+                  event: showAlert()
         };
         $scope.net = new vis.Network(container, data, options);
         fitAnimated();
