@@ -50,7 +50,7 @@ public class MonitoreoIncidenciaServiceImpl implements MonitoreoIncidenciaServic
 	public List<MonitoreoIncidenciasVO> getMonIncidencias(
 		Long idSupervisor, String fechaInicio, String fechaFin, 
 		Integer tipoBusqueda, String valor, Integer opcion, 
-		String mensajeErr
+		Integer idCentroInstalacion, String mensajeErr
 	) throws Exception, BusinessException, NotFoundException {
 		try {
 			List<Long> idsCentroInstalacion = gerenteSupervisorDAO.getIdCentroInstalacion(idSupervisor);
@@ -62,12 +62,14 @@ public class MonitoreoIncidenciaServiceImpl implements MonitoreoIncidenciaServic
 						listaMonitoreoIncidenciasVO = monitoreoIncidenciasDAO.getInfoSeguimientoGeneral(fechaInicio, fechaFin, idsCentroInstalacion);
 						break;
 					case 2:
-						//Consulta por centro de reparto
+						//Consulta por modulo
+						listaMonitoreoIncidenciasVO = monitoreoIncidenciasDAO.getInfoSeguimientoXModulo(fechaInicio, fechaFin, tipoBusqueda, valor, idCentroInstalacion);
 						break;
 					default: break;
 				}
 			}else {
-				mensajeErr = "";
+				mensajeErr = "No cuenta con centro de instalacion asignado";
+				throw new NotFoundException("");
 			}
 			return listaMonitoreoIncidenciasVO;
 		//List<SeguimientoOrdenServicioVO>

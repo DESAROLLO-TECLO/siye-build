@@ -79,9 +79,9 @@ public class LayoutServiceImpl implements LayoutService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public InsercionTablaVO getNbsColumnas(String tabla) throws BusinessException {
+	public InsercionTablaVO getNbsColumnas(Long idTipoLayout, String tabla) throws BusinessException {
 
-		List<ColumnaVO> cols = layoutDAO.getNbsColumnas(tabla);
+		List<ColumnaVO> cols = layoutDAO.getNbsColumnas(idTipoLayout, tabla);
 		if (cols == null || cols.isEmpty()) {
 			return null;
 		}
@@ -152,7 +152,8 @@ public class LayoutServiceImpl implements LayoutService {
 		validarCantidadColumnas(cargaMasivaVO.getConfigSecciones());
 
 		// moldes SQL
-		cargaMasivaVO.setConfigMoldesSQL(getMoldesSQLPorTbl(cargaMasivaVO.getConfigInsercion()));
+		cargaMasivaVO.setConfigMoldesSQL(getMoldesSQLPorTbl(cargaMasivaVO.getConfigLayout().getIdTipoLayout(),
+				cargaMasivaVO.getConfigInsercion()));
 
 		// columnas esperadas en el archivo
 		cargaMasivaVO.setColumnasEnArchivo(layoutDAO.getColumnasEnArchivo());
@@ -191,7 +192,8 @@ public class LayoutServiceImpl implements LayoutService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Map<String, InsercionTablaVO> getMoldesSQLPorTbl(List<TablaDestinoVO> tbls) throws BusinessException {
+	public Map<String, InsercionTablaVO> getMoldesSQLPorTbl(Long idTipoLayout, List<TablaDestinoVO> tbls)
+			throws BusinessException {
 
 		if (tbls == null || tbls.isEmpty()) {
 			throw new BusinessException(MSG_LAYOUT_SIN_ORDEN_INSERCION);
@@ -199,7 +201,7 @@ public class LayoutServiceImpl implements LayoutService {
 
 		Map<String, InsercionTablaVO> insertQueriesMap = new HashMap<String, InsercionTablaVO>();
 		for (TablaDestinoVO nbTbl : tbls) {
-			InsercionTablaVO valInsertVO = getConcatNbCols(nbTbl.getNbTabla());
+			InsercionTablaVO valInsertVO = getConcatNbCols(idTipoLayout, nbTbl.getNbTabla());
 			String insertSQL = MessageFormat.format(MSG_INSERT_PATTERN, nbTbl.getNbTabla(), valInsertVO.getColumnas(),
 					valInsertVO.getComodines());
 			String selectSQL = MessageFormat.format(MSG_SELECT_PATTERN, valInsertVO.getCampoID().getNbColumna(),
@@ -271,9 +273,9 @@ public class LayoutServiceImpl implements LayoutService {
 	 * @return
 	 * @throws BusinessException
 	 */
-	private InsercionTablaVO getConcatNbCols(String tabla) throws BusinessException {
+	private InsercionTablaVO getConcatNbCols(Long idTipoLayout, String tabla) throws BusinessException {
 
-		List<ColumnaVO> cols = layoutDAO.getNbsColumnas(tabla);
+		List<ColumnaVO> cols = layoutDAO.getNbsColumnas(idTipoLayout, tabla);
 		if (cols == null || cols.isEmpty()) {
 			return null;
 		}
