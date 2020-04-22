@@ -17,7 +17,7 @@ public class TblCatalogosDAOImpl extends BaseDaoHibernate<TblCatalogosDTO> imple
 	public List<TblCatalogosDTO> getTblCatalogos(){
 		Criteria c = getCurrentSession().createCriteria(TblCatalogosDTO.class);
 		c.add(Restrictions.eq("stActivo", true));
-		c.add(Restrictions.eq("stMostrar", 1));
+		c.add(Restrictions.eq("stMostrar", true));
 		c.addOrder(Order.asc("nuOrden"));
 		return (List<TblCatalogosDTO>)c.list();
 		
