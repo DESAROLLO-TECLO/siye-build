@@ -53,7 +53,7 @@ public interface LayoutService {
 	 * @param idTipoLayout
 	 * @param tabla
 	 * @return
-	 * @throws BusinessException 
+	 * @throws BusinessException
 	 */
 	InsercionTablaVO getNbsColumnas(Long idTipoLayout, String tabla) throws BusinessException;
 
@@ -71,10 +71,11 @@ public interface LayoutService {
 	 * Obtiene ordenadamente el arreglo de nombres de tablas a ser afectadas por la
 	 * carga masiva
 	 * 
+	 * @param idTipoLayout
 	 * @return
 	 * @throws BusinessException
 	 */
-	List<TablaDestinoVO> getOrdenInsercionTablas() throws BusinessException;
+	List<TablaDestinoVO> getOrdenInsercionTablas(Long idTipoLayout) throws BusinessException;
 
 	/**
 	 * Obtiene la bandera configurada para saber si se deben registrar archivos
@@ -86,12 +87,16 @@ public interface LayoutService {
 	boolean getIsProcesoConRechazo();
 
 	/**
-	 * Genera de forma din&aacute;mica  los comandos SQL para insertar la informacion del archivo
-	 * @param idTipoLayout 
-	 * @param List<TablaDestinoVO> tablas que ser&aacute;n consultadas o insertadas con la carga masiva
+	 * Genera de forma din&aacute;mica los comandos SQL para insertar la informacion
+	 * del archivo
+	 * 
+	 * @param idTipoLayout
+	 * @param List<TablaDestinoVO> tablas que ser&aacute;n consultadas o insertadas
+	 *                             con la carga masiva
 	 * @return
 	 * @throws BusinessException
 	 */
-	Map<String, InsercionTablaVO> getMoldesSQLPorTbl(Long idTipoLayout, List<TablaDestinoVO> tablas) throws BusinessException;
+	Map<String, InsercionTablaVO> getMoldesSQLPorTbl(Long idTipoLayout, List<TablaDestinoVO> tablas)
+			throws BusinessException;
 
 }
