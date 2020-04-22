@@ -445,9 +445,9 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		}
 		if (continuar && StringUtils.isNotBlank(col.getTipoDato())) {
 			try {
-				validarTipoObjeto(col.getTipoDato(), valor, col.getTxValorDefecto());
+				validarTipoObjeto(col.getTipoDato(), valor, col.getTxMascara());
 			} catch (Exception e) {
-				String tipoTraducido = traducirTipo(col.getTipoDato(), col.getTxValorDefecto());
+				String tipoTraducido = traducirTipo(col.getTipoDato(), col.getTxMascara());
 				sbErrCol.append(MessageFormat.format(MSG_ERROR_FORMATO_INVALIDO, tipoTraducido));
 			}
 		}

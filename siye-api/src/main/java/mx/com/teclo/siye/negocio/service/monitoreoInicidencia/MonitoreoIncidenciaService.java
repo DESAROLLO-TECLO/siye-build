@@ -9,7 +9,7 @@ import mx.com.teclo.siye.persistencia.vo.seguimientoOs.MonitoreoIncidenciasVO;
 
 public interface MonitoreoIncidenciaService {
 	
-	public List<MonitoreoIncidenciasVO> getMonIncidencias(Long idSupervisor, String fechaInicio, String fechaFin, Integer tipoBusqueda, String valor, Integer opcion, String mensajeErr) throws Exception, BusinessException, NotFoundException;
+	public List<MonitoreoIncidenciasVO> getMonIncidencias(Long idSupervisor, String fechaInicio, String fechaFin, Integer tipoBusqueda, String valor, Integer opcion, Integer idCentroInstalacion, String mensajeErr) throws Exception, BusinessException, NotFoundException;
 //	public List<IncidencDetalleVO> listIncidenciaByIdOrden(Long idOrden) throws NotFoundException;
 
 	public OrdenIncidenciaDetalleVO incidenciaByOS(Long idOrden,Long idPlan) throws NotFoundException;

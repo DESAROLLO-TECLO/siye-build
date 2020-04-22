@@ -25,11 +25,11 @@ public interface LayoutDAO {
 
 	/**
 	 * Obtiene ordenadamente los nombres de las columnas a afectar en el insert *
-	 * 
+	 * @param idTipoLayout
 	 * @param tabla
 	 * @return
 	 */
-	List<ColumnaVO> getNbsColumnas(String tabla);
+	List<ColumnaVO> getNbsColumnas(Long idTipoLayout, String tabla);
 
 	/**
 	 * Obtiene ordenadamente los nombres de las columnas a recibir en el archivo*
