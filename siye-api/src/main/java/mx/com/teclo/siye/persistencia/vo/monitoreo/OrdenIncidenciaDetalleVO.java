@@ -10,13 +10,13 @@ public class OrdenIncidenciaDetalleVO implements Serializable {
 	
 	private static final long serialVersionUID = 1374927111939946350L;
 	
-	private OrdenServiVO ordenServicio;
+	private OrdenServicioDetVO ordenServicio;
 	private List<ProcesoDetalleVO> proceso;
-	
-	public OrdenServiVO getOrdenServicio() {
+	private List<IncidenciaDetalleVO> incidencia;
+	public OrdenServicioDetVO getOrdenServicio() {
 		return ordenServicio;
 	}
-	public void setOrdenServicio(OrdenServiVO ordenServicio) {
+	public void setOrdenServicio(OrdenServicioDetVO ordenServicio) {
 		this.ordenServicio = ordenServicio;
 	}
 	public List<ProcesoDetalleVO> getProceso() {
@@ -25,5 +25,12 @@ public class OrdenIncidenciaDetalleVO implements Serializable {
 	public void setProceso(List<ProcesoDetalleVO> proceso) {
 		this.proceso = proceso;
 	}
-		
+	public List<IncidenciaDetalleVO> getIncidencia() {
+		return incidencia;
+	}
+	public void setIncidencia(List<IncidenciaDetalleVO> incidencia) {
+		this.incidencia = incidencia;
+	}
+	
+	
 }

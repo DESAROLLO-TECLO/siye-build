@@ -12,10 +12,13 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import javassist.convert.Transformer;
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestaDetalleDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelEncuestaVO;
+import mx.com.teclo.siye.persistencia.vo.monitoreo.EncuestaDetaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
 
 @Repository
@@ -50,8 +53,8 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<EncuestaDetalleDTO> getEncuestaByIdOrden(Long idProceso) {
-		String hql = "SELECT  enc "
+	public List<EncuestaDetaVO> getEncuestaByIdOrden(Long idProceso) {
+		String hql = "SELECT  enc.idEncuesta as idEncuesta,enc.cdEncuesta as cdEncuesta,enc.nbEncuesta as nbEncuesta,enc.txEncuesta as txEncuesta "
 				+ "FROM EncuestaDetalleDTO as enc, "
 				+ "ProcesoEncuestaDTO as proenc "
 				+ "WHERE enc.idEncuesta = proenc.idEncuesta.idEncuesta "
@@ -59,7 +62,7 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				+ "and enc.stActivo=1";
 			
 		Query query = getCurrentSession().createQuery(hql);
-		query.setParameter("idProceso", idProceso);
+		query.setParameter("idProceso", idProceso).setResultTransformer(Transformers.aliasToBean(EncuestaDetaVO.class));
 		return query.list();	
 	}
 
@@ -90,6 +93,21 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				.setParameter("idProceso", idProceso)
 				.setResultTransformer(Transformers.aliasToBean(EncuestaDetalleVO.class)).list();
 		return respuesta;
+	}
+
+	@Override
+	public StEncuestaVO getstEncuestaByIdEncuestaIdOrden(Long idEncuesta,Long idOrden) {
+		String hql = "SELECT  enc.stEncuesta.idStEncuesta as idStEncuesta,enc.stEncuesta.cdStEncuesta as cdStEncuesta,"
+				+ "enc.stEncuesta.nbStEncuesta as nbStEncuesta,enc.stEncuesta.cdColor as cdColor "
+				+ "FROM UsuarioEncuestaIntentosDTO as enc "
+				+ "WHERE enc.usuarioEncuesta.encuesta.idEncuesta=:idEncuesta "
+				+ "AND enc.usuarioEncuesta.ordenServicio.idOrdenServicio=:idOrden "
+				+ "AND enc.stActivo=1";
+			
+		Query query = getCurrentSession().createQuery(hql);
+		query.setParameter("idEncuesta", idEncuesta)
+		.setParameter("idOrden", idOrden).setResultTransformer(Transformers.aliasToBean(StEncuestaVO.class));
+		return (StEncuestaVO) query.uniqueResult();
 	}
 
 }
