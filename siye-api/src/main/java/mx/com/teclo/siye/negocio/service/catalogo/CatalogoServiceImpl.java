@@ -47,6 +47,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.VehiculoConductorDT
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.ConsecionarioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.TipoVehiculoDTO;
@@ -448,6 +449,31 @@ public class CatalogoServiceImpl implements CatalogoService{
 			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
 		List<TblCatalogosVO> listTblCatalogosVO = ResponseConverter.converterLista(new ArrayList<>(), listTblCatalogosDTO, TblCatalogosVO.class);
 		return listTblCatalogosVO;
+	}
+
+	@Transactional
+	@Override
+	public List<CentroInstalacionVO>consultaCentroIntalacion(String cdTipoBusqueda,Long valor) throws NotFoundException {
+		List<CentroInstalacionDTO> listCentroInstalacionDTO = new ArrayList<>(); 
+		if(cdTipoBusqueda == null)
+			throw new NotFoundException("No se encontró el el valor de busqueda.");
+		switch(cdTipoBusqueda) {
+			case "TODO":
+				listCentroInstalacionDTO = centroInstalacionDAO.obtenerCentroInstalacion();
+				break;
+			case "INACTIVOS":
+				listCentroInstalacionDTO = centroInstalacionDAO.obtenerCentroInstalacionVisible(valor);
+				break;
+			
+			case "ACTIVOS":
+				listCentroInstalacionDTO = centroInstalacionDAO.obtenerCentroInstalacionVisible(valor);
+				break;
+			}
+		
+		if(listCentroInstalacionDTO.isEmpty())
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		List<CentroInstalacionVO> listCentroInstalacionVO = ResponseConverter.converterLista(new ArrayList<>(), listCentroInstalacionDTO, CentroInstalacionVO.class);
+		return listCentroInstalacionVO;
 	}
 	
 

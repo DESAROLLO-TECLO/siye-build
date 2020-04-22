@@ -5,8 +5,13 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 
 @Entity
 @Table(name = "TIE018C_EE_ST_ENCUESTAS")
@@ -47,6 +52,10 @@ public class StEncuestaDTO implements Serializable {
 
 	@Column(name = "FH_MODIFICACION", nullable = false, length = 7)
 	private Date fhModificacion;
+	
+	@JoinColumn(name = "ID_ST_SEGUIMIENTO", referencedColumnName = "ID_ST_SEGUIMIENTO", nullable = false)
+	@ManyToOne(optional = false, fetch = FetchType.LAZY)
+	private StSeguimientoDTO stSeguimiento;
 
 	/**
 	 * @return the idStEncuesta
@@ -187,4 +196,14 @@ public class StEncuestaDTO implements Serializable {
 	public void setCdColor(String cdColor) {
 		this.cdColor = cdColor;
 	}
+
+	public StSeguimientoDTO getStSeguimiento() {
+		return stSeguimiento;
+	}
+
+	public void setStSeguimiento(StSeguimientoDTO stSeguimiento) {
+		this.stSeguimiento = stSeguimiento;
+	}
+	
+	
 }

@@ -18,8 +18,16 @@ public class ProcesoDetalleVO {
 	private Long idUsrModifica;
 	private Date fhModificacion;
 	private Long nuMaxImagenes;
+	private List<IncidenciaDetalleVO> incidencia;
 	private List<EncuestaDetaVO> encuesta;
 	
+	
+	public List<IncidenciaDetalleVO> getIncidencia() {
+		return incidencia;
+	}
+	public void setIncidencia(List<IncidenciaDetalleVO> incidencia) {
+		this.incidencia = incidencia;
+	}
 	public Long getIdProceso() {
 		return idProceso;
 	}
