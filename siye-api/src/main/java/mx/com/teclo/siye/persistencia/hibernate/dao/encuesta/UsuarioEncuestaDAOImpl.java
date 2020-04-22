@@ -68,4 +68,19 @@ public class UsuarioEncuestaDAOImpl extends BaseDaoHibernate<OrdenEncuestaDTO> i
 		c.add(Restrictions.eq("stActivo", true));
 		return (List<OrdenEncuestaDTO>)c.list();
 	}
+
+	@Override
+	public OrdenEncuestaDTO consultaByIdOrdernIdEncuesta(Long idOrden, Long idEnceusta) {
+		Criteria c= getCurrentSession().createCriteria(OrdenEncuestaDTO.class);
+		c.createAlias("ordenServicio", "ordenServicio");
+		c.createAlias("encuesta", "encuesta");
+		
+		c.add(Restrictions.eq("ordenServicio.idOrdenServicio", idOrden));
+		c.add(Restrictions.eq("ordenServicio.stActivo", true));
+		c.add(Restrictions.eq("encuesta.idEncuesta", idEnceusta));
+		c.add(Restrictions.eq("encuesta.stActivo", 1));
+		c.add(Restrictions.eq("stActivo", true));
+		
+		return (OrdenEncuestaDTO)c.uniqueResult();
+	}
 }
