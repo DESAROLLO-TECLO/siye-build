@@ -17,6 +17,7 @@ import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.siye.negocio.service.monitoreoInicidencia.MonitoreoIncidenciaService;
 import mx.com.teclo.siye.negocio.service.seguimientoOs.SeguimientoOsService;
+import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenIncidenciaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.MonitoreoIncidenciasVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
@@ -104,12 +105,13 @@ public class SeguimientoOsRestController {
 		}
 	};
 	
-	@RequestMapping(value = "/incidenciaByIdOrden", method = RequestMethod.GET)
-	public ResponseEntity<OrdenIncidenciaDetalleVO> getIncidenciasByIdOrden(@RequestParam(value="idOrden", required=true) Long idOrden,@RequestParam(value="idPlan", required=true) Long idPlan) throws NotFoundException{
-		OrdenIncidenciaDetalleVO incidenciaDTO = monitoreoIncidenciaService.incidenciaByOS(idOrden, idPlan);
+	@RequestMapping(value = "/getDetalleIncidenciasOS", method = RequestMethod.GET)
+	public ResponseEntity<OrdenIncidenciaDetalleVO> getIncidenciasByIdOrden(@RequestParam(value="idOrden", required=true) Long idOrden,@RequestParam(value="idPlan", required=true) Long idPlan) throws BusinessException, Exception{
+		OrdenIncidenciaDetalleVO incidenciaDTO = monitoreoIncidenciaService.getDetalleIncidenciasOS(idOrden, idPlan);
 		return new ResponseEntity<OrdenIncidenciaDetalleVO>(incidenciaDTO, HttpStatus.OK);
 	}
 	
+
 	
 	@GetMapping(value="/getDetallePregunta")
 	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
@@ -121,5 +123,13 @@ public class SeguimientoOsRestController {
 		}
 		return new ResponseEntity<List<PreguntasDetalleVO>>(respuesta, HttpStatus.OK);
 	};
+
+	
+	@RequestMapping(value = "/getExpedienteIncidencia", method = RequestMethod.GET)
+	public ResponseEntity<List<ImagenVO>> getExpedienteIncidencia(@RequestParam(value="idIncidencia", required=true) Long idIncidencia) throws BusinessException, Exception{
+	List<ImagenVO> listImagenes = monitoreoIncidenciaService.getExpedienteByIdIncidencia(idIncidencia);
+		return new ResponseEntity<List<ImagenVO>>(listImagenes, HttpStatus.OK);
+	}
+
 	
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDao;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
+import mx.com.teclo.siye.persistencia.vo.monitoreo.IncidenciaDetalleVO;
 
 public interface IncidenciaDAO extends BaseDao<IncidenciaDTO> {
 	
@@ -33,18 +34,33 @@ public interface IncidenciaDAO extends BaseDao<IncidenciaDTO> {
 	/**
 	 * Descripciónn: Obtiene una lista de incidencias por id de orden
 	 * @author Mannuel
-	 * @param idOrden
+	 * @param idEncuesta
+	 * @return List<IncidenciaDetalleVO> 
+	 * */
+	public List<IncidenciaDetalleVO> getIncidenciasByIdEncuesta(Long idEncuesta);
+	/**
+	 * Descripciónn: Obtiene una lista de incidencias por id ecnuesta
+	 * @author Mannuel
+	 * @param idEncuesta
 	 * @return List<IncidenciaDTO> 
 	 * */
-	public List<IncidenciaDTO> getIncidenciasByIdOrden(Long idOrden);
+	public List<IncidenciaDTO> getIncidenciasByIdEn(Long idEncuesta);
+	
 	/**
 	 * Descripciónn: Obtiene una lista de incidencias por id de encuesta
 	 * @author Mannuel
-	 * @param idOrden
-	 * @return List<IncidenciaDTO> 
+	 * @param idProceso
+	 * @return List<IncidenciaDetalleVO> 
 	 * */
-	
-	public List<IncidenciaDTO> getIncidenciasByIdEncuesta(Long idEncuesta);
+	public List<IncidenciaDetalleVO> getIncidenciasByProceso(Long idProceso);
+
+	/**
+	 * Descripciónn: Obtiene una lista de incidencias por id de orden
+	 * @author Mannuel
+	 * @param idOrden
+	 * @return List<IncidenciaDetalleVO> 
+	 * */
+	public List<IncidenciaDetalleVO> getIncidenciasByIdOrden(Long idOrden);
 
 
 }
