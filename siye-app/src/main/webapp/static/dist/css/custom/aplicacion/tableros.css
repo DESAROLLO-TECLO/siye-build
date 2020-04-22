@@ -1,0 +1,49 @@
+.menutablro{
+	background-color:none;
+	width:13.3%;
+	display: inline-block;
+	vertical-align:top;
+	padding:5px;
+}
+.active-tblro{
+	border-bottom: 2.5px solid red;
+}
+#centrame{
+	text-align:center;
+	margin:0 auto;
+	background-color:none;
+}
+.title-submentablro{
+	color: rgba(0,0,0,0.9);
+	
+	font-size:14px;
+}
+.quantity-tablro{
+	margin-top:0.5em;
+	color: rgba(0,0,0,0.8);
+	font-weight:bold;
+	font-size:25px;
+}
+
+.menutablro:hover{
+	border-bottom: 2.5px solid red;
+}
+.divcent-tblro{
+	width:50%;
+	min-height:50px;
+	margin:0 auto;
+	background-color:rgba(0,0,0,0.2);
+}
+.nomargin{
+	margin:0;
+	padding:0;
+}
+
+#refaccionesUtilizadas {
+    min-height: 450px;
+}
+
+.amcharts-axis-label{
+	margin:0;
+	padding:0;
+}
