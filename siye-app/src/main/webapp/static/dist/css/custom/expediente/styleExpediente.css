@@ -88,8 +88,8 @@ img.foto-evidencia-1 {
 }
 
 .style-rep-img{
-  width: 5rem;
-  height: auto;
+  width: 5rem !important;
+  height: auto !important;
 }
 
 .style-parent{

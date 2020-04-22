@@ -2,11 +2,14 @@ package mx.com.teclo.siye.negocio.service.proceso;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
+import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.DispositivosVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.PlanProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.ProcesoEncuestaVO;
@@ -54,6 +57,8 @@ public interface ProcesoService {
 	Boolean avanzarProcesoOrden (Long idOrdenServicio);
 	
 	Boolean iniciarTiempoProceso (Long idOrdenServicio, Long idProceso);
+
+	
 
 
 
