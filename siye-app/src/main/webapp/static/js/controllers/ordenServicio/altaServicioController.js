@@ -140,6 +140,12 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 	
 	$scope.guardarOrden = function(valor, valorDos){
 		
+			if($scope.banderaVehiculo==false){
+				
+				growl.error("Es necesario que consultes la placa vehicular ", { ttl: 5000 });
+				
+			}
+		
 		  if($scope.formAltaServicio.$invalid){
 				requiredFields();
 			}else{

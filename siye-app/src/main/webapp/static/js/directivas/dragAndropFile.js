@@ -18,10 +18,34 @@ angular.module('ui.filedrop', [])
                 e.preventDefault();
                 angular.element('body').removeClass("dragOver");
             };
+            
+            scope.logobsResult=function(files) {
+        		if(files != undefined){
+        			let i;
+        			for(i=0; i<files.length; i++){
+        				let file=files[i];
+        				let reader = new FileReader();
+        				  reader.onloadend = function () {
+        				    var b64 = reader.result.replace(/^data:.+;base64,/, '');
+        				    file.strBase64=b64;
+        				  };
+        				 reader.readAsDataURL(file);
+        			}
+        		}
+    		}
 
             //When a file is dropped
-            var loadFile = function (file) {
-                scope.uploadedFile = file;
+            var loadFile = function (files) {
+            	
+                let filesResult=[];
+                let i;
+                for(i=0; i<files.length; i++){
+                	filesResult.push(files[i]);
+                }
+                
+                scope.logobsResult(filesResult);
+            	
+                scope.uploadedFile = filesResult;
                 scope.$apply(scope.onImageDrop(scope));
             };
 

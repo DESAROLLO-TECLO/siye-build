@@ -55,7 +55,7 @@ public interface LayoutService {
 	 * @return
 	 * @throws BusinessException 
 	 */
-	InsercionTablaVO getNbsColumnas(String tabla) throws BusinessException;
+	InsercionTablaVO getNbsColumnas(Long idTipoLayout, String tabla) throws BusinessException;
 
 	/**
 	 * Obtiene los conjuntos de titulos de las columnas del header y footer y el
@@ -87,10 +87,11 @@ public interface LayoutService {
 
 	/**
 	 * Genera de forma din&aacute;mica  los comandos SQL para insertar la informacion del archivo
+	 * @param idTipoLayout 
 	 * @param List<TablaDestinoVO> tablas que ser&aacute;n consultadas o insertadas con la carga masiva
 	 * @return
 	 * @throws BusinessException
 	 */
-	Map<String, InsercionTablaVO> getMoldesSQLPorTbl(List<TablaDestinoVO> tablas) throws BusinessException;
+	Map<String, InsercionTablaVO> getMoldesSQLPorTbl(Long idTipoLayout, List<TablaDestinoVO> tablas) throws BusinessException;
 
 }

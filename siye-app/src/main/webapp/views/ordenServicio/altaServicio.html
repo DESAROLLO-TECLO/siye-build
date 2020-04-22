@@ -334,17 +334,17 @@
 									</div>
 								</div>
 								<div class="col-md-6">
-									<div class="form-group" ng-class="{'has-error': formAltaServicio.serieKit.$invalid && formAltaServicio.serieKit.$dirty}">
-										<label for="">*Serie de Kit:</label>
+									<div class="form-group" >
+										<label for="">Serie de Kit:</label>
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
 											</div>
-											<input type="text" name="serieKit" required class="form-control inputs" ng-model="orden.cdKitIntalacion" capitalize>
+											<input type="text" name="serieKit"  class="form-control inputs" ng-model="orden.cdKitIntalacion" capitalize>
 										</div>
-										<div ng-show="formAltaServicio.serieKit.$invalid  && formAltaServicio.serieKit.$dirty" ng-style="{color:'red'}">
-                                        	<label>La serie del kit es requerido. </label>
-                                    	</div>
+<!-- 										<div ng-show="formAltaServicio.serieKit.$invalid  && formAltaServicio.serieKit.$dirty" ng-style="{color:'red'}"> -->
+<!--                                         	<label>La serie del kit es requerido. </label> -->
+<!--                                     	</div> -->
 									</div>
 								</div>
 								

@@ -1,7 +1,9 @@
 package mx.com.teclo.siye.persistencia.vo.monitoreo;
 
 import java.io.Serializable;
+import java.util.Date;
 
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.EncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.ProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.StSeguimientoVO;
@@ -14,15 +16,58 @@ public class IncidenciaDetalleVO implements Serializable {
 	private String cdIncidencia;
 	private String nbIncidencia;
 	private String txIncidencia;
-	private StSeguimientoVO stSeguimiento;
+	private Date fhCreacion;
+	private StSeguimientoDTO stSeguimiento;
 	private Boolean stActivo;
-	private StSeguimientoVO tpIncidencia;
-	private StSeguimientoVO stIncidencia;
-	private StSeguimientoVO stAutorizacion;
-	private StSeguimientoVO prioridad;
+	private StSeguimientoDTO tpIncidencia;
+	private StSeguimientoDTO stIncidencia;
+	private StSeguimientoDTO stAutorizacion;
+	private StSeguimientoDTO prioridad;
+	
+	private StSeguimientoVO stSeguimientoVO;
+	private StSeguimientoVO tpIncidenciaVO;
+	private StSeguimientoVO stIncidenciaVO;
+	private StSeguimientoVO stAutorizacionVO;
+	private StSeguimientoVO prioridadVO;
 	
 	
-	
+
+	public Date getFhCreacion() {
+		return fhCreacion;
+	}
+	public void setFhCreacion(Date fhCreacion) {
+		this.fhCreacion = fhCreacion;
+	}
+	public StSeguimientoVO getStSeguimientoVO() {
+		return stSeguimientoVO;
+	}
+	public void setStSeguimientoVO(StSeguimientoVO stSeguimientoVO) {
+		this.stSeguimientoVO = stSeguimientoVO;
+	}
+	public StSeguimientoVO getTpIncidenciaVO() {
+		return tpIncidenciaVO;
+	}
+	public void setTpIncidenciaVO(StSeguimientoVO tpIncidenciaVO) {
+		this.tpIncidenciaVO = tpIncidenciaVO;
+	}
+	public StSeguimientoVO getStIncidenciaVO() {
+		return stIncidenciaVO;
+	}
+	public void setStIncidenciaVO(StSeguimientoVO stIncidenciaVO) {
+		this.stIncidenciaVO = stIncidenciaVO;
+	}
+	public StSeguimientoVO getStAutorizacionVO() {
+		return stAutorizacionVO;
+	}
+	public void setStAutorizacionVO(StSeguimientoVO stAutorizacionVO) {
+		this.stAutorizacionVO = stAutorizacionVO;
+	}
+	public StSeguimientoVO getPrioridadVO() {
+		return prioridadVO;
+	}
+	public void setPrioridadVO(StSeguimientoVO prioridadVO) {
+		this.prioridadVO = prioridadVO;
+	}
 	public Long getIdEncuesta() {
 		return idEncuesta;
 	}
@@ -53,10 +98,10 @@ public class IncidenciaDetalleVO implements Serializable {
 	public void setTxIncidencia(String txIncidencia) {
 		this.txIncidencia = txIncidencia;
 	}
-	public StSeguimientoVO getStSeguimiento() {
+	public StSeguimientoDTO getStSeguimiento() {
 		return stSeguimiento;
 	}
-	public void setStSeguimiento(StSeguimientoVO stSeguimiento) {
+	public void setStSeguimiento(StSeguimientoDTO stSeguimiento) {
 		this.stSeguimiento = stSeguimiento;
 	}
 	public Boolean getStActivo() {
@@ -65,28 +110,28 @@ public class IncidenciaDetalleVO implements Serializable {
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
 	}
-	public StSeguimientoVO getTpIncidencia() {
+	public StSeguimientoDTO getTpIncidencia() {
 		return tpIncidencia;
 	}
-	public void setTpIncidencia(StSeguimientoVO tpIncidencia) {
+	public void setTpIncidencia(StSeguimientoDTO tpIncidencia) {
 		this.tpIncidencia = tpIncidencia;
 	}
-	public StSeguimientoVO getStIncidencia() {
+	public StSeguimientoDTO getStIncidencia() {
 		return stIncidencia;
 	}
-	public void setStIncidencia(StSeguimientoVO stIncidencia) {
+	public void setStIncidencia(StSeguimientoDTO stIncidencia) {
 		this.stIncidencia = stIncidencia;
 	}
-	public StSeguimientoVO getStAutorizacion() {
+	public StSeguimientoDTO getStAutorizacion() {
 		return stAutorizacion;
 	}
-	public void setStAutorizacion(StSeguimientoVO stAutorizacion) {
+	public void setStAutorizacion(StSeguimientoDTO stAutorizacion) {
 		this.stAutorizacion = stAutorizacion;
 	}
-	public StSeguimientoVO getPrioridad() {
+	public StSeguimientoDTO getPrioridad() {
 		return prioridad;
 	}
-	public void setPrioridad(StSeguimientoVO prioridad) {
+	public void setPrioridad(StSeguimientoDTO prioridad) {
 		this.prioridad = prioridad;
 	}
 	

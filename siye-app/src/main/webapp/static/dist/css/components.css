@@ -111,3 +111,9 @@
 /* ----------- M�DULO: SEGUIMIENTO ----------- */
 @import url('custom/seguimiento/monitoreo.css');
 @import url('custom/monitoreo/monIncidencia.css');
+
+/* ----------- M�DULO: DASHBOARD ----------- */
+
+@import url('custom/dashboard/dashboard.css');
+@import url('custom/aplicacion/tableros.css');
+
