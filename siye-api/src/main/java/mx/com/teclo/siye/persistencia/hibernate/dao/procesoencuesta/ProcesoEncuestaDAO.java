@@ -45,7 +45,7 @@ public interface ProcesoEncuestaDAO extends BaseDao<ProcesoEncuestaDTO>{
 	 * @param idProceso
 	 * @return List<EncuestaDetaVO> 
 	 * */
-	public List<EncuestaDetalleDTO> getEncuestaByIdOrden(Long idProceso);
+	public List<EncuestaDetaVO> getEncuestaByIdOrden(Long idProceso);
 	
 	
 	/**
