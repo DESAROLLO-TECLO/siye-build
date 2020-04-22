@@ -96,7 +96,7 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 		return respuesta;
 	}
 
-<<<<<<< HEAD
+
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -125,7 +125,7 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				.setParameter("idEncuesta", idEncuesta)
 				.setResultTransformer(Transformers.aliasToBean(EncuestaDetalleVO.class)).list();
 		return respuesta;
-=======
+	}
 	@Override
 	public StEncuestaVO getstEncuestaByIdEncuestaIdOrden(Long idEncuesta,Long idOrden) {
 		String hql = "SELECT  enc.stEncuesta.idStEncuesta as idStEncuesta,enc.stEncuesta.cdStEncuesta as cdStEncuesta,"
@@ -139,7 +139,7 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 		query.setParameter("idEncuesta", idEncuesta)
 		.setParameter("idOrden", idOrden).setResultTransformer(Transformers.aliasToBean(StEncuestaVO.class));
 		return (StEncuestaVO) query.uniqueResult();
->>>>>>> 4b744162a75e75e6dbdb7306a55a236631b9dfda
+
 	}
 
 }
