@@ -2,19 +2,17 @@ package mx.com.teclo.siye.persistencia.hibernate.dao.procesoencuesta;
 
 import java.util.List;
 
-import org.hibernate.transform.Transformers;
-import org.hibernate.type.DoubleType;
-import org.hibernate.type.LongType;
-import org.hibernate.type.StringType;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
+import org.hibernate.type.DoubleType;
+import org.hibernate.type.LongType;
+import org.hibernate.type.StringType;
 import org.springframework.stereotype.Repository;
 
-import javassist.convert.Transformer;
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
-import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestaDetalleDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelEncuestaVO;
@@ -95,8 +93,6 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				.setResultTransformer(Transformers.aliasToBean(EncuestaDetalleVO.class)).list();
 		return respuesta;
 	}
-
-
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -126,6 +122,7 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				.setResultTransformer(Transformers.aliasToBean(EncuestaDetalleVO.class)).list();
 		return respuesta;
 	}
+
 	@Override
 	public StEncuestaVO getstEncuestaByIdEncuestaIdOrden(Long idEncuesta,Long idOrden) {
 		String hql = "SELECT  enc.stEncuesta.idStEncuesta as idStEncuesta,enc.stEncuesta.cdStEncuesta as cdStEncuesta,"
@@ -139,7 +136,6 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 		query.setParameter("idEncuesta", idEncuesta)
 		.setParameter("idOrden", idOrden).setResultTransformer(Transformers.aliasToBean(StEncuestaVO.class));
 		return (StEncuestaVO) query.uniqueResult();
-
 	}
 
 }
