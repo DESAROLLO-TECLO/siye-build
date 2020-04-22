@@ -167,6 +167,7 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 		if(OrdenServicioDTO!=null) {
 			respuesta.setIdOrdenServicio(idOrdenServicio);
 			respuesta.setCdOrdenServicio(OrdenServicioDTO.getCdOrdenServicio());
+			respuesta.setNbModuloAtencion(OrdenServicioDTO.getCentroInstalacion().getNbCentroInstalacion());
 			respuesta.setEvidencias(expedienteImgDAO.getImagenOS(idOrdenServicio, " AND ID_INCIDENCIA IS NULL ORDER BY NU_ORDEN ASC"));
 			respuesta.setIncidencias(expedienteImgDAO.getImagenOS(idOrdenServicio, " AND ID_INCIDENCIA IS NOT NULL ORDER BY NU_ORDEN ASC"));
 			respuesta.setEstatus(OrdenServicioDTO.getStSeguimiento().getNbStSeguimiento());

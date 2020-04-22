@@ -69,7 +69,7 @@ public class SeguimientoOsRestController {
 	@GetMapping(value="/getDetalleProceso")
 	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
 	public ResponseEntity<List<ProcesoDetalleVO>> getDetalleProceso(@RequestParam(value ="idOrden") Long idOrdenServicio,
-															  @RequestParam(value ="idProceso") Long idProceso) throws NotFoundException{	
+															  		@RequestParam(value ="idProceso") Long idProceso) throws NotFoundException{	
 		List<ProcesoDetalleVO> respuesta = seguimientoService.getDetalleProceso(idOrdenServicio, idProceso);
 		if(respuesta.isEmpty()) {
 			throw new NotFoundException("No hay información");

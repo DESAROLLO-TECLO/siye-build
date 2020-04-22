@@ -2,21 +2,30 @@ angular.module(appTeclo).service("detalleSeguimientoOsService", function($http, 
 
     const END_POINT=config.baseUrl+"/monitoreo";
     
-    const GET_DETALLE_OS=END_POINT+"/getSeguimientoOS";
+    const GET_DETALLE_OS=END_POINT+"/getProcesos";
     
     let datosConsultaOS = new Object({});
 
     this.saveconsultaGeneral=function(parametros){
         datosConsultaOS = parametros;
-    }
+	};
+	
+	this.getProcesosByOrdenServicio= function(){
+		if(datosConsultaOS.dtOs!=undefined){
+			return $http.get(GET_DETALLE_OS,{
+				params:{"idOrden": datosConsultaOS.dtOs.idOrdenServicio}
+			});
+		}
+	};
+
+	this.getDetalleProcesoEspecifico = function(params){
+		return $http.get(END_POINT+"/getDetalleProceso",{
+			params:{"idOrden": params.idOrden,
+					"idProceso":params.idProceso}
+		});
+	};
     
-    this.getDetalleOS=function(idOrdenServ){
-    	return jsonOrdenServ;
-    	/*return $http.get(GET_DETALLE_OS, {
-			params:{"idOrdenServ": idOrdenServ}
-    	});*/
-    };
-    
+
     
   ///JSON DE PRUEBA BORRAR
     var jsonOrdenServ={

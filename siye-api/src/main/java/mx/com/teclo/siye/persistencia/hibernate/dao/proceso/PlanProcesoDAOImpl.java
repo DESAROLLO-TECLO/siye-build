@@ -161,7 +161,7 @@ public class PlanProcesoDAOImpl extends BaseDaoHibernate<PlanProcesoDTO> impleme
 				+" tdop.FH_INI_PROCESO AS fhInicio," 
 				+" tdop.FH_FIN_PROCESO AS fhFin,"
 				+" proceso.ID_PROCESO AS idProceso," 
-				+" proceso.TX_PROCESO AS nbProceso"
+				+" proceso.TX_PROCESO AS nbProceso "
 				+"FROM TIE065D_ODS_PROCESOS tdop" 
 				+"   INNER JOIN TIE026D_IE_ORDEN_SERVICIOS os ON (tdop.ID_ORDEN_SERVICIO = os.ID_ORDEN_SERVICIO)"
 				+"   INNER JOIN TIE035C_IE_PROCESOS proceso ON (tdop.ID_PROCESO  = proceso.ID_PROCESO) "
