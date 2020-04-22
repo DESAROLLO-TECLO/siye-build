@@ -8,7 +8,7 @@ var includeDeseing=
 	'				</div>                                                                  																								                                                        '+
 	'				<div class="col-xs-4 col-sm-2 col-md-2">                                                                                                                                                                                        '+
 	'					<input type="file"  ng-show="false"                                                                            				                                                                                                '+
-	'						 id="file-1{{idElementUp}}"  custom-on-change handler="getFilesFromInput(params)"							                                                                                                            '+
+	'						 id="file-1{{idElementUp}}"  custom-on-change handler="getFilesFromInput(params)"					                                                                                                                    '+
 	'						class="inputfile inputfile-1" multiple />                                                                                                                                                                               '+
 	'					<label for="file-1{{idElementUp}}" capture="camera" class="btn btn-danger  pull-right">                                                                                                                                     '+
 	'						<i class="fa fa-camera fa-lg" aria-hidden="true"></i>                                                                                                                                                                   '+
@@ -44,7 +44,16 @@ var includeDeseing=
 	'									<div class="row border-div-child">                                                                                                                                                                          '+
 	'										<div class="{{showCombo ? \'col-xs-4 col-sm-2 col-md-2 style-parent\' : \'col-xs-6 col-sm-4 col-md-3 style-parent\'}}">                                                                                 '+
 	'											<div ng-if="file.isImage">																                                                                                                            '+
-	'	 											<div class="stile-puntero-pointer img-img-fluid style-rep-img" ng-click="showModalImg(file)" ng-thumb="{file:file,height:65}"></div>				                                        '+
+	'	 											<div ng-if="file.strBase64 != undefined">                                                                                                                                                        '+
+	'													<img id="img-{{idElementUp+unic}}"                                                                       '+
+	'														ng-click="showModalImg(file)"                                                                           '+
+	'														class="stile-puntero-pointer img-img-fluid style-rep-img"                                                                           '+
+	'														ng-src="data:image/jpeg;base64, {{file.strBase64}}" />							                                                '+
+	'												</div>				                                                                                                                                                                            '+
+	'												<div class="form-group" ng-if="file.strBase64 == undefined">				                                                                                                                                                                            '+
+	'														<label><i class="fa-li fa fa-spinner fa-2x fa-spin img-img-fluid style-rep-img text-success"></i></label>                                                                                                                                                                         '+
+	'														<div class="input-group">Cargando... </div>                                                                                                               '+
+	'												</div>				                                                                                                                                                                            '+
 	'											</div>																				                                                                                                                '+
 	'											<div ng-if="!file.isImage">                                                                                                                                                                         '+
 	'												<i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>                                                                                                                                        '+
@@ -52,7 +61,7 @@ var includeDeseing=
 	'										</div>                                                                                                                                                                                                  '+
 	'										<div class="{{showCombo ? \'col-xs-4 col-sm-5 col-md-2\' : \' col-xs-6 col-sm-2 col-md-2\'}}">                                                                                                          '+
 	'											<div class="form-group">                                                                                                                                                                            '+
-	'												<label>Nombre:</label>                                                                                                                                                                          '+
+	'												<label>Nombre: </label>                                                                                                                                                                         '+
 	'												<div class="input-group">                                                                                                                                                                       '+
 	'													{{file.name.length > 14 ? (file.name.substr(0,14)+\'...\') : file.name}}                   								                                                                    '+
 	'												</div>																																	                                                        '+
@@ -62,7 +71,7 @@ var includeDeseing=
 	'											<div class="form-group">                                                                                                                                                                            '+
 	'												<label>Tama&ntilde;o:</label>                                                                                                                                                                   '+
 	'												<div class="input-group">                                                                                                                                                                       '+
-	'													{{file.size/1024/1024|number:3}} Mb                                                                                                                                                         '+
+	'													{{file.exedeSize ? \'0.0 Mb\' : (file.size | prettySize)}}                                                                                                                                                                  '+
 	'												</div>																																	                                                        '+
 	'											</div>																																		                                                        '+
 	'										</div>                                                                                                                                                                                                  '+
@@ -143,7 +152,7 @@ var includeDeseing=
 	'				</div>                                                                                                                                                                                                                          '+
 	'			</div>                                                                                                                                                                                                                              '+
 	'		</div>                                                                                                                                                                                                                                  '+
-	'	</form>																														 													                                                            ';
+	'	</form>		                                                                                                                                                                                                                                ';
 	
 var includeDeseingModal=
 	'<div ng-if="showModalBuild" class="modal fade" id="{{idElementUp}}modalUpdateImage" tabindex="-1" role="dialog" aria-hidden="true" 		'+
@@ -174,7 +183,7 @@ var includeCarouselModal=
 	'			<div class="modal-content">                                                                                                                 '+
 	'				<div class="modal-header">                                                                                                              '+
 	'					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>              '+
-	'					<h4 class="modal-title" id="gridSystemModalLabel">Imagenes de {{\'Nombre nivel\'}}</h4>                                             '+
+	'					<h4 class="modal-title" id="gridSystemModalLabel">Imagenes</h4>                                             '+
 	'				</div>                                                                                                                                  '+
 	'				<div class="modal-body">                                                                                                                '+
 	'					<div id="carousel-{{idElementUp}}" class="carousel slide" data-ride="carousel">                                                     '+
@@ -186,7 +195,7 @@ var includeCarouselModal=
 	'									<img style="max-width: 100%;" id="img-{{idElementUp+imagePreview.unic}}" alt="{{imagePreview.name}}"                                         '+
 	'											ng-src="data:image/png;base64, {{imagePreview.strBase64}}" />                                               '+
 	'									<div class="carousel-caption">                                                                                      '+
-	'										{{imagePreview.name.length > 17 ? (imagePreview.name.substr(0,17)+\'...\') : imagePreview.name}}                '+
+	'										{{imagePreview.name.length > 14 ? (imagePreview.name.substr(0,14)+\'...\') : imagePreview.name}}                '+
 	'									</div>                                                                                                              '+
 	'								</div>                                                                                                                  '+
 	'							</div>                                                                                                                          '+
