@@ -35,103 +35,6 @@
         </div>
 
         <div class="row">
-            <!--div class="col-md-6">
-			<div class="box box-danger">
-				<div class="box-header with-border">
-					<div class="row">
-						<iv class="col-md-6" style="line-height:2.5;">
-							<h3 class="box-title ng-binding">Top 10 Productos</h3>
-						</div>
-						<div class="col-md-3 text-center">
-							<select class="form-control select2" name="zAnio1" 
-								id="zAnio1"	ng-model="init.zAnio1" 
-								ng-options="option.idAnio as option.descAnio for option in comboAnio">
-							</select>
-						</div>
-						<div class="col-md-3 text-center">
-							<select class="form-control select2" name="zMes1" 
-								id="zMes1"	ng-model="init.zMes1" 
-								ng-options="option.idMes as option.descMes for option in comboMes">
-							</select>
-						</div>
-					</div>
-				</div>
-				
-				<div class="box-body">
-					<div class="row">
-						<div class="col-md-12">
-							<ul class="nav nav-tabs">
-								<li ng-repeat="tab in tabsTOP10"
-									ng-class="{'active': tab.isActive}"
-									ng-click="changeGraph(tab.nbTab)">
-									<a>{{tab.nbTab}}</a>
-								</li>
-							</ul-->
-
-            <!--div ng-if="tabMasV" id="tabMasV">
-								<div id="top10MasVen" ng-repeat="pro in arrayTop10MasVen">
-									<div class="col-md-5">
-										<div class="col-md-2">
-											<strong>{{ pro.orden }}</strong>
-										</div>
-										
-										<div class="col-md-5 productall-img">
-											<img ng-src="{{ pro.lbImg }}" />
-		                                    <div class="productall-img__btn"
-		                                        ng-click="showDetailproduct(pro)">
-		                                        <a class="btn btn-block">
-		                                            Ver detalle
-		                                        </a>
-		                                    </div>
-										</div>
-										
-										<div class="col-md-5">
-											<strong class="productall-info__name" 
-												tooltip="{{ pro.nbTipoProducto }}" tooltip-placement="top">
-												{{ pro.nbTipoProducto | breaktext:true:35:'...' }}
-											</strong>
-											<label class="productall-info__price">
-		                                        ${{ pro.nuPrecio }}
-		                                    </label>
-										</div>
-									</div>
-								</div>
-							</div>
-								
-							<div ng-if="tabMenosV" id="tabMenosV">
-								<div id="top10MenosVen" ng-repeat="pro in arrayTop10MenosVen">
-									<div class="col-md-5">
-										<div class="col-md-2">
-											<strong>{{ pro.orden }}</strong>
-										</div>
-										
-										<div class="col-md-5 productall-img">
-											<img ng-src="{{ pro.lbImg }}" />
-		                                    <div class="productall-img__btn"
-		                                        ng-click="showDetailproduct(pro)">
-		                                        <a class="btn btn-block">
-		                                            Ver detalle
-		                                        </a>
-		                                    </div>
-										</div>
-										
-										<div class="col-md-5">
-											<strong class="productall-info__name" 
-												tooltip="{{ pro.nbTipoProducto }}" tooltip-placement="top">
-												{{ pro.nbTipoProducto | breaktext:true:35:'...' }}
-											</strong>
-											<label class="productall-info__price">
-		                                        ${{ pro.nuPrecio }}
-		                                    </label>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div-->
 
             <div class="col-md-12">
                 <div class="box box-danger">
@@ -160,10 +63,7 @@
                                     <input placeholder="Fecha inicial" class="form-control inputFecha" id="fhAtencionIni" date-picker idioma-dp="{{currentLanguage}}" mindate="'29/01/2018'" maxdate="'09/02/2018'" elemento="'fhAtencionIni'" ng-model="fhAtencionIni" readonly />
                                 </div>
 
-                                <!--select class="form-control select2" name="zAnio2" 
-								id="zAnio2"	ng-model="init.zAnio2" 
-								ng-options="option.idAnio as option.descAnio for option in comboAnio">
-							</select-->
+                               
                             </div>
                             <div class="col-md-3 text-center">
                                 <!--fecha fin-->
@@ -173,10 +73,6 @@
                                     </div>
                                     <input placeholder="Fecha final" class="form-control inputFecha" id="fhAtencionFin" date-picker idioma-dp="{{currentLanguage}}" mindate="'29/01/2018'" maxdate="'09/02/2018'" elemento="'fhAtencionFin'" ng-model="fhAtencionFin" readonly />
                                 </div>
-                                <!--select class="form-control select2" name="zMes2" 
-								id="zMes2"	ng-model="init.zMes2" 
-								ng-options="option.idMes as option.descMes for option in comboMes">
-							</select-->
                             </div>
                         </div>
                     </div>
@@ -237,10 +133,7 @@
                                         <div class="col-md-12 bodyGraf">
                                             <div id="graficaVentasXSucursal" class="grafica"></div>
                                         </div>
-                                        <!--div class="col-md-6 bodyGraf">
-										<br>
-										<div id="graficaMetasXSucursal" class="grafica"></div>
-									</div-->
+                                       
                                     </div>
                                 </div>
                                 <!-- Ordenes de Servicios Rechazadas-->
