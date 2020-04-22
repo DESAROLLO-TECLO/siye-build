@@ -39,18 +39,30 @@
                                 <div class="row">
                                     <div class="col-md-3 col-sm-4 col-xs-6">
                                         <div class="form-group">
-                                            <label ng-if="dataEtapa.transportista != null ">
-                                                Transportista: 
+                                            <a webuipopover data-placement="right" data-trigger="click"
+                                                selector-content="consultados" data-toggle="popover">
+                                                <label >
+                                                    Transportista:
                                                 <span class="etapa-texto">
-                                                    {{dataEtapa.transportista}}
+                                                    {{transportista[0].nbConductor}} {{transportista[0].nbApepatConductor}} {{transportista[0].nbApematConductor}}
                                                 </span>
-                                            </label>
-                                            <label ng-if="dataEtapa.transportista == null ">
-                                                Transportista: 
-                                                <span class="etapa-texto">
-                                                    Sin nombre  de Transportista
-                                                </span>
-                                            </label>
+                                                    <div id="consultados" class="webuipopover-content">
+                                                        <div class="center">
+                                                            <sapn style="font-size: 1.2em;">
+                                                                Transportistas: 
+                                                            </sapn>
+                                                        </div>
+                                                        <div style="border-bottom: 1px solid #cf0a2c; margin-bottom: 1%;"> </div>
+                                                        <div class="webuipopover-content-scroll">
+                                                            <ul style="padding-left: 20px;">
+                                                                <li ng-repeat="item in transportista">
+                                                                    {{item.nbConductor}} {{item.nbApepatConductor}} {{item.nbApematConductor}}
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </label>
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="col-md-3 col-sm-4 col-xs-6">
@@ -63,13 +75,19 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 col-sm-4 col-xs-6">
-                                        <div class="form-group" style="display: block; float:right;">
-                                            <span class="glyphicon glyphicon glyphicon-time" aria-hidden="true"></span>
+                                    <div class="col-md-3 col-sm-4 col-xs-6">
+                                        
+                                    </div>
+                                    <div class="col-md-3 col-sm-4 col-xs-6">
+                                        <div class="form-group">
+                                            <!--
+                                                <span class="glyphicon glyphicon glyphicon-time" aria-hidden="true"></span>
+                                            -->
                                             <label>
+                                                Tiempo Transcurrido: 
                                                 <div ng-if="tiempoTranscurridoOrden > 0">
                                                     <span class="etapa-texto">
-                                                        Tiempo Transcurrido: {{hora<10?formato:''}}{{hora}}:{{minuto<10?formato:''}}{{minuto}}:{{segundo<10?formato:''}}{{segundo}}
+                                                        {{hora<10?formato:''}}{{hora}}:{{minuto<10?formato:''}}{{minuto}}:{{segundo<10?formato:''}}{{segundo}}
                                                     </span>
                                                 </div>
                                                 <div ng-if="tiempoTranscurridoOrden == 0">
@@ -308,8 +326,12 @@
                                     <a ng-class="{'inactiv-click' : item.statusProceos == false}"
                                         href="#/etapas/proceso/{{item.proceso.idProceso}}/{{dataEtapa.idOrdenServicio}}" 
                                         data-toggle="tooltip" data-placement="bottom" title="{{item.proceso.nbProceso}}">
-                                        <div class="dash-info" 
-                                        ng-class="{'color-fondo': item.statusProceos == true, 'color-fondo-desactivado': item.statusProceos == false}">
+                                        <div class="dash-info"
+                                            ng-class="{'fn-noini': item.stSeguimiento.cdColor == 'fn-noini',
+                                                       'fn-cance': item.stSeguimiento.cdColor == 'fn-cance', 
+                                                       'fn-final': item.stSeguimiento.cdColor == 'fn-final', 
+                                                       'fn-curso': item.stSeguimiento.cdColor == 'fn-curso',
+                                                       'fn-inactivo': item.statusProceos == false}">
                                             <div class="dash-img">
                                                 <img class="dash-img-img" 
                                                     src="{{item.urlImg}}">

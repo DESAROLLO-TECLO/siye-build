@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<body id="bodyGraf">
+    <section class="content-header">
+        <h1>{{breadCrumbs.servicio}}</h1>
+        <ol class="breadcrumb">
+            <li>
+                <a> <i class="{{breadCrumbs.icono}}"></i>{{breadCrumbs.modulo}}
+                </a>
+            </li>
+            <li class="active">{{breadCrumbs.servicio}}</li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <!-- ./col -->
+            <div class="col-md-3" ng-repeat="ctrl in ctrls">
+                <!-- small box -->
+                <div class="small-box {{ctrl.bgPanel}}">
+                    <div class="inner">
+                        <div class="icon">
+                            <i class="fa {{ctrl.icon}}"></i>
+                        </div>
+
+                        <div class="counter" value="ctrl.myValue" to="ctrl.myTarget" duration="ctrl.myDuration" effect="ctrl.myEffect">
+                            <h3>{{ctrl.myValue | number:0 }}</h3>
+                        </div>
+
+                        <h4>{{ctrl.nbPanel}}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-md-12" style="line-height:2.5;">
+                                <h3 class="box-title ng-binding">Incidencias por módulos</h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 text-center">
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <!-- Modulos-->
+                                <!--select class="form-control select2" name="zSuc2" 
+								id="zSuc2"	ng-model="init.zSuc2" 
+								ng-options="option.idTipoSucursal as option.cdTipoSucursal for option in comboSucursal">
+							</select-->
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <!--fecha inicio-->
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input placeholder="Fecha inicial" class="form-control inputFecha" id="fhAtencionIni" date-picker idioma-dp="{{currentLanguage}}" mindate="'29/01/2018'" maxdate="'09/02/2018'" elemento="'fhAtencionIni'" ng-model="fhAtencionIni" readonly />
+                                </div>
+
+                               
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <!--fecha fin-->
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input placeholder="Fecha final" class="form-control inputFecha" id="fhAtencionFin" date-picker idioma-dp="{{currentLanguage}}" mindate="'29/01/2018'" maxdate="'09/02/2018'" elemento="'fhAtencionFin'" ng-model="fhAtencionFin" readonly />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12 bodyGraf">
+                                <div id="graficaSalidas" class="grafica"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-md-8" style="line-height:2.5;">
+                                <h3 class="box-title ng-binding">Orden de servicio</h3>
+                            </div>
+                        </div>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul class="nav nav-tabs">
+                                    <li ng-repeat="tab2 in tabsSucursales" ng-class="{'active': tab2.isActive}" ng-click="changeGraph(tab2.nbTab)">
+                                        <a>{{tab2.nbTab}}</a>
+                                    </li>
+                                </ul>
+
+                                <div ng-if="tabSucVen" id="tabSucVen">
+                                    <div class="row">
+                                        <br>
+                                        <div class="col-md-3"></div>
+                                        <div class="col-md-2 text-center">
+                                            <select class="form-control select2" name="zSuc3" id="zSuc3" ng-model="init.zSuc3" ng-options="option.idTipoSucursal as option.cdTipoSucursal for option in comboSucursal">
+										</select>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <select class="form-control select2" name="zAnio3" id="zAnio3" ng-model="init.zAnio3" ng-options="option.idAnio as option.descAnio for option in comboAnio">
+										</select>
+                                        </div>
+                                        <div class="col-md-2 text-center">
+                                            <select class="form-control select2" name="zMes3" id="zMes3" ng-model="init.zMes3" ng-options="option.idMes as option.descMes for option in comboMes">
+										</select>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 bodyGraf">
+                                            <div id="graficaVentasXSucursal" class="grafica"></div>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                                <!-- Ordenes de Servicios Rechazadas-->
+                                <div ng-if="tabSucIng" id="tabSucIng">
+                                    <div class="row">
+                                        <div class="col-md-12 bodyGraf">
+                                            <div id="graficaIngGanSucursal" class="grafica"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--Avance por Plan-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-md-8" style="line-height:2.5;">
+                                <h3 class="box-title ng-binding">Avance por plan</h3>
+                            </div>
+
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="graficaAvancePlan" class="grafica"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+  
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                    <div class="row">
+                        <div class="col-md-8" style="line-height:2.5;">
+                            <h3 class="box-title ng-binding">Procesos con Calificacion alta</h3>
+                        </div>
+
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                   <div id="chartdiv" class="grafica"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="col-md-6">
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                    <div class="row">
+                        <div class="col-md-8" style="line-height:2.5;">
+                            <h3 class="box-title ng-binding">Procesos con Calificacion baja</h3>
+                        </div>
+
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                   <div id="chartdiv2" class="grafica"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+
+
+
+
+</body>
+
+</html>

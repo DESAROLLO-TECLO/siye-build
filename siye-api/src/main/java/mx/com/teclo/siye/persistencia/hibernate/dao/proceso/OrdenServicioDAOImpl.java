@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Repository;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
+import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenServicioDetVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServcioDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.SeguimientoOrdenServicioVO;
 
@@ -196,6 +199,21 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 				.setParameterList("CentroInstalacion", CentroInstalacion)
 				.setResultTransformer(Transformers.aliasToBean(SeguimientoOrdenServicioVO.class)).list();
 		return respuesta;
+	}
+
+	@Override
+	public OrdenServicioDetVO getOrdenServicioByIdOrden(Long idOrdenServicio) {
+	
+		String hql = "SELECT  os.idOrdenServicio as idOrdenServicio,os.cdOrdenServicio as cdOrdenServicio,os.stSeguimiento.nbStSeguimiento as nbStSeguimiento,"
+				+ "os.proceso.cdProceso as cdProcesoActual,os.proceso.nbProceso as nbProcesoActual,os.encuesta.cdEncuesta as cdEncuestaActual,"
+				+ "os.encuesta.nbEncuesta as nbEncuestaActual,os.fhCita as fhCita,os.fhAtencionIni as fhAtencionIni,os.fhAtencionFin as fhAtencionFin "
+				+ "FROM OrdenServicioDTO as os "
+				+ "WHERE os.idOrdenServicio=:idOrdenServicio "
+				+ "AND os.stActivo=1";
+			
+		Query query = getCurrentSession().createQuery(hql);
+		query.setParameter("idOrdenServicio", idOrdenServicio).setResultTransformer(Transformers.aliasToBean(OrdenServicioDetVO.class));
+		return (OrdenServicioDetVO) query.uniqueResult();
 	}
 
 

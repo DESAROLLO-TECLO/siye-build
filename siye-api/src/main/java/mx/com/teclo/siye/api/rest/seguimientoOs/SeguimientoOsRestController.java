@@ -17,10 +17,12 @@ import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.siye.negocio.service.monitoreoInicidencia.MonitoreoIncidenciaService;
 import mx.com.teclo.siye.negocio.service.seguimientoOs.SeguimientoOsService;
+import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenIncidenciaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.MonitoreoIncidenciasVO;
-import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServicioDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesoDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesosOrdenServicioDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.SeguimientoOrdenServicioVO;
 
 @RestController
@@ -55,20 +57,20 @@ public class SeguimientoOsRestController {
 
 	@GetMapping(value="/getProcesos")
 	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
-	public ResponseEntity<OrdenServicioDetalleVO> getDetalleByEtapas(@RequestParam(value ="idOrden") Long nurdenServicio) throws NotFoundException{	
-		OrdenServicioDetalleVO respuesta = seguimientoService.getDetalleByEtapas(nurdenServicio);
+	public ResponseEntity<ProcesosOrdenServicioDetalleVO> getDetalleByEtapas(@RequestParam(value ="idOrden") Long nurdenServicio) throws NotFoundException{	
+		ProcesosOrdenServicioDetalleVO respuesta = seguimientoService.getDetalleByEtapas(nurdenServicio);
 		if(respuesta==null) {
 			throw new NotFoundException("No hay información");
 		}
 		
-		return new ResponseEntity<OrdenServicioDetalleVO>(respuesta, HttpStatus.OK);
+		return new ResponseEntity<ProcesosOrdenServicioDetalleVO>(respuesta, HttpStatus.OK);
 	};
 	
 	
 	@GetMapping(value="/getDetalleProceso")
 	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
 	public ResponseEntity<List<ProcesoDetalleVO>> getDetalleProceso(@RequestParam(value ="idOrden") Long idOrdenServicio,
-															  @RequestParam(value ="idProceso") Long idProceso) throws NotFoundException{	
+															  		@RequestParam(value ="idProceso") Long idProceso) throws NotFoundException{	
 		List<ProcesoDetalleVO> respuesta = seguimientoService.getDetalleProceso(idOrdenServicio, idProceso);
 		if(respuesta.isEmpty()) {
 			throw new NotFoundException("No hay información");
@@ -85,13 +87,13 @@ public class SeguimientoOsRestController {
 		@RequestParam(value ="fechaFin") String fechaFin,
 		@RequestParam(value ="tipoBusqueda") Integer tipoBusqueda,
 		@RequestParam(value ="valor") String valor,
-		@RequestParam(value ="opcion") Integer opcion
+		@RequestParam(value ="opcion") Integer opcion,
+		@RequestParam(value ="idCentroInstalacion") Integer idCentroInstalacion
 	) throws Exception, BusinessException, NotFoundException {
 		String mensajeErr = "";
 		try {
 			UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
-			List<MonitoreoIncidenciasVO> respuesta = monitoreoIncidenciaService.getMonIncidencias(usuario.getId(), fechaInicio, fechaFin, tipoBusqueda, valor, opcion, mensajeErr);
-			
+			List<MonitoreoIncidenciasVO> respuesta = monitoreoIncidenciaService.getMonIncidencias(usuario.getId(), fechaInicio, fechaFin, tipoBusqueda, valor, opcion, idCentroInstalacion, mensajeErr);
 			return new ResponseEntity<List<MonitoreoIncidenciasVO>>(respuesta, HttpStatus.OK);
 		} catch (Exception e) {
 			if(mensajeErr != null && !mensajeErr.isEmpty() && !mensajeErr.equals(null)) {
@@ -103,10 +105,31 @@ public class SeguimientoOsRestController {
 		}
 	};
 	
-	@RequestMapping(value = "/incidenciaByIdOrden", method = RequestMethod.GET)
-	public ResponseEntity<OrdenIncidenciaDetalleVO> getIncidenciasByIdOrden(@RequestParam(value="idOrden", required=true) Long idOrden,@RequestParam(value="idPlan", required=true) Long idPlan) throws NotFoundException{
-		OrdenIncidenciaDetalleVO incidenciaDTO = monitoreoIncidenciaService.incidenciaByOS(idOrden, idPlan);
+	@RequestMapping(value = "/getDetalleIncidenciasOS", method = RequestMethod.GET)
+	public ResponseEntity<OrdenIncidenciaDetalleVO> getIncidenciasByIdOrden(@RequestParam(value="idOrden", required=true) Long idOrden,@RequestParam(value="idPlan", required=true) Long idPlan) throws BusinessException, Exception{
+		OrdenIncidenciaDetalleVO incidenciaDTO = monitoreoIncidenciaService.getDetalleIncidenciasOS(idOrden, idPlan);
 		return new ResponseEntity<OrdenIncidenciaDetalleVO>(incidenciaDTO, HttpStatus.OK);
 	}
+	
+
+	
+	@GetMapping(value="/getDetallePregunta")
+	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
+	public ResponseEntity<List<PreguntasDetalleVO>> getDetallePregunta(@RequestParam(value ="idOrden") Long idOrdenServicio,
+															         @RequestParam(value ="idEncuesta") Long idEncuesta) throws NotFoundException{	
+		List<PreguntasDetalleVO> respuesta = seguimientoService.getDetallePregunta(idOrdenServicio, idEncuesta);
+		if(respuesta.isEmpty()) {
+			throw new NotFoundException("No hay preguntas con respuesta");
+		}
+		return new ResponseEntity<List<PreguntasDetalleVO>>(respuesta, HttpStatus.OK);
+	};
+
+	
+	@RequestMapping(value = "/getExpedienteIncidencia", method = RequestMethod.GET)
+	public ResponseEntity<List<ImagenVO>> getExpedienteIncidencia(@RequestParam(value="idIncidencia", required=true) Long idIncidencia) throws BusinessException, Exception{
+	List<ImagenVO> listImagenes = monitoreoIncidenciaService.getExpedienteByIdIncidencia(idIncidencia);
+		return new ResponseEntity<List<ImagenVO>>(listImagenes, HttpStatus.OK);
+	}
+
 	
 }

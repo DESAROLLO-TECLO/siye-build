@@ -9,4 +9,6 @@ import mx.com.teclo.siye.persistencia.vo.seguimientoOs.MonitoreoIncidenciasVO;
 public interface MonitoreoIncidenciasDAO extends BaseDao<OrdenServicioDTO>{
 	
 	public List<MonitoreoIncidenciasVO> getInfoSeguimientoGeneral(String fechaInicio, String fechaFin, List<Long> CentroInstalacion);
+	
+	public List<MonitoreoIncidenciasVO> getInfoSeguimientoXModulo(String fechaInicio, String fechaFin, Integer tipoBusqueda, String valor, Integer idCentroInstalacion);
 }
