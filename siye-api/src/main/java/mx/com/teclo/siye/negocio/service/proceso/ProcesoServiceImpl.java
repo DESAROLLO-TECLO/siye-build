@@ -138,12 +138,21 @@ public class ProcesoServiceImpl implements ProcesoService {
 			procesoEncuestaDTO=procesoEncuestaDAO.obtenerEncuestasProceso(plan.get(0).getProceso().getIdProceso());
         	OrdenServicioDTO  ordenServicioDTO = new OrdenServicioDTO();
         	ordenServicioDTO=getInfoBasicaOrdenServicio(idSolicitud);
+        	Long nuOrdenProcesoActual=1L;
+        	for(PlanProcesoVO actual:plan)
+			{
+        		if(actual.getProceso().getIdProceso()==(ordenServicioDTO.getProceso()!=null?ordenServicioDTO.getProceso().getIdProceso():procesoEncuestaDTO.get(0).getIdProceso().getIdProceso()))
+        		{
+        			nuOrdenProcesoActual=actual.getNuorden();
+        		}
+			}
 			for(PlanProcesoVO actual:plan)
 			{
 				actual.getProceso().setFechaInicioProceso(obtenerFechaInicioProceso(actual.getProceso().getIdProceso(),idSolicitud));
 				actual.getProceso().setFechaFinProceso(obtenerFechaFinProceso(actual.getProceso().getIdProceso(),idSolicitud));
-
-                    if(actual.getProceso().getIdProceso()<=(ordenServicioDTO.getProceso()!=null?ordenServicioDTO.getProceso().getIdProceso():procesoEncuestaDTO.get(0).getIdProceso().getIdProceso()))
+				
+				
+                    if(actual.getNuorden()<=nuOrdenProcesoActual)
                 	 {
                 		 actual.setStatusProceos(true);
                 		 //actual.setProcesoCompleto(true);
