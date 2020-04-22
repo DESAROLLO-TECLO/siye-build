@@ -272,55 +272,6 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
 				"value": $scope.dataMetasSuc.ventas
 			}]
 		});
-		
-//		var metaSuc = 1800;
-//		var intervalos = metaSuc / 10;
-//		var ventas = 670;
-//		var textoCentral = ventas;
-//		
-//		var graficaMetasXSucursal = AmCharts.makeChart("graficaMetasXSucursal", {
-//		  "theme": "none",
-//		  "type": "gauge",
-//		  "axes": [{
-//		    "topTextFontSize": 20,
-//		    "topTextYOffset": 100,
-//		    "axisColor": "#5b0218",
-//		    "axisThickness": 1,
-//		    "endValue": metaSuc,
-//		    "gridInside": true,
-//		    "inside": true,
-//		    "radius": "60%",
-//		    "valueInterval": intervalos,
-//		    "tickColor": "#5b0218",
-//		    "startAngle": -90,
-//		    "endAngle": 90,
-//		    //"unit": "%",
-//		    "bandOutlineAlpha": 0,
-//		    "topText": textoCentral,
-//		    "bands": [{
-//		      "color": "#5b0218",
-//		      "endValue": metaSuc,
-//		      "innerRadius": "105%",
-//		      "radius": "170%",
-//		      "gradientRatio": [0.5, 0, -0.5],
-//		      "startValue": 0
-//		    }, {
-//		      "color": "#d3d3d1",
-//		      "endValue": ventas,
-//		      "innerRadius": "105%",
-//		      "radius": "170%",
-//		      "gradientRatio": [0.5, 0, -0.5],
-//		      "startValue": 0
-//		    }]
-//		  }],
-//		  "arrows": [{
-//		    "alpha": 1,
-//		    "innerRadius": "35%",
-//		    "nailRadius": 0,
-//		    "radius": "170%",
-//		    "value": ventas
-//		  }]
-//		});
 	}
 	
 	$scope.tabMasV = true;
