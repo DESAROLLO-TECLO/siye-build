@@ -5,8 +5,11 @@ import java.util.List;
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDao;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestaDetalleDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelEncuestaVO;
+import mx.com.teclo.siye.persistencia.vo.monitoreo.EncuestaDetaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
 
 public interface ProcesoEncuestaDAO extends BaseDao<ProcesoEncuestaDTO>{
 	
@@ -40,8 +43,30 @@ public interface ProcesoEncuestaDAO extends BaseDao<ProcesoEncuestaDTO>{
 	 * Descripciónn: Obtiene una lista de encuestas por id de proceso
 	 * @author Mannuel
 	 * @param idProceso
-	 * @return List<EncuestaDetalleDTO> 
+	 * @return List<EncuestaDetaVO> 
 	 * */
 	public List<EncuestaDetalleDTO> getEncuestaByIdOrden(Long idProceso);
+	
+	
+	/**
+	 * Descripción: obtiene las preguntas por encuesta con su respuesta 
+	 * @author Maverick
+	 * @param idOrdenServicio
+	 * @param idEncuestaa
+	 * @return List<PreguntasDetalleVO> 
+	 * */
+	public List<PreguntasDetalleVO> getSeguimientoDetallePregunta(Long idOrdenServicio, Long idEncuesta);
+
+
+	
+	/**	 
+	 * * Descripciónn: Obtiene una lista de encuestas por id de proceso y idOrden
+	 * @author Mannuel
+	 * @param idProceso
+	 * @param idOrden
+	 * @return StEncuestaVO
+	 * */
+	public StEncuestaVO getstEncuestaByIdEncuestaIdOrden(Long idEncuesta,Long idOrden);
+
 
 }

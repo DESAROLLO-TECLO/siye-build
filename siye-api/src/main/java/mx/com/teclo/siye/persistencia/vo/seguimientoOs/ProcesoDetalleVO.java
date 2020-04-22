@@ -6,6 +6,7 @@ import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 
 public class ProcesoDetalleVO {
 	
+	private Long idOdsProceso;
 	private Long idProceso;
 	private String nbProceso;
 	private Double nuPorcentaje;
@@ -111,6 +112,18 @@ public class ProcesoDetalleVO {
 	 */
 	public void setEncuestas(List<EncuestaDetalleVO> encuestas) {
 		this.encuestas = encuestas;
+	}
+	/**
+	 * @return the idOdsProceso
+	 */
+	public Long getIdOdsProceso() {
+		return idOdsProceso;
+	}
+	/**
+	 * @param idOdsProceso the idOdsProceso to set
+	 */
+	public void setIdOdsProceso(Long idOdsProceso) {
+		this.idOdsProceso = idOdsProceso;
 	}
 
 }
