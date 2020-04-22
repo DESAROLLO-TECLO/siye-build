@@ -51,10 +51,12 @@ appt.directive('updateImage',
 	      template:'<div id="containerDirective"></div>',
 	      link: function(scope, $element, attrs) {
 	    	  
-	    	   var listImg = scope.$eval(attrs.listImages);
+	    	  const imageCompressor = new ImageCompressor();
+	    	  
+	    	  var listImg = scope.$eval(attrs.listImages);
 	    	   
-	    	   scope.listImages=listImg == undefined ? [] : listImg;
-	    	   scope.listFiles=new Array();
+	    	  scope.listImages=listImg == undefined ? [] : listImg;
+	    	  scope.listFiles=new Array();
 	    	  scope.imagePreview=new Object();	    	  
 	    	  
 	    	//Variable con la injeccion por defecto del servicio para expedientes
@@ -189,44 +191,34 @@ appt.directive('updateImage',
 	    	  scope.fileDropped=function(scopeDragDrop){
 	    		  let filesList = scopeDragDrop.uploadedFile;
 	    		  
-	    		  // Si exsisten restricciones se omiten los archivos que no las cumplan
-	    		  let files=scope.validRestrcctionsFiles(filesList);
+	    		  filesList= scope.validRestrcctionsFiles(filesList);
 	    		  
 	    		// los files obtenidos se asignan a la lista enviada como parametro
-	    		  scope.reinitListView(files);
+	    		  scope.addImgesToLisViewBiding(filesList);
 	    	  };
 	    	  
 	    	//Se obtienen los archivos en onjetoFiles se ejecuta cuando el componente input file detecta cambios, este componenete esta en el template
 	    	  scope.getFilesFromInput=function(inputFiles){
-	    			  
-	    		  // Si exsisten restricciones se omiten los archivos que no las cumplan
-	    		  let files=scope.validRestrcctionsFiles(inputFiles);
 	    		  
-	    		// los files obtenidos se asignan a la lista enviada como parametro
-	    		  scope.reinitListView(files);
+	    		  inputFiles = scope.validRestrcctionsFiles(inputFiles);
+	    		  
+	    		  scope.addImgesToLisViewBiding(inputFiles);
 	    	  };
 	    	  
-	    	  scope.reinitListView=function(filesList){
-	    		// los files obtenidos se asignan a la lista enviada como parametro
-	    		  scope.addImgesToLisViewBiding(filesList);
-	    	  }
-	    	  
-	    	  //se vaidan las restrciones en caso de existir
+	    	//se vaidan las restrciones en caso de existir
 	    	  scope.validRestrcctionsFiles=function(lisFiles){
 	    		  if(scope.paramConfComponent != undefined){
 	    			  let errorTypeFile=false;
-	        		  let errorSizeImage=false;
 	        		  let msj='Algunas archivos seleccionados no cumplieron con';
 	        		  let a=scope.paramConfComponent.listTypeExtencion;
 	        		  if(lisFiles != undefined && lisFiles.length > 0){
 	        			let i;
 	        			for(i=0; i<lisFiles.length; i++){
 	        				let item=lisFiles[i];
+	        				item.exedeSize=false;
 	        				if(scope.paramConfComponent.maxSizeMb != undefined &&
 	        						item.size > (constants.VAL_ONE_MB_BY_BYTES * scope.paramConfComponent.maxSizeMb)){
-	        					errorSizeImage=true;
-	        					lisFiles.splice(i,1);
-	        					i--;
+	        					item.exedeSize=true;	
 	        				}
 	        				if(scope.paramConfComponent.listTypeExtencion != undefined){
 	        					let type = item.type.slice(item.type.lastIndexOf('/') + 1);
@@ -240,20 +232,52 @@ appt.directive('updateImage',
 	        			}
 	        		  }
 	        		  
-	        		  if(errorSizeImage){
-	    					msj+=' el tamaño maxímo ('+scope.paramConfComponent.maxSizeMb+' MB)';
-	    			  }
 	        		  if(errorTypeFile){
 	        			  errorTypeFile=true;
 	        			  let coma=errorSizeImage  ? ',':'';
 	        			  msj+=coma+' la extención admitida';
-	        		  }
-	        		  if(errorSizeImage || errorTypeFile)
 	        			  growl.warning(msj, {ttl: 4000});
+	        		  }
 	    		  }
 	    		  
 	    		  return lisFiles;
 	    	  };
+	    	  
+	    	  //Metodo que permite comprimir la imagen
+	    	  scope.getCompress=function(file,index){
+	    		  
+	    			imageCompressor.compress(file, {quality: 0.6})
+	      		  .then((result) => {
+                    
+                    scope.$apply(function(){
+                    	file.exedeSize=false;	                    
+                        file.strBase64=result.strBase64;
+                        file.size=result.size;
+                        let resultSize=result.size;
+                        $.extend(result, file);
+                        result.size=resultSize;
+                        scope.listFiles[index]=result;
+	                    scope.logobsResult(scope.listFiles[index]);
+	                });
+                    
+	      		  })
+	      		  .catch((err) => {
+	      			scope.listFiles.splice(index,1);
+	      			growl.warning('Al gunos archivos no se pudiron adjuntar exedieron el tamaño maxímo ('+
+	      							scope.paramConfComponent.maxSizeMb+' Mb) permitido', {ttl: 4000});
+	      		  });
+	    	 };
+	    	 
+	    	 scope.logobsResult=function(file) {
+	        		if(file != undefined){
+        				let reader = new FileReader();
+        				  reader.onloadend = function () {
+        				    var b64 = reader.result.replace(/^data:.+;base64,/, '');
+        				    file.strBase64=b64;
+        				  };
+        				 reader.readAsDataURL(file);
+	        		}
+	    		}
 	    	  
 	    	// se agrega a la lista que mostrará las imagenes en el IU del html
 	    	  scope.addImgesToLisViewBiding=function(files){
@@ -261,28 +285,34 @@ appt.directive('updateImage',
 	    		  if(files.length > 0){
 	    			  let i;
 	        		  for(i=0; i<files.length; i++){
-	        			  
-	        			  if(scope.maxNuImage != undefined && scope.listFiles.length >= scope.maxNuImage){
+
+	        		  	 if(scope.maxNuImage != undefined && scope.listFiles.length >= scope.maxNuImage){
 	        				  growl.warning('Algunas archivos no se adjuntaron se llego al limite de archivos', {ttl: 4000});
 	        				  break;
-	        			  }
-	        			  
-	        			  let file=files[i];
-	           			  
-	           			let unic=(scope.listFiles.length+1);
-	           			file.unic=unic;
-	           			file.isSuccess=false;
-	           			let type = '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
-          				let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1);
-          				file.isImage=isImg;
-          				file.showProgress=true;
-          				file.tpDocumentList=angular.copy(scope.tpDocumentList);
-		          		if(scope.listFiles==undefined){
-          					scope.listFiles=new Array();
-          				}
-          				
-          				//se agrega a la lista envida siempre al inicio
-          				scope.listFiles.unshift(file);
+	        			 }
+	        		  	 
+	        		  	 let file=files[i];
+	        		  	 
+	        		  	if(file.exedeSize){
+	        		  		scope.getCompress(file,i);
+	        		  		file.strBase64=null;
+	        		  		file.size=0;
+	        		  	}	        		  		
+	        		  	 
+	        		  	 let unic=(scope.listFiles.length+1);
+	        		  	 file.unic=unic;
+	        		  	 file.isSuccess=false;
+	        		  	 let type = '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
+	        		  	 let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1);
+	        		  	 file.isImage=isImg;
+	        		  	 file.tpDocumentList=angular.copy(scope.tpDocumentList);
+	        		  	 
+	        		  	 if(scope.listFiles==undefined){
+	        		  		 scope.listFiles=new Array();
+	        		  	 }
+	        		  	 
+	        		  	 //se agrega a la lista envida siempre al inicio
+	        		  	 scope.listFiles.unshift(file);
 	        		  }
 	    		  }
 	    	  };
@@ -690,12 +720,12 @@ appt.directive('updateImage',
 			  //Metodo para mostrar el modal con el carrusel
 			  scope.showModalImg=function(itemImgVO){
 				  scope.showModalCarousel=true;
-				  scope.imagePreview=angular.copy(itemImgVO);
+				  scope.imagePreview=itemImgVO;
 				  $timeout(function() {
 					  let idCarousel='#carousel-'+scope.idElementUp;
 					  $(idCarousel).carousel();
 					  $('#'+scope.idElementUp+'modalCarousel').modal('show');
-				  },100);
+				  },200);
 			  };
 			  
 			  scope.hideModal=function(srcB64,nemaImg){
@@ -710,7 +740,7 @@ appt.directive('updateImage',
 	};    
 });
 
-appt.directive('customOnChange', [function() {
+appt.directive('customOnChange', function() {
     'use strict';
 
     return {
@@ -736,17 +766,17 @@ appt.directive('customOnChange', [function() {
         		}
     		}
         	
-            element.change(function(event){
+            element.change(async function(event){
+            	
+            	let files=element[0].files;
+                let filesResult=[];
+                let i;
+                for(i=0; i<files.length; i++){
+                	filesResult.push(files[i]);
+                }
+                
                 scope.$apply(function(){
-                    let files=element[0].files;
-                    let filesResult=[];
-                    let i;
-                    for(i=0; i<files.length; i++){
-                    	filesResult.push(files[i]);
-                    }
-                    
                     scope.logobsResult(filesResult);
-                    
                     let onject={params: filesResult};
                     scope.handler(onject);
                 });
@@ -754,7 +784,24 @@ appt.directive('customOnChange', [function() {
         }
 
     };
-}]);
+});
+
+appt.filter('prettySize',function(){
+	return function(size) {
+		var kilobyte = 1024;
+	    var megabyte = kilobyte * kilobyte;
+
+	    if (size > megabyte) {
+	      return (size / megabyte).toFixed(2) + ' MB';
+	    } else if (size > kilobyte) {
+	      return (size / kilobyte).toFixed(2) + ' KB';
+	    } else if (size >= 0) {
+	      return size + ' B';
+	    }
+
+	    return 'N/A';
+	}
+});
 
 appt.filter('startFromGrid', function() {
 		var lastInput=null;
