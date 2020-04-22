@@ -41,4 +41,11 @@ public interface CentroInstalacionDAO extends BaseDao<CentroInstalacionDTO> {
 	 */
 	public List<CentroInstalacionDTO> obtenerCentroInstalacionVisible(Long value);
 	
+	/** 
+	 * Descripción: Obtener la lista de incidencias
+     * @author Estephanie Chavez
+	 * @return Long
+	 */
+	public Long getUltimoId();
+	
 }
