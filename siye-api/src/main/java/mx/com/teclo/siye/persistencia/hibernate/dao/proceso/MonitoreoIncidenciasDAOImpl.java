@@ -180,7 +180,7 @@ public class MonitoreoIncidenciasDAOImpl extends BaseDaoHibernate<OrdenServicioD
 		+ "				THEN 1 "
 		+ "			WHEN #{tipoBusqueda} = 3 AND TIE027.CD_VIN = '#{valor}' "
 		+ "				THEN 1 "
-		+ "			WHEN #{tipoBusqueda} = 4 AND TIE051.CD_INCIDENCIA = ':valor' " + 
+		+ "			WHEN #{tipoBusqueda} = 4 AND TIE051.CD_INCIDENCIA = '#{valor}' " + 
 		"				THEN 1 "
 		+ "		END "
 		+ "	) = 1 "
