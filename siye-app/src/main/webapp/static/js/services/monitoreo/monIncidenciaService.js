@@ -14,4 +14,21 @@ angular.module(appTeclo).service("monIncidenciaService", function($http, config)
 			}
 		});
 	};
+	
+	this.getDetalleIncidenciasOS = function(idOrden, idPlan){
+		return $http.get(config.baseUrl + END_POINT + "/getDetalleIncidenciasOS",{
+			params:{
+				"idOrden":idOrden,
+				"idPlan":idPlan,
+			}
+		});
+	};
+	this.getExpedienteIncidencia = function(idIncidencia){
+		return $http.get(config.baseUrl + END_POINT + "/getExpedienteIncidencia",{
+			params:{
+				"idIncidencia":idIncidencia
+			}
+		});
+	};
+	
 });
