@@ -1,407 +1,368 @@
 <html>
 
 <head>
-<meta charset="utf-8">
+    <meta charset="utf-8">
 </head>
 
 <body>
 
     <section class="content">
-    <div class="row">
-		<div class="col-md-12">
-			<div class="box box-danger">
-				<div class="box-header with-border" align="center">
-					<h3 class="box-title">Parámetros de Consulta</h3>
-					<div class="box-tools pull-right">
-						<button class="btn btn-box-tool" type="button"
-							data-widget="collapse">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-danger">
+                    <div class="box-header with-border" align="center">
+                        <h3 class="box-title">Parámetros de Consulta</h3>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
 							<i class="fa fa-minus"></i>
 						</button>
-					</div>
-				</div>
-				<!-- /.box-header -->	
-				<div class="box-body">
-					<div class="row">
-						<div class="col-md-12">
-<!-- 						Busquedas -->
-							<div class="col-md-3">
-									<div class="form-group">
-										<label for="checkTest1" class="labelCheck noneSelectedUser">
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!-- 						Busquedas -->
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="checkTest1" class="labelCheck noneSelectedUser">
 											Tipo de Búsqueda:
 										</label>
-										<switcher class="swTeclo pull-right"
-											id-check="checkTest1"
-											ng-disabled="isDisabled"
-											true-label="Avanzada"
-											true-value="'active'"
-											false-label="Todos"
-											false-value="'inactive'"
-											ng-change="showDatesFunc()"
-											ng-model="switchTest1">
-										</switcher>
-									</div>
-							</div>
-							
-							<div class="col-md-3" ng-show="showDates">
-										<label class="control-label">Fecha Inicio:</label>
-										<div class="input-group" datetime-picker 
-											options="dateTimePickerOptionsInicio" 
-											ng-model="formBusqueda.fechaInicio"> 
-											
-											<div class="input-group-addon labelCheck"> 
-												<i class="fa fa-calendar-plus-o"></i> 
-											</div> 
-											<input class="form-control inputFecha" name="fechaInicio"> 
-										</div>
-									</div>
-									<div class="col-md-3" ng-show="showDates">
-										<label class="control-label" >Fecha Fín:</label>
-										
-										<div class="input-group" datetime-picker 
-											options="dateTimePickerOptionsFinal" 
-											ng-model="formBusqueda.fechaFin"> 
-											
-											<div class="input-group-addon labelCheck"> 
-												<i class="fa fa-calendar-plus-o"></i> 
-											</div> 
-											<input class="form-control inputFecha" name="fechaFin"> 
-										</div> 
-									</div>
-									<div class="col-md-1" ng-show="showDates">
-										<label class="control-label" >&nbsp;</label>
-										
-										<div class="input-group"> 
-											<button type="button" class="btn btn-danger" ng-click="guardar()">Buscar</button>
-										</div> 
-									</div>
-						</div>
-					</div>
-                    <br/>
-                    
-                    	
-<!--Grafica a mmostrar-->
-					<div class="row">
-						<div class="col-md-12">
-							<div class="row" id="centrame">
-									<a ng-click="cambia('OrdenesServicios')">
-									<div class="menutablro" id="OrdenesServicios"
-									ng-class="{'active-tblro': active1 === true}" ng-click="actives(1)">									
-										<div class="title-submentablro">Ordenes de Servicios</div>
-										<div class="quantity-tablro">153,254</div>
-									</div>
-									</a>
-									<a   ng-click="cambia('Planes')">
-									<div class="menutablro" id="Planes"
-									ng-class="{'active-tblro': active2 === true}" ng-click="actives(2)">
-										<div class="title-submentablro">Planes</div>
-										<div class="quantity-tablro">52,366</div>
-									</div>
-									</a>
-									<a   ng-click="cambia('Modulos')">
-									<div class="menutablro" id="Modulos"
-									ng-class="{'active-tblro': active3 === true}" ng-click="actives(3)">
-										<div class="title-submentablro">Modulos</div>
-										<div class="quantity-tablro">83,514</div>
-									</div>
-									</a>
-									<a   ng-click="cambia('Incidencias')">
-									<div class="menutablro" id="Incidencias"
-									ng-class="{'active-tblro': active4 === true}" ng-click="actives(4)">
-										<div class="title-submentablro">Incidencias</div>
-										<div class="quantity-tablro">30,100</div>
-									</div>
-									</a>
-								</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-    </div>		
+                                        <switcher class="swTeclo pull-right" id-check="checkTest1" ng-disabled="isDisabled" true-label="Avanzada" true-value="'active'" false-label="Todos" false-value="'inactive'" ng-change="showDatesFunc()" ng-model="switchTest1">
+                                        </switcher>
+                                    </div>
+                                </div>
 
+                                <div class="col-md-3" ng-show="showDates">
+                                    <label class="control-label">Fecha Inicio:</label>
+                                    <div class="input-group" datetime-picker options="dateTimePickerOptionsInicio" ng-model="formBusqueda.fechaInicio">
 
+                                        <div class="input-group-addon labelCheck">
+                                            <i class="fa fa-calendar-plus-o"></i>
+                                        </div>
+                                        <input class="form-control inputFecha" name="fechaInicio">
+                                    </div>
+                                </div>
+                                <div class="col-md-3" ng-show="showDates">
+                                    <label class="control-label">Fecha Fín:</label>
 
+                                    <div class="input-group" datetime-picker options="dateTimePickerOptionsFinal" ng-model="formBusqueda.fechaFin">
 
-<!-- INDICADORES INI		 -->
-		
-<div class="row" ng-show="OrdenesServiciosShow">
-			
-    <div class="col-md-3 col-xs-6" ng-repeat="ctrl in indicadores">
-        <a href="#">
-        <!-- small box -->
-        <div class="small-box {{ctrl.bgPanel}}">
-            <div class="inner">
+                                        <div class="input-group-addon labelCheck">
+                                            <i class="fa fa-calendar-plus-o"></i>
+                                        </div>
+                                        <input class="form-control inputFecha" name="fechaFin">
+                                    </div>
+                                </div>
+                                <div class="col-md-1" ng-show="showDates">
+                                    <label class="control-label">&nbsp;</label>
 
-                <div class="counter" value="ctrl.myValue" to="ctrl.myTarget"
-                    duration="ctrl.myDuration" effect="ctrl.myEffect">
-                    <h3>{{ctrl.myValue | number:0 }}</h3>
-                </div>
-                
-                <p>{{ctrl.nbPanel}}</p>
-            </div>
-            <div class="icon">
-                <i class="fa {{ctrl.icon}}"></i>
-            </div>
-<!-- 					<a href="#" class="small-box-footer">Más Información <i -->
-<!-- 						class="fa fa-arrow-circle-right"></i> -->
-<!-- 					</a> -->
-        </div>
-        </a>
-    </div>
-    
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- Graficas-->
-
-
-    <!-- graficas de barras 2D-->
-
-    <div class="col-md-12" ng-show="(OrdenesServiciosShow && incidenciasShow && ModulosShow) || (PlanesShow)">
-        <div class="box box-danger">
-            <div class="box-header with-border">
-                <div class="row">
-                    <div class="col-md-7" style="line-height: 2.6;">
-                        <h3 class="box-title">{{titulos.barras3D_2}}</h3>								
-                    </div>
-                </div>
-                <div class="box-tools pull-right">
-                    <button class="btn btn-box-tool" type="button"
-                        data-widget="collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
-                </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                <div class="row text-center">
-                    <div class="col-md-6">
-                        <h5>plan Baico<h5>
-                        <div  class="amCharts" id="grafica3"></div>
-                    </div>
-
-                    <div class="col-md-6">
-                        <h5>plan Completo<h5>
-                        <div  class="amCharts" id="grafica3PC"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-
-
-			<!-----------------Dona---------------->
-<div class="row">
-    <div class="col-md-6" ng-show="OrdenesServiciosShow || incidenciasShow || PlanesShow">
-            <div class="box box-danger">
-                <div class="box-header with-border text-center">
-                    <div class="row">
-                        <div class="col-md-12" style="line-height:2.5;">
-                            <h3 class="box-title ng-binding">{{titulos.pastel}}</h3>								
+                                    <div class="input-group">
+                                        <button type="button" class="btn btn-danger" ng-click="guardar()">Buscar</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" type="button"
-                            data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="box-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="amCharts" id="grafica1"></div>
+                        <br/>
+
+
+                        <!--Grafica a mmostrar-->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row" id="centrame">
+                                    <a ng-click="cambia('OrdenesServicios')">
+                                        <div class="menutablro" id="OrdenesServicios" ng-class="{'active-tblro': active1 === true}" ng-click="actives(1)">
+                                            <div class="title-submentablro">Ordenes de Servicios</div>
+                                            <div class="quantity-tablro">153,254</div>
+                                        </div>
+                                    </a>
+                                    <a ng-click="cambia('Planes')">
+                                        <div class="menutablro" id="Planes" ng-class="{'active-tblro': active2 === true}" ng-click="actives(2)">
+                                            <div class="title-submentablro">Planes</div>
+                                            <div class="quantity-tablro">52,366</div>
+                                        </div>
+                                    </a>
+                                    <a ng-click="cambia('Modulos')">
+                                        <div class="menutablro" id="Modulos" ng-class="{'active-tblro': active3 === true}" ng-click="actives(3)">
+                                            <div class="title-submentablro">Modulos</div>
+                                            <div class="quantity-tablro">83,514</div>
+                                        </div>
+                                    </a>
+                                    <a ng-click="cambia('Incidencias')">
+                                        <div class="menutablro" id="Incidencias" ng-class="{'active-tblro': active4 === true}" ng-click="actives(4)">
+                                            <div class="title-submentablro">Incidencias</div>
+                                            <div class="quantity-tablro">30,100</div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-                    <!-----------------Barras3d---------------->
 
-        <div class="col-md-6" ng-show="OrdenesServiciosShow || incidenciasShow">
+
+
+        <!-- INDICADORES INI		 -->
+
+        <div class="row" ng-show="OrdenesServiciosShow">
+
+            <div class="col-md-3 col-xs-6" ng-repeat="ctrl in indicadores">
+                <a href="#">
+                    <!-- small box -->
+                    <div class="small-box {{ctrl.bgPanel}}">
+                        <div class="inner">
+
+                            <div class="counter" value="ctrl.myValue" to="ctrl.myTarget" duration="ctrl.myDuration" effect="ctrl.myEffect">
+                                <h3>{{ctrl.myValue | number:0 }}</h3>
+                            </div>
+
+                            <p>{{ctrl.nbPanel}}</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa {{ctrl.icon}}"></i>
+                        </div>
+                        <!-- 					<a href="#" class="small-box-footer">Más Información <i -->
+                        <!-- 						class="fa fa-arrow-circle-right"></i> -->
+                        <!-- 					</a> -->
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Graficas-->
+        <!-- graficas de barras 2D-->
+
+        <div class="col-md-12" ng-show="(OrdenesServiciosShow && incidenciasShow && ModulosShow) || (PlanesShow)">
             <div class="box box-danger">
                 <div class="box-header with-border">
                     <div class="row">
                         <div class="col-md-7" style="line-height: 2.6;">
-                            <h3 class="box-title">{{titulos.barras3D_2}}</h3>								
+                            <h3 class="box-title">{{titulos.barras3D_2}}</h3>
                         </div>
                     </div>
                     <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" type="button"
-                            data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
+                        <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
                     </div>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <div class="row text-center">
-                        <div class="col-md-12">
-                            <div class="amCharts" id="grafica2"></div>
+                        <div class="col-md-6">
+                            <h5>plan Baico
+                                <h5>
+                                    <div class="amCharts" id="grafica3"></div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h5>plan Completo
+                                <h5>
+                                    <div class="amCharts" id="grafica3PC"></div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-</div>
 
 
-
-        
-
-
-
-			<!-----------------PIE---------------->
-            <div class="row">
-                <div class="col-md-6" ng-show="OrdenesServiciosShow">
-                        <div class="box box-danger">
-                            <div class="box-header with-border text-center">
-                                <div class="row">
-                                    <div class="col-md-12" style="line-height:2.5;">
-                                        <h3 class="box-title ng-binding">{{titulos.pie}}</h3>								
-                                    </div>
-                                </div>
-                                <div class="box-tools pull-right">
-                                    <button class="btn btn-box-tool" type="button"
-                                        data-widget="collapse">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
+        <!-----------------Dona---------------->
+        <div class="row">
+            <div class="col-md-6" ng-show="OrdenesServiciosShow || incidenciasShow || PlanesShow">
+                <div class="box box-danger">
+                    <div class="box-header with-border text-center">
+                        <div class="row">
+                            <div class="col-md-12" style="line-height:2.5;">
+                                <h3 class="box-title ng-binding">{{titulos.pastel}}</h3>
                             </div>
-                            <div class="box-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="amCharts" id="graficaPie"></div>
-                                    </div>
-                                </div>
+                        </div>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="amCharts" id="grafica1"></div>
                             </div>
                         </div>
                     </div>
-            
-                                <!-----------------Barras3d---------------->
-            
-                    <div class="col-md-6" ng-show="OrdenesServiciosShow">
-                        <div class="box box-danger">
-                            <div class="box-header with-border">
-                                <div class="row">
-                                    <div class="col-md-7" style="line-height: 2.6;">
-                                        <h3 class="box-title">{{titulos.barras3D_2}}</h3>								
-                                    </div>
-                                </div>
-                                <div class="box-tools pull-right">
-                                    <button class="btn btn-box-tool" type="button"
-                                        data-widget="collapse">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <!-- /.box-header -->
-                            <div class="box-body">
-                                <div class="row text-center">
-                                    <div class="col-md-12">
-                                      <div class="amCharts" id="graficaBarras"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-            
+                </div>
             </div>
 
+            <!-----------------Barras3d---------------->
 
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <!-- ORDENES DE SERVICIOS-->
-            <div class="row">
-                <div class="col-md-6" ng-show="OrdenesServiciosShow">
-                        <div class="box box-danger">
-                            <div class="box-header with-border text-center">
-                                <div class="row">
-                                    <div class="col-md-12" style="line-height:2.5;">
-                                        <h3 class="box-title ng-binding">{{titulos.OSbyPlan}}</h3>								
-                                    </div>
-                                </div>
-                                <div class="box-tools pull-right">
-                                    <button class="btn btn-box-tool" type="button"
-                                        data-widget="collapse">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
+            <div class="col-md-6" ng-show="OrdenesServiciosShow || incidenciasShow">
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-md-7" style="line-height: 2.6;">
+                                <h3 class="box-title">{{titulos.barras3D_2}}</h3>
                             </div>
-                            <div class="box-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="amCharts" id="graficaPieOSPlan"></div>
-                                    </div>
-                                </div>
+                        </div>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="row text-center">
+                            <div class="col-md-12">
+                                <div class="amCharts" id="grafica2"></div>
                             </div>
                         </div>
                     </div>
-            
-                                <!-----------------Barras3d---------------->
-            
-                    <div class="col-md-6" ng-show="OrdenesServiciosShow">
-                        <div class="box box-danger">
-                            <div class="box-header with-border">
-                                <div class="row">
-                                    <div class="col-md-7" style="line-height: 2.6;">
-                                        <h3 class="box-title">{{titulos.AvanceGeneral}}</h3>								
-                                    </div>
-                                </div>
-                                <div class="box-tools pull-right">
-                                    <button class="btn btn-box-tool" type="button"
-                                        data-widget="collapse">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <!-- /.box-header -->
-                            <div class="box-body">
-                                <div class="row text-center">
-                                    <div class="col-md-12">
-                                      <div class="amCharts" id="graficaAvanceGeneral"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-            
+                </div>
             </div>
+
+        </div>
+
+
+
+
+
+
+
+        <!-----------------PIE---------------->
+        <div class="row">
+            <div class="col-md-6" ng-show="OrdenesServiciosShow">
+                <div class="box box-danger">
+                    <div class="box-header with-border text-center">
+                        <div class="row">
+                            <div class="col-md-12" style="line-height:2.5;">
+                                <h3 class="box-title ng-binding">{{titulos.pie}}</h3>
+                            </div>
+                        </div>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="amCharts" id="graficaPie"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-----------------Barras3d---------------->
+
+            <div class="col-md-6" ng-show="OrdenesServiciosShow">
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-md-7" style="line-height: 2.6;">
+                                <h3 class="box-title">{{titulos.barras3D_2}}</h3>
+                            </div>
+                        </div>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="row text-center">
+                            <div class="col-md-12">
+                                <div class="amCharts" id="graficaBarras"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ORDENES DE SERVICIOS-->
+        <div class="row">
+            <div class="col-md-6" ng-show="OrdenesServiciosShow">
+                <div class="box box-danger">
+                    <div class="box-header with-border text-center">
+                        <div class="row">
+                            <div class="col-md-12" style="line-height:2.5;">
+                                <h3 class="box-title ng-binding">{{titulos.OSbyPlan}}</h3>
+                            </div>
+                        </div>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="amCharts" id="graficaPieOSPlan"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-----------------Barras3d---------------->
+
+            <div class="col-md-6" ng-show="OrdenesServiciosShow">
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-md-7" style="line-height: 2.6;">
+                                <h3 class="box-title">{{titulos.AvanceGeneral}}</h3>
+                            </div>
+                        </div>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                        </div>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <div class="row text-center">
+                            <div class="col-md-12">
+                                <div class="amCharts" id="graficaAvanceGeneral"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6" ng-show="incidenciasShow">
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-md-7" style="line-height: 2.6;">
+                                <h3 class="box-title">{{titulos.incidenciasTop}}</h3>
+                            </div>
+                        </div>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row text-center">
+                            <div class="col-md-12">
+                                <div class="amCharts" id="incidenciaTop"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
     </section>
 
