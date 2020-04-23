@@ -4,8 +4,8 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
 	/**************************************INITIALIZERS***************************************************/	
 	$scope.cambia = function(valor){
 		$scope.OrdenesServiciosShow=false;
-		$scope.PlanBasicoShow=false;
-		$scope.PlanCompletoShow=false;
+		$scope.PlanesShow=false;
+		$scope.ModulosShow=false;
 		$scope.incidenciasShow=false;
 
 		
@@ -38,15 +38,17 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
 			
 	  	    break;
 	  	    
-	  	 case 'PlanBasico':
+	  	 case 'Planes':
 	  		$scope.titulos={
-				//	pastel:'Distribución de Tipos de Multa',
+					pastel:'Avance por Plan',
 				//	barras3D:'Top 10 de Artículos más Infringidos con Multa',
 					barras:'Avance de Procesos'};
 			 
 			 
-			$scope.PlanBasicoShow=true;
-	  		initGraphCG($scope.graphBarrasVerticalesPuntos);
+			$scope.PlanesShow=true;
+			  initGraphCG($scope.graphBarrasVerticalesPuntos);
+			  initGraphCG2($scope.graphBarrasVerticalesPuntos);
+			  grafica1($scope.dataGraphPastel1OS);
 			//graphBarras3D($scope.datGraph3DPuntos);
 			//graficaUnidadesMantenimiento($scope.dataGraphPastelPuntos);
 			
@@ -55,13 +57,13 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
 			//removeClass();
 	  	    break;
 	  	    
-	  	case 'PlanCompleto':
+	  	case 'Modulos':
 	  		$scope.titulos={
 					pastel:'Distribución de Trabajo Comunitario por Categoría',
 					barras3D:'Media de Puntos Acumulados',
 					barras:'Actividad de Trabajo Comunitario Durante el Periodo',
 					barrasHorizontal:'Top 10 Trabajos más Solicitados'};
-	  		$scope.PlanCompletoShow=true;
+	  		$scope.ModulosShow=true;
 	  		
 	  		initGraphCG($scope.graphBarrasVerticalesPuntos);
 			//graphBarras3D($scope.datGraph3DPuntos);
@@ -328,7 +330,49 @@ initGraphCG = function(jsonData) {
 	});
 }
 
+initGraphCG2 = function(jsonData) {
+	var chartRendimientoVehiculosCombustible = AmCharts.makeChart("grafica3PC", {
+		"type": "serial",
+		  "addClassNames": true,
+		  "theme": "chartVG",
+		  "autoMargins": false,
+		  "marginLeft": 35,
+		  "marginRight": 8,
+		  "marginTop": 10,
+		  "marginBottom": 26,
+		  "balloon": {
+			"adjustBorderColor": false,
+			"horizontalPadding": 20,
+			"verticalPadding": 8,
+			"color": "#ffffff"
+		  },
 
+		  "dataProvider": jsonData.data,
+		  "valueAxes": [ {
+			"axisAlpha": 10,
+			"position": "left"
+		  } ],
+		  "startDuration": 1,
+		  "graphs": [ {
+			"alphaField": "alpha",
+			"balloonText": "<span style='font-size:12px;'>[[proceso]] :<br><span style='font-size:20px;'>[[value]]</span> [[additional]]</span>",
+			"fillAlphas": 1,
+		//	"title": jsonData.titleRed,
+			"type": "column",
+			"valueField": "avance",
+			"dashLengthField": "dashLengthColumn"
+		  }],
+		  "categoryField": "proceso",
+		  "categoryAxis": {
+			"gridPosition": "start",
+			"axisAlpha": 0,
+			"tickLength": 0
+		  },
+		  "export": {
+			"enabled": true
+		  }
+	});
+}
 
 
 $scope.showDates=false;

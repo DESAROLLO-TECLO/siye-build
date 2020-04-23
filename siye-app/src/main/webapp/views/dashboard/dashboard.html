@@ -90,17 +90,17 @@
 										<div class="quantity-tablro">153,254</div>
 									</div>
 									</a>
-									<a   ng-click="cambia('PlanBasico')">
-									<div class="menutablro" id="PlanBasico"
+									<a   ng-click="cambia('Planes')">
+									<div class="menutablro" id="Planes"
 									ng-class="{'active-tblro': active2 === true}" ng-click="actives(2)">
-										<div class="title-submentablro">Plan Basico</div>
+										<div class="title-submentablro">Planes</div>
 										<div class="quantity-tablro">52,366</div>
 									</div>
 									</a>
-									<a   ng-click="cambia('PlanCompleto')">
-									<div class="menutablro" id="PlanCompleto"
+									<a   ng-click="cambia('Modulos')">
+									<div class="menutablro" id="Modulos"
 									ng-class="{'active-tblro': active3 === true}" ng-click="actives(3)">
-										<div class="title-submentablro">Plan Completo</div>
+										<div class="title-submentablro">Modulos</div>
 										<div class="quantity-tablro">83,514</div>
 									</div>
 									</a>
@@ -168,9 +168,47 @@
 
 
 <!-- Graficas-->
+
+
+    <!-- graficas de barras 2D-->
+
+    <div class="col-md-12" ng-show="(OrdenesServiciosShow && incidenciasShow && ModulosShow) || (PlanesShow)">
+        <div class="box box-danger">
+            <div class="box-header with-border">
+                <div class="row">
+                    <div class="col-md-7" style="line-height: 2.6;">
+                        <h3 class="box-title">{{titulos.barras3D_2}}</h3>								
+                    </div>
+                </div>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" type="button"
+                        data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="row text-center">
+                    <div class="col-md-6">
+                        <h5>plan Baico<h5>
+                        <div  class="amCharts" id="grafica3"></div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h5>plan Completo<h5>
+                        <div  class="amCharts" id="grafica3PC"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+
 			<!-----------------Dona---------------->
 <div class="row">
-    <div class="col-md-6" ng-show="OrdenesServiciosShow || incidenciasShow">
+    <div class="col-md-6" ng-show="OrdenesServiciosShow || incidenciasShow || PlanesShow">
             <div class="box box-danger">
                 <div class="box-header with-border text-center">
                     <div class="row">
@@ -224,33 +262,7 @@
         </div>
 
 
-    <!-- graficas de barras 2D-->
 
-    <div class="col-md-12" ng-show="(OrdenesServiciosShow && incidenciasShow) || (PlanBasicoShow || PlanCompletoShow)">
-        <div class="box box-danger">
-            <div class="box-header with-border">
-                <div class="row">
-                    <div class="col-md-7" style="line-height: 2.6;">
-                        <h3 class="box-title">{{titulos.barras3D_2}}</h3>								
-                    </div>
-                </div>
-                <div class="box-tools pull-right">
-                    <button class="btn btn-box-tool" type="button"
-                        data-widget="collapse">
-                        <i class="fa fa-minus"></i>
-                    </button>
-                </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-                <div class="row text-center">
-                    <div class="col-md-12">
-                        <div  class="amCharts" id="grafica3"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
     
