@@ -3,6 +3,8 @@ package mx.com.teclo.siye.persistencia.vo.proceso;
 import java.io.Serializable;
 import java.util.Date;
 
+import mx.com.teclo.siye.persistencia.hibernate.dto.async.TipoLayoutDTO;
+
 public class LoteOrdenServicioVO implements Serializable {
 	
 	private static final long serialVersionUID = 166525209015486035L;
@@ -20,7 +22,7 @@ public class LoteOrdenServicioVO implements Serializable {
 	private Long nuOdsPendientes;
 	private Long nuOdsIncidencia;
 	private String txLoteOds;
-	private Long idTipoLayout;
+	private TipoLayoutDTO idTipoLayout;
 	private Boolean stActivo;
 	private Long idUsrCreacion;
 	private Date fhCreacion;
@@ -103,10 +105,10 @@ public class LoteOrdenServicioVO implements Serializable {
 	public void setTxLoteOds(String txLoteOds) {
 		this.txLoteOds = txLoteOds;
 	}
-	public Long getIdTipoLayout() {
+	public TipoLayoutDTO getIdTipoLayout() {
 		return idTipoLayout;
 	}
-	public void setIdTipoLayout(Long idTipoLayout) {
+	public void setIdTipoLayout(TipoLayoutDTO idTipoLayout) {
 		this.idTipoLayout = idTipoLayout;
 	}
 	public Boolean getStActivo() {
