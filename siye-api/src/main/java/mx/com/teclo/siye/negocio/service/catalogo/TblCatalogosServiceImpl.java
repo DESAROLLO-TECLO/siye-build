@@ -99,35 +99,37 @@ public class TblCatalogosServiceImpl implements TblCatalogosService{
 	@Override
 	public Boolean actualizaCentrodeInstalacion(CentroInstalacionVO centroInstalacionVO) throws NotFoundException, BusinessException{
 		CentroInstalacionDTO centroInstalacionDTO = centroInstalacionDAO.centroIns(centroInstalacionVO.getIdCentroInstalacion());
-	
+		Boolean respuesta = false;	
 		if(centroInstalacionDTO == null)
 			throw new NotFoundException("El registro que intenta actualizar no existe");
-		/*
 		
-		centroInstalacionDTO.setFhCita(centroInstalacionVO.getFhCita());
-		centroInstalacionDTO.setFhAtencionFin(centroInstalacionVO.getFhAtencionFin());
-		centroInstalacionDTO.setFhAtencionIni(centroInstalacionVO.getFhAtencionIni());
-		centroInstalacionDTO.setIdOrigenOds(1L);
-	
-		if (osVO.getIncidencia() != null) {
-				OdsIncidenciaDTO oiDTO = new OdsIncidenciaDTO();
-				IncidenciaDTO iDTO = new IncidenciaDTO();
-				iDTO = ResponseConverter.copiarPropiedadesFull(osVO.getIncidencia(), IncidenciaDTO.class);
-				oiDTO.setIdOrdenServicio(osDTO);
-				oiDTO.setIdIncidencia(iDTO);
-				
-			OdsDetalleCambioDTO dcDTO = new OdsDetalleCambioDTO();	
-			
-			dcDTO = ResponseConverter.copiarPropiedadesFull(osDTO, OdsDetalleCambioDTO.class);
-			dcDTO.setOrdenServicio2(osDTO);				
-			odsDetalleCambioDAO.save(dcDTO);	
-			odsIncidenciaDAO.save(oiDTO);
-			ordenServicioDAO.update(osDTO);	
-		} else {
-			throw new NotFoundException("La incidencia se encuentra vacia.");
+		CentroInstalacionDTO centroInstalacionNuevo = new CentroInstalacionDTO();
+		centroInstalacionNuevo.setStCentroInstalcion(centroInstalacionDTO.getStCentroInstalcion());
+		centroInstalacionNuevo.setFhCreacion(centroInstalacionDTO.getFhCreacion());
+		centroInstalacionNuevo.setFhModificacion(new Date());
+		centroInstalacionNuevo.setIdUsrCreacion(centroInstalacionDTO.getIdUsrCreacion());
+		centroInstalacionNuevo.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
+		centroInstalacionNuevo.setStActivo(centroInstalacionVO.getStActivo());
+		centroInstalacionNuevo.setStCentroInstalcion(centroInstalacionDTO.getStCentroInstalcion());
+		centroInstalacionNuevo.setCdCentroInstalacion(centroInstalacionDTO.getCdCentroInstalacion());
+		centroInstalacionNuevo.setNbCentroInstalacion(centroInstalacionVO.getNbCentroInstalacion());
+		centroInstalacionNuevo.setNbCalle(centroInstalacionVO.getNbCalle());
+		centroInstalacionNuevo.setNuExterior(centroInstalacionVO.getNuExterior());
+		centroInstalacionNuevo.setNbEntreCalle(centroInstalacionVO.getNbEntreCalle());
+		centroInstalacionNuevo.setNbYCalle(centroInstalacionVO.getNbYCalle());
+		centroInstalacionNuevo.setNbColonia(centroInstalacionVO.getNbColonia());
+		centroInstalacionNuevo.setNbAlcaldia(centroInstalacionVO.getNbAlcaldia());
+		centroInstalacionNuevo.setNbDiasAtencion(centroInstalacionVO.getNbDiasAtencion());
+		centroInstalacionNuevo.setHrAtencionIni(centroInstalacionVO.getHrAtencionIni());
+		centroInstalacionNuevo.setHrAtencionFin(centroInstalacionVO.getHrAtencionFin());
+		try {
+			centroInstalacionDAO.update(centroInstalacionNuevo);
+			respuesta = true;
+		} catch (Exception e) {
+			respuesta = false;
 		}
-*/
-	return true;
+		
+	return respuesta;
 	}
 
 }
