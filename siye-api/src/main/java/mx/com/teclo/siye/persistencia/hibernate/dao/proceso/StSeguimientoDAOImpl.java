@@ -29,10 +29,14 @@ public class StSeguimientoDAOImpl extends BaseDaoHibernate<StSeguimientoDTO> imp
 	}
 	
 	@Override
-	public StSeguimientoDTO obtenerStSeguimientoByCodigo(String cdStSeguimiento) {
+	public StSeguimientoDTO obtenerStSeguimientoByCodigo(String cdStSeguimiento, String cdTpSeguimiento, String nbTpSeguimiento) {
 		Criteria c = getCurrentSession().createCriteria(StSeguimientoDTO.class);
-		c.add(Restrictions.eq("stActivo", true));
 		c.add(Restrictions.eq("cdStSeguimiento", cdStSeguimiento));
+		c.add(Restrictions.eq("stActivo", true));
+		c.createAlias("tipoSeguimiento", "tipoSeguimiento");
+		c.add(Restrictions.eq("tipoSeguimiento.cdTpSeguimiento", cdTpSeguimiento));
+		c.add(Restrictions.eq("tipoSeguimiento.nbTpSeguimiento", nbTpSeguimiento));
+		c.add(Restrictions.eq("tipoSeguimiento.stActivo", true));
 		return (StSeguimientoDTO)c.uniqueResult();
 	}
 	
