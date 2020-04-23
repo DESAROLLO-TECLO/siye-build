@@ -15,7 +15,8 @@ angular.module(appTeclo).controller('monIncidenciaController',
         tipoBusqueda: [
             {idTipo:1, cdTipo:"ORDEN",	nbTipo:"Orden de Servicio"},
             {idTipo:2, cd:"PLACA", 		nbTipo:"Placa Vehicular"},
-            {idTipo:3, cdTipo:"VIN",	nbTipo:"VIN"} 
+            {idTipo:3, cdTipo:"VIN",	nbTipo:"VIN"},
+            {idTipo:4, cdTipo:"INCIDENCIA",	nbTipo:"INCIDENCIA"}
         ]
 	};
     

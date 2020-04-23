@@ -42,24 +42,24 @@
 												<select class="form-control select2"
 													name="comboTipoBusqueda" id="comboTipoBusqueda"
 													ng-options="x.idTipo as x.nbTipo for x in listTipoBusqueda.tipoBusqueda"
-													ng-model="parametroBusqueda.tipoBusqueda">
+													ng-model="params.tipoBusqueda">
 													<option value="">Seleccione</option>
 												</select>
 											</div>
 										</div>
 									</div>
 									<div class="col-xs-12 col-md-6" ng-show="flags.showParametrosOS">
-										<div class="form-group" ng-class="{ 'has-error' : busquedaForm.valor.$invalid && !busquedaForm.valor.$pristine }">
+										<div class="form-group" ng-class="{ 'has-error' : formBoxBusqueda.valor.$invalid && !formBoxBusqueda.valor.$pristine }">
 											<label for="valor">{{flags.labelValorRequerido}}:</label>
 											<div class="input-group">
 												<span class="input-group-addon">
 													<i class="fa fa-shield"></i>
 												</span>
 												<input type="text" maxlength="20"
-													ng-model="parametroBusqueda.valor" name="valor" id="valor" 
+													ng-model="params.valor" name="valor" id="valor" 
 													class="form-control" ng-required="flags.campoValorRequerido">
 											</div>
-											<p ng-show="busquedaForm.valor.$invalid && !busquedaForm.valor.$pristine" 
+											<p ng-show="formBoxBusqueda.valor.$invalid && !formBoxBusqueda.valor.$pristine" 
 												class="help-block">El valor es requerdo</p>
 										</div>
 									</div>
@@ -79,9 +79,9 @@
 								<!-- renglon de opociones -->
 								<div class="box-footer">
 									<div class="row center">
-										<button class="btn btn-danger" ng-click="corteDiario()">
-											Corte al día
-										</button>
+<!-- 										<button class="btn btn-danger" ng-click="corteDiario()"> -->
+<!-- 											Corte al día -->
+<!-- 										</button> -->
 										<button class="btn btn-danger" ng-click="consultaBtn();">
 											Buscar
 										</button>
@@ -146,12 +146,10 @@
 												<tr>
 													<th class="text-center" sort order="'nbModulo'" by="order" reverse="reverse" rowspan="2">
 														CENTRO DE INSTALACIÓN</th>
-													<th class="encabezadoOSPadre" colspan="6">
+													<th class="encabezadoOSPadre" colspan="3">
 														ORDENES DE SERVICIO</th><!--width="65%"-->
 													<th class="text-center" sort order="'nuIncidencias'" by="order" reverse="reverse" rowspan="2">
 														INCIDENCIAS</th><!--width="10%">-->
-													<th class="text-center" sort order="''" by="order" reverse="reverse" rowspan="2">
-														BOTONES</th><!--width="10%">-->
 												</tr>
 												<tr>
 													<th class="encabezadoOSHijo text-center" sort order="'totalOrdenes'" by="order" reverse="reverse">
@@ -160,60 +158,27 @@
 														PROGRAMADAS</th><!--width="11%">-->
 													<th class="encabezadoOSHijo text-center" sort order="'nuOrdenesNoProgramadas'" by="order" reverse="reverse">
 														NO PROGRAMADAS</th><!--width="16%">-->
-													<th class="encabezadoOSHijo text-center" sort order="'nuOrdenesEnCurso'" by="order" reverse="reverse">
-														EN CURSO</th><!--width="10%">-->
-													<th class="encabezadoOSHijo text-center" sort order="'nuOrdenesPendientes'" by="order" reverse="reverse">
-														PENDIENTES</th><!--width="10%">-->
-													<th class="encabezadoOSHijo text-center" sort order="'nuOrdenesAtendidas'" by="order" reverse="reverse">
-														ATENDIDAS</th><!--width="10%">-->
+<!-- 													<th class="encabezadoOSHijo text-center" sort order="'nuOrdenesEnCurso'" by="order" reverse="reverse"> -->
+<!-- 														EN CURSO</th>width="10%"> -->
+<!-- 													<th class="encabezadoOSHijo text-center" sort order="'nuOrdenesPendientes'" by="order" reverse="reverse"> -->
+<!-- 														PENDIENTES</th>width="10%"> -->
+<!-- 													<th class="encabezadoOSHijo text-center" sort order="'nuOrdenesAtendidas'" by="order" reverse="reverse"> -->
+<!-- 														ATENDIDAS</th>width="10%"> -->
 												</tr>
 											</thead>
 											<!-- Cuerpo de la tabla datos de consulta -->
 											<tbody>
-												<tr dir-paginate="modulo in monIncidenciasVO.datosTabla | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage">
-													<td class="text-center"
-														ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
-														ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
-														{{modulo.nbModulo}}
-													</td><!-- width="15%">-->
-													<td class="text-center"
-														ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
-														ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
-														{{modulo.totalOrdenes | number}}
-													</td><!-- width="8%">-->
-													<td class="text-center"
-														ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
-														ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
-														{{modulo.nuOrdenesProgramadas | number}}
-													</td><!-- width="11%">-->
-													<td class="text-center"
-														ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
-														ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
-														{{modulo.nuOrdenesNoProgramadas | number}}
-													</td><!-- width="16%">-->
-													<td class="text-center"
-														ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
-														ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
-														{{modulo.nuOrdenesEnCurso | number}}
-													</td><!-- width="10%">-->
-													<td class="text-center"
-														ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
-														ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
-														{{modulo.nuOrdenesPendientes | number}}
-													</td><!-- width="10%">-->
-													<td class="text-center"
-														ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
-														ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
-														{{modulo.nuOrdenesAtendidas | number}}
-													</td><!-- width="10%">-->
-													<td class="text-center"
-														ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
-														ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
-														{{modulo.nuIncidencias | number}}
-													</td><!-- width="10%">-->
-													<td class="text-center">
-														ACCIONES
-													</td><!-- width="10%">-->
+												<tr dir-paginate="modulo in monIncidenciasVO.datosTabla | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage"
+													ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
+													ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
+													<td class="text-center">{{modulo.nbModulo}}</td>
+													<td class="text-center">{{modulo.totalOrdenes | number}}</td><!-- width="8%">-->
+													<td class="text-center">{{modulo.nuOrdenesProgramadas | number}}</td><!-- width="11%">-->
+													<td class="text-center">{{modulo.nuOrdenesNoProgramadas | number}}</td><!-- width="16%">-->
+<!-- 													<td class="text-center">{{modulo.nuOrdenesEnCurso | number}}</td>width="10%"> -->
+<!-- 													<td class="text-center">{{modulo.nuOrdenesPendientes | number}}</td>width="10%"> -->
+<!-- 													<td class="text-center">{{modulo.nuOrdenesAtendidas | number}}</td>width="10%"> -->
+													<td class="text-center">{{modulo.nuIncidencias | number}}</td><!-- width="10%">-->
 												</tr>
 												<tr ng-show="(monIncidenciasVO.datosTabla | filter:view.searchSomething).length < 1">
 													<td colspan="6" class="text-center">
@@ -240,8 +205,6 @@
 														ETAPA</th>
 													<th class="text-center" sort order="'nuIncidenciasOS'" by="order" reverse="reverse">
 														INCIDENCIAS</th>
-													<th class="text-center">
-														ACCIONES</th>
 												</tr>
 											</thead>
 											<!-- Cuerpo de la tabla datos de consulta -->
@@ -275,17 +238,12 @@
 													<td class="text-center" style="vertical-align: middle;"
 														ng-click="consultaOrdenServicio(ordenServicio)" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
-														{{ordenServicio.nbEtapa}}
+														{{ordenServicio.nbEncuesta}}
 													</td>
 													<td class="text-center" style="vertical-align: middle;"
 														ng-click="consultaOrdenServicio(ordenServicio)" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
 														{{ordenServicio.nuIncidenciasOS}}
-													</td>
-													<td class="text-center" style="vertical-align: middle;"
-														ng-click="consultaOrdenServicio(ordenServicio)" 
-														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
-														BOTONES
 													</td>
 												</tr>
 											</tbody>
