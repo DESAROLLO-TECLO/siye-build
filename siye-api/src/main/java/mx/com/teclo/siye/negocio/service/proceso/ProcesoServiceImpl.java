@@ -1,14 +1,18 @@
 package mx.com.teclo.siye.negocio.service.proceso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
+import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.EstatusCalificacionDAO;
@@ -17,21 +21,33 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaInte
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.OrdenProcesoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.CentroInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.DispositivosDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanProcesoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.procesoencuesta.ProcesoEncuestaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenProcesoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaIntentosDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.OdsIncidenciaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitDispositivoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.procesos.IEprocesosDTO;
 import mx.com.teclo.siye.persistencia.mybatis.dao.proceso.ProcesoDAO;
 import mx.com.teclo.siye.persistencia.mybatis.dao.proceso.ServicioEncuestasMyBatisDAO;
+
+import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
+
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
+
 import mx.com.teclo.siye.persistencia.vo.proceso.DispositivosVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.PlanProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.ProcesoEncuestaVO;
@@ -138,12 +154,21 @@ public class ProcesoServiceImpl implements ProcesoService {
 			procesoEncuestaDTO=procesoEncuestaDAO.obtenerEncuestasProceso(plan.get(0).getProceso().getIdProceso());
         	OrdenServicioDTO  ordenServicioDTO = new OrdenServicioDTO();
         	ordenServicioDTO=getInfoBasicaOrdenServicio(idSolicitud);
+        	Long nuOrdenProcesoActual=1L;
+        	for(PlanProcesoVO actual:plan)
+			{
+        		if(actual.getProceso().getIdProceso()==(ordenServicioDTO.getProceso()!=null?ordenServicioDTO.getProceso().getIdProceso():procesoEncuestaDTO.get(0).getIdProceso().getIdProceso()))
+        		{
+        			nuOrdenProcesoActual=actual.getNuorden();
+        		}
+			}
 			for(PlanProcesoVO actual:plan)
 			{
 				actual.getProceso().setFechaInicioProceso(obtenerFechaInicioProceso(actual.getProceso().getIdProceso(),idSolicitud));
 				actual.getProceso().setFechaFinProceso(obtenerFechaFinProceso(actual.getProceso().getIdProceso(),idSolicitud));
-
-                    if(actual.getProceso().getIdProceso()<=(ordenServicioDTO.getProceso()!=null?ordenServicioDTO.getProceso().getIdProceso():procesoEncuestaDTO.get(0).getIdProceso().getIdProceso()))
+				
+				
+                    if(actual.getNuorden()<=nuOrdenProcesoActual)
                 	 {
                 		 actual.setStatusProceos(true);
                 		 //actual.setProcesoCompleto(true);
@@ -480,6 +505,8 @@ public class ProcesoServiceImpl implements ProcesoService {
 			Date fechActual=new Date();
 			return servicioEncuestasMyBatisDAO.iniciarProceso(idOrdenServicio,idProceso,fechActual);
 		}
+		
+
 		
 
 }

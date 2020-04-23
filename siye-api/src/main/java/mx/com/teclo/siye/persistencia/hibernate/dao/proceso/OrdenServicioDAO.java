@@ -4,6 +4,7 @@ import java.util.List;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDao;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
+import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenServicioDetVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServcioDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.SeguimientoOrdenServicioVO;
 
@@ -116,5 +117,13 @@ public interface OrdenServicioDAO extends BaseDao<OrdenServicioDTO>{
 	public List<SeguimientoOrdenServicioVO> getInfoSeguimientoGeneral(StringBuilder consulta, List<Long> CentroInstalacion, List<String> columnas);
 	
 
+	/**
+     * Descripción: Obtener el registro de orden de 
+     * servicio mediante su identificador unico
+     * @author Manuel
+     * @param idOrdenServicio
+     * @return OrdenServicioDetVO
+     * */
+	public OrdenServicioDetVO getOrdenServicioByIdOrden(Long idOrdenServicio);
 
 }

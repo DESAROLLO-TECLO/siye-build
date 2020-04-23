@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoEncuestaVO;
 
 
@@ -15,6 +16,7 @@ public class EncuestaDetaVO {
 	private String cdEncuesta;
 	private String nbEncuesta;
 	private String txEncuesta;
+	private StEncuestaVO stEncuesta;
 	private String txInstrucciones;
 	private Integer nuPreguntas;
 	private Integer nuSecciones;
@@ -35,6 +37,12 @@ public class EncuestaDetaVO {
 	private Integer nuCalificacionApro;
 	private List<IncidenciaDetalleVO> incidencia;
 	
+	public StEncuestaVO getStEncuesta() {
+		return stEncuesta;
+	}
+	public void setStEncuesta(StEncuestaVO stEncuesta) {
+		this.stEncuesta = stEncuesta;
+	}
 	public Long getIdProceso() {
 		return idProceso;
 	}

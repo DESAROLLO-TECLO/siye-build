@@ -449,4 +449,72 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
 	initController();
 
 
+
+
+
+
+	qa2 =function() {
+
+		var chart = AmCharts.makeChart("chartdiv2",{
+			"type"    : "pie",
+			"titleField"  : "category",
+			"valueField"  : "column-1",
+			"dataProvider"  : [
+			  {
+				"category": "Proceso 1",
+				"column-1": 6
+			  },
+			  {
+				"category": "Proceso 2 ",
+				"column-1": 6
+			  },
+			  {
+				"category": "Proceso 3",
+				"column-1": 2
+			  }
+			]
+		  });
+
+		
+		
+		}; 
+
+
+
+
+
+
+
+	
+	qa =function() {
+
+		var chart = AmCharts.makeChart("chartdiv",{
+			"type"    : "pie",
+			"titleField"  : "category",
+			"valueField"  : "column-1",
+			"dataProvider"  : [
+			  {
+				"category": "Proceso 1",
+				"column-1": 6
+			  },
+			  {
+				"category": "Proceso 2 ",
+				"column-1": 6
+			  },
+			  {
+				"category": "Proceso 3",
+				"column-1": 2
+			  }
+			]
+		  });
+
+		
+		
+		}; 
+
+
+
+
+		qa();
+		qa2();
 }); 

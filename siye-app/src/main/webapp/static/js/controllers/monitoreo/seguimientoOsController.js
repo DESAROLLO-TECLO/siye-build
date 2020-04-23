@@ -64,9 +64,9 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
                 }
             }
             $scope.rangoFechas.options.ranges = rango;
-            consultaInicial();
+           // consultaInicial();
         }).error(function (data) {
-
+            growl.error(data.message);
         });
     };
 
@@ -126,9 +126,9 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
             let pasoVentana = new Object({
                 formBusuqeda:$scope.params,
                 tablaTotales:$scope.seguimientoVO.respaldo,
-                listaOs:$scope.seguimientoVO.datosTabla
+                listaOs:$scope.seguimientoVO.datosTabla,
+                dtOs:ordenservicio
             });
-            debugger
             detalleSeguimientoOsService.saveconsultaGeneral(pasoVentana);
             $location.path('/detSegimientoOS');
         }
@@ -154,7 +154,6 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
         $scope.tamColumna = 'col-md-' + 12 / (CATAMANO + 1);
 
         // Obtener las fechas del componente 
-        debugger
         $scope.params.fechaInicio = $scope.rangoFechas.date.startDate.format('DD/MM/YYYY');
         $scope.params.fechaFin = $scope.rangoFechas.date.endDate.format('DD/MM/YYYY');
         
