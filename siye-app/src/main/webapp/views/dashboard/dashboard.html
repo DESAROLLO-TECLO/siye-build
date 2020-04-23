@@ -261,11 +261,150 @@
             </div>
         </div>
 
+</div>
 
 
+
+        
+
+
+
+			<!-----------------PIE---------------->
+            <div class="row">
+                <div class="col-md-6" ng-show="OrdenesServiciosShow">
+                        <div class="box box-danger">
+                            <div class="box-header with-border text-center">
+                                <div class="row">
+                                    <div class="col-md-12" style="line-height:2.5;">
+                                        <h3 class="box-title ng-binding">{{titulos.pie}}</h3>								
+                                    </div>
+                                </div>
+                                <div class="box-tools pull-right">
+                                    <button class="btn btn-box-tool" type="button"
+                                        data-widget="collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="amCharts" id="graficaPie"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                                <!-----------------Barras3d---------------->
+            
+                    <div class="col-md-6" ng-show="OrdenesServiciosShow">
+                        <div class="box box-danger">
+                            <div class="box-header with-border">
+                                <div class="row">
+                                    <div class="col-md-7" style="line-height: 2.6;">
+                                        <h3 class="box-title">{{titulos.barras3D_2}}</h3>								
+                                    </div>
+                                </div>
+                                <div class="box-tools pull-right">
+                                    <button class="btn btn-box-tool" type="button"
+                                        data-widget="collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="row text-center">
+                                    <div class="col-md-12">
+                                      <div class="amCharts" id="graficaBarras"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+            </div>
 
 
     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            <!-- ORDENES DE SERVICIOS-->
+            <div class="row">
+                <div class="col-md-6" ng-show="OrdenesServiciosShow">
+                        <div class="box box-danger">
+                            <div class="box-header with-border text-center">
+                                <div class="row">
+                                    <div class="col-md-12" style="line-height:2.5;">
+                                        <h3 class="box-title ng-binding">{{titulos.OSbyPlan}}</h3>								
+                                    </div>
+                                </div>
+                                <div class="box-tools pull-right">
+                                    <button class="btn btn-box-tool" type="button"
+                                        data-widget="collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="amCharts" id="graficaPieOSPlan"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                                <!-----------------Barras3d---------------->
+            
+                    <div class="col-md-6" ng-show="OrdenesServiciosShow">
+                        <div class="box box-danger">
+                            <div class="box-header with-border">
+                                <div class="row">
+                                    <div class="col-md-7" style="line-height: 2.6;">
+                                        <h3 class="box-title">{{titulos.AvanceGeneral}}</h3>								
+                                    </div>
+                                </div>
+                                <div class="box-tools pull-right">
+                                    <button class="btn btn-box-tool" type="button"
+                                        data-widget="collapse">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <div class="row text-center">
+                                    <div class="col-md-12">
+                                      <div class="amCharts" id="graficaAvanceGeneral"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+            </div>
+
     </section>
+
+
 
 </body>
