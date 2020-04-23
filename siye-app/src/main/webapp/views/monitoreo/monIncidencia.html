@@ -82,7 +82,7 @@
 										<button class="btn btn-danger" ng-click="corteDiario()">
 											Corte al día
 										</button>
-										<button class="btn btn-danger" ng-click="consultaMonIncidencias(1);">
+										<button class="btn btn-danger" ng-click="consultaBtn();">
 											Buscar
 										</button>
 									</div>
@@ -170,34 +170,49 @@
 											</thead>
 											<!-- Cuerpo de la tabla datos de consulta -->
 											<tbody>
-												<tr dir-paginate="modulo in monIncidenciasVO.datosTabla | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage" 
-													ng-click="verDetalle(modulo)">
-													<td class="text-center">
+												<tr dir-paginate="modulo in monIncidenciasVO.datosTabla | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage">
+													<td class="text-center"
+														ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
+														ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
 														{{modulo.nbModulo}}
 													</td><!-- width="15%">-->
-													<td class="text-center">
+													<td class="text-center"
+														ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
+														ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
 														{{modulo.totalOrdenes | number}}
 													</td><!-- width="8%">-->
-													<td class="text-center">
+													<td class="text-center"
+														ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
+														ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
 														{{modulo.nuOrdenesProgramadas | number}}
 													</td><!-- width="11%">-->
-													<td class="text-center">
+													<td class="text-center"
+														ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
+														ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
 														{{modulo.nuOrdenesNoProgramadas | number}}
 													</td><!-- width="16%">-->
-													<td class="text-center">
+													<td class="text-center"
+														ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
+														ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
 														{{modulo.nuOrdenesEnCurso | number}}
 													</td><!-- width="10%">-->
-													<td class="text-center">
+													<td class="text-center"
+														ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
+														ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
 														{{modulo.nuOrdenesPendientes | number}}
 													</td><!-- width="10%">-->
-													<td class="text-center">
+													<td class="text-center"
+														ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
+														ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
 														{{modulo.nuOrdenesAtendidas | number}}
 													</td><!-- width="10%">-->
-													<td class="text-center">
+													<td class="text-center"
+														ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
+														ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
 														{{modulo.nuIncidencias | number}}
 													</td><!-- width="10%">-->
 													<td class="text-center">
-														BOTONES
+														ACCIONES
 													</td><!-- width="10%">-->
 												</tr>
 												<tr ng-show="(monIncidenciasVO.datosTabla | filter:view.searchSomething).length < 1">
@@ -207,6 +222,75 @@
 												</tr>
 											</tbody>
 										</table>
+										
+										<table class="table table-hover header-fixed w-auto" ng-if="flags.mostrartablaResultadosOS">
+											<thead>
+												<tr>
+													<th class="text-center" sort order="'cdOrdenServicio'" by="order" reverse="reverse">
+														ORDEN SERVICIO</th>
+													<th class="text-center" sort order="'nbConcesion'" by="order" reverse="reverse">
+														CONCESION</th>
+													<th class="text-center" sort order="'cdPlacaVehiculo'" by="order" reverse="reverse">
+														PLACA</th>
+													<th class="text-center" sort order="'cdVIN'" by="order" reverse="reverse">
+														VIN</th>
+													<th class="text-center" sort order="'nbProceso'" by="order" reverse="reverse">
+														PROCESO</th>
+													<th class="text-center" sort order="'nbEncuesta'" by="order" reverse="reverse">
+														ETAPA</th>
+													<th class="text-center" sort order="'nuIncidenciasOS'" by="order" reverse="reverse">
+														INCIDENCIAS</th>
+													<th class="text-center">
+														ACCIONES</th>
+												</tr>
+											</thead>
+											<!-- Cuerpo de la tabla datos de consulta -->
+											<tbody>
+												<tr dir-paginate="ordenServicio in monIncidenciasVO.datosTabla | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage">
+													<td class="text-center" style="vertical-align: middle;"
+														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
+														{{ordenServicio.cdOrdenServicio}}
+													</td>
+													<td class="text-center" style="vertical-align: middle;"
+														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
+														{{ordenServicio.nbConcesion}}
+													</td>
+													<td class="text-center" style="vertical-align: middle;"
+														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
+														{{ordenServicio.cdPlacaVehiculo}}
+													</td>
+													<td class="text-center" style="vertical-align: middle;"
+														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
+														{{ordenServicio.cdVIN}}
+													</td>
+													<td class="text-center" style="vertical-align: middle;"
+														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
+														{{ordenServicio.nbProceso}}
+													</td>
+													<td class="text-center" style="vertical-align: middle;"
+														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
+														{{ordenServicio.nbEtapa}}
+													</td>
+													<td class="text-center" style="vertical-align: middle;"
+														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
+														{{ordenServicio.nuIncidenciasOS}}
+													</td>
+													<td class="text-center" style="vertical-align: middle;"
+														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
+														BOTONES
+													</td>
+												</tr>
+											</tbody>
+										</table>
+										
 									</div>
 									<div class="fixed-table-pagination" style="display: block;">
 										<rows-per-page rows="view.rowsPerPage" filtro="view.searchSomething" array="monIncidenciasVO.datosTablaCentros"></rows-per-page>

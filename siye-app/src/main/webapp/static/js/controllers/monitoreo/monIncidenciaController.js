@@ -53,25 +53,15 @@ angular.module(appTeclo).controller('monIncidenciaController',
         idCentroInstalacion	: -1
     };
 	
-	getRangoFechas = function () {
-		catalogoGenericoService.getCatRangoFechas().success(function (data) {
-			let rango = {};
-			for (let x = 0; x < data.length; x++) {
-				if (data[x].nbTipoFecha!= 'PERSONALIZADO') {
-					rango[data[x].nbTipoFecha] = [data[x].fechaInicio, data[x].fechaFin];
-				}
-			}
-			$scope.rangoFechas.options.ranges = rango;
-			$scope.consultaMonIncidencias(1);
-		}).error(function (data) {
-			growl.error(data.message);
-		});
-	};
-	
-	$scope.consultaMonIncidencias = function (opcion) {
-		//$scope.params.opcion = opcion;
+	$scope.consultaMonIncidencias = function () {
 		$scope.params.fechaInicio = $scope.rangoFechas.date.startDate.format('DD/MM/YYYY');
         $scope.params.fechaFin = $scope.rangoFechas.date.endDate.format('DD/MM/YYYY');
+        
+        if($scope.params.opcion == 1){
+        	
+        }else if($scope.params.opcion == 2){
+        	
+        }
         
 		monIncidenciaService.getMonIncidencias(
 			$scope.params
@@ -79,12 +69,12 @@ angular.module(appTeclo).controller('monIncidenciaController',
 			if(data.length > 0){
 				$scope.flags.mostrarTablaResultados = true;
 				$scope.monIncidenciasVO.datosTabla = data;
-				if(opcion == 1){
+				if($scope.params.opcion == 1){
 					$scope.flags.mostrartablaResultadosCentros = true;
 					$scope.flags.mostrartablaResultadosOS = false;
 
 					$scope.monIncidenciasVO.respaldoCentros = angular.copy(data);
-				}else if(opcion == 2){
+				}else if($scope.params.opcion == 2){
 					$scope.flags.mostrartablaResultadosCentros = false;
 					$scope.flags.mostrartablaResultadosOS = true;
 					
@@ -95,6 +85,35 @@ angular.module(appTeclo).controller('monIncidenciaController',
 			growl.error(data.message);
 		});
 	};
+	
+	getRangoFechas = function () {
+		catalogoGenericoService.getCatRangoFechas().success(function (data) {
+			let rango = {};
+			for (let x = 0; x < data.length; x++) {
+				if (data[x].nbTipoFecha!= 'PERSONALIZADO') {
+					rango[data[x].nbTipoFecha] = [data[x].fechaInicio, data[x].fechaFin];
+				}
+			}
+			$scope.rangoFechas.options.ranges = rango;
+			$scope.consultaMonIncidencias();
+		}).error(function (data) {
+			growl.error(data.message);
+		});
+	};
+	
+	$scope.consultaBtn = function(){
+		$scope.consultaMonIncidencias();
+	}
+	
+	$scope.consultaDetalle = function(modulo){
+		$scope.flags.showParametrosOS = true;
+		$scope.params.tipoBusqueda = -1;
+		$scope.params.valor = "";
+		$scope.params.opcion = 2;
+		$scope.params.nbCentroInstalacion = modulo.nbModulo;
+		$scope.params.idCentroInstalacion = modulo.idCentroInstalacion;
+		$scope.consultaMonIncidencias();
+	}
 	
 	getRangoFechas();
 });
