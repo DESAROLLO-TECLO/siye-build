@@ -8,6 +8,7 @@ public class ColumnaVO {
 	private Integer nuLongitudMax;
 	private Boolean stCampoFiltro;
 	private Boolean stInsertable;
+	private String txMascara;
 	
 	public String getNbColumna() {
 		return nbColumna;
@@ -50,6 +51,12 @@ public class ColumnaVO {
 	}
 	public void setStInsertable(Boolean stInsertable) {
 		this.stInsertable = stInsertable;
+	}
+	public String getTxMascara() {
+		return txMascara;
+	}
+	public void setTxMascara(String txMascara) {
+		this.txMascara = txMascara;
 	}
 	
 	

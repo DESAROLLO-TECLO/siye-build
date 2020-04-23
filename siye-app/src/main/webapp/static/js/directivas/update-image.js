@@ -57,7 +57,11 @@ appt.directive('updateImage',
 	    	   
 	    	  scope.listImages=listImg == undefined ? [] : listImg;
 	    	  scope.listFiles=new Array();
-	    	  scope.imagePreview=new Object();	    	  
+	    	  scope.listFilesExcedeSize=new Array();
+	    	  scope.imagePreview=new Object();
+	    	  scope.showProgressBar=false;
+	    	  scope.totalImagesPendig=0;
+	    	  scope.closedFiles=0;
 	    	  
 	    	//Variable con la injeccion por defecto del servicio para expedientes
 	    	  var expedienteService=$injector.get('expedienteService')
@@ -131,6 +135,9 @@ appt.directive('updateImage',
 			//Se obtiene el elemneto que donde se pueden arrastrar y pegar imagenes (pc)
 			  let idDrop=('#zonaDrop'+scope.idElementUp);
 			  var divDropable= $element.find(idDrop);
+			  
+			  const progressBar = document.querySelector('.progress-bar-ex-per[role="progressbar"]');
+			  const remainingBar = document.querySelector('.progress-bar-ex-per[role="remaining"]');
 			  
 			//Metodo principal que ejecuta toda la configuración inicial de la directiva
 			  async function intDirective(){
@@ -218,7 +225,10 @@ appt.directive('updateImage',
 	        				item.exedeSize=false;
 	        				if(scope.paramConfComponent.maxSizeMb != undefined &&
 	        						item.size > (constants.VAL_ONE_MB_BY_BYTES * scope.paramConfComponent.maxSizeMb)){
-	        					item.exedeSize=true;	
+	        					item.exedeSize=true;
+	        					scope.listFilesExcedeSize.push(lisFiles[i]);
+            					lisFiles.splice(i,1);
+            					i--;
 	        				}
 	        				if(scope.paramConfComponent.listTypeExtencion != undefined){
 	        					let type = item.type.slice(item.type.lastIndexOf('/') + 1);
@@ -244,28 +254,59 @@ appt.directive('updateImage',
 	    	  };
 	    	  
 	    	  //Metodo que permite comprimir la imagen
-	    	  scope.getCompress=function(file,index){
+	    	  scope.getCompress=function(){
 	    		  
-	    			imageCompressor.compress(file, {quality: 0.6})
-	      		  .then((result) => {
-                    
-                    scope.$apply(function(){
-                    	file.exedeSize=false;	                    
-                        file.strBase64=result.strBase64;
-                        file.size=result.size;
-                        let resultSize=result.size;
-                        $.extend(result, file);
-                        result.size=resultSize;
-                        scope.listFiles[index]=result;
-	                    scope.logobsResult(scope.listFiles[index]);
-	                });
-                    
-	      		  })
-	      		  .catch((err) => {
-	      			scope.listFiles.splice(index,1);
-	      			growl.warning('Al gunos archivos no se pudiron adjuntar exedieron el tamaño maxímo ('+
-	      							scope.paramConfComponent.maxSizeMb+' Mb) permitido', {ttl: 4000});
-	      		  });
+	    		  if(scope.maxNuImage != undefined && scope.listFiles.length >= scope.maxNuImage){
+	    			  scope.listFilesExcedeSize=[];
+	    			  progressBar.style.width = '100%';
+	 	    		  progressBar.innerText = '100%';
+	 	    		  remainingBar.style.width ='0%';
+	 	    		 $timeout(function() {
+		    			 scope.closedFiles=0;
+		    			 scope.totalImagesPendig=0;
+		    			 scope.showProgressBar=false;
+		    			 let nameDivUnblokig='div.block-'+scope.idElementUp;
+		    			 $(nameDivUnblokig).unblock(); 
+					  },800);
+	    			  growl.warning('Algunas archivos no se adjuntaron se llego al limite de archivos', {ttl: 4000});
+    				  return;
+    			 }
+	    		  
+				  let fileItem=scope.listFilesExcedeSize.pop();
+    			  
+    			  new ImageCompressor(fileItem, {
+	    			    quality: 0.4,
+	    			    success(result) {
+	    			    	 //scope.$apply(function(){
+	    			    	 let unic=(scope.listFiles.length+1);
+	    			    	 result.unic=unic;
+	    			    	 result.isSuccess=false;
+		        		  	 let type = '|' + result.type.slice(result.type.lastIndexOf('/') + 1) + '|';
+		        		  	 let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1);
+		        		  	 result.isImage=isImg;
+		        		  	 result.exedeSize=false;
+		        		  	 result.tpDocumentList=angular.copy(scope.tpDocumentList);
+		        		  	 scope.logobsResult(result);
+		        		  	 scope.listFiles.unshift(result);
+		        		  	scope.closedFiles++;
+		        		  	scope.initCalculatePorcentajeProgressBar();
+		        		  	 if(scope.listFilesExcedeSize.length > 0){	
+		        		  		scope.getCompress();
+		        		  		return;
+		        		  	 }
+		        		  	 
+    		                //});
+	    			    },
+	    			    error(e) {
+	    	      			growl.warning('Al gunos archivos no se pudiron adjuntar exedieron el tamaño maxímo ('+
+	    	      							scope.paramConfComponent.maxSizeMb+' Mb) permitido', {ttl: 4000});
+	    	      			if(scope.listFilesExcedeSize.length > 0){
+		        		  		scope.getCompress();
+		        		  		return;
+		        		  	 }
+	    			    },
+	    			  });  
+	    			  
 	    	 };
 	    	 
 	    	 scope.logobsResult=function(file) {
@@ -277,11 +318,53 @@ appt.directive('updateImage',
         				  };
         				 reader.readAsDataURL(file);
 	        		}
-	    		}
+	    	}
+	    	 
+	    	 scope.initCalculatePorcentajeProgressBar=function(){
+	    		 let percentage = Math.min(Math.max(Math.floor(scope.closedFiles / scope.totalImagesPendig * 100), 0), 100);
+	    		 // calculate remaining percentage
+	    		 let remaining = 100-percentage;
+
+	    		 // apply percentage
+	    		 progressBar.style.width = percentage + '%';
+	    		 progressBar.innerText = isNaN(percentage) ? '100%' : (percentage  + '%');
+	    		 remainingBar.style.width = remaining + '%';
+	    		 //remainingBar.innerText = remaining + '%';
+	    		 
+	    		 if(scope.closedFiles == scope.totalImagesPendig){
+	    			 $timeout(function() {
+		    			 scope.closedFiles=0;
+		    			 scope.totalImagesPendig=0;
+		    			 scope.showProgressBar=false;
+		    			 let nameDivUnblokig='div.block-'+scope.idElementUp;
+		    			 $(nameDivUnblokig).unblock(); 
+					  },800);
+	    		 }
+	    	 };
 	    	  
 	    	// se agrega a la lista que mostrará las imagenes en el IU del html
 	    	  scope.addImgesToLisViewBiding=function(files){
+	    		  let idProgressBarDiv="div-progress-"+scope.idElementUp;
+	    		  let nameDivUnblokig='div.block-'+scope.idElementUp;
+	    		  $(nameDivUnblokig).block({
+	                  message: $('#'+idProgressBarDiv), 
+	                  css: {border: 'none', 
+	                      	padding: '15px',
+	                      	width: '40%',
+	                      	backgroundColor: '#000', 
+	                      	'-webkit-border-radius': '10px', 
+	                      	'-moz-border-radius': '10px', 
+	                      	opacity: .8, 
+	                      	color: '#fff'},
+	                  overlayCSS: { 
+	                    	backgroundColor: '#ECF0F3',
+	                    	opacity: .5,
+	                    	  }
+	              }); 
 	    		  
+	    		  scope.totalImagesPendig=scope.listFilesExcedeSize.length + files.length;
+    			  scope.initCalculatePorcentajeProgressBar();
+	    		  scope.showProgressBar=true;
 	    		  if(files.length > 0){
 	    			  let i;
 	        		  for(i=0; i<files.length; i++){
@@ -292,12 +375,6 @@ appt.directive('updateImage',
 	        			 }
 	        		  	 
 	        		  	 let file=files[i];
-	        		  	 
-	        		  	if(file.exedeSize){
-	        		  		scope.getCompress(file,i);
-	        		  		file.strBase64=null;
-	        		  		file.size=0;
-	        		  	}	        		  		
 	        		  	 
 	        		  	 let unic=(scope.listFiles.length+1);
 	        		  	 file.unic=unic;
@@ -313,8 +390,14 @@ appt.directive('updateImage',
 	        		  	 
 	        		  	 //se agrega a la lista envida siempre al inicio
 	        		  	 scope.listFiles.unshift(file);
+	        		  	scope.closedFiles++;
+	        		  	scope.initCalculatePorcentajeProgressBar();
 	        		  }
 	    		  }
+	    		  if(scope.listFilesExcedeSize.length > 0){	    			  
+	    			  scope.getCompress();  
+	    		  }
+      		  		
 	    	  };
 	 	     
 	 	  //CONVIERTE UNA CADENA BASE64 A OBJETO FILE PARA EL COMPONENTE FILE UPLOADER
@@ -384,6 +467,11 @@ appt.directive('updateImage',
 		     //Guarda una imagen consumiendo el servicio
 		     scope.saveImageItem= async function(item,form,nameComponent){
 		    	 
+		    	 if(item.exedeSize){
+		    		 growl.warning('La imagen aun se esta cargando, por favor espere', {ttl: 4000});
+		    		 return;
+		    	 }
+		    		
 		    	 if (form[nameComponent].$invalid) {
 		    		 form[nameComponent].$dirty=true;
 		              growl.error('Formulario incompleto');
@@ -400,6 +488,15 @@ appt.directive('updateImage',
 		     //metodo que se crea con alcance de controller padre, se puede invocar desde el controller
 		     scope.$parent.$parent.isValidFormImages=function(message){
 		    	 
+		    	 let listNotAdd=scope.listFiles.filter(function(item){
+		    		 return item.exedeSize;
+		    	 });
+		    	 
+		    	 if(listNotAdd.length !=  undefined && listNotAdd.length > 0){
+		    		 growl.warning('Las imagenes aun se estan cargando, por favor espere', {ttl: 4000});
+		    		 return false;
+		    	 }
+		    	 
 		    	 if(scope.listFiles == undefined || scope.listFiles.length == 0 || scope.formTpDocument.$invalid){
 		    		 	showAlert.requiredFields(scope.formTpDocument);
 		    		 	
@@ -413,8 +510,8 @@ appt.directive('updateImage',
 		     
 		     //METODO QUE CON ALCANCE DESDE EL CONTROLADOR PADRE, PERMITE COMPLEMENTAR LA LISTA DE IMAGENES DESDE EL CONTROLER
 		     scope.$parent.$parent.updateViewDirective = function(inListImages){
-		    	 let listImages=angular.copy(inListImages);
-		    	  angular.forEach(listImages, function(item, key) {
+		    	 let listImages=[];
+		    	  angular.forEach(inListImages, function(item, key) {
 		    		  let file= scope.urltoFile(item.lbExpedienteODS, item.nbExpedienteODS, item.cdTipoArchivo);
 		    		  file.unic=(key+1);
 		    		  file.strBase64=item.lbExpedienteODS;
@@ -438,6 +535,7 @@ appt.directive('updateImage',
 	    					  }
 	    				  }
 	    			  }
+		    		  listImages.push(file);
 		    	  });
 		    	  
 		    	  scope.listFiles=listImages;
@@ -450,6 +548,14 @@ appt.directive('updateImage',
 		     
 		   //Funcion para guardar las imagenes, se valida si se tiene una funcion en especifico
 		     scope.saveImagesAll=function(form){
+		    	 let listNotAdd=scope.listFiles.filter(function(item){
+		    		 return item.exedeSize;
+		    	 });
+		    	 
+		    	 if(listNotAdd.length !=  undefined && listNotAdd.length > 0){
+		    		 growl.warning('Las imagenes aun se estan cargando, por favor espere', {ttl: 4000});
+		    		 return;
+		    	 }
 		    	 
 		    	 if (form.$invalid) {
 		              showAlert.requiredFields(form);
