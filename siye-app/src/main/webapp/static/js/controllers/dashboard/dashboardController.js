@@ -17,7 +17,7 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
                     barras: 'Total de Comparendos',
                     barras3D_2: 'Ordenes de Servicios',
                     pie: 'Ordenes de Servicios Planeadas y no Planeadas',
-                    OSbyPlan: 'Ordenes de Servicios po Plan',
+                    osbyPlan: 'Ordenes de Servicios po Plan',
                     AvanceGeneral: 'Avance General Ordenes de Servicios'
                 };
 
