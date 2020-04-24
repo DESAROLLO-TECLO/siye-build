@@ -45,7 +45,7 @@ import mx.com.teclo.siye.persistencia.vo.async.ColumnaVO;
 import mx.com.teclo.siye.persistencia.vo.async.ConfigCargaMasivaVO;
 import mx.com.teclo.siye.persistencia.vo.async.InsercionTablaVO;
 import mx.com.teclo.siye.persistencia.vo.async.TablaDestinoVO;
-import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
+import mx.com.teclo.siye.persistencia.vo.async.ConfigLayoutVO;
 import mx.com.teclo.siye.util.enumerados.ArchivoSeguimientoEnum;
 import mx.com.teclo.siye.util.enumerados.SeccionLayoutEnum;
 import mx.com.teclo.siye.util.enumerados.TipoDirectorioStorageEnum;
@@ -363,7 +363,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		} catch (IOException e) {
 			lineas--;
 		}
-		TipoLayoutVO layoutVigente = tipoLayoutDAO.getLayoutVigente();
+		ConfigLayoutVO layoutVigente = tipoLayoutDAO.getLayoutVigente();
 		if (layoutVigente == null) {
 			throw new BusinessException(LayoutServiceImpl.MSG_LAYOUT_VIGENTE_NULO);
 		}
@@ -371,8 +371,8 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		TipoLayoutDTO layoutVigenteDTO = tipoLayoutDAO.findOne(layoutVigente.getIdTipoLayout());
 		StSeguimientoDTO seguimientoDTO = seguimientoDAO.findOne(ArchivoSeguimientoEnum.CARGANDO.getIdArchivoSeg());
 
-		loteDTO.setIdTipoLayout(layoutVigenteDTO);
-		loteDTO.setIdStSeguimiento(seguimientoDTO);
+		loteDTO.setTipoLayout(layoutVigenteDTO);
+		loteDTO.setStSeguimiento(seguimientoDTO);
 		loteDTO.setFhModificacion(new Date());
 		loteDTO.setNuOdsReportados(lineas);
 		loteDAO.update(loteDTO);

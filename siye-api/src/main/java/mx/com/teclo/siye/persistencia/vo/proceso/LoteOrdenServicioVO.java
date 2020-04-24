@@ -3,8 +3,6 @@ package mx.com.teclo.siye.persistencia.vo.proceso;
 import java.io.Serializable;
 import java.util.Date;
 
-import mx.com.teclo.siye.persistencia.hibernate.dto.async.TipoLayoutDTO;
-
 public class LoteOrdenServicioVO implements Serializable {
 	
 	private static final long serialVersionUID = 166525209015486035L;
@@ -13,7 +11,7 @@ public class LoteOrdenServicioVO implements Serializable {
 	private String cdLoteOds;
 	private String nbLoteOds;
 	private String nbArchivoFinal;
-	private Long idStSeguimiento;
+	private StSeguimientoVO stSeguimiento;
 	private String cdStSeguimiento;
 	private String nbStSeguimiento;
 	private Long nuOdsReportados;
@@ -22,7 +20,7 @@ public class LoteOrdenServicioVO implements Serializable {
 	private Long nuOdsPendientes;
 	private Long nuOdsIncidencia;
 	private String txLoteOds;
-	private TipoLayoutDTO idTipoLayout;
+	private TipoLayoutVO tipoLayout;
 	private Boolean stActivo;
 	private Long idUsrCreacion;
 	private Date fhCreacion;
@@ -51,11 +49,12 @@ public class LoteOrdenServicioVO implements Serializable {
 	public void setNbArchivoFinal(String nbArchivoFinal) {
 		this.nbArchivoFinal = nbArchivoFinal;
 	}
-	public Long getIdStSeguimiento() {
-		return idStSeguimiento;
+	
+	public StSeguimientoVO getStSeguimiento() {
+		return stSeguimiento;
 	}
-	public void setIdStSeguimiento(Long idStSeguimiento) {
-		this.idStSeguimiento = idStSeguimiento;
+	public void setStSeguimiento(StSeguimientoVO stSeguimiento) {
+		this.stSeguimiento = stSeguimiento;
 	}
 	public String getCdStSeguimiento() {
 		return cdStSeguimiento;
@@ -104,12 +103,12 @@ public class LoteOrdenServicioVO implements Serializable {
 	}
 	public void setTxLoteOds(String txLoteOds) {
 		this.txLoteOds = txLoteOds;
+	}	
+	public TipoLayoutVO getTipoLayout() {
+		return tipoLayout;
 	}
-	public TipoLayoutDTO getIdTipoLayout() {
-		return idTipoLayout;
-	}
-	public void setIdTipoLayout(TipoLayoutDTO idTipoLayout) {
-		this.idTipoLayout = idTipoLayout;
+	public void setTipoLayout(TipoLayoutVO tipoLayout) {
+		this.tipoLayout = tipoLayout;
 	}
 	public Boolean getStActivo() {
 		return stActivo;
