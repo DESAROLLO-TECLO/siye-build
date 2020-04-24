@@ -285,6 +285,36 @@
             </div>
         </div>
 
+        
+        <div class="col-md-12" ng-show="incidenciasShow">
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                    <div class="row">
+                        <div class="col-md-7" style="line-height: 2.6;">
+                            <h3 class="box-title">{{titulos.incidenciaProcesos}}</h3>
+                        </div>
+                    </div>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                    </div>
+                </div>
+
+
+
+                 <!-- /.box-header -->
+                 <div class="box-body">
+                    <div class="row text-center">
+                        <div class="col-md-12">
+                            <div class="amCharts" id="graficaBarrasIncidencia"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <!-- ORDENES DE SERVICIOS-->
         <div class="row">
             <div class="col-md-6" ng-show="OrdenesServiciosShow">

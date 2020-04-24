@@ -86,12 +86,16 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
                     barrasHorizontal: 'Top 10 de Actividades más Suspendidas',
                     barras3D_2: 'Incidencias Recurrentes',
                     incidenciasTop: 'Top estatus de incidencia',
-                    topSupervisorLevantaIncidencia: 'Top supervisores que levantan incidencia'
+					topSupervisorLevantaIncidencia: 'Top supervisores que levantan incidencia',
+					incidenciaProcesos: 'Incidencia por Procesos'
                 };
                 grafica1($scope.dataGraphPastel1IN, "grafica1");
                 graficaIncidenciaTop($scope.incidenciasTopData, "incidenciaTop");
                 graficaIncidenciaTop($scope.incidenciasPorSuper, "incidenciaTopSupervisor");
-                graphBarras3D_2($scope.IndicenciasRecurrentes);
+				graphBarras3D_2($scope.IndicenciasRecurrentes);
+				initGraphCGeneral($scope.graphBarrasVerticalesPuntos,"graficaBarrasIncidencia");
+
+				
                 break;
             default:
 
