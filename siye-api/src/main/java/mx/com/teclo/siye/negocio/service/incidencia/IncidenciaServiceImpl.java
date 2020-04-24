@@ -164,14 +164,15 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		} catch (Exception e) {
 			respuesta = "Error al guardar la incidencia. ";
 		}
+		incidenciaDAO.save(incidenciaDTO);
+		if (altaIncidenciaVO.getListImagen() == null || altaIncidenciaVO.getListImagen().isEmpty()) {
+			respuestaIncidencia = "";
+		} else {
+			respuestaIncidencia = expedienteImgService.saveImagenIncidencia(altaIncidenciaVO.getListImagen(), incidenciaDTO);
+		}
 		
 		try {
-			incidenciaDAO.save(incidenciaDTO);
-			if (altaIncidenciaVO.getListImagen() == null || altaIncidenciaVO.getListImagen().isEmpty()) {
-				respuestaIncidencia = "";
-			} else {
-				respuestaIncidencia = expedienteImgService.saveImagenIncidencia(altaIncidenciaVO.getListImagen(), incidenciaDTO);
-			}
+			
 			if (altaIncidenciaVO.getIdOrdenServicio() != null && altaIncidenciaVO.getIdOrdenServicio() != 0 ) {
 				OrdenServicioDTO ordenServicioDTO = ordenServicioDAO.obtenerOrdenServicio(altaIncidenciaVO.getIdOrdenServicio());
 				OdsIncidenciaDTO odsIncidenciaDTO = new OdsIncidenciaDTO();
