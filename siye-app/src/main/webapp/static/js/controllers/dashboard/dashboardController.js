@@ -18,7 +18,11 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
                     barras3D_2: 'Ordenes de Servicios',
                     pie: 'Ordenes de Servicios Planeadas y no Planeadas',
                     osbyPlan: 'Ordenes de Servicios po Plan',
-                    AvanceGeneral: 'Avance General Ordenes de Servicios'
+                    AvanceGeneral: 'Avance General Ordenes de Servicios',
+                    tipoEstimadoAtencion: 'Tiempo promedio de atención de ordenes de servicio por módulo',
+                    topTenicosMayNumInstall: 'Top técnicos con mayor número de instalaciones',
+                    topTenicosMayNumPruebasPlat: 'Top técnicos con mayor número de pruebas en plataforma',
+                    atencionPorModulo: 'Atencion de ordenes de servicio por módulo'
                 };
 
                 $scope.OrdenesServiciosShow = true;
@@ -32,6 +36,12 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
                 initGraphCGeneral($scope.OSconincidencias, "graficaBarras");
                 grafica1($scope.dataOSByPlan, "graficaPieOSPlan");
                 grafica1($scope.dataOSByAvanceGeneral, "graficaAvanceGeneral");
+                graficaIncidenciaTop($scope.dataGraphPastel1IN, "incidenciaTopSupervisor");
+                // dataBarrasHorizontalTrabajo
+                graficaBarrasHorizontal($scope.dataBarrasHorizontalTrabajo, "topTecnicosMayNumInstall");
+                graficaBarrasHorizontal($scope.dataPruebasPlat, "topTecnicosMayNumPruebasPlat");
+
+                grafica1($scope.dataGraphPastel1IN, "ordenesDeServPorMod");
 
 
                 $scope.indicadores = [];
@@ -48,21 +58,12 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
             case 'Planes':
                 $scope.titulos = {
                     pastel: 'Avance por Plan',
-                    //	barras3D:'Top 10 de Artículos más Infringidos con Multa',
                     barras: 'Avance de Procesos'
                 };
-
-
                 $scope.PlanesShow = true;
                 initGraphCG($scope.graphBarrasVerticalesPuntos);
                 initGraphCG2($scope.graphBarrasVerticalesPuntos);
                 grafica1($scope.dataGraphPastel1OS, "grafica1");
-                //graphBarras3D($scope.datGraph3DPuntos);
-                //graficaUnidadesMantenimiento($scope.dataGraphPastelPuntos);
-
-
-
-                //removeClass();
                 break;
 
             case 'Modulos':
@@ -75,10 +76,6 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
                 $scope.ModulosShow = true;
 
                 initGraphCG($scope.graphBarrasVerticalesPuntos);
-                //graphBarras3D($scope.datGraph3DPuntos);
-                //graficaUnidadesMantenimiento($scope.dataGraphPastelTrabajoComun);
-                //graficaBarrasHorizontal($scope.dataBarrasHorizontalTrabajo);
-
                 break;
 
             case 'Incidencias':
@@ -88,17 +85,13 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
                     barras: 'Suspensión de Actividades Durante el Periodo',
                     barrasHorizontal: 'Top 10 de Actividades más Suspendidas',
                     barras3D_2: 'Incidencias Recurrentes',
-                    incidenciasTop: 'Top Estatus de incidencia'
+                    incidenciasTop: 'Top estatus de incidencia',
+                    topSupervisorLevantaIncidencia: 'Top supervisores que levantan incidencia'
                 };
-
-
-                //	initGraphCG($scope.IncidenciasModulo);
                 grafica1($scope.dataGraphPastel1IN, "grafica1");
-                graficaIncidenciaTop($scope.incidenciasTopData);
+                graficaIncidenciaTop($scope.incidenciasTopData, "incidenciaTop");
+                graficaIncidenciaTop($scope.incidenciasPorSuper, "incidenciaTopSupervisor");
                 graphBarras3D_2($scope.IndicenciasRecurrentes);
-                //	graficaUnidadesMantenimiento($scope.dataGraphPastelCursosLineaB);
-                //	graficaBarrasHorizontal($scope.dataBarrasHorizontalCursosLineaB);
-
                 break;
             default:
 
@@ -137,6 +130,101 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
 
 
     // JSON Data Graficas
+
+    $scope.dataBarrasHorizontalTrabajo = [{
+            "year": "Jesús Goméz",
+            "income": 10,
+            "expenses": 10000
+        },
+        {
+            "year": "Nataly Rodriguez",
+            "income": 8,
+            "expenses": 9000
+        },
+        {
+            "year": "Jose Toscano",
+            "income": 13,
+            "expenses": 8000
+        },
+        {
+            "year": "Fernando Sanchez",
+            "income": 17,
+            "expenses": 7000
+        },
+        {
+            "year": "Gabriel Soto",
+            "income": 9,
+            "expenses": 6000
+        },
+        {
+            "year": "Graciela Hernandez",
+            "income": 9,
+            "expenses": 5000
+        },
+        {
+            "year": "Jose Luis Lopez",
+            "income": 9,
+            "expenses": 4000
+        },
+        {
+            "year": "Carlos Perez",
+            "income": 9,
+            "expenses": 3000
+        },
+        {
+            "year": "Marisol Sanchez",
+            "income": 9,
+            "expenses": 2000
+        }
+    ];
+
+    $scope.dataPruebasPlat = [{
+            "year": "Antonio Perez",
+            "income": 10,
+            "expenses": 10000
+        },
+        {
+            "year": "José Murillo",
+            "income": 8,
+            "expenses": 9000
+        },
+        {
+            "year": "Manuel Sanchez",
+            "income": 13,
+            "expenses": 8000
+        },
+        {
+            "year": "Francisco Lopez",
+            "income": 17,
+            "expenses": 7000
+        },
+        {
+            "year": "David Guerra",
+            "income": 9,
+            "expenses": 6000
+        },
+        {
+            "year": "Javier Dante",
+            "income": 9,
+            "expenses": 5000
+        },
+        {
+            "year": "Sanuel Sanchez",
+            "income": 9,
+            "expenses": 4000
+        },
+        {
+            "year": "Gabriel Martinez",
+            "income": 9,
+            "expenses": 3000
+        },
+        {
+            "year": "Damian Gomez",
+            "income": 9,
+            "expenses": 2000
+        }
+    ];
+
 
     // Odenes de Servicio
     $scope.dataGraphPastel1OS = [{
@@ -290,6 +378,20 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
         "componente": "Incidencia tipo 3",
         "nInstalaciones": 10300,
         "color": "#607d8b"
+    }];
+
+    $scope.incidenciasPorSuper = [{
+        "title": "Jorge Pérez -<br> NO EXISTE ORDEN",
+        "value": 133
+    }, {
+        "title": "Marisol Sanchez -<br> SIN PIEZAS <br> PARA INSTALACIÓN",
+        "value": 245
+    }, {
+        "title": "Carlos Hernández -<br> VEHÍCULO NO APROBADO",
+        "value": 158
+    }, {
+        "title": "Francisco Gutierrez -<br> DATOS ERRONEOS",
+        "value": 382
     }];
 
 
@@ -502,8 +604,8 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
         });
     };
 
-    graficaIncidenciaTop = function(jsonData) {
-        AmCharts.makeChart("incidenciaTop", {
+    graficaIncidenciaTop = function(jsonData, idElemento) {
+        AmCharts.makeChart(idElemento, {
             "type": "pie",
             "theme": "donaMantto",
             "dataProvider": jsonData,
@@ -520,6 +622,43 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
         });
     };
 
+    graficaBarrasHorizontal = function(jsonData, idElemento) {
+        AmCharts.makeChart(idElemento, {
+            "type": "serial",
+            "theme": "chartMantto",
+            "categoryField": "year",
+            "rotate": true,
+            "startDuration": 1,
+            "categoryAxis": {
+                "gridPosition": "start",
+                "position": "left"
+            },
+            "trendLines": [],
+            "graphs": [{
+                "balloonText": "Cantidad: [[value]]",
+                "fillAlphas": 0.8,
+                "id": "AmGraph-2",
+                "lineAlpha": 0.2,
+                "title": "Cantidad",
+                "type": "column",
+                "valueField": "expenses"
+            }],
+            "guides": [],
+            "valueAxes": [{
+                "id": "ValueAxis-1",
+                "position": "top",
+                "axisAlpha": 0
+            }],
+            "allLabels": [],
+            "balloon": {},
+            "titles": [],
+            "dataProvider": jsonData,
+            "export": {
+                "enabled": true
+            }
+
+        });
+    };
 
 
 
