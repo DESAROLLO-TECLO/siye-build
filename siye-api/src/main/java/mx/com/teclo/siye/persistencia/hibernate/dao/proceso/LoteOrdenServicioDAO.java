@@ -2,7 +2,7 @@ package mx.com.teclo.siye.persistencia.hibernate.dao.proceso;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDao;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.LoteOrdenServicioDTO;
-import mx.com.teclo.siye.persistencia.vo.proceso.LoteOrdenServicioVO;
+import mx.com.teclo.siye.persistencia.vo.async.ArchivoLoteVO;
 
 public interface LoteOrdenServicioDAO extends BaseDao<LoteOrdenServicioDTO> {
 
@@ -10,8 +10,8 @@ public interface LoteOrdenServicioDAO extends BaseDao<LoteOrdenServicioDTO> {
 	 * Obtiene el lote por su identificador
 	 * 
 	 * @param idOrdenServicio
-	 * @return LoteOrdenServicioVO
+	 * @return ArchivoLoteVO
 	 */
-	public LoteOrdenServicioVO obtenerLote(Long idLote);
+	public ArchivoLoteVO obtenerLote(Long idLote);
 
 }

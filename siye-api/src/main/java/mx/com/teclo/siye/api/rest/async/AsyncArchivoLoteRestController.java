@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.siye.negocio.service.async.AsyncArchivoLoteService;
-import mx.com.teclo.siye.persistencia.vo.proceso.LoteOrdenServicioVO;
+import mx.com.teclo.siye.persistencia.vo.async.ArchivoLoteVO;
 
 /**
  * Recibe el archivo lote para registrar masivamente &oacute;rdenes de servicio
@@ -33,14 +33,14 @@ public class AsyncArchivoLoteRestController {
 
 
 	@PostMapping(value = "/upload", consumes = "multipart/form-data")
-	public ResponseEntity<LoteOrdenServicioVO> recibirArchivoLote(@RequestParam("file") MultipartFile archivoLote)
+	public ResponseEntity<ArchivoLoteVO> recibirArchivoLote(@RequestParam("file") MultipartFile archivoLote)
 			throws IOException, BusinessException {
 
 		Long idFile = asyncLoteService.registrarArchivoLote(archivoLote);
 		LOGGER.debug("Archivo lote registrado con ID " + idFile);
 		asyncLoteService.cargarArchivoLote(idFile);
 
-		return new ResponseEntity<LoteOrdenServicioVO>(asyncLoteService.obtenerArchivoLote(idFile), HttpStatus.OK);
+		return new ResponseEntity<ArchivoLoteVO>(asyncLoteService.obtenerArchivoLote(idFile), HttpStatus.OK);
 	}
 	
 	

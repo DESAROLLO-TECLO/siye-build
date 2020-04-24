@@ -26,6 +26,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.EncuestaDetaVO;
+import mx.com.teclo.siye.persistencia.vo.monitoreo.IncidenDetailVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.IncidenciaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenIncidenciaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenServicioDetVO;
@@ -58,6 +59,7 @@ public class MonitoreoIncidenciaServiceImpl implements MonitoreoIncidenciaServic
 	
 	private static final String MSG_ERROR_PROCESO_NULO = "No se encontraron procesos";
 	private static final String MSG_ERROR_EXPEDIENTE_VACIO = "No se encontraron archivos";
+	private static final String MSG_ERROR_SIN_INCIDENCIAS = "No se encontraron incidencias";
 	
 	@Transactional
 	@Override
@@ -147,7 +149,7 @@ public class MonitoreoIncidenciaServiceImpl implements MonitoreoIncidenciaServic
 		
 		} catch (Exception e) {
 				e.printStackTrace();
-				throw new NotFoundException("¡Ha ocurrido un imprevisto! , porfavor contacte al administrador Error: "+e);
+				throw new Exception("¡Ha ocurrido un imprevisto! , porfavor contacte al administrador Error: "+e);
 		}
 	}
 	
@@ -197,4 +199,37 @@ public class MonitoreoIncidenciaServiceImpl implements MonitoreoIncidenciaServic
 				throw new NotFoundException(MSG_ERROR_EXPEDIENTE_VACIO);	
 			return listImagenes;
 	}
+
+	@Override
+	@Transactional
+	public List<IncidenDetailVO> getListIncidenciaByIdOrden(Long idCentroInstalacion, Integer tipoBusqueda, String valor,
+			String fechaInicio, String fechaFin) throws Exception, BusinessException, NotFoundException {
+	
+		List<IncidenciaDTO> listIncidenciaDTO = new ArrayList<IncidenciaDTO>();
+	
+		switch (tipoBusqueda) {
+		case 1:
+			//Buscar por orden
+			listIncidenciaDTO=incidenciaDAO.getIncidenciasByIdOrdenFechas(idCentroInstalacion, Long.parseLong(valor), fechaInicio, fechaFin);
+			break;
+		case 2:
+			//Buscar por incidencia
+			listIncidenciaDTO=incidenciaDAO.getIncidenciasByIdIncidenciaFechas(idCentroInstalacion, Long.parseLong(valor), fechaInicio, fechaFin);
+			break;
+		case 3:
+			//Buscar sin orden
+			listIncidenciaDTO=incidenciaDAO.getIncidenciasByIdCentroFechas(idCentroInstalacion, fechaInicio, fechaFin);
+			break;
+
+		default:
+			break;
+		}
+		if (listIncidenciaDTO == null) 
+			throw new NotFoundException(MSG_ERROR_SIN_INCIDENCIAS);	
+		 List<IncidenDetailVO>listIncidencia=ResponseConverter.converterLista(new ArrayList<>(), listIncidenciaDTO, IncidenDetailVO.class);
+		return listIncidencia;
+
+	}
+
+
 }

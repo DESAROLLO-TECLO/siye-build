@@ -6,7 +6,7 @@ package mx.com.teclo.siye.negocio.service.async;
 import org.springframework.web.multipart.MultipartFile;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
-import mx.com.teclo.siye.persistencia.vo.proceso.LoteOrdenServicioVO;
+import mx.com.teclo.siye.persistencia.vo.async.ArchivoLoteVO;
 import mx.com.teclo.siye.util.enumerados.ArchivoSeguimientoEnum;
 
 /**
@@ -56,10 +56,10 @@ public interface AsyncArchivoLoteService {
 	/**
 	 * Recupera la informaci&oacute;n de un archivo lote
 	 * 
-	 * @return LoteOrdenServicioVO
+	 * @return ArchivoLoteVO
 	 * @throws BusinessException
 	 */
-	LoteOrdenServicioVO obtenerArchivoLote(Long idArchivoLote) throws BusinessException;
+	ArchivoLoteVO obtenerArchivoLote(Long idArchivoLote) throws BusinessException;
 
 	/**
 	 * Recupera la informaci&oacute;n del lote
