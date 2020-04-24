@@ -92,7 +92,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 	public String altaIncidencia(AltaIncidenciaVO altaIncidenciaVO)  throws BusinessException{
 		try {
 			ConfiguracionVO configuracionVO = catalogoService.configuracion("TIE051D_IMG_REQ");
-			if (configuracionVO.getCdValorPConfig() == "Si") {
+			if (configuracionVO.getCdValorPConfig().toUpperCase() == "SI") {
 				validarIncidencia2(altaIncidenciaVO.getDescripcion(), altaIncidenciaVO.getListImagen());
 			} else {
 				validarIncidencia(altaIncidenciaVO.getDescripcion(), altaIncidenciaVO.getListImagen());
