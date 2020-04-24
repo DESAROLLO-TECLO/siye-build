@@ -133,14 +133,107 @@
         </div>
 
         <!-- Graficas-->
-        <!-- graficas de barras 2D-->
 
-        <div class="col-md-12" ng-show="(OrdenesServiciosShow && incidenciasShow && ModulosShow) || (PlanesShow)">
+
+       <!-----------------Barras3d---------------->
+        <div class=row>
+       <div class="col-md-6" ng-show="OrdenesServiciosShow">
+        <div class="box box-danger">
+            <div class="box-header with-border">
+                <div class="row">
+                    <div class="col-md-7" style="line-height: 2.6;">
+                        <h3 class="box-title">{{titulos.AvanceGeneral}}</h3>
+                    </div>
+                </div>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="row text-center">
+                    <div class="col-md-12">
+                        <div class="amCharts" id="graficaAvanceGeneral"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+      <div class="col-md-6" ng-show="OrdenesServiciosShow">
+        <div class="box box-danger">
+            <div class="box-header with-border text-center">
+                <div class="row">
+                    <div class="col-md-12" style="line-height:2.5;">
+                        <h3 class="box-title ng-binding">{{titulos.osbyPlan}}</h3>
+                    </div>
+                </div>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="amCharts" id="graficaPieOSPlan"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+
+     </div>
+
+
+
+
+     <div class="col-md-12" ng-show="(OrdenesServiciosShow && incidenciasShow && ModulosShow) || (PlanesShow)">
+        <div class="box box-danger">
+            <div class="box-header with-border">
+                <div class="row">
+                    <div class="col-md-7" style="line-height: 2.6;">
+                        <h3 class="box-title">{{titulos.barras3D_2}}</h3>
+                    </div>
+                </div>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                    <i class="fa fa-minus"></i>
+                </button>
+                </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="row text-center">
+                    <div class="col-md-6">
+                        <h5>plan Baico
+                            <h5>
+                                <div class="amCharts" id="grafica3"></div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h5>plan Completo
+                            <h5>
+                                <div class="amCharts" id="grafica3PC"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+     <div class="row">
+
+
+        <div class="col-md-6" ng-show="OrdenesServiciosShow || incidenciasShow">
             <div class="box box-danger">
-                <div class="box-header with-border">
+                <div class="box-header with-border text-center">
                     <div class="row">
-                        <div class="col-md-7" style="line-height: 2.6;">
-                            <h3 class="box-title">{{titulos.barras3D_2}}</h3>
+                        <div class="col-md-12" style="line-height:2.5;">
+                            <h3 class="box-title ng-binding">{{titulos.barras3D_2}}</h3>
                         </div>
                     </div>
                     <div class="box-tools pull-right">
@@ -149,19 +242,37 @@
                     </button>
                     </div>
                 </div>
-                <!-- /.box-header -->
                 <div class="box-body">
-                    <div class="row text-center">
-                        <div class="col-md-6">
-                            <h5>plan Baico
-                                <h5>
-                                    <div class="amCharts" id="grafica3"></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="amCharts" id="grafica2"></div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        <div class="col-md-6">
-                            <h5>plan Completo
-                                <h5>
-                                    <div class="amCharts" id="grafica3PC"></div>
+    
+
+
+        <div class="col-md-6" ng-show="OrdenesServiciosShow || incidenciasShow || PlanesShow">
+            <div class="box box-danger">
+                <div class="box-header with-border text-center">
+                    <div class="row">
+                        <div class="col-md-12" style="line-height:2.5;">
+                            <h3 class="box-title ng-binding">{{titulos.pastel}}</h3>
+                        </div>
+                    </div>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                        <i class="fa fa-minus"></i>
+                    </button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="amCharts" id="grafica1"></div>
                         </div>
                     </div>
                 </div>
@@ -169,61 +280,20 @@
         </div>
 
 
+        <!-----------------Barras3d---------------->
 
-        <!-----------------Dona---------------->
-        <div class="row">
-            <div class="col-md-6" ng-show="OrdenesServiciosShow || incidenciasShow || PlanesShow">
-                <div class="box box-danger">
-                    <div class="box-header with-border text-center">
-                        <div class="row">
-                            <div class="col-md-12" style="line-height:2.5;">
-                                <h3 class="box-title ng-binding">{{titulos.pastel}}</h3>
-                            </div>
-                        </div>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="amCharts" id="grafica1"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        
 
-            <!-----------------Barras3d---------------->
+    </div>
 
-            <div class="col-md-6" ng-show="OrdenesServiciosShow || incidenciasShow">
-                <div class="box box-danger">
-                    <div class="box-header with-border">
-                        <div class="row">
-                            <div class="col-md-7" style="line-height: 2.6;">
-                                <h3 class="box-title">{{titulos.barras3D_2}}</h3>
-                            </div>
-                        </div>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                        </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <div class="row text-center">
-                            <div class="col-md-12">
-                                <div class="amCharts" id="grafica2"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-        </div>
+<!-- graficas de barras 2D-->
+
+       
+
+
+
+
 
 
 
@@ -232,6 +302,171 @@
 
 
         <!-----------------PIE---------------->
+        
+
+        
+        <div class="col-md-12" ng-show="incidenciasShow">
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                    <div class="row">
+                        <div class="col-md-7" style="line-height: 2.6;">
+                            <h3 class="box-title">{{titulos.incidenciaProcesos}}</h3>
+                        </div>
+                    </div>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                    </div>
+                </div>
+
+
+
+                 <!-- /.box-header -->
+                 <div class="box-body">
+                    <div class="row text-center">
+                        <div class="col-md-12">
+                            <div class="amCharts" id="graficaBarrasIncidencia"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ORDENES DE SERVICIOS-->
+        <div class="row">
+          
+     
+            <div class="col-md-6" ng-show="incidenciasShow">
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-md-7" style="line-height: 2.6;">
+                                <h3 class="box-title">{{titulos.incidenciasTop}}</h3>
+                            </div>
+                        </div>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row text-center">
+                            <div class="col-md-12">
+                                <div class="amCharts" id="incidenciaTop"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6" ng-show="incidenciasShow || ModulosShow">
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-md-7" style="line-height: 2.6;">
+                                <h3 class="box-title" ng-show="incidenciasShow">{{titulos.incidenciasShow }}</h3>
+                                <h3 class="box-title" ng-show="ModulosShow">{{titulos.tipoEstimadoAtencion}}</h3>
+                            </div>
+                        </div>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+                            <i class="fa fa-minus"></i>
+                        </button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row text-center">
+                            <div class="col-md-12">
+                                <div class="amCharts" id="incidenciaTopSupervisor"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+           
+
+            <div class="col-md-6" ng-show="ModulosShow">
+                <div class="box box-danger">
+                    <div class="box-header with-border text-center">
+                        <div class="row">
+                            <div class="col-md-7" style="line-height: 2.5;">
+                                <h3 class="box-title ng-binding">{{titulos.atencionPorModulo}}</h3>
+                            </div>
+                        </div>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <div class="amCharts" id="ordenesDeServPorMod"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-6" ng-show="OrdenesServiciosShow">
+                <div class="box box-danger">
+                    <div class="box-header with-border text-center">
+                        <div class="row">
+                            <div class="col-md-7" style="line-height: 2.5;">
+                                <h3 class="box-title ng-binding">{{titulos.topTenicosMayNumInstall}}</h3>
+                            </div>
+                        </div>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <div class="amCharts" id="topTecnicosMayNumInstall"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6" ng-show="OrdenesServiciosShow">
+                <div class="box box-danger">
+                    <div class="box-header with-border text-center">
+                        <div class="row">
+                            <div class="col-md-7" style="line-height: 2.5;">
+                                <h3 class="box-title ng-binding">{{titulos.topTenicosMayNumPruebasPlat}}</h3>
+                            </div>
+                        </div>
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
+								<i class="fa fa-minus"></i>
+							</button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <div class="amCharts" id="topTecnicosMayNumPruebasPlat"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
         <div class="row">
             <div class="col-md-6" ng-show="OrdenesServiciosShow">
                 <div class="box box-danger">
@@ -285,212 +520,8 @@
             </div>
         </div>
 
-        
-        <div class="col-md-12" ng-show="incidenciasShow">
-            <div class="box box-danger">
-                <div class="box-header with-border">
-                    <div class="row">
-                        <div class="col-md-7" style="line-height: 2.6;">
-                            <h3 class="box-title">{{titulos.incidenciaProcesos}}</h3>
-                        </div>
-                    </div>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" type="button" data-widget="collapse">
-                                    <i class="fa fa-minus"></i>
-                                </button>
-                    </div>
-                </div>
-
-
-
-                 <!-- /.box-header -->
-                 <div class="box-body">
-                    <div class="row text-center">
-                        <div class="col-md-12">
-                            <div class="amCharts" id="graficaBarrasIncidencia"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- ORDENES DE SERVICIOS-->
-        <div class="row">
-            <div class="col-md-6" ng-show="OrdenesServiciosShow">
-                <div class="box box-danger">
-                    <div class="box-header with-border text-center">
-                        <div class="row">
-                            <div class="col-md-12" style="line-height:2.5;">
-                                <h3 class="box-title ng-binding">{{titulos.osbyPlan}}</h3>
-                            </div>
-                        </div>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="amCharts" id="graficaPieOSPlan"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-----------------Barras3d---------------->
-
-            <div class="col-md-6" ng-show="OrdenesServiciosShow">
-                <div class="box box-danger">
-                    <div class="box-header with-border">
-                        <div class="row">
-                            <div class="col-md-7" style="line-height: 2.6;">
-                                <h3 class="box-title">{{titulos.AvanceGeneral}}</h3>
-                            </div>
-                        </div>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
-                                        <i class="fa fa-minus"></i>
-                                    </button>
-                        </div>
-                    </div>
-                    <!-- /.box-header -->
-                    <div class="box-body">
-                        <div class="row text-center">
-                            <div class="col-md-12">
-                                <div class="amCharts" id="graficaAvanceGeneral"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6" ng-show="incidenciasShow">
-                <div class="box box-danger">
-                    <div class="box-header with-border">
-                        <div class="row">
-                            <div class="col-md-7" style="line-height: 2.6;">
-                                <h3 class="box-title">{{titulos.incidenciasTop}}</h3>
-                            </div>
-                        </div>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="row text-center">
-                            <div class="col-md-12">
-                                <div class="amCharts" id="incidenciaTop"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6" ng-show="incidenciasShow || OrdenesServiciosShow">
-                <div class="box box-danger">
-                    <div class="box-header with-border">
-                        <div class="row">
-                            <div class="col-md-7" style="line-height: 2.6;">
-                                <h3 class="box-title" ng-show="incidenciasShow">{{titulos.incidenciasShow }}</h3>
-                                <h3 class="box-title" ng-show="OrdenesServiciosShow">{{titulos.tipoEstimadoAtencion}}</h3>
-                            </div>
-                        </div>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="row text-center">
-                            <div class="col-md-12">
-                                <div class="amCharts" id="incidenciaTopSupervisor"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6" ng-show="OrdenesServiciosShow">
-                <div class="box box-danger">
-                    <div class="box-header with-border text-center">
-                        <div class="row">
-                            <div class="col-md-7" style="line-height: 2.5;">
-                                <h3 class="box-title ng-binding">{{titulos.topTenicosMayNumInstall}}</h3>
-                            </div>
-                        </div>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
-								<i class="fa fa-minus"></i>
-							</button>
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-12 text-center">
-                                <div class="amCharts" id="topTecnicosMayNumInstall"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6" ng-show="OrdenesServiciosShow">
-                <div class="box box-danger">
-                    <div class="box-header with-border text-center">
-                        <div class="row">
-                            <div class="col-md-7" style="line-height: 2.5;">
-                                <h3 class="box-title ng-binding">{{titulos.topTenicosMayNumPruebasPlat}}</h3>
-                            </div>
-                        </div>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
-								<i class="fa fa-minus"></i>
-							</button>
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-12 text-center">
-                                <div class="amCharts" id="topTecnicosMayNumPruebasPlat"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6" ng-show="OrdenesServiciosShow">
-                <div class="box box-danger">
-                    <div class="box-header with-border text-center">
-                        <div class="row">
-                            <div class="col-md-7" style="line-height: 2.5;">
-                                <h3 class="box-title ng-binding">{{titulos.atencionPorModulo}}</h3>
-                            </div>
-                        </div>
-                        <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" type="button" data-widget="collapse">
-								<i class="fa fa-minus"></i>
-							</button>
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-12 text-center">
-                                <div class="amCharts" id="ordenesDeServPorMod"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
+                <!-----------------Dona---------------->
+               
     </section>
 
 

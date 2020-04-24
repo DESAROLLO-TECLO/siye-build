@@ -19,10 +19,8 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
                     pie: 'Ordenes de Servicios Planeadas y no Planeadas',
                     osbyPlan: 'Ordenes de Servicios po Plan',
                     AvanceGeneral: 'Avance General Ordenes de Servicios',
-                    tipoEstimadoAtencion: 'Tiempo promedio de atención de ordenes de servicio por módulo',
                     topTenicosMayNumInstall: 'Top técnicos con mayor número de instalaciones',
-                    topTenicosMayNumPruebasPlat: 'Top técnicos con mayor número de pruebas en plataforma',
-                    atencionPorModulo: 'Atencion de ordenes de servicio por módulo'
+                    topTenicosMayNumPruebasPlat: 'Top técnicos con mayor número de pruebas en plataforma'
                 };
 
                 $scope.OrdenesServiciosShow = true;
@@ -71,7 +69,9 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
                     pastel: 'Distribución de Trabajo Comunitario por Categoría',
                     barras3D: 'Media de Puntos Acumulados',
                     barras: 'Actividad de Trabajo Comunitario Durante el Periodo',
-                    barrasHorizontal: 'Top 10 Trabajos más Solicitados'
+                    barrasHorizontal: 'Top 10 Trabajos más Solicitados',
+                    tipoEstimadoAtencion: 'Tiempo promedio de atención de ordenes de servicio por módulo',
+                    atencionPorModulo: 'Atencion de ordenes de servicio por módulo'
                 };
                 $scope.ModulosShow = true;
 
