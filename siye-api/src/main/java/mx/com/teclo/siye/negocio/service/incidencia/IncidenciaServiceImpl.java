@@ -131,11 +131,11 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		}
 		String cdIncidencia = "I" + year + serie;
 		String nbIncidencia = "Incidencia " + serie;
-		StSeguimientoDTO stAutorizacionDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NO_AUT_ATND");
-		StSeguimientoDTO stIncidenciaDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NO_ATND");
-		StSeguimientoDTO stSeguimiento = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NUEVO");
-		StSeguimientoDTO tpIncidenciaDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getTpIncidencia().getCdStSeguimiento());
-		StSeguimientoDTO prioridadDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getPrioridad().getCdStSeguimiento());
+		StSeguimientoDTO stAutorizacionDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NO_AUT_ATND","ID_ST_AUTORIZACION","TIE051D_IE_INCIDENCIA");
+		StSeguimientoDTO stIncidenciaDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NO_ATND","ST_INCIDENCIA","TIE051D_IE_INCIDENCIA");
+		StSeguimientoDTO stSeguimiento = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NUEVO","ID_ST_SEGUIMIENTO","TIE051D_IE_INCIDENCIA");
+		StSeguimientoDTO tpIncidenciaDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getTpIncidencia().getCdStSeguimiento(),"ID_TP_INCIDENCIA","TIE051D_IE_INCIDENCIA");
+		StSeguimientoDTO prioridadDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getPrioridad().getCdStSeguimiento(),"ID_PRIORIDAD","TIE051D_IE_INCIDENCIA");
 		IEprocesosDTO procesoDTO = iEProcesosDAO.consultarProcesoByidProceso(altaIncidenciaVO.getIdProceso());
 		EncuestasDTO encuestasDTO = encuestasDAO.encuestaIntento(altaIncidenciaVO.getIdEncuesta());
 		incidenciaDTO.setCdIncidencia(cdIncidencia);

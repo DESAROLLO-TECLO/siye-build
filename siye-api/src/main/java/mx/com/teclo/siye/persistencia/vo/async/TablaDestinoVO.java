@@ -4,6 +4,8 @@ public class TablaDestinoVO {
 	private String nbTabla;
 	private Boolean isReadOnly;
 	private Boolean isTblBase;
+	private Integer nuOrdenInsercion;
+	private Boolean isTblBaseFinal;
 
 	public String getNbTabla() {
 		return nbTabla;
@@ -28,5 +30,24 @@ public class TablaDestinoVO {
 	public void setIsTblBase(Boolean isTblBase) {
 		this.isTblBase = isTblBase;
 	}
+
+	public Integer getNuOrdenInsercion() {
+		return nuOrdenInsercion;
+	}
+
+	public void setNuOrdenInsercion(Integer nuOrdenInsercion) {
+		this.nuOrdenInsercion = nuOrdenInsercion;
+	}
+
+	public Boolean getIsTblBaseFinal() {
+		return isTblBaseFinal;
+	}
+
+	public void setIsTblBaseFinal(Boolean isTblBaseFinal) {
+		this.isTblBaseFinal = isTblBaseFinal;
+	}
+	
+	
+	
 
 }

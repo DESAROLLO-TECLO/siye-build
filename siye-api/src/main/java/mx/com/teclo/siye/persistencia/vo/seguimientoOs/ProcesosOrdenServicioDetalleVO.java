@@ -4,7 +4,7 @@ import java.util.List;
 
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 
-public class OrdenServicioDetalleVO {
+public class ProcesosOrdenServicioDetalleVO {
 	
 	private Long idOrdenServicio;
 	private String cdOrdenServicio;

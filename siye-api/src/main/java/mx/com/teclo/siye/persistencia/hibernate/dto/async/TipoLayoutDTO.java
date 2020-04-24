@@ -30,7 +30,7 @@ public class TipoLayoutDTO implements Serializable {
 	private Short nuMaxRegistros;
 
 	@Column(name = "ID_TIPO_ARCHIVO")
-	private String idTipoArchivo;
+	private Long idTipoArchivo;
 
 	@Column(name = "TX_MASCARA")
 	private String txMascara;
@@ -94,11 +94,11 @@ public class TipoLayoutDTO implements Serializable {
 		this.nuMaxRegistros = nuMaxRegistros;
 	}
 
-	public String getIdTipoArchivo() {
+	public Long getIdTipoArchivo() {
 		return idTipoArchivo;
 	}
 
-	public void setIdTipoArchivo(String idTipoArchivo) {
+	public void setIdTipoArchivo(Long idTipoArchivo) {
 		this.idTipoArchivo = idTipoArchivo;
 	}
 

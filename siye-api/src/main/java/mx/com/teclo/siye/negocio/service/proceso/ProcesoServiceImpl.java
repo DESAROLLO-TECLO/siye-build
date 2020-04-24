@@ -1,5 +1,6 @@
 package mx.com.teclo.siye.negocio.service.proceso;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +32,6 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
 import mx.com.teclo.siye.persistencia.mybatis.dao.proceso.ProcesoDAO;
 import mx.com.teclo.siye.persistencia.mybatis.dao.proceso.ServicioEncuestasMyBatisDAO;
-import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.DispositivosVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.PlanProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.ProcesoEncuestaVO;
@@ -138,12 +138,21 @@ public class ProcesoServiceImpl implements ProcesoService {
 			procesoEncuestaDTO=procesoEncuestaDAO.obtenerEncuestasProceso(plan.get(0).getProceso().getIdProceso());
         	OrdenServicioDTO  ordenServicioDTO = new OrdenServicioDTO();
         	ordenServicioDTO=getInfoBasicaOrdenServicio(idSolicitud);
+        	Long nuOrdenProcesoActual=1L;
+        	for(PlanProcesoVO actual:plan)
+			{
+        		if(actual.getProceso().getIdProceso()==(ordenServicioDTO.getProceso()!=null?ordenServicioDTO.getProceso().getIdProceso():procesoEncuestaDTO.get(0).getIdProceso().getIdProceso()))
+        		{
+        			nuOrdenProcesoActual=actual.getNuorden();
+        		}
+			}
 			for(PlanProcesoVO actual:plan)
 			{
 				actual.getProceso().setFechaInicioProceso(obtenerFechaInicioProceso(actual.getProceso().getIdProceso(),idSolicitud));
 				actual.getProceso().setFechaFinProceso(obtenerFechaFinProceso(actual.getProceso().getIdProceso(),idSolicitud));
-
-                    if(actual.getProceso().getIdProceso()<=(ordenServicioDTO.getProceso()!=null?ordenServicioDTO.getProceso().getIdProceso():procesoEncuestaDTO.get(0).getIdProceso().getIdProceso()))
+				
+				
+                    if(actual.getNuorden()<=nuOrdenProcesoActual)
                 	 {
                 		 actual.setStatusProceos(true);
                 		 //actual.setProcesoCompleto(true);
@@ -316,7 +325,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 		Date fechActual=new Date();
 		if(orden.getStSeguimiento().getCdStSeguimiento().equals("NUEVO"))
 		{
-			orden.setStSeguimiento(stSeguimientoDAO.obtenerStSeguimientoByCodigo("CURSO"));
+			orden.setStSeguimiento(stSeguimientoDAO.obtenerStSeguimientoByCodigo("CURSO","ID_ST_SEGUIMIENTO","TIE026D_IE_ORDEN_SERVICIOS"));
 			orden.setProceso(procesoDAO.obtenerProceso(planProceso.get(0).getProceso().getIdProceso()));
 		    orden.setEncuesta(encuestasDAO.findOne(procesoEncuestas.get(0).getIdEncuesta().getIdEncuesta()));
 			orden.setFhAtencionIni(fechActual);
@@ -338,7 +347,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 			OrdenServicioDTO orden=ordenServicioDAO.obtenerOrdenServicio(idOrdenServicio);
 			if(!orden.getStSeguimiento().getCdStSeguimiento().equals("CURSO"))
 			{
-				orden.setStSeguimiento(stSeguimientoDAO.obtenerStSeguimientoByCodigo("FINALIZADO"));
+				orden.setStSeguimiento(stSeguimientoDAO.obtenerStSeguimientoByCodigo("FINALIZADO","ID_ST_SEGUIMIENTO","TIE026D_IE_ORDEN_SERVICIOS"));
 				orden.setFhAtencionFin(new Date());
 				ordenServicioDAO.update(orden);
 				return true;
@@ -439,7 +448,7 @@ public class ProcesoServiceImpl implements ProcesoService {
                 //servicioEncuestasMyBatisDAO.iniciarProceso(idOrdenServicio, procesoSiguiente);
 			}else
 			{
-				orden.setStSeguimiento(stSeguimientoDAO.obtenerStSeguimientoByCodigo("FINALIZADO"));
+				orden.setStSeguimiento(stSeguimientoDAO.obtenerStSeguimientoByCodigo("FINALIZADO","ID_ST_SEGUIMIENTO","TIE026D_IE_ORDEN_SERVICIOS"));
 				orden.setFhAtencionFin(fechActual);
 				ordenServicioDAO.update(orden);
 			}
@@ -480,6 +489,8 @@ public class ProcesoServiceImpl implements ProcesoService {
 			Date fechActual=new Date();
 			return servicioEncuestasMyBatisDAO.iniciarProceso(idOrdenServicio,idProceso,fechActual);
 		}
+		
+
 		
 
 }

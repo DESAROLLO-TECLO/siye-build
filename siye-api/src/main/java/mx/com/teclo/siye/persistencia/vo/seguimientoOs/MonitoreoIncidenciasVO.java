@@ -19,6 +19,7 @@ public class MonitoreoIncidenciasVO {
 	private String cdPlacaVehiculo;
 	private String cdVIN;
 	private String nbProceso;
+	private String nbEncuesta;
 	private Long nuIncidenciasOS;
 	
 	public Long getIdCentroInstalacion() {
@@ -75,9 +76,6 @@ public class MonitoreoIncidenciasVO {
 	public void setNuIncidencias(Long nuIncidencias) {
 		this.nuIncidencias = nuIncidencias;
 	}
-	
-	//-------------------------------------
-	
 	public Long getIdOrdenServicio() {
 		return idOrdenServicio;
 	}
@@ -113,6 +111,12 @@ public class MonitoreoIncidenciasVO {
 	}
 	public void setNbProceso(String nbProceso) {
 		this.nbProceso = nbProceso;
+	}
+	public String getNbEncuesta() {
+		return nbEncuesta;
+	}
+	public void setNbEncuesta(String nbEncuesta) {
+		this.nbEncuesta = nbEncuesta;
 	}
 	public Long getNuIncidenciasOS() {
 		return nuIncidenciasOS;

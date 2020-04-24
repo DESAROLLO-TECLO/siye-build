@@ -260,13 +260,27 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
     // Linea de tiempo 
     $routeProvider.when("/detSegimientoOS", {
         templateUrl: "views/monitoreo/detalleSeguimientoOS.html",
-        controller: "detalleSeguimientoOsController"
+        controller: "detalleSeguimientoOsController",
+        resolve:{
+            lineaTiempoVO: function(detalleSeguimientoOsService){
+                return detalleSeguimientoOsService.getProcesosByOrdenServicio();
+            }
+        }
     });
 
     // Monitoreo Incidencias 
     $routeProvider.when("/monIncidencia", {
         templateUrl: "views/monitoreo/monIncidencia.html",
         controller: "monIncidenciaController"
+    });
+    
+    $routeProvider.when("/seguimientoIncidencia/:idOrden/:idPlan", {
+        templateUrl: "views/monitoreo/detalleIncidencia.html",
+        controller: "detalleIncidenciaController",
+        resolve: {
+        	idOrden: function($route) { return $route.current.params.idOrden; },
+        	idPlan: function($route) { return $route.current.params.idPlan; }
+        }
     });
 
     /* Dashboard */
