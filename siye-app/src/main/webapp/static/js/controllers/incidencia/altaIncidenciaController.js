@@ -31,7 +31,7 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
 			let param = filtroBuscar(data, "cdLlavePConfig", "TIE051D_NU_MAX_IMAGENES");
 			$scope.paramConfiguracion.maxNuImage = param.cdValorPConfig; 
 			param = filtroBuscar(data, "cdLlavePConfig", "TIE051D_IMG_REQ");
-			$scope.requiredImage = param.cdValorPConfig == "Si" ? true : false;
+			$scope.requiredImage = param.cdValorPConfig.toUpperCase() == "SI" ? true : false;
 		}).error(function(e) {
             growl.warning(e.message, { ttl: 5000 });
         });

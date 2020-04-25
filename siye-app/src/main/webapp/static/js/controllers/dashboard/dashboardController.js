@@ -19,10 +19,8 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
                     pie: 'Ordenes de Servicios Planeadas y no Planeadas',
                     osbyPlan: 'Ordenes de Servicios po Plan',
                     AvanceGeneral: 'Avance General Ordenes de Servicios',
-                    tipoEstimadoAtencion: 'Tiempo promedio de atención de ordenes de servicio por módulo',
                     topTenicosMayNumInstall: 'Top técnicos con mayor número de instalaciones',
-                    topTenicosMayNumPruebasPlat: 'Top técnicos con mayor número de pruebas en plataforma',
-                    atencionPorModulo: 'Atencion de ordenes de servicio por módulo'
+                    topTenicosMayNumPruebasPlat: 'Top técnicos con mayor número de pruebas en plataforma'
                 };
 
                 $scope.OrdenesServiciosShow = true;
@@ -71,7 +69,9 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
                     pastel: 'Distribución de Trabajo Comunitario por Categoría',
                     barras3D: 'Media de Puntos Acumulados',
                     barras: 'Actividad de Trabajo Comunitario Durante el Periodo',
-                    barrasHorizontal: 'Top 10 Trabajos más Solicitados'
+                    barrasHorizontal: 'Top 10 Trabajos más Solicitados',
+                    tipoEstimadoAtencion: 'Tiempo promedio de atención de ordenes de servicio por módulo',
+                    atencionPorModulo: 'Atencion de ordenes de servicio por módulo'
                 };
                 $scope.ModulosShow = true;
 
@@ -86,12 +86,16 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
                     barrasHorizontal: 'Top 10 de Actividades más Suspendidas',
                     barras3D_2: 'Incidencias Recurrentes',
                     incidenciasTop: 'Top estatus de incidencia',
-                    topSupervisorLevantaIncidencia: 'Top supervisores que levantan incidencia'
+					topSupervisorLevantaIncidencia: 'Top supervisores que levantan incidencia',
+					incidenciaProcesos: 'Incidencia por Procesos'
                 };
                 grafica1($scope.dataGraphPastel1IN, "grafica1");
                 graficaIncidenciaTop($scope.incidenciasTopData, "incidenciaTop");
                 graficaIncidenciaTop($scope.incidenciasPorSuper, "incidenciaTopSupervisor");
-                graphBarras3D_2($scope.IndicenciasRecurrentes);
+				graphBarras3D_2($scope.IndicenciasRecurrentes);
+				initGraphCGeneral($scope.graphBarrasVerticalesPuntos,"graficaBarrasIncidencia");
+
+				
                 break;
             default:
 

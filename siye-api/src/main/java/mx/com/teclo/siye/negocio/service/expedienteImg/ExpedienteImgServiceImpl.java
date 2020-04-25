@@ -451,6 +451,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 		ConfiguracionVO configuracionVO;
 		try {
 			configuracionVO = catalogoService.configuracion("TIE051D_NU_MAX_IMAGENES");
+			
 			int nuMaximoImagenes = Integer.parseInt(configuracionVO.getCdValorPConfig());
 			
 			if(listImagenVO.size() > nuMaximoImagenes)
@@ -473,7 +474,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 						expedientesImgDTO.setIdUsrCreacion(usuario.getId());
 						expedientesImgDTO.setFhModifica(new Date());
 						expedientesImgDTO.setIdUsrModifica(usuario.getId());
-						TipoExpedienteDTO tipoExpedienteDTO = tipoExpedienteDAO.findOne(imagenVO.getTipoExpediente().getIdTipoExpediente());
+						TipoExpedienteDTO tipoExpedienteDTO = tipoExpedienteDAO.findOne(imagenVO.getIdTipoExpediente());
 //						tipoExpedienteDTO = ResponseConverter.copiarPropiedadesFull(imagenVO.getTipoExpediente(), TipoExpedienteDTO.class);
 						expedientesImgDTO.setTipoExpediente(tipoExpedienteDTO);
 						try {

@@ -1,7 +1,11 @@
 package mx.com.teclo.siye.persistencia.hibernate.dao.incidencia;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -10,6 +14,7 @@ import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
+import mx.com.teclo.siye.persistencia.vo.monitoreo.IncidenDetailVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.IncidenciaDetalleVO;
 
 @Repository
@@ -109,6 +114,60 @@ public class IncidenciaDAOImpl extends BaseDaoHibernate<IncidenciaDTO> implement
 		c.add(Restrictions.eq("encuesta.idEncuesta", idEncuesta));
 		return (List<IncidenciaDTO>)c.list();
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<IncidenciaDTO> getIncidenciasByIdOrdenFechas(Long idCentroInstalacion,Long idOrden, String fhInici, String fhFin) {
+		String hql = "SELECT  inc "
+				+ "FROM IncidenciaDTO as inc, "
+				+ "OdsIncidenciaDTO as osinc "
+				+ "WHERE inc.idIncidencia = osinc.idIncidencia.idIncidencia "
+				+ "and osinc.idOrdenServicio.idOrdenServicio=:idOrden "
+				+ "AND inc.centroInstalacion.idCentroInstalacion=:idCentroInstalacion "
+				+ "and TRUNC(TO_DATE(inc.fhCreacion)) BETWEEN TO_DATE('#{fhInici}','dd/MM/yyyy') AND TO_DATE('#{fhFin}','dd/MM/yyyy')"
+				+ "and inc.stActivo=1";
 		
+		hql = StringUtils.replace(hql, "#{fhInici}", fhInici);
+		hql = StringUtils.replace(hql, "#{fhFin}", fhFin);
+		Query query = getCurrentSession().createQuery(hql);
+		query.setParameter("idOrden", idOrden);
+		query.setParameter("idCentroInstalacion", idCentroInstalacion);
+		return query.list();	
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<IncidenciaDTO> getIncidenciasByIdCentroFechas(Long idCentroInstalacion, String fhInici, String fhFin) throws ParseException {
+		
+		String hql = "SELECT  inc "
+				+ "FROM IncidenciaDTO as inc "
+				+ "WHERE inc.idIncidencia NOT IN (SELECT DISTINCT inci.idIncidencia from OdsIncidenciaDTO as inci) "
+				+ "AND inc.centroInstalacion.idCentroInstalacion=:idCentroInstalacion "
+				+ "and TRUNC(TO_DATE(inc.fhCreacion)) BETWEEN TO_DATE('#{fhInici}','dd/MM/yyyy') AND TO_DATE('#{fhFin}','dd/MM/yyyy') "
+				+ "and inc.stActivo=1 ORDER BY inc.fhCreacion DESC";
+		
+		hql = StringUtils.replace(hql, "#{fhInici}", fhInici);
+		hql = StringUtils.replace(hql, "#{fhFin}", fhFin);
+		Query query = getCurrentSession().createQuery(hql);
+		query.setParameter("idCentroInstalacion", idCentroInstalacion);
+		return query.list();
+	}
+
+	@Override
+	public List<IncidenciaDTO> getIncidenciasByIdIncidenciaFechas(Long idCentroInstalacion,Long idIncidencia, String fhInici, String fhFin) {
+		String hql = "SELECT  inc "
+				+ "FROM IncidenciaDTO as inc "
+				+ "WHERE inc.idIncidencia=:idIncidencia "
+				+ "AND inc.centroInstalacion.idCentroInstalacion=:idCentroInstalacion "
+				+ "and TRUNC(TO_DATE(inc.fhCreacion)) BETWEEN TO_DATE('#{fhInici}','dd/MM/yyyy') AND TO_DATE('#{fhFin}','dd/MM/yyyy') "
+				+ "and inc.stActivo=1 ORDER BY inc.fhCreacion DESC";
+		
+		hql = StringUtils.replace(hql, "#{fhInici}", fhInici);
+		hql = StringUtils.replace(hql, "#{fhFin}", fhFin);
+		Query query = getCurrentSession().createQuery(hql);
+		query.setParameter("idIncidencia", idIncidencia);
+		query.setParameter("idCentroInstalacion", idCentroInstalacion);
+		return query.list();
+	}
 
 }

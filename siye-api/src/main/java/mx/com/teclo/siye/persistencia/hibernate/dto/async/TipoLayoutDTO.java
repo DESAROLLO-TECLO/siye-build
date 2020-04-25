@@ -27,7 +27,7 @@ public class TipoLayoutDTO implements Serializable {
 	private String nbTipoLayout;
 
 	@Column(name = "NU_MAX_REGISTROS")
-	private Short nuMaxRegistros;
+	private Integer nuMaxRegistros;
 
 	@Column(name = "ID_TIPO_ARCHIVO")
 	private Long idTipoArchivo;
@@ -86,11 +86,11 @@ public class TipoLayoutDTO implements Serializable {
 		this.nbTipoLayout = nbTipoLayout;
 	}
 
-	public Short getNuMaxRegistros() {
+	public Integer getNuMaxRegistros() {
 		return nuMaxRegistros;
 	}
 
-	public void setNuMaxRegistros(Short nuMaxRegistros) {
+	public void setNuMaxRegistros(Integer nuMaxRegistros) {
 		this.nuMaxRegistros = nuMaxRegistros;
 	}
 

@@ -12,5 +12,5 @@ public interface TblCatalogosService {
 	
 	public Boolean actualizaCentrodeInstalacion(CentroInstalacionVO centroInstalacionVO) throws NotFoundException, BusinessException;
 	
-
+	public CentroInstalacionVO findCentroInstalacion(Long idCentroInstalacion);
 }
