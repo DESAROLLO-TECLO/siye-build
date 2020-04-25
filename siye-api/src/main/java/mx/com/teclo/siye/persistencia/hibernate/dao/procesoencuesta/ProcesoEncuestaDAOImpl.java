@@ -58,7 +58,7 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				+ "ProcesoEncuestaDTO as proenc "
 				+ "WHERE enc.idEncuesta = proenc.idEncuesta.idEncuesta "
 				+ "and proenc.idProceso.idProceso=:idProceso "
-				+ "and enc.stActivo=1";
+				+ "and enc.stActivo=1 ORDER BY proenc.nuOrden ASC ";
 			
 		Query query = getCurrentSession().createQuery(hql);
 		query.setParameter("idProceso", idProceso).setResultTransformer(Transformers.aliasToBean(EncuestaDetaVO.class));

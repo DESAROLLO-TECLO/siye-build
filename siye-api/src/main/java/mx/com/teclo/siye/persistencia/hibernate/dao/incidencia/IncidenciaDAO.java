@@ -39,7 +39,7 @@ public interface IncidenciaDAO extends BaseDao<IncidenciaDTO> {
 	 * @param idEncuesta
 	 * @return List<IncidenciaDetalleVO> 
 	 * */
-	public List<IncidenciaDetalleVO> getIncidenciasByIdEncuesta(Long idEncuesta);
+	public List<IncidenciaDetalleVO> getIncidenciasByIdEncuesta(Long idOrden,Long idEncuesta);
 	/**
 	 * Descripciónn: Obtiene una lista de incidencias por id ecnuesta
 	 * @author Mannuel
@@ -54,7 +54,7 @@ public interface IncidenciaDAO extends BaseDao<IncidenciaDTO> {
 	 * @param idProceso
 	 * @return List<IncidenciaDetalleVO> 
 	 * */
-	public List<IncidenciaDetalleVO> getIncidenciasByProceso(Long idProceso);
+	public List<IncidenciaDetalleVO> getIncidenciasByProceso(Long idOrden,Long idProceso);
 
 	/**
 	 * Descripciónn: Obtiene una lista de incidencias por id de orden
