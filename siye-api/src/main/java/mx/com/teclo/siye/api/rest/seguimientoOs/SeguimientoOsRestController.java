@@ -18,6 +18,7 @@ import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService
 import mx.com.teclo.siye.negocio.service.monitoreoInicidencia.MonitoreoIncidenciaService;
 import mx.com.teclo.siye.negocio.service.seguimientoOs.SeguimientoOsService;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
+import mx.com.teclo.siye.persistencia.vo.monitoreo.IncidenDetailVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenIncidenciaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleIncidenciaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.MonitoreoIncidenciasVO;
@@ -153,6 +154,19 @@ public class SeguimientoOsRestController {
 		}
 		return new ResponseEntity<List<DetalleIncidenciaVO>>(respuesta, HttpStatus.OK);
 	};
+
+	
+	@RequestMapping(value = "/getIncidenciasByTipobusqueda", method = RequestMethod.GET)
+	public ResponseEntity<List<IncidenDetailVO>> listIncidenciaByIdOrden(@RequestParam(value="idCentroInstalacion", required=true) Long idCentroInstalacion,
+			@RequestParam(value="tipoBusqueda", required=true) Integer tipoBusqueda,
+			@RequestParam(value="valor", required=true) String valor,
+			@RequestParam(value="fechaInicio", required=true) String fechaInicio,
+			@RequestParam(value="fechaFin", required=true) String fechaFin
+			) throws BusinessException, Exception{
+		List<IncidenDetailVO> listImagenes = monitoreoIncidenciaService.getListIncidenciaByIdOrden(idCentroInstalacion, tipoBusqueda, valor, fechaInicio, fechaFin);
+		return new ResponseEntity<List<IncidenDetailVO>>(listImagenes, HttpStatus.OK);
+	}
+
 
 	
 }

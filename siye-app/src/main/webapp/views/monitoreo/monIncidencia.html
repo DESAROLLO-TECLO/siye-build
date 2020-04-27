@@ -17,81 +17,251 @@
 		</section>
 		
 		<!-- Formulario de busqueda -->
-	    <section class="content">
-	        <div class="row centerCol">
-	            <div class="col-sm-12 col-md-8">
-	                <div class="box box-danger">
-	                    <form name="formBoxBusqueda" novalidate>
-	                        <div class="box-header with-border text-center">
-	                            <h3 class="box-title">{{ 'APP.Base.boxBusqueda.tituloBox' | translate}}</h3>
-	                            <div class="box-tools pull-right">
-	                                <button class="btn btn-box-tool" type="button" id="btnAlmacen" data-widget="collapse">
-	                                    <i class="fa fa-minus"></i>
-	                                </button>
-	                            </div>
-	                        </div>
-	                        <div class="box-body">
-	                            <div class="row">
-<!-- 	                                <div class="col-md-6"> -->
-<!-- 	                                    <div class="form-group" -->
-<!-- 	                                        ng-class="{'has-error': (formBoxBusqueda.tipoBusqueda.$invalid && formBoxBusqueda.tipoBusqueda.$dirty) }"> -->
-<!-- 	                                        <label> -->
-<!-- 	                                            *{{'MONITOREO.busqueda.tipoBusqueda.label' | translate}} -->
-<!-- 	                                        </label> -->
-<!-- 	                                        <div class="input-group"> -->
-<!-- 	                                            <div class="input-group-addon"> -->
-<!-- 	                                                <i class="fa fa-list-alt"></i> -->
-<!-- 	                                            </div> -->
-<!-- 	                                            <select class="form-control" name="tipoBusqueda" id="tipoBusqueda" -->
-<!-- 	                                                select-picker multiple idioma-sp="{{currentLanguage}}" -->
-<!-- 	                                                data-actions-box="true"  -->
-<!-- 	                                                data-selected-text-format="count > 2" -->
-<!-- 	                                                ng-model="params.colSeleccionada" -->
-<!-- 	                                                ng-required="true" -->
-<!-- 	                                                ng-options="sp as sp.txTipoBusqueda for sp in catTipoBusqueda"> -->
-<!-- 	                                            </select> -->
-<!-- 	                                        </div> -->
-<!-- 	                                        <div -->
-<!-- 	                                            ng-show="formBoxBusqueda.tipoBusqueda.$error.required && formBoxBusqueda.tipoBusqueda.$dirty"> -->
-<!-- 	                                            <span ng-style="{color:'red'}"> -->
-<!-- 	                                                {{'MONITOREO.busqueda.tipoBusqueda.validacion' | translate}} -->
-<!-- 	                                            </span> -->
-<!-- 	                                        </div> -->
-<!-- 	                                    </div> -->
-<!-- 	                                </div> -->
-	                                <div class="col-md-6">
-	                                    <div class="form-group">
-	                                        <label>
-	                                            *{{'MONITOREO.busqueda.rangoFechas.label' | translate}}
-	                                        </label>
-	                                        <div class="input-group">
-	                                            <div class="input-group-addon labelCheck">
-	                                                <i class="fa fa-calendar-plus-o"></i>
-	                                            </div>
-	                                            <input date-range-picker class="form-control date-picker" type="text"
-	                                                    ng-model="rangoFechas.date" 
-	                                                    options="rangoFechas.options"/>
-	                                        </div>
-	                                    </div>
-	                                </div>
-	                            </div>
-	                            <!-- renglon de opociones -->
-	                            <div class="box-footer">
-	                                <div class="row center">
-	                                    <button class="btn btn-danger" ng-click="corteDiario()">
-	                                        {{'MONITOREO.busqueda.corte' | translate}}
-	                                    </button>
-	                                    <button class="btn btn-danger" ng-click="consultaOS(formBoxBusqueda, params)">
-	                                        {{'APP.Base.boton.buscar' | translate}}
-	                                    </button>
-	                                </div>
-	                            </div>
-	                        </div>
-	                    </form>
-	                </div>
-	            </div>
-	        </div>
-	    </section>
-	    <!-- final formulario de busqueda -->
+		<section class="content">
+			<div class="row centerCol">
+				<div class="col-sm-12 col-md-8">
+					<div class="box box-danger" style="margin-bottom: 0px;">
+						<form name="formBoxBusqueda" novalidate>
+							<div class="box-header with-border text-center">
+								<h3 class="box-title">Parámetros de Búsqueda</h3>
+								<div class="box-tools pull-right">
+									<button class="btn btn-box-tool" type="button" id="btnAlmacen" data-widget="collapse">
+										<i class="fa fa-minus"></i>
+									</button>
+								</div>
+							</div>
+							<div class="box-body">
+								<div class="row">
+									<div class="col-xs-12 col-md-6" ng-show="flags.showParametrosOS">
+										<div class="form-group" ng-class="{'has-error': (formBoxBusqueda.tipoBusqueda.$invalid && formBoxBusqueda.tipoBusqueda.$dirty)}">
+											<label>Tipo de Búsqueda:</label>
+											<div class="input-group">
+												<div class="input-group-addon">
+													<i class="fa fa-flask"></i>
+												</div>
+												<select class="form-control select2"
+													name="comboTipoBusqueda" id="comboTipoBusqueda"
+													ng-options="x.idTipo as x.nbTipo for x in listTipoBusqueda.tipoBusqueda"
+													ng-model="params.tipoBusqueda">
+													<option value="">Seleccione</option>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-12 col-md-6" ng-show="flags.showParametrosOS">
+										<div class="form-group" ng-class="{ 'has-error' : formBoxBusqueda.valor.$invalid && !formBoxBusqueda.valor.$pristine }">
+											<label for="valor">{{flags.labelValorRequerido}}:</label>
+											<div class="input-group">
+												<span class="input-group-addon">
+													<i class="fa fa-shield"></i>
+												</span>
+												<input type="text" maxlength="20"
+													ng-model="params.valor" name="valor" id="valor" 
+													class="form-control" ng-required="flags.campoValorRequerido">
+											</div>
+											<p ng-show="formBoxBusqueda.valor.$invalid && !formBoxBusqueda.valor.$pristine" 
+												class="help-block">El valor es requerdo</p>
+										</div>
+									</div>
+									<div class="col-xs-12 col-md-offset-3 col-md-6">
+										<div class="form-group">
+											<label>*Rango de Fechas</label>
+											<div class="input-group">
+												<div class="input-group-addon labelCheck">
+													<i class="fa fa-calendar-plus-o"></i>
+												</div>
+												<input date-range-picker class="form-control date-picker" type="text"
+													ng-model="rangoFechas.date" options="rangoFechas.options"/>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- renglon de opociones -->
+								<div class="box-footer">
+									<div class="row center">
+<!-- 										<button class="btn btn-danger" ng-click="corteDiario()"> -->
+<!-- 											Corte al día -->
+<!-- 										</button> -->
+										<button class="btn btn-danger" ng-click="consultaBtn();">
+											Buscar
+										</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</section>
+		<!-- final formulario de busqueda -->
+		<section class="content">
+			<div ng-if="flags.mostrarTablaResultados" class="row centerCol">
+				<div class="col-md-12">
+					<div class="box box-danger">
+						<div class="box-header with-border">
+							<div class="row middleRow">
+								<div class="col-xs-4 col-md-3">
+									<h4>Registros encontrados: {{(monIncidenciasVO.datosTabla| filter:view.searchSomething).length | number}}
+									</h4>
+								</div>
+								<div class="col-xs-4 col-md-5 center">
+									<div ng-if="seguimientoVO.verDetalleOS">
+										<button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Resultado Principal" 
+											style="border-radius: 50%; width: 2em; height: 2em; padding: 0;" ng-click="infoGral()">
+											<i class="fa fa-angle-double-left" aria-hidden="true"></i>
+										</button>
+										<label>
+											<strong class="text-center">
+												{{monIncidenciasVO.nbCentroInstalacion}}
+											</strong>
+										</label>
+									</div>
+								</div>
+								<div class="col-xs-3 col-md-3">
+									<div class="input-group">
+										<span class="input-group-addon">
+											<i class="fa fa-search"></i>
+										</span>
+										<input id="searchsomething" type="text" class="form-control" 
+											placeholder="{{'APP.Base.tablaResultados.filtrarPor' | translate}}" 
+											ng-model="view.searchSomething" ng-model-options="{debounce: 500}" />
+									</div>
+								</div>
+								<div class="col-xs-1 col-sm-1">
+									<span class="labelCheck" ng-click="descargaExcel()" 
+										tooltip="Descargar reporte" placement="top"> 
+										<img src="static/dist/img/excel.png" class="img-xs" />
+									</span>
+								</div>
+							</div>
+						</div>
+						
+						<div class="box-body ngOnlyEnter">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="table-responsive tableMonIncidencias">
+										<!-- tabla de totales de movimientos -->
+										<table class="table table-hover header-fixed w-auto" ng-if="flags.mostrartablaResultadosCentros"><!--  table-xs table-sm --> 
+											<thead>
+												<tr>
+													<th class="text-center" sort order="'nbModulo'" by="order" reverse="reverse" rowspan="2">
+														CENTRO DE INSTALACIÓN</th>
+													<th class="encabezadoOSPadre" colspan="3">
+														ORDENES DE SERVICIO</th><!--width="65%"-->
+													<th class="text-center" sort order="'nuIncidencias'" by="order" reverse="reverse" rowspan="2">
+														INCIDENCIAS</th><!--width="10%">-->
+												</tr>
+												<tr>
+													<th class="encabezadoOSHijo text-center" sort order="'totalOrdenes'" by="order" reverse="reverse">
+														TOTAL</th><!--width="8%">-->
+													<th class="encabezadoOSHijo text-center" sort order="'nuOrdenesProgramadas'" by="order" reverse="reverse">
+														PROGRAMADAS</th><!--width="11%">-->
+													<th class="encabezadoOSHijo text-center" sort order="'nuOrdenesNoProgramadas'" by="order" reverse="reverse">
+														NO PROGRAMADAS</th><!--width="16%">-->
+<!-- 													<th class="encabezadoOSHijo text-center" sort order="'nuOrdenesEnCurso'" by="order" reverse="reverse"> -->
+<!-- 														EN CURSO</th>width="10%"> -->
+<!-- 													<th class="encabezadoOSHijo text-center" sort order="'nuOrdenesPendientes'" by="order" reverse="reverse"> -->
+<!-- 														PENDIENTES</th>width="10%"> -->
+<!-- 													<th class="encabezadoOSHijo text-center" sort order="'nuOrdenesAtendidas'" by="order" reverse="reverse"> -->
+<!-- 														ATENDIDAS</th>width="10%"> -->
+												</tr>
+											</thead>
+											<!-- Cuerpo de la tabla datos de consulta -->
+											<tbody>
+												<tr dir-paginate="modulo in monIncidenciasVO.datosTabla | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage"
+													ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
+													ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
+													<td class="text-center">{{modulo.nbModulo}}</td>
+													<td class="text-center">{{modulo.totalOrdenes | number}}</td><!-- width="8%">-->
+													<td class="text-center">{{modulo.nuOrdenesProgramadas | number}}</td><!-- width="11%">-->
+													<td class="text-center">{{modulo.nuOrdenesNoProgramadas | number}}</td><!-- width="16%">-->
+<!-- 													<td class="text-center">{{modulo.nuOrdenesEnCurso | number}}</td>width="10%"> -->
+<!-- 													<td class="text-center">{{modulo.nuOrdenesPendientes | number}}</td>width="10%"> -->
+<!-- 													<td class="text-center">{{modulo.nuOrdenesAtendidas | number}}</td>width="10%"> -->
+													<td class="text-center">{{modulo.nuIncidencias | number}}</td><!-- width="10%">-->
+												</tr>
+												<tr ng-show="(monIncidenciasVO.datosTabla | filter:view.searchSomething).length < 1">
+													<td colspan="6" class="text-center">
+														<h4>{{'APP.Base.mensaje.noRegistros' | translate}}</h4>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+										
+										<table class="table table-hover header-fixed w-auto" ng-if="flags.mostrartablaResultadosOS">
+											<thead>
+												<tr>
+													<th class="text-center" sort order="'cdOrdenServicio'" by="order" reverse="reverse">
+														ORDEN SERVICIO</th>
+													<th class="text-center" sort order="'nbConcesion'" by="order" reverse="reverse">
+														CONCESION</th>
+													<th class="text-center" sort order="'cdPlacaVehiculo'" by="order" reverse="reverse">
+														PLACA</th>
+													<th class="text-center" sort order="'cdVIN'" by="order" reverse="reverse">
+														VIN</th>
+													<th class="text-center" sort order="'nbProceso'" by="order" reverse="reverse">
+														PROCESO</th>
+													<th class="text-center" sort order="'nbEncuesta'" by="order" reverse="reverse">
+														ETAPA</th>
+													<th class="text-center" sort order="'nuIncidenciasOS'" by="order" reverse="reverse">
+														INCIDENCIAS</th>
+												</tr>
+											</thead>
+											<!-- Cuerpo de la tabla datos de consulta -->
+											<tbody>
+												<tr dir-paginate="ordenServicio in monIncidenciasVO.datosTabla | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage">
+													<td class="text-center" style="vertical-align: middle;"
+														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
+														{{ordenServicio.cdOrdenServicio}}
+													</td>
+													<td class="text-center" style="vertical-align: middle;"
+														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
+														{{ordenServicio.nbConcesion}}
+													</td>
+													<td class="text-center" style="vertical-align: middle;"
+														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
+														{{ordenServicio.cdPlacaVehiculo}}
+													</td>
+													<td class="text-center" style="vertical-align: middle;"
+														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
+														{{ordenServicio.cdVIN}}
+													</td>
+													<td class="text-center" style="vertical-align: middle;"
+														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
+														{{ordenServicio.nbProceso}}
+													</td>
+													<td class="text-center" style="vertical-align: middle;"
+														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
+														{{ordenServicio.nbEncuesta}}
+													</td>
+													<td class="text-center" style="vertical-align: middle;"
+														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
+														{{ordenServicio.nuIncidenciasOS}}
+													</td>
+												</tr>
+											</tbody>
+										</table>
+										
+									</div>
+									<div class="fixed-table-pagination" style="display: block;">
+										<rows-per-page rows="view.rowsPerPage" filtro="view.searchSomething" array="monIncidenciasVO.datosTablaCentros"></rows-per-page>
+										<div class="pull-right pagination">
+											<dir-pagination-controls class="pagination"></dir-pagination-controls>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 	</body>
 </html>

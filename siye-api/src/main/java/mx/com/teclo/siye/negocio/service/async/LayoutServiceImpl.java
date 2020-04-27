@@ -2,8 +2,6 @@ package mx.com.teclo.siye.negocio.service.async;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,14 +23,13 @@ import mx.com.teclo.siye.persistencia.vo.async.ColumnaVO;
 import mx.com.teclo.siye.persistencia.vo.async.ConfigCargaMasivaVO;
 import mx.com.teclo.siye.persistencia.vo.async.InsercionTablaVO;
 import mx.com.teclo.siye.persistencia.vo.async.TablaDestinoVO;
-import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
+import mx.com.teclo.siye.persistencia.vo.async.ConfigLayoutVO;
 import mx.com.teclo.siye.util.enumerados.SeccionLayoutEnum;
 
 @Service
 public class LayoutServiceImpl implements LayoutService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LayoutServiceImpl.class);
-	private static final Long ID_ORDEN_INSERCION = 5L;
 	private static final String MSG_LAYOUT_SIN_ORDEN_INSERCION = "El layout no tiene un orden de valores a insertar";
 	private static final String MSG_INSERT_PATTERN = "INSERT INTO {0}({1}) VALUES({2})";
 	private static final String MSG_SELECT_PATTERN = "SELECT {0} FROM {1} WHERE {2} = {3}";
@@ -67,7 +64,7 @@ public class LayoutServiceImpl implements LayoutService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public TipoLayoutVO getLayoutVigente() {
+	public ConfigLayoutVO getLayoutVigente() {
 		return tipoLayoutDAO.getLayoutVigente();
 	}
 
@@ -137,10 +134,10 @@ public class LayoutServiceImpl implements LayoutService {
 		}
 
 		// orden de inserción en tablas
-		cargaMasivaVO.setConfigInsercion(getOrdenInsercionTablas());
+		cargaMasivaVO.setConfigInsercion(getOrdenInsercionTablas(cargaMasivaVO.getConfigLote().getIdTipoLayout()));
 
 		// layout
-		TipoLayoutVO layoutAplicado = tipoLayoutDAO.getTipoLayoutById(cargaMasivaVO.getConfigLote().getIdTipoLayout());
+		ConfigLayoutVO layoutAplicado = tipoLayoutDAO.getTipoLayoutById(cargaMasivaVO.getConfigLote().getIdTipoLayout());
 		cargaMasivaVO.setConfigLayout(layoutAplicado);
 		if (cargaMasivaVO.getConfigLayout() == null) {
 			throw new BusinessException(
@@ -156,37 +153,22 @@ public class LayoutServiceImpl implements LayoutService {
 				cargaMasivaVO.getConfigInsercion()));
 
 		// columnas esperadas en el archivo
-		cargaMasivaVO.setColumnasEnArchivo(layoutDAO.getColumnasEnArchivo());
+		cargaMasivaVO.setColumnasEnArchivo(
+				layoutDAO.getColumnasEnArchivo(cargaMasivaVO.getConfigLayout().getIdTipoLayout()));
 
 		return cargaMasivaVO;
 	}
 
 	@Override
 	@Transactional
-	public List<TablaDestinoVO> getOrdenInsercionTablas() throws BusinessException {
-		ConfiguracionOSDTO configInsercionTbls = configuracionDAO.findOne(ID_ORDEN_INSERCION);
-		if (configInsercionTbls == null || StringUtils.isBlank(configInsercionTbls.getCdValorConfig())
-				|| configInsercionTbls.getCdValorConfig().indexOf(CARACTER_COMA + CARACTER_COMA) > 0) {
-			throw new BusinessException(MSG_LAYOUT_SIN_ORDEN_INSERCION);
+	public List<TablaDestinoVO> getOrdenInsercionTablas(Long idTipoLayout) throws BusinessException {
+		List<TablaDestinoVO> tablasDestino = layoutDAO.getOrdenInsercionTablas(idTipoLayout);
+		int tblFinal = tablasDestino.size() - 1;
+		for (int i = 0; i < tablasDestino.size(); i++) {
+			tablasDestino.get(i).setIsTblBaseFinal(Boolean.FALSE.booleanValue());
 		}
-		List<TablaDestinoVO> tablasDestino = new ArrayList<TablaDestinoVO>();
-		List<String> nbTablas = Arrays.asList(configInsercionTbls.getCdValorConfig().split(CARACTER_COMA));
-		for (String nombreTbl : nbTablas) {
-			String nombreOriginal = nombreTbl.trim();
-			String nombreFinal = nombreOriginal;
-			boolean isReadOnly = Boolean.TRUE.booleanValue();
-			if (nombreOriginal.startsWith(CARACTER_DOS_PUNTOS)) {
-				isReadOnly = Boolean.FALSE.booleanValue();
-				nombreFinal = nombreOriginal.replace(CARACTER_DOS_PUNTOS, "");
-			}
+		tablasDestino.get(tblFinal).setIsTblBaseFinal(Boolean.TRUE.booleanValue());
 
-			TablaDestinoVO tblDestino = new TablaDestinoVO();
-			tblDestino.setNbTabla(nombreFinal);
-			tblDestino.setIsReadOnly(isReadOnly);
-			tblDestino.setIsTblBase(Boolean.FALSE.booleanValue());
-			tablasDestino.add(tblDestino);
-		}
-		tablasDestino.get(nbTablas.size() - 1).setIsTblBase(Boolean.TRUE.booleanValue());
 		return tablasDestino;
 	}
 

@@ -45,7 +45,7 @@ import mx.com.teclo.siye.persistencia.vo.async.ColumnaVO;
 import mx.com.teclo.siye.persistencia.vo.async.ConfigCargaMasivaVO;
 import mx.com.teclo.siye.persistencia.vo.async.InsercionTablaVO;
 import mx.com.teclo.siye.persistencia.vo.async.TablaDestinoVO;
-import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
+import mx.com.teclo.siye.persistencia.vo.async.ConfigLayoutVO;
 import mx.com.teclo.siye.util.enumerados.ArchivoSeguimientoEnum;
 import mx.com.teclo.siye.util.enumerados.SeccionLayoutEnum;
 import mx.com.teclo.siye.util.enumerados.TipoDirectorioStorageEnum;
@@ -61,6 +61,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	private static final String MSG_ERROR_SQL = "Error al ejecutar comando SQL {0}";
 	private static final String MSG_ERROR_TAMANIO_EXCEDE = "Err: Excede +{0} ";
 	private static final String MSG_ERROR_LINEA_DESAJUSTADA = "Err: Excede +{0} columnas";
+	private static final String MSG_ERROR_INSUFICIENTES_COLUMNAS = "Err: Columnas incompletas ({0} vs {1})";
 	private static final String MSG_ERROR_FORMATO_INVALIDO = "Err: No es {0}";
 	private static final String MSG_ERROR_DATO_REQUERIDO = "Err: Requerido ";
 	private static final String MSG_LINEA_NOK = "0";
@@ -169,83 +170,31 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	 * @return
 	 * @throws BusinessException
 	 */
+	@SuppressWarnings("unlikely-arg-type")
 	private Long insertarEnTablas(ConfigCargaMasivaVO config, String linea, String separador, Connection con)
 			throws BusinessException {
 		HashMap<String, Long> mapaIds = new HashMap<String, Long>();
-		try {
-			mapaIds = obtenerIDsTblsRef(config, linea, separador, con);
-		} catch (Exception e) {
-			return 0L;
-		}
-
-		String[] arrVal = linea.split(separador);
-
-		boolean isExitoso = true;
-		for (Entry<String, Long> refTbl : mapaIds.entrySet()) {
-			ColumnaVO campoFiltro = config.getConfigMoldesSQL().get(refTbl.getKey()).getColumnaFiltro();
-			int ordenColumna = campoFiltro.getNuOrden();
-			int ordenEnArray = ordenColumna == 0 ? 0 : ordenColumna -1;
-			if (refTbl.getValue() == null) {
-				arrVal[ordenEnArray] = "Err: Error en BD";
-				isExitoso = false;
-			} else if (refTbl.getValue().longValue() == BigDecimal.ZERO.longValue()) {				
-				arrVal[ordenEnArray] = "Err: No encontrado";
-				isExitoso = false;
-			}
-		}
-		if (!isExitoso) {
-			String arrLinea = Arrays.toString(arrVal);
-			throw new BusinessException(arrLinea);
-		}
-
 		List<TablaDestinoVO> nbTbls = config.getConfigInsercion();
 		TablaDestinoVO ultimaTabla = nbTbls.get(nbTbls.size() - BigDecimal.ONE.intValue());
-
-		InsercionTablaVO configSQL = config.getConfigMoldesSQL().get(ultimaTabla.getNbTabla());
-		String queryInsert = new String(configSQL.getInsertSQL());
-		LOGGER.debug("Q1 original " + queryInsert);
-
-		for (Entry<String, Long> tblRef : mapaIds.entrySet()) {
-			queryInsert = queryInsert.replace(LayoutServiceImpl.CARACTER_DOS_PUNTOS + tblRef.getKey(),
-					tblRef.getValue().toString());
-		}
-
-		// Aplicamos en duro el id del lote
-		queryInsert = queryInsert.replace(TIE025D_IE_LOTE_ODS, config.getConfigLote().getIdLoteOds().toString());
-
-		queryInsert = formatearSQL(queryInsert, linea, separador);
-		LOGGER.debug("Q2 aplicado formatearSQL " + queryInsert);
-
-		queryInsert = queryInsert.replace("\\,", ",");
-		LOGGER.debug("Q3 removiendo slash " + queryInsert);
-
-		configSQL.setInsertSQL(queryInsert);
-		// Long id = insertarOrdenServicio(config, linea, separador, con);
-
-		LOGGER.info("Insertando ODS");
-		Long idGenerado = 0L;
-
-		String campoID = configSQL.getCampoID().getNbColumna();
-
 		try {
-			LOGGER.debug("Q4 previo a la busqueda " + queryInsert);
-
-			PreparedStatement stmt = con.prepareStatement(queryInsert);
-			stmt = con.prepareStatement(queryInsert, new String[] { campoID });
-			stmt.executeUpdate();
-			ResultSet generatedKeys = stmt.getGeneratedKeys();
-			if (null != generatedKeys) {
-				Map<Object, Object> m = resultSetToArrayMap(generatedKeys);
-				BigDecimal id = (BigDecimal) m.get("value");
-				idGenerado = id.longValue();
+			mapaIds = obtenerIDsTblsRef(config, linea, separador, con);
+			if (mapaIds.containsKey(ultimaTabla.getNbTabla())){
+				if(mapaIds.get(ultimaTabla.getNbTabla()).longValue() > BigDecimal.ZERO.longValue()) {
+					con.commit();
+					Long id =  mapaIds.get(ultimaTabla.getNbTabla());
+					return id;
+				}
 			}
-		} catch (SQLException e) {
-			LOGGER.error(e.getMessage());
-			throw new BusinessException("Err: Guardado fallido");
+			traducirErroresEnLinea(config, linea, separador, mapaIds);
+		} catch (BusinessException e) {
+			throw e;
+		} catch (Exception e1) {
+			return 0L;
 		}
-
-		return idGenerado;
+		return 0L;
 	}
+
+	
 
 	/**
 	 * Obtiene el mapa de identificadores de los registros a los que hace referencia
@@ -262,42 +211,89 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 			Connection con) throws BusinessException {
 		HashMap<String, Long> mapaIds = new HashMap<String, Long>();
 		List<TablaDestinoVO> nbTbls = config.getConfigInsercion();
-		for (TablaDestinoVO nbTbl : nbTbls) {
+		for (int i = 0; i < nbTbls.size(); i++) {
+			TablaDestinoVO nbTbl = nbTbls.get(i);
+
 			try {
 				InsercionTablaVO configSQL = config.getConfigMoldesSQL().get(nbTbl.getNbTabla());
-				if (!nbTbl.getIsTblBase()) {
-					Long idGenerado = 0L;
-					String querySelect = formatearSQL(configSQL.getSelectSQL(), linea, separador);
-					String queryInsert = formatearSQL(configSQL.getInsertSQL(), linea, separador);
-					PreparedStatement stmt = con.prepareStatement(querySelect);
-					ResultSet resultSet = stmt.executeQuery();
-					if (resultSet.next()) {
-						//mapaIds.put(nbTbl.getNbTabla(), resultSet.getLong(1));
-						idGenerado = resultSet.getLong(1);
-					} else {						
-						if (!nbTbl.getIsReadOnly()) {
-							LOGGER.debug(queryInsert);
-							stmt = con.prepareStatement(queryInsert,
-									new String[] { configSQL.getCampoID().getNbColumna() });
-							stmt.executeUpdate();
-							ResultSet generatedKeys = stmt.getGeneratedKeys();
-							if (null != generatedKeys) {
-								Map<Object, Object> m = resultSetToArrayMap(generatedKeys);
-								BigDecimal id = (BigDecimal) m.get("value");
-								//mapaIds.put(nbTbl.getNbTabla(), id.longValue());
-								idGenerado = id.longValue();
-							}
-						}
-						
-					}
-					mapaIds.put(nbTbl.getNbTabla(), idGenerado);
+				Long idGenerado = 0L;
+
+				String querySelect = formatearSQL(configSQL.getSelectSQL(), linea, separador);
+				PreparedStatement stmt = con.prepareStatement(querySelect);
+				ResultSet resultSet = stmt.executeQuery();
+				if (resultSet.next()) {
+					idGenerado = resultSet.getLong(1);
 				}
+				if (nbTbl.getIsReadOnly()) {
+					mapaIds.put(nbTbl.getNbTabla(), idGenerado == null ? 0L : idGenerado);
+					continue;
+				}
+				LOGGER.info("Q1 original "+configSQL.getInsertSQL());
+				String queryInsert = formatearSQL(configSQL.getInsertSQL(), linea, separador);
+				LOGGER.info("Q2 formateado "+queryInsert);
+				queryInsert = queryInsert.replace("\\,", ",");
+				LOGGER.info("Q3 dates formteadas "+queryInsert);
+
+				if (nbTbl.getIsTblBase()) {
+					for (Entry<String, Long> tblRef : mapaIds.entrySet()) {
+						queryInsert = queryInsert.replace(LayoutServiceImpl.CARACTER_DOS_PUNTOS + tblRef.getKey(),
+								tblRef.getValue().toString());
+					}
+					// Aplicamos en duro el id del lote
+					if (nbTbl.getIsTblBaseFinal()) {
+						queryInsert = queryInsert.replace(TIE025D_IE_LOTE_ODS,
+								config.getConfigLote().getIdLoteOds().toString());
+						LOGGER.info("Q4 concatenado lote "+queryInsert);
+					}
+				}
+
+				LOGGER.debug(queryInsert);
+				stmt = con.prepareStatement(queryInsert, new String[] { configSQL.getCampoID().getNbColumna() });
+				stmt.executeUpdate();
+				ResultSet generatedKeys = stmt.getGeneratedKeys();
+				if (null != generatedKeys) {
+					Map<Object, Object> m = resultSetToArrayMap(generatedKeys);
+					BigDecimal id = (BigDecimal) m.get("value");
+					idGenerado = id.longValue();
+				}
+				mapaIds.put(nbTbl.getNbTabla(), idGenerado);
+
 			} catch (SQLException e) {
 				mapaIds.put(nbTbl.getNbTabla(), null);
 			}
 		}
 		return mapaIds;
 
+	}
+	/**
+	 * Obtiene la posici&oacute;n del valor de b&uacute;squeda y es sustituido por el error
+	 * @param config
+	 * @param linea
+	 * @param separador
+	 * @param mapaIds
+	 * @throws BusinessException
+	 */
+	private void traducirErroresEnLinea(ConfigCargaMasivaVO config, String linea, String separador,
+			Map<String, Long> mapaIds) throws BusinessException {
+		String[] arrVal = linea.split(separador);
+
+		boolean isExitoso = true;
+		for (Entry<String, Long> refTbl : mapaIds.entrySet()) {
+			ColumnaVO campoFiltro = config.getConfigMoldesSQL().get(refTbl.getKey()).getColumnaFiltro();
+			int ordenColumna = campoFiltro.getNuOrden();
+			int ordenEnArray = ordenColumna == 0 ? 0 : ordenColumna - 1;
+			if (refTbl.getValue() == null) {
+				arrVal[ordenEnArray] = "Err: Error en BD";
+				isExitoso = false;
+			} else if (refTbl.getValue().longValue() == BigDecimal.ZERO.longValue()) {
+				arrVal[ordenEnArray] = "Err: No encontrado";
+				isExitoso = false;
+			}
+		}
+		if (!isExitoso) {
+			String arrLinea = Arrays.toString(arrVal);
+			throw new BusinessException(arrLinea);
+		}
 	}
 
 	/**
@@ -367,7 +363,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		} catch (IOException e) {
 			lineas--;
 		}
-		TipoLayoutVO layoutVigente = tipoLayoutDAO.getLayoutVigente();
+		ConfigLayoutVO layoutVigente = tipoLayoutDAO.getLayoutVigente();
 		if (layoutVigente == null) {
 			throw new BusinessException(LayoutServiceImpl.MSG_LAYOUT_VIGENTE_NULO);
 		}
@@ -375,8 +371,8 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		TipoLayoutDTO layoutVigenteDTO = tipoLayoutDAO.findOne(layoutVigente.getIdTipoLayout());
 		StSeguimientoDTO seguimientoDTO = seguimientoDAO.findOne(ArchivoSeguimientoEnum.CARGANDO.getIdArchivoSeg());
 
-		loteDTO.setIdTipoLayout(layoutVigenteDTO);
-		loteDTO.setIdStSeguimiento(seguimientoDTO);
+		loteDTO.setTipoLayout(layoutVigenteDTO);
+		loteDTO.setStSeguimiento(seguimientoDTO);
 		loteDTO.setFhModificacion(new Date());
 		loteDTO.setNuOdsReportados(lineas);
 		loteDAO.update(loteDTO);
@@ -402,9 +398,13 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 
 		StringBuilder sbErrores = new StringBuilder();
 		boolean isLineaValida = true;
-		if (colsEsperadas != colsRecibidas) {
-			throw new IllegalArgumentException(MessageFormat.format(MSG_ERROR_LINEA_DESAJUSTADA + separador + linea,
-					colsEsperadas, colsRecibidas));
+		if (colsRecibidas != colsEsperadas) {
+			if (colsRecibidas > colsEsperadas) {
+				throw new IllegalArgumentException(
+						MessageFormat.format(MSG_ERROR_LINEA_DESAJUSTADA + separador + linea, colsEsperadas));
+			}
+			throw new IllegalArgumentException(MessageFormat
+					.format(MSG_ERROR_INSUFICIENTES_COLUMNAS + separador + linea, colsRecibidas, colsEsperadas));
 		}
 
 		for (ColumnaArchivoVO col : config.getColumnasEnArchivo()) {
@@ -438,6 +438,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 			sbErrCol.append(MSG_ERROR_DATO_REQUERIDO);
 			continuar = false;
 		}
+		int largodate = valor.length();
 		if (continuar && valor.length() > col.getLongMax()) {
 			sbErrCol.append(MessageFormat.format(MSG_ERROR_TAMANIO_EXCEDE, col.getLongMax()));
 			continuar = false;
@@ -494,7 +495,8 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	}
 
 	/**
-	 * Reemplaza el tipo dato java por uno reconocido por un usuario no t&eacute;cnico
+	 * Reemplaza el tipo dato java por uno reconocido por un usuario no
+	 * t&eacute;cnico
 	 * 
 	 * @param tipoDato
 	 * @param formato

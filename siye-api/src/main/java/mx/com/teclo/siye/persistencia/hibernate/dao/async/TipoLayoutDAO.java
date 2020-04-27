@@ -2,7 +2,7 @@ package mx.com.teclo.siye.persistencia.hibernate.dao.async;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDao;
 import mx.com.teclo.siye.persistencia.hibernate.dto.async.TipoLayoutDTO;
-import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
+import mx.com.teclo.siye.persistencia.vo.async.ConfigLayoutVO;
 
 /**
  * Recupera la configuraci&oacute; del layout o estructura que se espera recibir
@@ -12,7 +12,7 @@ import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
  *
  */
 public interface TipoLayoutDAO extends BaseDao<TipoLayoutDTO> {
-	TipoLayoutVO getLayoutVigente();
-	TipoLayoutVO getTipoLayoutById(Long idTipoLayout);
+	ConfigLayoutVO getLayoutVigente();
+	ConfigLayoutVO getTipoLayoutById(Long idTipoLayout);
 	
 }

@@ -10,10 +10,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
+import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
+import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.CentroInstalacionDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.OdsIncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.LoteOrdenServicioDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OdsDetalleCambioDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.TipoVehiculoDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.VehiculoDTO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
 
 @Service
 public class TblCatalogosServiceImpl implements TblCatalogosService{
@@ -25,6 +37,8 @@ public class TblCatalogosServiceImpl implements TblCatalogosService{
 	@Autowired
 	private CentroInstalacionDAO centroInstalacionDAO;
 
+	@Autowired
+	private CatalogoService catalogoService;
  
 	
 	@Override
@@ -82,5 +96,49 @@ public class TblCatalogosServiceImpl implements TblCatalogosService{
 		return respuesta;
 	}
 	
-
+	
+	@Transactional
+	@Override
+	public Boolean actualizaCentrodeInstalacion(CentroInstalacionVO centroInstalacionVO) throws NotFoundException, BusinessException{
+		CentroInstalacionDTO centroInstalacionDTO = centroInstalacionDAO.centroIns(centroInstalacionVO.getIdCentroInstalacion());
+		Boolean respuesta = false;	
+		if(centroInstalacionDTO == null)
+			throw new NotFoundException("El registro que intenta actualizar no existe");
+		
+		CentroInstalacionDTO centroInstalacionNuevo = new CentroInstalacionDTO();
+		centroInstalacionNuevo.setIdCentroInstalacion(centroInstalacionDTO.getIdCentroInstalacion());
+		centroInstalacionNuevo.setStCentroInstalcion(centroInstalacionDTO.getStCentroInstalcion());
+		centroInstalacionNuevo.setFhCreacion(centroInstalacionDTO.getFhCreacion());
+		centroInstalacionNuevo.setFhModificacion(new Date());
+		centroInstalacionNuevo.setIdUsrCreacion(centroInstalacionDTO.getIdUsrCreacion());
+		centroInstalacionNuevo.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
+		centroInstalacionNuevo.setStActivo(centroInstalacionVO.getStActivo());
+		centroInstalacionNuevo.setStCentroInstalcion(centroInstalacionDTO.getStCentroInstalcion());
+		centroInstalacionNuevo.setCdCentroInstalacion(centroInstalacionDTO.getCdCentroInstalacion());
+		centroInstalacionNuevo.setNbCentroInstalacion(centroInstalacionVO.getNbCentroInstalacion());
+		centroInstalacionNuevo.setNbCalle(centroInstalacionVO.getNbCalle());
+		centroInstalacionNuevo.setNuExterior(centroInstalacionVO.getNuExterior());
+		centroInstalacionNuevo.setNbEntreCalle(centroInstalacionVO.getNbEntreCalle());
+		centroInstalacionNuevo.setNbYCalle(centroInstalacionVO.getNbYCalle());
+		centroInstalacionNuevo.setNbColonia(centroInstalacionVO.getNbColonia());
+		centroInstalacionNuevo.setNbAlcaldia(centroInstalacionVO.getNbAlcaldia());
+		centroInstalacionNuevo.setNbDiasAtencion(centroInstalacionVO.getNbDiasAtencion());
+		centroInstalacionNuevo.setHrAtencionIni(centroInstalacionVO.getHrAtencionIni());
+		centroInstalacionNuevo.setHrAtencionFin(centroInstalacionVO.getHrAtencionFin());
+		try {
+			centroInstalacionDAO.update(centroInstalacionNuevo);
+			respuesta = true;
+		} catch (Exception e) {
+			respuesta = false;
+		}
+		
+	return respuesta;
+	}
+	
+	@Transactional
+	@Override
+	public CentroInstalacionVO findCentroInstalacion(Long idCentroInstalacion) {
+		CentroInstalacionVO centroInstalacionVO = centroInstalacionDAO.obtenerCentroInstalacion(idCentroInstalacion);
+		return centroInstalacionVO;
+	}
 }
