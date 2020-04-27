@@ -48,37 +48,46 @@ public class IncidenciaDAOImpl extends BaseDaoHibernate<IncidenciaDTO> implement
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<IncidenciaDetalleVO> getIncidenciasByIdEncuesta(Long idEncuesta){
+	public List<IncidenciaDetalleVO> getIncidenciasByIdEncuesta(Long idOrden,Long idEncuesta){
 		
 		String hql = "SELECT  inc.idIncidencia as idIncidencia,inc.cdIncidencia as cdIncidencia ,"
 				+ "inc.nbIncidencia as nbIncidencia,inc.txIncidencia as txIncidencia,inc.fhCreacion as fhCreacion,"
 				+ "inc.stSeguimiento as stSeguimiento,inc.tpIncidencia as tpIncidencia,inc.stIncidencia as stIncidencia,"
 				+ "inc.stAutorizacion as stAutorizacion,inc.prioridad as prioridad "
-				+ "FROM IncidenciaDTO as inc "
-				+ "WHERE inc.encuesta.idEncuesta =:idEncuesta "
+				+ "FROM IncidenciaDTO as inc, "
+				+ "OdsIncidenciaDTO as osinc "
+				+ "WHERE inc.idIncidencia = osinc.idIncidencia.idIncidencia "
+				+ "and osinc.idOrdenServicio.idOrdenServicio=:idOrden "
+				+ "and inc.encuesta.idEncuesta =:idEncuesta "
 				+ "and inc.iEproceso.idProceso IS NOT NULL "
 				+ "and inc.stActivo=1 ORDER BY inc.fhCreacion DESC";
 			
 		Query query = getCurrentSession().createQuery(hql);
-		query.setParameter("idEncuesta", idEncuesta).setResultTransformer(Transformers.aliasToBean(IncidenciaDetalleVO.class));
+		query.setParameter("idEncuesta", idEncuesta).
+		setParameter("idOrden", idOrden).setResultTransformer(Transformers.aliasToBean(IncidenciaDetalleVO.class));
 		return query.list();		
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<IncidenciaDetalleVO> getIncidenciasByProceso(Long idProceso){
+	public List<IncidenciaDetalleVO> getIncidenciasByProceso(Long idOrden,Long idProceso){
 		
 		String hql = "SELECT  inc.idIncidencia as idIncidencia,inc.cdIncidencia as cdIncidencia ,"
 				+ "inc.nbIncidencia as nbIncidencia,inc.txIncidencia as txIncidencia,inc.fhCreacion as fhCreacion,"
 				+ "inc.stSeguimiento as stSeguimiento,inc.tpIncidencia as tpIncidencia,inc.stIncidencia as stIncidencia,"
 				+ "inc.stAutorizacion as stAutorizacion,inc.prioridad as prioridad "
-				+ "FROM IncidenciaDTO as inc "
-				+ "WHERE inc.iEproceso.idProceso=:idProceso "
+				+ "FROM IncidenciaDTO as inc, "
+				+ "OdsIncidenciaDTO as osinc "
+				+ "WHERE inc.idIncidencia = osinc.idIncidencia.idIncidencia "
+				+ "and osinc.idOrdenServicio.idOrdenServicio=:idOrden "
+				+ "and inc.iEproceso.idProceso=:idProceso "
 				+ "and inc.encuesta.idEncuesta IS NULL "
 				+ "and inc.stActivo=1 ORDER BY inc.fhCreacion DESC";
 			
 		Query query = getCurrentSession().createQuery(hql);
-		query.setParameter("idProceso", idProceso).setResultTransformer(Transformers.aliasToBean(IncidenciaDetalleVO.class));
+		query.setParameter("idProceso", idProceso).
+		setParameter("idOrden", idOrden)
+		.setResultTransformer(Transformers.aliasToBean(IncidenciaDetalleVO.class));
 		return query.list();		
 	}
 	
