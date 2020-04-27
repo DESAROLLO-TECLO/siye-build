@@ -12,9 +12,9 @@
 			</div>
 			
 			<div class="modal-body">
-				<form name="formIncidenciasMon" novalidate>
+				<form name="formIncidenciasMon" novalidate dir-paginate="incidencia in incidenciasMonVO | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: 1" pagination-id="tabla1">
 					<div class="row">
-						<div class="col-xs-6 col-md-6" dir-paginate="incidencia in incidenciasMonVO | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: 1" pagination-id="tabla1">
+						<div class="col-xs-6 col-md-6">
 							<fieldset class="fieldsetModalIncidencias">
 								<legend>Informacion de Incidencia</legend>
 								<div class="row rowModalIncidencias">
@@ -113,13 +113,29 @@
 								<legend>Imagenes de Incidencia</legend>
 								<div class="row rowModalIncidencias">
 									<div class="col-xs-12 col-md-12">
-										<div ng-if="incidencia.listaImagenes == undefined || incidencia.listaImagenes.length == 0">
+										<div ng-show="incidencia.listaImagenes == undefined || incidencia.listaImagenes.length == 0">
 											<div class="text-center">
 												<h4 class="box-title">Sin imágenes</h4>
 											</div>
 											<div class="imgNotFount">
 												<img ng-src="static/dist/img/image-not-found.svg" style="width: 38rem;"
 													class="img-responsive center-block figure-img img-fluid img-rounded">
+											</div>
+										</div>
+										
+										<div uib-carousel active="0" ng-show="incidencia.listaImagenes.length > 0">
+											<div uib-slide ng-repeat="img in incidencia.listaImagenes" index="$index">
+												<div class="box-title">
+													<h4 class="box-title">{{img.nbExpedienteODS}}</h4>
+												</div>
+												<div class="box-body">
+													<figure class="figure">
+														<img ng-src="http://imagenes.infracciones.df.gob.mx/{{img[0].path}}/{{img[0].nombreArchivo}}"
+															class="img-responsive center-block figure-img img-fluid img-rounded"
+															ng-if="img[1] == 'HandHeld'">
+														<img ng-src="{{img.image}}" class="img-responsive center-block figure-img img-fluid img-rounded">
+													</figure>
+												</div>
 											</div>
 										</div>
 									</div>

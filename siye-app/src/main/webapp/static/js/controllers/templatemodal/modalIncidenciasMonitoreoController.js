@@ -28,6 +28,11 @@ angular.module(appTeclo).controller('modalIncidenciasMonitoreoController',
 		).success(function (data) {
 			if(data.length > 0){
 				$scope.incidenciasMonVO = data;
+				for (var i = 0; i < $scope.incidenciasMonVO.length; i++) {
+					$scope.incidenciasMonVO[i].listaImagenes = [];
+				}
+				$scope.consultaExpedienteIncidencia($scope.incidenciasMonVO[0].idIncidencia);
+				
 			}
 		}).error(function (data) {
 			growl.error(data.message);
@@ -39,7 +44,12 @@ angular.module(appTeclo).controller('modalIncidenciasMonitoreoController',
 			idIncidencia
 		).success(function (data) {
 			if(data.length > 0){
-				$scope.incidenciasExpedienteVO = data;
+				var incidenciasExpedienteVO = data;
+				for (var i = 0; i < $scope.incidenciasMonVO.length; i++) {
+					if($scope.incidenciasMonVO[i].idIncidencia == idIncidencia){
+						$scope.incidenciasMonVO[i].listaImagenes = incidenciasExpedienteVO;
+					}
+				}
 			}
 		}).error(function (data) {
 			growl.error(data.message);
@@ -48,6 +58,8 @@ angular.module(appTeclo).controller('modalIncidenciasMonitoreoController',
 	
 	$scope.cambioDeIncidencia = function(){
 		alert("hola newPageNumber: oldPageNumber: ");
+		$scope.incidenciasMonVO;
+		var x="s";
 	}
 	
 	$scope.defaultValuesModal();
