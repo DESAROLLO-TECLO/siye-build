@@ -45,6 +45,14 @@ angular.module(appTeclo).controller('modalIncidenciasMonitoreoController',
 		).success(function (data) {
 			if(data.length > 0){
 				var incidenciasExpedienteVO = data;
+//				for (var i = 0; i < array.length; i++) {
+//					var array_element = array[i];
+//					
+//				}
+//				var img = {
+//						imagen: "data:image/JPEG;base64," + data.image,
+//						nombreArchivo: fotoNombre,
+//					};
 				for (var i = 0; i < $scope.incidenciasMonVO.length; i++) {
 					if($scope.incidenciasMonVO[i].idIncidencia == idIncidencia){
 						$scope.incidenciasMonVO[i].listaImagenes = incidenciasExpedienteVO;

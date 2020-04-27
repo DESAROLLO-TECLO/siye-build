@@ -86,7 +86,7 @@ angular.module(appTeclo).controller('monIncidenciaController',
 		}
 		
 		$scope.rangoFechas.date.startDate = moment("12/04/2020", "DD/MM/YYYY");
-		$scope.rangoFechas.date.endDate = moment("23/04/2020", "DD/MM/YYYY");
+		$scope.rangoFechas.date.endDate = moment("24/04/2020", "DD/MM/YYYY");
 		
 		$scope.consultaBtn();
 	}

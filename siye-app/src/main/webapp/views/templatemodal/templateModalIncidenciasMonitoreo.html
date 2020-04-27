@@ -12,8 +12,8 @@
 			</div>
 			
 			<div class="modal-body">
-				<form name="formIncidenciasMon" novalidate dir-paginate="incidencia in incidenciasMonVO | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: 1" pagination-id="tabla1">
-					<div class="row">
+				<form name="formIncidenciasMon" novalidate >
+					<div class="row" dir-paginate="incidencia in incidenciasMonVO | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: 1" pagination-id="tabla1">
 						<div class="col-xs-6 col-md-6">
 							<fieldset class="fieldsetModalIncidencias">
 								<legend>Informacion de Incidencia</legend>
@@ -130,10 +130,10 @@
 												</div>
 												<div class="box-body">
 													<figure class="figure">
-														<img ng-src="http://imagenes.infracciones.df.gob.mx/{{img[0].path}}/{{img[0].nombreArchivo}}"
-															class="img-responsive center-block figure-img img-fluid img-rounded"
-															ng-if="img[1] == 'HandHeld'">
-														<img ng-src="{{img.image}}" class="img-responsive center-block figure-img img-fluid img-rounded">
+<!-- 														<img ng-src="http://imagenes.infracciones.df.gob.mx/{{img[0].path}}/{{img[0].nombreArchivo}}" -->
+<!-- 															class="img-responsive center-block figure-img img-fluid img-rounded" -->
+<!-- 															ng-if="img[1] == 'HandHeld'"> -->
+														<img ng-src="data:image/JPEG;base64,{{img.lbExpedienteODS}}" class="img-responsive center-block figure-img img-fluid img-rounded">
 													</figure>
 												</div>
 											</div>
@@ -142,6 +142,9 @@
 								</div>
 							</fieldset>
 						</div>
+					</div>
+					<div class="row">
+						
 					</div>
 				</form>
 			</div>
