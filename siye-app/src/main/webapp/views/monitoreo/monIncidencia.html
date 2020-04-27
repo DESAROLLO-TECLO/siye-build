@@ -221,34 +221,32 @@
 											<tbody>
 												<tr dir-paginate="ordenServicio in monIncidenciasVO.datosTabla | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage">
 													<td class="text-center" style="vertical-align: middle;"
-														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-click="showLineaTiempo(ordenServicio)" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
-														<a ng-click="showLineaTiempo(ordenServicio)">
-															{{ordenServicio.cdOrdenServicio}}
-														</a>
+														<a>{{ordenServicio.cdOrdenServicio}}</a>
 													</td>
 													<td class="text-center" style="vertical-align: middle;"
-														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-click="showLineaTiempo(ordenServicio)" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
 														{{ordenServicio.nbConcesion}}
 													</td>
 													<td class="text-center" style="vertical-align: middle;"
-														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-click="showLineaTiempo(ordenServicio)" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
 														{{ordenServicio.cdPlacaVehiculo}}
 													</td>
 													<td class="text-center" style="vertical-align: middle;"
-														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-click="showLineaTiempo(ordenServicio)" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
 														{{ordenServicio.cdVIN}}
 													</td>
 													<td class="text-center" style="vertical-align: middle;"
-														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-click="showLineaTiempo(ordenServicio)" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
 														{{ordenServicio.nbProceso}}
 													</td>
 													<td class="text-center" style="vertical-align: middle;"
-														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-click="showLineaTiempo(ordenServicio)" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
 														{{ordenServicio.nbEncuesta}}
 													</td>
