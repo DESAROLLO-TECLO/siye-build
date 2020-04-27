@@ -12,7 +12,7 @@
 			</div>
 			
 			<div class="modal-body">
-				<form name="formIncidenciasMon" novalidate dir-paginate="incidencia in incidenciasMonVO | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: 1" pagination-id="tabla1">
+				<form name="formIncidenciasMon" novalidate ng-repeat="incidencia in incidenciasMonVO.slice(((paramConfigPage.bigCurrentPage-1)*paramConfigPage.itemsPerPage),((paramConfigPage.bigCurrentPage)*paramConfigPage.itemsPerPage))">
 					<div class="row">
 						<div class="col-xs-6 col-md-6">
 							<fieldset class="fieldsetModalIncidencias">
@@ -102,10 +102,16 @@
 								</div>
 							</fieldset>
 							<div class="container-fluid">
-								<div class="table-pagination-IncidenciasModal" style="display:block;">
-<!-- 									<rows-per-page rows="1" filtro="view.searchSomethingInc" array="incidenciasMonVO"></rows-per-page> -->
-									<dir-pagination-controls class="pull-right pagination-detail" pagination-id="tabla1">></dir-pagination-controls>
-								</div>
+							
+						<uib-pagination previous-text="<"
+							next-text=">"
+							total-items="paramConfigPage.bigTotalItems" num-pages="numPages"
+							ng-model="paramConfigPage.bigCurrentPage"
+							max-size="paramConfigPage.maxSize"
+							items-per-page="paramConfigPage.itemsPerPage"
+							class="pagination-md" boundary-link-numbers="true"
+							direction-links="true" rotate="false">
+						</uib-pagination>
 							</div>
 						</div>
 						<div class="col-xs-6 col-md-6">
@@ -130,10 +136,9 @@
 												</div>
 												<div class="box-body">
 													<figure class="figure">
-														<img ng-src="http://imagenes.infracciones.df.gob.mx/{{img[0].path}}/{{img[0].nombreArchivo}}"
+														<img ng-src="data:image/img.cdTipoArchivo;base64,{{img.lbExpedienteODS}}"
 															class="img-responsive center-block figure-img img-fluid img-rounded"
-															ng-if="img[1] == 'HandHeld'">
-														<img ng-src="{{img.image}}" class="img-responsive center-block figure-img img-fluid img-rounded">
+															>
 													</figure>
 												</div>
 											</div>
