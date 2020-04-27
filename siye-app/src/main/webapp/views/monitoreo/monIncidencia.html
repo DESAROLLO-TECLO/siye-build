@@ -15,9 +15,11 @@
 				<li class="active">Incidencias</li>
 			</ol>
 		</section>
+		<!-- Linea de tiempo de incidencia -->
+		<div ng-show="flags.pantallaLTiempo" ng-include="'views/monitoreo/detalleIncidencia.html'"></div>
 		
 		<!-- Formulario de busqueda -->
-		<section class="content">
+		<section class="content" ng-show="!flags.pantallaLTiempo">
 			<div class="row centerCol">
 				<div class="col-sm-12 col-md-8">
 					<div class="box box-danger" style="margin-bottom: 0px;">
@@ -102,7 +104,7 @@
 			</div>
 		</section>
 		<!-- final formulario de busqueda -->
-		<section class="content">
+		<section class="content" ng-show="!flags.pantallaLTiempo">
 			<div ng-if="flags.mostrarTablaResultados" class="row centerCol">
 				<div class="col-md-12">
 					<div class="box box-danger">
@@ -221,7 +223,7 @@
 													<td class="text-center" style="vertical-align: middle;"
 														ng-click="consultaOrdenServicio(ordenServicio)" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
-														<a href="#/seguimientoIncidencia/{{ordenServicio.idOrdenServicio}}/{{ordenServicio.idPlan}}">
+														<a ng-click="showLineaTiempo(ordenServicio)">
 															{{ordenServicio.cdOrdenServicio}}
 														</a>
 													</td>

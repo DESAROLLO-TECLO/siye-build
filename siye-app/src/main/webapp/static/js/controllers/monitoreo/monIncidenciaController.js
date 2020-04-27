@@ -1,5 +1,5 @@
 angular.module(appTeclo).controller('monIncidenciaController', 
-	function ($rootScope, $scope, $location, $document, showAlert, growl, catalogoGenericoService, monIncidenciaService, ModalService) {
+	function ($rootScope, $timeout, $scope, $location, $document, showAlert, growl, catalogoGenericoService, monIncidenciaService, ModalService) {
 	//monIncidenciaService
 	$scope.defaultValues = function(){
 		$scope.flags = {
@@ -8,8 +8,11 @@ angular.module(appTeclo).controller('monIncidenciaController',
 			labelValorRequerido 			: "Valor",
 			mostrarTablaResultados			: false,
 			mostrartablaResultadosCentros	: false,
-			mostrartablaResultadosOS		: false
+			mostrartablaResultadosOS		: false,
+			pantallaLTiempo					:false
 		}
+		$scope.orden=[];
+
 		
 		$scope.rangoFechas = {
 			date: {
@@ -214,6 +217,46 @@ angular.module(appTeclo).controller('monIncidenciaController',
 		$scope.params.fechaFin = $scope.rangoFechas.date.endDate.format('DD/MM/YYYY');
 		$scope.consultaMonIncidencias();
 	}
+	//Consulta arbol de incidencia de orden<Proceso<Encuesta>>>
+	$scope.showLineaTiempo=function(orden){
+		let idOrden= orden.idOrdenServicio;
+		let idPlan=orden.idPlan;
+		monIncidenciaService.getDetalleIncidenciasOS(idOrden,idPlan).success(function(data) {
+		    if (data!=null) {
+		    	$scope.flags.pantallaLTiempo=true;
+		    	$scope.orden=data;
+		   		scrollDetail();
+		    	}else
+		    	growl.warning("No se encontro informacion")
+				}).error(function(e) {
+			$scope.flags.pantallaLTiempo=false;
+			$scope.orden = [];
+		    growl.warning(e.message, { ttl: 5000 });
+		});
+		
+	};
+	$scope.regresar=function(){
+		$scope.flags.pantallaLTiempo=false;
+		$scope.orden = [];
+		scrollDetailDestroy();
+	}
+
+	//Funcion para destruir el slimscrol de la linea de tiempo(Muestra toda la informacion en columna)
+	scrollDetailDestroy = function() {
+		$('#scrollDetail').slimscroll("destroy");
+		$('#scrollDetail').attr('style', '');
+		$("#scrollDetail").slimScroll({destroy: true});
+	};
+	//Funcion para asignar scrol a la linea de tiempocon el plugin slim scroll
+	scrollDetail = function() {
+		$('#scrollDetail').slimScroll({
+			height : '100%',
+			color : '#00243c',
+			opacity : .3,
+			size : "4px",
+			alwaysVisible : false
+		});
+	};
 	
 	$scope.defaultValues();
 	getRangoFechas();
