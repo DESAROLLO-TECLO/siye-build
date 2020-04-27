@@ -42,7 +42,8 @@
 												<select class="form-control select2"
 													name="comboTipoBusqueda" id="comboTipoBusqueda"
 													ng-options="x.idTipo as x.nbTipo for x in listTipoBusqueda.tipoBusqueda"
-													ng-model="params.tipoBusqueda">
+													ng-model="params.tipoBusqueda"
+													ng-change="cambioCombo()">
 													<option value="">Seleccione</option>
 												</select>
 											</div>
@@ -250,7 +251,10 @@
 													<td class="text-center" style="vertical-align: middle;"
 														ng-click="ordenServicio.nuIncidenciasOS > 0 ? showDialogIncidencias(ordenServicio) : ''" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
-														{{ordenServicio.nuIncidenciasOS | number}}
+														<span class="etiquetaColor" 
+															style="width:100%; background-color: #cf0a2c;">
+															{{ordenServicio.nuIncidenciasOS | number}}
+														</span>
 													</td>
 												</tr>
 											</tbody>

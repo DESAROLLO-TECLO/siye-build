@@ -34,12 +34,12 @@ angular.module(appTeclo).controller('modalIncidenciasMonitoreoController',
 		});
 	};
 	
-	$scope.consultaMonIncidencias = function () {
-		monIncidenciaService.getIncidenciasByTipobusqueda(
-			$scope.paramsModalIncidencias
+	$scope.consultaExpedienteIncidencia = function (idIncidencia) {
+		monIncidenciaService.getExpedienteIncidencia(
+			idIncidencia
 		).success(function (data) {
 			if(data.length > 0){
-				$scope.incidenciasMonVO = data;
+				$scope.incidenciasExpedienteVO = data;
 			}
 		}).error(function (data) {
 			growl.error(data.message);

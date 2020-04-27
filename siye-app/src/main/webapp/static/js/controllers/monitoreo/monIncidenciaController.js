@@ -106,42 +106,26 @@ angular.module(appTeclo).controller('monIncidenciaController',
 			$scope.flags.campoValorRequerido = true;
 			$scope.flags.labelValorRequerido = "*Valor";
 		}else if($scope.params.tipoBusqueda == undefined || $scope.params.tipoBusqueda == null || $scope.params.tipoBusqueda < 1){
-        	$scope.params.tipoBusqueda = -1;
-        	$scope.flags.campoValorRequerido = false;
-    		$scope.flags.labelValorRequerido = "Valor";
-    		$scope.params.valor = "";
-    		$scope.formBoxBusqueda.valor.$setPristine();
-        }
+			$scope.params.tipoBusqueda = -1;
+			$scope.flags.campoValorRequerido = false;
+			$scope.flags.labelValorRequerido = "Valor";
+			$scope.params.valor = "";
+			$scope.formBoxBusqueda.valor.$setPristine();
+		}
 	}
 	
 	$scope.realizaValidaciones = function (){
 		var respuesta = true;
 		if($scope.rangoFechas.date.startDate == null || $scope.rangoFechas.date.endDate == null){
-			$scope.rangoFechas = {
-				date: {
-					startDate: moment().endOf('day'),
-					endDate: moment().endOf('day')
-				},
-				options: {
-					maxDate: moment().endOf("day"),
-					locale: {
-						applyLabel: "Aceptar",
-						cancelLabel: 'Cancelar',
-						customRangeLabel: 'PERSONALIZADO',
-						format: 'D/MM/YYYY',
-						separator: " - "
-					},
-					ranges: {}
-				}
-			};
-			
-			$scope.rangoFechas.date.startDate = moment("12/04/2020", "DD/MM/YYYY");
-			$scope.rangoFechas.date.endDate = moment("23/04/2020", "DD/MM/YYYY");
+			$scope.rangoFechas.date.startDate = moment().endOf('day');
+			$scope.rangoFechas.date.endDate = moment().endOf('day');
+			$scope.params.fechaInicio = $scope.rangoFechas.date.startDate.format('DD/MM/YYYY');
+			$scope.params.fechaFin = $scope.rangoFechas.date.endDate.format('DD/MM/YYYY');
 			$scope.showAviso("El campo de rango de fechas no puede estar vacío.", "templateModalAviso");
 			respuesta = false;
 		}
 		
-		if($scope.params.tipoBusqueda > 0 && $scope.params.valor == ""){
+		if($scope.params.tipoBusqueda > 0 && ($scope.params.valor == undefined || $scope.params.valor == "")){
 			respuesta = false;
 		}
 		
@@ -149,7 +133,7 @@ angular.module(appTeclo).controller('monIncidenciaController',
 	}
 	
 	requiredFields = function(){
-		angular.forEach($scope.form.$error, function (field) {
+		angular.forEach($scope.formBoxBusqueda.$error, function (field) {
 			angular.forEach(field, function(errorField){
 				errorField.$setDirty();
 			})
