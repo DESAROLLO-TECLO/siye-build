@@ -14,6 +14,7 @@ public class MonitoreoIncidenciasVO {
 	//-------------------------------------
 	
 	private Long idOrdenServicio;
+	private Long idIncidencia;
 	private String cdOrdenServicio;
 	private String nbConcesion;
 	private String cdPlacaVehiculo;
@@ -76,11 +77,20 @@ public class MonitoreoIncidenciasVO {
 	public void setNuIncidencias(Long nuIncidencias) {
 		this.nuIncidencias = nuIncidencias;
 	}
+	
+	//-------------------------------------
+	
 	public Long getIdOrdenServicio() {
 		return idOrdenServicio;
 	}
 	public void setIdOrdenServicio(Long idOrdenServicio) {
 		this.idOrdenServicio = idOrdenServicio;
+	}
+	public Long getIdIncidencia() {
+		return idIncidencia;
+	}
+	public void setIdIncidencia(Long idIncidencia) {
+		this.idIncidencia = idIncidencia;
 	}
 	public String getCdOrdenServicio() {
 		return cdOrdenServicio;

@@ -145,6 +145,14 @@ public class MonitoreoIncidenciasDAOImpl extends BaseDaoHibernate<OrdenServicioD
 		String consulta = ""
 		+ "SELECT "
 		+ "	TIE026.ID_ORDEN_SERVICIO AS idOrdenServicio, "
+		+ "	("
+		+ "		CASE "
+		+ "			WHEN :tipoBusqueda <> 4 "
+		+ "				THEN NULL "
+		+ "			WHEN :tipoBusqueda = 4 "
+		+ "				THEN TIE051.ID_INCIDENCIA "
+		+ "		END "
+		+ "	) AS idIncidencia, "
 		+ "	NVL(TIE026.CD_ORDEN_SERVICIO, 'Orden de servicio Pendiente') AS cdOrdenServicio, "
 		+ "	NVL(TIE052.NB_CONCESION,'--') AS nbConcesion, "
 		+ "	NVL(TIE027.CD_PLACA_VEHICULO, '--') AS cdPlacaVehiculo, "
@@ -180,8 +188,8 @@ public class MonitoreoIncidenciasDAOImpl extends BaseDaoHibernate<OrdenServicioD
 		+ "				THEN 1 "
 		+ "			WHEN #{tipoBusqueda} = 3 AND TIE027.CD_VIN = '#{valor}' "
 		+ "				THEN 1 "
-		+ "			WHEN #{tipoBusqueda} = 4 AND TIE051.CD_INCIDENCIA = '#{valor}' " + 
-		"				THEN 1 "
+		+ "			WHEN #{tipoBusqueda} = 4 AND TIE051.CD_INCIDENCIA = '#{valor}' "
+		+ "				THEN 1 "
 		+ "		END "
 		+ "	) = 1 "
 		+ "	AND TRUNC(TIE051.FH_CREACION) BETWEEN TO_DATE('#{fechaInicio}', 'dd/MM/yyyy') AND TO_DATE('#{fechaFin}', 'dd/MM/yyyy') "
@@ -204,6 +212,7 @@ public class MonitoreoIncidenciasDAOImpl extends BaseDaoHibernate<OrdenServicioD
 		
 		List<MonitoreoIncidenciasVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idOrdenServicio", LongType.INSTANCE)
+				.addScalar("idIncidencia", LongType.INSTANCE)
 				.addScalar("cdOrdenServicio", StringType.INSTANCE)
 				.addScalar("nbConcesion", StringType.INSTANCE)
 				.addScalar("cdPlacaVehiculo", StringType.INSTANCE)
