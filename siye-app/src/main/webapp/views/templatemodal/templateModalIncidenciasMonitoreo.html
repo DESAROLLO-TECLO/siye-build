@@ -5,7 +5,7 @@
 		<div class="modal-content">
 			<div class="modal-header bg-red-active">
 				<button type="button" class="close" data-dismiss="modal"
-					aria-label="Close" ng-click="updateFront()">
+					aria-label="Close" ng-click="cerrarModal()">
 					<span aria-hidden="true">&times;</span>
 				</button>
 				<h4 class="modal-title center" id="myModalLabel">Incidendias Orden de Servicio: {{OrdenServicioModalIncidencias.cdOrdenServicio}}</h4>
@@ -13,7 +13,7 @@
 			
 			<div class="modal-body">
 				<form name="formIncidenciasMon" novalidate >
-					<div class="row" dir-paginate="incidencia in incidenciasMonVO | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: 1" pagination-id="tabla1">
+					<div class="row" ng-repeat="incidencia in incidenciasMonVO.slice(((paramConfigPage.bigCurrentPage-1)*paramConfigPage.itemsPerPage),((paramConfigPage.bigCurrentPage)*paramConfigPage.itemsPerPage))">
 						<div class="col-xs-6 col-md-6">
 							<fieldset class="fieldsetModalIncidencias">
 								<legend>Informacion de Incidencia</legend>
@@ -102,10 +102,16 @@
 								</div>
 							</fieldset>
 							<div class="container-fluid">
-								<div class="table-pagination-IncidenciasModal" style="display:block;">
-<!-- 									<rows-per-page rows="1" filtro="view.searchSomethingInc" array="incidenciasMonVO"></rows-per-page> -->
-									<dir-pagination-controls class="pull-right pagination-detail" pagination-id="tabla1">></dir-pagination-controls>
-								</div>
+							
+								<uib-pagination previous-text="<"
+									next-text=">"
+									total-items="paramConfigPage.bigTotalItems" num-pages="numPages"
+									ng-model="paramConfigPage.bigCurrentPage"
+									max-size="paramConfigPage.maxSize"
+									items-per-page="paramConfigPage.itemsPerPage"
+									class="pagination-md" boundary-link-numbers="true"
+									direction-links="true" rotate="false">
+								</uib-pagination>
 							</div>
 						</div>
 						<div class="col-xs-6 col-md-6">
@@ -133,7 +139,11 @@
 <!-- 														<img ng-src="http://imagenes.infracciones.df.gob.mx/{{img[0].path}}/{{img[0].nombreArchivo}}" -->
 <!-- 															class="img-responsive center-block figure-img img-fluid img-rounded" -->
 <!-- 															ng-if="img[1] == 'HandHeld'"> -->
-														<img ng-src="data:image/JPEG;base64,{{img.lbExpedienteODS}}" class="img-responsive center-block figure-img img-fluid img-rounded">
+<!-- 														<img ng-src="data:image/JPEG;base64,{{img.lbExpedienteODS}}" class="img-responsive center-block figure-img img-fluid img-rounded"> -->
+
+														<img ng-src="data:image/img.cdTipoArchivo;base64,{{img.lbExpedienteODS}}"
+															class="img-responsive center-block figure-img img-fluid img-rounded">
+
 													</figure>
 												</div>
 											</div>

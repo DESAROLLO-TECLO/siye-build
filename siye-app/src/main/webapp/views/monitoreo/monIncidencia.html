@@ -221,7 +221,9 @@
 													<td class="text-center" style="vertical-align: middle;"
 														ng-click="consultaOrdenServicio(ordenServicio)" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
-														{{ordenServicio.cdOrdenServicio}}
+														<a href="#/seguimientoIncidencia/{{ordenServicio.idOrdenServicio}}/{{ordenServicio.idPlan}}">
+															{{ordenServicio.cdOrdenServicio}}
+														</a>
 													</td>
 													<td class="text-center" style="vertical-align: middle;"
 														ng-click="consultaOrdenServicio(ordenServicio)" 
@@ -274,68 +276,6 @@
 				</div>
 			</div>
 		</section>
+		
 	</body>
-<!-- 	<div class="modal fade" id="myModal" tabindex="-1" -->
-<!-- 		data-keyboard="false" data-backdrop="static" role="dialog" -->
-<!-- 		aria-labelledby="myModalLabel"> -->
-<!-- 		<div class="modal-dialog" role="document"> -->
-<!-- 			<div class="modal-content"> -->
-<!-- 				<div class="modal-header"> -->
-<!-- 					<button type="button" class="close" ng-click="uncheckOpcion()" data-dismiss="modal" -->
-<!-- 						aria-label="Close"> -->
-<!-- 						<span aria-hidden="true">&times;</span> -->
-<!-- 					</button> -->
-<!-- 					<h4 class="modal-title" id="myModalLabel"> -->
-<!-- 						Justificación -->
-<!-- 					</h4> -->
-<!-- 				</div> -->
-<!-- 				<div class="modal-body"> -->
-
-<!-- 					<div class="row"> -->
-<!-- 						<div class="col-md-12"> -->
-<!-- 							<div class="form-group" -->
-<!-- 								ng-class="{'has-error': evaluacion.causa.$invalid && evaluacion.causa.$dirty}"> -->
-<!-- 								<label> *Causas: </label> -->
-<!-- 								<div class="input-group"> -->
-<!-- 									<div class="input-group-addon"> -->
-<!-- 										<i class="fa fa-list-alt"></i> -->
-<!-- 									</div> -->
-
-<!-- 									<select class="form-control" select-picker multiple -->
-<!-- 										idioma-sp="{{currentLanguage}}" -->
-<!-- 										data-actions-box="true" -->
-<!-- 										data-selected-text-format="count > 2" -->
-<!-- 										ng-required="true" data-max-options="5" -->
-<!-- 										ng-model="object.causas" name="causa" id="causa" -->
-<!-- 										ng-change="changeComboCausa()" -->
-<!-- 										ng-options="sp.idCausa as sp.nbCausa for sp in comboCausasList"> -->
-
-<!-- 									</select> -->
-<!-- 								</div> -->
-<!-- 								<div ng-show="evaluacion.causa.$error.required && evaluacion.causa.$dirty" -->
-<!-- 									ng-style="{color:'red'}"> -->
-<!-- 									Es necesario ingresar por lo menos una causa -->
-<!-- 								</div> -->
-								
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 						<div class="col-md-12"> -->
-<!-- 							<textarea class="form-control" rows="2" -->
-<!-- 								ng-disabled="true" style="resize: none;">{{nbCausa+""}}</textarea> -->
-<!-- 						</div> -->
-<!-- 						<div class="col-md-12"> -->
-<!-- 							<label> *Descripción: </label> -->
-<!-- 							<textarea class="form-control" rows="4"></textarea> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
-<!-- 				<div class="modal-footer"> -->
-<!-- 					 <button type="button" class="btn btn-default"
-<!-- 						data-dismiss="modal">Salir sin guardar</button> -->
-<!-- 					<button type="button" class="btn btn-primary" -->
-<!-- 						ng-click="guardarCausa(evaluacion)">Guardar</button> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
 </html>

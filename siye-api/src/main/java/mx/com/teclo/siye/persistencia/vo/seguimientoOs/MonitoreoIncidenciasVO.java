@@ -21,6 +21,8 @@ public class MonitoreoIncidenciasVO {
 	private String cdVIN;
 	private String nbProceso;
 	private String nbEncuesta;
+	private Long idPlan;
+	
 	private Long nuIncidenciasOS;
 	
 	public Long getIdCentroInstalacion() {
@@ -127,6 +129,12 @@ public class MonitoreoIncidenciasVO {
 	}
 	public void setNbEncuesta(String nbEncuesta) {
 		this.nbEncuesta = nbEncuesta;
+	}
+	public Long getIdPlan() {
+		return idPlan;
+	}
+	public void setIdPlan(Long idPlan) {
+		this.idPlan = idPlan;
 	}
 	public Long getNuIncidenciasOS() {
 		return nuIncidenciasOS;
