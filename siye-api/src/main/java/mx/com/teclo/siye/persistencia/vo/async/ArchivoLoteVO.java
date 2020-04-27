@@ -26,6 +26,7 @@ public class ArchivoLoteVO {
 	private Long nuOdsAtendidos;
 	private Long nuOdsPendientes;
 	private Long nuOdsIncidencia;
+	private Long nuOdsIgnoradas;
 	private String txLoteOds;
 	private Long idTipoLayout;
 	private Boolean stActivo;
@@ -56,7 +57,7 @@ public class ArchivoLoteVO {
 
 	public void setNbLoteOds(String nbLoteOds) {
 		this.nbLoteOds = nbLoteOds;
-	}	
+	}
 
 	public String getNbArchivoFinal() {
 		return nbArchivoFinal;
@@ -89,6 +90,7 @@ public class ArchivoLoteVO {
 	public void setNbStSeguimiento(String nbStSeguimiento) {
 		this.nbStSeguimiento = nbStSeguimiento;
 	}
+
 	public String getCdColor() {
 		return cdColor;
 	}
@@ -96,8 +98,6 @@ public class ArchivoLoteVO {
 	public void setCdColor(String cdColor) {
 		this.cdColor = cdColor;
 	}
-
-	
 
 	public Long getNuOdsReportados() {
 		return nuOdsReportados;
@@ -139,6 +139,14 @@ public class ArchivoLoteVO {
 		this.nuOdsIncidencia = nuOdsIncidencia;
 	}
 
+	public Long getNuOdsIgnoradas() {
+		return nuOdsIgnoradas;
+	}
+
+	public void setNuOdsIgnoradas(Long nuOdsIgnoradas) {
+		this.nuOdsIgnoradas = nuOdsIgnoradas;
+	}
+
 	public String getTxLoteOds() {
 		return txLoteOds;
 	}
@@ -146,7 +154,7 @@ public class ArchivoLoteVO {
 	public void setTxLoteOds(String txLoteOds) {
 		this.txLoteOds = txLoteOds;
 	}
-	
+
 	public Long getIdTipoLayout() {
 		return idTipoLayout;
 	}
