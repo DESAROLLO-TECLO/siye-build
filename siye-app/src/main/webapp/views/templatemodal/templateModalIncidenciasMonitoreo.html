@@ -1,0 +1,134 @@
+<meta charset="utf-8">
+<div id="modalIncidenciasMonitoreo" class="modal fade" role="dialog"
+	data-keyboard="false" data-backdrop="static">
+	<div class="modal-dialog modal-lg modalIncidenciasMonitoreo" role="document">
+		<div class="modal-content">
+			<div class="modal-header bg-red-active">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close" ng-click="updateFront()">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title center" id="myModalLabel">Incidendias Orden de Servicio: {{OrdenServicioModalIncidencias.cdOrdenServicio}}</h4>
+			</div>
+			
+			<div class="modal-body">
+				<form name="formIncidenciasMon" novalidate>
+					<div class="row">
+						<div class="col-xs-6 col-md-6" dir-paginate="incidencia in incidenciasMonVO | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: 1" pagination-id="tabla1">
+							<fieldset class="fieldsetModalIncidencias">
+								<legend>Informacion de Incidencia</legend>
+								<div class="row rowModalIncidencias">
+									<div class="col-xs-6 col-md-6">
+										<div class="form-group">
+											<label>Folio Incidencia:</label>
+											<div class="col-xs-12 col-md-12">
+												{{incidencia.cdIncidencia}}
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-6 col-md-6">
+										<div class="form-group">
+											<label>Nombre Incidencia:</label>
+											<div class="col-xs-12 col-md-12">
+												{{incidencia.nbIncidencia}}
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row rowModalIncidencias">
+									<div class="col-xs-4 col-md-4">
+										<div class="form-group" style="margin-bottom: 0px;">
+											<label>Prioridad:</label>
+											<div class="">
+												<span class="etiquetaColor" 
+													style="width:100%; background-color: {{incidencia.prioridad.cdColor}};">
+													{{incidencia.prioridad.nbStSeguimiento}}
+												</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-4 col-md-4">
+										<div class="form-group" style="margin-bottom: 0px;">
+											<label>Estatus:</label>
+											<div class="">
+												<span class="etiquetaColor" 
+													style="width:100%; background-color: {{incidencia.stSeguimiento.cdColor}};">
+													{{incidencia.stSeguimiento.nbStSeguimiento}}
+												</span>
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-4 col-md-4">
+										<div class="form-group" style="margin-bottom: 0px;">
+											<label>Tipo Incidencia:</label>
+											<div class="">
+												<span class="etiquetaColor" 
+													style="width:100%; background-color: {{incidencia.tpIncidencia.cdColor}};">
+													{{incidencia.tpIncidencia.nbStSeguimiento}}
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row rowModalIncidencias">
+									<div class="col-xs-6 col-md-6">
+										<div class="form-group">
+											<label>Proceso:</label>
+											<div class="col-xs-12 col-md-12">
+												{{incidencia.iEproceso.nbProceso}}
+											</div>
+										</div>
+									</div>
+									<div class="col-xs-6 col-md-6">
+										<div class="form-group">
+											<label>Etapa:</label>
+											<div class="col-xs-12 col-md-12">
+												{{incidencia.encuesta.nbEncuesta}}
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row rowModalIncidencias">
+									<div class="col-xs-12 col-md-12">
+										<div class="form-group">
+											<label>Descripcion Incidencia:</label>
+											<div class="col-xs-12 col-md-12">
+												<textarea id="infra_motivo" class="form-control" rows="7" 
+													style="resize: none;" ng-model="incidencia.txIncidencia" disabled="true">
+												</textarea>
+											</div>
+										</div>
+									</div>
+								</div>
+							</fieldset>
+							<div class="container-fluid">
+								<div class="table-pagination-IncidenciasModal" style="display:block;">
+<!-- 									<rows-per-page rows="1" filtro="view.searchSomethingInc" array="incidenciasMonVO"></rows-per-page> -->
+									<dir-pagination-controls class="pull-right pagination-detail" pagination-id="tabla1">></dir-pagination-controls>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-6 col-md-6">
+							<fieldset class="fieldsetModalIncidencias">
+								<legend>Imagenes de Incidencia</legend>
+								<div class="row rowModalIncidencias">
+									<div class="col-xs-12 col-md-12">
+										<div ng-if="incidencia.listaImagenes == undefined || incidencia.listaImagenes.length == 0">
+											<div class="text-center">
+												<h4 class="box-title">Sin imágenes</h4>
+											</div>
+											<div class="imgNotFount">
+												<img ng-src="static/dist/img/image-not-found.svg" style="width: 38rem;"
+													class="img-responsive center-block figure-img img-fluid img-rounded">
+											</div>
+										</div>
+									</div>
+								</div>
+							</fieldset>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

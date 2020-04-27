@@ -78,12 +78,19 @@
 								</div>
 								<!-- renglon de opociones -->
 								<div class="box-footer">
-									<div class="row center">
+									<div class="col-md-1 col-xs-1" align="right"></div>
+									<div class="col-md-10 col-xs-10" align="center">
 <!-- 										<button class="btn btn-danger" ng-click="corteDiario()"> -->
 <!-- 											Corte al día -->
 <!-- 										</button> -->
 										<button class="btn btn-danger" ng-click="consultaBtn();">
 											Buscar
+										</button>
+									</div>
+									<div class="col-md-1 col-xs-1 box-tools pull-right">
+										<button type="button" class="btn btn-box-tool btn-danger" ng-click="limpiarCampos()" style="font-size: 1.2rem;"
+											data-toggle="tooltip" data-placement="right" title="Limpiar Campos">
+											<i class="fa fa-undo"></i>
 										</button>
 									</div>
 								</div>
@@ -105,14 +112,14 @@
 									</h4>
 								</div>
 								<div class="col-xs-4 col-md-5 center">
-									<div ng-if="seguimientoVO.verDetalleOS">
+									<div ng-if="flags.mostrartablaResultadosOS">
 										<button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Resultado Principal" 
 											style="border-radius: 50%; width: 2em; height: 2em; padding: 0;" ng-click="infoGral()">
 											<i class="fa fa-angle-double-left" aria-hidden="true"></i>
 										</button>
 										<label>
 											<strong class="text-center">
-												{{monIncidenciasVO.nbCentroInstalacion}}
+												{{params.nbCentroInstalacion}}
 											</strong>
 										</label>
 									</div>
@@ -169,8 +176,8 @@
 											<!-- Cuerpo de la tabla datos de consulta -->
 											<tbody>
 												<tr dir-paginate="modulo in monIncidenciasVO.datosTabla | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage"
-													ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
-													ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
+													ng-click="modulo.nuIncidencias > 0 ? consultaDetalle(modulo) : ''" 
+													ng-class="{'cursorPointer': (modulo.nuIncidencias > 0)}">
 													<td class="text-center">{{modulo.nbModulo}}</td>
 													<td class="text-center">{{modulo.totalOrdenes | number}}</td><!-- width="8%">-->
 													<td class="text-center">{{modulo.nuOrdenesProgramadas | number}}</td><!-- width="11%">-->
@@ -241,9 +248,9 @@
 														{{ordenServicio.nbEncuesta}}
 													</td>
 													<td class="text-center" style="vertical-align: middle;"
-														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-click="ordenServicio.nuIncidenciasOS > 0 ? showDialogIncidencias(ordenServicio) : ''" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
-														{{ordenServicio.nuIncidenciasOS}}
+														{{ordenServicio.nuIncidenciasOS | number}}
 													</td>
 												</tr>
 											</tbody>
@@ -264,4 +271,67 @@
 			</div>
 		</section>
 	</body>
+<!-- 	<div class="modal fade" id="myModal" tabindex="-1" -->
+<!-- 		data-keyboard="false" data-backdrop="static" role="dialog" -->
+<!-- 		aria-labelledby="myModalLabel"> -->
+<!-- 		<div class="modal-dialog" role="document"> -->
+<!-- 			<div class="modal-content"> -->
+<!-- 				<div class="modal-header"> -->
+<!-- 					<button type="button" class="close" ng-click="uncheckOpcion()" data-dismiss="modal" -->
+<!-- 						aria-label="Close"> -->
+<!-- 						<span aria-hidden="true">&times;</span> -->
+<!-- 					</button> -->
+<!-- 					<h4 class="modal-title" id="myModalLabel"> -->
+<!-- 						Justificación -->
+<!-- 					</h4> -->
+<!-- 				</div> -->
+<!-- 				<div class="modal-body"> -->
+
+<!-- 					<div class="row"> -->
+<!-- 						<div class="col-md-12"> -->
+<!-- 							<div class="form-group" -->
+<!-- 								ng-class="{'has-error': evaluacion.causa.$invalid && evaluacion.causa.$dirty}"> -->
+<!-- 								<label> *Causas: </label> -->
+<!-- 								<div class="input-group"> -->
+<!-- 									<div class="input-group-addon"> -->
+<!-- 										<i class="fa fa-list-alt"></i> -->
+<!-- 									</div> -->
+
+<!-- 									<select class="form-control" select-picker multiple -->
+<!-- 										idioma-sp="{{currentLanguage}}" -->
+<!-- 										data-actions-box="true" -->
+<!-- 										data-selected-text-format="count > 2" -->
+<!-- 										ng-required="true" data-max-options="5" -->
+<!-- 										ng-model="object.causas" name="causa" id="causa" -->
+<!-- 										ng-change="changeComboCausa()" -->
+<!-- 										ng-options="sp.idCausa as sp.nbCausa for sp in comboCausasList"> -->
+
+<!-- 									</select> -->
+<!-- 								</div> -->
+<!-- 								<div ng-show="evaluacion.causa.$error.required && evaluacion.causa.$dirty" -->
+<!-- 									ng-style="{color:'red'}"> -->
+<!-- 									Es necesario ingresar por lo menos una causa -->
+<!-- 								</div> -->
+								
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<div class="col-md-12"> -->
+<!-- 							<textarea class="form-control" rows="2" -->
+<!-- 								ng-disabled="true" style="resize: none;">{{nbCausa+""}}</textarea> -->
+<!-- 						</div> -->
+<!-- 						<div class="col-md-12"> -->
+<!-- 							<label> *Descripción: </label> -->
+<!-- 							<textarea class="form-control" rows="4"></textarea> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 				<div class="modal-footer"> -->
+<!-- 					 <button type="button" class="btn btn-default"
+<!-- 						data-dismiss="modal">Salir sin guardar</button> -->
+<!-- 					<button type="button" class="btn btn-primary" -->
+<!-- 						ng-click="guardarCausa(evaluacion)">Guardar</button> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
 </html>
