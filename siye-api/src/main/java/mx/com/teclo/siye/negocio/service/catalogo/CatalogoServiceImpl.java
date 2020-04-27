@@ -19,6 +19,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ConductorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ConfiguracionParamDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.OpcionCausasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ParametrosFolioDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.PersonaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.PersonaTipoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ProveedorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
@@ -37,6 +38,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConductorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConfiguracionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.OpcionCausaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ParametrosFolioDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.PersonaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.PersonaTipoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ProveedorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.StEncuestaDTO;
@@ -139,6 +141,10 @@ public class CatalogoServiceImpl implements CatalogoService{
 
 	@Autowired
 	private TblCatalogosDAO tblCatalogosDAO;
+	
+
+	@Autowired
+	private PersonaDAO personaDAO;
  
 	
 	@Transactional
@@ -456,7 +462,7 @@ public class CatalogoServiceImpl implements CatalogoService{
 	public List<CentroInstalacionVO>consultaCentroIntalacion(String cdTipoBusqueda,Long valor) throws NotFoundException {
 		List<CentroInstalacionDTO> listCentroInstalacionDTO = new ArrayList<>(); 
 		if(cdTipoBusqueda == null)
-			throw new NotFoundException("No se encontró el el valor de busqueda.");
+			throw new NotFoundException("No se encontró el valor de busqueda.");
 		switch(cdTipoBusqueda) {
 			case "TODO":
 				listCentroInstalacionDTO = centroInstalacionDAO.obtenerCentroInstalacion();
@@ -474,6 +480,31 @@ public class CatalogoServiceImpl implements CatalogoService{
 			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
 		List<CentroInstalacionVO> listCentroInstalacionVO = ResponseConverter.converterLista(new ArrayList<>(), listCentroInstalacionDTO, CentroInstalacionVO.class);
 		return listCentroInstalacionVO;
+	}
+	
+	@Transactional
+	@Override
+	public List<PersonaVO>consultalistPersona(String cdTipoBusqueda,Long valor) throws NotFoundException {
+		List<PersonaDTO> listPersonaDTO = new ArrayList<>(); 
+		if(cdTipoBusqueda == null)
+			throw new NotFoundException("No se encontró el valor de busqueda.");
+		switch(cdTipoBusqueda) {
+			case "TODO":
+				listPersonaDTO = personaDAO.getTecnicos();
+				break;
+			case "INACTIVOS":
+				listPersonaDTO = personaDAO.obtenerPersonaVisible(valor);
+				break;
+			
+			case "ACTIVOS":
+				listPersonaDTO = personaDAO.obtenerPersonaVisible(valor);
+				break;
+			}
+		
+		if(listPersonaDTO.isEmpty())
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		List<PersonaVO> listPersonaVO = ResponseConverter.converterLista(new ArrayList<>(), listPersonaDTO, PersonaVO.class);
+		return listPersonaVO;
 	}
 	
 
