@@ -8,44 +8,147 @@
 		<ol class="breadcrumb">
 			<li><a><i class="fa fa-check-square-o"></i>Seguimiento</a>
 			</li>
-			<li class="active">Comparendo</li>
+			<li class="active">Orden de Servicio</li>
 		</ol>
 	</header>
 
 	<section class="content">
 		<!--Inicia Vista de nodos -->
 		<div class="row">
-			<!-- Cuadro de consulta de impugnacion -->
 			<div class="col-md-10 col-md-offset-1">
-				<!-- <ul class="nav nav-tabs preventClic">
-					<li role="presentation" class="tabBox" ng-class="{'active border-box':b_seguimiento}">
-						<a>Seguimiento</a></li>
-					<li role="presentation" class="tabBox" ng-class="{'active border-box':b_detalle}"><a
-							ng-click="cambioVista('d')">Detalle</a></li> -->
+				<ul class="nav nav-tabs preventClic">
+					<li role="presentation" class="tabBox">
+						<button type="submit" ng-class="{vista:_grapStock == true}" ng-click="changeViewTab('gs')"><i
+								class="glyphicon glyphicon-th"></i>
+								fdñlkjsjklñfsdljkf
+						</button>
+					</li>
+					<li role="presentation" class="tabBox">
+						<button type="submit" ng-class="{vista:_grapStock4 === true}" ng-click="changeViewTab('gsf')"><i
+								class="glyphicon glyphicon-th-large"></i></button>
+					</li>
 				</ul>
 				<div class="box box-danger">
 					<div class="box-header with-border">
 						<fieldset>
 							<div class="row">
-								<br>
-								<div class="col-md-10">
+								<div class="col-md-11">
 									<div class="row">
-										<div class="col-xs-4 col-md-3">
-											<strong>Orden Servicio:</strong>
-											<p>{{ordenServicioVO.detalle.cdOrdenServicio}}</p>
-										</div>
-										<div class="col-xs-4 col-md-3">
-											<strong>Centro de Instalación:</strong>
-											<p>{{ordenServicioVO.detalle.nbModuloAtencion}}</p>
-										</div>
-										<div class="col-xs-4 col-md-3">
-											<strong>Estatus:</strong>
-											<p>{{ordenServicioVO.detalle.estatus}}</p>
-										</div>
-										<div class="col-xs-4 col-md-3">
-											link evidencias y in
-										</div>
+										<table class="col-md-12">
+											<thead>
+												<th class="col-md-3 center-text">
+													{{'MONITOREO.detalleOs.label.ci' | translate}}
+												</th>
 
+												<th class="col-md-3 center-text">
+													{{'MONITOREO.detalleOs.label.os' | translate}}													
+												</th>
+
+												<th class="col-md-3 center-text">
+													{{'MONITOREO.detalleOs.label.plan' | translate}}
+												</th>
+
+												<th class="col-md-3 center-text">
+													{{'MONITOREO.detalleOs.label.kit' | translate}}
+												</th>
+											</thead>
+											<tbody>
+												<tr>
+													<td class="col-md-3">
+														{{ordenServicioVO.detalle.nbModuloAtencion}}
+													</td>
+													<td class="col-md-3">
+														{{ordenServicioVO.detalle.cdOrdenServicio}}
+													</td>
+													<td class="col-md-3">
+														{{ordenServicioVO.detalle.nbPlan}}
+													</td>
+													<td class="col-md-3">
+														{{ordenServicioVO.detalle.nbKit}}
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+
+									<div class="row">
+										<table class="col-md-12">
+											<thead>
+												<th class="center-text col-md-3">
+													{{'MONITOREO.detalleOs.label.finicio' | translate}}
+												</th>
+												<th class="center-text col-md-3">
+													{{'MONITOREO.detalleOs.label.ffin' | translate}}
+												</th>
+												<th class="center-text col-md-3">
+													{{'MONITOREO.detalleOs.label.proceso' | translate}}
+												</th>
+												<th class="center-text col-md-3">
+													{{'MONITOREO.detalleOs.label.estatus' | translate}}
+												</th>
+											</thead>
+
+											<tbody>
+												<tr>
+													<td class="col-md-2 center-text">
+														{{ordenServicioVO.detalle.finicio |date:"short"}}
+													</td>
+													<td class="col-md-2 center-text">
+														{{ordenServicioVO.detalle.ffin != null ? ordenServicioVO.detalle.ffin : "SIN TERMINAR" |date:"short" }}
+													</td>
+													<td class="col-md-2 center-text">
+														{{ordenServicioVO.detalle.ffin != null ? 
+															ordenServicioVO.detalle.ffin - ordenServicioVO.detalle.finicio  : "SIN TERMINAR"|date:"short" }}
+													</td>
+													<td class="col-md-2 center-text">
+														{{ordenServicioVO.detalle.estatus}}
+													</td>
+												</tr>
+											</tbody>
+
+										</table>
+									</div>
+
+
+
+									<!--
+
+									<div class="row">
+										<div class="center-text  col-md-2">
+											<strong class="center-text">
+												
+											</strong>
+											<p></p>
+										</div>
+										<div class="center-text  col-md-2">
+											<strong class="center-text">
+												
+											</strong>
+											<p>
+											</p>
+										</div>
+										<div class="center-text  col-md-2">
+											<strong class="center-text">
+												
+											</strong>
+											<p>
+											</p>
+										</div>
+										<div class="center-text col-md-2">
+											<strong
+												class="center-text"></strong>
+											<p></p>
+										</div>
+										<div class="center-text  col-md-4">
+											<button class="btn btn-danger"
+												ng-click="verImagenesCarrusel(ordenServicioVO.detalle,'evidencia','ordenservicio')">
+												{{'MONITOREO.detalleOs.label.evidencia' | translate}}
+											</button>
+											<button class="btn btn-danger"
+												ng-click="verImagenesCarrusel(ordenServicioVO.detalle,'incidencia','ordenservicio')">
+												{{'MONITOREO.detalleOs.label.incidencia' | translate}}
+											</button>
+										</div>
 									</div>
 								</div>
 								<div ng-class="{'col-xs-6 col-md-1':procesoActivo, 'col-md-2':!procesoActivo}">
@@ -54,13 +157,13 @@
 											ng-click="guardarSeguimientoPDF();"
 											tooltip="{{'ADMINISTRACION.Seguimiento.mensajes.exportarReporte' | translate}}">
 									</a>
-								</div>
+								</div> -->
 							</div>
 						</fieldset>
 					</div>
 					<div class="box-body">
 						<!-- Vista en modo NODOS procesos -->
-						<div  ng-show="ordenServicioVO.verProcesos">
+						<div ng-show="ordenServicioVO.verProcesos">
 							<section class="content contFullscreen" id="contFullScreen">
 								<div class="row">
 									<div class="col-md-12">
@@ -71,109 +174,86 @@
 						</div>
 
 						<!-- Vista modo linea de tiempo -->
-						<div ng-show="ordenServicioVO.verDetalle">
+						<div style="height: 500px; 	overflow-y: scroll;" ng-show="ordenServicioVO.verDetalle">
 							<div class="box-body scrollDetail" id="scrollDetail">
 								<ul class="timeline">
-									<li class="time-label" ng-repeat-start="pr in procesoDetalle">
-										<span class="bg-dates"> {{pr.fhProcCompare | date:
-												'dd/MM/yyyy HH:mm:ss'}} </span>
+									<li class="time-label"
+										ng-repeat-start="detalle in ordenServicioVO.etapasVO.encuestas">
+										<span class="bg-dates">
+											{{detalle.nbEncuesta}}
+										</span>
 									</li>
 									<li>
-										<div class="fa nodesTimeline"
-											style="background-color: {{pr.procesos.tipoProceso.cdRgb}};">
-											<img ng-src="data:image/png;base64,{{pr.procesos.lbImagen}}"
-												class="img-circle imgNodes" alt="Cinque Terre">
-										</div>
 										<div class="timeline-item">
-											<h3 class="timeline-header">
-												<div class="row">
-													<div class="col-md-6">
-														<p>
-															<strong>{{pr.procesos.nbProceso}}</strong>
-														</p>
-													</div>
-													<div class="col-md-6">
-														<p class="badge pull-right">
-															<span>{{pr.nbUsuario}}</span>
-														</p>
-													</div>
-												</div>
-											</h3>
 											<div class="timeline-body table-responsive">
 												<table class="table tblsnborder">
 													<thead>
 														<tr>
-															<td class="center"><strong>Observaciones</strong></td>
-															<td class="center"><strong>Documentos
-																	adjuntos</strong></td>
-															<td class="center"><strong>Plantillas</strong></td>
+															<td class="col-md-4 center-text">
+																<strong>
+																	{{'MONITOREO.detalleOs.label.finicio' | translate}}
+																</strong>
+															</td>
+															<td class="col-md-4 center-text">
+																<strong>
+																	{{'MONITOREO.detalleOs.label.ffin' | translate}}
+																</strong>
+															</td>
+															<td class="col-md-4 center-text">
+																<strong>
+																	{{'MONITOREO.detalleOs.label.preguntas' | translate}}
+																</strong>
+															</td>
 														</tr>
 													</thead>
 													<tbody>
 														<tr>
-															<td style="text-align: center;" width="40%">{{pr.txComentario}}</td>
-															<td style="text-align: center;" width="35%">
-																<div class="row" ng-show="pr.tipoArchivo.length == 0">
-																	<div class="col-md-12">ESTE PROCESO NO CUENTA CON
-																		ARCHIVOS</div>
-																</div>
-																<div class="row" ng-repeat-start="ar in pr.tipoArchivo">
-																	<div class="col-md-12" ng-if="ar.archivo.lbArchivo != null">
-																		<a class="linkTable"
-																			tooltip="{{'ADMINISTRACION.Seguimiento.mensajes.visualizar' | translate}}"
-																			ng-click="descargarDocumentoDigitalizado(ar.archivo.lbArchivo)">
-																			<i class="fa fa-eye"></i> {{ar.txDescripcion}}
-																		</a>
-																	</div>
-																	<!-- 															<div class="col-md-8" -->
-																	<!-- 																ng-if="ar.archivo.lbArchivo == null">-{{ar.nbArchivoTipo}}</div> -->
-																	<div class="col-md-12" ng-if="ar.archivo.lbArchivo == null">
-																		<a class="linkTable"
-																			tooltip="{{'ADMINISTRACION.Seguimiento.mensajes.cargar' | translate}}"
-																			ng-show="archivo.archivo == null"
-																			ng-click="cargarArchivo(ar,0,$parent.$parent.$index)">
-																			<i class="fa fa-upload" title="Cargar Archivo"
-																				aria-hidden="true"></i>{{ar.txDescripcion}}
-																		</a>
-																	</div>
-																</div>
-																<p />
-																<div ng-repeat-end></div>
+															<td class="col-md-4 center-text">
+																{{detalle.fhInicio!=null ? detalle.fhInicio : "SIN FECHA" |date:"short"}}
 															</td>
-															<td style="text-align: left;" width="25%">
-																<div class="row" ng-show="pr.plantillasProceso.length == 0">
-																	<div class="col-md-12">ESTE PROCESO NO CUENTA CON
-																		PLANTILLAS</div>
-																</div>
-																<div class="row" ng-repeat-start="pl in pr.plantillasProceso">
-																	<div class="col-md-12" ng-if="$first">
-																		<a class="linkTable"
-																			tooltip="{{'ADMINISTRACION.Seguimiento.mensajes.descargar' | translate}}"
-																			ng-click="downloadPlantilla(pl.cdExtension,pl.lbArchivo,pl.nbPlantilla)">
-																			<i class="fa fa-download"></i> {{pl.nbPlantilla}}
-																		</a>
-																	</div>
-																	<div class="col-md-12" ng-if="!$first">
-																		<a class="linkTable"
-																			tooltip="{{'ADMINISTRACION.Seguimiento.mensajes.descargar' | translate}}"
-																			ng-click="downloadPlantilla(pl.cdExtension,pl.lbArchivo,pl.nbPlantilla)">
-																			<i class="fa fa-download"></i> {{pl.nbPlantilla}}
-																		</a>
-																	</div>
-																</div>
-																<p />
-																<div ng-repeat-end></div>
+															<td class="col-md-4 center-text">
+																{{detalle.fhFin !=null ? detalle.fhFin : "SIN FECHA" |date:"short"}}
 															</td>
-															<!-- 													<td style="text-align:center;"> -->
-															<!-- 														<button style="border-radius: 30px;" type="button" class="btn btn-success btn-flat" > -->
-															<!-- 															<i class="fa fa-download" title="Descargar" aria-hidden="true" ng-click="downloadPlantilla(plantilla.nbUrl)"></i> -->
-															<!-- 														</button> -->
-															<!-- 													</td> -->
+															<td class="col-md-4 center-text">
+																{{detalle.preguntas}}
+															</td>
+														</tr>
+														<tr>
+															<td class="col-md-4 center-text">
+																<span
+																	style="border-image: initial; border: 1px solid blue;">
+																	{{detalle.estatus}}
+																</span>
+															</td>
+															<td class="col-md-4 center-text">
+																<label for="">
+																	<strong>*Progreso: </strong>{{detalle.nuPorcentaje}}
+																</label>
+																<div class="progress" style="width: 50%;">
+																	<div class="progress-bar" role="progressbar"
+																        style="{{detalle.nuPorcentaje}}" aria-valuenow="100"
+																		aria-valuemin="0"
+																		aria-valuemax="100">
+																	</div>
+																</div>
+															</td>
+															<td class="col-md-4 center-text">
+																<a type="button"
+																	ng-click="verImagenesCarrusel(detalle,'evidencia', 'encuesta')"
+																	class="btn pull-left">
+																	{{'MONITOREO.detalleOs.label.evidencia' | translate}}
+																</a>
+																<a type="button"
+																	ng-click="verImagenesCarrusel(detalle,'incidencia', 'encuesta')"
+																	class="btn pull-left">
+																	{{'MONITOREO.detalleOs.label.incidencia' | translate}}
+																</a>
+															</td>
 														</tr>
 													</tbody>
 												</table>
 											</div>
-											<div class="timeline-footer" ng-if="false">
+											<!-- <div class="timeline-footer" ng-if="false">
 												<div class="row">
 													<div class="col-md-2" ng-repeat-start="ar in pr.archivosProceso"
 														ng-if="$first">
@@ -204,16 +284,16 @@
 													</div>
 													<div ng-repeat-end></div>
 												</div>
-											</div>
+											</div> -->
 										</div>
 									</li>
-									<!-- END timeline item -->
-									<li ng-if="$last" ng-repeat-end><i class="fa fa-clock-o bg-gray"></i></li>
-									<!-- 				            <li ng-repeat-end></li> -->
+									<li ng-if="$last" ng-repeat-end>
+										<i class="fa fa-clock-o bg-gray"></i>
+									</li>
 								</ul>
 							</div>
 						</div>
-						
+
 					</div>
 					<div class="box-footer">
 						<div class="row">

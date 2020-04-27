@@ -2,6 +2,8 @@ package mx.com.teclo.siye.negocio.service.seguimientoOs;
 
 import java.util.List;
 
+import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleIncidenciaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesoDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesosOrdenServicioDetalleVO;
@@ -33,7 +35,7 @@ public interface SeguimientoOsService {
 	 * @param idProceso
 	 * @return List<ProcesoDetalleVO>
 	 *  Metodo para consultar, el acance de una Os en especifico  */
-	public List<ProcesoDetalleVO> getDetalleProceso(Long idOrdenServicio, Long idProceso);
+	public ProcesoDetalleVO getDetalleProceso(Long idOrdenServicio, Long idProceso);
 	
 	 /**
 	  * Descripción: metodo que consulta la preguntas y su respuesta de una encuesta especifica,
@@ -43,5 +45,24 @@ public interface SeguimientoOsService {
 	  * @return List<PreguntasDetalleVO>  
 	  * */
 	public List<PreguntasDetalleVO> getDetallePregunta(Long idOrdenServicio, Long idEncuesta);
+	
+	 /**
+	  * Descripción: metodo para cunsultar las imagenes por nivel y tipo evidencia o incidencia ,
+	  * @author Maverick
+	  * @param idOrdenServicio
+	  * @param valor
+	  * @param nivel
+	  * @param clase
+	  * @return List<PreguntasDetalleVO>  
+	  * */
+	public List<ImagenVO> getDetalleImagenByNivel(Long idOrdenServicio, Long valor, String nivel, String clase);
+	
+	 /**
+	  * Descripción: consulta el detalle, nivel, estatus de la incidencia 
+	  * @author Maverick
+	  * @param idOrdenServicio
+	  * @return List<DetalleIncidenciaVO>  
+	  * */
+	public List<DetalleIncidenciaVO> getDetalleSeguimientoIncidencia(Long idOrdenServicio);
 
 }

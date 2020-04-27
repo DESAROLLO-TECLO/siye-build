@@ -19,6 +19,7 @@ import mx.com.teclo.siye.negocio.service.monitoreoInicidencia.MonitoreoIncidenci
 import mx.com.teclo.siye.negocio.service.seguimientoOs.SeguimientoOsService;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenIncidenciaDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleIncidenciaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.MonitoreoIncidenciasVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesoDetalleVO;
@@ -69,16 +70,14 @@ public class SeguimientoOsRestController {
 	
 	@GetMapping(value="/getDetalleProceso")
 	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
-	public ResponseEntity<List<ProcesoDetalleVO>> getDetalleProceso(@RequestParam(value ="idOrden") Long idOrdenServicio,
+	public ResponseEntity<ProcesoDetalleVO> getDetalleProceso(@RequestParam(value ="idOrden") Long idOrdenServicio,
 															  		@RequestParam(value ="idProceso") Long idProceso) throws NotFoundException{	
-		List<ProcesoDetalleVO> respuesta = seguimientoService.getDetalleProceso(idOrdenServicio, idProceso);
-		if(respuesta.isEmpty()) {
+		ProcesoDetalleVO respuesta = seguimientoService.getDetalleProceso(idOrdenServicio, idProceso);
+		if(respuesta==null) {
 			throw new NotFoundException("No hay información");
 		}
-		return new ResponseEntity<List<ProcesoDetalleVO>>(respuesta, HttpStatus.OK);
+		return new ResponseEntity<ProcesoDetalleVO>(respuesta, HttpStatus.OK);
 	};
-	
-	
 	
 
 	@GetMapping(value="/getMonIncidencias")
@@ -129,7 +128,31 @@ public class SeguimientoOsRestController {
 	public ResponseEntity<List<ImagenVO>> getExpedienteIncidencia(@RequestParam(value="idIncidencia", required=true) Long idIncidencia) throws BusinessException, Exception{
 	List<ImagenVO> listImagenes = monitoreoIncidenciaService.getExpedienteByIdIncidencia(idIncidencia);
 		return new ResponseEntity<List<ImagenVO>>(listImagenes, HttpStatus.OK);
-	}
+	};
+	
+	@GetMapping(value="/getImgSeguimiento")
+	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
+	public ResponseEntity<List<ImagenVO>> getImagenSeguimiento(@RequestParam(value ="idOrdenServicio") Long idOrdenServicio,
+															   @RequestParam(value ="valor") Long valor,
+															   @RequestParam(value ="nivel") String nivel,
+															   @RequestParam(value ="clase") String clase) throws NotFoundException{	
+		List<ImagenVO> respuesta = seguimientoService.getDetalleImagenByNivel(idOrdenServicio, valor, nivel, clase);
+		if(respuesta.isEmpty()) {
+			throw new NotFoundException("No hay imagenes de "+clase);
+		}
+		return new ResponseEntity<List<ImagenVO>>(respuesta, HttpStatus.OK);
+	};
+	
+	@GetMapping(value="/getDetalleIncidencia")
+	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
+	public ResponseEntity<List<DetalleIncidenciaVO>> getImagenSeguimiento(@RequestParam(value ="idOrdenServicio") Long idOrdenServicio) throws NotFoundException{	
+		
+		List<DetalleIncidenciaVO> respuesta = seguimientoService.getDetalleSeguimientoIncidencia(idOrdenServicio);
+		if(respuesta.isEmpty()) {
+			throw new NotFoundException("Ocurrio un error al consultar el detalle de la incidencia");
+		}
+		return new ResponseEntity<List<DetalleIncidenciaVO>>(respuesta, HttpStatus.OK);
+	};
 
 	
 }

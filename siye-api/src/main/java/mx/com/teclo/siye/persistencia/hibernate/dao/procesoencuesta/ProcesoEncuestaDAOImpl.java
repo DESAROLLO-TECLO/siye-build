@@ -7,7 +7,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
-import org.hibernate.type.DoubleType;
+import org.hibernate.type.DateType;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
 import org.springframework.stereotype.Repository;
@@ -71,8 +71,8 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 		StringBuilder consulta = new StringBuilder("SELECT tdipe.ID_ENCUESTA  AS idEncuesta, encuesta.NB_ENCUESTA AS nbEncuesta," 
 	            +"tdeuei.FH_INICIO  AS fhInicio, tdeuei.FH_FIN AS fhFin, tdeuei.NU_PREGUNTAS||'/'||tdeuei.NU_PREGUNTAS_CORRECTAS AS preguntas," 
 				+"st.NB_ST_ENCUESTA AS estatus,"
-	            +"CASE tdeuei.ID_ST_CALIFICACION WHEN 3 THEN 0.0"
-				+"  ELSE tdeuei.NU_PREGUNTAS /(tdeuei.NU_PREGUNTAS_CORRECTAS + tdeuei.NU_PREGUNTAS_INCORR + tdeuei.NU_PREGUNTAS_VACIAS)*100 END AS nuPorcentaje"
+	            +"CASE tdeuei.ID_ST_CALIFICACION WHEN 3 THEN '0%' "
+				+"  ELSE tdeuei.NU_PREGUNTAS /(tdeuei.NU_PREGUNTAS_CORRECTAS + tdeuei.NU_PREGUNTAS_INCORR + tdeuei.NU_PREGUNTAS_VACIAS)*100 || '%' END AS nuPorcentaje"
 	            +" FROM TIE037D_IE_PROCESO_ENCUESTA tdipe" 
 				+"    INNER JOIN TIE001D_EE_ENCUESTAS encuesta ON (tdipe.ID_ENCUESTA = encuesta.ID_ENCUESTA)" 
 				+"    INNER JOIN TIE002D_EE_ODS_ENCUESTA tdeoe ON (encuesta.ID_ENCUESTA = tdeoe.ID_ENCUESTA)" 
@@ -83,11 +83,11 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 		List<EncuestaDetalleVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idEncuesta",LongType.INSTANCE)
 				.addScalar("nbEncuesta",StringType.INSTANCE)
-				.addScalar("fhInicio", StringType.INSTANCE)
-				.addScalar("fhFin", StringType.INSTANCE)
+				.addScalar("fhInicio", DateType.INSTANCE)
+				.addScalar("fhFin", DateType.INSTANCE)
 				.addScalar("preguntas", StringType.INSTANCE)
 				.addScalar("estatus", StringType.INSTANCE)
-				.addScalar("nuPorcentaje",DoubleType.INSTANCE)
+				.addScalar("nuPorcentaje",StringType.INSTANCE)
 				.setParameter("idOrdenServicio", idOrdenServicio)
 				.setParameter("idProceso", idProceso)
 				.setResultTransformer(Transformers.aliasToBean(EncuestaDetalleVO.class)).list();
@@ -136,6 +136,12 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 		query.setParameter("idEncuesta", idEncuesta)
 		.setParameter("idOrden", idOrden).setResultTransformer(Transformers.aliasToBean(StEncuestaVO.class));
 		return (StEncuestaVO) query.uniqueResult();
+	}
+
+	@Override
+	public List<EncuestaDetalleVO> getDetalleEncuestaParaNodos(Long idOrdenServicio, Long idProceso) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
