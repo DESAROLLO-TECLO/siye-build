@@ -215,6 +215,48 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		query.setParameter("idOrdenServicio", idOrdenServicio).setResultTransformer(Transformers.aliasToBean(OrdenServicioDetVO.class));
 		return (OrdenServicioDetVO) query.uniqueResult();
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrdenServicioDTO> todos(Long idCentroInstalacion,Integer numMostrar) {
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		c.createAlias("centroInstalacion", "centroInstalacion");
+		c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
+		c.add(Restrictions.eq("stActivo", true));
+		c.addOrder(Order.desc("fhCita"));
+		c.addOrder(Order.desc("proceso"));
+        c.setMaxResults(numMostrar);
+		return (List<OrdenServicioDTO>)c.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrdenServicioDTO> getOrdenServicioByLote(String valor,Long centroInstalacion) {
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		c.createAlias("centroInstalacion", "centroInstalacion");
+		c.createAlias("loteOrdenServicio", "lote");
+		c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", centroInstalacion));
+		c.add(Restrictions.eq("lote.nbLoteOds", valor));
+		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("idOrigenOds",1));
+		c.addOrder(Order.desc("fhCita"));
+		c.addOrder(Order.desc("proceso"));
+		return (List<OrdenServicioDTO>)c.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrdenServicioDTO> getOrdenServicioByIncidecnia(String valor,Long centroInstalacion) {
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		c.createAlias("centroInstalacion", "centroInstalacion");
+		c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", centroInstalacion));
+		c.add(Restrictions.eq("cdOrdenServicio", valor));
+		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("idOrigenOds",2));
+		c.addOrder(Order.desc("fhCita"));
+		c.addOrder(Order.desc("proceso"));
+		return (List<OrdenServicioDTO>)c.list();
+	}
 
 
 
