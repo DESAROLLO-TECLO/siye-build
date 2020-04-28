@@ -2,14 +2,20 @@ package mx.com.teclo.siye.persistencia.hibernate.dto.proceso;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.SeccionDTO;
 
 @Entity
 @Table(name = "TIE030D_IE_KIT_INSTALACION")
@@ -43,6 +49,10 @@ public class KitInstalacionDTO implements Serializable {
 
 	@Column(name = "FH_MODIFICACION", nullable = false, length = 7)
 	private Date fhModificacion;
+	
+	//probando
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "kitInstalacion", fetch = FetchType.LAZY)
+	private List<KitInstalacionDispDTO> kitInstalacionDispDTO;
 
 	/**
 	 * @return the idKitInstalacion
@@ -142,6 +152,16 @@ public class KitInstalacionDTO implements Serializable {
 		this.fhModificacion = fhModificacion;
 	}
 
+	public List<KitInstalacionDispDTO> getKitInstalacionDispDTO() {
+		return kitInstalacionDispDTO;
+	}
+
+	public void setKitInstalacionDispDTO(
+			List<KitInstalacionDispDTO> kitInstalacionDispDTO) {
+		this.kitInstalacionDispDTO = kitInstalacionDispDTO;
+	}
+
+	
 
 	
 

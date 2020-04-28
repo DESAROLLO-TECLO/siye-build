@@ -160,4 +160,12 @@ public interface OrdenServicioDAO extends BaseDao<OrdenServicioDTO>{
 	public List<OrdenServicioDTO> consultaOrdenByOrdenServicioTodo(String valor);
 	
 	public List<OrdenServicioDTO> consultaOrdenByVinTodo(String valor);
+	
+	public List<OrdenServicioDTO> consultaAvanzada(Boolean busquedaAvanzada,String cdTipoBusqueda,
+		    String valorBusqueda, String fhInicio, String fhFin,String centroInstalacion,String estatusSeguimiento,
+		    Boolean isLote, Boolean isIncidencia,
+			String valorLoteIncidencia, String tipoKit,
+			String tipoPlan,Integer nuMaxMostrar);
+	
+	public List<OrdenServicioDTO> consultaTodasOrdenes();
 }
