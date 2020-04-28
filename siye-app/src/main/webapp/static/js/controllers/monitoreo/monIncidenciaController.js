@@ -88,8 +88,8 @@ angular.module(appTeclo).controller('monIncidenciaController',
 			$scope.rangoFechas.date.endDate = moment($scope.params.fechaFin, "DD/MM/YYYY");
 		}
 		
-		$scope.rangoFechas.date.startDate = moment("12/04/2020", "DD/MM/YYYY");
-		$scope.rangoFechas.date.endDate = moment("24/04/2020", "DD/MM/YYYY");
+		//$scope.rangoFechas.date.startDate = moment("12/04/2020", "DD/MM/YYYY");
+		//$scope.rangoFechas.date.endDate = moment("24/04/2020", "DD/MM/YYYY");
 		
 		$scope.consultaBtn();
 	}
@@ -247,6 +247,7 @@ angular.module(appTeclo).controller('monIncidenciaController',
 		$('#scrollDetail').attr('style', '');
 		$("#scrollDetail").slimScroll({destroy: true});
 	};
+	
 	//Funcion para asignar scrol a la linea de tiempocon el plugin slim scroll
 	scrollDetail = function() {
 		$('#scrollDetail').slimScroll({
@@ -256,6 +257,72 @@ angular.module(appTeclo).controller('monIncidenciaController',
 			size : "4px",
 			alwaysVisible : false
 		});
+	};
+	
+	$scope.descargarExcel = function() {
+		let peticionReporteVO = new Object();
+		peticionReporteVO.header = getCabeceras();
+		peticionReporteVO.values = getContenido($scope.monIncidenciasVO.datosTabla);
+		if($scope.paramsRespaldo.opcion == 1){
+			peticionReporteVO.titulo = "Reporte de Monitoreo de Incidencias - Por Centros de Instalacion";
+		}else if($scope.paramsRespaldo.opcion == 2){
+			peticionReporteVO.titulo = "Reporte de Monitoreo de Incidencias - Por Ordenes de Servicio";
+		}
+		monIncidenciaService.descargarReporteExcel(peticionReporteVO).success(function(data, status, headers) {
+			let filename = headers('filename');
+			let file = new Blob([data], { type: 'application/vnd.ms-excel;base64,' });
+			monIncidenciaService.downloadfile(file, filename);
+		}).error(function(e) {
+			if(e.descripcion != undefined){
+				growl.error(e.descripcion,{ ttl: 5000 });
+			}else if(e.message != undefined) {
+				growl.error(e.message,{ ttl: 5000 });
+			}else {showAlert.error('Falló la petición');}
+		});
+	};
+	
+	getCabeceras = () => {
+		let headers = new Array();
+		if($scope.paramsRespaldo.opcion == 1){
+			headers.push("CENTRO DE INSTALACIÓN");
+			headers.push("TOTAL ORDENES DE SERVICIO");
+			headers.push("ORDENES DE SERVICIO PROGRAMADAS");
+			headers.push("ORDENES DE SERVICIO NO PROGRAMADAS");
+			headers.push("INCIDENCIAS");
+		}else if($scope.paramsRespaldo.opcion == 2){
+			headers.push("ORDEN SERVICIO");
+			headers.push("CONCESION");
+			headers.push("PLACA");
+			headers.push("VIN");
+			headers.push("PROCESO");
+			headers.push("ETAPA");
+			headers.push("INCIDENCIAS");
+		}
+		return headers;
+	};
+	
+	getContenido = (list) => {
+		let array = new Array();
+		for (let i = 0; i < list.length; i++) {
+			let elemento = new Array();
+			if($scope.paramsRespaldo.opcion == 1){
+				elemento.push(list[i].nbModulo);
+				elemento.push(list[i].totalOrdenes);
+				elemento.push(list[i].nuOrdenesProgramadas);
+				elemento.push(list[i].nuOrdenesNoProgramadas);
+				elemento.push(list[i].nuIncidencias);
+			}else if($scope.paramsRespaldo.opcion == 2){
+				elemento.push(list[i].cdOrdenServicio);
+				elemento.push(list[i].nbConcesion);
+				elemento.push(list[i].cdPlacaVehiculo);
+				elemento.push(list[i].cdVIN);
+				elemento.push(list[i].nbProceso);
+				elemento.push(list[i].nbEncuesta);
+				elemento.push(list[i].nuIncidenciasOS);
+			}
+			array.push(elemento);
+		}
+		return array;
 	};
 	
 	$scope.defaultValues();
