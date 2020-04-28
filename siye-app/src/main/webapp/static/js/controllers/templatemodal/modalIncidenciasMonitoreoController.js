@@ -72,7 +72,7 @@ angular.module(appTeclo).controller('modalIncidenciasMonitoreoController',
 				}
 			}
 		}).error(function (data) {
-			growl.error(data.message);
+			growl.info(data.message);
 		});
 	};
 	
