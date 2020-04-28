@@ -35,11 +35,13 @@ public class LoteOrdenServicioDTO implements Serializable {
 	private String nbArchivoFinal;
 	@JoinColumn(name = "ID_ST_SEGUIMIENTO", referencedColumnName = "ID_ST_SEGUIMIENTO")
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
-	private StSeguimientoDTO idStSeguimiento;
+	private StSeguimientoDTO stSeguimiento;
 	@Column(name = "NU_ODS_REPORTADOS")
 	private Long nuOdsReportados;
 	@Column(name = "NU_ODS_CARGADOS")
 	private Long nuOdsCargados;
+	@Column(name = "NU_ODS_IGNORADOS")
+	private Long nuOdsIgnorados;
 	@Column(name = "NU_ODS_ATENDIDOS")
 	private Long nuOdsAtendidos;
 	@Column(name = "NU_ODS_PENDIENTES")
@@ -50,7 +52,7 @@ public class LoteOrdenServicioDTO implements Serializable {
 	private String txLoteOds;
 	@JoinColumn(name = "ID_TIPO_LAYOUT", referencedColumnName = "ID_TIPO_LAYOUT")
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
-	private TipoLayoutDTO idTipoLayout;	
+	private TipoLayoutDTO tipoLayout;	
 	@Column(name = "ST_ACTIVO")
 	private Boolean stActivo;
 	@Column(name = "ID_USR_CREACION")
@@ -94,12 +96,12 @@ public class LoteOrdenServicioDTO implements Serializable {
 		this.nbArchivoFinal = nbArchivoFinal;
 	}
 
-	public StSeguimientoDTO getIdStSeguimiento() {
-		return idStSeguimiento;
+	public StSeguimientoDTO getStSeguimiento() {
+		return stSeguimiento;
 	}
 
-	public void setIdStSeguimiento(StSeguimientoDTO idStSeguimiento) {
-		this.idStSeguimiento = idStSeguimiento;
+	public void setStSeguimiento(StSeguimientoDTO stSeguimiento) {
+		this.stSeguimiento = stSeguimiento;
 	}
 
 	public Long getNuOdsReportados() {
@@ -116,6 +118,14 @@ public class LoteOrdenServicioDTO implements Serializable {
 
 	public void setNuOdsCargados(Long nuOdsCargados) {
 		this.nuOdsCargados = nuOdsCargados;
+	}
+	
+	public Long getNuOdsIgnorados() {
+		return nuOdsIgnorados;
+	}
+
+	public void setNuOdsIgnorados(Long nuOdsIgnorados) {
+		this.nuOdsIgnorados = nuOdsIgnorados;
 	}
 
 	public Long getNuOdsAtendidos() {
@@ -150,12 +160,12 @@ public class LoteOrdenServicioDTO implements Serializable {
 		this.txLoteOds = txLoteOds;
 	}
 
-	public TipoLayoutDTO getIdTipoLayout() {
-		return idTipoLayout;
+	public TipoLayoutDTO getTipoLayout() {
+		return tipoLayout;
 	}
 
-	public void setIdTipoLayout(TipoLayoutDTO layoutVigenteDTO) {
-		this.idTipoLayout = layoutVigenteDTO;
+	public void setTipoLayout(TipoLayoutDTO tipoLayout) {
+		this.tipoLayout = tipoLayout;
 	}
 
 	public Boolean getStActivo() {

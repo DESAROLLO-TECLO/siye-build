@@ -23,10 +23,10 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.LoteOrdenServicioDAO
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.LoteOrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
+import mx.com.teclo.siye.persistencia.vo.async.ArchivoLoteVO;
 import mx.com.teclo.siye.persistencia.vo.async.ConfigCargaMasivaVO;
 import mx.com.teclo.siye.persistencia.vo.async.InsercionTablaVO;
-import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
-import mx.com.teclo.siye.persistencia.vo.proceso.LoteOrdenServicioVO;
+import mx.com.teclo.siye.persistencia.vo.async.ConfigLayoutVO;
 import mx.com.teclo.siye.util.enumerados.ArchivoSeguimientoEnum;
 
 @Service
@@ -115,8 +115,9 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 			throws BusinessException {
 		LOGGER.info(MessageFormat.format(MSG_ACTUALIZANDO_SEGUIMIENTO, idArchivoLote));
 		LoteOrdenServicioDTO loteDTOrdenServicioDTO = loteDAO.findOne(idArchivoLote);
-		StSeguimientoDTO seguimientoDTO = seguimientoDAO.findOne(seguimiento.getIdArchivoSeg());
-		loteDTOrdenServicioDTO.setIdStSeguimiento(seguimientoDTO);
+		StSeguimientoDTO seguimientoDTO = seguimientoDAO.obtenerStSeguimientoByCodigo(seguimiento.getCdArchivoSeg(),
+				seguimiento.getCdTipoSeg(), seguimiento.getNbTipoSeg());
+		loteDTOrdenServicioDTO.setStSeguimiento(seguimientoDTO);
 		loteDTOrdenServicioDTO.setTxLoteOds(txLoteOdsError);
 		loteDTOrdenServicioDTO.setFhModificacion(new Date());
 		loteDAO.update(loteDTOrdenServicioDTO);
@@ -125,7 +126,7 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public LoteOrdenServicioVO obtenerArchivoLote(Long idArchivoLote) throws BusinessException {
+	public ArchivoLoteVO obtenerArchivoLote(Long idArchivoLote) throws BusinessException {
 		return loteDAO.obtenerLote(idArchivoLote);
 	}
 
@@ -148,16 +149,21 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 		loteDTO.setIdUsrModifica(1L);
 		loteDTO.setFhModificacion(new Date());
 		loteDTO.setStActivo(Boolean.TRUE.booleanValue());
-		TipoLayoutVO layoutVigente = tipoLayoutDAO.getLayoutVigente();
+		ConfigLayoutVO layoutVigente = tipoLayoutDAO.getLayoutVigente();
+
 		if (layoutVigente != null) {
-			loteDTO.setIdTipoLayout(tipoLayoutDAO.findOne(layoutVigente.getIdTipoLayout()));
+			loteDTO.setTipoLayout(tipoLayoutDAO.findOne(layoutVigente.getIdTipoLayout()));
 		}
 
 		if (StringUtils.isNotBlank(error)) {
-			loteDTO.setIdStSeguimiento(seguimientoDAO.findOne(ArchivoSeguimientoEnum.RECHAZADO.getIdArchivoSeg()));
+			loteDTO.setStSeguimiento(seguimientoDAO.obtenerStSeguimientoByCodigo(
+					ArchivoSeguimientoEnum.RECHAZADO.getCdArchivoSeg(), ArchivoSeguimientoEnum.RECHAZADO.getCdTipoSeg(),
+					ArchivoSeguimientoEnum.RECHAZADO.getNbTipoSeg()));
 			loteDTO.setTxLoteOds(error);
 		} else {
-			loteDTO.setIdStSeguimiento(seguimientoDAO.findOne(ArchivoSeguimientoEnum.RECIBIDO.getIdArchivoSeg()));
+			loteDTO.setStSeguimiento(seguimientoDAO.obtenerStSeguimientoByCodigo(
+					ArchivoSeguimientoEnum.RECIBIDO.getCdArchivoSeg(), ArchivoSeguimientoEnum.RECIBIDO.getCdTipoSeg(),
+					ArchivoSeguimientoEnum.RECIBIDO.getNbTipoSeg()));
 		}
 
 		return (Long) loteDAO.save(loteDTO);

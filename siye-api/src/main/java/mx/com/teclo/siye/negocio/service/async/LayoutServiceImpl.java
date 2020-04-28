@@ -23,7 +23,7 @@ import mx.com.teclo.siye.persistencia.vo.async.ColumnaVO;
 import mx.com.teclo.siye.persistencia.vo.async.ConfigCargaMasivaVO;
 import mx.com.teclo.siye.persistencia.vo.async.InsercionTablaVO;
 import mx.com.teclo.siye.persistencia.vo.async.TablaDestinoVO;
-import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
+import mx.com.teclo.siye.persistencia.vo.async.ConfigLayoutVO;
 import mx.com.teclo.siye.util.enumerados.SeccionLayoutEnum;
 
 @Service
@@ -64,7 +64,7 @@ public class LayoutServiceImpl implements LayoutService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public TipoLayoutVO getLayoutVigente() {
+	public ConfigLayoutVO getLayoutVigente() {
 		return tipoLayoutDAO.getLayoutVigente();
 	}
 
@@ -137,7 +137,7 @@ public class LayoutServiceImpl implements LayoutService {
 		cargaMasivaVO.setConfigInsercion(getOrdenInsercionTablas(cargaMasivaVO.getConfigLote().getIdTipoLayout()));
 
 		// layout
-		TipoLayoutVO layoutAplicado = tipoLayoutDAO.getTipoLayoutById(cargaMasivaVO.getConfigLote().getIdTipoLayout());
+		ConfigLayoutVO layoutAplicado = tipoLayoutDAO.getTipoLayoutById(cargaMasivaVO.getConfigLote().getIdTipoLayout());
 		cargaMasivaVO.setConfigLayout(layoutAplicado);
 		if (cargaMasivaVO.getConfigLayout() == null) {
 			throw new BusinessException(

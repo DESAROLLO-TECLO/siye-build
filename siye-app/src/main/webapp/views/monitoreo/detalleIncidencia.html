@@ -1,18 +1,6 @@
-<head>
-<meta charset="utf-8">
-<style>
-</style>
-</head>
-<body class="backNodes">
-	<header class="content-header">
-		<h1>Monitoreo</h1>
-		<ol class="breadcrumb">
-			<li><a><i class="fa fa-check-square-o"></i>Seguimiento</a>
-			</li>
-			<li class="active">Detalle</li>
-		</ol>
-	</header>
-	<section class="content" id="scape1">
+
+
+	<section class="content" id="scape1" ng-controller="detalleIncidenciaController">
 		<!-- Inicia de linea de tiempo -->
 		<div class="row">
 			<!-- Cuadro de consulta-->
@@ -74,7 +62,7 @@
 													<td class="center" ><strong>Folio</strong></td>
 													<td class="center" ><strong>Nombre</strong></td>													
 													<td class="center"><strong>Seguimiento</strong></td>
-													<td class="center"><strong>Motivos</strong></td>
+													<td class="center"><strong>Tipo</strong></td>
 													<td class="center"><strong>Evidencia</strong></td>
 												</tr>
 											</thead>
@@ -86,6 +74,11 @@
 														tooltip="{{inc.prioridadVO.nbStSeguimiento}}"
 														tooltip-placement="right">
 														 <span>
+<!-- 														 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" -->
+<!-- 														     width="20" height="20" viewBox="0 0 20 20"> -->
+<!-- 														  <circle cx="20" cy="20" r="10" -->
+<!-- 														          fill="RoyalBlue" /> -->
+<!-- 														</svg> -->
 														<img ng-if="inc.prioridadVO.idStSeguimiento==8" width="25px" height="25px" src="static/dist/img/incidencia/circulo_rojo.png">
 														<img ng-if="inc.prioridadVO.idStSeguimiento==9" width="25px" height="25px" src="static/dist/img/incidencia/circulo_amarillo.png">
 														<img ng-if="inc.prioridadVO.idStSeguimiento==10" width="25px" height="25px" src="static/dist/img/incidencia/circulo_azul.png">														
@@ -93,7 +86,7 @@
 													</a>													
 													</td>
 													<td style="text-align: center;" >{{inc.cdIncidencia}}</td>
-													<td style="text-align: center;" >{{inc.cdIncidencia}}</td>
+													<td style="text-align: center;" >{{inc.nbIncidencia}}</td>
 													
 													<td style="text-align: center;">{{inc.stSeguimientoVO.nbStSeguimiento}}
 													</td>
@@ -116,8 +109,8 @@
 										</table>
 									</div>
 									<!-- Se pinta orden de servicio -->
-									<span class="bg-success"> {{orden.ordenServicio.cdOrdenServicio}} </span> 
-								
+									<span class="bg-success" ng-if="orden.proceso.length>0"> {{orden.ordenServicio.cdOrdenServicio}} </span> 
+									<span class="bg-warning" ng-if="orden.proceso.length==0">El plan de la orden no tiene procesos asignados</span> 
 								<!-- -Termina tabla de orden de servicio -->		
 								
 								</li>
@@ -135,7 +128,7 @@
 													<td class="center" ><strong>Folio</strong></td>
 													<td class="center" ><strong>Nombre</strong></td>													
 													<td class="center"><strong>Seguimiento</strong></td>
-													<td class="center"><strong>Motivos</strong></td>
+													<td class="center"><strong>Tipo</strong></td>
 													<td class="center"><strong>Evidencia</strong></td>
 												</tr>
 											</thead>
@@ -155,7 +148,7 @@
 													
 													</td>
 													<td style="text-align: center;" >{{inc.cdIncidencia}}</td>
-													<td style="text-align: center;" >{{inc.cdIncidencia}}</td>
+													<td style="text-align: center;" >{{inc.nbIncidencia}}</td>
 													
 													<td style="text-align: center;">{{inc.stSeguimientoVO.nbStSeguimiento}}
 													</td>
@@ -221,7 +214,7 @@
 													<td class="center" ><strong>Folio</strong></td>
 													<td class="center" ><strong>Nombre</strong></td>											
 													<td class="center"><strong>Seguimiento</strong></td>
-													<td class="center"><strong>Motivos</strong></td>
+													<td class="center"><strong>Tipo</strong></td>
 													<td class="center"><strong>Evidencia</strong></td>
 												</tr>
 											</thead>
@@ -242,7 +235,7 @@
 													
 													</td>
 													<td style="text-align: center;" >{{inc.cdIncidencia}}</td>
-													<td style="text-align: center;" >{{inc.cdIncidencia}}</td>
+													<td style="text-align: center;" >{{inc.nbIncidencia}}</td>
 													
 													<td style="text-align: center;">{{inc.stSeguimientoVO.nbStSeguimiento}}
 													</td>
@@ -297,5 +290,3 @@
 				<!-- Termina de linea de tiempo -->
 
 	</section>
-</body>
-</html>

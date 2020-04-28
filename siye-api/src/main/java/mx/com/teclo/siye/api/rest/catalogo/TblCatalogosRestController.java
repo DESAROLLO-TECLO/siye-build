@@ -34,7 +34,7 @@ public class TblCatalogosRestController {
 		Boolean  status = tblCatalogosService.actualizaCentrodeInstalacion(centroInstalacionVO);
 		CentroInstalacionVO CentroInstalacionVORespuesta = new CentroInstalacionVO();
 		if (status) {
-			CentroInstalacionVORespuesta = null;//tblCatalogosService.findCentroInstalacion(centroInstalacionVO.getIdCentroInstalacion());
+			CentroInstalacionVORespuesta = tblCatalogosService.findCentroInstalacion(centroInstalacionVO.getIdCentroInstalacion());
 		}
 		return new ResponseEntity<CentroInstalacionVO>(CentroInstalacionVORespuesta,  HttpStatus.OK);
 	}

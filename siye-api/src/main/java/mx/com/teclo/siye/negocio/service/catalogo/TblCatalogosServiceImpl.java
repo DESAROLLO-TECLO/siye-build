@@ -37,6 +37,8 @@ public class TblCatalogosServiceImpl implements TblCatalogosService{
 	@Autowired
 	private CentroInstalacionDAO centroInstalacionDAO;
 
+	@Autowired
+	private CatalogoService catalogoService;
  
 	
 	@Override
@@ -104,6 +106,7 @@ public class TblCatalogosServiceImpl implements TblCatalogosService{
 			throw new NotFoundException("El registro que intenta actualizar no existe");
 		
 		CentroInstalacionDTO centroInstalacionNuevo = new CentroInstalacionDTO();
+		centroInstalacionNuevo.setIdCentroInstalacion(centroInstalacionDTO.getIdCentroInstalacion());
 		centroInstalacionNuevo.setStCentroInstalcion(centroInstalacionDTO.getStCentroInstalcion());
 		centroInstalacionNuevo.setFhCreacion(centroInstalacionDTO.getFhCreacion());
 		centroInstalacionNuevo.setFhModificacion(new Date());
@@ -131,5 +134,11 @@ public class TblCatalogosServiceImpl implements TblCatalogosService{
 		
 	return respuesta;
 	}
-
+	
+	@Transactional
+	@Override
+	public CentroInstalacionVO findCentroInstalacion(Long idCentroInstalacion) {
+		CentroInstalacionVO centroInstalacionVO = centroInstalacionDAO.obtenerCentroInstalacion(idCentroInstalacion);
+		return centroInstalacionVO;
+	}
 }

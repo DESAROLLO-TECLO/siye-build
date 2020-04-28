@@ -8,7 +8,7 @@ import mx.com.teclo.siye.persistencia.vo.async.ColumnaVO;
 import mx.com.teclo.siye.persistencia.vo.async.ConfigCargaMasivaVO;
 import mx.com.teclo.siye.persistencia.vo.async.InsercionTablaVO;
 import mx.com.teclo.siye.persistencia.vo.async.TablaDestinoVO;
-import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
+import mx.com.teclo.siye.persistencia.vo.async.ConfigLayoutVO;
 
 /**
  * Administra la alta, actualizaci&oacute;n y consulta de la estructura (layout)
@@ -25,7 +25,7 @@ public interface LayoutService {
 	 * 
 	 * @return TipoLayoutVO
 	 */
-	TipoLayoutVO getLayoutVigente();
+	ConfigLayoutVO getLayoutVigente();
 
 	/**
 	 * Obtiene todas las configuraciones requeridas para generar queries

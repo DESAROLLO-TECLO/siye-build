@@ -145,12 +145,21 @@ public class MonitoreoIncidenciasDAOImpl extends BaseDaoHibernate<OrdenServicioD
 		String consulta = ""
 		+ "SELECT "
 		+ "	TIE026.ID_ORDEN_SERVICIO AS idOrdenServicio, "
+		+ "	("
+		+ "		CASE "
+		+ "			WHEN #{tipoBusqueda} <> 4 "
+		+ "				THEN NULL "
+		+ "			WHEN #{tipoBusqueda} = 4 "
+		+ "				THEN TIE051.ID_INCIDENCIA "
+		+ "		END "
+		+ "	) AS idIncidencia, "
 		+ "	NVL(TIE026.CD_ORDEN_SERVICIO, 'Orden de servicio Pendiente') AS cdOrdenServicio, "
 		+ "	NVL(TIE052.NB_CONCESION,'--') AS nbConcesion, "
 		+ "	NVL(TIE027.CD_PLACA_VEHICULO, '--') AS cdPlacaVehiculo, "
 		+ "	NVL(TIE027.CD_VIN, '--') AS cdVIN, "
 		+ "	NVL(NB_PROCESO, '--') AS nbProceso, "
 		+ "	NVL(TIE001.NB_ENCUESTA, '--') AS nbEncuesta, "
+		+ "	TIE026.ID_PLAN AS idPlan, "
 		+ "	COUNT(TIE051.ID_INCIDENCIA) AS nuIncidenciasOS "
 		+ "FROM TIE051D_IE_INCIDENCIA TIE051 "
 		+ "LEFT JOIN TIE058D_IE_ODS_INCIDENCIA TIE058 ON TIE058.ID_INCIDENCIA = TIE051.ID_INCIDENCIA "
@@ -180,19 +189,28 @@ public class MonitoreoIncidenciasDAOImpl extends BaseDaoHibernate<OrdenServicioD
 		+ "				THEN 1 "
 		+ "			WHEN #{tipoBusqueda} = 3 AND TIE027.CD_VIN = '#{valor}' "
 		+ "				THEN 1 "
-		+ "			WHEN #{tipoBusqueda} = 4 AND TIE051.CD_INCIDENCIA = '#{valor}' " + 
-		"				THEN 1 "
+		+ "			WHEN #{tipoBusqueda} = 4 AND TIE051.CD_INCIDENCIA = '#{valor}' "
+		+ "				THEN 1 "
 		+ "		END "
 		+ "	) = 1 "
 		+ "	AND TRUNC(TIE051.FH_CREACION) BETWEEN TO_DATE('#{fechaInicio}', 'dd/MM/yyyy') AND TO_DATE('#{fechaFin}', 'dd/MM/yyyy') "
 		+ "GROUP BY "
 		+ "	TIE026.ID_ORDEN_SERVICIO, "
+		+ "	("
+		+ "		CASE "
+		+ "			WHEN #{tipoBusqueda} <> 4 "
+		+ "				THEN NULL "
+		+ "			WHEN #{tipoBusqueda} = 4 "
+		+ "				THEN TIE051.ID_INCIDENCIA "
+		+ "		END "
+		+ "	), "
 		+ "	NVL(TIE026.CD_ORDEN_SERVICIO, 'Orden de servicio Pendiente'), "
 		+ "	NVL(TIE052.NB_CONCESION,'--'), "
 		+ "	NVL(TIE027.CD_PLACA_VEHICULO, '--'), "
 		+ "	NVL(TIE027.CD_VIN, '--'), "
 		+ "	NVL(NB_PROCESO, '--'), "
-		+ "	NVL(TIE001.NB_ENCUESTA, '--') "
+		+ "	NVL(TIE001.NB_ENCUESTA, '--'), "
+		+ "	TIE026.ID_PLAN "
 		+ "ORDER BY TIE026.ID_ORDEN_SERVICIO ASC ";
 		
 		consulta = StringUtils.replace(consulta, "#{idCentroInstalacion}", idCentroInstalacion.toString());
@@ -201,15 +219,16 @@ public class MonitoreoIncidenciasDAOImpl extends BaseDaoHibernate<OrdenServicioD
 		consulta = StringUtils.replace(consulta, "#{fechaInicio}", fechaInicio);
 		consulta = StringUtils.replace(consulta, "#{fechaFin}", fechaFin);
 		
-		
 		List<MonitoreoIncidenciasVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idOrdenServicio", LongType.INSTANCE)
+				.addScalar("idIncidencia", LongType.INSTANCE)
 				.addScalar("cdOrdenServicio", StringType.INSTANCE)
 				.addScalar("nbConcesion", StringType.INSTANCE)
 				.addScalar("cdPlacaVehiculo", StringType.INSTANCE)
 				.addScalar("cdVIN", StringType.INSTANCE)
 				.addScalar("nbProceso", StringType.INSTANCE)
 				.addScalar("nbEncuesta", StringType.INSTANCE)
+				.addScalar("idPlan", LongType.INSTANCE)
 				.addScalar("nuIncidenciasOS", LongType.INSTANCE)
 				.setResultTransformer(Transformers.aliasToBean(MonitoreoIncidenciasVO.class)).list();
 		return respuesta;

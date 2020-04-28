@@ -26,6 +26,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanProcesoDTO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.EncuestaDetaVO;
+import mx.com.teclo.siye.persistencia.vo.monitoreo.IncidenDetailVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.IncidenciaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenIncidenciaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenServicioDetVO;
@@ -58,6 +59,7 @@ public class MonitoreoIncidenciaServiceImpl implements MonitoreoIncidenciaServic
 	
 	private static final String MSG_ERROR_PROCESO_NULO = "No se encontraron procesos";
 	private static final String MSG_ERROR_EXPEDIENTE_VACIO = "No se encontraron archivos";
+	private static final String MSG_ERROR_SIN_INCIDENCIAS = "No se encontraron incidencias";
 	
 	@Transactional
 	@Override
@@ -111,14 +113,14 @@ public class MonitoreoIncidenciaServiceImpl implements MonitoreoIncidenciaServic
 		for (PlanProcesoDTO proce : planProcesoDTO) {
 		ProcesoDetalleVO procesoVO =new ProcesoDetalleVO();
  		procesoVO = ResponseConverter.copiarPropiedadesFull(proce.getProceso(), ProcesoDetalleVO.class);
-		List<IncidenciaDetalleVO> listIncidenciaPro =obtenerIncidencias(procesoVO.getIdProceso(),"PROCESO");
+		List<IncidenciaDetalleVO> listIncidenciaPro =obtenerIncidencias(idOrden,procesoVO.getIdProceso(),"PROCESO");
  		procesoVO.setIncidencia(listIncidenciaPro);
 				 List<EncuestaDetaVO> listEncuesta =procesoEncuestaDAO.getEncuestaByIdOrden(procesoVO.getIdProceso());	
 				 
 		        	for (EncuestaDetaVO encuestaDetaVO : listEncuesta) {
 		        		StEncuestaVO stEncuesta =procesoEncuestaDAO.getstEncuestaByIdEncuestaIdOrden(encuestaDetaVO.getIdEncuesta(),idOrden);
 		        		encuestaDetaVO.setStEncuesta(stEncuesta);
-		        		List<IncidenciaDetalleVO> listIncidenciaEncu =obtenerIncidencias(encuestaDetaVO.getIdEncuesta(),"ENCUESTA");
+		        		List<IncidenciaDetalleVO> listIncidenciaEncu =obtenerIncidencias(idOrden,encuestaDetaVO.getIdEncuesta(),"ENCUESTA");
 						encuestaDetaVO.setIncidencia(listIncidenciaEncu);
 					}
 		        	procesoVO.setEncuesta(listEncuesta);
@@ -126,7 +128,7 @@ public class MonitoreoIncidenciaServiceImpl implements MonitoreoIncidenciaServic
 		 lisProcesoVO.add(procesoVO);
 		}
 		listiVO.setProceso(lisProcesoVO);
-		List<IncidenciaDetalleVO> listIncidenciaOrden =obtenerIncidencias(idOrden,"ORDEN");
+		List<IncidenciaDetalleVO> listIncidenciaOrden =obtenerIncidencias(null,idOrden,"ORDEN");
 //		OrdenServicioDetVO detOrden=ordenServicioDAO.getOrdenServicioByIdOrden(idOrden);
 		OrdenServicioDTO dtoOs=ordenServicioDAO.obtenerOrdenServicio(idOrden);
 		OrdenServicioDetVO detOrdenVO=new OrdenServicioDetVO();
@@ -147,12 +149,12 @@ public class MonitoreoIncidenciaServiceImpl implements MonitoreoIncidenciaServic
 		
 		} catch (Exception e) {
 				e.printStackTrace();
-				throw new NotFoundException("¡Ha ocurrido un imprevisto! , porfavor contacte al administrador Error: "+e);
+				throw new Exception("¡Ha ocurrido un imprevisto! , porfavor contacte al administrador Error: "+e);
 		}
 	}
 	
 	
-	private List<IncidenciaDetalleVO> obtenerIncidencias(Long id,String parametro){
+	private List<IncidenciaDetalleVO> obtenerIncidencias(Long idOrden,Long id,String parametro){
 		List<IncidenciaDetalleVO> listIncidencia=new ArrayList<IncidenciaDetalleVO>();
 		
 		switch (parametro) {
@@ -160,10 +162,10 @@ public class MonitoreoIncidenciaServiceImpl implements MonitoreoIncidenciaServic
 			listIncidencia =incidenciaDAO.getIncidenciasByIdOrden(id);
 			break;
 		case "PROCESO":
-			listIncidencia =incidenciaDAO.getIncidenciasByProceso(id);
+			listIncidencia =incidenciaDAO.getIncidenciasByProceso(idOrden,id);
 			break;
 		case "ENCUESTA":
-			listIncidencia =incidenciaDAO.getIncidenciasByIdEncuesta(id);
+			listIncidencia =incidenciaDAO.getIncidenciasByIdEncuesta(idOrden,id);
 			break;
 		default:
 			break;
@@ -191,10 +193,41 @@ public class MonitoreoIncidenciaServiceImpl implements MonitoreoIncidenciaServic
 	@Transactional
 	public List<ImagenVO> getExpedienteByIdIncidencia(Long idIncidencia)
 			throws Exception, BusinessException, NotFoundException {
-	
-			List<ImagenVO> listImagenes=expedienteImgDAO.getImagenesByIdIncidencia(idIncidencia);
-			if (listImagenes.isEmpty()) 
-				throw new NotFoundException(MSG_ERROR_EXPEDIENTE_VACIO);	
-			return listImagenes;
+		List<ImagenVO> listImagenes=expedienteImgDAO.getImagenesByIdIncidencia(idIncidencia);
+		if (listImagenes.isEmpty()) 
+			throw new NotFoundException(MSG_ERROR_EXPEDIENTE_VACIO);	
+		return listImagenes;		
 	}
+
+	@Override
+	@Transactional
+	public List<IncidenDetailVO> getListIncidenciaByIdOrden(Long idCentroInstalacion, Integer tipoBusqueda, String valor,
+			String fechaInicio, String fechaFin) throws Exception, BusinessException, NotFoundException {
+		List<IncidenciaDTO> listIncidenciaDTO = new ArrayList<IncidenciaDTO>();
+						
+			switch (tipoBusqueda) {
+			case 1:
+				//Buscar por orden
+				listIncidenciaDTO=incidenciaDAO.getIncidenciasByIdOrdenFechas(idCentroInstalacion, Long.parseLong(valor), fechaInicio, fechaFin);
+				break;
+			case 2:
+				//Buscar por incidencia
+				listIncidenciaDTO=incidenciaDAO.getIncidenciasByIdIncidenciaFechas(idCentroInstalacion, Long.parseLong(valor), fechaInicio, fechaFin);
+				break;
+			case 3:
+				//Buscar sin orden
+				listIncidenciaDTO=incidenciaDAO.getIncidenciasByIdCentroFechas(idCentroInstalacion, fechaInicio, fechaFin);
+				break;
+
+			default:
+				break;
+					
+			}
+			if (listIncidenciaDTO == null) 
+				throw new NotFoundException(MSG_ERROR_SIN_INCIDENCIAS);	
+			 List<IncidenDetailVO>listIncidencia=ResponseConverter.converterLista(new ArrayList<>(), listIncidenciaDTO, IncidenDetailVO.class);
+			return listIncidencia;
+	}
+
+
 }

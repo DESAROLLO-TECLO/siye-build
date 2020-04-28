@@ -9,16 +9,16 @@ import org.springframework.stereotype.Repository;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.LoteOrdenServicioDTO;
-import mx.com.teclo.siye.persistencia.vo.proceso.LoteOrdenServicioVO;
+import mx.com.teclo.siye.persistencia.vo.async.ArchivoLoteVO;
 
 @Repository
 public class LoteOrdenServicioDAOImpl extends BaseDaoHibernate<LoteOrdenServicioDTO> implements LoteOrdenServicioDAO {
 
 	@Override
-	public LoteOrdenServicioVO obtenerLote(Long idLote) {
+	public ArchivoLoteVO obtenerLote(Long idLote) {
 		Criteria c = getCurrentSession().createCriteria(LoteOrdenServicioDTO.class, "lote");
-		c.createAlias("lote.idStSeguimiento", "seguimiento");
-		c.createAlias("lote.idTipoLayout", "tipoLayout", JoinType.LEFT_OUTER_JOIN);
+		c.createAlias("lote.stSeguimiento", "seguimiento");
+		c.createAlias("lote.tipoLayout", "tipoLayout", JoinType.LEFT_OUTER_JOIN);
 		c.add(Restrictions.eq("lote.idLoteOds", idLote));
 		c.add(Restrictions.eq("lote.stActivo", Boolean.TRUE.booleanValue()));
 
@@ -29,6 +29,7 @@ public class LoteOrdenServicioDAOImpl extends BaseDaoHibernate<LoteOrdenServicio
 				.add(Projections.property("seguimiento.idStSeguimiento").as("idStSeguimiento"))
 				.add(Projections.property("seguimiento.cdStSeguimiento").as("cdStSeguimiento"))
 				.add(Projections.property("seguimiento.nbStSeguimiento").as("nbStSeguimiento"))
+				.add(Projections.property("seguimiento.cdColor").as("cdColor"))
 				.add(Projections.property("lote.nuOdsReportados").as("nuOdsReportados"))
 				.add(Projections.property("lote.nuOdsCargados").as("nuOdsCargados"))
 				.add(Projections.property("lote.nuOdsAtendidos").as("nuOdsAtendidos"))
@@ -40,8 +41,8 @@ public class LoteOrdenServicioDAOImpl extends BaseDaoHibernate<LoteOrdenServicio
 				.add(Projections.property("lote.idUsrCreacion").as("idUsrCreacion"))
 				.add(Projections.property("lote.fhCreacion").as("fhCreacion")));
 
-		c.setResultTransformer(Transformers.aliasToBean(LoteOrdenServicioVO.class));
-		return (LoteOrdenServicioVO) c.uniqueResult();
+		c.setResultTransformer(Transformers.aliasToBean(ArchivoLoteVO.class));
+		return (ArchivoLoteVO) c.uniqueResult();
 	}
 
 }
