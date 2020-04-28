@@ -242,7 +242,7 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", centroInstalacion));
 		c.add(Restrictions.eq("lote.nbArchivoFinal", valor));
 		c.add(Restrictions.eq("stActivo", true));
-		c.add(Restrictions.eq("idOrigenOds",1));
+		c.add(Restrictions.eq("idOrigenOds",Long.valueOf(1)));
 		c.addOrder(Order.desc("fhCita"));
 		c.addOrder(Order.desc("proceso"));
 		return (List<OrdenServicioDTO>)c.list();
@@ -256,7 +256,7 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", centroInstalacion));
 		c.add(Restrictions.eq("cdOrdenServicio", valor));
 		c.add(Restrictions.eq("stActivo", true));
-		c.add(Restrictions.eq("idOrigenOds",2));
+		c.add(Restrictions.eq("idOrigenOds",Long.valueOf(2)));
 		c.addOrder(Order.desc("fhCita"));
 		c.addOrder(Order.desc("proceso"));
 		return (List<OrdenServicioDTO>)c.list();
