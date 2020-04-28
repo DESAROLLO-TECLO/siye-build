@@ -218,10 +218,10 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<OrdenServicioDTO> todos(Long idCentroInstalacion,Integer numMostrar) {
+	public List<OrdenServicioDTO> todos(Integer numMostrar) {
 		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
-		c.createAlias("centroInstalacion", "centroInstalacion");
-		c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
+		//c.createAlias("centroInstalacion", "centroInstalacion");
+		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
 		c.add(Restrictions.eq("stActivo", true));
 		c.addOrder(Order.desc("fhCita"));
 		c.addOrder(Order.desc("proceso"));
@@ -231,11 +231,11 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<OrdenServicioDTO> getOrdenServicioByLote(String valor,Long centroInstalacion) {
+	public List<OrdenServicioDTO> getOrdenServicioByLote(String valor) {
 		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
-		c.createAlias("centroInstalacion", "centroInstalacion");
+		//c.createAlias("centroInstalacion", "centroInstalacion");
 		c.createAlias("loteOrdenServicio", "lote");
-		c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", centroInstalacion));
+		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", centroInstalacion));
 		c.add(Restrictions.eq("lote.nbLoteOds", valor));
 		c.add(Restrictions.eq("stActivo", true));
 		c.add(Restrictions.eq("idOrigenOds",1));
@@ -246,15 +246,53 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<OrdenServicioDTO> getOrdenServicioByIncidecnia(String valor,Long centroInstalacion) {
+	public List<OrdenServicioDTO> getOrdenServicioByIncidecnia(String valor) {
 		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
-		c.createAlias("centroInstalacion", "centroInstalacion");
-		c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", centroInstalacion));
+		//c.createAlias("centroInstalacion", "centroInstalacion");
+		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", centroInstalacion));
 		c.add(Restrictions.eq("cdOrdenServicio", valor));
 		c.add(Restrictions.eq("stActivo", true));
 		c.add(Restrictions.eq("idOrigenOds",2));
 		c.addOrder(Order.desc("fhCita"));
 		c.addOrder(Order.desc("proceso"));
+		return (List<OrdenServicioDTO>)c.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrdenServicioDTO> consultaOrdenByPlacaTodo(String valor) {
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		c.createAlias("vehiculo", "vehiculo");
+		//c.createAlias("centroInstalacion", "centroInstalacion");
+		//c.add(Restrictions.sqlRestriction("trunc(FH_CITA) = trunc(?)", new Date(), org.hibernate.type.StandardBasicTypes.DATE));
+		c.add(Restrictions.eq("vehiculo.cdPlacaVehiculo", valor));
+		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
+		c.add(Restrictions.eq("stActivo", true));
+		return (List<OrdenServicioDTO>)c.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrdenServicioDTO> consultaOrdenByOrdenServicioTodo(String valor) {
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		//c.createAlias("centroInstalacion", "centroInstalacion");
+		//c.add(Restrictions.sqlRestriction("trunc(FH_CITA) = trunc(?)", new Date(), org.hibernate.type.StandardBasicTypes.DATE));
+		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
+		c.add(Restrictions.eq("cdOrdenServicio", valor));
+		c.add(Restrictions.eq("stActivo", true));
+		return (List<OrdenServicioDTO>)c.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrdenServicioDTO> consultaOrdenByVinTodo(String valor) {
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		c.createAlias("vehiculo", "vehiculo");
+		//c.createAlias("centroInstalacion", "centroInstalacion");
+		//c.add(Restrictions.sqlRestriction("trunc(FH_CITA) = trunc(?)", new Date(), org.hibernate.type.StandardBasicTypes.DATE));
+		c.add(Restrictions.eq("vehiculo.cdVin", valor));
+		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
+		c.add(Restrictions.eq("stActivo", true));
 		return (List<OrdenServicioDTO>)c.list();
 	}
 

@@ -469,26 +469,26 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 					Integer registrosAMostrar;
 					ConfiguracionDTO a1 =  configuracionDAO.configuracion("NUM_MAX_REGISTROS_MOSTRAR");
 					registrosAMostrar=Integer.parseInt(a1.getCdValorPConfig());
-					listOrdenServicioDTO = ordenServicioDAO.todos(gerenteSupervisorDTO.getCentroInstalacion().getIdCentroInstalacion(),registrosAMostrar);
+					listOrdenServicioDTO = ordenServicioDAO.todos(registrosAMostrar);
 					break;
 				case "PLACA":
-					listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByPlaca(valorBusqueda, gerenteSupervisorDTO.getCentroInstalacion().getIdCentroInstalacion());
+					listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByPlacaTodo(valorBusqueda);
 					break;
 				
 				case "ORDEN_SERVICIO":
-					listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByOrdenServicio(valorBusqueda, gerenteSupervisorDTO.getCentroInstalacion().getIdCentroInstalacion());
+					listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByOrdenServicioTodo(valorBusqueda);
 					break;
 				
 				case "VIN":
-					listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByVin(valorBusqueda, gerenteSupervisorDTO.getCentroInstalacion().getIdCentroInstalacion());
+					listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByVinTodo(valorBusqueda);
 					break;
 					
 				case "LOTE":
-					listOrdenServicioDTO = ordenServicioDAO.getOrdenServicioByLote(valorBusqueda, gerenteSupervisorDTO.getCentroInstalacion().getIdCentroInstalacion());
+					listOrdenServicioDTO = ordenServicioDAO.getOrdenServicioByLote(valorBusqueda);
 					break;
 					
 				case "INCIDENCIA":
-					listOrdenServicioDTO = ordenServicioDAO.getOrdenServicioByIncidecnia(valorBusqueda, gerenteSupervisorDTO.getCentroInstalacion().getIdCentroInstalacion());
+					listOrdenServicioDTO = ordenServicioDAO.getOrdenServicioByIncidecnia(valorBusqueda);
 					break;
 				}
 			

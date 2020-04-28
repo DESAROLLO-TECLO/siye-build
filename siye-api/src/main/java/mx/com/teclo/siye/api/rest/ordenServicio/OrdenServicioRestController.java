@@ -84,7 +84,7 @@ public class OrdenServicioRestController {
 				throw new NotFoundException(mensajeErr);
 			} else {
 				e.printStackTrace();
-				throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
+		  		throw new NotFoundException(!e.getMessage().equals(null)?e.getMessage():"Ha ocurrido un imprevisto!, por favor contacte al administrador.");
 			}
 		}
 	}
@@ -124,7 +124,8 @@ public class OrdenServicioRestController {
 
        }catch(Exception e)
        {
-   		throw new NotFoundException("Ha ocurrido un imprevisto!, por favor contacte al administrador.");
+    	   
+   		throw new NotFoundException(!e.getMessage().equals(null)?e.getMessage():"Ha ocurrido un imprevisto!, por favor contacte al administrador.");
        }
      }
 }

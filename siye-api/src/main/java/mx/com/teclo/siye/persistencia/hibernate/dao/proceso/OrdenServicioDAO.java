@@ -134,7 +134,7 @@ public interface OrdenServicioDAO extends BaseDao<OrdenServicioDTO>{
 	 * @param numMostrar
 	 * @return List<OrdenServicioDTO>
 	 */
-	public List<OrdenServicioDTO> todos(Long centroInstalacion, Integer numMostrar);
+	public List<OrdenServicioDTO> todos(Integer numMostrar);
 	
 	
 	/**
@@ -144,7 +144,7 @@ public interface OrdenServicioDAO extends BaseDao<OrdenServicioDTO>{
 	 * @param valor
 	 * @return List<OrdenServicioDTO>
 	 */
-	public List<OrdenServicioDTO> getOrdenServicioByLote(String valor,Long centroInstalacion);
+	public List<OrdenServicioDTO> getOrdenServicioByLote(String valor);
 	
 	/**
      * Descripción: Obtener lista de todos los registros de un lote
@@ -153,5 +153,11 @@ public interface OrdenServicioDAO extends BaseDao<OrdenServicioDTO>{
 	 * @param valor
 	 * @return List<OrdenServicioDTO>
 	 */
-	public List<OrdenServicioDTO> getOrdenServicioByIncidecnia(String valor,Long centroInstalacion);
+	public List<OrdenServicioDTO> getOrdenServicioByIncidecnia(String valor);
+	
+	public List<OrdenServicioDTO> consultaOrdenByPlacaTodo(String valor);
+	
+	public List<OrdenServicioDTO> consultaOrdenByOrdenServicioTodo(String valor);
+	
+	public List<OrdenServicioDTO> consultaOrdenByVinTodo(String valor);
 }
