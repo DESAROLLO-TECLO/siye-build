@@ -35,7 +35,7 @@ public interface ProcesoEncuestaDAO extends BaseDao<ProcesoEncuestaDTO>{
 	 * @return List<EncuestaDetalleVO>
 	 *metodo para consultar el avance de las encuestas de una os y proceso en especifico
 	 * */
-	public List<EncuestaDetalleVO> getDetalleEncuesta(Long idOrdenServicio, Long idProceso);
+	public List<EncuestaDetalleVO> getDetalleEncuesta(Long idOrdenServicio, List<Long> idProceso);
 	
 
 	/**

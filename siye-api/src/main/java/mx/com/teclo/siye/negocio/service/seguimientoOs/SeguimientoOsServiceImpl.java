@@ -1,5 +1,6 @@
 package mx.com.teclo.siye.negocio.service.seguimientoOs;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServcioDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesoDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesosOrdenServicioDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ReporteExcelVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.SeguimientoOrdenServicioVO;
 
 @Service
@@ -44,6 +46,15 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 	
 	@Autowired
 	private IncidenciaDAO incidenciaDAO;
+	
+	@Autowired
+	private RptGralSeguimientoService rptGeneral;
+	
+	@Autowired
+	private RptDetalleSeguimientoService  rptDetalle;
+	
+	@Autowired
+	private RptIncidenciaSeguimientoService rptIncidencia;
 	
 
 	private final String ENCURSO = "EN_CURSO", COMPLETA = "COMPLETADAS", PROGRAMADA = "PROGRAMADA",
@@ -180,10 +191,9 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 			respuesta.setNuPorcentaje(0.0);
 			List<ProcesoDetalleVO> etapas = planProcesoDAO.getEtapasParaSeguimiento(idOrdenServicio);
 			if (!etapas.isEmpty()) {
-				
 				//Consultar avance de encuestas del proceso 
 				for(ProcesoDetalleVO etapa: etapas) {
-					etapa.setEncuestas(procesoEncuestaDAO.getDetalleEncuesta(idOrdenServicio, etapa.getIdProceso()));
+					etapa.setEncuestas(procesoEncuestaDAO.getDetalleEncuestaParaNodos(idOrdenServicio, etapa.getIdProceso()));
 				}
 				respuesta.setProcesos(etapas);
 			}
@@ -194,24 +204,9 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 
 	@Transactional
 	@Override
-	public ProcesoDetalleVO getDetalleProceso(Long idOrdenServicio, Long idProceso) {
-		// Consultar el estatus del proceso de la os en especifico
-		ProcesoDetalleVO proceso = planProcesoDAO.getDetalleProceso(idOrdenServicio, idProceso);
-		if (proceso != null) {
-			// consultar lista de imagenes de evidencia nivel PROCESO
-			proceso.setImagenes(expedienteImgDAO.getImgByProceso(idOrdenServicio, idProceso));
-
-			// Consulta de encuestas y evidencias
-			List<EncuestaDetalleVO> lstEncuesta = procesoEncuestaDAO.getDetalleEncuesta(idOrdenServicio, idProceso);
-			if (!lstEncuesta.isEmpty()) {
-//				for (EncuestaDetalleVO encuesta : lstEncuesta) {
-//					// consultar evidencias a nivel de encuesta
-//					encuesta.setImagenes(expedienteImgDAO.getImgByEncuesta(idOrdenServicio, encuesta.getIdEncuesta()));
-//				}
-				proceso.setEncuestas(lstEncuesta);
-			}
-		}
-		return proceso;
+	public List<EncuestaDetalleVO> getDetalleProcesos(Long idOrdenServicio, List<Long> idProceso) {
+		List<EncuestaDetalleVO> respuesta = procesoEncuestaDAO.getDetalleEncuesta(idOrdenServicio, idProceso);
+		return respuesta;
 	}
 
 	@Transactional
@@ -284,6 +279,21 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 	@Override
 	public List<DetalleIncidenciaVO> getDetalleSeguimientoIncidencia(Long idOrdenServicio) {
 		List<DetalleIncidenciaVO> respuesta = incidenciaDAO.getDetalleIncidencia(idOrdenServicio);
+		return respuesta;
+	}
+
+
+	@Override
+	public ByteArrayOutputStream getReporteSeguimientoOs(ReporteExcelVO listaObj) {
+		ByteArrayOutputStream respuesta = new ByteArrayOutputStream();
+		
+		if(listaObj.getNivel().equals("general")){
+			respuesta = rptGeneral.generarReporte(listaObj.getNivelGeneral(), listaObj.getColumnas(), listaObj.getFechaInicio(), listaObj.getFechaFin());
+		}else if(listaObj.getNivel().equals("detalle")) {
+			respuesta = rptDetalle.generarReporte(listaObj.getNivelDetalle(), listaObj.getCentroInstalacion(), listaObj.getFechaInicio(), listaObj.getFechaFin());
+		}else if(listaObj.getNivel().equals("incidencia")) {
+			respuesta = rptIncidencia.generarReporte(listaObj.getNivelIncidencia(), listaObj.getCentroInstalacion(),listaObj.getFechaInicio(), listaObj.getFechaFin());
+		}
 		return respuesta;
 	}
 

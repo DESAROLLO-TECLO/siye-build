@@ -19,5 +19,18 @@ angular.module(appTeclo).service("seguimientoOsService", function($http, config)
 			params:{"idOrdenServicio":os}});
 	};
 
+	this.getReporteExcel = function(params){
+		return $http({
+	        method: 'POST',
+			url: config.baseUrl + END_POINT +  "/getReporGral",
+			data:params,
+	        dataType: "json",
+	        header :{ "Content-type": "application/json",
+	        			"Accept"    : "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+	        },
+	        responseType: 'arraybuffer'
+		});
+	}
+
 
 });

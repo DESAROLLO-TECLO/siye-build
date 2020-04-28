@@ -24,10 +24,10 @@ angular.module(appTeclo).service("detalleSeguimientoOsService", function($http, 
 		}
 	};
 
-	this.getDetalleProcesoEspecifico = function(params){
+	this.getDetalleProcesoEspecifico = function(idOrdenServicio, procesos){
 		return $http.get(END_POINT+"/getDetalleProceso",{
-			params:{"idOrden": params.idOrden,
-					"idProceso":params.idProceso}
+			params:{"idOrden": idOrdenServicio,
+					"idProceso":procesos}
 		});
 	};
 

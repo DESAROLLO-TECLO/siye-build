@@ -1,11 +1,15 @@
 package mx.com.teclo.siye.api.rest.seguimientoOs;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,10 +25,11 @@ import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.IncidenDetailVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenIncidenciaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleIncidenciaVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.MonitoreoIncidenciasVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
-import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesoDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesosOrdenServicioDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ReporteExcelVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.SeguimientoOrdenServicioVO;
 
 @RestController
@@ -71,13 +76,13 @@ public class SeguimientoOsRestController {
 	
 	@GetMapping(value="/getDetalleProceso")
 	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
-	public ResponseEntity<ProcesoDetalleVO> getDetalleProceso(@RequestParam(value ="idOrden") Long idOrdenServicio,
-															  		@RequestParam(value ="idProceso") Long idProceso) throws NotFoundException{	
-		ProcesoDetalleVO respuesta = seguimientoService.getDetalleProceso(idOrdenServicio, idProceso);
+	public ResponseEntity<List<EncuestaDetalleVO>> getDetalleProceso(@RequestParam(value ="idOrden") Long idOrdenServicio,
+															         @RequestParam(value ="idProceso") List<Long> idProceso) throws NotFoundException{	
+		List<EncuestaDetalleVO> respuesta = seguimientoService.getDetalleProcesos(idOrdenServicio, idProceso);
 		if(respuesta==null) {
 			throw new NotFoundException("No hay información");
 		}
-		return new ResponseEntity<ProcesoDetalleVO>(respuesta, HttpStatus.OK);
+		return new ResponseEntity<List<EncuestaDetalleVO>>(respuesta, HttpStatus.OK);
 	};
 	
 
@@ -166,7 +171,22 @@ public class SeguimientoOsRestController {
 		List<IncidenDetailVO> listImagenes = monitoreoIncidenciaService.getListIncidenciaByIdOrden(idCentroInstalacion, tipoBusqueda, valor, fechaInicio, fechaFin);
 		return new ResponseEntity<List<IncidenDetailVO>>(listImagenes, HttpStatus.OK);
 	}
-
-
+	
+	@RequestMapping(value="/getReporGral", method = RequestMethod.POST)
+	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
+	public ResponseEntity<byte[]> getReporteGral(@RequestBody ReporteExcelVO listas){
+    	String filename = "SeguimeintoOrdenServicio";
+    	ByteArrayOutputStream outputStream = seguimientoService.getReporteSeguimientoOs(listas);
+    	final byte[] bytes = outputStream.toByteArray();
+    	HttpHeaders headers = new HttpHeaders();
+    	headers.setContentType(MediaType.parseMediaType("application/vnd.ms-exce"));
+    	headers.add("Content-Disposition", "attachment; filename=" + filename);
+    	headers.add("filename",   filename);
+    	headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+    	headers.setContentLength(bytes.length);
+    	ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(bytes, headers, HttpStatus.OK);
+       return response;
+	}
+	
 	
 }

@@ -186,6 +186,7 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
                 $scope.evidenciaVO.data = data;
                 $scope.evidenciaVO.verEvidencia = true;
                 $scope.seguimientoVO.busquedaOk = false;
+                $scope.seguimientoVO.verDetalleOS = false;
                 console.log("datos de insidencia ", data )
             }).error(function(data){
                 growl.error(data.message)
@@ -296,6 +297,50 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
                 col5: true
             }; 
         }
+    };
+
+    $scope.descargaExcel = function(){
+        let parametros = new Object({
+            nivel:"",
+            nivelGeneral:null,
+            nivelDetalle:null,
+            nivelIncidencia:null,
+            columnas:$scope.params.opcMarcadas,
+            fechaInicio: $scope.params.fechaInicio,
+            fechaFin: $scope.params.fechaFin,
+            centroInstalacion:$scope.seguimientoVO.nbCentroInstalacion
+        });
+        
+        if($scope.seguimientoVO.tablaResultados){
+            parametros.nivelGeneral = $scope.seguimientoVO.datosTabla;
+            parametros.nivel = "general";           
+        }else if($scope.seguimientoVO.verDetalleOS){
+            parametros.nivelDetalle = $scope.seguimientoVO.datosTabla;
+            parametros.nivel = "detalle";
+        }else if($scope.evidenciaVO.verEvidencia){
+            parametros.nivelIncidencia = $scope.evidenciaVO.data;
+            parametros.nivel = "incidencia";
+        }
+
+        seguimientoOsService.getReporteExcel(parametros).success(function (data, status, headers) {
+            var filename = headers('filename');
+            var contentType = headers('content-type');
+            var file = new Blob([data], { type: 'application/vnd.ms-excel;base64,' });
+            save(file, filename);
+        }).error(function(data){
+            growl.error(data.message);
+        })
+    };
+
+    function save(file, fileName) {
+        var url = window.URL || window.webkitURL;
+        var blobUrl = url.createObjectURL(file);
+        var a = document.createElement('a');
+        a.href = blobUrl;
+        a.target = '_blank';
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
     };
 
     starController();
