@@ -13,6 +13,7 @@ import org.hibernate.type.StringType;
 import org.springframework.stereotype.Repository;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConfiguracionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenServicioDetVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServcioDetalleVO;
@@ -239,7 +240,7 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		//c.createAlias("centroInstalacion", "centroInstalacion");
 		c.createAlias("loteOrdenServicio", "lote");
 		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", centroInstalacion));
-		c.add(Restrictions.eq("lote.nbLoteOds", valor));
+		c.add(Restrictions.eq("lote.nbArchivoFinal", valor));
 		c.add(Restrictions.eq("stActivo", true));
 		c.add(Restrictions.eq("idOrigenOds",1));
 		c.addOrder(Order.desc("fhCita"));
@@ -271,6 +272,8 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		c.add(Restrictions.eq("vehiculo.cdPlacaVehiculo", valor));
 		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
 		c.add(Restrictions.eq("stActivo", true));
+		c.addOrder(Order.desc("fhCita"));
+		c.addOrder(Order.desc("proceso"));
 		return (List<OrdenServicioDTO>)c.list();
 	}
 	
@@ -283,6 +286,8 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
 		c.add(Restrictions.eq("cdOrdenServicio", valor));
 		c.add(Restrictions.eq("stActivo", true));
+		c.addOrder(Order.desc("fhCita"));
+		c.addOrder(Order.desc("proceso"));
 		return (List<OrdenServicioDTO>)c.list();
 	}
 	
@@ -296,9 +301,125 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		c.add(Restrictions.eq("vehiculo.cdVin", valor));
 		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
 		c.add(Restrictions.eq("stActivo", true));
+		c.addOrder(Order.desc("fhCita"));
+		c.addOrder(Order.desc("proceso"));
+		return (List<OrdenServicioDTO>)c.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrdenServicioDTO> consultaAvanzada(Boolean busquedaAvanzada,String cdTipoBusqueda,
+		    String valorBusqueda, String fhInicio, String fhFin,String centroInstalacion,String estatusSeguimiento,
+		    Boolean isLote, Boolean isIncidencia,
+			String valorLoteIncidencia, String tipoKit,
+			String tipoPlan,Integer nuMaxMostrar) {
+		
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		c.add(Restrictions.eq("stActivo", true));
+		c.addOrder(Order.desc("fhCita"));
+		c.addOrder(Order.desc("proceso"));
+        c.setMaxResults(nuMaxMostrar);
+		
+        if(fhInicio!=null && fhFin!=null){
+   		   c.add(Restrictions.sqlRestriction(" TRUNC (FH_CITA) "
+   			 +" between to_date ( '"+ fhInicio +"', 'dd/MM/yyyy') "
+   			 +"   AND to_date( '"+ fhFin +"' , 'dd/MM/yyyy') "));	
+   		}
+        
+        if(centroInstalacion!=null)
+        {
+        	String[] arrayCentroInstalacion=centroInstalacion.split(",");
+        	Long[] data = new Long[arrayCentroInstalacion.length];
+        	for (int i = 0; i < arrayCentroInstalacion.length; i++) {
+        	  data[i] = Long.valueOf(arrayCentroInstalacion[i]);
+        	}
+        	c.createAlias("centroInstalacion", "centroInstalacion");
+        	c.add(Restrictions.in("centroInstalacion.idCentroInstalacion",data));
+        }
+        
+        if(estatusSeguimiento!=null)
+        {
+        	String[] arrayeStatusSeguimiento=estatusSeguimiento.split(",");
+        	Long[] data = new Long[arrayeStatusSeguimiento.length];
+        	for (int i = 0; i < arrayeStatusSeguimiento.length; i++) {
+        	  data[i] = Long.valueOf(arrayeStatusSeguimiento[i]);
+        	}
+        	c.createAlias("stSeguimiento", "stSeguimiento");
+        	c.add(Restrictions.in("stSeguimiento.idStSeguimiento",data));
+        }
+        
+         if(tipoKit!=null)
+        {
+        	String[] arrayTipoKit=tipoKit.split(",");
+        	Long[] data = new Long[arrayTipoKit.length];
+        	for (int i = 0; i < arrayTipoKit.length; i++) {
+        	  data[i] = Long.valueOf(arrayTipoKit[i]);
+        	}
+        	c.createAlias("kitInstalacion", "kitInstalacion");
+        	c.createAlias("kitInstalacion.kitInstalacionDispDTO", "kitInstalacionDispDTO");
+        	c.createAlias("kitInstalacionDispDTO.kitDispositivo", "kitDispositivo");
+        	c.createAlias("kitDispositivo.tipoKit", "tipoKit");
+        	c.add(Restrictions.in("tipoKit.idTipoKit",data));
+        }
+
+        
+        if(tipoPlan!=null)
+        {
+        	String[] arrayTipoPlan=tipoPlan.split(",");
+        	Long[] data = new Long[arrayTipoPlan.length];
+        	for (int i = 0; i < arrayTipoPlan.length; i++) {
+        	  data[i] = Long.valueOf(arrayTipoPlan[i]);
+        	}
+        	c.createAlias("plan", "plan");
+        	c.add(Restrictions.in("plan.idPlan",data));
+        }
+        
+        if(isLote)
+        {
+        	c.createAlias("loteOrdenServicio", "lote");
+    		c.add(Restrictions.eq("lote.nbLoteOds", valorLoteIncidencia));
+    		c.add(Restrictions.eq("idOrigenOds",1));	
+        }
+        else if(isIncidencia)
+        {
+    		c.add(Restrictions.eq("cdOrdenServicio", valorLoteIncidencia));
+    		c.add(Restrictions.eq("idOrigenOds",2));
+        }
+        
+		switch(cdTipoBusqueda) {
+			case "TODO":
+				break;
+			case "PLACA":
+				c.createAlias("vehiculo", "vehiculo");
+				c.add(Restrictions.eq("vehiculo.cdPlacaVehiculo", valorBusqueda));
+				break;
+			
+			case "ORDEN_SERVICIO":
+				c.add(Restrictions.eq("cdOrdenServicio", valorBusqueda));
+				break;
+			
+			case "VIN":
+				c.createAlias("vehiculo", "vehiculo");
+				c.add(Restrictions.eq("vehiculo.cdVin", valorBusqueda));
+				break;
+
+			}
+       
+		return (List<OrdenServicioDTO>)c.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public  List<OrdenServicioDTO> consultaTodasOrdenes(){
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		c.add(Restrictions.sqlRestriction("trunc(FH_CITA) = trunc(?)", new Date(), org.hibernate.type.StandardBasicTypes.DATE));
+		c.add(Restrictions.eq("stActivo", true));
+		c.addOrder(Order.desc("fhCita"));
+		c.addOrder(Order.desc("proceso"));
 		return (List<OrdenServicioDTO>)c.list();
 	}
 
 
 
 }
+	
