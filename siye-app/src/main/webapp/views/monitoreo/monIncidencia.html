@@ -15,9 +15,11 @@
 				<li class="active">Incidencias</li>
 			</ol>
 		</section>
+		<!-- Linea de tiempo de incidencia -->
+		<div ng-show="flags.pantallaLTiempo" ng-include="'views/monitoreo/detalleIncidencia.html'"></div>
 		
 		<!-- Formulario de busqueda -->
-		<section class="content">
+		<section class="content" ng-show="!flags.pantallaLTiempo">
 			<div class="row centerCol">
 				<div class="col-sm-12 col-md-8">
 					<div class="box box-danger" style="margin-bottom: 0px;">
@@ -42,7 +44,8 @@
 												<select class="form-control select2"
 													name="comboTipoBusqueda" id="comboTipoBusqueda"
 													ng-options="x.idTipo as x.nbTipo for x in listTipoBusqueda.tipoBusqueda"
-													ng-model="params.tipoBusqueda">
+													ng-model="params.tipoBusqueda"
+													ng-change="cambioCombo()">
 													<option value="">Seleccione</option>
 												</select>
 											</div>
@@ -78,12 +81,19 @@
 								</div>
 								<!-- renglon de opociones -->
 								<div class="box-footer">
-									<div class="row center">
+									<div class="col-md-1 col-xs-1" align="right"></div>
+									<div class="col-md-10 col-xs-10" align="center">
 <!-- 										<button class="btn btn-danger" ng-click="corteDiario()"> -->
 <!-- 											Corte al día -->
 <!-- 										</button> -->
 										<button class="btn btn-danger" ng-click="consultaBtn();">
 											Buscar
+										</button>
+									</div>
+									<div class="col-md-1 col-xs-1 box-tools pull-right">
+										<button type="button" class="btn btn-box-tool btn-danger" ng-click="limpiarCampos()" style="font-size: 1.2rem;"
+											data-toggle="tooltip" data-placement="right" title="Limpiar Campos">
+											<i class="fa fa-undo"></i>
 										</button>
 									</div>
 								</div>
@@ -94,7 +104,7 @@
 			</div>
 		</section>
 		<!-- final formulario de busqueda -->
-		<section class="content">
+		<section class="content" ng-show="!flags.pantallaLTiempo">
 			<div ng-if="flags.mostrarTablaResultados" class="row centerCol">
 				<div class="col-md-12">
 					<div class="box box-danger">
@@ -105,14 +115,14 @@
 									</h4>
 								</div>
 								<div class="col-xs-4 col-md-5 center">
-									<div ng-if="seguimientoVO.verDetalleOS">
+									<div ng-if="flags.mostrartablaResultadosOS">
 										<button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Resultado Principal" 
 											style="border-radius: 50%; width: 2em; height: 2em; padding: 0;" ng-click="infoGral()">
 											<i class="fa fa-angle-double-left" aria-hidden="true"></i>
 										</button>
 										<label>
 											<strong class="text-center">
-												{{monIncidenciasVO.nbCentroInstalacion}}
+												{{params.nbCentroInstalacion}}
 											</strong>
 										</label>
 									</div>
@@ -169,8 +179,8 @@
 											<!-- Cuerpo de la tabla datos de consulta -->
 											<tbody>
 												<tr dir-paginate="modulo in monIncidenciasVO.datosTabla | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage"
-													ng-click="modulo.nuOrdenesAtendidas > 0 ? consultaDetalle(modulo) : ''" 
-													ng-class="{'cursorPointer': (modulo.nuOrdenesAtendidas > 0)}">
+													ng-click="modulo.nuIncidencias > 0 ? consultaDetalle(modulo) : ''" 
+													ng-class="{'cursorPointer': (modulo.nuIncidencias > 0)}">
 													<td class="text-center">{{modulo.nbModulo}}</td>
 													<td class="text-center">{{modulo.totalOrdenes | number}}</td><!-- width="8%">-->
 													<td class="text-center">{{modulo.nuOrdenesProgramadas | number}}</td><!-- width="11%">-->
@@ -211,39 +221,42 @@
 											<tbody>
 												<tr dir-paginate="ordenServicio in monIncidenciasVO.datosTabla | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage">
 													<td class="text-center" style="vertical-align: middle;"
-														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-click="showLineaTiempo(ordenServicio)" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
-														{{ordenServicio.cdOrdenServicio}}
+														<a>{{ordenServicio.cdOrdenServicio}}</a>
 													</td>
 													<td class="text-center" style="vertical-align: middle;"
-														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-click="showLineaTiempo(ordenServicio)" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
 														{{ordenServicio.nbConcesion}}
 													</td>
 													<td class="text-center" style="vertical-align: middle;"
-														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-click="showLineaTiempo(ordenServicio)" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
 														{{ordenServicio.cdPlacaVehiculo}}
 													</td>
 													<td class="text-center" style="vertical-align: middle;"
-														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-click="showLineaTiempo(ordenServicio)" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
 														{{ordenServicio.cdVIN}}
 													</td>
 													<td class="text-center" style="vertical-align: middle;"
-														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-click="showLineaTiempo(ordenServicio)" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
 														{{ordenServicio.nbProceso}}
 													</td>
 													<td class="text-center" style="vertical-align: middle;"
-														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-click="showLineaTiempo(ordenServicio)" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
 														{{ordenServicio.nbEncuesta}}
 													</td>
 													<td class="text-center" style="vertical-align: middle;"
-														ng-click="consultaOrdenServicio(ordenServicio)" 
+														ng-click="ordenServicio.nuIncidenciasOS > 0 ? showDialogIncidencias(ordenServicio) : ''" 
 														ng-class="[{'cursorPointer': (ordenServicio.nuIncidenciasOS > 0)}, {'incidenciaSinOrdenServicio': (ordenServicio.idOrdenServicio == null)}]">
-														{{ordenServicio.nuIncidenciasOS}}
+														<span class="etiquetaColor" 
+															style="width:100%; background-color: #cf0a2c;">
+															{{ordenServicio.nuIncidenciasOS | number}}
+														</span>
 													</td>
 												</tr>
 											</tbody>
@@ -263,5 +276,6 @@
 				</div>
 			</div>
 		</section>
+		
 	</body>
 </html>

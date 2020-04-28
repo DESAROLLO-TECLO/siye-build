@@ -115,4 +115,14 @@ public interface CatalogoService {
 	 */
 	public List<CentroInstalacionVO>consultaCentroIntalacion(String cdTipoBusqueda,Long valor) throws NotFoundException;
 
+	/**
+	 * @Descripción: Método para obtener la lista de personas
+	 * @author Estephanie Chavez
+	 * @param cdTipoBusqueda
+	 * @param valor
+	 * @return
+	 * @throws NotFoundException
+	 */
+	public List<PersonaVO> consultalistPersona(String cdTipoBusqueda, Long valor) throws NotFoundException;
+
 }

@@ -40,6 +40,8 @@ public class LoteOrdenServicioDTO implements Serializable {
 	private Long nuOdsReportados;
 	@Column(name = "NU_ODS_CARGADOS")
 	private Long nuOdsCargados;
+	@Column(name = "NU_ODS_IGNORADOS")
+	private Long nuOdsIgnorados;
 	@Column(name = "NU_ODS_ATENDIDOS")
 	private Long nuOdsAtendidos;
 	@Column(name = "NU_ODS_PENDIENTES")
@@ -116,6 +118,14 @@ public class LoteOrdenServicioDTO implements Serializable {
 
 	public void setNuOdsCargados(Long nuOdsCargados) {
 		this.nuOdsCargados = nuOdsCargados;
+	}
+	
+	public Long getNuOdsIgnorados() {
+		return nuOdsIgnorados;
+	}
+
+	public void setNuOdsIgnorados(Long nuOdsIgnorados) {
+		this.nuOdsIgnorados = nuOdsIgnorados;
 	}
 
 	public Long getNuOdsAtendidos() {

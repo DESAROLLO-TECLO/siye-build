@@ -1,7 +1,9 @@
 package mx.com.teclo.siye.negocio.service.catalogo;
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -13,7 +15,9 @@ import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.PersonaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.CentroInstalacionDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.PersonaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.OdsIncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
@@ -24,6 +28,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.TipoVehiculoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.VehiculoDTO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
 
@@ -36,6 +41,9 @@ public class TblCatalogosServiceImpl implements TblCatalogosService{
 	
 	@Autowired
 	private CentroInstalacionDAO centroInstalacionDAO;
+	
+	@Autowired
+	private PersonaDAO personaDAO;
 
 	@Autowired
 	private CatalogoService catalogoService;
@@ -43,7 +51,7 @@ public class TblCatalogosServiceImpl implements TblCatalogosService{
 	
 	@Override
 	@Transactional
-	public String altaCentrodeInstalacion(@RequestBody CentroInstalacionVO centroInstalacionVO) throws BusinessException {
+	public String altaCentrodeInstalacion(CentroInstalacionVO centroInstalacionVO) throws BusinessException {
 		String respuesta = "";	
 		Long serial = centroInstalacionDAO.getUltimoId() + 1;
 		String serie = "";
@@ -138,7 +146,101 @@ public class TblCatalogosServiceImpl implements TblCatalogosService{
 	@Transactional
 	@Override
 	public CentroInstalacionVO findCentroInstalacion(Long idCentroInstalacion) {
-		CentroInstalacionVO centroInstalacionVO = centroInstalacionDAO.obtenerCentroInstalacion(idCentroInstalacion);
+		CentroInstalacionVO centroInstalacionVO = new CentroInstalacionVO();
+		CentroInstalacionDTO centroInstalacionDTO = centroInstalacionDAO.centroIns(idCentroInstalacion);
+		ResponseConverter.copiarPropriedades(centroInstalacionVO, centroInstalacionDTO);
 		return centroInstalacionVO;
+	}
+	
+	
+	@Override
+	@Transactional
+	public String altaPersona (PersonaVO personaVO) throws BusinessException {
+		String respuesta = "";	
+		Integer serial = personaDAO.getUltimoId() + 1;
+		String serie = "";
+		if  (serial < 10) {
+			serie = "00000" + serial;
+		}
+		if  (serial < 100 && serial > 9) {
+			serie = "0000" + serial;
+		}
+		if  (serial < 1000 && serial > 99) {
+			serie = "000" + serial;
+		}
+		if  (serial < 1000 && serial > 999) {
+			serie = "00" + serial;
+		}
+		if  (serial < 10000 && serial > 9999) {
+			serie = "0" + serial;
+		}
+		if  (serial < 100000&& serial > 99999) {
+			serie = "" + serial;
+		}
+		PersonaDTO personaDTO = new PersonaDTO();
+		personaDTO.setNbPersona(personaVO.getNbPersona());
+		personaDTO.setCdPersona("CDP"+serie);
+		personaDTO.setNbPatPersona(personaVO.getNbPatPersona());
+		personaDTO.setNbMatPersona(personaVO.getNbMatPersona());
+		personaDTO.setNuOrden(serial);
+		personaDTO.setFhCreacion(new Date());
+		personaDTO.setFhModificacion(new Date());
+		personaDTO.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
+		personaDTO.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
+		personaDTO.setStActivo(true);
+		personaDTO.setStPersona(1L);
+		
+		try {
+			personaDAO.save(personaDTO);
+			respuesta = "";
+		} catch (Exception e) {
+			respuesta = "Error al guardar el técnico. ";
+		}
+		if (respuesta == "") {
+			respuesta = "Se guardo el técnico correctamente con folio: " +  personaDTO.getCdPersona();
+		}  
+		return respuesta;
+	}
+	
+	
+	@Transactional
+	@Override
+	public Boolean actualizaPersona (PersonaVO personaVO) throws NotFoundException, BusinessException{
+		PersonaDTO personaDTO = personaDAO.findOne(personaVO.getIdPersona());
+		Boolean respuesta = false;	
+		if(personaDTO == null)
+			throw new NotFoundException("El registro que intenta actualizar no existe");
+		
+		PersonaDTO personaNuevo = new PersonaDTO();
+		
+		personaNuevo.setNbPersona(personaVO.getNbPersona());
+		personaNuevo.setCdPersona(personaDTO.getCdPersona());
+		personaNuevo.setNbPatPersona(personaVO.getNbPatPersona());
+		personaNuevo.setNbMatPersona(personaVO.getNbMatPersona());
+		personaNuevo.setNuOrden(personaDTO.getNuOrden());
+		personaNuevo.setFhCreacion(personaDTO.getFhCreacion());
+		personaNuevo.setFhModificacion(new Date());
+		personaNuevo.setIdUsrCreacion(personaDTO.getIdUsrCreacion());
+		personaNuevo.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
+		personaNuevo.setStActivo(personaDTO.getStActivo());
+		personaNuevo.setStPersona(personaDTO.getStPersona());
+		
+		try {
+			personaDAO.update(personaNuevo);
+			respuesta = true;
+		} catch (Exception e) {
+			respuesta = false;
+		}
+		
+	return respuesta;
+	}
+	
+	@Transactional
+	@Override
+	public PersonaVO findPersona(Integer idPersona) {
+		PersonaVO personaVO = new PersonaVO();
+		PersonaDTO personaDTO = personaDAO.obtenerPersonaId(idPersona);
+		ResponseConverter.copiarPropriedades(personaVO, personaDTO);
+		return personaVO;
 	}
 }

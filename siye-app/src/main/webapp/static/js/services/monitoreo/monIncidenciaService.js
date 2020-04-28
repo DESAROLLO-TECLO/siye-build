@@ -31,4 +31,15 @@ angular.module(appTeclo).service("monIncidenciaService", function($http, config)
 		});
 	};
 	
+	this.getIncidenciasByTipobusqueda = function(parametros){
+		return $http.get(config.baseUrl + END_POINT + "/getIncidenciasByTipobusqueda",{
+			params:{
+				"fechaInicio"			: parametros.fechaInicio,
+				"fechaFin"				: parametros.fechaFin,
+				"tipoBusqueda"			: parametros.tipoBusqueda,
+				"valor"					: parametros.valor,
+				"idCentroInstalacion"	: parametros.idCentroInstalacion
+			}
+		});
+	};
 });

@@ -17,7 +17,7 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
                     barras: 'Total de Comparendos',
                     barras3D_2: 'Ordenes de Servicios',
                     pie: 'Ordenes de Servicios Planeadas y no Planeadas',
-                    osbyPlan: 'Ordenes de Servicios po Plan',
+                    osbyPlan: 'Ordenes de Servicios por Plan',
                     AvanceGeneral: 'Avance General Ordenes de Servicios',
                     topTenicosMayNumInstall: 'Top técnicos con mayor número de instalaciones',
                     topTenicosMayNumPruebasPlat: 'Top técnicos con mayor número de pruebas en plataforma'
@@ -34,7 +34,7 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
                 initGraphCGeneral($scope.OSconincidencias, "graficaBarras");
                 grafica1($scope.dataOSByPlan, "graficaPieOSPlan");
                 grafica1($scope.dataOSByAvanceGeneral, "graficaAvanceGeneral");
-                graficaIncidenciaTop($scope.dataGraphPastel1IN, "incidenciaTopSupervisor");
+                
                 // dataBarrasHorizontalTrabajo
                 graficaBarrasHorizontal($scope.dataBarrasHorizontalTrabajo, "topTecnicosMayNumInstall");
                 graficaBarrasHorizontal($scope.dataPruebasPlat, "topTecnicosMayNumPruebasPlat");
@@ -75,7 +75,12 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
                 };
                 $scope.ModulosShow = true;
 
-                initGraphCG($scope.graphBarrasVerticalesPuntos);
+                graficaBarrasHorizontal($scope.dataPruebasModulo, "incidenciaTopSupervisor");
+              //  graficaIncidenciaTop($scope.dataGraphPastel1IN, "incidenciaTopSupervisor");
+
+               // initGraphCG($scope.graphBarrasVerticalesPuntos);
+              //  graficaBarrasHorizontal($scope.dataBarrasHorizontalTrabajo, "topTecnicosMayNumInstall");
+
                 break;
 
             case 'Incidencias':
@@ -91,7 +96,7 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
                 };
                 grafica1($scope.dataGraphPastel1IN, "grafica1");
                 graficaIncidenciaTop($scope.incidenciasTopData, "incidenciaTop");
-                graficaIncidenciaTop($scope.incidenciasPorSuper, "incidenciaTopSupervisor");
+              //  graficaIncidenciaTop($scope.incidenciasPorSuper, "incidenciaTopSupervisor");
 				graphBarras3D_2($scope.IndicenciasRecurrentes);
 				initGraphCGeneral($scope.graphBarrasVerticalesPuntos,"graficaBarrasIncidencia");
 
@@ -399,7 +404,24 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
     }];
 
 
+// Modulos
 
+$scope.dataPruebasModulo = [{
+    "year": "Modulo 1",
+    "income": 10,
+    "expenses": 10000
+},
+{
+    "year": "Modulo 2",
+    "income": 8,
+    "expenses": 9000
+},
+{
+    "year": "Modulo 3",
+    "income": 13,
+    "expenses": 8000
+}
+];
 
     // Graficas 
 
