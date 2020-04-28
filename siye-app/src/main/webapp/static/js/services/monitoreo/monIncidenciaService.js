@@ -1,4 +1,4 @@
-angular.module(appTeclo).service("monIncidenciaService", function($http, config) {
+angular.module(appTeclo).service("monIncidenciaService", function($http, config, $timeout) {
 	
 	const END_POINT="/monitoreo";
 	
@@ -42,4 +42,31 @@ angular.module(appTeclo).service("monIncidenciaService", function($http, config)
 			}
 		});
 	};
+	
+	this.descargarReporteExcel = function (peticionReporteVO){
+		return $http({
+			method: 'POST',
+			url: config.baseUrl + "/descargaExcel",
+			data: peticionReporteVO,
+			dataType: "json",
+			header: {
+				"Content-type": "application/json",
+				"Accept": "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+			},
+			responseType: 'arraybuffer'
+		});
+	};
+	
+	this.downloadfile = function(file, fileName) {
+		var url = window.URL || window.webkitURL;
+		var blobUrl = url.createObjectURL(file);
+		var a = document.createElement('a');
+		a.href = blobUrl;
+		a.target = '_blank';
+		a.download = fileName;
+		document.body.appendChild(a);
+		$timeout(function() {
+			a.click();
+		}, 100);
+	}
 });
