@@ -1,4 +1,74 @@
-angular.module(appTeclo).controller("dashboardController", function($scope, $filter, $timeout) {
+angular.module(appTeclo).controller("dashboardController", function($scope, $filter, $timeout, catalogoGenericoService) {
+
+    $scope.optionsTimer = [{
+        label:"15 Seg."
+    },{
+        label:"30 Seg."
+    },{
+        label:"60 Seg."
+    }]
+
+    $scope.rangoFechas = {
+        date: {
+            startDate: moment().endOf('day'),
+            endDate: moment().endOf('day')
+        },
+        options: {
+            maxDate: moment().endOf("day"),
+            locale: {
+                applyLabel: "Aceptar",
+                cancelLabel: 'Cancelar',
+                customRangeLabel: 'PERSONALIZADO',
+                format: 'D/MM/YYYY',
+                separator: " - "
+            },
+            ranges: {}
+        }
+    };
+
+    getRangoFechas = function () {
+        catalogoGenericoService.getCatRangoFechas().success(function (data) {
+            let rango = {};
+            for (let x = 0; x < data.length; x++) {
+                if (data[x].nbTipoFecha!= 'PERSONALIZADO') {
+                    rango[data[x].nbTipoFecha] = [data[x].fechaInicio, data[x].fechaFin];
+                }
+            }
+            $scope.rangoFechas.options.ranges = rango;
+           // consultaInicial();
+        }).error(function (data) {
+            growl.error(data.message);
+        });
+    };
+
+
+    consultaInicial = function () {
+        verColumnas($scope.catTipoBusqueda)
+        seguimientoOsService.getInfoOsByRangoFechas($scope.params).success(function (data) {
+            $scope.seguimientoVO.tablaResultados = true;
+            $scope.seguimientoVO.busquedaOk = true;
+            $scope.seguimientoVO.respaldo = angular.copy(data);
+            $scope.seguimientoVO.datosTabla = data;
+        }).error(function (data) {
+            growl.error(data.message);
+        });
+    };
+
+    getRangoFechas();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     $scope.indicadores = [];
     /**************************************INITIALIZERS***************************************************/
@@ -7,15 +77,26 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
         $scope.PlanesShow = false;
         $scope.ModulosShow = false;
         $scope.incidenciasShow = false;
+        $scope.generalShow = false;
 
 
         switch (valor) {
+
+            case 'General':
+                $scope.titulos = {
+                    general: "Grafica General"
+                }
+                $scope.generalShow = true;
+
+                graficaGeneral($scope.generalData, "graficaGeneral");
+                break;
             case 'OrdenesServicios':
                 $scope.titulos = {
                     pastel: 'Tipos de Vehiculos con Instalacion',
                     barras3D: 'Multas Pagadas vs No Pagadas',
                     barras: 'Total de Comparendos',
-                    barras3D_2: 'Ordenes de Servicios',
+                    barras2: 'Ordenes de Servicion con Inicdencias',
+                    barras3D_2: 'Validacion de Componentes',
                     pie: 'Ordenes de Servicios Planeadas y no Planeadas',
                     osbyPlan: 'Ordenes de Servicios por Plan',
                     AvanceGeneral: 'Avance General Ordenes de Servicios',
@@ -27,12 +108,14 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
 
                 // initGraphCG($scope.graphBarrasVerticalesInfracciones);
                 //graphBarras3D($scope.datGraph3DInfracciones);
-                graphBarras3D_2($scope.datGraph3D_2);
+                graphBarras3D_2($scope.datGraph3D_2,);
                 //graphBarras3D_3($scope.datGraph3D_3);
-                grafica1($scope.dataGraphPastel1OS, "grafica1");
+                //grafica1($scope.dataGraphPastel1OS, "");
                 grafPie($scope.OSPlaneadasAndnotPlaneadas);
+                initGraphCGeneral($scope.dataGraphPastel1OS, "grafica1");
                 initGraphCGeneral($scope.OSconincidencias, "graficaBarras");
-                grafica1($scope.dataOSByPlan, "graficaPieOSPlan");
+              /// grafica1();
+                graficaPie($scope.ordenesServicioByPlan, "graficaPieOSPlan");
                 grafica1($scope.dataOSByAvanceGeneral, "graficaAvanceGeneral");
                 
                 // dataBarrasHorizontalTrabajo
@@ -44,10 +127,12 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
 
                 $scope.indicadores = [];
                 $scope.indicadores = [
-                    { myValue: 1, nbPanel: "En Cusro", myTarget: 15985, myDuration: 1500, bgPanel: 'bg-aqua' /*, icon: "fa-beer"*/ , myEffect: 'swing', id: 1 },
-                    { myValue: 2, nbPanel: "En Espera", myTarget: 1382, myDuration: 1500, bgPanel: 'bg-yellow' /*, icon: "fa-beer"*/ , myEffect: 'swing', id: 2 },
+                    { myValue: 1, nbPanel: "Nuevo", myTarget: 15985, myDuration: 1500, bgPanel: 'bg-aqua' /*, icon: "fa-beer"*/ , myEffect: 'swing', id: 1 },
+                    { myValue: 2, nbPanel: "En Curso", myTarget: 1382, myDuration: 1500, bgPanel: 'bg-yellow' /*, icon: "fa-beer"*/ , myEffect: 'swing', id: 2 },
                     { myValue: 3, nbPanel: "Finalizadas", myTarget: 8723, myDuration: 1500, bgPanel: 'bg-green' /*, icon: "fa-beer"*/ , myEffect: 'swing', id: 3 },
-                    { myValue: 4, nbPanel: "Finalizadas Incidencia", myTarget: 8723, myDuration: 1500, bgPanel: 'bg-aqua' /*, icon: "fa-beer"*/ , myEffect: 'swing', id: 3 },
+                    { myValue: 4, nbPanel: "Finalizadas con Incidencia", myTarget: 8723, myDuration: 1500, bgPanel: 'bg-aqua' /*, icon: "fa-beer"*/ , myEffect: 'swing', id: 4 },
+                    { myValue: 5, nbPanel: "Finalizado Incompleto", myTarget: 8723, myDuration: 1500, bgPanel: 'bg-red' /*, icon: "fa-beer"*/ , myEffect: 'swing', id: 5 },
+
                 ];
 
 
@@ -55,13 +140,17 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
 
             case 'Planes':
                 $scope.titulos = {
-                    pastel: 'Avance por Plan',
+                    pastel: 'Avance Plan Completo',
+                    barras3D_2: 'Avance Plan Basico',
                     barras: 'Avance de Procesos'
                 };
                 $scope.PlanesShow = true;
                 initGraphCG($scope.graphBarrasVerticalesPuntos);
                 initGraphCG2($scope.graphBarrasVerticalesPuntos);
-                grafica1($scope.dataGraphPastel1OS, "grafica1");
+                //grafica1($scope.dataGraphPastel1OS, "grafica1");
+                graficaGeneral($scope.avancePlan, "grafica1");
+                graficaGeneral($scope.avancePlan, "grafica2");
+               // grafica1($scope.dataGraphAvancePlan, "grafica2");
                 break;
 
             case 'Modulos':
@@ -76,6 +165,7 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
                 $scope.ModulosShow = true;
 
                 graficaBarrasHorizontal($scope.dataPruebasModulo, "incidenciaTopSupervisor");
+                grafica1($scope.dataGraphPastel1IN, "ordenesDeServPorMod");
               //  graficaIncidenciaTop($scope.dataGraphPastel1IN, "incidenciaTopSupervisor");
 
                // initGraphCG($scope.graphBarrasVerticalesPuntos);
@@ -114,6 +204,7 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
         $scope.active2 = false;
         $scope.active3 = false;
         $scope.active4 = false;
+        $scope.active5 = false;
 
         switch (input) {
             case 1:
@@ -129,6 +220,8 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
             case 4:
                 $scope.active4 = true;
                 break;
+            case 5:
+                $scope.active5 = true;
             default:
                 $scope.active1 = true;
                 break;
@@ -236,22 +329,28 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
 
 
     // Odenes de Servicio
-    $scope.dataGraphPastel1OS = [{
-        "title": "AUDI A1",
-        "value": 46385
+    $scope.dataGraphPastel1OS = {
+    title: '',
+    titleRed: '',
+    titleBlue: '',
+    data: [{
+        "proceso": "AUDI 1",
+        "avance": 1150
     }, {
-        "title": "AUDI A2",
-        "value": 11345
+        "proceso": "AUDI 2",
+        "avance": 950
     }, {
-        "title": "AUDI A3",
-        "value": 9863
+        "proceso": "AUDI 3",
+        "avance": 1050
     }, {
-        "title": "AUDI A4",
-        "value": 30100
+        "proceso": "AUDI 4",
+        "avance": 550
     }, {
-        "title": "AUDI A5",
-        "value": 3195
-    }];
+        "proceso": "AUDI 5",
+        "avance": 650
+    }],
+    };
+
 
     $scope.datGraph3D_2 = [{
         "componente": "Camaras",
@@ -322,6 +421,26 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
 
 
     // Plan Basico y completo
+
+   
+    $scope.dataGraphAvancePlan = [{
+        "title": "En Curso",
+        "value": 46385
+    }, {
+        "title": "Nuevas",
+        "value": 11345
+    }, {
+        "title": "Finalizadas",
+        "value": 9863
+    }, {
+        "title": "Finalizadas s/Incidencias",
+        "value": 9863
+    }, {
+        "title": "Finalizadas Incompletas",
+        "value": 9863
+    }];
+
+
 
     $scope.graphBarrasVerticalesPuntos = {
         title: 'Avance por plan',
@@ -404,6 +523,16 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
     }];
 
 
+    $scope.ordenesServicioByPlan = [{
+              "label": "Plan Basico",
+              "data": 501.9,
+              "color": "#67b7dc"
+            }, {
+              "label": "Plan Completo",
+              "data": 301.9,
+              "color": "#fdd400"
+            }];
+
 // Modulos
 
 $scope.dataPruebasModulo = [{
@@ -424,6 +553,25 @@ $scope.dataPruebasModulo = [{
 ];
 
     // Graficas 
+
+   
+    graficaPie = function(jsonData, div){
+        var grafPie = AmCharts.makeChart(div, {
+            "type": "pie",
+          /*  "legend": {
+                "useGraphSettings": true,
+                "colorField": "color",
+              },*/
+            "dataProvider": jsonData,
+            "valueField": "data",
+            "titleField": "label",
+            "colorField": "color",
+            "labelColorField": "color",
+            "balloon": {
+              "fixedPosition": true
+            }
+          });
+    };
 
     grafica1 = function(jsonData, div) {
 
@@ -568,6 +716,38 @@ $scope.dataPruebasModulo = [{
         });
     }
 
+    // General
+
+
+   $scope.generalData = [{
+        "date": "Modulo  1",
+        "market1": 71,
+        "market2": 75,
+        "sales1": 75,
+        "sales2": 78
+      }, {
+        "date": "Modulo 2",
+        "market1": 74,
+        "market2": 78,
+        "sales1": 84,
+        "sales2": 96
+      }];
+
+      
+   $scope.avancePlan = [{
+    "date": "Semana  1",
+    "market1": 71,
+    "market2": 75,
+    "sales1": 75,
+    "sales2": 78
+  }, {
+    "date": "Semana 2",
+    "market1": 74,
+    "market2": 78,
+    "sales1": 84,
+    "sales2": 96
+  }];
+
     // new 
     grafPie = function(jsonData) {
 
@@ -686,6 +866,120 @@ $scope.dataPruebasModulo = [{
         });
     };
 
+    graficaGeneral = function(jsonData, div){
+        var graficaGeneral =AmCharts.makeChart(div, {
+            "type": "serial",
+            "theme": "light",
+           
+            "precision": 2,
+            "valueAxes": [{
+              "id": "v2",
+              "title": "",
+              "gridAlpha": 0,
+              "position": "left",
+              "autoGridCount": false
+            }],
+            "graphs": [{
+              "id": "g3",
+              "valueAxis": "v1",
+              "lineColor": "#e1ede9",
+              "fillColors": "#e1ede9",
+              "fillAlphas": 1,
+              "type": "column",
+              "title": "Total",
+              "valueField": "sales2",
+              "clustered": false,
+              "columnWidth": 0.5,
+              "legendValueText": "[[value]]",
+              "balloonText": "[[title]]<br/><b style='font-size: 130%'>[[value]]</b>"
+            }, {
+              "id": "g4",
+              "valueAxis": "v1",
+              "lineColor": "#62cf73",
+              "fillColors": "#62cf73",
+              "fillAlphas": 1,
+              "type": "column",
+              "title": "Finalizadas",
+              "valueField": "sales1",
+              "clustered": false,
+              "columnWidth": 0.3,
+              "legendValueText": "[[value]]",
+              "balloonText": "[[title]]<br/><b style='font-size: 130%'>[[value]]</b>"
+            }, {
+              "id": "g1",
+              "valueAxis": "v2",
+              "bullet": "round",
+              "bulletBorderAlpha": 1,
+              "bulletColor": "#FFFFFF",
+              "bulletSize": 5,
+              "hideBulletsCount": 50,
+              "lineThickness": 2,
+              "lineColor": "#20acd4",
+              "type": "smoothedLine",
+              "title": "En Curso",
+              "useLineColorForBulletBorder": true,
+              "valueField": "market1",
+              "balloonText": "[[title]]<br/><b style='font-size: 130%'>[[value]]</b>"
+            }, {
+              "id": "g2",
+              "valueAxis": "v2",
+              "bullet": "round",
+              "bulletBorderAlpha": 1,
+              "bulletColor": "#FFFFFF",
+              "bulletSize": 5,
+              "hideBulletsCount": 50,
+              "lineThickness": 2,
+              "lineColor": "#930F0F",
+              "type": "smoothedLine",
+              "dashLength": 5,
+              "title": "Finalizadas con Incidencia",
+              "useLineColorForBulletBorder": true,
+              "valueField": "market2",
+              "balloonText": "[[title]]<br/><b style='font-size: 130%'>[[value]]</b>"
+            }],
+            "chartScrollbar": {
+              "graph": "g1",
+              "oppositeAxis": false,
+              "offset": 30,
+              "scrollbarHeight": 50,
+              "backgroundAlpha": 0,
+              "selectedBackgroundAlpha": 0.1,
+              "selectedBackgroundColor": "#888888",
+              "graphFillAlpha": 0,
+              "graphLineAlpha": 0.5,
+              "selectedGraphFillAlpha": 0,
+              "selectedGraphLineAlpha": 1,
+              "autoGridCount": true,
+              "color": "#AAAAAA"
+            },
+            "chartCursor": {
+              "pan": true,
+              "valueLineEnabled": true,
+              "valueLineBalloonEnabled": true,
+              "cursorAlpha": 0,
+              "valueLineAlpha": 0.2
+            },
+            "categoryField": "date",
+            "categoryAxis": {
+            
+              "dashLength": 1,
+              "minorGridEnabled": true
+            },
+            "legend": {
+              "useGraphSettings": true,
+              "position": "top"
+            },
+            "balloon": {
+              "borderThickness": 1,
+              "shadowAlpha": 0
+            },
+            "export": {
+              enabled: true
+            },
+            "dataProvider": jsonData
+          });
+    }
+
 
 
 
@@ -697,6 +991,6 @@ $scope.dataPruebasModulo = [{
 
     // init
     $scope.actives();
-    $scope.cambia('OrdenesServicios');
+    $scope.cambia('General');
 
 });
