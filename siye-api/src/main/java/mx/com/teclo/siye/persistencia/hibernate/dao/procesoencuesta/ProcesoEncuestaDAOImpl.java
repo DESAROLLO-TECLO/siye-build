@@ -7,7 +7,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
-import org.hibernate.type.DoubleType;
+import org.hibernate.type.DateType;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
 import org.springframework.stereotype.Repository;
@@ -67,29 +67,31 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<EncuestaDetalleVO> getDetalleEncuesta(Long idOrdenServicio, Long idProceso) {
+	public List<EncuestaDetalleVO> getDetalleEncuesta(Long idOrdenServicio, List<Long> idProceso) {
 		StringBuilder consulta = new StringBuilder("SELECT tdipe.ID_ENCUESTA  AS idEncuesta, encuesta.NB_ENCUESTA AS nbEncuesta," 
 	            +"tdeuei.FH_INICIO  AS fhInicio, tdeuei.FH_FIN AS fhFin, tdeuei.NU_PREGUNTAS||'/'||tdeuei.NU_PREGUNTAS_CORRECTAS AS preguntas," 
 				+"st.NB_ST_ENCUESTA AS estatus,"
-	            +"CASE tdeuei.ID_ST_CALIFICACION WHEN 3 THEN 0.0"
-				+"  ELSE tdeuei.NU_PREGUNTAS /(tdeuei.NU_PREGUNTAS_CORRECTAS + tdeuei.NU_PREGUNTAS_INCORR + tdeuei.NU_PREGUNTAS_VACIAS)*100 END AS nuPorcentaje"
+	            +"st.CD_COLOR AS nbColor,"
+	            +"CASE tdeuei.ID_ST_CALIFICACION WHEN 3 THEN '0%' "
+				+"  ELSE tdeuei.NU_PREGUNTAS /(tdeuei.NU_PREGUNTAS_CORRECTAS + tdeuei.NU_PREGUNTAS_INCORR + tdeuei.NU_PREGUNTAS_VACIAS)*100 || '%' END AS nuPorcentaje"
 	            +" FROM TIE037D_IE_PROCESO_ENCUESTA tdipe" 
 				+"    INNER JOIN TIE001D_EE_ENCUESTAS encuesta ON (tdipe.ID_ENCUESTA = encuesta.ID_ENCUESTA)" 
 				+"    INNER JOIN TIE002D_EE_ODS_ENCUESTA tdeoe ON (encuesta.ID_ENCUESTA = tdeoe.ID_ENCUESTA)" 
 				+"    INNER JOIN TIE006D_EE_USU_ENCU_INTEN tdeuei ON (tdeoe.ID_ODS_ENCUESTA  = tdeuei.ID_ODS_ENCUESTA)"
 				+"    INNER JOIN TIE018C_EE_ST_ENCUESTAS st ON (tdeuei.ID_ST_CALIFICACION = st.ID_ST_ENCUESTA)"
-				+" WHERE tdipe.ST_ACTIVO =1 AND encuesta.ST_ACTIVO =1 AND tdipe.ID_PROCESO =:idProceso AND tdeoe.ID_ORDEN_SERVICIO=:idOrdenServicio" 
-				+"   ORDER BY tdipe.ID_ENCUESTA ");
+				+" WHERE tdipe.ST_ACTIVO =1 AND encuesta.ST_ACTIVO =1 AND tdipe.ID_PROCESO IN (:idProceso) AND tdeoe.ID_ORDEN_SERVICIO=:idOrdenServicio" 
+				+"  AND  tdeuei.FH_INICIO IS NOT NULL   ORDER BY tdipe.ID_ENCUESTA ");
 		List<EncuestaDetalleVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idEncuesta",LongType.INSTANCE)
 				.addScalar("nbEncuesta",StringType.INSTANCE)
-				.addScalar("fhInicio", StringType.INSTANCE)
-				.addScalar("fhFin", StringType.INSTANCE)
+				.addScalar("fhInicio", DateType.INSTANCE)
+				.addScalar("fhFin", DateType.INSTANCE)
 				.addScalar("preguntas", StringType.INSTANCE)
 				.addScalar("estatus", StringType.INSTANCE)
-				.addScalar("nuPorcentaje",DoubleType.INSTANCE)
+				.addScalar("nbColor",StringType.INSTANCE)
+				.addScalar("nuPorcentaje",StringType.INSTANCE)
 				.setParameter("idOrdenServicio", idOrdenServicio)
-				.setParameter("idProceso", idProceso)
+				.setParameterList("idProceso", idProceso)
 				.setResultTransformer(Transformers.aliasToBean(EncuestaDetalleVO.class)).list();
 		return respuesta;
 	}
@@ -136,6 +138,32 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 		query.setParameter("idEncuesta", idEncuesta)
 		.setParameter("idOrden", idOrden).setResultTransformer(Transformers.aliasToBean(StEncuestaVO.class));
 		return (StEncuestaVO) query.uniqueResult();
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<EncuestaDetalleVO> getDetalleEncuestaParaNodos(Long idOrdenServicio, Long idProceso) {
+		StringBuilder consulta = new StringBuilder("SELECT "
+				+"tdipe.ID_ENCUESTA  AS idEncuesta, " 
+				+"encuesta.NB_ENCUESTA AS nbEncuesta, "
+				+"st.NB_ST_ENCUESTA AS estatus, "
+				+"st.CD_COLOR AS nbColor "
+				+"FROM TIE037D_IE_PROCESO_ENCUESTA tdipe " 
+				+"	INNER JOIN TIE001D_EE_ENCUESTAS encuesta ON (tdipe.ID_ENCUESTA = encuesta.ID_ENCUESTA)"
+				+"	INNER JOIN TIE002D_EE_ODS_ENCUESTA tdeoe ON (encuesta.ID_ENCUESTA = tdeoe.ID_ENCUESTA)"
+				+"	INNER JOIN TIE006D_EE_USU_ENCU_INTEN tdeuei ON (tdeoe.ID_ODS_ENCUESTA  = tdeuei.ID_ODS_ENCUESTA)"
+				+"	INNER JOIN TIE018C_EE_ST_ENCUESTAS st ON (tdeuei.ID_ST_CALIFICACION = st.ID_ST_ENCUESTA)  "
+				+"WHERE tdipe.ST_ACTIVO =1 AND encuesta.ST_ACTIVO =1 AND tdipe.ID_PROCESO =:idProceso AND tdeoe.ID_ORDEN_SERVICIO=:idOrdenServicio" + 
+				"   ORDER BY tdipe.ID_ENCUESTA");		
+		List<EncuestaDetalleVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
+				.addScalar("idEncuesta",LongType.INSTANCE)
+				.addScalar("nbEncuesta",StringType.INSTANCE)
+				.addScalar("estatus", StringType.INSTANCE)
+				.addScalar("nbColor",StringType.INSTANCE)
+				.setParameter("idOrdenServicio", idOrdenServicio)
+				.setParameter("idProceso", idProceso)
+				.setResultTransformer(Transformers.aliasToBean(EncuestaDetalleVO.class)).list();
+		return respuesta;
 	}
 
 }

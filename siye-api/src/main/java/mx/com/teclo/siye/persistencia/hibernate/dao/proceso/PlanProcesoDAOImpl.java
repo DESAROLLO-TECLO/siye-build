@@ -178,22 +178,21 @@ public class PlanProcesoDAOImpl extends BaseDaoHibernate<PlanProcesoDTO> impleme
 		return respuesta;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public List<ProcesoDetalleVO> getDetalleProceso(Long idOrdenServicio, Long idProceso) {
+	public ProcesoDetalleVO getDetalleProceso(Long idOrdenServicio, Long idProceso) {
 		StringBuilder consulta = new StringBuilder("SELECT tdop.ID_PROCESO AS idProceso, FH_INI_PROCESO AS fhInicio, FH_FIN_PROCESO AS fhFin,"
 				+"tcip.TX_PROCESO  AS nbProceso"
 				+" FROM TIE065D_ODS_PROCESOS tdop " 
 				+"  INNER JOIN TIE035C_IE_PROCESOS tcip ON (tdop.ID_PROCESO = tcip.ID_PROCESO)"
 				+" WHERE tdop.ID_ORDEN_SERVICIO =:idOrdenServicio AND tdop.ID_PROCESO =:idProceso AND tdop.ST_ACTIVO =1");
-		List<ProcesoDetalleVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
+		ProcesoDetalleVO respuesta = (ProcesoDetalleVO) getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idProceso",LongType.INSTANCE)
 				.addScalar("fhInicio",StringType.INSTANCE)
 				.addScalar("fhFin",StringType.INSTANCE)
 				.addScalar("nbProceso",StringType.INSTANCE)
 				.setParameter("idOrdenServicio", idOrdenServicio)
 				.setParameter("idProceso", idProceso)
-				.setResultTransformer(Transformers.aliasToBean(ProcesoDetalleVO.class)).list();
+				.setResultTransformer(Transformers.aliasToBean(ProcesoDetalleVO.class)).uniqueResult();
 		return respuesta;
 	}
 

@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
-import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenServicioDetVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServcioDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.SeguimientoOrdenServicioVO;
@@ -135,6 +134,7 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 	@SuppressWarnings("unchecked")
 	public List<OrdenServcioDetalleVO> getDetalleOS(Long idCentroInstalacion, String fechaInicio, String fechaFin) {
 		StringBuilder consulta = new StringBuilder("SELECT" + 
+	            "   OS.ID_PLAN AS idPlan,"+
 				"   OS.ID_ORDEN_SERVICIO AS idOrdenServicio, "+
 				"	OS.CD_ORDEN_SERVICIO AS nuOrdenServicio," + 
 				"	OS.FH_ATENCION_INI AS fechaAtencion," + 
@@ -146,7 +146,8 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 				"	PR.NB_PROCESO AS txProceso," + 
 				"	ENC.NB_ENCUESTA AS txEtapa," + 
 				"	(SELECT COUNT(*) FROM TIE058D_IE_ODS_INCIDENCIA WHERE ID_ORDEN_SERVICIO = OS.ID_ORDEN_SERVICIO) AS nuIncidencia," + 
-				"	SEG.NB_ST_SEGUIMIENTO AS estado " + 
+				"	SEG.NB_ST_SEGUIMIENTO AS estado," +
+				"	SEG.CD_COLOR AS color "+
 				"FROM" + 
 				"	TIE026D_IE_ORDEN_SERVICIOS OS" + 
 				" LEFT JOIN TIE029C_IE_CENTROS_INSTALACION CI ON	(CI.ID_CENTRO_INSTALACION = OS.ID_CENTRO_INSTALACION)" + 
@@ -163,10 +164,11 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 				" LEFT JOIN TIE048C_IE_ST_SEGUIMIENTO SEG ON	(SEG.ID_ST_SEGUIMIENTO = OS.ID_ST_SEGUIMIENTO)" + 
 				" LEFT JOIN TIE044C_IE_CONDUCTOR CO ON	(CO.ID_CONDUCTOR = VC.ID_CONDUCTOR)" + 
 				" LEFT JOIN TIE052C_IE_CONCESIONES CONC ON (CONC.ID_CONCESION = V.ID_CONCESION) " + 
-				"WHERE CI.ID_CENTRO_INSTALACION =:idCentroInstalacion" + 
+				"WHERE CI.ID_CENTRO_INSTALACION =:idCentroInstalacion AND os.ST_ACTIVO =1 "  + 
 				"	AND TRUNC(OS.FH_CITA) BETWEEN TO_DATE('"+fechaInicio+"','dd/MM/yyyy')  AND TO_DATE('"+ fechaFin+"','dd/MM/yyyy')" + 
 				" ORDER BY OS.CD_ORDEN_SERVICIO, OS.FH_CITA DESC");		
 		List<OrdenServcioDetalleVO> detalleEntrada = getCurrentSession().createSQLQuery(consulta.toString())
+				.addScalar("idPlan",LongType.INSTANCE)
 				.addScalar("idOrdenServicio", LongType.INSTANCE)
 				.addScalar("nuOrdenServicio",StringType.INSTANCE)
 				.addScalar("fechaAtencion",StringType.INSTANCE)
@@ -179,6 +181,7 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 				.addScalar("txEtapa",StringType.INSTANCE)
 				.addScalar("nuIncidencia",LongType.INSTANCE)
 				.addScalar("estado",StringType.INSTANCE)
+				.addScalar("color",StringType.INSTANCE)
 				.setParameter("idCentroInstalacion", idCentroInstalacion)
 				.setResultTransformer(Transformers.aliasToBean(OrdenServcioDetalleVO.class)).list();
 		return detalleEntrada;
@@ -214,6 +217,86 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		Query query = getCurrentSession().createQuery(hql);
 		query.setParameter("idOrdenServicio", idOrdenServicio).setResultTransformer(Transformers.aliasToBean(OrdenServicioDetVO.class));
 		return (OrdenServicioDetVO) query.uniqueResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrdenServicioDTO> todos(Integer numMostrar) {
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		//c.createAlias("centroInstalacion", "centroInstalacion");
+		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
+		c.add(Restrictions.eq("stActivo", true));
+		c.addOrder(Order.desc("fhCita"));
+		c.addOrder(Order.desc("proceso"));
+        c.setMaxResults(numMostrar);
+		return (List<OrdenServicioDTO>)c.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrdenServicioDTO> getOrdenServicioByLote(String valor) {
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		//c.createAlias("centroInstalacion", "centroInstalacion");
+		c.createAlias("loteOrdenServicio", "lote");
+		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", centroInstalacion));
+		c.add(Restrictions.eq("lote.nbLoteOds", valor));
+		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("idOrigenOds",1));
+		c.addOrder(Order.desc("fhCita"));
+		c.addOrder(Order.desc("proceso"));
+		return (List<OrdenServicioDTO>)c.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrdenServicioDTO> getOrdenServicioByIncidecnia(String valor) {
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		//c.createAlias("centroInstalacion", "centroInstalacion");
+		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", centroInstalacion));
+		c.add(Restrictions.eq("cdOrdenServicio", valor));
+		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("idOrigenOds",2));
+		c.addOrder(Order.desc("fhCita"));
+		c.addOrder(Order.desc("proceso"));
+		return (List<OrdenServicioDTO>)c.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrdenServicioDTO> consultaOrdenByPlacaTodo(String valor) {
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		c.createAlias("vehiculo", "vehiculo");
+		//c.createAlias("centroInstalacion", "centroInstalacion");
+		//c.add(Restrictions.sqlRestriction("trunc(FH_CITA) = trunc(?)", new Date(), org.hibernate.type.StandardBasicTypes.DATE));
+		c.add(Restrictions.eq("vehiculo.cdPlacaVehiculo", valor));
+		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
+		c.add(Restrictions.eq("stActivo", true));
+		return (List<OrdenServicioDTO>)c.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrdenServicioDTO> consultaOrdenByOrdenServicioTodo(String valor) {
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		//c.createAlias("centroInstalacion", "centroInstalacion");
+		//c.add(Restrictions.sqlRestriction("trunc(FH_CITA) = trunc(?)", new Date(), org.hibernate.type.StandardBasicTypes.DATE));
+		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
+		c.add(Restrictions.eq("cdOrdenServicio", valor));
+		c.add(Restrictions.eq("stActivo", true));
+		return (List<OrdenServicioDTO>)c.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrdenServicioDTO> consultaOrdenByVinTodo(String valor) {
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		c.createAlias("vehiculo", "vehiculo");
+		//c.createAlias("centroInstalacion", "centroInstalacion");
+		//c.add(Restrictions.sqlRestriction("trunc(FH_CITA) = trunc(?)", new Date(), org.hibernate.type.StandardBasicTypes.DATE));
+		c.add(Restrictions.eq("vehiculo.cdVin", valor));
+		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", idCentroInstalacion));
+		c.add(Restrictions.eq("stActivo", true));
+		return (List<OrdenServicioDTO>)c.list();
 	}
 
 

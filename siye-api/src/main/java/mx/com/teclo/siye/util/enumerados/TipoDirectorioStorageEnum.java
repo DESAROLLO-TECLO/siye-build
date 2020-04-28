@@ -2,7 +2,8 @@ package mx.com.teclo.siye.util.enumerados;
 
 public enum TipoDirectorioStorageEnum {
 	INPUT("recibido"),
-	OUTPUT("entregado");
+	OUTPUT("entregado"),
+	STAGE("validado");
 
 	private String cdTipo;
 	

@@ -171,6 +171,7 @@
                 "label":"Rango de Fechas",
                 "validacion":"El rango de fechas es requerido."
             },
+            "opciones":"OPCIONES SELECCIONADAS",
             "corte":"CORTE AL DIA"
         },
         "resultadosGral":{
@@ -191,7 +192,36 @@
                 "txProceso":"PROCESO",
                 "txIncidensia":"INCIDENCIA",
                 "txEstado":"ESTADO"
+            },
+            "label":{
+                "incidencia":"Incidencia",
+                "evidencia":"Evidencia",
+                "os":"ORDEN SERVICIO",
+                "ci":"CENTRO INSTALACION",
+                "estatus":"ESTATUS",
+                "finicio":"FECHA INICIO",
+                "ffin":"FECHA FIN",
+                "proceso":"TRANSCURRIDO",
+                "kit":"KIT",
+                "plan":"PLAN",
+                "preguntas":"Preguntas Contestadas"
             }
+        },
+        "incidencia":{
+            "titulo":{
+                "cdincidencia":"FOLIO",
+                "nbIncidencia": "INCIDENCIA",
+                "prioridad":"PRIORIDAD",
+                "stIncidencia": "ESTATUS",
+                "nbProceso": "PROCESO",
+                "txIncidencia": "DESCRIPCIÓN",
+                "accion": "ACCIÓN"
+            }
+            
+        },
+        "pestanas":{
+            "nodos":"Orden Servicio",
+            "linea":"Linea de Tiempo"
         }
     },
     "ADMINISTRACION": {

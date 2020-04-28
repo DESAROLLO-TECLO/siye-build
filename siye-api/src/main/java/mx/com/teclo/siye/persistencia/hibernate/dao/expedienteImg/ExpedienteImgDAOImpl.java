@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
 import mx.com.teclo.siye.persistencia.hibernate.dto.expedientesImg.ExpedientesImgDTO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
-import mx.com.teclo.siye.persistencia.vo.monitoreo.IncidenciaDetalleVO;
 
 @Repository
 public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> implements ExpedienteImgDAO {
@@ -230,6 +229,23 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 			Query query = getCurrentSession().createQuery(hql);
 			query.setParameter("idIncidencia", idIncidencia).setResultTransformer(Transformers.aliasToBean(ImagenVO.class));
 			return query.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ImagenVO> getImagenPorNivel(StringBuilder consulta) {
+		List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
+				 .addScalar("idExpedienteODS", LongType.INSTANCE)
+				 .addScalar("idOdsEncuesta", LongType.INSTANCE)
+				 .addScalar("idOrdenServicio", LongType.INSTANCE)
+				 .addScalar("idProceso", LongType.INSTANCE)
+				 .addScalar("idPregunta",LongType.INSTANCE)
+				 .addScalar("nbExpedienteODS", StringType.INSTANCE)
+				 .addScalar("cdTipoArchivo", StringType.INSTANCE)
+				 .addScalar("lbExpedienteODS",StandardBasicTypes.BINARY)
+				 .addScalar("idTipoExpediente",LongType.INSTANCE)
+				 .setResultTransformer(Transformers.aliasToBean(ImagenVO.class)).list();
+		return respuesta;
 	}
 
 }

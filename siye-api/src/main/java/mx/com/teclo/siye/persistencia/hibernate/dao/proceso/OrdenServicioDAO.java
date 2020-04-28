@@ -126,4 +126,38 @@ public interface OrdenServicioDAO extends BaseDao<OrdenServicioDTO>{
      * */
 	public OrdenServicioDetVO getOrdenServicioByIdOrden(Long idOrdenServicio);
 
+	
+	/**
+     * Descripción: Obtener lista de todos los registros
+     * @author David Guerra
+	 * @param centroInstalacion
+	 * @param numMostrar
+	 * @return List<OrdenServicioDTO>
+	 */
+	public List<OrdenServicioDTO> todos(Integer numMostrar);
+	
+	
+	/**
+     * Descripción: Obtener lista de todos los registros de un lote
+     * @author David Guerra
+	 * @param centroInstalacion
+	 * @param valor
+	 * @return List<OrdenServicioDTO>
+	 */
+	public List<OrdenServicioDTO> getOrdenServicioByLote(String valor);
+	
+	/**
+     * Descripción: Obtener lista de todos los registros de un lote
+     * @author David Guerra
+	 * @param centroInstalacion
+	 * @param valor
+	 * @return List<OrdenServicioDTO>
+	 */
+	public List<OrdenServicioDTO> getOrdenServicioByIncidecnia(String valor);
+	
+	public List<OrdenServicioDTO> consultaOrdenByPlacaTodo(String valor);
+	
+	public List<OrdenServicioDTO> consultaOrdenByOrdenServicioTodo(String valor);
+	
+	public List<OrdenServicioDTO> consultaOrdenByVinTodo(String valor);
 }
