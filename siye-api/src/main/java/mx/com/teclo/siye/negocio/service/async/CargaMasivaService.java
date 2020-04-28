@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import javax.naming.NamingException;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
+import mx.com.teclo.siye.persistencia.vo.async.ArchivoLoteVO;
 import mx.com.teclo.siye.persistencia.vo.async.ConfigCargaMasivaVO;
 
 public interface CargaMasivaService {
@@ -29,6 +30,12 @@ public interface CargaMasivaService {
 	 * @throws SQLException 
 	 */
 	void procesarLineas(ConfigCargaMasivaVO config) throws BusinessException;
-
 	
+	/**
+	 * Actualiza al estado de cargado un archivo lote
+	 * @param archivoLoteVO
+	 * @throws BusinessException 
+	 */
+	void actualizarCargaMasiva(ArchivoLoteVO archivoLoteVO) throws BusinessException;
+
 }

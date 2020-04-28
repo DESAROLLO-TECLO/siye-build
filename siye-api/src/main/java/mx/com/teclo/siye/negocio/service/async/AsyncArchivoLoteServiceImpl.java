@@ -115,7 +115,8 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 			throws BusinessException {
 		LOGGER.info(MessageFormat.format(MSG_ACTUALIZANDO_SEGUIMIENTO, idArchivoLote));
 		LoteOrdenServicioDTO loteDTOrdenServicioDTO = loteDAO.findOne(idArchivoLote);
-		StSeguimientoDTO seguimientoDTO = seguimientoDAO.findOne(seguimiento.getIdArchivoSeg());
+		StSeguimientoDTO seguimientoDTO = seguimientoDAO.obtenerStSeguimientoByCodigo(seguimiento.getCdArchivoSeg(),
+				seguimiento.getCdTipoSeg(), seguimiento.getNbTipoSeg());
 		loteDTOrdenServicioDTO.setStSeguimiento(seguimientoDTO);
 		loteDTOrdenServicioDTO.setTxLoteOds(txLoteOdsError);
 		loteDTOrdenServicioDTO.setFhModificacion(new Date());
@@ -149,15 +150,20 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 		loteDTO.setFhModificacion(new Date());
 		loteDTO.setStActivo(Boolean.TRUE.booleanValue());
 		ConfigLayoutVO layoutVigente = tipoLayoutDAO.getLayoutVigente();
+
 		if (layoutVigente != null) {
 			loteDTO.setTipoLayout(tipoLayoutDAO.findOne(layoutVigente.getIdTipoLayout()));
 		}
 
 		if (StringUtils.isNotBlank(error)) {
-			loteDTO.setStSeguimiento(seguimientoDAO.findOne(ArchivoSeguimientoEnum.RECHAZADO.getIdArchivoSeg()));
+			loteDTO.setStSeguimiento(seguimientoDAO.obtenerStSeguimientoByCodigo(
+					ArchivoSeguimientoEnum.RECHAZADO.getCdArchivoSeg(), ArchivoSeguimientoEnum.RECHAZADO.getCdTipoSeg(),
+					ArchivoSeguimientoEnum.RECHAZADO.getNbTipoSeg()));
 			loteDTO.setTxLoteOds(error);
 		} else {
-			loteDTO.setStSeguimiento(seguimientoDAO.findOne(ArchivoSeguimientoEnum.RECIBIDO.getIdArchivoSeg()));
+			loteDTO.setStSeguimiento(seguimientoDAO.obtenerStSeguimientoByCodigo(
+					ArchivoSeguimientoEnum.RECIBIDO.getCdArchivoSeg(), ArchivoSeguimientoEnum.RECIBIDO.getCdTipoSeg(),
+					ArchivoSeguimientoEnum.RECIBIDO.getNbTipoSeg()));
 		}
 
 		return (Long) loteDAO.save(loteDTO);

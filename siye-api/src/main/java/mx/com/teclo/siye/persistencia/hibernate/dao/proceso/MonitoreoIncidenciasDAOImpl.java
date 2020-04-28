@@ -159,6 +159,7 @@ public class MonitoreoIncidenciasDAOImpl extends BaseDaoHibernate<OrdenServicioD
 		+ "	NVL(TIE027.CD_VIN, '--') AS cdVIN, "
 		+ "	NVL(NB_PROCESO, '--') AS nbProceso, "
 		+ "	NVL(TIE001.NB_ENCUESTA, '--') AS nbEncuesta, "
+		+ "	TIE026.ID_PLAN AS idPlan, "
 		+ "	COUNT(TIE051.ID_INCIDENCIA) AS nuIncidenciasOS "
 		+ "FROM TIE051D_IE_INCIDENCIA TIE051 "
 		+ "LEFT JOIN TIE058D_IE_ODS_INCIDENCIA TIE058 ON TIE058.ID_INCIDENCIA = TIE051.ID_INCIDENCIA "
@@ -208,7 +209,8 @@ public class MonitoreoIncidenciasDAOImpl extends BaseDaoHibernate<OrdenServicioD
 		+ "	NVL(TIE027.CD_PLACA_VEHICULO, '--'), "
 		+ "	NVL(TIE027.CD_VIN, '--'), "
 		+ "	NVL(NB_PROCESO, '--'), "
-		+ "	NVL(TIE001.NB_ENCUESTA, '--') "
+		+ "	NVL(TIE001.NB_ENCUESTA, '--'), "
+		+ "	TIE026.ID_PLAN "
 		+ "ORDER BY TIE026.ID_ORDEN_SERVICIO ASC ";
 		
 		consulta = StringUtils.replace(consulta, "#{idCentroInstalacion}", idCentroInstalacion.toString());
@@ -216,7 +218,6 @@ public class MonitoreoIncidenciasDAOImpl extends BaseDaoHibernate<OrdenServicioD
 		consulta = StringUtils.replace(consulta, "#{valor}", valor);
 		consulta = StringUtils.replace(consulta, "#{fechaInicio}", fechaInicio);
 		consulta = StringUtils.replace(consulta, "#{fechaFin}", fechaFin);
-		
 		
 		List<MonitoreoIncidenciasVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idOrdenServicio", LongType.INSTANCE)
@@ -227,6 +228,7 @@ public class MonitoreoIncidenciasDAOImpl extends BaseDaoHibernate<OrdenServicioD
 				.addScalar("cdVIN", StringType.INSTANCE)
 				.addScalar("nbProceso", StringType.INSTANCE)
 				.addScalar("nbEncuesta", StringType.INSTANCE)
+				.addScalar("idPlan", LongType.INSTANCE)
 				.addScalar("nuIncidenciasOS", LongType.INSTANCE)
 				.setResultTransformer(Transformers.aliasToBean(MonitoreoIncidenciasVO.class)).list();
 		return respuesta;
