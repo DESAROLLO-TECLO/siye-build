@@ -354,7 +354,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 			}
 			if (stmt != null) {
 				try {
-					resultSet.close();
+					stmt.close();
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
