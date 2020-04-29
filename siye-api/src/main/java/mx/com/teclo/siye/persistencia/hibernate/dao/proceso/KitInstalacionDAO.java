@@ -33,4 +33,6 @@ public interface KitInstalacionDAO extends BaseDao<KitInstalacionDTO> {
 	public List<KitInstalacionDTO> obtenerkitInstalacionAll()throws NotFoundException ;
 
 	public KitInstalacionDTO kitIns(String cdKitIns);
+	
+	public KitInstalacionDTO ultimoId();
 }
