@@ -1,19 +1,18 @@
 package mx.com.teclo.siye.persistencia.vo.seguimientoOs;
 
-import java.util.List;
-
-import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
+import java.util.Date;
 
 public class EncuestaDetalleVO {
 	
 	private Long idEncuesta;
 	private String nbEncuesta;
-	private String fhInicio;
-	private String fhFin;
-	private Double nuPorcentaje;
+	private Date fhInicio;
+	private Date fhFin;
+	private String nuPorcentaje;
 	private String preguntas;
 	private String estatus;
-	private List<ImagenVO> imagenes;
+	private String nbColor;
+	
 	
 	
 	/**
@@ -43,37 +42,37 @@ public class EncuestaDetalleVO {
 	/**
 	 * @return the fhInicio
 	 */
-	public String getFhInicio() {
+	public Date getFhInicio() {
 		return fhInicio;
 	}
 	/**
 	 * @param fhInicio the fhInicio to set
 	 */
-	public void setFhInicio(String fhInicio) {
+	public void setFhInicio(Date fhInicio) {
 		this.fhInicio = fhInicio;
 	}
 	/**
 	 * @return the fhFin
 	 */
-	public String getFhFin() {
+	public Date getFhFin() {
 		return fhFin;
 	}
 	/**
 	 * @param fhFin the fhFin to set
 	 */
-	public void setFhFin(String fhFin) {
+	public void setFhFin(Date fhFin) {
 		this.fhFin = fhFin;
 	}
 	/**
 	 * @return the nuPorcentaje
 	 */
-	public Double getNuPorcentaje() {
+	public String getNuPorcentaje() {
 		return nuPorcentaje;
 	}
 	/**
 	 * @param nuPorcentaje the nuPorcentaje to set
 	 */
-	public void setNuPorcentaje(Double nuPorcentaje) {
+	public void setNuPorcentaje(String nuPorcentaje) {
 		this.nuPorcentaje = nuPorcentaje;
 	}
 	/**
@@ -101,16 +100,16 @@ public class EncuestaDetalleVO {
 		this.estatus = estatus;
 	}
 	/**
-	 * @return the imagenes
+	 * @return the nbColor
 	 */
-	public List<ImagenVO> getImagenes() {
-		return imagenes;
+	public String getNbColor() {
+		return nbColor;
 	}
 	/**
-	 * @param imagenes the imagenes to set
+	 * @param nbColor the nbColor to set
 	 */
-	public void setImagenes(List<ImagenVO> imagenes) {
-		this.imagenes = imagenes;
+	public void setNbColor(String nbColor) {
+		this.nbColor = nbColor;
 	}
 	
 }

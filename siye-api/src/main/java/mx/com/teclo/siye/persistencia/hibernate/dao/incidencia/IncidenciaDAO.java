@@ -5,8 +5,8 @@ import java.util.List;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDao;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
-import mx.com.teclo.siye.persistencia.vo.monitoreo.IncidenDetailVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.IncidenciaDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleIncidenciaVO;
 
 public interface IncidenciaDAO extends BaseDao<IncidenciaDTO> {
 	
@@ -63,6 +63,15 @@ public interface IncidenciaDAO extends BaseDao<IncidenciaDTO> {
 	 * @return List<IncidenciaDetalleVO> 
 	 * */
 	public List<IncidenciaDetalleVO> getIncidenciasByIdOrden(Long idOrden);
+	
+	
+	/**
+	 * Descripciónn: Obtiene una lista de incidencias por id de orden
+	 * @author Maverick
+	 * @param idOrden
+	 * @return List<DetalleIncidenciaVO> 
+	 * */
+	public List<DetalleIncidenciaVO> getDetalleIncidencia(Long idOrden);
 
 	/**
 	 * Descripciónn: Obtiene una lista de incidencias por id de orden,fechaIni fecha fin

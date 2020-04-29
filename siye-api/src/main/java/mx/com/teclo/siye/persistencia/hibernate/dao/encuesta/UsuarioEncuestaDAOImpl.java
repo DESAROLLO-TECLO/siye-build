@@ -38,6 +38,7 @@ public class UsuarioEncuestaDAOImpl extends BaseDaoHibernate<OrdenEncuestaDTO> i
 		c.add(Restrictions.eq("ordenServicio.stActivo", true));
 		c.add(Restrictions.eq("tipoEncuesta.idTipoEncuesta", 2L));
 		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("stAplicaEncuesta", true));
 		return (List<OrdenEncuestaDTO>)c.list();
 	}
 
@@ -52,6 +53,7 @@ public class UsuarioEncuestaDAOImpl extends BaseDaoHibernate<OrdenEncuestaDTO> i
 		c.add(Restrictions.eq("ordenServicio.stActivo", true));
 		c.add(Restrictions.eq("tipoEncuesta.idTipoEncuesta", 2L));
 		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("stAplicaEncuesta", true));
 		return (List<OrdenEncuestaDTO>)c.list();
 	}
 
@@ -66,6 +68,7 @@ public class UsuarioEncuestaDAOImpl extends BaseDaoHibernate<OrdenEncuestaDTO> i
 		c.add(Restrictions.eq("ordenServicio.stActivo", true));
 		c.add(Restrictions.eq("tipoEncuesta.idTipoEncuesta", 2L));
 		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("stAplicaEncuesta", true));
 		return (List<OrdenEncuestaDTO>)c.list();
 	}
 

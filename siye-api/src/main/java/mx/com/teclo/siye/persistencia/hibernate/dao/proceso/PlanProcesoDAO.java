@@ -42,9 +42,9 @@ public interface PlanProcesoDAO extends BaseDao<PlanProcesoDTO> {
 	 * Obtiene el avance del proceso para uno OS especifica 
 	 * 
 	 * @param idPlan
-	 * @return List<ProcesoDetalleVO>
+	 * @return ProcesoDetalleVO
 	 * Maverick
 	 */
-	public List<ProcesoDetalleVO> getDetalleProceso(Long idOrdenServicio, Long idProceso);
+	public ProcesoDetalleVO getDetalleProceso(Long idOrdenServicio, Long idProceso);
 
 }

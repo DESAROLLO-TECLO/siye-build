@@ -17,9 +17,6 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
         var disY = 150;
         //se obtiene una referencio del elemento del dom con id  mynetwork
         var container = document.getElementById('mynetwork');
-
-        ///var infoNetwork = document.getElementById('infoNetwork');
-
         var nodes, edges;
         var nodeInfo, edgeInfo;
 
@@ -28,26 +25,35 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             verProcesos:true,
             verDetalle:false,
             detalle:[],
-            proceso:[]
+            proceso:[],
+            etapasVO:[]
+        });
+
+        $scope.opciones = new Object({
+            verNodos:true,
+            verLinea:false
         });
 
         getDetalleOrdenServicio = function () {
             if (lineaTiempoVO != undefined) {
+                $scope.ordenServicioVO.proceso = detalleSeguimientoOsService.getconsultaGeneral();
                 $scope.ordenServicioVO.detalle = lineaTiempoVO.data;
                 initController();
             } else {
                 $location.path('/seguimientoOS');
-                growl.error('No hay detalle para esta Orden de Servicio');
+                // growl.error('No hay detalle para esta Orden de Servicio');
             }
         };
 
         $scope.regresar = function(){
             if($scope.ordenServicioVO.verProcesos){
                 //Regresar consulta gral
-
+                $location.path('/seguimientoOS');
             }else{
                 $scope.ordenServicioVO.verProcesos = true;
                 $scope.ordenServicioVO.verDetalle = false;
+                $scope.opciones.verNodos = true;
+                $scope.opciones.verLinea= false;
             }
         };
 
@@ -174,26 +180,67 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             });
         };
 
-        getDetalleOrdenServicio();
+        getLineaTiempo = function(os, procesos){
+            detalleSeguimientoOsService.getDetalleProcesoEspecifico(os, procesos).success(function(data){
+                $scope.ordenServicioVO.etapasVO = data;
+                $scope.ordenServicioVO.verProcesos = false;
+                $scope.ordenServicioVO.verDetalle = true;
+                $scope.opciones.verNodos = false;
+                $scope.opciones.verLinea= true;
+            }).error(function(data){
+                growl.error(data.message);
+            })
+        };
 
-        /* Metodo para consultar el detalle de un proceso
-        * utlizando como parametros nodo que es el id del proceso y la OS 
-        */ 
-
-        $scope.net.on("click", function (params) {
-            if(params.nodes[0]!=undefined){
-                let paramBusqueda = new Object({
-                    idOrden:$scope.ordenServicioVO.detalle.idOrdenServicio,
-                    idProceso:params.nodes[0]
-                });
-                detalleSeguimientoOsService.getDetalleProcesoEspecifico(paramBusqueda).success(function(data){
-                    $scope.ordenServicioVO.proceso.detalle = data;
-                    $scope.ordenServicioVO.verProcesos = false;
-                    $scope.ordenServicioVO.verDetalle = true;
+        $scope.verImagenesCarrusel = function(params, claseBus, nivel){
+            if(params!=undefined){
+                debugger
+                let datos = {
+                    idOrdenServicio: $scope.ordenServicioVO.proceso.dtOs.idOrdenServicio,
+                    valor: params.idEncuesta !=undefined ? params.idEncuesta : 0,
+                    nivel: nivel,
+                    clase:claseBus
+                };
+                detalleSeguimientoOsService.getImagenBynivel(datos).success(function(data){
+                    debugger
+                    let lista = [];
+                    for(let x=0; x<data.length; x++){
+                        let imagen = new Object({
+                            image: 'data:image/jpg;base64,'+data[x].lbExpedienteODS,
+                            url: 'data:image/jpg;base64,'+data[x].lbExpedienteODS,
+                            thumbrl: 'data:image/jpg;base64,'+data[x].lbExpedienteODS
+                        })
+                        lista.push(imagen);
+                    }
+                    Lightbox.openModal(lista, 0);
                 }).error(function(data){
                     growl.error(data.message);
-                })
+                });
             }
-        });
+        };
+
+        $scope.changeViewTab = function(tipo){
+            switch(tipo){
+                case 'nodo':
+                    $scope.opciones.verNodos = true;
+                    $scope.opciones.verLinea= false;
+                    $scope.ordenServicioVO.verProcesos = true;
+                    $scope.ordenServicioVO.verDetalle = false;
+                    break;
+
+                case 'linea':
+                    let opciones = $scope.ordenServicioVO.detalle.procesos.length;
+                    let proceso = [];
+                    for(let x=0; x<opciones; x++){
+                        proceso.push($scope.ordenServicioVO.detalle.procesos[x].idProceso);
+                    }
+                    getLineaTiempo($scope.ordenServicioVO.proceso.dtOs.idOrdenServicio, proceso)
+                    break;
+            }
+        };
+
+
+
+        getDetalleOrdenServicio();
 
     });

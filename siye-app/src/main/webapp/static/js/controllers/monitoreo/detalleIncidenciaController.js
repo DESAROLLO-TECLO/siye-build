@@ -6,19 +6,7 @@ angular.module(appTeclo).controller('detalleIncidenciaController', function($sco
 	$scope.procesoActivo = false;
 	$scope.flagDownload=false;
 	$scope.multimedia=[];
-////Consulta arbol de incidencia de orden<Proceso<Encuesta>>>
-//$scope.getDetalleIncidenciasOS=function(idOrden,idPlan){
-//	monIncidenciaService.getDetalleIncidenciasOS(idOrden,idPlan).success(function(data) {
-//    if (data!=null) {
-//    	$scope.orden=data;
-//		scrollDetail();
-//    	}else
-//    	growl.warning("No se encontro informacion")
-//		}).error(function(e) {
-//	$scope.orden = [];
-//    growl.warning(e.message, { ttl: 5000 });
-//});
-//}
+
 //Consulta Evidencias por incidencia
 $scope.consultarEvidenciaIncide = function(idIncidencia){
 	monIncidenciaService.getExpedienteIncidencia(idIncidencia).success(function(data){

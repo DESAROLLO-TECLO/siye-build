@@ -254,7 +254,12 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
     // Seguimiento 
     $routeProvider.when("/seguimientoOS", {
         templateUrl: "views/monitoreo/seguimiento.html",
-        controller: "seguimientoOsController"
+        controller: "seguimientoOsController",
+        resolve:{
+            lineaTiempoVO: function(detalleSeguimientoOsService){
+                return detalleSeguimientoOsService.getconsultaGeneral();
+            }
+        }
     });
 
     // Linea de tiempo 
