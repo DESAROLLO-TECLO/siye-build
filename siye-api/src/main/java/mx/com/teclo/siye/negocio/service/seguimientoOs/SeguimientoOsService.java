@@ -76,6 +76,14 @@ public interface SeguimientoOsService {
 	 * */
 	public ByteArrayOutputStream getReporteSeguimientoOs(ReporteExcelVO listaObj);
 	
+	/**
+	 * Metodo para realizar el corte diario de OS que no se atendieron en el dia correinte 
+	 * @author Maverick
+	 * @param String
+	 * @retun String 
+	 * */
+	public String hacerCorteDiario(String fecha);
+	
 
 
 }

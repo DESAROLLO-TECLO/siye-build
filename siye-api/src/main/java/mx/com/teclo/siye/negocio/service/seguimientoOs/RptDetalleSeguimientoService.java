@@ -41,8 +41,8 @@ public class RptDetalleSeguimientoService {
 		
 		/*Columnas del reporte*/
 		titulos.add("ORDEN SERIVICIO");
+		titulos.add("FECHA DE ATENCIÓN");
 		titulos.add("PLACA");
-		titulos.add("ETAPA");
 		titulos.add("PROCESO");
 		titulos.add("INCIDENCIA");
 		titulos.add("ESTADO");
@@ -56,8 +56,12 @@ public class RptDetalleSeguimientoService {
 		for(OrdenServcioDetalleVO d : info) {
 			List<String> rprt = new ArrayList<String>();
 			rprt.add(d.getNuOrdenServicio());
+			if(d.getFechaAtencion()!=null) {
+				rprt.add(ru.getFecha_ddMMYYYY_hhmmss(d.getFechaAtencion()));
+			}else {
+				rprt.add("");
+			}
 			rprt.add(d.getTxPlaca());
-			rprt.add(d.getTxEtapa());
 			rprt.add(d.getTxProceso());
 			rprt.add(d.getNuIncidencia().toString());
 			rprt.add(d.getEstado());

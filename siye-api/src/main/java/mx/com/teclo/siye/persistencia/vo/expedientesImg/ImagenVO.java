@@ -1,5 +1,7 @@
 package mx.com.teclo.siye.persistencia.vo.expedientesImg;
 
+import java.util.Date;
+
 import mx.com.teclo.siye.persistencia.vo.tipoExpediente.TipoExpedienteVO;
 
 public class ImagenVO {
@@ -16,7 +18,9 @@ public class ImagenVO {
 	private String cdTipoArchivo;
 	private byte[] lbExpedienteODS;
 	private String nbNivel;
+	private String cdNivel;
 	private TipoExpedienteVO tipoExpediente;
+	private Date fhCreacion;
 	
 	/**
 	 * @return the idExpedienteODS
@@ -156,11 +160,42 @@ public class ImagenVO {
 	public void setNbNivel(String nbNivel) {
 		this.nbNivel = nbNivel;
 	}
+	
+	/**
+	 * @return the cdNivel
+	 */
+	public String getCdNivel() {
+		return cdNivel;
+	}
+	/**
+	 * @param cdNivel the cdNivel to set
+	 */
+	public void setCdNivel(String cdNivel) {
+		this.cdNivel = cdNivel;
+	}
 	public TipoExpedienteVO getTipoExpediente() {
 		return tipoExpediente;
 	}
 	public void setTipoExpediente(TipoExpedienteVO tipoExpediente) {
 		this.tipoExpediente = tipoExpediente;
+	}
+	/**
+	 * @param idOdsEncuesta the idOdsEncuesta to set
+	 */
+	public void setIdOdsEncuesta(Long idOdsEncuesta) {
+		this.idOdsEncuesta = idOdsEncuesta;
+	}
+	/**
+	 * @return the fhCreacion
+	 */
+	public Date getFhCreacion() {
+		return fhCreacion;
+	}
+	/**
+	 * @param fhCreacion the fhCreacion to set
+	 */
+	public void setFhCreacion(Date fhCreacion) {
+		this.fhCreacion = fhCreacion;
 	}
 	
 }

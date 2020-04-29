@@ -188,5 +188,15 @@ public class SeguimientoOsRestController {
        return response;
 	}
 	
+	@RequestMapping(value="/corteDiario", method = RequestMethod.GET)
+	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
+	public ResponseEntity<String> hacerCorteDiario(@RequestParam(value ="fechaCorte") String fechaCorte) throws NotFoundException{	
+		String respuesta = seguimientoService.hacerCorteDiario(fechaCorte);
+		if(respuesta==null) {
+			throw new NotFoundException("Ocurrio un error al realizar el corte diario");
+		}
+		return new ResponseEntity<String>(respuesta, HttpStatus.OK);		
+	}
+	
 	
 }

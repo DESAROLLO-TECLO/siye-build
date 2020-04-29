@@ -30,7 +30,14 @@ angular.module(appTeclo).service("seguimientoOsService", function($http, config)
 	        },
 	        responseType: 'arraybuffer'
 		});
-	}
+	};
 
+	this.hacerCorteDiario = function(fecha){
+		return $http.post(config.baseUrl + END_POINT +"/corteDiario",nuevoInsumo);
+	};
+
+	this.saveInsumo = function(nuevoInsumo){
+		return $http.post(config.baseUrl + "/almacen/nuevoInsumo",nuevoInsumo);
+	}
 
 });

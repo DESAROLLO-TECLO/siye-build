@@ -188,7 +188,7 @@
             "titulo":{
                 "ordenServicio":"ORDEN SERVICIO",
                 "nuPlaca":"PLACA",
-                "txEtapa":"ETAPA",
+                "txEtapa":"FECHA ATENCIÓN",
                 "txProceso":"PROCESO",
                 "txIncidensia":"INCIDENCIA",
                 "txEstado":"ESTADO"

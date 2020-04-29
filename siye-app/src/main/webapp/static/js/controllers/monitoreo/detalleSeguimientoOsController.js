@@ -2,7 +2,7 @@ angular.module(appTeclo).config(function (LightboxProvider) {
     LightboxProvider.fullScreenMode = true;
 });
 angular.module(appTeclo).controller('detalleSeguimientoOsController',
-    function ($rootScope, $scope, $location, $document, showAlert, growl, Lightbox, detalleSeguimientoOsService, lineaTiempoVO) {
+    function ($rootScope, $scope, $route, $location, $document, showAlert, growl, Lightbox, detalleSeguimientoOsService, lineaTiempoVO, ModalService) {
         $scope.procesoActual = {};
         $scope.b_seguimiento = true;
         $scope.b_detalle = false;
@@ -38,7 +38,13 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             if (lineaTiempoVO != undefined) {
                 $scope.ordenServicioVO.proceso = detalleSeguimientoOsService.getconsultaGeneral();
                 $scope.ordenServicioVO.detalle = lineaTiempoVO.data;
-                initController();
+                if(lineaTiempoVO.data.procesos!=null){
+                    initController();
+                }else{
+                    growl.info("No tiene Procesos Asignados ");
+                    $location.path('/seguimientoOS');
+                }
+               
             } else {
                 $location.path('/seguimientoOS');
                 // growl.error('No hay detalle para esta Orden de Servicio');
@@ -194,27 +200,18 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
 
         $scope.verImagenesCarrusel = function(params, claseBus, nivel){
             if(params!=undefined){
-                debugger
-                let datos = {
-                    idOrdenServicio: $scope.ordenServicioVO.proceso.dtOs.idOrdenServicio,
-                    valor: params.idEncuesta !=undefined ? params.idEncuesta : 0,
-                    nivel: nivel,
-                    clase:claseBus
-                };
-                detalleSeguimientoOsService.getImagenBynivel(datos).success(function(data){
-                    debugger
-                    let lista = [];
-                    for(let x=0; x<data.length; x++){
-                        let imagen = new Object({
-                            image: 'data:image/jpg;base64,'+data[x].lbExpedienteODS,
-                            url: 'data:image/jpg;base64,'+data[x].lbExpedienteODS,
-                            thumbrl: 'data:image/jpg;base64,'+data[x].lbExpedienteODS
-                        })
-                        lista.push(imagen);
-                    }
-                    Lightbox.openModal(lista, 0);
-                }).error(function(data){
-                    growl.error(data.message);
+                $scope.paramsRespaldoModal = new Object({
+                    fechaInicio:  $scope.ordenServicioVO.proceso.formBusuqeda.fechaInicio,
+                    fechaFin: $scope.ordenServicioVO.proceso.formBusuqeda.fechaInicio,
+                    idCentroInstalacion:$scope.ordenServicioVO.proceso.idCentroInstalacion
+                });    
+                ModalService.showModal({
+                    templateUrl: 'views/templatemodal/templateModalIncidenciasMonitoreo.html',
+                    controller: 'modalIncidenciasMonitoreoController',
+                    scope: $scope,
+                    inputs: {OrdenServicio :params}
+                }).then(function(modal) {
+                    modal.element.modal();
                 });
             }
         };
@@ -239,6 +236,12 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             }
         };
 
+        $scope.$on('$locationChangeSuccess', function (event, current, previous) {
+            $scope.proximoController = $route.current.$$route.controller;
+            if ($scope.proximoController != "detalleSeguimientoOsController" && $scope.proximoController != "seguimientoOsController") {
+                detalleSeguimientoOsService.saveconsultaGeneral(null);
+            }
+        });
 
 
         getDetalleOrdenServicio();

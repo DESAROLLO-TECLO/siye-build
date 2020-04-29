@@ -8,6 +8,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
+import org.hibernate.type.DateType;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
 import org.springframework.stereotype.Repository;
@@ -134,8 +135,9 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<OrdenServcioDetalleVO> getDetalleOS(Long idCentroInstalacion, String fechaInicio, String fechaFin) {
-		StringBuilder consulta = new StringBuilder("SELECT" + 
-	            "   OS.ID_PLAN AS idPlan,"+
+		StringBuilder consulta = new StringBuilder("SELECT UNIQUE idOrdenServicio, idPlan, nuOrdenServicio, fechaAtencion, txTransportista, txPlaca," + 
+				"txSupervisor, txTecnicoInstalacion, txProceso, nuIncidencia, estado, color FROM (" + 
+	            "   SELECT OS.ID_PLAN AS idPlan,"+
 				"   OS.ID_ORDEN_SERVICIO AS idOrdenServicio, "+
 				"	OS.CD_ORDEN_SERVICIO AS nuOrdenServicio," + 
 				"	OS.FH_ATENCION_INI AS fechaAtencion," + 
@@ -167,19 +169,17 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 				" LEFT JOIN TIE052C_IE_CONCESIONES CONC ON (CONC.ID_CONCESION = V.ID_CONCESION) " + 
 				"WHERE CI.ID_CENTRO_INSTALACION =:idCentroInstalacion AND os.ST_ACTIVO =1 "  + 
 				"	AND TRUNC(OS.FH_CITA) BETWEEN TO_DATE('"+fechaInicio+"','dd/MM/yyyy')  AND TO_DATE('"+ fechaFin+"','dd/MM/yyyy')" + 
-				" ORDER BY OS.CD_ORDEN_SERVICIO, OS.FH_CITA DESC");		
+				" )ORDER BY idOrdenServicio, fechaAtencion");	
 		List<OrdenServcioDetalleVO> detalleEntrada = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idPlan",LongType.INSTANCE)
 				.addScalar("idOrdenServicio", LongType.INSTANCE)
 				.addScalar("nuOrdenServicio",StringType.INSTANCE)
-				.addScalar("fechaAtencion",StringType.INSTANCE)
+				.addScalar("fechaAtencion",DateType.INSTANCE)
 				.addScalar("txTransportista",StringType.INSTANCE)
 				.addScalar("txPlaca",StringType.INSTANCE)
-				.addScalar("txtRepresentante",StringType.INSTANCE)
 				.addScalar("txSupervisor",StringType.INSTANCE)
 				.addScalar("txTecnicoInstalacion",StringType.INSTANCE)
 				.addScalar("txProceso",StringType.INSTANCE)
-				.addScalar("txEtapa",StringType.INSTANCE)
 				.addScalar("nuIncidencia",LongType.INSTANCE)
 				.addScalar("estado",StringType.INSTANCE)
 				.addScalar("color",StringType.INSTANCE)
