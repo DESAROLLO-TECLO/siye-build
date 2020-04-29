@@ -172,8 +172,12 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 					imgVO.setNbExpedienteODS(dto.getNbExpedienteODS());
 					
 					if(dto.getTipoExpediente() != null){
-						TipoExpedienteVO tpExpVO=ResponseConverter.copiarPropiedadesFull(dto.getTipoExpediente(), TipoExpedienteVO.class);
-						imgVO.setTipoExpediente(tpExpVO);	
+						TipoExpedienteVO tpExpVO=new TipoExpedienteVO();
+						tpExpVO.setIdTipoExpediente(dto.getTipoExpediente().getIdDispositivo());
+						tpExpVO.setCdTipoExpediente(dto.getTipoExpediente().getCdTipoExpediente());
+						tpExpVO.setNbTipoExpediente(dto.getTipoExpediente().getNbTipoExpediente());
+						imgVO.setTipoExpediente(tpExpVO);
+						imgVO.setIdTipoExpediente(dto.getTipoExpediente().getIdDispositivo());
 					}
 					
 					//Clasificacion de imagenes
