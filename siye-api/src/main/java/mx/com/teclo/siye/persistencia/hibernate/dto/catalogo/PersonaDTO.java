@@ -63,6 +63,9 @@ public class PersonaDTO implements Serializable {
 	@Column(name = "FH_MODIFICACION", nullable = false)
 	private Date fhModificacion;
 
+	@Column(name = "ST_PERSONA", nullable = false)
+	private Long stPersona;
+
 	public Integer getIdPersona() {
 		return idPersona;
 	}
@@ -150,4 +153,13 @@ public class PersonaDTO implements Serializable {
 	public void setFhModificacion(Date fhModificacion) {
 		this.fhModificacion = fhModificacion;
 	}
+
+	public Long getStPersona() {
+		return stPersona;
+	}
+
+	public void setStPersona(Long stPersona) {
+		this.stPersona = stPersona;
+	}
+	
 }

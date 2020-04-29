@@ -9,4 +9,6 @@ public interface ConcesionariaDAO extends BaseDao<ConsecionarioDTO>{
 	
 	List<ConsecionarioDTO> getConcesionariaAll();
 
+	public List<ConsecionarioDTO> obtenerConsecionarioVisible(Long value);
+
 }

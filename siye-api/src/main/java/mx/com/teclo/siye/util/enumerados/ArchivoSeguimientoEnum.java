@@ -1,29 +1,32 @@
 package mx.com.teclo.siye.util.enumerados;
 
 public enum ArchivoSeguimientoEnum {
-	RECIBIDO(4L, "RECIBIDO", "RECIBIDO"), CARGANDO(5L, "CARGANDO", "CARGANDO"), CARGADO(6L, "CARGADO", "CARGADO A SIE"),
-	RECHAZADO(7L, "RECHAZADO", "RECHAZADO");
+	RECIBIDO("RECIBIDO", "ID_ST_SEGUIMIENTO", "TIE025D_IE_LOTE_ODS"),
+	CARGANDO("CARGANDO", "ID_ST_SEGUIMIENTO", "TIE025D_IE_LOTE_ODS"),
+	CARGADO("CARGADO", "ID_ST_SEGUIMIENTO", "TIE025D_IE_LOTE_ODS"),
+	RECHAZADO("RECHAZADO", "ID_ST_SEGUIMIENTO", "TIE025D_IE_LOTE_ODS");
 
-	private Long idArchivoSeg;
 	private String cdArchivoSeg;
-	private String nbArchivoSeg;
+	private String cdTipoSeg;
+	private String nbTipoSeg;
 
-	private ArchivoSeguimientoEnum(Long idArchivoSeg, String cdArchivoSeg, String nbArchivoSeg) {
-		this.idArchivoSeg = idArchivoSeg;
+	private ArchivoSeguimientoEnum(String cdArchivoSeg, String cdTipoSeg, String nbTipoSeg) {
+
 		this.cdArchivoSeg = cdArchivoSeg;
-		this.nbArchivoSeg = nbArchivoSeg;
-	}
-
-	public Long getIdArchivoSeg() {
-		return idArchivoSeg;
+		this.cdTipoSeg = cdTipoSeg;
+		this.nbTipoSeg = nbTipoSeg;
 	}
 
 	public String getCdArchivoSeg() {
 		return cdArchivoSeg;
 	}
 
-	public String getNbArchivoSeg() {
-		return nbArchivoSeg;
+	public String getCdTipoSeg() {
+		return cdTipoSeg;
+	}
+
+	public String getNbTipoSeg() {
+		return nbTipoSeg;
 	}
 
 }

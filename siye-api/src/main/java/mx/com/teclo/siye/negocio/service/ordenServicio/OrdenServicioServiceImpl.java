@@ -17,6 +17,7 @@ import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ConfiguracionParamDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ProveedorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoVehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
@@ -33,6 +34,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.VehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConfiguracionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ProveedorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.OdsIncidenciaDTO;
@@ -114,14 +116,25 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	@Autowired
 	private IncidenciaDAO incidenciaDAO;
 	
+	@Autowired
+	private  ConfiguracionParamDAO configuracionDAO;
+	
 	@Transactional
 	@Override
 	public List<OrdenServicioVO> consultaOrdenServicioAll() throws NotFoundException {
 		UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
 		GerenteSupervisorDTO gerenteSupervisorDTO = gerenteSupervisorDAO.consultaGerenteSupervisorBySupervisor(usuario.getId());
+		List<OrdenServicioDTO> listOrdenServicioDTO =new ArrayList<OrdenServicioDTO>();
 		if(gerenteSupervisorDTO == null)
-			throw new NotFoundException("No se encontró el centro de instalación, favor de reportar al administrador del sistema.");
-		List<OrdenServicioDTO> listOrdenServicioDTO =  ordenServicioDAO.consultaOrdenByFhCita(gerenteSupervisorDTO.getCentroInstalacion().getIdCentroInstalacion()); //ordenServicioDAO.consultaOrdenAll();
+		{
+			 listOrdenServicioDTO =  ordenServicioDAO.consultaTodasOrdenes(); 
+			
+		}
+		else
+		{
+	        listOrdenServicioDTO =  ordenServicioDAO.consultaOrdenByFhCita(gerenteSupervisorDTO.getCentroInstalacion().getIdCentroInstalacion()); 
+		}
+		
 		if(listOrdenServicioDTO.isEmpty())
 			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
 		List<OrdenServicioVO> listOrdenServicioVO = ResponseConverter.converterLista(new ArrayList<>(), listOrdenServicioDTO, OrdenServicioVO.class);
@@ -444,6 +457,67 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		odsIncidenciaDAO.save(odsIncidencDTO);
 		
 	}
+	
+	@Transactional
+	@Override
+	public List<OrdenServicioVO> consultaHistorica(Boolean busquedaAvanzada,String cdTipoBusqueda,
+		    String valorBusqueda, String fhInicio, String fhFin,String centroInstalacion,String estatusSeguimiento,
+		    Boolean isLote, Boolean isIncidencia,
+			String valorLoteIncidencia, String tipoKit,
+			String tipoPlan) throws NotFoundException {
+		List<OrdenServicioDTO> listOrdenServicioDTO = new ArrayList<>(); 
+		//UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
+		//GerenteSupervisorDTO gerenteSupervisorDTO = gerenteSupervisorDAO.consultaGerenteSupervisorBySupervisor(usuario.getId());
+		//if(gerenteSupervisorDTO == null)
+			//throw new NotFoundException("No se encontró el centro de instalación, favor de reportar al administrador del sistema.");
+		if(!busquedaAvanzada)
+		{
+			switch(cdTipoBusqueda) {
+				case "TODO":
+					Integer registrosAMostrar;
+					ConfiguracionDTO a1 =  configuracionDAO.configuracion("NUM_MAX_REGISTROS_MOSTRAR");
+					registrosAMostrar=Integer.parseInt(a1.getCdValorPConfig());
+					listOrdenServicioDTO = ordenServicioDAO.todos(registrosAMostrar);
+					break;
+				case "PLACA":
+					listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByPlacaTodo(valorBusqueda);
+					break;
+				
+				case "ORDEN_SERVICIO":
+					listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByOrdenServicioTodo(valorBusqueda);
+					break;
+				
+				case "VIN":
+					listOrdenServicioDTO = ordenServicioDAO.consultaOrdenByVinTodo(valorBusqueda);
+					break;
+					
+				case "LOTE":
+					listOrdenServicioDTO = ordenServicioDAO.getOrdenServicioByLote(valorBusqueda);
+					break;
+					
+				case "INCIDENCIA":
+					listOrdenServicioDTO = ordenServicioDAO.getOrdenServicioByIncidecnia(valorBusqueda);
+					break;
+				}
+			
+			if(listOrdenServicioDTO.isEmpty())
+				throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+			List<OrdenServicioVO> listOrdenServicioVO = ResponseConverter.converterLista(new ArrayList<>(), listOrdenServicioDTO, OrdenServicioVO.class);
+			return listOrdenServicioVO;
+		}else
+		{
+			Integer registrosAMostrar;
+			ConfiguracionDTO a1 =  configuracionDAO.configuracion("NUM_MAX_REGISTROS_MOSTRAR");
+			registrosAMostrar=Integer.parseInt(a1.getCdValorPConfig());
+			listOrdenServicioDTO=ordenServicioDAO.consultaAvanzada(busquedaAvanzada, cdTipoBusqueda, valorBusqueda, fhInicio, fhFin, centroInstalacion, estatusSeguimiento, isLote, isIncidencia, valorLoteIncidencia, tipoKit, tipoPlan,registrosAMostrar);
+			
+			if(listOrdenServicioDTO.isEmpty())
+				throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+			List<OrdenServicioVO> listOrdenServicioVO = ResponseConverter.converterLista(new ArrayList<>(), listOrdenServicioDTO, OrdenServicioVO.class);
+			return listOrdenServicioVO;
+		}
+		}
+		
 
 
 }

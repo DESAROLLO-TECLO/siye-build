@@ -10,4 +10,10 @@ public interface PersonaDAO  extends BaseDao<PersonaDTO>{
 	public List<PersonaDTO> getTecnicos();
 	
 	public List<PersonaDTO> getInstaladorXNombre(String nombre, String aPaterno, String aMaterno);
+
+	public List<PersonaDTO> obtenerPersonaVisible(Long value);
+
+	public Integer getUltimoId();
+
+	public PersonaDTO obtenerPersonaId(Integer idPersona);
 }

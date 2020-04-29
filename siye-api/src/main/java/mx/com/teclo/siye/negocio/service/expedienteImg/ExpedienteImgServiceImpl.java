@@ -14,7 +14,6 @@ import mx.com.teclo.arquitectura.ortogonales.responsehttp.BadRequestHttpResponse
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
 import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
-import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.negocio.service.catalogo.CatalogoService;
 import mx.com.teclo.siye.persistencia.hibernate.dao.configuracion.ConfiguracionOSDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestasDAO;
@@ -316,7 +315,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 		TipoExpedienteDTO tipoExpedienteDTO = null;
 		
 		if(imagen.getIdOdsEncuesta()!=null) {
-			 ordenEncuestaDTO = usuarioEncuesta.findOne(imagen.getIdOdsEncuesta());
+			 ordenEncuestaDTO = usuarioEncuesta.consultaByIdOrdernIdEncuesta(imagen.getIdOrdenServicio(), imagen.getIdOdsEncuesta());
 		}
 		if(imagen.getIdPregunta()!=null) {
 			preguntaDTO = preguntaDAO.findOne(imagen.getIdPregunta());
@@ -428,7 +427,9 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 			break;
 
 		case CDENCUESTA:
-			respuesta = expedienteImgDAO.getImgByEncuesta(nuOrderServicio, idValorBuscar);
+			OrdenEncuestaDTO ordEncuest=usuarioEncuesta.consultaByIdOrdernIdEncuesta(nuOrderServicio, idValorBuscar);
+			Long idOrdenEncuesta=ordEncuest.getIdUsuarioEncuesta();
+			respuesta = expedienteImgDAO.getImgByEncuesta(nuOrderServicio, idOrdenEncuesta);
 			break;
 
 		case CDPREGUNTA:
@@ -450,6 +451,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 		ConfiguracionVO configuracionVO;
 		try {
 			configuracionVO = catalogoService.configuracion("TIE051D_NU_MAX_IMAGENES");
+			
 			int nuMaximoImagenes = Integer.parseInt(configuracionVO.getCdValorPConfig());
 			
 			if(listImagenVO.size() > nuMaximoImagenes)
@@ -472,7 +474,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 						expedientesImgDTO.setIdUsrCreacion(usuario.getId());
 						expedientesImgDTO.setFhModifica(new Date());
 						expedientesImgDTO.setIdUsrModifica(usuario.getId());
-						TipoExpedienteDTO tipoExpedienteDTO = tipoExpedienteDAO.findOne(imagenVO.getTipoExpediente().getIdTipoExpediente());
+						TipoExpedienteDTO tipoExpedienteDTO = tipoExpedienteDAO.findOne(imagenVO.getIdTipoExpediente());
 //						tipoExpedienteDTO = ResponseConverter.copiarPropiedadesFull(imagenVO.getTipoExpediente(), TipoExpedienteDTO.class);
 						expedientesImgDTO.setTipoExpediente(tipoExpedienteDTO);
 						try {

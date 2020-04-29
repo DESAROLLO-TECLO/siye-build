@@ -4,6 +4,7 @@ import java.util.List;
 
 import mx.com.teclo.siye.persistencia.vo.async.ColumnaArchivoVO;
 import mx.com.teclo.siye.persistencia.vo.async.ColumnaVO;
+import mx.com.teclo.siye.persistencia.vo.async.TablaDestinoVO;
 
 /**
  * Recupera las columnas esperadas en el archivo de carga masiva
@@ -26,17 +27,27 @@ public interface LayoutDAO {
 	/**
 	 * Obtiene ordenadamente los nombres de las columnas a afectar en el insert *
 	 * 
+	 * @param idTipoLayout
 	 * @param tabla
 	 * @return
 	 */
-	List<ColumnaVO> getNbsColumnas(String tabla);
+	List<ColumnaVO> getNbsColumnas(Long idTipoLayout, String tabla);
 
 	/**
 	 * Obtiene ordenadamente los nombres de las columnas a recibir en el archivo*
 	 * 
-	 * 
+	 * @param idTipoLayout
 	 * @return List<ColumnaArchivoVO>
 	 */
-	List<ColumnaArchivoVO> getColumnasEnArchivo();
+	List<ColumnaArchivoVO> getColumnasEnArchivo(Long idTipoLayout);
+
+	/**
+	 * Obtiene en orden de inserci&oacute;n las tablas que involucradas en la carga
+	 * masiva
+	 * 
+	 * @param idTipoLayout
+	 * @return
+	 */
+	List<TablaDestinoVO> getOrdenInsercionTablas(Long idTipoLayout);
 
 }

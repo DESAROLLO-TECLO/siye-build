@@ -31,20 +31,20 @@ public interface PlanProcesoDAO extends BaseDao<PlanProcesoDTO> {
 	/**
 	 * Obtiene los procesos del plan
 	 * 
-	 * @param idPlan
+	 * @param idOrdenServicio
 	 * @return List<ProcesoDetalleVO>
 	 * Maverick
 	 */
-	public List<ProcesoDetalleVO> getEtapasParaSeguimiento(Long idPlan);
+	public List<ProcesoDetalleVO> getEtapasParaSeguimiento(Long idOrdenServicio);
 	
 	
 	/**
 	 * Obtiene el avance del proceso para uno OS especifica 
 	 * 
 	 * @param idPlan
-	 * @return List<ProcesoDetalleVO>
+	 * @return ProcesoDetalleVO
 	 * Maverick
 	 */
-	public List<ProcesoDetalleVO> getDetalleProceso(Long idOrdenServicio, Long idProceso);
+	public ProcesoDetalleVO getDetalleProceso(Long idOrdenServicio, Long idProceso);
 
 }

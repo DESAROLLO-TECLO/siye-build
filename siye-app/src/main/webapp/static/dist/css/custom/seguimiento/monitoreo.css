@@ -63,6 +63,22 @@
 	background-color: #cf0a2c;
 	color: #ecf0f1;
 }
+.timeline>.time-label>span.bg-success {
+	background-color: #5bb700;
+	color: #ecf0f1;
+}
+
+.timeline>.time-label>span.bg-warning {
+	background-color: #cf0a2c;
+	color: #ecf0f1;
+}
+
+.timeline>.time-label>.timeline-header>span.bg-warning1 {
+	background-color: #cf0a2c;
+	color: #ecf0f1;
+}
+
+
 
 .timeline>li>.fa.nodesTimeline {
 	width: 2.8rem;
@@ -78,6 +94,24 @@
 .timeline-header p.badge {
 	background-color: #fbeef1;
 	color: #cc4865;
+}
+.timeline-header p.badgesucces {
+	background-color: #bbffbb;
+	color: #00b900;
+}
+
+.timeline-header p.badgewarning {
+	background-color: #fbeef1;
+	color: #cc4865;
+}
+.timeline-header span.badgewarning {
+	font-weight: 600;
+    padding: 0.3571rem;
+    display: inline-block;
+    border-radius: 0.2857rem;
+	font-size: 11px;
+	background-color: rgba(207,10,44,.9);
+    color: #fff;
 }
 
 img.imgNodes {

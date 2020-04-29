@@ -15,6 +15,7 @@ public class TipoVehiculoVO implements Serializable{
 	private String nbTipoVehiculo;
 	private Long nuOrden;
 	private Boolean stActivo;
+	private Long stTipoVehiculo;
 	
 	public Long getIdTipoVehiculo() {
 		return idTipoVehiculo;
@@ -46,6 +47,13 @@ public class TipoVehiculoVO implements Serializable{
 	public void setStActivo(Boolean stAtivo) {
 		this.stActivo = stAtivo;
 	}
+	public Long getStTipoVehiculo() {
+		return stTipoVehiculo;
+	}
+	public void setStTipoVehiculo(Long stTipoVehiculo) {
+		this.stTipoVehiculo = stTipoVehiculo;
+	}
+	
 	
 	
 

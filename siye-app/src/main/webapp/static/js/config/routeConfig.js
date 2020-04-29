@@ -83,6 +83,12 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
             }
         }
     });
+
+    $routeProvider.when("/catalogos", {
+        templateUrl: "views/administracion/catalogos.html",
+        controller: "catalogoController"
+
+    });
     /*___________________________________________________________
     ________** FIN -> ADMINISTRACIÓN CONTROLLERS ** ___________*/
 
@@ -106,14 +112,14 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         resolve: {
             procesoInfo: function(procesoService, $route) {
                 return procesoService.getInfoProceso($route.current.params.idpro, $route.current.params.idord);
-        },
-        idord : function($route){ 
-			return $route.current.params.idord;
-        },
-        idpro : function($route){ 
-			return $route.current.params.idpro;
+            },
+            idord: function($route) {
+                return $route.current.params.idord;
+            },
+            idpro: function($route) {
+                return $route.current.params.idpro;
+            }
         }
-      }
     });
 
     $routeProvider.when("/etapas/proceso/encuesta/:idencuesta/:idorden/:idproceso", {
@@ -121,10 +127,10 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         controller: "encuestaController",
         resolve: {
             encuestaInfo: function(encuestaService, $route) {
-                return encuestaService.getInfoEncuesta($route.current.params.idencuesta,$route.current.params.idorden);
+                return encuestaService.getInfoEncuesta($route.current.params.idencuesta, $route.current.params.idorden);
             },
-            idpro : function($route){ 
-    			return $route.current.params.idproceso;
+            idpro: function($route) {
+                return $route.current.params.idproceso;
             }
         }
     });
@@ -206,7 +212,7 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         controller: "altaIncidenciaController",
         resolve: {
             dataInfo: function($route) {
-            	let info = {}
+                let info = {}
                 return info;
             }
         }
@@ -216,30 +222,30 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         controller: "altaIncidenciaController",
         resolve: {
             dataInfo: function($route) {
-            	let info = {
-            			idOrden: $route.current.params.idOrden,
-            			idProceso: $route.current.params.idProceso,
-            			idEncuesta: $route.current.params.idEncuesta,
-            			idPregunta: $route.current.params.idPregunta,
-            			urlActual: $route.current.params.urlActual
-            	}
+                let info = {
+                    idOrden: $route.current.params.idOrden,
+                    idProceso: $route.current.params.idProceso,
+                    idEncuesta: $route.current.params.idEncuesta,
+                    idPregunta: $route.current.params.idPregunta,
+                    urlActual: $route.current.params.urlActual
+                }
                 return info;
             }
         }
-    });    
+    });
     //Expedinete
     $routeProvider.when("/cargaMasiva", {
         templateUrl: "views/expediente/expediente.html",
         controller: "expedienteController"
     });
-    
-  //Expedinete por nivel
+
+    //Expedinete por nivel
     $routeProvider.when("/cargaMasiva/cargaNivel", {
         templateUrl: "views/expediente/expedineteRedirec.html",
         controller: "expedienteRedirectController",
         resolve: {
             params: function(expedienteService) {
-            	let params=expedienteService.getParams();
+                let params = expedienteService.getParams();
                 return params;
             }
         }
@@ -248,18 +254,44 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
     // Seguimiento 
     $routeProvider.when("/seguimientoOS", {
         templateUrl: "views/monitoreo/seguimiento.html",
-        controller: "seguimientoOsController"
+        controller: "seguimientoOsController",
+        resolve:{
+            lineaTiempoVO: function(detalleSeguimientoOsService){
+                return detalleSeguimientoOsService.getconsultaGeneral();
+            }
+        }
     });
 
     // Linea de tiempo 
     $routeProvider.when("/detSegimientoOS", {
         templateUrl: "views/monitoreo/detalleSeguimientoOS.html",
-        controller: "detalleSeguimientoOsController"
+        controller: "detalleSeguimientoOsController",
+        resolve:{
+            lineaTiempoVO: function(detalleSeguimientoOsService){
+                return detalleSeguimientoOsService.getProcesosByOrdenServicio();
+            }
+        }
     });
-    
+
     // Monitoreo Incidencias 
     $routeProvider.when("/monIncidencia", {
         templateUrl: "views/monitoreo/monIncidencia.html",
         controller: "monIncidenciaController"
     });
+    
+    $routeProvider.when("/seguimientoIncidencia/:idOrden/:idPlan", {
+        templateUrl: "views/monitoreo/detalleIncidencia.html",
+        controller: "detalleIncidenciaController",
+        resolve: {
+        	idOrden: function($route) { return $route.current.params.idOrden; },
+        	idPlan: function($route) { return $route.current.params.idPlan; }
+        }
+    });
+
+    /* Dashboard */
+    $routeProvider.when("/tablero", {
+        templateUrl: "views/dashboard/dashboard.html",
+        controller: "dashboardController"
+    });
+
 });

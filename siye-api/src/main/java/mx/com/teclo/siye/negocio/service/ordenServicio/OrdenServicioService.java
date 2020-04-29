@@ -39,5 +39,11 @@ public interface OrdenServicioService {
 	public void saveOrdenServicio(OrdenServiVO ordenServiVO);
 
 	List<OrdenServicioVO> consultaOrdenServicioAll() throws NotFoundException; 
+	
+	List<OrdenServicioVO> consultaHistorica(Boolean busquedaAvanzada,String cdTipoBusqueda,
+		    String valorBusqueda, String fhInicio, String fhFin,String centroInstalacion,String estatusSeguimiento,
+		    Boolean isLote, Boolean isIncidencia,
+			String valorLoteIncidencia, String tipoKit,
+			String tipoPlan) throws NotFoundException; 
 
 }

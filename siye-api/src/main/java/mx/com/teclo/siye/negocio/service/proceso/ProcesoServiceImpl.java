@@ -1,5 +1,6 @@
 package mx.com.teclo.siye.negocio.service.proceso;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.EstatusCalificacion
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaIntentoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestasDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.OrdenProcesoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.DispositivosDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
@@ -22,6 +24,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanProcesoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.procesoencuesta.ProcesoEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenProcesoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaIntentosDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitDispositivoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
@@ -32,6 +35,7 @@ import mx.com.teclo.siye.persistencia.mybatis.dao.proceso.ServicioEncuestasMyBat
 import mx.com.teclo.siye.persistencia.vo.proceso.DispositivosVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.PlanProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.ProcesoEncuestaVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.StSeguimientoVO;
 
 
 
@@ -77,6 +81,9 @@ public class ProcesoServiceImpl implements ProcesoService {
 	
 	@Autowired
 	private EncuestasDAO encuestasDAO;
+	
+	@Autowired
+	private OrdenProcesoDAO ordenProcesoDAO;
 	
 	
 
@@ -126,38 +133,47 @@ public class ProcesoServiceImpl implements ProcesoService {
     	List<ProcesoEncuestaDTO> procesoEncuestaDTO = new ArrayList<ProcesoEncuestaDTO>();
     	List<OrdenEncuestaDTO> nuevoOrdenEncuestas=new ArrayList<OrdenEncuestaDTO>();
 
-    	Boolean banderaMostrarContestados=true;
 		if(encuestasByUsuario.size()>0)
 		{
 			procesoEncuestaDTO=procesoEncuestaDAO.obtenerEncuestasProceso(plan.get(0).getProceso().getIdProceso());
         	OrdenServicioDTO  ordenServicioDTO = new OrdenServicioDTO();
         	ordenServicioDTO=getInfoBasicaOrdenServicio(idSolicitud);
+        	Long nuOrdenProcesoActual=1L;
+        	for(PlanProcesoVO actual:plan)
+			{
+        		if(actual.getProceso().getIdProceso()==(ordenServicioDTO.getProceso()!=null?ordenServicioDTO.getProceso().getIdProceso():procesoEncuestaDTO.get(0).getIdProceso().getIdProceso()))
+        		{
+        			nuOrdenProcesoActual=actual.getNuorden();
+        		}
+			}
 			for(PlanProcesoVO actual:plan)
 			{
 				actual.getProceso().setFechaInicioProceso(obtenerFechaInicioProceso(actual.getProceso().getIdProceso(),idSolicitud));
 				actual.getProceso().setFechaFinProceso(obtenerFechaFinProceso(actual.getProceso().getIdProceso(),idSolicitud));
-
-                 if(banderaMostrarContestados)
-                 { 
-                	 if(actual.getProceso().getIdProceso()<=(ordenServicioDTO.getProceso()!=null?ordenServicioDTO.getProceso().getIdProceso():procesoEncuestaDTO.get(0).getIdProceso().getIdProceso()))
+				
+				
+                    if(actual.getNuorden()<=nuOrdenProcesoActual)
                 	 {
                 		 actual.setStatusProceos(true);
-                		 actual.setProcesoCompleto(true);
+                		 //actual.setProcesoCompleto(true);
                 	 } 
                 	 else
                 	 {
                 		 actual.setStatusProceos(false);
-                		 actual.setProcesoCompleto(false);
+                         //actual.setProcesoCompleto(false);
                 	 }
-                 }else
-                 {
-                	 if(actual.getProceso().getIdProceso()==ordenServicioDTO.getProceso().getIdProceso())
-                	 {
-                		 actual.setStatusProceos(true);
-                	 }
-                	 else
-                		 actual.setStatusProceos(false);
-                 }
+                    
+                   List<OrdenProcesoDTO> ordenProceso=ordenProcesoDAO.getProcesoPorOrden(idSolicitud);
+                   for(OrdenProcesoDTO proceso:ordenProceso)
+                   {
+   					if(actual.getProceso().getIdProceso()==proceso.getProceso().getIdProceso()) {
+
+									StSeguimientoVO steVO = new StSeguimientoVO();
+									ResponseConverter.copiarPropriedades(steVO, proceso.getStSeguimiento());
+									actual.setStSeguimiento(steVO);	
+
+						}   
+                   }
 
 			}
 			return plan;
@@ -186,12 +202,12 @@ public class ProcesoServiceImpl implements ProcesoService {
               if(actual.getNuorden()==1)
               {
             	  actual.setStatusProceos(true);
-            	  actual.setProcesoCompleto(false);
+            	  //actual.setProcesoCompleto(false);
               }
               else
               {
             	  actual.setStatusProceos(false);
-            	  actual.setProcesoCompleto(false);
+            	  //actual.setProcesoCompleto(false);
               }
 			}
             nuevoOrdenEncuestas=obtenerEncuestas(idSolicitud);
@@ -217,6 +233,22 @@ public class ProcesoServiceImpl implements ProcesoService {
           	  usuarioEncuestaIntentoDAO.save(nuevoIntentoEncuesta);
 
             }
+			for(PlanProcesoVO actual:plan)
+			{
+				 List<OrdenProcesoDTO> ordenProceso=ordenProcesoDAO.getProcesoPorOrden(idSolicitud);
+                   for(OrdenProcesoDTO proceso:ordenProceso)
+                   {
+   					if(actual.getProceso().getIdProceso()==proceso.getProceso().getIdProceso()) {
+
+									StSeguimientoVO steVO = new StSeguimientoVO();
+									ResponseConverter.copiarPropriedades(steVO, proceso.getStSeguimiento());
+									actual.setStSeguimiento(steVO);	
+
+						}   
+                   }
+
+			}
+            
             
 			return plan;
 		}
@@ -243,12 +275,12 @@ public class ProcesoServiceImpl implements ProcesoService {
 								{
 									if(encuestas.getStAplicaEncuesta()==false && encuestas.getNuIntegerentos()>0)
 									{
-										actual.setStRespondida(true);
+										//actual.setStRespondida(true);
 										actual.setStActivaMostrar(true);
 									}
 									else
 									{
-										actual.setStRespondida(false);	
+										//actual.setStRespondida(false);	
 										actual.setStActivaMostrar(true);	
 										seEncontroActiva=true;
 									}
@@ -257,15 +289,23 @@ public class ProcesoServiceImpl implements ProcesoService {
 								}
                           
 								if(actual.getIdEncuesta().getIdEncuesta()==encuestas.getEncuesta().getIdEncuesta()) {
+									// Obtener el detalle del intento actual
+									UsuarioEncuestaIntentosDTO ueiDTO = usuarioEncuestaIntentoDAO.getEncuestaByUsuario(encuestas.getEncuesta().getIdEncuesta(),encuestas.getOrdenServicio().getIdOrdenServicio());
+									if(ueiDTO != null) {
+										if(ueiDTO.getStEncuesta() != null) {
+											if(ueiDTO.getStEncuesta().getStSeguimiento()!=null)
+											{
+												StSeguimientoVO steVO = new StSeguimientoVO();
+												ResponseConverter.copiarPropriedades(steVO, ueiDTO.getStEncuesta().getStSeguimiento());
+												actual.setStSeguimiento(steVO);	
+											}
+
+										}
+									}
 									actual.setStSatisfaccion(encuestas.getStAplicaEncuesta());
-								}
-								
-								if(actual.getIdEncuesta().getIdEncuesta()==encuestas.getEncuesta().getIdEncuesta())
-								{
 									actual.getIdEncuesta().setFechaInicioEncuesta(obtenerFechaInicioEncuesta(encuestas.getIdUsuarioEncuesta()));
 								    actual.getIdEncuesta().setFechaFinEncuesta(obtenerFechaFinEncuesta(encuestas.getIdUsuarioEncuesta()));
 								}
-
 
 					    }
 
@@ -282,14 +322,15 @@ public class ProcesoServiceImpl implements ProcesoService {
 		OrdenServicioDTO orden=ordenServicioDAO.obtenerOrdenServicio(idOrdenServicio);
 		List<PlanProcesoDTO> planProceso=planProcesoDAO.obtenerPorcesosPlan(orden.getPlan().getIdPlan());
 		List<ProcesoEncuestaDTO> procesoEncuestas=procesoEncuestaDAO.obtenerEncuestasProceso(planProceso.get(0).getProceso().getIdProceso());
+		Date fechActual=new Date();
 		if(orden.getStSeguimiento().getCdStSeguimiento().equals("NUEVO"))
 		{
-			orden.setStSeguimiento(stSeguimientoDAO.obtenerStSeguimientoByCodigo("CURSO"));
+			orden.setStSeguimiento(stSeguimientoDAO.obtenerStSeguimientoByCodigo("CURSO","ID_ST_SEGUIMIENTO","TIE026D_IE_ORDEN_SERVICIOS"));
 			orden.setProceso(procesoDAO.obtenerProceso(planProceso.get(0).getProceso().getIdProceso()));
 		    orden.setEncuesta(encuestasDAO.findOne(procesoEncuestas.get(0).getIdEncuesta().getIdEncuesta()));
-			orden.setFhAtencionIni(new Date());
+			orden.setFhAtencionIni(fechActual);
 			ordenServicioDAO.update(orden);
-            servicioEncuestasMyBatisDAO.iniciarProceso(idOrdenServicio, planProceso.get(0).getProceso().getIdProceso());
+            servicioEncuestasMyBatisDAO.iniciarProceso(idOrdenServicio, planProceso.get(0).getProceso().getIdProceso(),fechActual);
 			
 			return true;
 			
@@ -306,7 +347,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 			OrdenServicioDTO orden=ordenServicioDAO.obtenerOrdenServicio(idOrdenServicio);
 			if(!orden.getStSeguimiento().getCdStSeguimiento().equals("CURSO"))
 			{
-				orden.setStSeguimiento(stSeguimientoDAO.obtenerStSeguimientoByCodigo("FINALIZADO"));
+				orden.setStSeguimiento(stSeguimientoDAO.obtenerStSeguimientoByCodigo("FINALIZADO","ID_ST_SEGUIMIENTO","TIE026D_IE_ORDEN_SERVICIOS"));
 				orden.setFhAtencionFin(new Date());
 				ordenServicioDAO.update(orden);
 				return true;
@@ -375,6 +416,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 			{
 		     Boolean procesoActualEncontrado=false;
 			 Long procesoSiguiente= null;
+			 Date fechActual=new Date();
 			List<PlanProcesoDTO> planProceso=planProcesoDAO.obtenerPorcesosPlan(orden.getPlan().getIdPlan());
 			for(int j=0;j<planProceso.size();j++)
 	        {
@@ -383,7 +425,7 @@ public class ProcesoServiceImpl implements ProcesoService {
 				{
 					procesoActualEncontrado=true;
 					//aqui
-					servicioEncuestasMyBatisDAO.finalizarProceso(idOrdenServicio, orden.getProceso().getIdProceso());
+					servicioEncuestasMyBatisDAO.finalizarProceso(idOrdenServicio, orden.getProceso().getIdProceso(),fechActual);
 				}
 				if(procesoActualEncontrado && procesoSiguiente==null )
 				{
@@ -406,8 +448,8 @@ public class ProcesoServiceImpl implements ProcesoService {
                 //servicioEncuestasMyBatisDAO.iniciarProceso(idOrdenServicio, procesoSiguiente);
 			}else
 			{
-				orden.setStSeguimiento(stSeguimientoDAO.obtenerStSeguimientoByCodigo("FINALIZADO"));
-				orden.setFhAtencionFin(new Date());
+				orden.setStSeguimiento(stSeguimientoDAO.obtenerStSeguimientoByCodigo("FINALIZADO","ID_ST_SEGUIMIENTO","TIE026D_IE_ORDEN_SERVICIOS"));
+				orden.setFhAtencionFin(fechActual);
 				ordenServicioDAO.update(orden);
 			}
 			return true;	
@@ -444,8 +486,11 @@ public class ProcesoServiceImpl implements ProcesoService {
 		@Transactional
 		public Boolean iniciarTiempoProceso (Long idOrdenServicio, Long idProceso)
 		{
-			return servicioEncuestasMyBatisDAO.iniciarProceso(idOrdenServicio, idProceso);
+			Date fechActual=new Date();
+			return servicioEncuestasMyBatisDAO.iniciarProceso(idOrdenServicio,idProceso,fechActual);
 		}
+		
+
 		
 
 }

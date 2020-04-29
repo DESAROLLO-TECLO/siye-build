@@ -3,6 +3,7 @@ package mx.com.teclo.siye.persistencia.hibernate.dao.expedienteImg;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
@@ -213,6 +214,36 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 				 .addScalar("lbExpedienteODS",StandardBasicTypes.BINARY)
 				 .addScalar("idTipoExpediente",LongType.INSTANCE)
 				 .setParameter("OrdenServicio", OrdenServicio)
+				 .setResultTransformer(Transformers.aliasToBean(ImagenVO.class)).list();
+		return respuesta;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ImagenVO> getImagenesByIdIncidencia(Long idIncidencia) {		
+			String hql = "SELECT ex.idExpedienteODS as idExpedienteODS,ex.nbExpedienteODS as nbExpedienteODS,"
+					+ "ex.cdTipoArchivo as cdTipoArchivo,ex.lbExpedienteODS as lbExpedienteODS "
+					+ "FROM ExpedientesImgDTO as ex "
+					+ "WHERE ex.incidencia.idIncidencia=:idIncidencia "
+					+ "and ex.stActivo=1 ORDER BY ex.nuOrden DESC";
+			Query query = getCurrentSession().createQuery(hql);
+			query.setParameter("idIncidencia", idIncidencia).setResultTransformer(Transformers.aliasToBean(ImagenVO.class));
+			return query.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ImagenVO> getImagenPorNivel(StringBuilder consulta) {
+		List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
+				 .addScalar("idExpedienteODS", LongType.INSTANCE)
+				 .addScalar("idOdsEncuesta", LongType.INSTANCE)
+				 .addScalar("idOrdenServicio", LongType.INSTANCE)
+				 .addScalar("idProceso", LongType.INSTANCE)
+				 .addScalar("idPregunta",LongType.INSTANCE)
+				 .addScalar("nbExpedienteODS", StringType.INSTANCE)
+				 .addScalar("cdTipoArchivo", StringType.INSTANCE)
+				 .addScalar("lbExpedienteODS",StandardBasicTypes.BINARY)
+				 .addScalar("idTipoExpediente",LongType.INSTANCE)
 				 .setResultTransformer(Transformers.aliasToBean(ImagenVO.class)).list();
 		return respuesta;
 	}

@@ -1,10 +1,9 @@
 package mx.com.teclo.siye.persistencia.vo.seguimientoOs;
 
+import java.util.Date;
 import java.util.List;
 
-import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
-
-public class OrdenServicioDetalleVO {
+public class ProcesosOrdenServicioDetalleVO {
 	
 	private Long idOrdenServicio;
 	private String cdOrdenServicio;
@@ -12,8 +11,10 @@ public class OrdenServicioDetalleVO {
 	private String cdIdentific;
 	private Double nuPorcentaje;
 	private String estatus;
-	private List<ImagenVO> evidencias;
-	private List<ImagenVO> incidencias;
+	private String nbKit;
+	private String nbPlan;
+	private Date finicio;
+	private Date ffin;
 	private List<ProcesoDetalleVO> procesos;
 	
 	
@@ -84,34 +85,58 @@ public class OrdenServicioDetalleVO {
 		return estatus;
 	}
 	/**
+	 * @return the nbKit
+	 */
+	public String getNbKit() {
+		return nbKit;
+	}
+	/**
+	 * @param nbKit the nbKit to set
+	 */
+	public void setNbKit(String nbKit) {
+		this.nbKit = nbKit;
+	}
+	/**
+	 * @return the nbPlan
+	 */
+	public String getNbPlan() {
+		return nbPlan;
+	}
+	/**
+	 * @param nbPlan the nbPlan to set
+	 */
+	public void setNbPlan(String nbPlan) {
+		this.nbPlan = nbPlan;
+	}
+	/**
+	 * @return the finicio
+	 */
+	public Date getFinicio() {
+		return finicio;
+	}
+	/**
+	 * @param finicio the finicio to set
+	 */
+	public void setFinicio(Date finicio) {
+		this.finicio = finicio;
+	}
+	/**
+	 * @return the ffin
+	 */
+	public Date getFfin() {
+		return ffin;
+	}
+	/**
+	 * @param ffin the ffin to set
+	 */
+	public void setFfin(Date ffin) {
+		this.ffin = ffin;
+	}
+	/**
 	 * @param estatus the estatus to set
 	 */
 	public void setEstatus(String estatus) {
 		this.estatus = estatus;
-	}
-	/**
-	 * @return the evidencias
-	 */
-	public List<ImagenVO> getEvidencias() {
-		return evidencias;
-	}
-	/**
-	 * @param evidencias the evidencias to set
-	 */
-	public void setEvidencias(List<ImagenVO> evidencias) {
-		this.evidencias = evidencias;
-	}
-	/**
-	 * @return the incidencias
-	 */
-	public List<ImagenVO> getIncidencias() {
-		return incidencias;
-	}
-	/**
-	 * @param incidencias the incidencias to set
-	 */
-	public void setIncidencias(List<ImagenVO> incidencias) {
-		this.incidencias = incidencias;
 	}
 	/**
 	 * @return the procesos

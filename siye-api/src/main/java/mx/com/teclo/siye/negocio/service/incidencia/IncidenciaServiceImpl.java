@@ -92,7 +92,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 	public String altaIncidencia(AltaIncidenciaVO altaIncidenciaVO)  throws BusinessException{
 		try {
 			ConfiguracionVO configuracionVO = catalogoService.configuracion("TIE051D_IMG_REQ");
-			if (configuracionVO.getCdValorPConfig() == "Si") {
+			if (configuracionVO.getCdValorPConfig().toUpperCase() == "SI") {
 				validarIncidencia2(altaIncidenciaVO.getDescripcion(), altaIncidenciaVO.getListImagen());
 			} else {
 				validarIncidencia(altaIncidenciaVO.getDescripcion(), altaIncidenciaVO.getListImagen());
@@ -131,11 +131,11 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		}
 		String cdIncidencia = "I" + year + serie;
 		String nbIncidencia = "Incidencia " + serie;
-		StSeguimientoDTO stAutorizacionDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NO_AUT_ATND");
-		StSeguimientoDTO stIncidenciaDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NO_ATND");
-		StSeguimientoDTO stSeguimiento = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NUEVO");
-		StSeguimientoDTO tpIncidenciaDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getTpIncidencia().getCdStSeguimiento());
-		StSeguimientoDTO prioridadDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getPrioridad().getCdStSeguimiento());
+		StSeguimientoDTO stAutorizacionDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NO_AUT_ATND","ID_ST_AUTORIZACION","TIE051D_IE_INCIDENCIA");
+		StSeguimientoDTO stIncidenciaDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NO_ATND","ST_INCIDENCIA","TIE051D_IE_INCIDENCIA");
+		StSeguimientoDTO stSeguimiento = stSeguimientoDAO.obtenerStSeguimientoByCodigo("NUEVO","ID_ST_SEGUIMIENTO","TIE051D_IE_INCIDENCIA");
+		StSeguimientoDTO tpIncidenciaDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getTpIncidencia().getCdStSeguimiento(),"ID_TP_INCIDENCIA","TIE051D_IE_INCIDENCIA");
+		StSeguimientoDTO prioridadDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo(altaIncidenciaVO.getPrioridad().getCdStSeguimiento(),"ID_PRIORIDAD","TIE051D_IE_INCIDENCIA");
 		IEprocesosDTO procesoDTO = iEProcesosDAO.consultarProcesoByidProceso(altaIncidenciaVO.getIdProceso());
 		EncuestasDTO encuestasDTO = encuestasDAO.encuestaIntento(altaIncidenciaVO.getIdEncuesta());
 		incidenciaDTO.setCdIncidencia(cdIncidencia);
@@ -164,14 +164,15 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		} catch (Exception e) {
 			respuesta = "Error al guardar la incidencia. ";
 		}
+		incidenciaDAO.save(incidenciaDTO);
+		if (altaIncidenciaVO.getListImagen() == null || altaIncidenciaVO.getListImagen().isEmpty()) {
+			respuestaIncidencia = "";
+		} else {
+			respuestaIncidencia = expedienteImgService.saveImagenIncidencia(altaIncidenciaVO.getListImagen(), incidenciaDTO);
+		}
 		
 		try {
-			incidenciaDAO.save(incidenciaDTO);
-			if (altaIncidenciaVO.getListImagen() == null || altaIncidenciaVO.getListImagen().isEmpty()) {
-				respuestaIncidencia = "";
-			} else {
-				respuestaIncidencia = expedienteImgService.saveImagenIncidencia(altaIncidenciaVO.getListImagen(), incidenciaDTO);
-			}
+			
 			if (altaIncidenciaVO.getIdOrdenServicio() != null && altaIncidenciaVO.getIdOrdenServicio() != 0 ) {
 				OrdenServicioDTO ordenServicioDTO = ordenServicioDAO.obtenerOrdenServicio(altaIncidenciaVO.getIdOrdenServicio());
 				OdsIncidenciaDTO odsIncidenciaDTO = new OdsIncidenciaDTO();
