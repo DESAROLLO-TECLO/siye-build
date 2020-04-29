@@ -40,8 +40,11 @@ public class IncidenciaDAOImpl extends BaseDaoHibernate<IncidenciaDTO> implement
 	@Override
 	public  IncidenciaDTO incidenciaBycdIncidencia(String cdIncidenc){
 		Criteria c = getCurrentSession().createCriteria(IncidenciaDTO.class);
+		c.createAlias("stIncidencia", "stIncidencia");
+		
 		c.add(Restrictions.eq("stActivo", true));
 		c.add(Restrictions.eq("cdIncidencia", cdIncidenc));
+		c.add(Restrictions.ne("stIncidencia.idStSeguimiento", 3l));
 		return (IncidenciaDTO)c.uniqueResult();
 		
 	}

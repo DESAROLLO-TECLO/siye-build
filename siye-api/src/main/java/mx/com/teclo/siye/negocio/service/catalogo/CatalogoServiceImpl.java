@@ -33,6 +33,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.ConcesionariaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.KitInstalacionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.VehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConductorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConfiguracionDTO;
@@ -53,6 +54,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.TipoVehiculoDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.VehiculoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.usuario.GerenteSupervisorDTO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.CatTipoFechasVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConcesionariaVO;
@@ -70,11 +72,13 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.VehiculoConductorVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.ConsecionarioVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.KitInstalacionVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioCatalogoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.PlanVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.StSeguimientoVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.VehiculoVO;
 import mx.com.teclo.siye.util.comun.RutinasTiempoImpl;
 import mx.com.teclo.siye.util.enumerados.RespuestaHttp;
 
@@ -142,10 +146,12 @@ public class CatalogoServiceImpl implements CatalogoService{
 	@Autowired
 	private TblCatalogosDAO tblCatalogosDAO;
 	
-
 	@Autowired
 	private PersonaDAO personaDAO;
- 
+	
+	@Autowired
+	private VehiculoDAO vehiculoDAO;
+	
 	
 	@Transactional
 	@Override
@@ -507,5 +513,128 @@ public class CatalogoServiceImpl implements CatalogoService{
 		return listPersonaVO;
 	}
 	
-
+	@Transactional
+	@Override
+	public List<ConductorVO>consultaConductor(String cdTipoBusqueda,Long valor) throws NotFoundException {
+		List<ConductorDTO> listConductorDTO = new ArrayList<>(); 
+		if(cdTipoBusqueda == null)
+			throw new NotFoundException("No se encontró el valor de busqueda.");
+		switch(cdTipoBusqueda) {
+			case "TODO":
+				listConductorDTO = conductorDAO.getTransportistas();
+				break;
+			case "INACTIVOS":
+				listConductorDTO = conductorDAO.obtenerConductorVisible(valor);
+				break;
+			
+			case "ACTIVOS":
+				listConductorDTO = conductorDAO.obtenerConductorVisible(valor);
+				break;
+			}
+		
+		if(listConductorDTO.isEmpty())
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		List<ConductorVO> listConductorVO = ResponseConverter.converterLista(new ArrayList<>(), listConductorDTO, ConductorVO.class);
+		return listConductorVO;
+	}
+	
+	@Transactional
+	@Override
+	public List<ProveedorVO>consultaProveedor(String cdTipoBusqueda,Long valor) throws NotFoundException {
+		List<ProveedorDTO> listProveedorDTO = new ArrayList<>(); 
+		if(cdTipoBusqueda == null)
+			throw new NotFoundException("No se encontró el valor de busqueda.");
+		switch(cdTipoBusqueda) {
+			case "TODO":
+				listProveedorDTO = proveedorDAO.getListProveedor();
+				break;
+			case "INACTIVOS":
+				listProveedorDTO = proveedorDAO.obtenerProveedorVisible(valor);
+				break;
+			
+			case "ACTIVOS":
+				listProveedorDTO = proveedorDAO.obtenerProveedorVisible(valor);
+				break;
+			}
+		
+		if(listProveedorDTO.isEmpty())
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		List<ProveedorVO> listProveedorVO = ResponseConverter.converterLista(new ArrayList<>(), listProveedorDTO, ProveedorVO.class);
+		return listProveedorVO;
+	}
+	
+	@Transactional
+	@Override
+	public List<TipoVehiculoVO>consultaTipoVehiculo(String cdTipoBusqueda, Long valor) throws NotFoundException {
+		List<TipoVehiculoDTO> listTipoVehiculoDTO = new ArrayList<>(); 
+		if(cdTipoBusqueda == null)
+			throw new NotFoundException("No se encontró el valor de busqueda.");
+		switch(cdTipoBusqueda) {
+			case "TODO":
+				listTipoVehiculoDTO = tipoVehiculoDAO.tipoVehiculo();
+				break;
+			case "INACTIVOS":
+				listTipoVehiculoDTO = tipoVehiculoDAO.obtenerTipoVehiculoVisible(valor);
+				break;
+			
+			case "ACTIVOS":
+				listTipoVehiculoDTO = tipoVehiculoDAO.obtenerTipoVehiculoVisible(valor);
+				break;
+			}
+		
+		if(listTipoVehiculoDTO.isEmpty())
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		List<TipoVehiculoVO> listTipoVehiculoVO = ResponseConverter.converterLista(new ArrayList<>(), listTipoVehiculoDTO, TipoVehiculoVO.class);
+		return listTipoVehiculoVO;
+	}
+	
+	@Transactional
+	@Override
+	public List<VehiculoVO>consultaVehiculo(String cdTipoBusqueda,Long valor) throws NotFoundException {
+		List<VehiculoDTO> listVehiculoDTO = new ArrayList<>(); 
+		if(cdTipoBusqueda == null)
+			throw new NotFoundException("No se encontró el valor de busqueda.");
+		switch(cdTipoBusqueda) {
+			case "TODO":
+				listVehiculoDTO = vehiculoDAO.buscarVehiculo();
+				break;
+			case "INACTIVOS":
+				listVehiculoDTO = vehiculoDAO.obtenerVehiculoVisible(valor);
+				break;
+			
+			case "ACTIVOS":
+				listVehiculoDTO = vehiculoDAO.obtenerVehiculoVisible(valor);
+				break;
+			}
+		
+		if(listVehiculoDTO.isEmpty())
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		List<VehiculoVO> listVehiculoVO = ResponseConverter.converterLista(new ArrayList<>(), listVehiculoDTO, VehiculoVO.class);
+		return listVehiculoVO;
+	}
+	
+	@Transactional
+	@Override
+	public List<ConsecionarioVO>consultaConcesiones(String cdTipoBusqueda,Long valor) throws NotFoundException {
+		List<ConsecionarioDTO> listConsecionarioDTO = new ArrayList<>(); 
+		if(cdTipoBusqueda == null)
+			throw new NotFoundException("No se encontró el valor de busqueda.");
+		switch(cdTipoBusqueda) {
+			case "TODO":
+				listConsecionarioDTO = concesionariaDAO.getConcesionariaAll();
+				break;
+			case "INACTIVOS":
+				listConsecionarioDTO = concesionariaDAO.obtenerConsecionarioVisible(valor);
+				break;
+			
+			case "ACTIVOS":
+				listConsecionarioDTO = concesionariaDAO.obtenerConsecionarioVisible(valor);
+				break;
+			}
+		
+		if(listConsecionarioDTO.isEmpty())
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		List<ConsecionarioVO> listConsecionarioVO = ResponseConverter.converterLista(new ArrayList<>(), listConsecionarioDTO, ConsecionarioVO.class);
+		return listConsecionarioVO;
+	}
 }

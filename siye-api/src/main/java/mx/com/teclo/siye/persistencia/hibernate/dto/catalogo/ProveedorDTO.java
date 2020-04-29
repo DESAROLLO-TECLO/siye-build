@@ -40,6 +40,8 @@ public class ProveedorDTO implements Serializable{
 	private Long idUsrModifica;
 	@Column(name="FH_MODIFICACION")
 	private Date fhModificacion;
+	@Column(name="ST_PROVEEDOR")
+	private Long stProveedor;
 	
 	public Long getIdProveedor() {
 		return idProveedor;
@@ -95,6 +97,13 @@ public class ProveedorDTO implements Serializable{
 	public void setFhModificacion(Date fhModificacion) {
 		this.fhModificacion = fhModificacion;
 	}
+	public Long getStProveedor() {
+		return stProveedor;
+	}
+	public void setStProveedor(Long stProveedor) {
+		this.stProveedor = stProveedor;
+	}
+	
 	
 	
 

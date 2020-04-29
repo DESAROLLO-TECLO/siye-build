@@ -3,6 +3,7 @@ package mx.com.teclo.siye.persistencia.hibernate.dao.proceso;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -34,6 +35,14 @@ public class KitInstalacionDAOImpl extends BaseDaoHibernate<KitInstalacionDTO> i
 		c.add(Restrictions.eq("stActivo", true));
 		c.add(Restrictions.eq("cdKitInstalacion", cdKitIns));
 		return (KitInstalacionDTO)c.uniqueResult();
+	}
+	
+	@Override
+	public KitInstalacionDTO ultimoId() {
+		Criteria c = getCurrentSession().createCriteria(KitInstalacionDTO.class);
+		c.add(Restrictions.eq("stActivo", true));
+		c.addOrder(Order.desc("idKitInstalacion"));
+		return (KitInstalacionDTO)c.setMaxResults(1).uniqueResult();
 	}
 
 }

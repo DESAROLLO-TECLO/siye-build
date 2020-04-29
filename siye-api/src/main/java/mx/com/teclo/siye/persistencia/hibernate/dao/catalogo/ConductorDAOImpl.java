@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConductorDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.PersonaDTO;
 
 @Repository
 public class ConductorDAOImpl extends BaseDaoHibernate<ConductorDTO> implements ConductorDAO{
@@ -32,5 +33,14 @@ public class ConductorDAOImpl extends BaseDaoHibernate<ConductorDTO> implements 
 		criteria.add(Restrictions.eq("stActivo", true));
 		
 		return (List<ConductorDTO>)criteria.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ConductorDTO> obtenerConductorVisible(Long value) {
+		Criteria c = getCurrentSession().createCriteria(ConductorDTO.class);
+		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("stCondutor", value));
+		return (List<ConductorDTO>) c.list();
 	}
 }

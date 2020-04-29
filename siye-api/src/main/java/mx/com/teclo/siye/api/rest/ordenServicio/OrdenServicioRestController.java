@@ -84,8 +84,8 @@ public class OrdenServicioRestController {
 				throw new NotFoundException(mensajeErr);
 			} else {
 				e.printStackTrace();
-		  		throw new NotFoundException(!e.getMessage().equals(null)?e.getMessage():"Ha ocurrido un imprevisto!, por favor contacte al administrador.");
-			}
+				throw new NotFoundException("Ha ocurrido un imprevisto!, por favor contacte al administrador.");
+			       }
 		}
 	}
 	
@@ -98,8 +98,9 @@ public class OrdenServicioRestController {
 
        }catch(Exception e)
        {
-   		throw new NotFoundException("Ha ocurrido un imprevisto!, por favor contacte al administrador.");
-       }
+    	   throw new NotFoundException(!e.getMessage().equals(null)?e.getMessage():"Ha ocurrido un imprevisto!, por favor contacte al administrador.");
+			
+   		}
      }
 	 
 	 @RequestMapping(value = "/consultaAvanzada", method = RequestMethod.GET)
@@ -109,13 +110,13 @@ public class OrdenServicioRestController {
 			 @RequestParam(value="valor") String valor,
 				@RequestParam(name="fhInicio", required = false) String fechaInicio,
 				@RequestParam(name="fhFin", required = false) String fechaFin, 
-				@RequestParam(name="centroInstalacion", required = false) Long centroInstalacion,
-				@RequestParam(name="estatusSeguimiento", required = false) Long estatusSeguimiento,
+				@RequestParam(name="centroInstalacion", required = false) String centroInstalacion,
+				@RequestParam(name="estatusSeguimiento", required = false) String estatusSeguimiento,
 				@RequestParam(name="isLote", required = false) Boolean isLote, 
 				@RequestParam(name="isIncidencia", required = false) Boolean isIncidencia,
 				@RequestParam(name="valorLoteIncidencia", required = false) String valorLoteIncidencia, 
-				@RequestParam(name="tipoKit", required = false) Long tipoKit,
-				@RequestParam(name="tipoPlan", required = false) Long tipoPlan
+				@RequestParam(name="tipoKit", required = false) String tipoKit,
+				@RequestParam(name="tipoPlan", required = false) String tipoPlan
 				) throws NotFoundException {
 		 try
 		 {
