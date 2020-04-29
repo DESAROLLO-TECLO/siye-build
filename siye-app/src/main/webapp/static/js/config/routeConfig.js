@@ -42,6 +42,11 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         controller: "pluginsWebController"
     });
 
+ // Carga de Archivo OTG
+    $routeProvider.when("/upload", {
+        templateUrl: "views/cargaArchivoLaout/cargarArchivoRuta.html",
+        controller: "cargaArchivoLayoutController"
+    });
     //	Orden servicio
     $routeProvider.when("/alta", {
         templateUrl: "views/ordenServicio/altaServicio.html",
