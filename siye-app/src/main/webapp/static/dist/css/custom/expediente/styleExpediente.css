@@ -36,17 +36,17 @@ img.foto-evidencia-1 {
   	border-right: 1px solid #ccc;
   	border-bottom: 1px solid #ccc;
   	border-left: 1px solid #ccc;
-  	padding-top: 14px;
-  	padding-right: 14px;
-  	padding-bottom: 14px;
-  	padding-left: 14px;
+  	padding-top: 10px;
+  	padding-right: 10px;
+  	padding-bottom: 10px;
+  	padding-left: 10px;
 }
 
 .padding-per{
-	padding-top: 14px;
-  	padding-right: 14px;
-  	padding-bottom: 14px;
-  	padding-left: 14px;
+	padding-top: 10px;
+  	padding-right: 10px;
+  	padding-bottom: 10px;
+  	padding-left: 10px;
 }
 
 .border-div-child{
@@ -54,10 +54,10 @@ img.foto-evidencia-1 {
   	border-right: 1px solid #b40c07;
   	border-bottom: 1px solid #b40c07;
   	border-left: 1px solid #b40c07;
-  	padding-top: 14px;
-  	padding-right: 14px;
-  	padding-bottom: 14px;
-  	padding-left: 14px;
+  	padding-top: 10px;
+  	padding-right: 10px;
+  	padding-bottom: 10px;
+  	padding-left: 10px;
 }
 
 .border-punteado-div{
@@ -65,10 +65,10 @@ img.foto-evidencia-1 {
   	border-right: 2px dashed #ccc;
   	border-bottom: 2px dashed #ccc;
   	border-left: 2px dashed #ccc;
-  	padding-top: 7px;
-  	padding-right: 7px;
-  	padding-bottom: 7px;
-  	padding-left: 7px;
+  	padding-top: 5px;
+  	padding-right: 5px;
+  	padding-bottom: 5px;
+  	padding-left: 5px;
 }
 
 .stile-puntero-pointer{
@@ -88,8 +88,10 @@ img.foto-evidencia-1 {
 }
 
 .style-rep-img{
-  width: 5rem !important;
-  height: auto !important;
+  width: 8rem !important;
+  height: 5rem !important;
+  max-height: 6rem !important;
+  max-width: 8rem !important;
 }
 
 .style-parent{
@@ -174,6 +176,112 @@ img.foto-evidencia-1 {
   cursor: pointer;
 }
 
+.col-md-img-pre{
+	width: 50%;
+	float: left;
+	position: relative;
+	min-height: 1px;
+	padding-left: 1.071rem;
+	padding-right: 1.071rem;
+}
+
+@media only screen and (max-width: 766px){
+  .col-md-img-pre{	
+    width: 33.33333333333333%;
+	float: left;
+	position: relative;
+    min-height: 1px;
+    padding-left: 1.071rem;
+    padding-right: 1.071rem;
+  }
+}
+
+@media only screen and (max-width: 600px){
+  .col-md-img-pre{	
+   width: 50%;
+	float: left;
+	position: relative;
+	min-height: 1px;
+	padding-left: 1.071rem;
+	padding-right: 1.071rem;
+  }
+}
+
+.col-md-resp-per-name{
+    width: 50%;
+	float: left;
+	position: relative;
+	min-height: 1px;
+	padding-left: 1.071rem;
+	padding-right: 1.071rem;
+}
+
+@media only screen and (max-width: 766px){
+  .col-md-resp-per-name{	
+    width: 33.33333333333333%;
+	float: left;
+	position: relative;
+    min-height: 1px;
+    padding-left: 1.071rem;
+    padding-right: 1.071rem;
+  }
+}
+
+@media only screen and (max-width: 600px){
+  .col-md-resp-per-name{	
+   width: 50%;
+	float: left;
+	position: relative;
+	min-height: 1px;
+	padding-left: 1.071rem;
+	padding-right: 1.071rem;
+  }
+}
+	
+.col-md-resp-per-combo{
+	width: 100%;
+	float: left;
+	position: relative;
+    min-height: 1px;
+    padding-left: 1.071rem;
+    padding-right: 1.071rem;
+    height: 6rem;
+}
+
+@media only screen and (max-width: 766px){
+  .col-md-resp-per-combo{	
+    width: 33.33333333333333%;
+	float: left;
+	position: relative;
+    min-height: 1px;
+    padding-left: 1.071rem;
+    padding-right: 1.071rem;
+    height: 6rem;
+  }
+}
+
+@media only screen and (max-width: 600px){
+  .col-md-resp-per-combo{	
+    width: 100%;
+	float: left;
+	position: relative;
+    min-height: 1px;
+    padding-left: 1.071rem;
+    padding-right: 1.071rem;
+    height: 6rem;
+  }
+}
+
+.col-action-del-add{
+	width: 100%;
+	float: left;
+	position: relative;
+    min-height: 1px;
+    padding-left: 1.071rem;
+    padding-right: 1.071rem;
+}
+
+
 /* 100% Image Width on Smaller Screens */
 @media only screen and (max-width: 700px){
   .modal-contentPer {
@@ -184,6 +292,20 @@ img.foto-evidencia-1 {
 @media only screen and (max-width: 766px){
   .fa-2x{	
     font-size:  3em !important;
+  }
+}
+
+@media only screen and (max-width: 766px){
+  .blockMsg, .blockPage{	
+    width: 77% !important;
+    top:35% important;
+  }
+}
+
+@media only screen and (max-width: 600px){
+  .blockMsg, .blockPage{	
+    width: 90% !important;
+    top:10% important;
   }
 }
 
