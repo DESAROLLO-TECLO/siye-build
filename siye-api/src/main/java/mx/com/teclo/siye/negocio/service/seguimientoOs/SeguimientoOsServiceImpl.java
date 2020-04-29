@@ -2,6 +2,7 @@ package mx.com.teclo.siye.negocio.service.seguimientoOs;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -9,13 +10,16 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.siye.persistencia.hibernate.dao.expedienteImg.ExpedienteImgDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanProcesoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.procesoencuesta.ProcesoEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleIncidenciaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
@@ -55,6 +59,9 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 	
 	@Autowired
 	private RptIncidenciaSeguimientoService rptIncidencia;
+	
+	@Autowired
+	private StSeguimientoDAO stSeguimientoDAO;
 	
 
 	private final String ENCURSO = "EN_CURSO", COMPLETA = "COMPLETADAS", PROGRAMADA = "PROGRAMADA",
@@ -300,9 +307,38 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 	
 	@Override
 	@Transactional
-	public String hacerCorteDiario(String fecha) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public void hacerCorteDiario(String fecha, Long idUsuario) throws BusinessException{
+		Long ST_CANCELAR_OS = 1L;
+		Date fechaModificacion = new Date(); 		
+		//Coonsultar Centro de Instalacion 
+		List<Long> idCentroInstalacion = gerenteSupervisorDAO.getIdCentroInstalacion(idUsuario);
+		
+		if(!idCentroInstalacion.isEmpty()) {
+			// Ordenes de Servicio para cancelar 
+			List<OrdenServicioDTO> listaOrden = ordenServicioDAO.hacerCorteDiarioOS(fecha, idCentroInstalacion);
+			
+			if(!listaOrden.isEmpty()) {
+				// Consulta de el nuevo status para las OS que se cancelaran 
+				StSeguimientoDTO seguimientoDTO =  stSeguimientoDAO.findOne(ST_CANCELAR_OS);
+				if(seguimientoDTO!= null) {
+					for(OrdenServicioDTO os: listaOrden) {
+						os.setFhModificacion(fechaModificacion);
+						os.setIdUsrModifica(idUsuario);
+						os.setStSeguimiento(seguimientoDTO);
+						ordenServicioDAO.update(os);					
+					}
+				}else {
+					// error  sin tipo de cancelacion 
+					throw new BusinessException("No existe el estatus de cancelación ");
+				}
+			}else {
+				// sin OS 
+				throw new BusinessException("No tiene Ordenes de Servicio para terminar ");
+			}
+		}else {
+			// sin centro de instalacion 
+			throw new BusinessException("No tiene Centro de Instalación Asignados ");
+		}	
+	};
 
 }

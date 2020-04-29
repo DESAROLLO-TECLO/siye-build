@@ -28,7 +28,8 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
 
     $scope.evidenciaVO = new Object({
         data:{},
-        verEvidencia:false
+        verEvidencia:false,
+        folioOS:""
     });
 
     $scope.rangoFechas = {
@@ -185,6 +186,7 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
         if(os!=undefined){
             seguimientoOsService.getDetalleIncidencias(os.idOrdenServicio).success(function(data){
                 $scope.evidenciaVO.data = data;
+                $scope.evidenciaVO.folioOS = os.nuOrdenServicio;
                 $scope.evidenciaVO.verEvidencia = true;
                 $scope.seguimientoVO.busquedaOk = false;
                 $scope.seguimientoVO.verDetalleOS = false;
@@ -215,10 +217,12 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
 
     $scope.corteDiario = function(){
         let fecha =  moment().endOf('day').format('DD/MM/YYYY');
-        seguimientoOsService.hacerCorteDiario(fecha).success(function(data){
-
-        }).error(function(data){
-            grow.error(data.message);
+        $scope.showConfirmacion("¿Desea Realizar el Corte del dia "+ fecha +" ?", function () {             
+            seguimientoOsService.hacerCorteDiario(fecha).success(function(data){
+                growl.success(data.message);
+            }).error(function(data){
+                growl.info(data.message);
+            });
         });
     };
 
@@ -345,6 +349,21 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
         document.body.appendChild(a);
         a.click();
     };
+
+	$scope.showConfirmacion = function (messageTo, action) {
+		ModalService.showModal({
+			templateUrl: 'views/templatemodal/templateModalConfirmacion.html',
+			controller: 'mensajeModalController',
+			inputs: { message: messageTo }
+		}).then(function (modal) {
+			modal.element.modal();
+			modal.close.then(function (result) {
+				if (result) {
+					action();
+				}
+			});
+		});
+	};
 
     $scope.$on('$locationChangeSuccess', function (event, current, previous) {
         $scope.proximoController = $route.current.$$route.controller;

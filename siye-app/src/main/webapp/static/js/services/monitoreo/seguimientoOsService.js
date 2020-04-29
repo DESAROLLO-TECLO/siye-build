@@ -33,11 +33,9 @@ angular.module(appTeclo).service("seguimientoOsService", function($http, config)
 	};
 
 	this.hacerCorteDiario = function(fecha){
-		return $http.post(config.baseUrl + END_POINT +"/corteDiario",nuevoInsumo);
+		return $http.get(config.baseUrl + END_POINT +"/corteDiario",{
+			params:{"fechaCorte":fecha}
+		});
 	};
-
-	this.saveInsumo = function(nuevoInsumo){
-		return $http.post(config.baseUrl + "/almacen/nuevoInsumo",nuevoInsumo);
-	}
 
 });

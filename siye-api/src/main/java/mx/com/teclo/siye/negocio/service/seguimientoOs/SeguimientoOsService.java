@@ -3,6 +3,7 @@ package mx.com.teclo.siye.negocio.service.seguimientoOs;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
+import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleIncidenciaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
@@ -13,7 +14,7 @@ import mx.com.teclo.siye.persistencia.vo.seguimientoOs.SeguimientoOrdenServicioV
 
 public interface SeguimientoOsService {
 	
-	/*
+	/**
 	 * @author Maverick
 	 * @param List<String> columnas
 	 * @param String fechaInicio
@@ -79,10 +80,12 @@ public interface SeguimientoOsService {
 	/**
 	 * Metodo para realizar el corte diario de OS que no se atendieron en el dia correinte 
 	 * @author Maverick
-	 * @param String
+	 * @param idUsuario
+	 * @param fechaCorte
+	 * @throws BusinessException 
 	 * @retun String 
 	 * */
-	public String hacerCorteDiario(String fecha);
+	public void hacerCorteDiario(String fecha, Long idUsuario) throws BusinessException;
 	
 
 
