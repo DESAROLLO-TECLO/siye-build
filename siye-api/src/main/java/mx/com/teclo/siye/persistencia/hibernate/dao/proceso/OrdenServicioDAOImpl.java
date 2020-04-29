@@ -378,12 +378,12 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
         {
         	c.createAlias("loteOrdenServicio", "lote");
     		c.add(Restrictions.eq("lote.nbLoteOds", valorLoteIncidencia));
-    		c.add(Restrictions.eq("idOrigenOds",1));	
+    		c.add(Restrictions.eq("idOrigenOds",Long.valueOf(1)));	
         }
         else if(isIncidencia)
         {
     		c.add(Restrictions.eq("cdOrdenServicio", valorLoteIncidencia));
-    		c.add(Restrictions.eq("idOrigenOds",2));
+    		c.add(Restrictions.eq("idOrigenOds",Long.valueOf(2)));
         }
         
 		switch(cdTipoBusqueda) {
