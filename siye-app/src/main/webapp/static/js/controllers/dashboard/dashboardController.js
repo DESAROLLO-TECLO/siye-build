@@ -88,7 +88,9 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
                 }
                 $scope.generalShow = true;
 
-                graficaGeneral($scope.generalData, "graficaGeneral");
+              //  graficaGeneral($scope.generalData, "graficaGeneral");
+
+              graficaGeneral2($scope.generalData, "graficaGeneral");
                 break;
             case 'OrdenesServicios':
                 $scope.titulos = {
@@ -864,6 +866,97 @@ $scope.dataPruebasModulo = [{
             }
 
         });
+    };
+
+    graficaGeneral2 = function(jsonData, div){
+        var graficaG = AmCharts.makeChart(div, {
+    "type": "serial",
+    "theme": "none",
+    "legend": {
+        "useGraphSettings": true
+    },
+    "dataProvider": [{
+        "year": "Modulo 1",
+        "en curso": 1,
+        "Nuevo": 5,
+        "Finalizadas": 3,
+        "Finalizadas con Incidencia": 6,
+        "Finalizadas Incompletas": 8
+    }, {
+        "year": "Modulo 2",
+        "en curso": 1,
+        "Nuevo": 2,
+        "Finalizadas": 6,
+        "Finalizadas con Incidencia": 6,
+        "Finalizadas Incompletas": 8
+    }],
+    "valueAxes": [{
+        "integersOnly": true,
+        "maximum": 6,
+        "minimum": 1,
+        "reversed": true,
+        "axisAlpha": 0,
+        "dashLength": 5,
+        "gridCount": 10,
+        "position": "left",
+        "title": "Place taken"
+    }],
+    "startDuration": 0.5,
+    "graphs": [{
+        "balloonText": "[[category]]: [[value]]",
+        "bullet": "round",
+        "hidden": false,
+        "title": "en curso",
+        "valueField": "en curso",
+    "fillAlphas": 0
+    }, {
+        "balloonText": "[[category]]: [[value]]",
+        "bullet": "round",
+        "title": "Nuevo",
+        "valueField": "Nuevo",
+    "fillAlphas": 0
+    }, {
+        "balloonText": "place taken by UK in [[category]]: [[value]]",
+        "bullet": "round",
+        "title": "Finalizadas",
+        "valueField": "Finalizadas",
+    "fillAlphas": 0
+    },{
+        "balloonText": "place taken by UK in [[category]]: [[value]]",
+        "bullet": "round",
+        "title": "Finalizadas con Incidencia",
+        "valueField": "Finalizadas con Incidencia",
+    "fillAlphas": 0
+    },{
+        "balloonText": "place taken by UK in [[category]]: [[value]]",
+        "bullet": "round",
+        "title": "Finalizadas Incompletas",
+        "valueField": "Finalizadas Incompletas",
+    "fillAlphas": 0
+    },
+
+
+
+
+],
+    "chartCursor": {
+        "cursorAlpha": 0,
+        "zoomable": false
+    },
+    "categoryField": "year",
+    "categoryAxis": {
+        "gridPosition": "start",
+        "axisAlpha": 0,
+        "fillAlpha": 0.05,
+        "fillColor": "#000000",
+        "gridAlpha": 0,
+        "position": "top"
+    },
+    "export": {
+    	"enabled": true,
+        "position": "bottom-right"
+     }
+});
     };
 
     graficaGeneral = function(jsonData, div){
