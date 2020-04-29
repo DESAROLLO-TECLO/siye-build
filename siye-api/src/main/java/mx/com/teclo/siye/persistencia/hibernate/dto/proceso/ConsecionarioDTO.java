@@ -33,6 +33,9 @@ public class ConsecionarioDTO implements Serializable {
 	private Long idUsrModifica;
 	@Column(name = "FH_MODIFICACION")	
 	private Date fhModificacion;
+	@Column(name = "ST_CONCESION")
+	private Long stConcesion;
+	
 	public Long getIdConsecion() {
 		return idConsecion;
 	}
@@ -86,6 +89,12 @@ public class ConsecionarioDTO implements Serializable {
 	}
 	public void setFhModificacion(Date fhModificacion) {
 		this.fhModificacion = fhModificacion;
+	}
+	public Long getStConcesion() {
+		return stConcesion;
+	}
+	public void setStConcesion(Long stConcesion) {
+		this.stConcesion = stConcesion;
 	}
 	
 	

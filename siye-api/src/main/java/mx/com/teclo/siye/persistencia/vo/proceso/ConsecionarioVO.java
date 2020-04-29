@@ -14,6 +14,7 @@ public class ConsecionarioVO {
 	private Date fhCreacion;
 	private Long idUsrModifica;	
 	private Date fhModificacion;
+	private Long stConcesion;
 	
 	public Long getIdConsecion() {
 		return idConsecion;
@@ -69,6 +70,13 @@ public class ConsecionarioVO {
 	public void setFhModificacion(Date fhModificacion) {
 		this.fhModificacion = fhModificacion;
 	}
+	public Long getStConcesion() {
+		return stConcesion;
+	}
+	public void setStConcesion(Long stConcesion) {
+		this.stConcesion = stConcesion;
+	}
+	
 	
 	
 	

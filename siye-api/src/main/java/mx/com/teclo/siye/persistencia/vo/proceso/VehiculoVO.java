@@ -22,6 +22,7 @@ public class VehiculoVO implements Serializable {
 	private Long idTipoVehiculo;
 	private String cdTipoVehiculo;
 	private String nbTipoVehiculo;
+	private Long stVehiculo;
 
 	public Long getIdVehiculo() {
 		return idVehiculo;
@@ -127,6 +128,15 @@ public class VehiculoVO implements Serializable {
 	public void setNbTipoVehiculo(String nbTipoVehiculo) {
 		this.nbTipoVehiculo = nbTipoVehiculo;
 	}
+
+	public Long getStVehiculo() {
+		return stVehiculo;
+	}
+
+	public void setStVehiculo(Long stVehiculo) {
+		this.stVehiculo = stVehiculo;
+	}
+	
 
 	
 }

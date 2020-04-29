@@ -10,4 +10,6 @@ public interface ConductorDAO extends BaseDao<ConductorDTO>{
 	public List<ConductorDTO> getTransportistas();
 	
 	public List<ConductorDTO> getConductorXNombre(String nombre, String aPaterno, String aMaterno);
+
+	public List<ConductorDTO> obtenerConductorVisible(Long value);
 }

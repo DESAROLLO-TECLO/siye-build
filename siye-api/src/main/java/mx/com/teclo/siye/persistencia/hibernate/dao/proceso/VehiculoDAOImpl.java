@@ -12,6 +12,7 @@ import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ProveedorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.VehiculoDTO;
 import mx.com.teclo.siye.persistencia.vo.filtro.FiltroVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.VehiculoVO;
@@ -64,5 +65,22 @@ public class VehiculoDAOImpl extends BaseDaoHibernate<VehiculoDTO> implements Ve
 		c.add(Restrictions.eq("cdPlacaVehiculo", placa));
 		
 		return (VehiculoDTO) c.uniqueResult();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<VehiculoDTO> buscarVehiculo() {
+		Criteria c = getCurrentSession().createCriteria(VehiculoDTO.class);
+		c.add(Restrictions.eq("stActivo", true));
+		return (List<VehiculoDTO>) c.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<VehiculoDTO> obtenerVehiculoVisible(Long value) {
+		Criteria c = getCurrentSession().createCriteria(VehiculoDTO.class);
+		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("stVehiculo", value));
+		return (List<VehiculoDTO>) c.list();
 	}
 }

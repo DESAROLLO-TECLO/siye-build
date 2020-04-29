@@ -32,7 +32,7 @@ public class KitInstalacionDTO implements Serializable {
 	@Column(name = "ID_KIT_INSTALACION", unique = true, nullable = false, precision = 11, scale = 0)
 	private Long idKitInstalacion;
 
-	@Column(name = "CD_KIT_INSTALACION", nullable = false, length = 15)
+	@Column(name = "CD_KIT_INSTALACION", insertable=false, length = 15)
 	private String cdKitInstalacion;
 
 	@Column(name = "ST_ACTIVO", nullable = false, precision = 1, scale = 0)

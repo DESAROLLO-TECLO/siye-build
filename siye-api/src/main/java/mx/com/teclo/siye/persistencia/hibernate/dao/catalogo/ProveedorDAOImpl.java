@@ -10,6 +10,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConductorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ProveedorDTO;
 
 @Repository
@@ -22,6 +23,15 @@ public class ProveedorDAOImpl extends BaseDaoHibernate<ProveedorDTO> implements 
 		c.add(Restrictions.eq("stActivo", true));
 		c.addOrder(Order.asc("nuOrden"));
 		return (List<ProveedorDTO>)c.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ProveedorDTO> obtenerProveedorVisible(Long value) {
+		Criteria c = getCurrentSession().createCriteria(ProveedorDTO.class);
+		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("stProveedor", value));
+		return (List<ProveedorDTO>) c.list();
 	}
 
 }
