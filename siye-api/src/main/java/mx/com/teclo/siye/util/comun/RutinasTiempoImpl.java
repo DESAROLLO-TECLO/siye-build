@@ -263,8 +263,6 @@ public class RutinasTiempoImpl {
 		return year.toString();
 	}
 	
-	
-	
 	/**
 	 * @author javier07
 	 * @param file File

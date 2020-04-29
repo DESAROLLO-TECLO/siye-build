@@ -209,13 +209,13 @@
                                                 reverse="reverse">
                                                 {{'MONITOREO.detalleOs.titulo.ordenServicio' | translate}}
                                             </th>
-                                            <th class="col-md-2 text-center" sort order="'txPlaca'" by="order"
-                                                reverse="reverse">
-                                                {{'MONITOREO.detalleOs.titulo.nuPlaca' | translate}}
-                                            </th>
                                             <th class="col-md-2 text-center" sort order="'txEtapa'" by="order"
                                                 reverse="reverse">
                                                 {{'MONITOREO.detalleOs.titulo.txEtapa' | translate}}
+                                            </th>
+                                            <th class="col-md-2 text-center" sort order="'txPlaca'" by="order"
+                                                reverse="reverse">
+                                                {{'MONITOREO.detalleOs.titulo.nuPlaca' | translate}}
                                             </th>
                                             <th class="col-md-2 text-center" sort order="'txProceso'" by="order"
                                                 reverse="reverse">
@@ -236,9 +236,10 @@
                                         <tr
                                             dir-paginate="detalle in seguimientoVO.datosTabla | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage">
                                             <td class="col-md-3 text-center">
-                                                <strong>{{detalle.nuOrdenServicio}}</strong></td>
-                                            <td class="col-md-2 text-center">{{detalle.txPlaca}}</td>
-                                            <td class="col-md-2 text-center">{{detalle.txEtapa}}</td>
+                                                <strong>{{detalle.nuOrdenServicio}}</strong>
+                                            </td>
+                                            <td class="col-md-2 text-center">{{detalle.fechaAtencion | date:"dd-MM-yyyy, h:mm "}}</td>
+                                            <td class="col-md-2 text-center">{{detalle.txPlaca}}</td>                                            
                                             <td class="col-md-2 text-center">{{detalle.txProceso}}</td>
                                             <td class="col-md-1 text-center">
                                                 <button class="btn btn-danger" ng-disabled="detalle.nuIncidencia <1"
@@ -395,6 +396,8 @@
             </div>
         </div>
     </div>
+
+
 </body>
 
 </html>

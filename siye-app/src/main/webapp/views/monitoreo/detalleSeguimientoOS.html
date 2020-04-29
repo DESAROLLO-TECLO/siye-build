@@ -19,22 +19,20 @@
 				<div class="box box-danger">
 					<div class="box-header with-border">
 						<ul class="nav nav-tabs preventClic">
-							<li role="presentation" class="tabBox"
-								ng-class="{'active border-box':opciones.verNodos}">
+							<li role="presentation" class="tabBox" ng-class="{'active border-box':opciones.verNodos}">
 								<a ng-click="changeViewTab('nodo')">
-									{{'MONITOREO.pestanas.nodos' |	translate}} 
+									{{'MONITOREO.pestanas.nodos' |	translate}}
 								</a>
 							</li>
-							<li role="presentation" class="tabBox"
-								ng-class="{'active border-box':opciones.verLinea}">
+							<li role="presentation" class="tabBox" ng-class="{'active border-box':opciones.verLinea}">
 								<a ng-click="changeViewTab('linea')">
-									{{'MONITOREO.pestanas.linea' | translate}} 
+									{{'MONITOREO.pestanas.linea' | translate}}
 								</a>
 							</li>
 						</ul>
-						<fieldset>
+						<fieldset style="min-height: 16%;">
 							<div class="row">
-								<div class="col-md-11">
+								<div class="col-md-12">
 									<div class="row">
 										<table class="col-md-12">
 											<thead>
@@ -43,7 +41,7 @@
 												</th>
 
 												<th class="col-md-3 center-text">
-													{{'MONITOREO.detalleOs.label.os' | translate}}													
+													{{'MONITOREO.detalleOs.label.os' | translate}}
 												</th>
 
 												<th class="col-md-3 center-text">
@@ -89,78 +87,35 @@
 													{{'MONITOREO.detalleOs.label.estatus' | translate}}
 												</th>
 											</thead>
-
 											<tbody>
 												<tr>
 													<td class="col-md-2 center-text">
-														{{ordenServicioVO.detalle.finicio |date:"dd-MM-yyyy HH:mm:ss"}}
+														{{ordenServicioVO.detalle.finicio |date:"dd-MM-yyyy, h:mm"}}
 													</td>
 													<td class="col-md-2 center-text">
-														{{ordenServicioVO.detalle.ffin != null ? ordenServicioVO.detalle.ffin : "SIN TERMINAR" |date:"dd-MM-yyyy" }}
+														{{ordenServicioVO.detalle.ffin != null ? ordenServicioVO.detalle.ffin : "SIN TERMINAR" |date:"dd-MM-yyyy, h:mm"}}
 													</td>
 													<td class="col-md-2 center-text">
 														{{ordenServicioVO.detalle.ffin != null ? 
-															ordenServicioVO.detalle.ffin - ordenServicioVO.detalle.finicio  : "SIN TERMINAR"|date:"dd-MM-yyyy" }}
+															ordenServicioVO.detalle.ffin - ordenServicioVO.detalle.finicio  : "SIN TERMINAR"|date:"dd-MM-yyyy, h:mm"}}
 													</td>
 													<td class="col-md-2 center-text">
 														{{ordenServicioVO.detalle.estatus}}
 													</td>
 												</tr>
 											</tbody>
-
 										</table>
 									</div>
 
-
-
-									<!--
-
 									<div class="row">
-										<div class="center-text  col-md-2">
-											<strong class="center-text">
-												
-											</strong>
-											<p></p>
-										</div>
-										<div class="center-text  col-md-2">
-											<strong class="center-text">
-												
-											</strong>
-											<p>
-											</p>
-										</div>
-										<div class="center-text  col-md-2">
-											<strong class="center-text">
-												
-											</strong>
-											<p>
-											</p>
-										</div>
-										<div class="center-text col-md-2">
-											<strong
-												class="center-text"></strong>
-											<p></p>
-										</div>
-										<div class="center-text  col-md-4">
+										<div class="row center">
 											<button class="btn btn-danger"
-												ng-click="verImagenesCarrusel(ordenServicioVO.detalle,'evidencia','ordenservicio')">
-												{{'MONITOREO.detalleOs.label.evidencia' | translate}}
-											</button>
-											<button class="btn btn-danger"
-												ng-click="verImagenesCarrusel(ordenServicioVO.detalle,'incidencia','ordenservicio')">
-												{{'MONITOREO.detalleOs.label.incidencia' | translate}}
-											</button>
+											ng-click="verImagenesCarrusel(ordenServicioVO.detalle,'incidencia','ordenservicio')">
+											{{'MONITOREO.detalleOs.label.incidencia' | translate}}
+										</button>
 										</div>
 									</div>
 								</div>
-								<div ng-class="{'col-xs-6 col-md-1':procesoActivo, 'col-md-2':!procesoActivo}">
-									<a ng-class="{'pull-right':!procesoActivo}"> <img
-											src="./static/dist/img/incidencia/pdf.svg" class="imgExport"
-											ng-click="guardarSeguimientoPDF();"
-											tooltip="{{'ADMINISTRACION.Seguimiento.mensajes.exportarReporte' | translate}}">
-									</a>
-								</div> -->
-							</div>
 						</fieldset>
 					</div>
 					<div class="box-body">
@@ -179,8 +134,11 @@
 						<div style="height: 500px; 	overflow-y: scroll;" ng-show="ordenServicioVO.verDetalle">
 							<div class="box-body scrollDetail" id="scrollDetail">
 								<ul class="timeline">
-									<li class="time-label"
-										ng-repeat-start="detalle in ordenServicioVO.etapasVO">
+									<div class="fa nodesTimeline" style="background-color:white;">
+										<img ng-src="./static/dist/img/incidencia/start_incidencia.svg"
+											class="img-circle imgNodes" alt="Cinque Terre">
+									</div>
+									<li class="time-label" ng-repeat-start="detalle in ordenServicioVO.etapasVO">
 										<span class="bg-dates">
 											{{detalle.nbEncuesta}}
 										</span>
@@ -191,17 +149,22 @@
 												<table class="table tblsnborder">
 													<thead>
 														<tr>
-															<td class="col-md-4 center-text">
+															<td class="col-md-3 center-text">
 																<strong>
 																	{{'MONITOREO.detalleOs.label.finicio' | translate}}
 																</strong>
 															</td>
-															<td class="col-md-4 center-text">
+															<td class="col-md-3 center-text">
 																<strong>
 																	{{'MONITOREO.detalleOs.label.ffin' | translate}}
 																</strong>
 															</td>
-															<td class="col-md-4 center-text">
+															<td class="col-md-3 center-text">
+																<strong>
+																	{{'MONITOREO.detalleOs.label.proceso' | translate}}
+																</strong>
+															</td>
+															<td class="col-md-3 center-text">
 																<strong>
 																	{{'MONITOREO.detalleOs.label.preguntas' | translate}}
 																</strong>
@@ -210,44 +173,50 @@
 													</thead>
 													<tbody>
 														<tr>
-															<td class="col-md-4 center-text">
-																{{detalle.fhInicio!=null ? detalle.fhInicio : "SIN FECHA" |date:"dd-MM-yyyy HH:mm:ss"}}
+															<td class="col-md-3 center-text">
+																{{detalle.fhInicio!=null ? detalle.fhInicio : "SIN FECHA" |date:"dd-MM-yyyy, h:mm"}}
 															</td>
-															<td class="col-md-4 center-text">
-																{{detalle.fhFin !=null ? detalle.fhFin : "SIN FECHA" |date:"dd-MM-yyyy HH:mm:ss"}}
+															<td class="col-md-3 center-text">
+																{{detalle.fhFin !=null ? detalle.fhFin : "SIN FECHA" |date:"dd-MM-yyyy, h:mm"}}
 															</td>
-															<td class="col-md-4 center-text">
-																{{detalle.preguntas}}
+															<td class="col-md-3 center-text">
+																{{detalle.fhInicio!=null && detalle.fhFin!= null ?
+																    detalle.fhFin-detalle.fhInicio : "SIN TERMINAR" |date:"dd-MM-yyyy, h:mm"}}
+															</td>
+															<td class="col-md-3 center">
+																<div class="center">
+																	{{detalle.preguntas}}
+																</div>																
 															</td>
 														</tr>
 														<tr>
 															<td class="col-md-4 center-text">
-																<div style="background-color:{{detalle.nbColor}}">
+																<div class="center"
+																	style="width: 50%; background-color:{{detalle.nbColor}};">
 																	{{detalle.estatus}}
 																</div>
 															</td>
 															<td class="col-md-4 center-text">
-																<label for="">
+																<label class="center">
 																	<strong>*Progreso: </strong>{{detalle.nuPorcentaje}}
 																</label>
 																<div class="progress" style="width: 50%;">
-																	<div class="progress-bar" role="progressbar" 
-																		 aria-valuenow="10" 
-																		 aria-valuemin="0" 
-																		 aria-valuemax="100" style="width: {{detalle.nuPorcentaje}}" />
+																	<div class="progress-bar" role="progressbar"
+																		aria-valuenow="10" aria-valuemin="0"
+																		aria-valuemax="100"
+																		style="width: {{detalle.nuPorcentaje}}" />
 																</div>
 															</td>
 															<td class="col-md-4 center-text">
-																<a type="button"
-																	ng-click="verImagenesCarrusel(detalle,'evidencia', 'encuesta')"
+																<button class="btn btn-danger" ng-click="verImagenesCarrusel(detalle,'evidencia', 'encuesta')"
 																	class="btn pull-left">
 																	{{'MONITOREO.detalleOs.label.evidencia' | translate}}
-																</a>
-																<a type="button"
-																	ng-click="verImagenesCarrusel(detalle,'incidencia', 'encuesta')"
-																	class="btn pull-left">
-																	{{'MONITOREO.detalleOs.label.incidencia' | translate}}
-																</a>
+																</button>
+
+																<button class="btn btn-danger" ng-click="verImagenesCarrusel(detalle,'incidencia', 'encuesta')"
+																		class="btn pull-left">
+																		{{'MONITOREO.detalleOs.label.incidencia' | translate}}
+																</button>
 															</td>
 														</tr>
 													</tbody>

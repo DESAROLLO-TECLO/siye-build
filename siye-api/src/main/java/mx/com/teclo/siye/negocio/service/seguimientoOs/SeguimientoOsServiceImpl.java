@@ -297,4 +297,12 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 		return respuesta;
 	}
 
+	
+	@Override
+	@Transactional
+	public String hacerCorteDiario(String fecha) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
