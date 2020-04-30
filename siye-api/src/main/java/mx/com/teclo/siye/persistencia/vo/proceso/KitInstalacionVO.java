@@ -4,6 +4,7 @@
 package mx.com.teclo.siye.persistencia.vo.proceso;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author UNITIS-ODM2
@@ -16,6 +17,7 @@ public class KitInstalacionVO implements Serializable {
 	private Long idKitInstalacion;
 	private String cdKitInstalacion;
 	private Boolean stActivo;
+	private List<KitInstalacionDispositivoVO>  kitInstalacionDispDTO;
 	
 	public Long getIdKitInstalacion() {
 		return idKitInstalacion;
@@ -35,5 +37,14 @@ public class KitInstalacionVO implements Serializable {
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
 	}
+	public List<KitInstalacionDispositivoVO> getKitInstalacionDispDTO() {
+		return kitInstalacionDispDTO;
+	}
+	public void setKitInstalacionDispDTO(
+			List<KitInstalacionDispositivoVO> kitInstalacionDispDTO) {
+		this.kitInstalacionDispDTO = kitInstalacionDispDTO;
+	}
+	
+	
 		
 }

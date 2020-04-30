@@ -14,6 +14,8 @@ public class ProveedorVO {
 	
 	private Boolean stActivo;
 
+	private Long stProveedor;
+
 	public Long getIdProveedor() {
 		return idProveedor;
 	}
@@ -52,6 +54,14 @@ public class ProveedorVO {
 
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
+	}
+
+	public Long getStProveedor() {
+		return stProveedor;
+	}
+
+	public void setStProveedor(Long stProveedor) {
+		this.stProveedor = stProveedor;
 	}
 	
 	

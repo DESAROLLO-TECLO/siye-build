@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.negocio.service.catalogo.TblCatalogosService;
+import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
 
@@ -37,6 +38,23 @@ public class TblCatalogosRestController {
 			CentroInstalacionVORespuesta = tblCatalogosService.findCentroInstalacion(centroInstalacionVO.getIdCentroInstalacion());
 		}
 		return new ResponseEntity<CentroInstalacionVO>(CentroInstalacionVORespuesta,  HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/altaPersona", method = RequestMethod.POST, produces = "text/plain")
+	public ResponseEntity<String> altaPersona(@RequestBody PersonaVO personaVO) throws BusinessException{
+		String resp = tblCatalogosService.altaPersona(personaVO);
+		return new ResponseEntity<String>(resp, HttpStatus.OK);
+		
+	}
+
+	@RequestMapping(value ="/updatePersona", method = RequestMethod.PUT)
+	public ResponseEntity<PersonaVO> updatePersona(@RequestBody PersonaVO personaVO) throws NotFoundException, BusinessException{
+		Boolean  status = tblCatalogosService.actualizaPersona(personaVO);
+		PersonaVO PersonaVORespuesta = new PersonaVO();
+		if (status) {
+			PersonaVORespuesta = tblCatalogosService.findPersona(personaVO.getIdPersona());
+		}
+		return new ResponseEntity<PersonaVO>(PersonaVORespuesta,  HttpStatus.OK);
 	}
 	
 }

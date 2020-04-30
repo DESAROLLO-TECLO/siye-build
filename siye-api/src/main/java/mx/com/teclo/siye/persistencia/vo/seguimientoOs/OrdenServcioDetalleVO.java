@@ -1,10 +1,13 @@
 package mx.com.teclo.siye.persistencia.vo.seguimientoOs;
 
+import java.util.Date;
+
 public class OrdenServcioDetalleVO {
 
+	private Long idPlan;
 	private Long idOrdenServicio;
 	private String nuOrdenServicio;
-	private String fechaAtencion;
+	private Date fechaAtencion;
 	private String txTransportista;
 	private String txPlaca;
 	private String txtRepresentante;
@@ -14,7 +17,7 @@ public class OrdenServcioDetalleVO {
 	private String txEtapa;
 	private Long nuIncidencia;
 	private String estado;
-	
+	private String color;
 	
 	/**
 	 * @return the nuOrdenServicio
@@ -31,13 +34,13 @@ public class OrdenServcioDetalleVO {
 	/**
 	 * @return the fechaAtencion
 	 */
-	public String getFechaAtencion() {
+	public Date getFechaAtencion() {
 		return fechaAtencion;
 	}
 	/**
 	 * @param fechaAtencion the fechaAtencion to set
 	 */
-	public void setFechaAtencion(String fechaAtencion) {
+	public void setFechaAtencion(Date fechaAtencion) {
 		this.fechaAtencion = fechaAtencion;
 	}
 	/**
@@ -159,6 +162,30 @@ public class OrdenServcioDetalleVO {
 	 */
 	public void setIdOrdenServicio(Long idOrdenServicio) {
 		this.idOrdenServicio = idOrdenServicio;
+	}
+	/**
+	 * @return the idPlan
+	 */
+	public Long getIdPlan() {
+		return idPlan;
+	}
+	/**
+	 * @param idPlan the idPlan to set
+	 */
+	public void setIdPlan(Long idPlan) {
+		this.idPlan = idPlan;
+	}
+	/**
+	 * @return the color
+	 */
+	public String getColor() {
+		return color;
+	}
+	/**
+	 * @param color the color to set
+	 */
+	public void setColor(String color) {
+		this.color = color;
 	}
 	
 }

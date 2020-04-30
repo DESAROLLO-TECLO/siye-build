@@ -34,4 +34,8 @@ public interface VehiculoDAO extends BaseDao<VehiculoDTO> {
 	
 	public VehiculoDTO buscarVehiculoPorPlaca(String placa);
 
+	public List<VehiculoDTO> buscarVehiculo();
+
+	public List<VehiculoDTO> obtenerVehiculoVisible(Long value);
+
 }

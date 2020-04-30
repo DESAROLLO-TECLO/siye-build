@@ -42,6 +42,11 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         controller: "pluginsWebController"
     });
 
+ // Carga de Archivo OTG
+    $routeProvider.when("/upload", {
+        templateUrl: "views/archivoLayout/cargarArchivoRuta.html",
+        controller: "cargaArchivoLayoutController"
+    });
     //	Orden servicio
     $routeProvider.when("/alta", {
         templateUrl: "views/ordenServicio/altaServicio.html",
@@ -254,7 +259,12 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
     // Seguimiento 
     $routeProvider.when("/seguimientoOS", {
         templateUrl: "views/monitoreo/seguimiento.html",
-        controller: "seguimientoOsController"
+        controller: "seguimientoOsController",
+        resolve:{
+            lineaTiempoVO: function(detalleSeguimientoOsService){
+                return detalleSeguimientoOsService.getconsultaGeneral();
+            }
+        }
     });
 
     // Linea de tiempo 

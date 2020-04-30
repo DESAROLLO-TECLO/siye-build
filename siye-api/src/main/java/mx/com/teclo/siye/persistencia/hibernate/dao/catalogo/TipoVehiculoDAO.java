@@ -9,4 +9,6 @@ public interface TipoVehiculoDAO extends BaseDao<TipoVehiculoDTO>{
 	
 	public List<TipoVehiculoDTO> tipoVehiculo();
 
+	public List<TipoVehiculoDTO> obtenerTipoVehiculoVisible(Long value);
+
 }

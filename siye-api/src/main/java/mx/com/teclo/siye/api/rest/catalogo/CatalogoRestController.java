@@ -18,18 +18,22 @@ import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.negocio.service.catalogo.CatalogoService;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.OpcionCausaDTO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.CatTipoFechasVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.ConcesionariaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.OpcionCausaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaGenericaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.ProveedorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TblCatalogosVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.ConsecionarioVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioCatalogoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.StSeguimientoVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.VehiculoVO;
 import mx.com.teclo.siye.util.enumerados.RespuestaHttp;
 
 
@@ -170,6 +174,36 @@ public class CatalogoRestController {
 	public ResponseEntity<List<PersonaVO>> consultalistPersona(@RequestParam(value="cdTipoBusqueda") String cdTipoBusqueda, @RequestParam(value="valor") Long valor) throws NotFoundException {
 		List<PersonaVO> listPersonaVO = catalogoService.consultalistPersona(cdTipoBusqueda, valor);
 		return new ResponseEntity<List<PersonaVO>>(listPersonaVO, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/consultaConductor", method = RequestMethod.GET)
+	public ResponseEntity<List<ConductorVO>> consultaConductor(@RequestParam(value="cdTipoBusqueda") String cdTipoBusqueda, @RequestParam(value="valor") Long valor) throws NotFoundException {
+		List<ConductorVO> listConductorVO = catalogoService.consultaConductor(cdTipoBusqueda, valor);
+		return new ResponseEntity<List<ConductorVO>>(listConductorVO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/consultaProveedor", method = RequestMethod.GET)
+	public ResponseEntity<List<ProveedorVO>> consultaProveedor(@RequestParam(value="cdTipoBusqueda") String cdTipoBusqueda, @RequestParam(value="valor") Long valor) throws NotFoundException {
+		List<ProveedorVO> listProveedorVO = catalogoService.consultaProveedor(cdTipoBusqueda, valor);
+		return new ResponseEntity<List<ProveedorVO>>(listProveedorVO, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/consultaConcesiones", method = RequestMethod.GET)
+	public ResponseEntity<List<ConsecionarioVO>> consultaConcesiones(@RequestParam(value="cdTipoBusqueda") String cdTipoBusqueda, @RequestParam(value="valor") Long valor) throws NotFoundException {
+		List<ConsecionarioVO> listConsecionarioVO = catalogoService.consultaConcesiones(cdTipoBusqueda, valor);
+		return new ResponseEntity<List<ConsecionarioVO>>(listConsecionarioVO, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/consultaTipoVehiculo", method = RequestMethod.GET)
+	public ResponseEntity<List<TipoVehiculoVO>> consultaTipoVehiculo(@RequestParam(value="cdTipoBusqueda") String cdTipoBusqueda, @RequestParam(value="valor") Long valor) throws NotFoundException {
+		List<TipoVehiculoVO> listTipoVehiculoVO = catalogoService.consultaTipoVehiculo(cdTipoBusqueda, valor);
+		return new ResponseEntity<List<TipoVehiculoVO>>(listTipoVehiculoVO, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/consultaVehiculo", method = RequestMethod.GET)
+	public ResponseEntity<List<VehiculoVO>> consultaVehiculo(@RequestParam(value="cdTipoBusqueda") String cdTipoBusqueda, @RequestParam(value="valor") Long valor) throws NotFoundException {
+		List<VehiculoVO> listVehiculoVO = catalogoService.consultaVehiculo(cdTipoBusqueda, valor);
+		return new ResponseEntity<List<VehiculoVO>>(listVehiculoVO, HttpStatus.OK);
 	}
 
 	

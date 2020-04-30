@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.PersonaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 
 @Repository
 public class PersonaDAOImpl extends BaseDaoHibernate<PersonaDTO> implements PersonaDAO{
@@ -43,5 +44,22 @@ public class PersonaDAOImpl extends BaseDaoHibernate<PersonaDTO> implements Pers
 		c.add(Restrictions.eq("stActivo", true));
 		c.add(Restrictions.eq("stPersona", value));
 		return (List<PersonaDTO>) c.list();
+	}
+	
+	
+	@Override
+	public Integer getUltimoId(){
+		Criteria c = getCurrentSession().createCriteria(PersonaDTO.class);
+		c.addOrder(Order.desc("idPersona"));
+		PersonaDTO personaDTO = (PersonaDTO)c.list().get(0);
+		return personaDTO.getIdPersona();
+	}
+	
+	@Override
+	public PersonaDTO obtenerPersonaId(Integer idPersona) {
+		Criteria c = getCurrentSession().createCriteria(PersonaDTO.class);
+		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("idPersona", idPersona));
+		return (PersonaDTO) c.uniqueResult();
 	}
 }
