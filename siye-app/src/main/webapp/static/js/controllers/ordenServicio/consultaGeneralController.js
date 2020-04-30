@@ -31,6 +31,8 @@ function($scope, showAlert, $location, growl, consultaGeneralService,encuestaSer
 		$scope.paramBusqueda="TODO";
 		$scope.valorBusqueda="";
 		$scope.busquedaAvanzada=false;	
+		$scope.isIncidencia=false;
+		$scope.isLote=false;
 		getRangoFechas();
 		getCentroIstalacion();
 		getStSeguimiento();
@@ -58,15 +60,20 @@ function($scope, showAlert, $location, growl, consultaGeneralService,encuestaSer
 	
 	$scope.cambioBusquedaAvanzada=function()
 	{
-		if($scope.busquedaAvanzada)
+		if(!$scope.busquedaAvanzada)
 			{
 			$scope.paramBusqueda="TODO";
+			$scope.cambioComboParametro($scope.paramBusqueda);
+			$scope.checkTipoBusqudaFecha=true;
 			$scope.valorBusqueda="";
-			$scope.tipoFecha=1;
+			$scope.tipoFecha=$scope.rangoFechas[0];
 			$scope.centroInst=[];
 			$scope.statusSegumiento=[]
 			$scope.tipoKit=[];
 			$scope.tipoPlan=[];
+			$scope.isLote=false;
+			$scope.isIncidencia=false;
+			$scope.valorOrigen="";
 			$scope.FHInicio="";
 			$scope.FHFin="";
 			$scope.checkTipoBusqudaFecha
@@ -136,6 +143,14 @@ function($scope, showAlert, $location, growl, consultaGeneralService,encuestaSer
 		$scope.parametrosBusqueda.fhInicio=$scope.FHInicio;
 		$scope.parametrosBusqueda.fhFin=$scope.FHFin;
 		}
+		  $scope.parametrosBusqueda.centroInstalacion=$scope.centroInst?$scope.centroInst:null;
+		  $scope.parametrosBusqueda.estatusSeguimiento=$scope.statusSegumiento?$scope.statusSegumiento:null;
+		  $scope.parametrosBusqueda.isLote=$scope.isLote?$scope.isLote:false;
+		  $scope.parametrosBusqueda.isIncidencia=$scope.isIncidencia?$scope.isIncidencia:false;
+		  $scope.parametrosBusqueda.valorLoteIncidencia=$scope.valorOrigen?$scope.valorOrigen:null;
+		  $scope.parametrosBusqueda.tipoKit=$scope.tipoKit?$scope.tipoKit:null;
+		  $scope.parametrosBusqueda.tipoPlan=$scope.tipoPlan?$scope.tipoPlan:null;
+		
 		}
 	};
 	
@@ -180,7 +195,7 @@ function($scope, showAlert, $location, growl, consultaGeneralService,encuestaSer
                 }
             }
             $scope.rangoFechas=arrayNuevo
-            $scope.tipoFecha=1;
+            $scope.tipoFecha=$scope.rangoFechas[0];
 
         }).error(function (data) {
             growl.error(data.message);
@@ -226,7 +241,39 @@ function($scope, showAlert, $location, growl, consultaGeneralService,encuestaSer
 	$scope.limpiarCampos=function()
 	{
 		iniciarValores();
+		$scope.consultaOrden.$setPristine();
 	}
+	
+	$scope.changeRangoFechas=function()
+	{
+		if(!$scope.checkTipoBusqudaFecha)
+			{
+			$scope.tipoFecha=$scope.rangoFechas[0];
+			$scope.FHInicio="";
+			$scope.FHFin="";
+			}
+		else
+			{
+			$scope.tipoFecha=$scope.rangoFechas[0];
+			$scope.FHInicio="";
+			$scope.FHFin="";
+			}
+	}
+	
+	$scope.changeOrigen=function()
+	{
+		if($scope.isLote)
+			$scope.isIncidencia=false;
+
+	
+	}
+	
+	$scope.changeOrigen2=function()
+	{
+		if($scope.isIncidencia)
+			$scope.isLote=false;
+	}
+
 
 
 	$scope.getNumRegistrosMaximos('NUM_MAX_REGISTROS_MOSTRAR');
