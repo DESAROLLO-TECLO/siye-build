@@ -875,7 +875,7 @@ appt.directive('updateImage',
 				  },200);
 			  };
 			  
-			  scope.hideModal=function(srcB64,nemaImg){
+			  scope.hideModal=function(){
 				  $('#'+scope.idElementUp+'modalCarousel').modal('hide');
 				  $('.modal-backdrop').remove();
 				  scope.showModalCarousel=false;
