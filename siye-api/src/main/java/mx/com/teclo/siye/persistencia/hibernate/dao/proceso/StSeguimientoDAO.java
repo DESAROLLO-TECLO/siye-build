@@ -23,6 +23,8 @@ public interface StSeguimientoDAO extends BaseDao<StSeguimientoDTO> {
 	StSeguimientoDTO obtenerStSeguimientoByCodigo(String cdStSeguimiento, String cdTpSeguimiento, String nbTpSeguimiento);
 
 	List<StSeguimientoDTO> obtenerStSeguimientoByCdTpSeguimiento(String cdTpSeguimiento);
+	
+	List<StSeguimientoDTO> obtenerStSeguimientoByTipo(Long tipo);
 
 
 }

@@ -134,10 +134,11 @@
 						<div style="height: 500px; 	overflow-y: scroll;" ng-show="ordenServicioVO.verDetalle">
 							<div class="box-body scrollDetail" id="scrollDetail">
 								<ul class="timeline">
-									<div class="fa nodesTimeline" style="background-color:white;">
+									<!-- <div class="fa nodesTimeline" style="background-color:white;">
 										<img ng-src="./static/dist/img/incidencia/start_incidencia.svg"
 											class="img-circle imgNodes" alt="Cinque Terre">
 									</div>
+									<div class="row"></div> -->
 									<li class="time-label" ng-repeat-start="detalle in ordenServicioVO.etapasVO">
 										<span class="bg-dates">
 											{{detalle.nbEncuesta}}
@@ -174,14 +175,15 @@
 													<tbody>
 														<tr>
 															<td class="col-md-3 center-text">
-																{{detalle.fhInicio!=null ? detalle.fhInicio : "SIN FECHA" |date:"dd-MM-yyyy, h:mm"}}
+																{{detalle.fhInicio!=null ? detalle.fhInicio : "SIN FECHA" |date:"dd-MM-yyyy h:mm:ss"}}
 															</td>
 															<td class="col-md-3 center-text">
-																{{detalle.fhFin !=null ? detalle.fhFin : "SIN FECHA" |date:"dd-MM-yyyy, h:mm"}}
+																{{detalle.fhFin !=null ? detalle.fhFin : "SIN FECHA" |date:"dd-MM-yyyy h:mm:ss"}}
 															</td>
 															<td class="col-md-3 center-text">
-																{{detalle.fhInicio!=null && detalle.fhFin!= null ?
-																    detalle.fhFin-detalle.fhInicio : "SIN TERMINAR" |date:"dd-MM-yyyy, h:mm"}}
+																{{detalle.fhFin!= null ?
+																	detalle.fhFin-detalle.fhInicio !=null ?
+																	detalle.fhFin-detalle.fhInicio : "no hay tiempo" : "SIN TERMINAR" |date:"dd-MM-yyyy h:mm:ss"}}
 															</td>
 															<td class="col-md-3 center">
 																<div class="center">
@@ -193,7 +195,11 @@
 															<td class="col-md-4 center-text">
 																<div class="center"
 																	style="width: 50%; background-color:{{detalle.nbColor}};">
-																	{{detalle.estatus}}
+																	<font color="white">
+																		<strong>
+																			{{detalle.estatus}}
+																		</strong>
+																	</font>
 																</div>
 															</td>
 															<td class="col-md-4 center-text">

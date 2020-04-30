@@ -14,9 +14,9 @@ import org.hibernate.type.StringType;
 import org.springframework.stereotype.Repository;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
-import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConfiguracionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenServicioDetVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleIncidenciaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServcioDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.SeguimientoOrdenServicioVO;
 
@@ -418,6 +418,19 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		c.addOrder(Order.desc("proceso"));
 		return (List<OrdenServicioDTO>)c.list();
 	}
+
+	
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<OrdenServicioDTO> hacerCorteDiarioOS(String fechaCorte, List<Long> idCentroInstalacion) {
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		c.createAlias("centroInstalacion", "centroDTO");
+		c.add(Restrictions.in("centroDTO.idCentroInstalacion", idCentroInstalacion));
+		c.add(Restrictions.sqlRestriction("trunc(FH_CITA) = trunc(?)", new Date(), org.hibernate.type.StandardBasicTypes.DATE));
+		c.add(Restrictions.isNull("fhAtencionFin"));
+		c.add(Restrictions.eq("stActivo", true));
+		return (List<OrdenServicioDTO>)c.list();	
+	};
 
 
 

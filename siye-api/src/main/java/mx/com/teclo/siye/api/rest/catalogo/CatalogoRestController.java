@@ -27,11 +27,13 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ProveedorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TblCatalogosVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.TipoKitVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.ConsecionarioVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioCatalogoVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.PlanVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.StSeguimientoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.VehiculoVO;
 import mx.com.teclo.siye.util.enumerados.RespuestaHttp;
@@ -204,6 +206,24 @@ public class CatalogoRestController {
 	public ResponseEntity<List<VehiculoVO>> consultaVehiculo(@RequestParam(value="cdTipoBusqueda") String cdTipoBusqueda, @RequestParam(value="valor") Long valor) throws NotFoundException {
 		List<VehiculoVO> listVehiculoVO = catalogoService.consultaVehiculo(cdTipoBusqueda, valor);
 		return new ResponseEntity<List<VehiculoVO>>(listVehiculoVO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/consultaStSegumientoByTipo", method = RequestMethod.GET)
+	public ResponseEntity<List<StSeguimientoVO>> consultaStSegumientoByTipo(@RequestParam(value="tipoSeguimiento") Long tipo) throws NotFoundException {
+		List<StSeguimientoVO> stSeguimientoVO = catalogoService.consultaStSeguimientoByTipo(tipo);
+		return new ResponseEntity<List<StSeguimientoVO>>(stSeguimientoVO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/consultaTipoKit", method = RequestMethod.GET)
+	public ResponseEntity<List<TipoKitVO>> consultaTipoKit() throws NotFoundException {
+		List<TipoKitVO> TipoKitVO = catalogoService.consultaTipoKit();
+		return new ResponseEntity<List<TipoKitVO>>(TipoKitVO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/consultaPlan", method = RequestMethod.GET)
+	public ResponseEntity<List<PlanVO>> consultaPlan() throws NotFoundException {
+		List<PlanVO> planVO = catalogoService.consultaPlan();
+		return new ResponseEntity<List<PlanVO>>(planVO, HttpStatus.OK);
 	}
 
 	
