@@ -30,7 +30,12 @@ angular.module(appTeclo).service("seguimientoOsService", function($http, config)
 	        },
 	        responseType: 'arraybuffer'
 		});
-	}
+	};
 
+	this.hacerCorteDiario = function(fecha){
+		return $http.get(config.baseUrl + END_POINT +"/corteDiario",{
+			params:{"fechaCorte":fecha}
+		});
+	};
 
 });

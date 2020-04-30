@@ -8,13 +8,15 @@ angular.module(appTeclo).controller('modalIncidenciasMonitoreoController',
 			itemsPerPage : 1,
 			maxSize : 2
 		};
+		
 	// Escuchar la variable de paginador
     $scope.$watch("paramConfigPage.bigCurrentPage", function(newValue, oldValue) {
         if (newValue === oldValue) {
             return;
         }
         $scope.recuperIncidencia(newValue);
-    });
+	});
+	
     $scope.recuperIncidencia=function(numPagina){
         var incidenciaVO = $scope.incidenciasMonVO.slice(((numPagina - 1) * $scope.paramConfigPage.itemsPerPage), ((numPagina) * $scope.paramConfigPage.itemsPerPage));
         var idIncidencia=incidenciaVO[0].idIncidencia;
