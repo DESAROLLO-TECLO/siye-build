@@ -1,59 +1,52 @@
-
-
-	<section class="content" id="scape1" ng-controller="detalleIncidenciaController">
-		<!-- Inicia de linea de tiempo -->
-		<div class="row">
-			<!-- Cuadro de consulta-->
-			<div class="col-md-10 col-md-offset-1">
-				<div class="box box-danger" >
-					<div class="box-header with-border">
-						<fieldset style="min-height: 16%;">
-							<div class="row">
-								<div class="col-md-10">
-									<div class="row">
-										<div class="col-xs-4 col-md-3">
-											<strong>Orden de Servicio:</strong>
-											<p>{{orden.ordenServicio.cdOrdenServicio}}</p>
-											
-										</div>
-										<div class="col-xs-4 col-md-3">
-											<strong>Fecha de Cita:</strong>
-											<p>{{orden.ordenServicio.fhCita | date: 'dd-MM-yyyy
-												HH:mm:ss'}}</p>
-										</div>
-										<div class="col-xs-4 col-md-3">
-											<strong>Proceso Actual:</strong>
-											<p>{{orden.ordenServicio.nbProcesoActual==null?'Sin Proceso Actual':orden.ordenServicio.nbProcesoActual}}</p>
-										</div>
-										<div class="col-md-3">
-											<strong>Encuesta Actual:</strong>
-											<p>{{orden.ordenServicio.nbEncuestaActual==null?'Sin Encuesta actual':orden.ordenServicio.nbEncuestaActual}}</p>
-										</div>
+<section class="content" ng-controller="detalleIncidenciaController">
+	<!-- Inicia de linea de tiempo -->
+	<div class="row">
+		<!-- Cuadro de consulta-->
+		<div class="col-md-10 col-md-offset-1" id="scape1" >
+			<div class="box box-danger" >
+				<div class="box-header with-border">
+					<fieldset style="min-height: auto; padding-bottom: 0px; margin-bottom: 0px;">
+						<div class="col-md-12">
+							<div class="col-xs-10 col-md-10">
+								<div class="col-md-12">
+									<div class="col-xs-6 col-md-3">
+										<strong>Orden de Servicio:</strong>
+										<p>{{orden.ordenServicio.cdOrdenServicio}}</p>
 									</div>
+									<div class="col-xs-6 col-md-3">
+										<strong>Fecha de Cita:</strong>
+										<p>{{orden.ordenServicio.fhCita | date: 'dd-MM-yyyy HH:mm:ss'}}</p>
+									</div>
+									<div class="col-xs-6 col-md-3">
+										<strong>Proceso Actual:</strong>
+										<p>{{orden.ordenServicio.nbProcesoActual==null?'Sin Proceso Actual':orden.ordenServicio.nbProcesoActual}}</p>
+									</div>
+									<div class="col-xs-6 col-md-3">
+										<strong>Encuesta Actual:</strong>
+										<p>{{orden.ordenServicio.nbEncuestaActual==null?'Sin Encuesta actual':orden.ordenServicio.nbEncuestaActual}}</p>
+									</div>
+								</div>
 
-								</div>
-								<div 
-									ng-class="{'col-xs-6 col-md-1':procesoActivo, 'col-md-2':!procesoActivo}">
-									<a ng-if="!flagDownload" ng-class="{'pull-right':!procesoActivo}"  ng-click="downLoadTimeLine()"> <img 
-										src="./static/dist/img/incidencia/download.png" class="imgExport"
-										ng-click="funcionPrueba()" >
-									</a>
-								</div>
 							</div>
-						</fieldset>
-					</div>
-					<div class="row">
-					<div class="col-md-12 col-md-offset-0">
-					<div class="box-body scrollDetail" id="scrollDetail">
-						<ul class="timeline">
-
-							<li class="time-label">
-								<div  class="fa nodesTimeline" style="background-color:white;" ng-if="orden.incidencia.length>0">
-									<img ng-src="./static/dist/img/incidencia/start_incidencia.svg"
-										class="img-circle imgNodes"  alt="Cinque Terre">
-								</div>
-										<!-- Inicia tabla de orden de servicio -->								
-										<div class="timeline-body table-responsive" ng-if="orden.incidencia.length>0">
+							<div ng-class="{'col-xs-6 col-md-1':procesoActivo, 'col-xs-2 col-md-2':!procesoActivo}">
+								<a ng-if="!flagDownload" ng-class="{'pull-right':!procesoActivo}" ng-click="downLoadTimeLine()">
+									<img src="./static/dist/img/incidencia/download.png" class="imgExport">
+								</a>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="box-body scrollDetail" id="scrollDetail">
+							<ul class="timeline">
+								<li class="time-label">
+									<div  class="fa nodesTimeline" style="background-color:white;" ng-if="orden.incidencia.length>0">
+										<img ng-src="./static/dist/img/incidencia/start_incidencia.svg"
+											class="img-circle imgNodes"  alt="Cinque Terre">
+									</div>
+									<!-- Inicia tabla de orden de servicio -->								
+									<div class="timeline-body table-responsive" ng-if="orden.incidencia.length>0">
 										<table class="table tblsnborder" >
 											<thead>
 												<tr>
@@ -70,38 +63,33 @@
 												<tr ng-repeat-start="inc in orden.incidencia">
 													<td style="text-align: left;border: hidden;" width="5%"></td>
 													<td style="text-align: center;">													
-														<a  class="img-rounded"										 
-														tooltip="{{inc.prioridadVO.nbStSeguimiento}}"
-														tooltip-placement="right">
-														 <span>
+														<a  class="img-rounded" tooltip="{{inc.prioridadVO.nbStSeguimiento}}"
+															tooltip-placement="right">
+													 		<span>
 <!-- 														 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" -->
 <!-- 														     width="20" height="20" viewBox="0 0 20 20"> -->
 <!-- 														  <circle cx="20" cy="20" r="10" -->
 <!-- 														          fill="RoyalBlue" /> -->
 <!-- 														</svg> -->
-														<img ng-if="inc.prioridadVO.idStSeguimiento==8" width="25px" height="25px" src="static/dist/img/incidencia/circulo_rojo.png">
-														<img ng-if="inc.prioridadVO.idStSeguimiento==9" width="25px" height="25px" src="static/dist/img/incidencia/circulo_amarillo.png">
-														<img ng-if="inc.prioridadVO.idStSeguimiento==10" width="25px" height="25px" src="static/dist/img/incidencia/circulo_azul.png">														
-														</span>																											
-													</a>													
+																<img ng-if="inc.prioridadVO.idStSeguimiento==8" width="25px" height="25px" src="static/dist/img/incidencia/circulo_rojo.png">
+																<img ng-if="inc.prioridadVO.idStSeguimiento==9" width="25px" height="25px" src="static/dist/img/incidencia/circulo_amarillo.png">
+																<img ng-if="inc.prioridadVO.idStSeguimiento==10" width="25px" height="25px" src="static/dist/img/incidencia/circulo_azul.png">														
+															</span>																											
+														</a>													
 													</td>
-													<td style="text-align: center;" >{{inc.cdIncidencia}}</td>
-													<td style="text-align: center;" >{{inc.nbIncidencia}}</td>
-													
-													<td style="text-align: center;">{{inc.stSeguimientoVO.nbStSeguimiento}}
-													</td>
-													<td style="text-align:center;">{{inc.tpIncidenciaVO.nbStSeguimiento}}
-													</td>													
+													<td style="text-align: center;">{{inc.cdIncidencia}}</td>
+													<td style="text-align: center;">{{inc.nbIncidencia}}</td>
+													<td style="text-align: center;">{{inc.stSeguimientoVO.nbStSeguimiento}}</td>
+													<td style="text-align:center;">{{inc.tpIncidenciaVO.nbStSeguimiento}}</td>													
 													<td style="text-align:center;">
-														<a  class="img-rounded"
-												 		ng-click="consultarEvidenciaIncide(inc.idIncidencia)"
-														tooltip="Evidencia"
-														tooltip-placement="right">
-														<span>
-														<img   width="25px" height="25px" src="static/dist/img/incidencia/evidencia.png">														
-														</span>																											
-													</a>
-													
+														<a class="img-rounded"
+											 				ng-click="consultarEvidenciaIncide(inc.idIncidencia)"
+															tooltip="Evidencia"
+															tooltip-placement="right">
+															<span>
+																<img width="25px" height="25px" src="static/dist/img/incidencia/evidencia.png">														
+															</span>																											
+														</a>
 													</td>
 												</tr>
 												<tr ng-repeat-end></tr>
@@ -111,15 +99,13 @@
 									<!-- Se pinta orden de servicio -->
 									<span class="bg-success" ng-if="orden.proceso.length>0"> {{orden.ordenServicio.cdOrdenServicio}} </span> 
 									<span class="bg-warning" ng-if="orden.proceso.length==0">El plan de la orden no tiene procesos asignados</span> 
-								<!-- -Termina tabla de orden de servicio -->		
-								
+									<!-- -Termina tabla de orden de servicio -->
 								</li>
-							<li class="time-label" ng-repeat-start="pr in orden.proceso">
-								<!-- Se pintan procesos de orden -->
-								<span class="bg-warning"> {{pr.nbProceso}} </span>
-								<!-- Inicia tabla de incidencias para procesos -->
-								
-										<div class="timeline-body table-responsive" ng-if="pr.incidencia.length>0">
+								<li class="time-label" ng-repeat-start="pr in orden.proceso">
+									<!-- Se pintan procesos de orden -->
+									<span class="bg-warning"> {{pr.nbProceso}} </span>
+									<!-- Inicia tabla de incidencias para procesos -->
+									<div class="timeline-body table-responsive" ng-if="pr.incidencia.length>0">
 										<table class="table tblsnborder" >
 											<thead>
 												<tr>
@@ -136,157 +122,143 @@
 												<tr ng-repeat-start="inc in pr.incidencia">
 													<td style="text-align: left;border: hidden;" width="5%"></td>
 													<td style="text-align: center;">													
-														<a  class="img-rounded"												 
-														tooltip="{{inc.prioridadVO.nbStSeguimiento}}"
-														tooltip-placement="right">
-														 <span>
-														<img ng-if="inc.prioridadVO.idStSeguimiento==8" width="25px" height="25px" src="static/dist/img/incidencia/circulo_rojo.png">
-														<img ng-if="inc.prioridadVO.idStSeguimiento==9" width="25px" height="25px" src="static/dist/img/incidencia/circulo_amarillo.png">
-														<img ng-if="inc.prioridadVO.idStSeguimiento==10" width="25px" height="25px" src="static/dist/img/incidencia/circulo_azul.png">														
-														</span>																											
-													</a>
-													
-													</td>
-													<td style="text-align: center;" >{{inc.cdIncidencia}}</td>
-													<td style="text-align: center;" >{{inc.nbIncidencia}}</td>
-													
-													<td style="text-align: center;">{{inc.stSeguimientoVO.nbStSeguimiento}}
-													</td>
-													<td style="text-align:center;">{{inc.tpIncidenciaVO.nbStSeguimiento}}
-													</td>
-													
-													<td style="text-align:center;">
-														<a  class="img-rounded"
-												 		ng-click="consultarEvidenciaIncide(inc.idIncidencia)"
-														tooltip="Evidencia"
-														tooltip-placement="right">
-														 <span>
-														<img   width="25px" height="25px" src="static/dist/img/incidencia/evidencia.png">														
-														</span>																											
-													</a>													
-													</td>
-												</tr>
-												<tr ng-repeat-end></tr>
-											</tbody>
-										</table>
-									</div>
-								
-								<!-- -Termina tabla d e incidencias para procesos -->									
-							</li>
-							<li>
-								<div ng-repeat-start="encu in pr.encuesta" >
-								<div class="col-md-12">
-								<!--Se pintan nodos de encuestas o etapas como quiera -->
-								<div  class="fa nodesTimeline" style="background-color:white;" >
-									<img ng-src="./static/dist/img/incidencia/encuesta.png"
-										tooltip="{{encu.stEncuesta.nbStEncuesta==null?'NO INICIADA':encu.stEncuesta.nbStEncuesta}}"
-										tooltip-placement="right" style="border-color: black;"
-										class="img-circle imgNodes" >
-								</div>
-								<!--Se pintan nodos de encuestas o etapas como quiera -->
-								</div>
-								<div class="timeline-item" >
-									<h3 class="timeline-header" >
-										<div class="row">
-											<div class="col-md-1">
-												<p>
-												<strong >
-													{{encu.nbEncuesta}}</strong>
-												</p>											
-												</div>
-											<div class="col-md-4">
-												<p class="badgesucces pull-left">
-													<span ng-if="encu.incidencia.length==0"> Sin Incidencias</span>
-												</p>
-												<p class="badgewarning pull-left">
-													<span ng-if="encu.incidencia.length>0"> Con Incidencias</span>
-												</p>
-											</div>
-										</div>
-									</h3>
-									<!-- -Inicia tabla de incidencias para Encuestas -->								
-									<div class="timeline-body table-responsive" ng-if="encu.incidencia.length>0">
-										<table class="table tblsnborder" >
-											<thead>
-												<tr>
-													<td class="left" style="border: hidden"></td>
-													<td class="center" ><strong>Prioridad</strong></td>
-													<td class="center" ><strong>Folio</strong></td>
-													<td class="center" ><strong>Nombre</strong></td>											
-													<td class="center"><strong>Seguimiento</strong></td>
-													<td class="center"><strong>Tipo</strong></td>
-													<td class="center"><strong>Evidencia</strong></td>
-												</tr>
-											</thead>
-											<tbody>
-												<tr ng-repeat-start="inc in encu.incidencia">
-													<td style="text-align: left;border: hidden;" width="5%"></td>
-													<td style="text-align: center;">
-													
-														<a  class="img-rounded"												 
-														tooltip="{{inc.prioridadVO.nbStSeguimiento}}"
-														tooltip-placement="right">
-														 <span>
-														<img ng-if="inc.prioridadVO.idStSeguimiento==8" width="25px" height="25px" src="static/dist/img/incidencia/circulo_rojo.png">
-														<img ng-if="inc.prioridadVO.idStSeguimiento==9" width="25px" height="25px" src="static/dist/img/incidencia/circulo_amarillo.png">
-														<img ng-if="inc.prioridadVO.idStSeguimiento==10" width="25px" height="25px" src="static/dist/img/incidencia/circulo_azul.png">
-														</span>
-													</a>
-													
-													</td>
-													<td style="text-align: center;" >{{inc.cdIncidencia}}</td>
-													<td style="text-align: center;" >{{inc.nbIncidencia}}</td>
-													
-													<td style="text-align: center;">{{inc.stSeguimientoVO.nbStSeguimiento}}
-													</td>
-													<td style="text-align:center;">{{inc.tpIncidenciaVO.nbStSeguimiento}}
-													</td>
-													
-													<td style="text-align:center;">
-														<a  class="img-rounded"
-												 		ng-click="consultarEvidenciaIncide(inc.idIncidencia)"
-														tooltip="Evidencia"
-														tooltip-placement="right">
-														 <span>
-														<img   width="25px" height="25px" src="static/dist/img/incidencia/evidencia.png">
-														</span>
+														<a class="img-rounded"												 
+															tooltip="{{inc.prioridadVO.nbStSeguimiento}}"
+															tooltip-placement="right">
+													 		<span>
+																<img ng-if="inc.prioridadVO.idStSeguimiento==8" width="25px" height="25px" src="static/dist/img/incidencia/circulo_rojo.png">
+																<img ng-if="inc.prioridadVO.idStSeguimiento==9" width="25px" height="25px" src="static/dist/img/incidencia/circulo_amarillo.png">
+																<img ng-if="inc.prioridadVO.idStSeguimiento==10" width="25px" height="25px" src="static/dist/img/incidencia/circulo_azul.png">														
+															</span>																											
 														</a>
 													</td>
+													<td style="text-align: center;" >{{inc.cdIncidencia}}</td>
+													<td style="text-align: center;" >{{inc.nbIncidencia}}</td>
+													<td style="text-align: center;">{{inc.stSeguimientoVO.nbStSeguimiento}}
+													</td>
+													<td style="text-align:center;">{{inc.tpIncidenciaVO.nbStSeguimiento}}</td>
+													<td style="text-align:center;">
+														<a class="img-rounded"
+											 				ng-click="consultarEvidenciaIncide(inc.idIncidencia)"
+															tooltip="Evidencia"
+															tooltip-placement="right">
+													 		<span>
+																<img width="25px" height="25px" src="static/dist/img/incidencia/evidencia.png">														
+															</span>																											
+														</a>													
+													</td>
 												</tr>
 												<tr ng-repeat-end></tr>
 											</tbody>
 										</table>
 									</div>
-									<!-- -Termina tabla de incidencias para Encuestas -->
-									</div>
+									<!-- -Termina tabla d e incidencias para procesos -->									
+								</li>
+								<li>
+									<div ng-repeat-start="encu in pr.encuesta">
+										<div class="col-md-12">
+											<!--Se pintan nodos de encuestas o etapas como quiera -->
+											<div  class="fa nodesTimeline" style="background-color:white;" >
+												<img ng-src="./static/dist/img/incidencia/encuesta.png"
+													tooltip="{{encu.stEncuesta.nbStEncuesta==null?'NO INICIADA':encu.stEncuesta.nbStEncuesta}}"
+													tooltip-placement="right" style="border-color: black;"
+													class="img-circle imgNodes" >
+											</div>
+											<!--Se pintan nodos de encuestas o etapas como quiera -->
+										</div>
+										<div class="timeline-item" >
+											<h3 class="timeline-header" >
+												<div class="row">
+													<div class="col-xs-2 col-md-2">
+														<p>
+															<strong>{{encu.nbEncuesta}}</strong>
+														</p>											
+													</div>
+													<div class="col-xs-6 col-md-6">
+														<p class="badgesucces pull-left">
+															<span ng-if="encu.incidencia.length==0"> Sin Incidencias</span>
+														</p>
+														<p class="badgewarning pull-left">
+															<span ng-if="encu.incidencia.length>0"> Con Incidencias</span>
+														</p>
+													</div>
+												</div>
+											</h3>
+											<!-- -Inicia tabla de incidencias para Encuestas -->								
+											<div class="timeline-body table-responsive" ng-if="encu.incidencia.length>0">
+												<table class="table tblsnborder" >
+													<thead>
+														<tr>
+															<td class="left" style="border: hidden"></td>
+															<td class="center" ><strong>Prioridad</strong></td>
+															<td class="center" ><strong>Folio</strong></td>
+															<td class="center" ><strong>Nombre</strong></td>											
+															<td class="center"><strong>Seguimiento</strong></td>
+															<td class="center"><strong>Tipo</strong></td>
+															<td class="center"><strong>Evidencia</strong></td>
+														</tr>
+													</thead>
+													<tbody>
+														<tr ng-repeat-start="inc in encu.incidencia">
+															<td style="text-align: left; border: hidden;" width="5%"></td>
+															<td style="text-align: center;">
+																<a class="img-rounded"												 
+																	tooltip="{{inc.prioridadVO.nbStSeguimiento}}"
+																	tooltip-placement="right">
+													 				<span>
+																		<img ng-if="inc.prioridadVO.idStSeguimiento==8" width="25px" height="25px" src="static/dist/img/incidencia/circulo_rojo.png">
+																		<img ng-if="inc.prioridadVO.idStSeguimiento==9" width="25px" height="25px" src="static/dist/img/incidencia/circulo_amarillo.png">
+																		<img ng-if="inc.prioridadVO.idStSeguimiento==10" width="25px" height="25px" src="static/dist/img/incidencia/circulo_azul.png">
+																	</span>
+																</a>
+															</td>
+															<td style="text-align: center;" >{{inc.cdIncidencia}}</td>
+															<td style="text-align: center;" >{{inc.nbIncidencia}}</td>
+															<td style="text-align: center;">{{inc.stSeguimientoVO.nbStSeguimiento}}</td>
+															<td style="text-align:center;">{{inc.tpIncidenciaVO.nbStSeguimiento}}</td>
+															<td style="text-align:center;">
+																<a class="img-rounded"
+											 						ng-click="consultarEvidenciaIncide(inc.idIncidencia)"
+																	tooltip="Evidencia"
+																	tooltip-placement="right">
+													 				<span>
+																		<img   width="25px" height="25px" src="static/dist/img/incidencia/evidencia.png">
+																	</span>
+																</a>
+															</td>
+														</tr>
+														<tr ng-repeat-end></tr>
+													</tbody>
+												</table>
+											</div>
+											<!-- -Termina tabla de incidencias para Encuestas -->
+										</div>
 <!-- 										<div ng-repeat-end></div> -->
-								</div>
-								<div ng-repeat-end></div>
-							</li>
-							<!-- END timeline item -->
-							<li ng-if="$last" ng-repeat-end><i
-								class="fa fa-clock-o bg-gray"></i></li>
-						</ul>
+									</div>
+									<div ng-repeat-end></div>
+								</li>
+								<!-- END timeline item -->
+								<li ng-if="$last" ng-repeat-end>
+									<i class="fa fa-clock-o bg-gray"></i>
+								</li>
+							</ul>
+						</div>
 					</div>
-					</div>
-					</div>
-				
-					<div class="box-footer text-center" >
-						<section>
-							<div class="row">
-								<div class="col-md-4" ng-if="!flagDownload">
-									<a type="button" ng-click="regresar()" class="btn pull-left">
-										<i class="fa fa-arrow-circle-left"></i>
-										{{'APP.Base.boton.regresar' | translate}}
-									</a>
-								</div>
+				</div>
+				<div class="box-footer text-center" >
+					<section>
+						<div class="row">
+							<div class="col-md-4" ng-if="!flagDownload">
+								<a type="button" ng-click="regresar()" class="btn pull-left">
+									<i class="fa fa-arrow-circle-left"></i>
+									{{'APP.Base.boton.regresar' | translate}}
+								</a>
 							</div>
-						</section>
-					</div>
-				
+						</div>
+					</section>
 				</div>
 			</div>
 		</div>
-				<!-- Termina de linea de tiempo -->
-
-	</section>
+	</div>
+	<!-- Termina de linea de tiempo -->
+</section>

@@ -236,7 +236,8 @@ angular.module(appTeclo).controller('monIncidenciaController',
 		
 	};
 	$scope.regresar=function(){
-		$scope.flags.pantallaLTiempo=false;
+		//$scope.consultaDetalle();
+		$scope.flags.pantallaLTiempo = false;
 		$scope.orden = [];
 		scrollDetailDestroy();
 	}
