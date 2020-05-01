@@ -1,8 +1,6 @@
 package mx.com.teclo.siye.persistencia.hibernate.dao.incidencia;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Repository;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
-import mx.com.teclo.siye.persistencia.vo.monitoreo.IncidenDetailVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.IncidenciaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleIncidenciaVO;
 
@@ -43,8 +40,11 @@ public class IncidenciaDAOImpl extends BaseDaoHibernate<IncidenciaDTO> implement
 	@Override
 	public  IncidenciaDTO incidenciaBycdIncidencia(String cdIncidenc){
 		Criteria c = getCurrentSession().createCriteria(IncidenciaDTO.class);
+		c.createAlias("stIncidencia", "stIncidencia");
+		
 		c.add(Restrictions.eq("stActivo", true));
 		c.add(Restrictions.eq("cdIncidencia", cdIncidenc));
+		c.add(Restrictions.ne("stIncidencia.idStSeguimiento", 3l));
 		return (IncidenciaDTO)c.uniqueResult();
 		
 	}
@@ -155,7 +155,7 @@ public class IncidenciaDAOImpl extends BaseDaoHibernate<IncidenciaDTO> implement
 				+" INNER JOIN TIE048C_IE_ST_SEGUIMIENTO stIncidencia ON (tdii.ID_ST_INCIDENCIA = stIncidencia.ID_ST_SEGUIMIENTO) "
 				+" INNER JOIN TIE035C_IE_PROCESOS tcip ON (tdii.ID_PROCESO = tcip.ID_PROCESO) "
 				+" INNER JOIN TIE001D_EE_ENCUESTAS tdee ON (tdii.ID_ENCUESTA = tdee.ID_ENCUESTA) "
-				+"  WHERE tdioi.ID_ORDEN_SERVICIO=:idOrdenServicio");
+				+"  WHERE tdioi.ID_ORDEN_SERVICIO=:idOrdenServicio  ORDER BY idIncidencia");
 		List<DetalleIncidenciaVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idOSIncidencia",LongType.INSTANCE)
 				.addScalar("idOrdenServicio",LongType.INSTANCE)

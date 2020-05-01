@@ -1,16 +1,13 @@
 package mx.com.teclo.siye.persistencia.vo.expedientesImg;
 
-import java.util.List;
-
 public class ExpedienteNivelPreguntaVO {
 	
 	private Long idPregunta;
 	private String cdPregunta;
 	private Long nuMaxImg;
-	private String cdClasif;
+	private String cdNivel;
 	private String nbNivel;
 	private String name;
-	private List<ImagenVO> imagenes;
 	
 	
 	/**
@@ -50,28 +47,16 @@ public class ExpedienteNivelPreguntaVO {
 		this.nuMaxImg = nuMaxImg;
 	}
 	/**
-	 * @return the imagenes
+	 * @return the cdNivel
 	 */
-	public List<ImagenVO> getImagenes() {
-		return imagenes;
+	public String getCdNivel() {
+		return cdNivel;
 	}
 	/**
-	 * @param imagenes the imagenes to set
+	 * @param cdNivel the cdNivel to set
 	 */
-	public void setImagenes(List<ImagenVO> imagenes) {
-		this.imagenes = imagenes;
-	}
-	/**
-	 * @return the cdClasif
-	 */
-	public String getCdClasif() {
-		return cdClasif;
-	}
-	/**
-	 * @param cdClasif the cdClasif to set
-	 */
-	public void setCdClasif(String cdClasif) {
-		this.cdClasif = cdClasif;
+	public void setCdNivel(String cdNivel) {
+		this.cdNivel = cdNivel;
 	}
 	/**
 	 * @return the nbNivel

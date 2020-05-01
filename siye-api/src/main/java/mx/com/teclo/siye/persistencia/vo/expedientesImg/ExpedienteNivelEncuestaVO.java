@@ -7,24 +7,15 @@ public class ExpedienteNivelEncuestaVO {
 	private Long idEncuesta;
 	private String cdEncuesta;
 	private Long nuMaxImg;
-	private String cdClasif;
+	private String cdNivel;
 	private String nbNivel;
 	private String name;
-	private List<ImagenVO> imagenes;
-	private List<ExpedienteNivelPreguntaVO> listImageClasif;
-
-	
+	private List<ExpedienteNivelPreguntaVO> listPreguntas;
 	/**
 	 * @return the idEncuesta
 	 */
 	public Long getIdEncuesta() {
 		return idEncuesta;
-	}
-	/**
-	 * @return the listImageClasif
-	 */
-	public List<ExpedienteNivelPreguntaVO> getListImageClasif() {
-		return listImageClasif;
 	}
 	/**
 	 * @param idEncuesta the idEncuesta to set
@@ -57,34 +48,16 @@ public class ExpedienteNivelEncuestaVO {
 		this.nuMaxImg = nuMaxImg;
 	}
 	/**
-	 * @return the imagenes
+	 * @return the cdNivel
 	 */
-	public List<ImagenVO> getImagenes() {
-		return imagenes;
+	public String getCdNivel() {
+		return cdNivel;
 	}
 	/**
-	 * @param imagenes the imagenes to set
+	 * @param cdNivel the cdNivel to set
 	 */
-	public void setImagenes(List<ImagenVO> imagenes) {
-		this.imagenes = imagenes;
-	}
-	/**
-	 * @param listImageClasif the listImageClasif to set
-	 */
-	public void setListImageClasif(List<ExpedienteNivelPreguntaVO> listImageClasif) {
-		this.listImageClasif = listImageClasif;
-	}
-	/**
-	 * @return the cdClasif
-	 */
-	public String getCdClasif() {
-		return cdClasif;
-	}
-	/**
-	 * @param cdClasif the cdClasif to set
-	 */
-	public void setCdClasif(String cdClasif) {
-		this.cdClasif = cdClasif;
+	public void setCdNivel(String cdNivel) {
+		this.cdNivel = cdNivel;
 	}
 	/**
 	 * @return the nbNivel
@@ -110,5 +83,16 @@ public class ExpedienteNivelEncuestaVO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+	/**
+	 * @return the listPreguntas
+	 */
+	public List<ExpedienteNivelPreguntaVO> getListPreguntas() {
+		return listPreguntas;
+	}
+	/**
+	 * @param listPreguntas the listPreguntas to set
+	 */
+	public void setListPreguntas(List<ExpedienteNivelPreguntaVO> listPreguntas) {
+		this.listPreguntas = listPreguntas;
+	}
 }

@@ -172,7 +172,7 @@ appt.directive('updateImage',
 	    						  file.tipoExpediente = a[i];
 	    						  $timeout(function() {
 	    							  $("#select2-tpDoc"+file.unic+''+scope.idElementUp+"-container").text(file.tipoExpediente.nbTipoExpediente);
-	    						  },450);
+	    						  },500);
 	    						  break;
 	    					  }
 	    				  }
@@ -275,7 +275,7 @@ appt.directive('updateImage',
 				  let fileItem=scope.listFilesExcedeSize.pop();
     			  
     			  new ImageCompressor(fileItem, {
-	    			    quality: 0.4,
+	    			    quality: 0.2,
 	    			    success(result) {
 	    			    	 //scope.$apply(function(){
 	    			    	 let unic=(scope.listFiles.length+1);
@@ -370,6 +370,18 @@ appt.directive('updateImage',
 	        		  for(i=0; i<files.length; i++){
 
 	        		  	 if(scope.maxNuImage != undefined && scope.listFiles.length >= scope.maxNuImage){
+	        		  		 
+	        		  		progressBar.style.width = '100%';
+	        		  		progressBar.innerText = '100%';
+	       	    		 	remainingBar.style.width ='0%';
+		       	    		 $timeout(function() {
+				    			    scope.closedFiles=0;
+				    			    scope.totalImagesPendig=0;
+				    			    scope.showProgressBar=false;
+				    			    let nameDivUnblokig='div.block-'+scope.idElementUp;
+				    			    $(nameDivUnblokig).unblock(); 
+							       },800);
+	        		  		 
 	        				  growl.warning('Algunas archivos no se adjuntaron se llego al limite de archivos', {ttl: 4000});
 	        				  break;
 	        			 }
@@ -497,11 +509,26 @@ appt.directive('updateImage',
 		    		 return false;
 		    	 }
 		    	 
+		    	 if(scope.showCombo){
+		    		 let listNotTpExpedient=scope.listFiles.filter(function(item){
+			    		 return item.tipoExpediente == undefined;
+			    	 });
+		    		 
+		    		 if(listNotTpExpedient.length !=  undefined && listNotTpExpedient.length > 0){
+		    			 showAlert.requiredFields(form);
+		    			 if(message != undefined && message != '')
+			    		 		growl.error(message,{ttl: 4000});
+		    			 
+			    		 return false;
+			    	 }
+		    	 }
+		    	 
 		    	 if(scope.listFiles == undefined || scope.listFiles.length == 0 || scope.formTpDocument.$invalid){
 		    		 	showAlert.requiredFields(scope.formTpDocument);
 		    		 	
 		    		 	if(message != undefined && message != '')
-		    		 		growl.error(message);
+		    		 		growl.error(message,{ttl: 4000});
+		    		 	
 		              return false; 
 		    	 }
 		    	 
@@ -552,6 +579,18 @@ appt.directive('updateImage',
 		    		 return item.exedeSize;
 		    	 });
 		    	 
+		    	 if(scope.showCombo){
+		    		 let listNotTpExpedient=scope.listFiles.filter(function(item){
+			    		 return item.tipoExpediente == undefined;
+			    	 });
+		    		 
+		    		 if(listNotTpExpedient.length !=  undefined && listNotTpExpedient.length > 0){
+		    			 showAlert.requiredFields(form);
+			    		 growl.error('Formulario incompleto', {ttl: 4000});
+			    		 return;
+			    	 }
+		    	 }
+		    	 
 		    	 if(listNotAdd.length !=  undefined && listNotAdd.length > 0){
 		    		 growl.warning('Las imagenes aun se estan cargando, por favor espere', {ttl: 4000});
 		    		 return;
@@ -559,7 +598,7 @@ appt.directive('updateImage',
 		    	 
 		    	 if (form.$invalid) {
 		              showAlert.requiredFields(form);
-		              growl.error('Formulario incompleto');
+		              growl.error('Formulario incompleto', {ttl: 4000});
 		              return;
 		          }
 		    	 
@@ -654,7 +693,7 @@ appt.directive('updateImage',
 		          			  expedienteService.deleteExpediente(imgDelete)
 			          		  .success(function(reponse){
 			          			scope.listFiles.splice(indexImg,1);
-			          			growl.success('Imagenes eliminadas correctamente', { ttl: 4000 });
+			          			growl.success('Imagen eliminada correctamente', { ttl: 4000 });
 			          		  }).error(function(error){
 			          			  growl.error(error, { ttl: 4000 });
 			          		  });
@@ -803,11 +842,13 @@ appt.directive('updateImage',
 			  };
 			  
 			//METODO QUE PERMITE IDENTIFICAR EL TIPO DE DISPOSITIVO DONDE SE ESTA CARGANDO LA PANTALLA Y DETERMINA QUE COMPONENTES MOSTRAR
-			  isMobile=function(){
+			  scope.isMobile=function(){
 				  var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 					if (isMobile) {
+//						 scope.paramConfigPage.itemsPerPage=2;
 						return true;
 					} else {
+//						scope.paramConfigPage.itemsPerPage=6;
 						return false;
 					}
 			  }
@@ -839,9 +880,14 @@ appt.directive('updateImage',
 				  $('.modal-backdrop').remove();
 				  scope.showModalCarousel=false;
 				  scope.imagePreview=new Object();
+				  scope.showProgressBar=false;
+				  let nameDivUnblokig='div.block-'+scope.idElementUp;
+	    		  $(nameDivUnblokig).unblock(); 
 			  };
 			  
+			  scope.isMobile();
 			  intDirective();
+			  
 	   }
 	};    
 });

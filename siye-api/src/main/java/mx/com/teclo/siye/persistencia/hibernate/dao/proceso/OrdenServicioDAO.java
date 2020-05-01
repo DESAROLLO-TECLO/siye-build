@@ -168,4 +168,12 @@ public interface OrdenServicioDAO extends BaseDao<OrdenServicioDTO>{
 			String tipoPlan,Integer nuMaxMostrar);
 	
 	public List<OrdenServicioDTO> consultaTodasOrdenes();
+	
+	/**
+     * Descripción: Cancelar Orden de servicio sin atender al dia 
+     * @author Maverick
+	 * @param fechaCorte
+	 * @param idCentroInstalacion
+	 */
+	public List<OrdenServicioDTO> hacerCorteDiarioOS(String fechaCorte, List<Long> idCentroInstalacion);
 }

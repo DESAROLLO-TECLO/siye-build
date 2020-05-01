@@ -42,6 +42,11 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         controller: "pluginsWebController"
     });
 
+ // Carga de Archivo OTG
+    $routeProvider.when("/upload", {
+        templateUrl: "views/archivoLayout/cargarArchivoRuta.html",
+        controller: "cargaArchivoLayoutController"
+    });
     //	Orden servicio
     $routeProvider.when("/alta", {
         templateUrl: "views/ordenServicio/altaServicio.html",
@@ -292,6 +297,12 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
     $routeProvider.when("/tablero", {
         templateUrl: "views/dashboard/dashboard.html",
         controller: "dashboardController"
+    });
+    
+    //consulta General
+    $routeProvider.when("/consultaGeneral", {
+        templateUrl: "views/ordenServicio/consultaGeneral.html",
+        controller: "consultaGeneralController"
     });
 
 });

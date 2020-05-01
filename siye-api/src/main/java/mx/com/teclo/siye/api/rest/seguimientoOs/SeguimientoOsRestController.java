@@ -96,18 +96,9 @@ public class SeguimientoOsRestController {
 		@RequestParam(value ="idCentroInstalacion") Integer idCentroInstalacion
 	) throws Exception, BusinessException, NotFoundException {
 		String mensajeErr = "";
-		try {
-			UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
-			List<MonitoreoIncidenciasVO> respuesta = monitoreoIncidenciaService.getMonIncidencias(usuario.getId(), fechaInicio, fechaFin, tipoBusqueda, valor, opcion, idCentroInstalacion, mensajeErr);
-			return new ResponseEntity<List<MonitoreoIncidenciasVO>>(respuesta, HttpStatus.OK);
-		} catch (Exception e) {
-			if(mensajeErr != null && !mensajeErr.isEmpty() && !mensajeErr.equals(null)) {
-				throw new NotFoundException(mensajeErr);
-			} else {
-				e.printStackTrace();
-				throw new NotFoundException("¡Ha ocurrido un imprevisto! , porfavor contacte al administrador");
-			}
-		}
+		UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
+		List<MonitoreoIncidenciasVO> respuesta = monitoreoIncidenciaService.getMonIncidencias(usuario.getId(), fechaInicio, fechaFin, tipoBusqueda, valor, opcion, idCentroInstalacion, mensajeErr);
+		return new ResponseEntity<List<MonitoreoIncidenciasVO>>(respuesta, HttpStatus.OK);
 	};
 	
 	@RequestMapping(value = "/getDetalleIncidenciasOS", method = RequestMethod.GET)
@@ -186,6 +177,18 @@ public class SeguimientoOsRestController {
     	headers.setContentLength(bytes.length);
     	ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(bytes, headers, HttpStatus.OK);
        return response;
+	}
+	
+	@RequestMapping(value="/corteDiario", method = RequestMethod.GET)
+	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
+	public ResponseEntity<String> hacerCorteDiario(@RequestParam(value ="fechaCorte") String fechaCorte) throws BusinessException{	
+		UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();	
+		try {
+			seguimientoService.hacerCorteDiario(fechaCorte, usuario.getId());
+		} catch (BusinessException e) {
+			throw new BusinessException(e.getMessage());
+		}
+		return new ResponseEntity<String>("Cancelacion de Ordenes de Servicio correcta", HttpStatus.OK);		
 	}
 	
 	

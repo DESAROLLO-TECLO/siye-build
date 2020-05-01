@@ -367,6 +367,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		OrdenServicioDTO ordenServiDTO = new OrdenServicioDTO(); // TIE026_ORDEN_SERVICIO
 		OdsIncidenciaDTO odsIncidencDTO = new OdsIncidenciaDTO();
 		IncidenciaDTO incidenciaDTO = new IncidenciaDTO();
+		KitInstalacionDTO kitInstalacion  = new KitInstalacionDTO();
 		 // TIE027_VEHICULO
 		
 		VehiculoDTO vehiculo = vehiculoDAO.buscarVehiculoPorPlaca(ordenServiVO.getVehiculoVO().getPlaca());
@@ -394,11 +395,17 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			vehiculoDAO.save(vehiculo);
 		}
 		
-		KitInstalacionDTO kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion()); //TIE030_KIT_INSTALACION
-		
-		if(kitInstalacion == null){
+		if(ordenServiVO.getCdKitIntalacion() == null){
 			
-			kitInstalacion = new KitInstalacionDTO();
+			kitInstalacion.setStActivo(true);
+			kitInstalacion.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
+			kitInstalacion.setFhCreacion(new Date());
+			kitInstalacion.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
+			kitInstalacion.setFhModificacion(new Date());
+			kitDAO.save(kitInstalacion);
+			
+		}
+		else{
 			
 			kitInstalacion.setCdKitInstalacion(ordenServiVO.getCdKitIntalacion());
 			kitInstalacion.setStActivo(true);
@@ -407,9 +414,13 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			kitInstalacion.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
 			kitInstalacion.setFhModificacion(new Date());
 			kitDAO.save(kitInstalacion);
-		}	
+		}
+		
+		kitInstalacion = kitDAO.ultimoId();
+		
+		
 
-		kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion());
+		
 		vehiculo = vehiculoDAO.buscarVehiculoPorPlaca(ordenServiVO.getVehiculoVO().getPlaca());
 		CentroInstalacionDTO centroInst = centroInstalacionDAO.findOne(ordenServiVO.getCentroI());
 		
@@ -438,7 +449,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			KitInstalacionDispDTO kitInsDipDTO = new KitInstalacionDispDTO();
 			
 			KitDispositivoDTO dispDTO = dispositivoDAO.getByDispositivo(ordenServiVO.getKitInstalacionVO().get(i).getIdDispositivo());
-			kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion());
+//			kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion());
 			ProveedorDTO provee = proveedorDAO.findOne(ordenServiVO.getKitInstalacionVO().get(i).getProveedor());
 			
 			
@@ -455,6 +466,13 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		odsIncidencDTO.setIdOrdenServicio(ordenServiDTO);
 		odsIncidencDTO.setIdIncidencia(incidenciaDTO);
 		odsIncidenciaDAO.save(odsIncidencDTO);
+		
+		
+		StSeguimientoDTO stSeguimiento3 =seguimientoDAO.obtenerSeguimientoDos(3l);
+		incidenciaDTO.setStIncidencia(stSeguimiento3);
+		incidenciaDTO.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
+		incidenciaDTO.setFhModificacion(new Date());
+		incidenciaDAO.update(incidenciaDTO);
 		
 	}
 	

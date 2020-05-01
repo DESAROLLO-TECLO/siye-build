@@ -1,8 +1,8 @@
 angular.module(appTeclo).config(function (LightboxProvider) {
     LightboxProvider.fullScreenMode = true;
 });
-angular.module(appTeclo).controller('seguimientoOsController', function ($rootScope, $scope, $location, $document, showAlert, growl, catalogoGenericoService,
-    seguimientoOsService,detalleSeguimientoOsService, lineaTiempoVO) {
+angular.module(appTeclo).controller('seguimientoOsController', function ($rootScope,  $route,$scope, $location, $document, showAlert, growl, catalogoGenericoService,
+    seguimientoOsService,detalleSeguimientoOsService, lineaTiempoVO, ModalService) {
 
     $scope.view = new Object({
         rowsPerPage:'5'
@@ -28,7 +28,8 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
 
     $scope.evidenciaVO = new Object({
         data:{},
-        verEvidencia:false
+        verEvidencia:false,
+        folioOS:""
     });
 
     $scope.rangoFechas = {
@@ -70,8 +71,6 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
 
     starController = function(){
         if(lineaTiempoVO!=null){
-            debugger
-            console.log("regreso de linea ", lineaTiempoVO);
             $scope.rangoFechas.options.ranges = lineaTiempoVO.rangoFechas; 
             verColumnas(lineaTiempoVO.formBusuqeda.colSeleccionada);
             $scope.rangoFechas.date.startDate = lineaTiempoVO.formBusuqeda.fechaI;
@@ -146,6 +145,7 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
                 $scope.seguimientoVO.datosTabla=[];
                 $scope.seguimientoVO.datosTabla = centroInstalacion.detalleOrdenServicio;
                 $scope.seguimientoVO.nbCentroInstalacion = centroInstalacion.nbModulo;
+                $scope.seguimientoVO.idCentroInstalacion = centroInstalacion.idCentroInstalacion;
             }
         }
     };
@@ -154,6 +154,7 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
         if(tipo==='incidencia'){
             $scope.evidenciaVO.verEvidencia = false;
             $scope.seguimientoVO.busquedaOk= true;
+            $scope.seguimientoVO.verDetalleOS = true;
         }else{
             if($scope.seguimientoVO.respaldo!=undefined){
             $scope.seguimientoVO.verDetalleOS = false;
@@ -173,7 +174,8 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
                 listaOs:$scope.seguimientoVO.datosTabla,
                 dtOs:ordenservicio,
                 centroInstalacion:$scope.seguimientoVO.respaldo[0].nbModulo,
-                rangoFechas:$scope.rangoFechas.options.ranges
+                rangoFechas:$scope.rangoFechas.options.ranges,
+                idCentroInstalacion:$scope.seguimientoVO.idCentroInstalacion
             });
             detalleSeguimientoOsService.saveconsultaGeneral(pasoVentana);
             $location.path('/detSegimientoOS');
@@ -184,6 +186,7 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
         if(os!=undefined){
             seguimientoOsService.getDetalleIncidencias(os.idOrdenServicio).success(function(data){
                 $scope.evidenciaVO.data = data;
+                $scope.evidenciaVO.folioOS = os.nuOrdenServicio;
                 $scope.evidenciaVO.verEvidencia = true;
                 $scope.seguimientoVO.busquedaOk = false;
                 $scope.seguimientoVO.verDetalleOS = false;
@@ -196,27 +199,31 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
 
     $scope.verImagen = function(incidencia){
         if(incidencia!= undefined){
-            let params = new Object({
-                idOrdenServicio:incidencia.idOrdenServicio,
-                valor: incidencia.idIncidencia,
-                nivel:'incidencia',
-                clase:'incidencia'
-            })
-            detalleSeguimientoOsService.getImagenBynivel(params).success(function(data){
-                let lista = [];
-                for(let x=0; x<data.length; x++){
-                    let imagen = new Object({
-                        image: 'data:image/jpg;base64,'+data[x].lbExpedienteODS,
-                        url: 'data:image/jpg;base64,'+data[x].lbExpedienteODS,
-                        thumbrl: 'data:image/jpg;base64,'+data[x].lbExpedienteODS
-                    })
-                    lista.push(imagen);
-                }
-                Lightbox.openModal(lista, 0);
-            }).error(function(data){
-                growl.error(data.message);
-            })
+            $scope.paramsRespaldoModal = new Object({
+                fechaInicio: $scope.params.fechaInicio,
+                fechaFin: $scope.params.fechaFin,
+                idCentroInstalacion: $scope.seguimientoVO.idCentroInstalacion
+            });
+            ModalService.showModal({
+                templateUrl: 'views/templatemodal/templateModalIncidenciasMonitoreo.html',
+                controller: 'modalIncidenciasMonitoreoController',
+                scope: $scope,
+                inputs: {OrdenServicio :incidencia}
+            }).then(function(modal) {
+                modal.element.modal();
+            });
         }
+    };
+
+    $scope.corteDiario = function(){
+        let fecha =  moment().endOf('day').format('DD/MM/YYYY');
+        $scope.showConfirmacion("¿Desea Realizar el Corte del dia "+ fecha +" ?", function () {             
+            seguimientoOsService.hacerCorteDiario(fecha).success(function(data){
+                growl.success(data.message);
+            }).error(function(data){
+                growl.info(data.message);
+            });
+        });
     };
 
     //Genericas 
@@ -342,6 +349,28 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
         document.body.appendChild(a);
         a.click();
     };
+
+	$scope.showConfirmacion = function (messageTo, action) {
+		ModalService.showModal({
+			templateUrl: 'views/templatemodal/templateModalConfirmacion.html',
+			controller: 'mensajeModalController',
+			inputs: { message: messageTo }
+		}).then(function (modal) {
+			modal.element.modal();
+			modal.close.then(function (result) {
+				if (result) {
+					action();
+				}
+			});
+		});
+	};
+
+    $scope.$on('$locationChangeSuccess', function (event, current, previous) {
+        $scope.proximoController = $route.current.$$route.controller;
+        if ($scope.proximoController != "detalleSeguimientoOsController" && $scope.proximoController != "seguimientoOsController") {
+            detalleSeguimientoOsService.saveconsultaGeneral(null);
+        }
+    });
 
     starController();
 });
