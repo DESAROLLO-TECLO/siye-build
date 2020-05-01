@@ -8,7 +8,7 @@ function($http, config) {
 	const GET_CAT_TP_ARCHIVO=ENDPOINT+"/getTipoExpediente";
 	const DELETE=ENDPOINT+"/delEvidencia";
 	const GET_INFO_EXP_NIVEL=ENDPOINT+"/getInfoExpByNivel";
-	const GET_CAT_TP_DOC=ENDPOINT+"/";
+	const GET_CONF_COMPRESS_IMG=ENDPOINT+"/getConfigCompressImg";
 	
 	this.getInfoOs = function(tipoBusqueda,valor){
 		return $http.get(GET_INFO_OS, {
@@ -44,6 +44,10 @@ function($http, config) {
 						 "idValor": idValor}
 		});
    };
+   
+   this.getConfigCompressImg=function(){
+		return $http.get(GET_CONF_COMPRESS_IMG);
+	}
    
    //metodo para pasar parametros a expedienteRedirectController
    var paramsCof=null;

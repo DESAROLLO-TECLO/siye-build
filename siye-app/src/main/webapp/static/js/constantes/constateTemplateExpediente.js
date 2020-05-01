@@ -163,7 +163,7 @@ var includeDeseing=
     '</div>                                                                                                                                                                                                                                      ';
 	
 var includeDeseingModal=
-	'<div ng-if="showModalBuild" class="modal fade" id="{{idElementUp}}modalUpdateImage" tabindex="-1" role="dialog" aria-hidden="true" 		'+
+	'<div ng-show="showModalBuild" class="modal fade" id="{{idElementUp}}modalUpdateImage" tabindex="-1" role="dialog" aria-hidden="true" 		'+
 	'	data-keyboard="false" data-backdrop="static">                                                            								'+
 	'  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">                                 								'+
 	'    <div class="modal-content">                                                                             								'+
