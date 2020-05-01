@@ -5,7 +5,7 @@
 </head>
 <body>
 	<section class="content-header">
-		<h1>Consulta Orden de Servicio</h1>
+		<h1>Consulta</h1>
 		<ol class="breadcrumb">
 			<li><a><i class="fa fa-book"></i>Orden de Servicio</a></li>
 			<li class="active">Consulta</li>
@@ -16,10 +16,15 @@
 	<section class="content">
 		<form role="form" name="consultaOrden">
 			<div class="row">
-				<div class="col-md-offset-1 col-md-10 col-md-offset-1">
+				<div class="col-md-offset-2 col-md-8 col-md-offset-2">
 					<div class="box box-danger">
 						<div class="box-header with-border text-center">
 							<h3 class="box-title">Búsqueda</h3>
+							  <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+									<i class="fa fa-minus"></i>
+								</button>
+                        </div>
 						</div>
 						<div class="box-body">
                                 <div class="row">
@@ -63,12 +68,12 @@
 												capitalize></input> <span class="input-group-btn"> </span>
 										</div>
 										<div
-											ng-show="consultaTramite.valorBusqueda.$error.required  && consultaTramite.valorBusqueda.$dirty"
+											ng-show="consultaOrden.valorBusqueda.$error.required  && consultaOrden.valorBusqueda.$dirty"
 											ng-style="{color:'red'}">El valor es requerido</div>
 									</div>
 								</div>
 								
-								<div class=" col-md-offset-2 col-md-2">
+								<div class="col-md-4">
 								<div class="center">
 								<label >Búsqueda Avanzada</label>
 									<div class="form-grouo">
@@ -106,7 +111,7 @@
 											<switcher class="swTeclo pull-right"
 												id-check="checkTipoBusqudaFecha" false-label="Periodo"
 												false-value="true" true-label="Rango" true-value="false"
-												ng-change="" ng-model="checkTipoBusqudaFecha"> </switcher>
+												ng-change="changeRangoFechas()" ng-model="checkTipoBusqudaFecha"> </switcher>
 										</div>
 									</div>
 								</div>
@@ -163,8 +168,8 @@
 											idioma-sp="{{currentLanguage}}"
 											data-actions-box="true"
 											data-selected-text-format="count > 2"
-											ng-required="true" data-max-options="10"
-											ng-model="centroInst" name="causa" id="causa"
+											ng-required="" data-max-options=""
+											ng-model="centroInst" name="cInstalacion" id="cInstalacion"
 											ng-change=""
 											ng-options="sp.idCentroInstalacion as sp.nbCentroInstalacion for sp in catCentroInstalacion"
 											ng-disabled="">
@@ -181,8 +186,8 @@
 											idioma-sp="{{currentLanguage}}"
 											data-actions-box="true"
 											data-selected-text-format="count > 2"
-											ng-required="true" data-max-options="10"
-											ng-model="statusSegumiento" name="causa" id="causa"
+											ng-required="" data-max-options=""
+											ng-model="statusSegumiento" name="seguimiento" id="seguimiento"
 											ng-change=""
 											ng-options="sp.idStSeguimiento as sp.nbStSeguimiento for sp in catStSeguimiento"
 											ng-disabled="">
@@ -191,17 +196,39 @@
 									</div>
 								</div>
 
-								<div class="col-md-3">
-
+								<div class="col-md-offset-1 col-md-2">
+								<label> Origen:</label><br/>
+                                  <label>
+                                  <input type="checkbox" ng-model="isLote" ng-change="changeOrigen()">
+   								   Lote
+ 								  </label><br/>
+ 								  <label>
+   					              <input type="checkbox" ng-model="isIncidencia" ng-change="changeOrigen2()" >
+   								 Incidencia
+  								</label>
 								</div>
 
 								<div class="col-md-3">
+								<div class="form-group" ng-class="{'has-error': consultaOrden.valorOrigen.$invalid && consultaOrden.valorOrigen.$dirty}">
+										<label ng-if="isLote || isIncidencia">*Valor Origen:</label>
+										<label ng-if="!isLote && !isIncidencia">Valor Origen:</label>
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="fa fa-pencil"></i></span> <input ng-disabled="!isLote && !isIncidencia" type="text"
+												ng-model="valorOrigen" name="valorOrigen" maxlength="30"
+												ng-required="isLote || isIncidencia" class="form-control "
+												capitalize></input> <span class="input-group-btn"> </span>
+										</div>
+										<div
+											ng-show="consultaOrden.valorOrigen.$error.required  && consultaOrden.valorOrigen.$dirty"
+											ng-style="{color:'red'}">El valor del origen es requerido</div>
+									</div>
 								</div>
 								</div>
 								
 								
 							<div class="row" ng-show="busquedaAvanzada">
-							<div class="col-md-3">
+							<div class="col-md-4">
 									<label> Tipo de Kit:</label>
 									<div class="form-group">
 										<div class="input-group">
@@ -210,8 +237,8 @@
 											idioma-sp="{{currentLanguage}}"
 											data-actions-box="true"
 											data-selected-text-format="count > 2"
-											ng-required="true" data-max-options="10"
-											ng-model="tipoKit" name="causa" id="causa"
+											ng-required="" data-max-options=""
+											ng-model="tipoKit" name="kit" id="kit"
 											ng-change=""
 											ng-options="sp.idTipoKit as sp.nbTipoKit for sp in catTipoKit"
 											ng-disabled="">
@@ -219,7 +246,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-md-3">
+								<div class="col-md-4">
 									<label> Tipo de Plan:</label>
 									<div class="form-group">
 										<div class="input-group">
@@ -228,8 +255,8 @@
 											idioma-sp="{{currentLanguage}}"
 											data-actions-box="true"
 											data-selected-text-format="count > 2"
-											ng-required="true" data-max-options="10"
-											ng-model="tipoPlan" name="causa" id="causa"
+											ng-required="" data-max-options=""
+											ng-model="tipoPlan" name="plan" id="plan"
 											ng-change=""
 											ng-options="sp.idPlan as sp.nbPlan for sp in catPlan"
 											ng-disabled="">
@@ -241,8 +268,10 @@
 								
 								 <div class="row">
 								 <div class="col-md-12 center">
+								 <div class="col-md-offset-5 col-md-2">
 								 <button type="button" ng-click="busquedaTramitesParametros()"
 										class="btn btn-danger btn-flat">Buscar</button>
+								 </div>		
 								<div class="box-tools col-md-1 pull-right">
 								<button type="button" class="btn btn-box-tool btn-danger" ng-click="limpiarCampos()" style="font-size: 1.1rem;"
 									data-toggle="tooltip" data-placement="left" title="Refrescar">
@@ -288,19 +317,18 @@
 						
 						<div class="box-body table-responsive">
 							<table id="tabla_ordenServicio"
-								class="table table-striped table-hover header-fixed">
+								class="table table-striped table-hover table-xs table-sm" style="overflow: auto; border-collapse: collapse; width: 100%;">
 								<thead>
 									<tr>
-									    <th></th>
-										<th sort order="'cdOrdenServicio'" by="order" reverse="reverse" class="text-center">ORDEN DE SERVICIO</th>
-										<th sort order="'fhCita'" by="order" reverse="reverse" class="text-center">FECHA DE CITA</th>
-										<th sort order="'vehiculo.cdPlacaVehiculo'" by="order" reverse="reverse" class="text-center">PLACA</th>
-										<th sort order="'vehiculo.cdPlacaVehiculo'" by="order" reverse="reverse" class="text-center">PLACA</th>
-										<th sort order="'vehiculo.tipoVehiculo.nbTipoVehiculo'" by="order" reverse="reverse" class="text-center">TIPO DE VEHÍCULO</th>
-										<th sort order="'kitInstalacion.kitInstalacionDispDTO.kitDispositivo.tipoKit.nbTipoKit'" by="order" reverse="reverse" class="text-center">TIPO DE KIT</th>
-                                        <th sort order="'centroInstalacion.nbCentroInstalacion'" by="order" reverse="reverse" class="text-center">CENTRO DE INSTALACIÓN</th>
+									    <th width="15px" sort order="'stSeguimiento.nbStSeguimiento'" by="order" reverse="reverse" class="text-center"></th>
+										<th width="130px" sort order="'cdOrdenServicio'" by="order" reverse="reverse" class="text-center">ORDEN DE SERVICIO</th>
+										<th width="75px" sort order="'fhCita'" by="order" reverse="reverse" class="text-center">FECHA DE CITA</th>
+										<th width="70px" sort order="'vehiculo.cdPlacaVehiculo'" by="order" reverse="reverse" class="text-center">PLACA</th>
+										<th width="130px" sort order="'vehiculo.tipoVehiculo.nbTipoVehiculo'" by="order" reverse="reverse" class="text-center">TIPO DE VEHÍCULO</th>
+										<th sort order="'kitInstalacion.kitInstalacionDispDTO[0].kitDispositivo.tipoKit.nbTipoKit'" by="order" reverse="reverse" class="text-center">TIPO DE KIT</th>
+                                        <th width="80px" sort order="'centroInstalacion.nbCentroInstalacion'" by="order" reverse="reverse" class="text-center">CENTRO DE INSTALACIÓN</th>
                                         <th sort order="'plan.nbPlan'" by="order" reverse="reverse" class="text-center">TIPO DE PLAN</th>
-                                        <th sort order="'cdOrdenServicio'" by="order" reverse="reverse" class="text-center">ORIGEN</th>
+                                        <th width="80px" sort order="'cdOrdenServicio'" by="order" reverse="reverse" class="text-center">ORIGEN</th>
                                         <th sort order="'proceso.nbProceso'" by="order" reverse="reverse" class="text-center">PROCESO ACTUAL</th>
                                          
 									</tr>
@@ -308,26 +336,23 @@
 								<tbody>
 									<tr
 										dir-paginate="orden in listOrden | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage">
-				                        <td class="center" style="width: 2%">
-	                                 	<span class="etiquetaCancelado" style="background-color: {{orden.stSeguimiento.cdColor}}"
-	                               		data-toggle="tooltip" data-placement="left" title="{{orden.stSeguimiento.nbStSeguimiento}}">
-	                                    </span>
+				                        <td class="center" width="10px" style="background-color: {{orden.stSeguimiento.cdColor}}"
+				                        data-toggle="tooltip" data-placement="left" title="{{orden.stSeguimiento.nbStSeguimiento}}">
 	                           	        </td>
 										<td class="center"><a ng-click="" data-toggle="tooltip"
 											data-placement="left" title="Detalle de Orden de Servicio">{{orden.cdOrdenServicio}}</a></td>
-										<td class="center">{{orden.cdOrdenServicio}}</td>
-										<td class="center">{{orden.fhCita}}</td>
-										<td class="center">{{orden.vehiculo.cdPlacaVehiculo}}</td>
-										<td class="center">{{orden.vehiculo.tipoVehiculo.nbTipoVehiculo}}</td>
-										<td class="center">{{orden.kitInstalacion.kitInstalacionDispDTO.kitDispositivo.tipoKit.nbTipoKit}}</td>
-										<td class="center">{{orden.centroInstalacion.nbCentroInstalacion}}</td>
+										<td width="70px" class="center">{{orden.fhCita}}</td>
+										<td width="70px" class="center">{{orden.vehiculo.cdPlacaVehiculo}}</td>
+										<td width="130px" class="center">{{orden.vehiculo.tipoVehiculo.nbTipoVehiculo}}</td>
+										<td class="center">{{orden.kitInstalacion.kitInstalacionDispDTO[0].kitDispositivo.tipoKit.nbTipoKit}}</td>
+										<td width="80px" class="center">{{orden.centroInstalacion.nbCentroInstalacion}}</td>
 										<td class="center">{{orden.plan.nbPlan}}</td>
-										<td class="center" ng-show="orden.idOrigenOds==1">Lote: {{orden.loteOrdenServicio.nbArchivoFinal}}</td>
-										<td class="center" ng-show="orden.idOrigenOds==2">Incidencia: {{orden.cdOrdenServicio}}</td>
-										<td class="center">{{orden.proceso.nbProceso}}</td>
+										<td width="80px" class="center" ng-show="orden.idOrigenOds==1">Lote: {{orden.loteOrdenServicio.nbArchivoFinal}}</td>
+										<td width="80px" class="center" ng-show="orden.idOrigenOds==2">Incidencia: {{orden.cdOrdenServicio}}</td>
+										<td class="center">{{orden.proceso.nbProceso==null?"SIN PROCESO":orden.proceso.nbProceso}}</td>
 									</tr>
 									<tr
-										ng-if="listOrden | filter:view.searchSomething).length < 1">
+										ng-if="(listOrden | filter:view.searchSomething).length < 1">
 										<td colspan="10" class="text-center"><h4>No se
 												encontraron coincidencias</h4></td>
 									</tr>
