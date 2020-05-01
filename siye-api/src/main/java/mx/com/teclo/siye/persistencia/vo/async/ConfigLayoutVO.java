@@ -11,6 +11,8 @@ public class ConfigLayoutVO {
 	private String nbDirectorio;
 	private Boolean stCargaParcial;
 	private Boolean stVigente;
+	private Integer totalColsEsperadas;
+	private String charDelimitador;
 
 	public Long getIdTipoLayout() {
 		return idTipoLayout;
@@ -91,5 +93,23 @@ public class ConfigLayoutVO {
 	public void setStVigente(Boolean stVigente) {
 		this.stVigente = stVigente;
 	}
+
+	public Integer getTotalColsEsperadas() {
+		return totalColsEsperadas;
+	}
+
+	public void setTotalColsEsperadas(Integer totalColsEsperadas) {
+		this.totalColsEsperadas = totalColsEsperadas;
+	}
+
+	public String getCharDelimitador() {
+		return charDelimitador;
+	}
+
+	public void setCharDelimitador(String charDelimitador) {
+		this.charDelimitador = charDelimitador;
+	}
+
+	
 
 }
