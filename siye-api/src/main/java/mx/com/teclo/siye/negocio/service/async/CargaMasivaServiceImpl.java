@@ -68,7 +68,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	private static final String MSG_ACCEDIENDO_A_LA_RUTA = "Accediendo a la ruta de {0} {1} del archivo ID {2}";
 	private static final String MSG_ERROR_LECTURA_ARCHIVO = "Hubo un problema al validar el contenido del archivo {0}";
 	private static final String MSG_ERROR_ARCHIVO_NO_ENCONTRADO = "El archivo del lote ID {0} no fue encontrado";
-	private static final String MSG_ERROR_SQL = "Error al ejecutar comando SQL {0}";
+
 	private static final String MSG_ERROR_TAMANIO_EXCEDE = "Err: Excede +{0} caracteres ";
 	private static final String MSG_ERROR_LINEA_DESAJUSTADA = "Err: Excede +{0} columnas";
 	private static final String MSG_ERROR_INSUFICIENTES_COLUMNAS = "Err: Columnas incompletas ({0} vs {1})";
@@ -76,7 +76,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	private static final String MSG_ERROR_DATO_REQUERIDO = "Err: Requerido ";
 	private static final String MSG_LINEA_NOK = "Err: No cumple";
 	private static final String TIE025D_IE_LOTE_ODS = ":TIE025D_IE_LOTE_ODS";
-	private static final String MSG_ERROR_INDETERMINADO = "Err: Error inesperado ";
+
 	private static final String MSG_ERROR_CARGA_PARCIAL = "Se detectaron errores en una o varias l\u00EDneas del CSV ID {0} y no se permite la carga parcial";
 	private static final String MSG_LINEA_INVALIDA = "Err:";
 	private static final String MSG_ERROR_CONEXION_BD = "Hubo un error al intentar contectar a la base de datos";
@@ -84,6 +84,9 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	private static final String MSG_HEADER_NO_CORRESPONDE = "La cantidad de columnas no son las esperadas";
 	private static final String MSG_HEADER_RESULTADO = "RESULTADO";
 	private static final String MSG_HEADER_ID_ORDEN_SERVICIO = "ID ORDEN DE SERVICIO";
+	private static final String MSG_ERROR_EN_BD = "Err: Registro inconcluso";
+	private static final String MSG_ERROR_NO_ENCONTRADO = "Err: No encontrado";
+	private static final String MSG_ERROR_MAP_IDS_NULO = "Err: Sin resultados";
 	private static final char CHAR_COMA = ',';
 
 	@Autowired
@@ -131,10 +134,11 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		boolean isConHeader = isConSeccionTipo(config.getConfigSecciones(), SeccionLayoutEnum.HEADER);
 		boolean isConFooter = isConSeccionTipo(config.getConfigSecciones(), SeccionLayoutEnum.FOOTER);
 		char delimitador = null == config.getConfigLayout().getCharDelimitador() ? CHAR_COMA
-				: config.getConfigLayout().getCharDelimitador().charAt(0);
+				: config.getConfigLayout().getCharDelimitador().charAt(BigDecimal.ZERO.intValue());
 
 		// despues de la validacion se agrego una columna "Resultado"
-		int colEsperadas = config.getColumnasEnArchivo().size() + BigDecimal.ONE.intValue();
+		int colsEsperadas = config.getColumnasEnArchivo().size() + BigDecimal.ONE.intValue();
+		int colsRecibidas = colsEsperadas;
 		CSVFormat csvFormat = CSVFormat.EXCEL.withDelimiter(delimitador);
 		if (isConHeader) {
 			csvFormat = csvFormat.withHeader().withSkipHeaderRecord();
@@ -146,6 +150,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 			try (Connection connection = ds.getConnection()) {
 				if (!csvParser.getHeaderMap().isEmpty()) {
 					Set<String> nuCols = csvParser.getHeaderMap().keySet();
+					colsRecibidas = nuCols.size();
 					ArrayList<String> linea = new ArrayList<>();
 					linea.add(MSG_HEADER_ID_ORDEN_SERVICIO);
 					for (String string : nuCols) {
@@ -156,7 +161,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 
 				for (CSVRecord csvRecord : csvParser) {
 					LinkedList<String> linea = new LinkedList<>();
-					for (int i = 0; i < colEsperadas; i++) {
+					for (int i = 0; i < colsRecibidas; i++) {
 						linea.add(csvRecord.get(i));
 					}
 					if (linea.get(0).startsWith(MSG_LINEA_INVALIDA)) {
@@ -164,17 +169,16 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 						csvPrinter.printRecord(linea);
 						continue;
 					}
-					Long idODS = 0L;
+
 					try {
-						idODS = insertarEnTablas(config, linea, connection);
+						LinkedList<String> resultadoInsercion = insertarEnTablas(config, linea, connection);
+						Long idODS = Long.valueOf(resultadoInsercion.getFirst());
 						if (idODS.longValue() > BigDecimal.ZERO.longValue()) {
 							totalOrdenesInsertadas++;
 						}
-						linea.addFirst(idODS.toString());
-						csvPrinter.printRecord(linea);
-
+						csvPrinter.printRecord(resultadoInsercion);
 					} catch (Exception e) {
-						linea.addFirst(BigDecimal.ZERO.toString());
+						linea.addFirst(MSG_LINEA_INVALIDA + " " + e.getMessage());
 						csvPrinter.printRecord(linea);
 					}
 				}
@@ -199,7 +203,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		int totalLineasConError = BigDecimal.ZERO.intValue();
 		boolean isConHeader = isConSeccionTipo(config.getConfigSecciones(), SeccionLayoutEnum.HEADER);
 		boolean isConFooter = isConSeccionTipo(config.getConfigSecciones(), SeccionLayoutEnum.FOOTER);
-		char delimitador = null == config.getConfigLayout().getCharDelimitador() ? ','
+		char delimitador = null == config.getConfigLayout().getCharDelimitador() ? CHAR_COMA
 				: config.getConfigLayout().getCharDelimitador().charAt(BigDecimal.ZERO.intValue());
 		int colEsperadas = config.getColumnasEnArchivo().size();
 		CSVFormat csvFormat = CSVFormat.EXCEL.withDelimiter(delimitador);
@@ -219,9 +223,9 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 				if (colRecibidas != colEsperadas) {
 					throw new BusinessException(MSG_HEADER_NO_CORRESPONDE);
 				}
-				
+
 				LinkedList<String> linea = new LinkedList<>();
-				
+
 				for (String string : nuCols) {
 					linea.add(string);
 				}
@@ -235,9 +239,8 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 					linea.add(csvRecord.get(i));
 				}
 				try {
-					validarLinea(config, linea, delimitador);
-					linea.addFirst(MSG_LINEA_OK);
-					csvPrinter.printRecord(linea);
+					LinkedList<String> resultado = validarLinea(config, linea, delimitador);
+					csvPrinter.printRecord(resultado);
 				} catch (Exception e) {
 					totalLineasConError++;
 					linea.addFirst(MSG_LINEA_NOK);
@@ -256,34 +259,34 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	 * Busca registros por un campo filtro y recupera el ID para despu&eacute;s
 	 * reemplazarlo en el insert de la orden de servicio y ejecutar el comando SQL
 	 * 
-	 * @param config
+	 * @param ConfigCargaMasivaVO
 	 * @param linea
 	 * @param separador
 	 * @param con
 	 * @return
 	 * @throws BusinessException
 	 */
-	private Long insertarEnTablas(ConfigCargaMasivaVO config, List<String> arrayValores, 
+	private LinkedList<String> insertarEnTablas(ConfigCargaMasivaVO config, LinkedList<String> arrayValores,
 			Connection con) throws BusinessException {
 		String separador = config.getConfigLayout().getCharDelimitador();
 		HashMap<String, Long> mapaIds = new HashMap<String, Long>();
 		List<TablaDestinoVO> nbTbls = config.getConfigInsercion();
 		TablaDestinoVO ultimaTabla = nbTbls.get(nbTbls.size() - BigDecimal.ONE.intValue());
-		try {
-			mapaIds = obtenerIDsTblsRef(config, arrayValores, separador, con);
-			if (mapaIds != null)
-				if (mapaIds.containsKey(ultimaTabla.getNbTabla()))
-					if (mapaIds.get(ultimaTabla.getNbTabla()).longValue() > BigDecimal.ZERO.longValue())
-						return mapaIds.get(ultimaTabla.getNbTabla());
+		Long idOrdenServicio = BigDecimal.ZERO.longValue();
 
-			traducirErroresEnLinea(config, arrayValores, separador, mapaIds);
-		} catch (BusinessException e) {
-			throw e;
-		} catch (RuntimeException e1) {
-			arrayValores.add(0, "Err: " + e1.getMessage());
-			throw new BusinessException(quitarCorchetes(arrayValores.toString()));
+		mapaIds = obtenerIDsTblsRef(config, arrayValores, separador, con);
+		if (mapaIds != null)
+			if (mapaIds.containsKey(ultimaTabla.getNbTabla()))
+				if (mapaIds.get(ultimaTabla.getNbTabla()) != null)
+					if (mapaIds.get(ultimaTabla.getNbTabla()).longValue() > BigDecimal.ZERO.longValue())
+						idOrdenServicio = mapaIds.get(ultimaTabla.getNbTabla());
+
+		if (idOrdenServicio != null && idOrdenServicio.longValue() > BigDecimal.ZERO.longValue()) {
+			arrayValores.addFirst(idOrdenServicio.toString());
+			return arrayValores;
 		}
-		return 0L;
+
+		return traducirErroresEnLinea(config, arrayValores, separador, mapaIds);
 
 	}
 
@@ -306,10 +309,13 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		List<TablaDestinoVO> nbTbls = config.getConfigInsercion();
 		PreparedStatement stmt = null;
 		ResultSet resultSet = null;
+		TablaDestinoVO nbTbl = null;
+		Long idGenerado = BigDecimal.ZERO.longValue();
+
 		try {
 			for (int i = 0; i < nbTbls.size(); i++) {
-				Long idGenerado = 0L;
-				TablaDestinoVO nbTbl = nbTbls.get(i);
+				idGenerado = BigDecimal.ZERO.longValue();
+				nbTbl = nbTbls.get(i);
 				InsercionTablaVO configSQL = config.getConfigMoldesSQL().get(nbTbl.getNbTabla());
 
 				String querySelect = formatearSQL(configSQL.getSelectSQL(), arrayValores, separador);
@@ -329,17 +335,12 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 					stmt.close();
 				}
 
-				if (idGenerado != null && idGenerado.longValue() > BigDecimal.ZERO.longValue()) {
-					mapaIds.put(nbTbl.getNbTabla(), idGenerado);
+				idGenerado = idGenerado == null ? BigDecimal.ZERO.longValue() : idGenerado;
+				mapaIds.put(nbTbl.getNbTabla(), idGenerado);
+
+				if (nbTbl.getIsReadOnly() || idGenerado.longValue() > BigDecimal.ZERO.longValue()) {
 					continue;
 				}
-
-				if (nbTbl.getIsReadOnly()) {
-					mapaIds.put(nbTbl.getNbTabla(), idGenerado == null ? 0L : idGenerado);
-					continue;
-				}
-
-				idGenerado = 0L;
 
 				String queryInsert = formatearSQL(configSQL.getInsertSQL(), arrayValores, separador);
 				queryInsert = queryInsert.replace("\\,", ",");
@@ -377,8 +378,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 			}
 
 		} catch (SQLException e) {
-
-			e.printStackTrace();
+			mapaIds.put(nbTbl.getNbTabla(), null);
 		} finally {
 			if (resultSet != null) {
 				try {
@@ -411,29 +411,38 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	 * @param mapaIds
 	 * @throws BusinessException
 	 */
-	private void traducirErroresEnLinea(ConfigCargaMasivaVO config, List<String> linea, String separador,
-			Map<String, Long> mapaIds) throws BusinessException {
+	private LinkedList<String> traducirErroresEnLinea(ConfigCargaMasivaVO config, LinkedList<String> linea,
+			String separador, Map<String, Long> mapaIds) throws BusinessException {
 
 		if (mapaIds == null) {
-			linea.add(0, "Err: Sin resultados");
-			throw new BusinessException(quitarCorchetes(linea.toString()));
+			linea.addFirst(MSG_ERROR_MAP_IDS_NULO);
+			return linea;
 		}
-		boolean isExitoso = true;
+
+		List<TablaDestinoVO> nbTbls = config.getConfigInsercion();
+		TablaDestinoVO ultimaTabla = nbTbls.get(nbTbls.size() - BigDecimal.ONE.intValue());
+
 		for (Entry<String, Long> refTbl : mapaIds.entrySet()) {
+
+			@SuppressWarnings("unlikely-arg-type")
+			boolean isUltimaTbl = ultimaTabla.equals(refTbl.getKey());
+
+			// recuperamos columnas utilizadas en los selects
 			ColumnaVO campoFiltro = config.getConfigMoldesSQL().get(refTbl.getKey()).getColumnaFiltro();
 			int ordenEnArray = campoFiltro.getNuOrden();
 
+			if (isUltimaTbl) {
+				continue;
+			}
 			if (refTbl.getValue() == null) {
-				linea.add(ordenEnArray, "Err: Error en BD");
-				isExitoso = false;
+				linea.set(ordenEnArray, MSG_ERROR_EN_BD);
 			} else if (refTbl.getValue().longValue() == BigDecimal.ZERO.longValue()) {
-				linea.add(ordenEnArray, "Err: No encontrado");
-				isExitoso = false;
+				linea.set(ordenEnArray, MSG_ERROR_NO_ENCONTRADO);
 			}
 		}
-		if (!isExitoso) {
-			throw new BusinessException(quitarCorchetes(linea.toString()));
-		}
+
+		linea.addFirst(BigDecimal.ZERO.toString());
+		return linea;
 	}
 
 	/**
@@ -528,33 +537,29 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	}
 
 	/**
-	 * Valida tama&ntilde;o, longitud y formato de todas las columnas de una
-	 * l&iacute;nea
+	 * Valida tama&ntilde;o, longitud y formato de cada columna
 	 * 
 	 * @param config
-	 * @param linea
-	 * @param separador
+	 * @param arrayValores
+	 * @param delimitador
+	 * @return LinkedList<String>
 	 * @throws IllegalArgumentException
 	 * @throws BusinessException
 	 */
-	private void validarLinea(ConfigCargaMasivaVO config, List<String> arrayValores, char delimitador)
-			throws IllegalArgumentException, BusinessException {
-
+	private LinkedList<String> validarLinea(ConfigCargaMasivaVO config, LinkedList<String> arrayValores,
+			char delimitador) throws IllegalArgumentException, BusinessException {
 		int colsRecibidas = arrayValores.size();
 		int colsEsperadas = config.getColumnasEnArchivo().size();
 
 		if (colsRecibidas != colsEsperadas) {
 			if (colsRecibidas > colsEsperadas) {
-				throw new IllegalArgumentException(MessageFormat.format(
-						MSG_ERROR_LINEA_DESAJUSTADA + delimitador + quitarCorchetes(arrayValores.toString()),
-						colsEsperadas));
+				arrayValores.addFirst(MessageFormat.format(MSG_ERROR_LINEA_DESAJUSTADA, colsEsperadas));
+				return arrayValores;
 			}
-			throw new IllegalArgumentException(MessageFormat.format(
-					MSG_ERROR_INSUFICIENTES_COLUMNAS + delimitador + quitarCorchetes(arrayValores.toString()),
-					colsRecibidas, colsEsperadas));
-		}
+			arrayValores.addFirst(MessageFormat.format(MSG_ERROR_INSUFICIENTES_COLUMNAS, colsRecibidas, colsEsperadas));
+			return arrayValores;
 
-		StringBuilder sbErrores = new StringBuilder();
+		}
 		boolean isLineaValida = true;
 
 		for (ColumnaArchivoVO col : config.getColumnasEnArchivo()) {
@@ -563,13 +568,15 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 
 			if (StringUtils.isNotBlank(msgErrorCol)) {
 				isLineaValida = false;
+				arrayValores.set(col.getNuOrden() - 1, msgErrorCol);
 			}
-			sbErrores.append(delimitador).append(StringUtils.isBlank(msgErrorCol) ? valor : msgErrorCol);
 		}
-		String resultado = sbErrores.toString().substring(BigDecimal.ONE.intValue());
 		if (!isLineaValida) {
-			throw new BusinessException(MSG_LINEA_NOK + delimitador + resultado);
+			arrayValores.addFirst(MSG_LINEA_NOK);
+			return arrayValores;
 		}
+		arrayValores.addFirst(MSG_LINEA_OK);
+		return arrayValores;
 
 	}
 
@@ -593,7 +600,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 			continuar = false;
 
 		}
-		if (continuar && StringUtils.isNotBlank(col.getTipoDato())) {
+		if (continuar && StringUtils.isNotBlank(col.getTipoDato()) && StringUtils.isNotBlank(valor)) {
 			try {
 				validarTipoObjeto(col.getTipoDato(), valor, col.getTxMascara());
 			} catch (Exception e) {
@@ -743,17 +750,4 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 		actualizarCargaMasiva(archivoProcesadoVO);
 	}
 
-	private String quitarCorchetes(final String linea) {
-
-		String lineaSinCorchete = linea;
-		if (lineaSinCorchete.startsWith("[")) {
-			lineaSinCorchete = lineaSinCorchete.substring(1);
-		}
-		if (lineaSinCorchete.endsWith("]")) {
-			lineaSinCorchete = lineaSinCorchete.substring(0, lineaSinCorchete.length() - 1);
-			return lineaSinCorchete;
-		}
-		return lineaSinCorchete;
-
-	}
 }
