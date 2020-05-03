@@ -637,4 +637,40 @@ public class CatalogoServiceImpl implements CatalogoService{
 		List<ConsecionarioVO> listConsecionarioVO = ResponseConverter.converterLista(new ArrayList<>(), listConsecionarioDTO, ConsecionarioVO.class);
 		return listConsecionarioVO;
 	}
+	
+	
+	@Transactional
+	@Override
+	public List<StSeguimientoVO> consultaStSeguimientoByTipo(Long tipo) throws NotFoundException {
+		List<StSeguimientoDTO> listSeguimiento = new ArrayList<>(); 
+		listSeguimiento=stSeguimientoDAO.obtenerStSeguimientoByTipo(tipo);
+		if(listSeguimiento.isEmpty())
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		List<StSeguimientoVO> listSeguimientoVO = ResponseConverter.converterLista(new ArrayList<>(), listSeguimiento, StSeguimientoVO.class);
+		return listSeguimientoVO;
+	}
+	
+	@Transactional
+	@Override
+	public List<TipoKitVO> consultaTipoKit() throws NotFoundException {
+		List<TipoKitDTO> tipoKitDTO = new ArrayList<>(); 
+		tipoKitDTO=tipoKitDAO.getTipoKit();
+		if(tipoKitDTO.isEmpty())
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		List<TipoKitVO> tipoKitVO = ResponseConverter.converterLista(new ArrayList<>(), tipoKitDTO, TipoKitVO.class);
+		return tipoKitVO;
+	}
+	
+	@Transactional
+	@Override
+	public List<PlanVO> consultaPlan() throws NotFoundException {
+		List<PlanDTO> planDTO = new ArrayList<>(); 
+		planDTO=planDAO.getPlanAll();
+		if(planDTO.isEmpty())
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		List<PlanVO> planVO = ResponseConverter.converterLista(new ArrayList<>(), planDTO, PlanVO.class);
+		return planVO;
+	}
+	
+	
 }

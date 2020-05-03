@@ -12,11 +12,13 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.PersonaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ProveedorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TblCatalogosVO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.TipoKitVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.ConsecionarioVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioCatalogoVO;
+import mx.com.teclo.siye.persistencia.vo.proceso.PlanVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.StSeguimientoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.VehiculoVO;
 
@@ -49,7 +51,7 @@ public interface CatalogoService {
 	List<OrdenServicioCatalogoVO> getOrdenServicio() throws NotFoundException;
 
 	
-	List<OpcionCausaDTO> getCatalogoCausas(Long idOpcion);
+	List<OpcionCausaDTO> getCatalogoCausas(Long idOpcion) ;
 	
 
 	/**
@@ -177,5 +179,10 @@ public interface CatalogoService {
 	 * @throws NotFoundException
 	 */
 	public List<ConsecionarioVO> consultaConcesiones(String cdTipoBusqueda, Long valor) throws NotFoundException;
+	
+	public List<StSeguimientoVO> consultaStSeguimientoByTipo(Long tipo) throws NotFoundException;
 
+	public List<TipoKitVO> consultaTipoKit() throws NotFoundException;
+	
+	public List<PlanVO> consultaPlan() throws NotFoundException;
 }
