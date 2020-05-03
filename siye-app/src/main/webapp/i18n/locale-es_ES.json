@@ -204,7 +204,8 @@
                 "proceso":"TRANSCURRIDO",
                 "kit":"KIT",
                 "plan":"PLAN",
-                "preguntas":"Preguntas Contestadas"
+                "preguntas":"Preguntas Contestadas",
+                "progreso":"Progreso: "
             }
         },
         "incidencia":{
@@ -222,6 +223,24 @@
         "pestanas":{
             "nodos":"Orden Servicio",
             "linea":"Linea de Tiempo"
+        },
+        "modal":{
+            "detalle":{
+                "orden":"ORDEN DE SERVICIO ",
+                "encuesta":"ENCUESTA",
+                "pregunta":"PREGUNTAS CONTESTADAS",
+                "respuesta":"RESPUESTA",
+                "finicio":"FECHA INICIO",
+                "ffin":"FECHA FIN",
+                "tiempo":"TRANSCURRIDO",
+                "status":"ESTATUS",
+                "tipo":"TIPO",
+                "descripcion": "DESCRIPCIÓN INCIDENCIA",
+                "ci":"CENTRO INSTALACIÓN",
+                "kit":"KIT",
+                "plan":"PLAN",
+                "prioridad":"PRIORIDAD"
+            }
         }
     },
     "ADMINISTRACION": {
