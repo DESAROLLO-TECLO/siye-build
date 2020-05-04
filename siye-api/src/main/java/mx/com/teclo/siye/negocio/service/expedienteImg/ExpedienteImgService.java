@@ -6,6 +6,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.responsehttp.BadRequestHttpResponse;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.CargaExpedienteImgVO;
+import mx.com.teclo.siye.persistencia.vo.expedientesImg.CompresorImgConfigVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.tipoExpediente.TipoExpedienteVO;
 
@@ -56,4 +57,11 @@ public interface ExpedienteImgService {
 	 * Metodo para guardar las imagenes provenientes de las incidencias
 	 */
 	public String saveImagenIncidencia(List<ImagenVO> listImagenVO, IncidenciaDTO incidenciaDTO) throws BusinessException ;
+	
+	/**
+	 * @Descripcion: Regresa una lista de las configuraciones activas para comprimir imagenes
+	 * @author DanielUnitis
+	 * @return List<CompresorImgConfigVO>
+	 */
+	public List<CompresorImgConfigVO> getAllConfigCompress();
 }

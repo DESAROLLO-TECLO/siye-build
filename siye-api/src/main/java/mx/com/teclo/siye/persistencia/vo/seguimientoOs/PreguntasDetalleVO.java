@@ -1,12 +1,18 @@
 package mx.com.teclo.siye.persistencia.vo.seguimientoOs;
 
+import java.util.List;
+
+import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
+
 public class PreguntasDetalleVO {
 
 	private Long idOrdenServicio;
 	private Long idEncuesta;
+	private String nbEncuesta;
 	private Long idPegunta;
 	private String txPregunta;
 	private String txRespuesta;
+	private List<ImagenVO> listaImagen;
 	
 	
 	/**
@@ -68,6 +74,30 @@ public class PreguntasDetalleVO {
 	 */
 	public void setTxRespuesta(String txRespuesta) {
 		this.txRespuesta = txRespuesta;
+	}
+	/**
+	 * @return the listaImagen
+	 */
+	public List<ImagenVO> getListaImagen() {
+		return listaImagen;
+	}
+	/**
+	 * @param listaImagen the listaImagen to set
+	 */
+	public void setListaImagen(List<ImagenVO> listaImagen) {
+		this.listaImagen = listaImagen;
+	}
+	/**
+	 * @return the nbEncuesta
+	 */
+	public String getNbEncuesta() {
+		return nbEncuesta;
+	}
+	/**
+	 * @param nbEncuesta the nbEncuesta to set
+	 */
+	public void setNbEncuesta(String nbEncuesta) {
+		this.nbEncuesta = nbEncuesta;
 	}
 
 }
