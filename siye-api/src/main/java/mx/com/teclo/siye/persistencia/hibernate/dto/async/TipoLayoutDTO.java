@@ -40,6 +40,9 @@ public class TipoLayoutDTO implements Serializable {
 
 	@Column(name = "NB_DIRECTORIO")
 	private String nbDirectorio;
+	
+	@Column(name = "CD_DELIMITADOR")
+	private String cdDelimitador;
 
 	@Column(name = "ST_CARGA_PARCIAL", precision = 1, scale = 0)
 	private Boolean stCargaParcial;
@@ -124,6 +127,14 @@ public class TipoLayoutDTO implements Serializable {
 
 	public void setNbDirectorio(String nbDirectorio) {
 		this.nbDirectorio = nbDirectorio;
+	}
+
+	public String getCdDelimitador() {
+		return cdDelimitador;
+	}
+
+	public void setCdDelimitador(String cdDelimitador) {
+		this.cdDelimitador = cdDelimitador;
 	}
 
 	public Boolean getStCargaParcial() {

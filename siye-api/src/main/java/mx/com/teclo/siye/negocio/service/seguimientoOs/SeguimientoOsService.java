@@ -3,8 +3,11 @@ package mx.com.teclo.siye.negocio.service.seguimientoOs;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleImagenesOS;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleIncidenciaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
@@ -49,17 +52,7 @@ public interface SeguimientoOsService {
 	  * */
 	public List<PreguntasDetalleVO> getDetallePregunta(Long idOrdenServicio, Long idEncuesta);
 	
-	 /**
-	  * Descripción: metodo para cunsultar las imagenes por nivel y tipo evidencia o incidencia ,
-	  * @author Maverick
-	  * @param idOrdenServicio
-	  * @param valor
-	  * @param nivel
-	  * @param clase
-	  * @return List<PreguntasDetalleVO>  
-	  * */
-	public List<ImagenVO> getDetalleImagenByNivel(Long idOrdenServicio, Long valor, String nivel, String clase);
-	
+
 	 /**
 	  * Descripción: consulta el detalle, nivel, estatus de la incidencia 
 	  * @author Maverick
@@ -86,6 +79,17 @@ public interface SeguimientoOsService {
 	 * @retun String 
 	 * */
 	public void hacerCorteDiario(String fecha, Long idUsuario) throws BusinessException;
+	
+	/**
+	 * Metodo para consultar la informacion por nivel de eguiiento y mostrar las images de evidencia o incidencia 
+	 * @author Maverick
+	 * @param idOrdenServicio
+	 * @param valor
+	 * @param nivel
+	 * @param clase
+	 * @return DetalleImagenesOS
+	 */
+	public DetalleImagenesOS getDetalleImgOS(Long idOrdenServicio, Long valor, String nivel, String clase);
 	
 
 

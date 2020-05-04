@@ -242,6 +242,10 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 				 .addScalar("idPregunta",LongType.INSTANCE)
 				 .addScalar("nbExpedienteODS", StringType.INSTANCE)
 				 .addScalar("cdTipoArchivo", StringType.INSTANCE)
+				 .addScalar("idIncidencia",LongType.INSTANCE)
+				 .addScalar("txIncidencia",StringType.INSTANCE)
+				 .addScalar("colorPrioridad",StringType.INSTANCE)
+				 .addScalar("nbPrioridad",StringType.INSTANCE)
 				 .addScalar("lbExpedienteODS",StandardBasicTypes.BINARY)
 				 .addScalar("idTipoExpediente",LongType.INSTANCE)
 				 .setResultTransformer(Transformers.aliasToBean(ImagenVO.class)).list();

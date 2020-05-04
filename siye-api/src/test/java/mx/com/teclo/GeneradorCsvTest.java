@@ -35,7 +35,8 @@ public class GeneradorCsvTest {
 	private static final String CHARS_NUMEROS = "0123456789";
 	private static final String GUION = "-";
 	private static final String DOS_PUNTOS = ":";
-	private static final String HEADERS = "CD ORDEN SERVICIO,FH CITA,FH ATENCION INI,FH ATENCION FIN,FH ATENCION PARCIAL,TX MOTIVO CAMBIO,CD PLACA VEHICULO,CD VIN,CD TARJETA CIRCULACION,NB MARCA,NB SUB MARCA,CD MODELO,ST VEHICULO,CD TIPO VEHICULO,NB TIPO VEHICULO,NU ORDEN,ST TIPO VEHICULO,CD CENTRO INSTALACION,NB CENTRO INSTALACION,NB CALLE,NU EXTERIOR,NB ENTRE CALLE,NB Y CALLE,NB COLONIA,NB ALCALDIA,NB DIAS ATENCION,HR ATENCION INI,HR ATENCION FIN,NU ORDEN,ST CENTRO INSTALACION,CD KIT INSTALACION,CD PLAN,NB PLAN,TX PLAN,CD CONCESION,NB CONCESION,NU ORDEN,ST CONCESION";
+	// No repetir nombres de los headers
+	private static final String HEADERS = "CD ORDEN SERVICIO,FH CITA,FH ATENCION INI,FH ATENCION FIN,FH ATENCION PARCIAL,TX MOTIVO CAMBIO,CD PLACA VEHICULO,CD VIN,CD TARJETA CIRCULACION,NB MARCA,NB SUB MARCA,CD MODELO,ST VEHICULO,CD TIPO VEHICULO,NB TIPO VEHICULO,NU ORDEN VEHICULO,ST TIPO VEHICULO,CD CENTRO INSTALACION,NB CENTRO INSTALACION,NB CALLE,NU EXTERIOR,NB ENTRE CALLE,NB Y CALLE,NB COLONIA,NB ALCALDIA,NB DIAS ATENCION,HR ATENCION INI,HR ATENCION FIN,NU ORDEN CENTRO INST.,ST CENTRO INSTALACION,CD KIT INSTALACION,CD PLAN,NB PLAN,TX PLAN,CD CONCESION,NB CONCESION,NU ORDEN KIT,ST CONCESION";
 	private static SecureRandom rnd = new SecureRandom();
 	private List<String> rutas = new ArrayList<String>();
 	private List<String> alcaldias = new ArrayList<String>();
@@ -44,7 +45,7 @@ public class GeneradorCsvTest {
 	private SimpleDateFormat sdfCodigoOrdenServicio = new SimpleDateFormat("yyyyMMdd");
 	private SimpleDateFormat sdfCita = new SimpleDateFormat("dd/MM/yyyy");
 	private int diaAnio = 365;
-	private static final String RUTA_CSV_GENERADO = "C:\\Users\\UNITIS-ODM2\\Desktop\\CSV_DEMO_50.csv";
+	private static final String RUTA_CSV_GENERADO = "C:\\Users\\UNITIS-ODM2\\Desktop\\CSV_DEMO_3.csv";
 
 	@PostConstruct
 	public void init() {
@@ -72,7 +73,7 @@ public class GeneradorCsvTest {
 				bw.write(HEADERS);
 				bw.newLine();
 			}
-			for (int i = 0; i < 50; i++) {
+			for (int i = 0; i < 3; i++) {
 				int nuLinea = rnd.nextInt(15000);
 				String lineaGenerada = getLineaDatos(nuLinea % 2 == 0, i + 1);
 				bw.write(lineaGenerada);
