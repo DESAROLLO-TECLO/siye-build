@@ -310,7 +310,39 @@ appt.directive('updateImage',
 	    		  
 				  let fileItem=scope.listFilesExcedeSize.pop();
     			  let qualityConfig=scope.qualityCompressPorcent(fileItem.size);
-    			  new ImageCompressor(fileItem, {
+    			 
+    			  let compress = new Compress();
+    			  let arrayFiles=new Array();
+    			  arrayFiles.push(fileItem);
+    			  compress.compress(arrayFiles, {
+    				    size: 4, // the max size in MB, defaults to 2MB
+    				    quality: qualityConfig, // the quality of the image, max is 1,
+    				    maxWidth: 1920, // the max width of the output image, defaults to 1920px
+    				    maxHeight: 1920, // the max height of the output image, defaults to 1920px
+    				    resize: true, // defaults to true, set false if you do not want to resize the image width and height
+    				  }).then(function (dataList){
+    					  let dataResult=dataList[0];
+    					  let typeUni=dataResult.ext.slice(dataResult.ext.lastIndexOf('/') + 1);
+    					  result=scope.urltoFile(dataResult.data, dataResult.alt, typeUni);
+	    			    	 let unic=(scope.listFiles.length+1);
+	    			    	 result.unic=unic;
+	    			    	 result.isSuccess=false;
+		        		  	 let type = '|' + result.type.slice(result.type.lastIndexOf('/') + 1) + '|';
+		        		  	 let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1);
+		        		  	 result.isImage=isImg;
+		        		  	 result.exedeSize=false;
+		        		  	 result.tpDocumentList=angular.copy(scope.tpDocumentList);
+		        		  	 scope.logobsResult(result);
+		        		  	 scope.listFiles.unshift(result);
+		        		  	 scope.closedFiles++;
+		        		  	 scope.initCalculatePorcentajeProgressBar();
+		        		  	 if(scope.listFilesExcedeSize.length > 0){	
+		        		  		scope.getCompress();
+		        		  		return;
+		        		  	 }
+    				  });
+    			  
+    			  /* new ImageCompressor(fileItem, {
 	    			    quality: qualityConfig,
 	    			    success(result) {
 	    			    	 //scope.$apply(function(){
@@ -341,7 +373,7 @@ appt.directive('updateImage',
 		        		  		return;
 		        		  	 }
 	    			    },
-	    			  });  
+	    			  }); */
 	    			  
 	    	 };
 	    	 
