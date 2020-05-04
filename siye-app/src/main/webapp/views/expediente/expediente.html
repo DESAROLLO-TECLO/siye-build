@@ -158,8 +158,8 @@
 							</div>
 						</div>
 						
-						<div class="box-body table-responsive no-padding table-exp-resp">
-							<table id="fhNoLabTable" class="table table-hover header-fixed">
+						<div class="box-body table-responsive no-padding">
+							<table id="fhNoLabTable" class="table table-striped table-xs table-sm table-hover header-fixed table-exp-resp">
 								<thead>
 									<tr>
 										<th class="wrap-text">NOMBRE</th>
@@ -172,7 +172,7 @@
 								</thead>
 								<tbody>
 									<tr dir-paginate="imgVO in ordenServicio.imagenes | filter: view.filter | orderBy:order:reverse | itemsPerPage: view.rowsPerPage"
-										pagination-id="ordenServicio.imagenes">
+										pagination-id="imagenes">
 										<td class="center">
 											<a tooltip-placement="top"
 												tooltip="{{imgVO.nbExpedienteODS}}">
@@ -218,7 +218,7 @@
                             <div class="fixed-table-pagination" style="display: block;">
                                 <rows-per-page rows="view.rowsPerPage"  array="ordenServicio.imagenes"></rows-per-page>
                                 <div class="pull-right pagination">
-                                    <dir-pagination-controls class="pagination" pagination-id="ordenServicio.imagenes"></dir-pagination-controls>
+                                    <dir-pagination-controls class="pagination" pagination-id="imagenes"></dir-pagination-controls>
                                 </div>
                             </div>
                         </div>
