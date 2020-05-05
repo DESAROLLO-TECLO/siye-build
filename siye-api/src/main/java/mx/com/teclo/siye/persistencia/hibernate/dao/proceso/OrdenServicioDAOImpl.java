@@ -237,6 +237,7 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 	@Override
 	public List<OrdenServicioDTO> getOrdenServicioByLote(String valor) {
 		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		valor=valor.replace(".CSV", ".csv");
 		//c.createAlias("centroInstalacion", "centroInstalacion");
 		c.createAlias("loteOrdenServicio", "lote");
 		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", centroInstalacion));
@@ -376,8 +377,9 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
         
         if(isLote)
         {
+        	valorLoteIncidencia=valorLoteIncidencia.replace(".CSV", ".csv");
         	c.createAlias("loteOrdenServicio", "lote");
-    		c.add(Restrictions.eq("lote.nbLoteOds", valorLoteIncidencia));
+    		c.add(Restrictions.eq("lote.nbArchivoFinal", valorLoteIncidencia));
     		c.add(Restrictions.eq("idOrigenOds",Long.valueOf(1)));	
         }
         else if(isIncidencia)
