@@ -5,6 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
+    <style>
+        table {
+          border-collapse: collapse;
+          border-spacing: 0;
+          width: 100%;
+        }
+        
+        th, td {
+          text-align: center;
+          padding: 4px;
+        }
+        </style>
 </head>
 
 <body>
@@ -21,7 +33,7 @@
     <!-- Formulario de busqueda -->
     <section class="content">
         <div class="row centerCol">
-            <div class="col-sm-12 col-md-8">
+            <div class="col-sm-8 col-md-8 col-xs-8">
                 <div class="box box-danger">
                     <form name="formBoxBusqueda" novalidate>
                         <div class="box-header with-border text-center">
@@ -34,7 +46,7 @@
                         </div>
                         <div class="box-body">
                             <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-6 col-sm-6 col-xs-6">
                                     <div class="form-group"
                                         ng-class="{'has-error': (formBoxBusqueda.tipoBusqueda.$invalid && formBoxBusqueda.tipoBusqueda.$dirty) }">
                                         <label>
@@ -59,7 +71,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6 col-sm-6 col-xs-6">
                                     <div class="form-group">
                                         <label>
                                             *{{'MONITOREO.busqueda.rangoFechas.label' | translate}}
@@ -74,7 +86,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
                                 <input class="form-control" type="text" placeholder="{{params.opcMarcadas}}" readonly>
                             </div>
                             <div class="row"></div>
@@ -99,176 +111,180 @@
     <!-- final formulario de busqueda -->
 
     <!-- tabla de resultados -->
-    <div ng-if="seguimientoVO.busquedaOk" class="row centerCol content">
-        <div class="col-md-12">
-            <div class="box box-danger">
-                <div class="box-header with-border">
-                    <div class="row middleRow">
-                        <div class="col-sm-3">
-                            <h4>{{'APP.Base.tablaResultados.registrosEncontrados' | translate}}:
-                                {{(seguimientoVO.datosTabla| filter:view.searchSomething).length | number}}
-                            </h4>
-                        </div>
-                        <div class="col-md-5 center">
-                            <div ng-if="seguimientoVO.verDetalleOS">
-                                <button class="btn btn-danger" data-toggle="tooltip" data-placement="top"
-                                    title="Resultado Principal"
-                                    style="border-radius: 50%; width: 2em; height: 2em; padding: 0;"
-                                    ng-click="infoGral('gral')">
-                                    <i class="fa fa-angle-double-left" aria-hidden="true"></i>
-                                </button>
-                                <label>
-                                    <strong class="text-center">
-                                        {{seguimientoVO.nbCentroInstalacion}}
-                                    </strong>
-                                </label>
+    <div class="row">
+        <div ng-if="seguimientoVO.busquedaOk" class="row centerCol content">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="box box-danger" >
+                    <div class="box-header with-border">
+                        <div class="row middleRow">
+                            <div class="col-sm-3 col-md-3 col-xs-3">
+                                <h4>{{'APP.Base.tablaResultados.registrosEncontrados' | translate}}:
+                                    {{(seguimientoVO.datosTabla| filter:view.searchSomething).length | number}}
+                                </h4>
                             </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="fa fa-search"></i>
+                            <div class="col-sm-5 col-md-5 col-xs-5 center">
+                                <div ng-if="seguimientoVO.verDetalleOS">
+                                    <button class="btn btn-danger" data-toggle="tooltip" data-placement="top"
+                                        title="Resultado Principal"
+                                        style="border-radius: 50%; width: 2em; height: 2em; padding: 0;"
+                                        ng-click="infoGral('gral')">
+                                        <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+                                    </button>
+                                    <label>
+                                        <strong class="text-center">
+                                            {{seguimientoVO.nbCentroInstalacion}}
+                                        </strong>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-md-3 col-xs-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-search"></i>
+                                    </span>
+                                    <input id="searchsomething" type="text" class="form-control"
+                                        placeholder="{{'APP.Base.tablaResultados.filtrarPor' | translate}}"
+                                        ng-model="view.searchSomething" ng-model-options="{debounce: 500}" />
+                                </div>
+                            </div>
+                            <div class="col-sm-1 col-md-1 col-xs-1">
+                                <span class="labelCheck" ng-click="descargaExcel()"
+                                    tooltip="{{'APP.Base.tablaResultados.descargarReporte' | translate}}" placement="top">
+                                    <img src="static/dist/img/excel.png" class="img-xs" />
                                 </span>
-                                <input id="searchsomething" type="text" class="form-control"
-                                    placeholder="{{'APP.Base.tablaResultados.filtrarPor' | translate}}"
-                                    ng-model="view.searchSomething" ng-model-options="{debounce: 500}" />
                             </div>
-                        </div>
-                        <div class="col-sm-1">
-                            <span class="labelCheck" ng-click="descargaExcel()"
-                                tooltip="{{'APP.Base.tablaResultados.descargarReporte' | translate}}" placement="top">
-                                <img src="static/dist/img/excel.png" class="img-xs" />
-                            </span>
                         </div>
                     </div>
-                </div>
-                <div class="box-body ngOnlyEnter">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="table-responsive">
-                                <!-- tabla de totales de movimientos -->
-                                <table class="table table-hover header-fixed" ng-if="seguimientoVO.tablaResultados">
-                                    <thead>
-                                        <tr>
-                                            <th class="tamColumna text-center" sort order="'nbModulo'" by="order"
-                                                reverse="reverse">
-                                                {{'MONITOREO.resultadosGral.titulo.moduloAtencion' | translate}}
-                                            </th>
-                                            <th ng-if="verColumna.col1" class="tamColumna text-center" sort
-                                                order="'nuEnCurso'" by="order" reverse="reverse">
-                                                {{'MONITOREO.resultadosGral.titulo.EnCurso' | translate}}
-                                            </th>
-                                            <th ng-if="verColumna.col2" class="tamColumna text-center" sort
-                                                order="'nuCompleta'" by="order" reverse="reverse">
-                                                {{'MONITOREO.resultadosGral.titulo.completa' | translate}}
-                                            </th>
-                                            <th ng-if="verColumna.col3" class="tamColumna text-center" sort
-                                                order="'nuProgramado'" by="order" reverse="reverse">
-                                                {{'MONITOREO.resultadosGral.titulo.programada' | translate}}
-                                            </th>
-                                            <th ng-if="verColumna.col4" class="tamColumna text-center" sort
-                                                order="'nuNoProgramado'" by="order" reverse="reverse">
-                                                {{'MONITOREO.resultadosGral.titulo.noProgramada' | translate}}
-                                            </th>
-                                            <th ng-if="verColumna.col5" class="tamColumna text-center" sort
-                                                order="'nuIncidencias'" by="order" reverse="reverse">
-                                                {{'MONITOREO.resultadosGral.titulo.incidencia' | translate}}
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <!-- Cuerpo de la tabla datos de consulta -->
-                                    <tbody>
-                                        <tr dir-paginate="modulo in seguimientoVO.datosTabla | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage"
-                                            ng-click="verDetalle(modulo)">
-                                            <td class="col-md-2 text-center">{{modulo.nbModulo}}</td>
-                                            <td ng-if="verColumna.col1" class="tamColumna text-center">
-                                                {{modulo.nuEnCurso}}</td>
-                                            <td ng-if="verColumna.col2" class="tamColumna text-center">
-                                                {{modulo.nuCompleta}}</td>
-                                            <td ng-if="verColumna.col3" class="tamColumna text-center">
-                                                {{modulo.nuProgramado}}</td>
-                                            <td ng-if="verColumna.col4" class="tamColumna text-center">
-                                                {{modulo.nuNoProgramado}}</td>
-                                            <td ng-if="verColumna.col5" class="tamColumna text-center">
-                                                {{modulo.nuIncidencias}}</td>
-                                        </tr>
-                                        <tr
-                                            ng-show="(seguimientoVO.datosTabla | filter:view.searchSomething).length < 1">
-                                            <td colspan="6" class="text-center">
-                                                <h4>{{'APP.Base.mensaje.noRegistros' | translate}}</h4>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                                <!--   tabla de detalles de  OS -->
-                                <table class="table table-hover header-fixed" ng-if="seguimientoVO.verDetalleOS">
-                                    <thead>
-                                        <tr>
-                                            <th class="col-md-3 text-center" sort order="'nuOrdenServicio'" by="order"
-                                                reverse="reverse">
-                                                {{'MONITOREO.detalleOs.titulo.ordenServicio' | translate}}
-                                            </th>
-                                            <th class="col-md-2 text-center" sort order="'txEtapa'" by="order"
-                                                reverse="reverse">
-                                                {{'MONITOREO.detalleOs.titulo.txEtapa' | translate}}
-                                            </th>
-                                            <th class="col-md-2 text-center" sort order="'txPlaca'" by="order"
-                                                reverse="reverse">
-                                                {{'MONITOREO.detalleOs.titulo.nuPlaca' | translate}}
-                                            </th>
-                                            <th class="col-md-2 text-center" sort order="'txProceso'" by="order"
-                                                reverse="reverse">
-                                                {{'MONITOREO.detalleOs.titulo.txProceso' | translate}}
-                                            </th>
-                                            <th class="col-md-1 text-center" sort order="'nuIncidencia'" by="order"
-                                                reverse="reverse">
-                                                {{'MONITOREO.detalleOs.titulo.txIncidensia' | translate}}
-                                            </th>
-                                            <th class="col-md-2 text-center" sort order="'estado'" by="order"
-                                                reverse="reverse">
-                                                {{'MONITOREO.detalleOs.titulo.txEstado' | translate}}
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <!-- Cuerpo de la tabla datos de consulta -->
-                                    <tbody>
-                                        <tr
-                                            dir-paginate="detalle in seguimientoVO.datosTabla | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage">
-                                            <td class="col-md-3 text-center">
-                                                <strong>{{detalle.nuOrdenServicio}}</strong>
-                                            </td>
-                                            <td class="col-md-2 text-center">{{detalle.fechaAtencion | date:"dd-MM-yyyy, h:mm "}}</td>
-                                            <td class="col-md-2 text-center">{{detalle.txPlaca}}</td>                                            
-                                            <td class="col-md-2 text-center">{{detalle.txProceso}}</td>
-                                            <td class="col-md-1 text-center">
-                                                <button class="btn btn-danger" ng-disabled="detalle.nuIncidencia <1"
-                                                    ng-click="verDetalleIncidencia(detalle)">
-                                                    {{detalle.nuIncidencia}}
-                                                </button>
-                                            </td>
-                                            <td class="col-md-2 text-center" ng-click="verDetalleStatus(detalle)">
-                                                <span style="background-color: {{detalle.color}}">
-                                                    <strong>
-                                                        {{detalle.estado}}
-                                                    </strong>
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <tr
-                                            ng-show="(seguimientoVO.datosTabla| filter:view.searchSomething).length < 1">
-                                            <td colspan="6" class="text-center">
-                                                <h4>{{'APP.Base.mensaje.noRegistros' | translate}}</h4>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="fixed-table-pagination" style="display: block;">
-                                <rows-per-page rows="view.rowsPerPage" filtro="view.searchSomething"
-                                    array="seguimientoVO.datosTabla"></rows-per-page>
-                                <div class="pull-right pagination">
-                                    <dir-pagination-controls class="pagination"></dir-pagination-controls>
+                    <div class="box-body ngOnlyEnter">
+                        <div class="row">
+                            <div class="col-md-12 col-ms-12 col-xs-12" style="overflow-x:auto;">
+                                <div class="table-responsive">
+                                    <!-- tabla de totales de movimientos -->
+                                    <table class="table table-hover header-fixed" ng-if="seguimientoVO.tablaResultados">
+                                        <thead>
+                                            <tr>
+                                                <th class="tamColumna text-center" sort order="'nbModulo'" by="order"
+                                                    reverse="reverse">
+                                                    {{'MONITOREO.resultadosGral.titulo.moduloAtencion' | translate}}
+                                                </th>
+                                                <th ng-if="verColumna.col1" class="tamColumna text-center" sort
+                                                    order="'nuEnCurso'" by="order" reverse="reverse">
+                                                    {{'MONITOREO.resultadosGral.titulo.EnCurso' | translate}}
+                                                </th>
+                                                <th ng-if="verColumna.col2" class="tamColumna text-center" sort
+                                                    order="'nuCompleta'" by="order" reverse="reverse">
+                                                    {{'MONITOREO.resultadosGral.titulo.completa' | translate}}
+                                                </th>
+                                                <th ng-if="verColumna.col3" class="tamColumna text-center" sort
+                                                    order="'nuProgramado'" by="order" reverse="reverse">
+                                                    {{'MONITOREO.resultadosGral.titulo.programada' | translate}}
+                                                </th>
+                                                <th ng-if="verColumna.col4" class="tamColumna text-center" sort
+                                                    order="'nuNoProgramado'" by="order" reverse="reverse">
+                                                    {{'MONITOREO.resultadosGral.titulo.noProgramada' | translate}}
+                                                </th>
+                                                <th ng-if="verColumna.col5" class="tamColumna text-center" sort
+                                                    order="'nuIncidencias'" by="order" reverse="reverse">
+                                                    {{'MONITOREO.resultadosGral.titulo.incidencia' | translate}}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <!-- Cuerpo de la tabla datos de consulta -->
+                                        <tbody>
+                                            <tr dir-paginate="modulo in seguimientoVO.datosTabla | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage"
+                                                ng-click="verDetalle(modulo)">
+                                                <td class="col-md-2 col-ms-2 text-center">{{modulo.nbModulo}}</td>
+                                                <td ng-if="verColumna.col1" class="tamColumna text-center">
+                                                    {{modulo.nuEnCurso}}</td>
+                                                <td ng-if="verColumna.col2" class="tamColumna text-center">
+                                                    {{modulo.nuCompleta}}</td>
+                                                <td ng-if="verColumna.col3" class="tamColumna text-center">
+                                                    {{modulo.nuProgramado}}</td>
+                                                <td ng-if="verColumna.col4" class="tamColumna text-center">
+                                                    {{modulo.nuNoProgramado}}</td>
+                                                <td ng-if="verColumna.col5" class="tamColumna text-center">
+                                                    {{modulo.nuIncidencias}}</td>
+                                            </tr>
+                                            <tr
+                                                ng-show="(seguimientoVO.datosTabla | filter:view.searchSomething).length < 1">
+                                                <td colspan="6" class="text-center">
+                                                    <h4>{{'APP.Base.mensaje.noRegistros' | translate}}</h4>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+    
+                                    <!--   tabla de detalles de  OS -->
+                                    <table class="table table-hover header-fixed" ng-if="seguimientoVO.verDetalleOS">
+                                        <thead>
+                                            <tr>
+                                                <th class="col-md-3 col-ms-3 col-xs-3 text-center" sort order="'nuOrdenServicio'" by="order"
+                                                    reverse="reverse">
+                                                    {{'MONITOREO.detalleOs.titulo.ordenServicio' | translate}}
+                                                </th>
+                                                <th class="col-md-2 col-ms-2 col-xs-2 text-center" sort order="'txEtapa'" by="order"
+                                                    reverse="reverse">
+                                                    {{'MONITOREO.detalleOs.titulo.txEtapa' | translate}}
+                                                </th>
+                                                <th class="col-md-2 col-ms-2 col-xs-2 text-center" sort order="'txPlaca'" by="order"
+                                                    reverse="reverse">
+                                                    {{'MONITOREO.detalleOs.titulo.nuPlaca' | translate}}
+                                                </th>
+                                                <th class="col-md-2 col-ms-2 col-xs-2 text-center" sort order="'txProceso'" by="order"
+                                                    reverse="reverse">
+                                                    {{'MONITOREO.detalleOs.titulo.txProceso' | translate}}
+                                                </th>
+                                                <th class="col-md-1 col-ms-1 col-xs-1 text-center" sort order="'nuIncidencia'" by="order"
+                                                    reverse="reverse">
+                                                    {{'MONITOREO.detalleOs.titulo.txIncidensia' | translate}}
+                                                </th>
+                                                <th class="col-md-2 col-ms-2 col-xs-2 text-center" sort order="'estado'" by="order"
+                                                    reverse="reverse">
+                                                    {{'MONITOREO.detalleOs.titulo.txEstado' | translate}}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <!-- Cuerpo de la tabla datos de consulta -->
+                                        <tbody>
+                                            <tr
+                                                dir-paginate="detalle in seguimientoVO.datosTabla | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage">
+                                                <td class="col-md-3 col-sm-3 col-xs-3 text-center">
+                                                    <strong>{{detalle.nuOrdenServicio}}</strong>
+                                                </td>
+                                                <td class="col-md-2 col-sm-2 col-xs-2 text-center">
+                                                    {{detalle.fechaAtencion}}
+                                                </td>
+                                                <td class="col-md-2 col-sm-2 col-xs-2 text-center">{{detalle.txPlaca}}</td>
+                                                <td class="col-md-2 col-sm-2 col-xs-2 text-center">{{detalle.txProceso}}</td>
+                                                <td class="col-md-1 col-sm-1 col-xs-1 text-center">
+                                                    <button class="btn btn-danger" ng-disabled="detalle.nuIncidencia <1"
+                                                        ng-click="verDetalleIncidencia(detalle)">
+                                                        {{detalle.nuIncidencia}}
+                                                    </button>
+                                                </td>
+                                                <td class="col-md-2 col-sm-2 col-xs-2 text-center" ng-click="verDetalleStatus(detalle)">
+                                                    <span style="background-color: {{detalle.color}}">
+                                                        <strong>
+                                                            {{detalle.estado}}
+                                                        </strong>
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr
+                                                ng-show="(seguimientoVO.datosTabla| filter:view.searchSomething).length < 1">
+                                                <td colspan="6" class="text-center">
+                                                    <h4>{{'APP.Base.mensaje.noRegistros' | translate}}</h4>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="fixed-table-pagination" style="display: block;">
+                                    <rows-per-page rows="view.rowsPerPage" filtro="view.searchSomething"
+                                        array="seguimientoVO.datosTabla"></rows-per-page>
+                                    <div class="pull-right pagination">
+                                        <dir-pagination-controls class="pagination"></dir-pagination-controls>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -279,115 +295,117 @@
     </div>
 
     <!-- tabla de resultados de incidencia -->
-    <div ng-if="evidenciaVO.verEvidencia" class="row centerCol content">
-        <div class="col-md-12">
-            <div class="box box-danger">
-                <div class="box-header with-border">
-                    <div class="row middleRow">
-                        <div class="col-sm-3">
-                            <h4>{{'APP.Base.tablaResultados.registrosEncontrados' | translate}}:
-                                {{(evidenciaVO.data| filter:view.searchSomething).length | number}}
-                            </h4>
-                        </div>
-                        <div class="col-md-5 center">
-                            <div ng-if="evidenciaVO.verEvidencia">
-                                <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Atras"
-                                    style="border-radius: 50%; width: 2em; height: 2em; padding: 0;"
-                                    ng-click="infoGral('incidencia')">
-                                    <i class="fa fa-angle-double-left" aria-hidden="true"></i>
-                                </button>
-                                <label class="center">
-                                    <strong class="text-center">
-                                        {{evidenciaVO.folioOS}}
-                                    </strong>
-                                </label>
+    <div class="row">
+        <div ng-if="evidenciaVO.verEvidencia"  class="row centerCol content">
+            <div class="col-md-12 col-sm-12" style="overflow-x:auto;">
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <div class="row middleRow">
+                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                <h4>{{'APP.Base.tablaResultados.registrosEncontrados' | translate}}:
+                                    {{(evidenciaVO.data| filter:view.searchSomething).length | number}}
+                                </h4>
                             </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <span class="input-group-addon">
-                                    <i class="fa fa-search"></i>
+                            <div class="col-md-5 col-sm-5 col-xs-5 center">
+                                <div ng-if="evidenciaVO.verEvidencia">
+                                    <button class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Atras"
+                                        style="border-radius: 50%; width: 2em; height: 2em; padding: 0;"
+                                        ng-click="infoGral('incidencia')">
+                                        <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+                                    </button>
+                                    <label class="center">
+                                        <strong class="text-center">
+                                            {{evidenciaVO.folioOS}}
+                                        </strong>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                <div class="input-group">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-search"></i>
+                                    </span>
+                                    <input id="searchsomething" type="text" class="form-control"
+                                        placeholder="{{'APP.Base.tablaResultados.filtrarPor' | translate}}"
+                                        ng-model="view.searchSomething" ng-model-options="{debounce: 500}" />
+                                </div>
+                            </div>
+                            <div class="col-md-1 col-sm-1 col-xs-1">
+                                <span class="labelCheck" ng-click="descargaExcel()"
+                                    tooltip="{{'APP.Base.tablaResultados.descargarReporte' | translate}}" placement="top">
+                                    <img src="static/dist/img/excel.png" class="img-xs" />
                                 </span>
-                                <input id="searchsomething" type="text" class="form-control"
-                                    placeholder="{{'APP.Base.tablaResultados.filtrarPor' | translate}}"
-                                    ng-model="view.searchSomething" ng-model-options="{debounce: 500}" />
                             </div>
-                        </div>
-                        <div class="col-sm-1">
-                            <span class="labelCheck" ng-click="descargaExcel()"
-                                tooltip="{{'APP.Base.tablaResultados.descargarReporte' | translate}}" placement="top">
-                                <img src="static/dist/img/excel.png" class="img-xs" />
-                            </span>
                         </div>
                     </div>
-                </div>
-                <div class="box-body ngOnlyEnter">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="table-responsive">
-                                <table class="table table-hover header-fixed">
-                                    <thead>
-                                        <tr>
-                                            <th class="col-md-1 text-center" sort order="'cdIncidencia'" by="order"
-                                                reverse="reverse">
-                                                {{'MONITOREO.incidencia.titulo.cdincidencia' | translate}}
-                                            </th>
-                                            <th class="col-md-2 text-center" sort order="'nbIncidencia'" by="order"
-                                                reverse="reverse">
-                                                {{'MONITOREO.incidencia.titulo.nbIncidencia' | translate}}
-                                            </th>
-                                            <th class="col-md-2 text-center" sort order="'prioridad'" by="order"
-                                                reverse="reverse">
-                                                {{'MONITOREO.incidencia.titulo.prioridad' | translate}}
-                                            </th>
-                                            <th class="col-md-2 text-center" sort order="'stIncidencia'" by="order"
-                                                reverse="reverse">
-                                                {{'MONITOREO.incidencia.titulo.stIncidencia' | translate}}
-                                            </th>
-                                            <th class="col-md-2 text-center" sort order="'nbProceso'" by="order"
-                                                reverse="reverse">
-                                                {{'MONITOREO.incidencia.titulo.nbProceso' | translate}}
-                                            </th>
-                                            <th class="col-md-2 text-center" sort order="'txIncidencia'" by="order"
-                                                reverse="reverse">
-                                                {{'MONITOREO.incidencia.titulo.txIncidencia' | translate}}
-                                            </th>
-                                            <th class="col-md-1 text-center">
-                                                {{'MONITOREO.incidencia.titulo.accion' | translate}}
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr
-                                            dir-paginate="detalle in evidenciaVO.data | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage">
-                                            <td class="col-md-1 text-center">{{detalle.cdIncidencia}}</td>
-                                            <td class="col-md-2 text-center">{{detalle.nbIncidencia}}</td>
-                                            <td class="col-md-2 text-center">{{detalle.prioridad}}</td>
-                                            <td class="col-md-2 text-center">{{detalle.stIncidencia}}</td>
-                                            <td class="col-md-2 text-center">{{detalle.nbProceso}}</td>
-                                            <td class="col-md-2 text-truncate" data-toggle="tooltip"
-                                                data-placement="top" title="{{detalle.txIncidencia}}">
-                                                {{detalle.txIncidencia}}
-                                            </td>
-                                            <td class="col-md-1 text-center">
-                                                <button class="btn btn-danger" ng-click="verImagen(detalle)">
-                                                    <i class="fa fa-eye" aria-hidden="true"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <tr ng-show="(evidenciaVO.data| filter:view.searchSomething).length < 1">
-                                            <td colspan="6" class="text-center">
-                                                <h4>{{'APP.Base.mensaje.noRegistros' | translate}}</h4>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="fixed-table-pagination" style="display: block;">
-                                <rows-per-page rows="view.rowsPerPage" filtro="view.searchSomething"
-                                    array="evidenciaVO.data"></rows-per-page>
-                                <div class="pull-right pagination">
-                                    <dir-pagination-controls class="pagination"></dir-pagination-controls>
+                    <div class="box-body ngOnlyEnter">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-hover header-fixed">
+                                        <thead>
+                                            <tr>
+                                                <th class="col-md-1 col-xs-1 col-sm-1 text-center" sort order="'cdIncidencia'" by="order"
+                                                    reverse="reverse">
+                                                    {{'MONITOREO.incidencia.titulo.cdincidencia' | translate}}
+                                                </th>
+                                                <th class="col-md-2 col-xs-2 col-sm-2 text-center" sort order="'nbIncidencia'" by="order"
+                                                    reverse="reverse">
+                                                    {{'MONITOREO.incidencia.titulo.nbIncidencia' | translate}}
+                                                </th>
+                                                <th class="col-md-2 col-xs-2 col-sm-2 text-center" sort order="'prioridad'" by="order"
+                                                    reverse="reverse">
+                                                    {{'MONITOREO.incidencia.titulo.prioridad' | translate}}
+                                                </th>
+                                                <th class="col-md-2 col-xs-2 col-sm-2 text-center" sort order="'stIncidencia'" by="order"
+                                                    reverse="reverse">
+                                                    {{'MONITOREO.incidencia.titulo.stIncidencia' | translate}}
+                                                </th>
+                                                <th class="col-md-2 col-xs-2 col-sm-2 text-center" sort order="'nbProceso'" by="order"
+                                                    reverse="reverse">
+                                                    {{'MONITOREO.incidencia.titulo.nbProceso' | translate}}
+                                                </th>
+                                                <th class="col-md-2 col-xs-2 col-sm-2 text-center" sort order="'txIncidencia'" by="order"
+                                                    reverse="reverse">
+                                                    {{'MONITOREO.incidencia.titulo.txIncidencia' | translate}}
+                                                </th>
+                                                <th class="col-md-1 col-xs-1 col-sm-1 text-center">
+                                                    {{'MONITOREO.incidencia.titulo.accion' | translate}}
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr
+                                                dir-paginate="detalle in evidenciaVO.data | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage">
+                                                <td class="col-md-1 col-sm-1 col-xs-1 text-center">{{detalle.cdIncidencia}}</td>
+                                                <td class="col-md-2 col-sm-2 col-xs-2 text-center">{{detalle.nbIncidencia}}</td>
+                                                <td class="col-md-2 col-sm-2 col-xs-2 text-center">{{detalle.prioridad}}</td>
+                                                <td class="col-md-2 col-sm-2 col-xs-2 text-center">{{detalle.stIncidencia}}</td>
+                                                <td class="col-md-2 col-sm-2 col-xs-2 text-center">{{detalle.nbProceso}}</td>
+                                                <td class="col-md-2 col-sm-2 col-xs-2 text-truncate" data-toggle="tooltip"
+                                                    data-placement="top" title="{{detalle.txIncidencia}}">
+                                                    {{detalle.txIncidencia}}
+                                                </td>
+                                                <td class="col-md-1 col-sm-1 col-xs-1 text-center">
+                                                    <button class="btn btn-danger" ng-click="verImagen(detalle)">
+                                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr ng-show="(evidenciaVO.data| filter:view.searchSomething).length < 1">
+                                                <td colspan="6" class="text-center">
+                                                    <h4>{{'APP.Base.mensaje.noRegistros' | translate}}</h4>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="fixed-table-pagination" style="display: block;">
+                                    <rows-per-page rows="view.rowsPerPage" filtro="view.searchSomething"
+                                        array="evidenciaVO.data"></rows-per-page>
+                                    <div class="pull-right pagination">
+                                        <dir-pagination-controls class="pagination"></dir-pagination-controls>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -396,6 +414,7 @@
             </div>
         </div>
     </div>
+    
 
 
 </body>
