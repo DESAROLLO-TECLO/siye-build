@@ -1,5 +1,5 @@
 angular.module(appTeclo).controller('consultaGeneralController', 
-function($scope, showAlert, $location, growl, consultaGeneralService,encuestaService,catalogoGenericoService) {
+function($scope, showAlert, $location, growl, consultaGeneralService,encuestaService,catalogoGenericoService,deDetalle) {
 	
 	$scope.parametrosBusqueda = 
 	{busquedaAvanzada:false,cdTipoBusqueda:null,valor:null,
@@ -51,6 +51,7 @@ function($scope, showAlert, $location, growl, consultaGeneralService,encuestaSer
 		getStSeguimiento();
 		getTipoKit();
 		getPlan();
+		if(!deDetalle)
 		$scope.cargarTramitesDia();
 		$scope.FHInicio="";
 		$scope.FHFin="";
@@ -114,7 +115,7 @@ function($scope, showAlert, $location, growl, consultaGeneralService,encuestaSer
 						}
 						consultaGeneralService.parametrosBusquedaAnterior=$scope.parametrosBusqueda;
 						$scope.mostrarTabla=true;
-						if($scope.parametrosBusqueda.tipoKit.length>0)
+						if($scope.parametrosBusqueda.tipoKit && $scope.parametrosBusqueda.tipoKit.length>0)
 						{ 
                            var nuevoArreglo=[];
                            var tamaño=0;
@@ -378,6 +379,38 @@ function($scope, showAlert, $location, growl, consultaGeneralService,encuestaSer
 			
 	
 	};
+	
+	if(deDetalle)
+	{
+		deDetalle=false;
+		$scope.listOrden=[];
+		consultaGeneralService.busquedaTramitesParametros(consultaGeneralService.parametrosBusquedaAnterior).success(function(data) {
+		if(data.length >= $scope.cantidadRegistrosMostrar){
+			growl.info("Su consulta supera los "+$scope.cantidadRegistrosMostrar+" registros. En caso de requerir el reporte completo, solicítelo a soporte.", 'templateModalAviso');
+		}
+		$scope.mostrarTabla=true;
+		if(consultaGeneralService.parametrosBusquedaAnterior.tipoKit && consultaGeneralService.parametrosBusquedaAnterior.tipoKit.length>0)
+		{ 
+			
+           var nuevoArreglo=[];
+           var tamaño=0;
+           nuevoArreglo.push(data[0]);
+            for (let x = 1; x < data.length; x++) {
+            	tamaño=nuevoArreglo.length;
+                if (nuevoArreglo[tamaño-1].cdOrdenServicio!=data[x].cdOrdenServicio) {
+                nuevoArreglo.push(data[x])
+                }
+            }
+            $scope.listOrden = nuevoArreglo;
+		}
+		else
+		$scope.listOrden = data;
+	}).error(function(data){
+		$scope.listOrden = [];
+		growl.warning(data.message);
+		$scope.mostrarTabla=false;
+	});
+	}
 
 
 
