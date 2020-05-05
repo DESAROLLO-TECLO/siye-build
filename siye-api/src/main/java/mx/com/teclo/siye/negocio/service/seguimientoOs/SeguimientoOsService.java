@@ -3,10 +3,8 @@ package mx.com.teclo.siye.negocio.service.seguimientoOs;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
-import org.springframework.web.bind.annotation.RequestParam;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
-import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleImagenesOS;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleIncidenciaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
@@ -78,7 +76,7 @@ public interface SeguimientoOsService {
 	 * @throws BusinessException 
 	 * @retun String 
 	 * */
-	public void hacerCorteDiario(String fecha, Long idUsuario) throws BusinessException;
+	public String hacerCorteDiario(String fecha, Long idUsuario) throws BusinessException;
 	
 	/**
 	 * Metodo para consultar la informacion por nivel de eguiiento y mostrar las images de evidencia o incidencia 
