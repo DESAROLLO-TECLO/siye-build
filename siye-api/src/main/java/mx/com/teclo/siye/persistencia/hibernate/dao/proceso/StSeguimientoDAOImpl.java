@@ -50,6 +50,16 @@ public class StSeguimientoDAOImpl extends BaseDaoHibernate<StSeguimientoDTO> imp
 		c.add(Restrictions.eq("stActivo", true));
 		return (List<StSeguimientoDTO>)c.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<StSeguimientoDTO> obtenerStSeguimientoByTipo(Long tipo) {
+		Criteria c = getCurrentSession().createCriteria(StSeguimientoDTO.class);
+		c.createAlias("tipoSeguimiento", "tipoSeguimiento");
+		c.add(Restrictions.eq("tipoSeguimiento.idTipoSeguimiento", tipo));
+		c.add(Restrictions.eq("stActivo", true));
+		return (List<StSeguimientoDTO>)c.list();
+	}
 
 
 }

@@ -298,5 +298,17 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         templateUrl: "views/dashboard/dashboard.html",
         controller: "dashboardController"
     });
+    
+    //consulta General
+    $routeProvider.when("/consultaGeneral", {
+        templateUrl: "views/ordenServicio/consultaGeneral.html",
+        controller: "consultaGeneralController"
+    });
+    
+    //consulta General
+    $routeProvider.when("/detalleConsulta/:id", {
+        templateUrl: "views/ordenServicio/detalleConsulta.html",
+        controller: "detalleConsultaController"
+    });
 
 });

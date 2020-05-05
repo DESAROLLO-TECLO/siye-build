@@ -91,7 +91,7 @@ public class MonitoreoIncidenciaServiceImpl implements MonitoreoIncidenciaServic
 				throw new NotFoundException(mensajeErr);
 			} else {
 				e.printStackTrace();
-				throw new NotFoundException("¡Ha ocurrido un imprevisto! , porfavor contacte al administrador");
+				throw new NotFoundException("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador");
 			}
 		}
 	};
@@ -100,53 +100,51 @@ public class MonitoreoIncidenciaServiceImpl implements MonitoreoIncidenciaServic
 	@Transactional
 	public OrdenIncidenciaDetalleVO getDetalleIncidenciasOS(Long idOrden,Long idPlan)throws Exception, BusinessException, NotFoundException{
 		try {
-		OrdenIncidenciaDetalleVO listiVO = new OrdenIncidenciaDetalleVO();
-		List<ProcesoDetalleVO> lisProcesoVO =new ArrayList<ProcesoDetalleVO>();
-		List<PlanProcesoDTO> planProcesoDTO = new ArrayList<PlanProcesoDTO>();
-		planProcesoDTO = procesoService.getPlanOrdenServicio(idPlan);
-		
-		if (planProcesoDTO == null) 
-			throw new NotFoundException(MSG_ERROR_PROCESO_NULO);		
-		for (PlanProcesoDTO proce : planProcesoDTO) {
-		ProcesoDetalleVO procesoVO =new ProcesoDetalleVO();
- 		procesoVO = ResponseConverter.copiarPropiedadesFull(proce.getProceso(), ProcesoDetalleVO.class);
-		List<IncidenciaDetalleVO> listIncidenciaPro =obtenerIncidencias(idOrden,procesoVO.getIdProceso(),"PROCESO");
- 		procesoVO.setIncidencia(listIncidenciaPro);
-				 List<EncuestaDetaVO> listEncuesta =procesoEncuestaDAO.getEncuestaByIdOrden(procesoVO.getIdProceso());	
-				 
-		        	for (EncuestaDetaVO encuestaDetaVO : listEncuesta) {
-		        		StEncuestaVO stEncuesta =procesoEncuestaDAO.getstEncuestaByIdEncuestaIdOrden(encuestaDetaVO.getIdEncuesta(),idOrden);
-		        		encuestaDetaVO.setStEncuesta(stEncuesta);
-		        		List<IncidenciaDetalleVO> listIncidenciaEncu =obtenerIncidencias(idOrden,encuestaDetaVO.getIdEncuesta(),"ENCUESTA");
-						encuestaDetaVO.setIncidencia(listIncidenciaEncu);
-					}
-		        	procesoVO.setEncuesta(listEncuesta);
-
-		 lisProcesoVO.add(procesoVO);
-		}
-		listiVO.setProceso(lisProcesoVO);
-		List<IncidenciaDetalleVO> listIncidenciaOrden =obtenerIncidencias(null,idOrden,"ORDEN");
-//		OrdenServicioDetVO detOrden=ordenServicioDAO.getOrdenServicioByIdOrden(idOrden);
-		OrdenServicioDTO dtoOs=ordenServicioDAO.obtenerOrdenServicio(idOrden);
-		OrdenServicioDetVO detOrdenVO=new OrdenServicioDetVO();
-		detOrdenVO.setCdOrdenServicio(dtoOs.getCdOrdenServicio());
-		detOrdenVO.setIdOrdenServicio(dtoOs.getIdOrdenServicio());
-		detOrdenVO.setNbStSeguimiento(dtoOs.getStSeguimiento()==null?null:dtoOs.getStSeguimiento().getNbStSeguimiento());
-		detOrdenVO.setCdEncuestaActual(dtoOs.getEncuesta()==null?null:dtoOs.getEncuesta().getCdEncuesta());
-		detOrdenVO.setNbEncuestaActual(dtoOs.getEncuesta()==null?null:dtoOs.getEncuesta().getNbEncuesta());
-		detOrdenVO.setCdProcesoActual(dtoOs.getProceso()==null?null:dtoOs.getProceso().getCdProceso());
-		detOrdenVO.setNbProcesoActual(dtoOs.getProceso()==null?null:dtoOs.getProceso().getNbProceso());
-		detOrdenVO.setFhCita(dtoOs.getFhCita());
-		detOrdenVO.setFhAtencionIni(dtoOs.getFhAtencionIni());
-		detOrdenVO.setFhAtencionFin(dtoOs.getFhAtencionFin());
-		listiVO.setIncidencia(listIncidenciaOrden);
-		listiVO.setOrdenServicio(detOrdenVO);
-		
-		return listiVO;		
-		
+			OrdenIncidenciaDetalleVO listiVO = new OrdenIncidenciaDetalleVO();
+			List<ProcesoDetalleVO> lisProcesoVO =new ArrayList<ProcesoDetalleVO>();
+			List<PlanProcesoDTO> planProcesoDTO = new ArrayList<PlanProcesoDTO>();
+			planProcesoDTO = procesoService.getPlanOrdenServicio(idPlan);
+			
+			if (planProcesoDTO == null) {
+				throw new NotFoundException(MSG_ERROR_PROCESO_NULO);
+			}
+			for (PlanProcesoDTO proce : planProcesoDTO) {
+				ProcesoDetalleVO procesoVO =new ProcesoDetalleVO();
+				procesoVO = ResponseConverter.copiarPropiedadesFull(proce.getProceso(), ProcesoDetalleVO.class);
+				List<IncidenciaDetalleVO> listIncidenciaPro = obtenerIncidencias(idOrden,procesoVO.getIdProceso(),"PROCESO");
+				procesoVO.setIncidencia(listIncidenciaPro);
+				List<EncuestaDetaVO> listEncuesta =procesoEncuestaDAO.getEncuestaByIdOrden(procesoVO.getIdProceso());	
+				
+				for (EncuestaDetaVO encuestaDetaVO : listEncuesta) {
+					StEncuestaVO stEncuesta =procesoEncuestaDAO.getstEncuestaByIdEncuestaIdOrden(encuestaDetaVO.getIdEncuesta(),idOrden);
+					encuestaDetaVO.setStEncuesta(stEncuesta);
+					List<IncidenciaDetalleVO> listIncidenciaEncu =obtenerIncidencias(idOrden,encuestaDetaVO.getIdEncuesta(),"ENCUESTA");
+					encuestaDetaVO.setIncidencia(listIncidenciaEncu);
+				}
+				procesoVO.setEncuesta(listEncuesta);
+				lisProcesoVO.add(procesoVO);
+			}
+			listiVO.setProceso(lisProcesoVO);
+			List<IncidenciaDetalleVO> listIncidenciaOrden =obtenerIncidencias(null,idOrden,"ORDEN");
+//			OrdenServicioDetVO detOrden=ordenServicioDAO.getOrdenServicioByIdOrden(idOrden);
+			OrdenServicioDTO dtoOs=ordenServicioDAO.obtenerOrdenServicio(idOrden);
+			OrdenServicioDetVO detOrdenVO=new OrdenServicioDetVO();
+			detOrdenVO.setCdOrdenServicio(dtoOs.getCdOrdenServicio());
+			detOrdenVO.setIdOrdenServicio(dtoOs.getIdOrdenServicio());
+			detOrdenVO.setNbStSeguimiento(dtoOs.getStSeguimiento()==null?null:dtoOs.getStSeguimiento().getNbStSeguimiento());
+			detOrdenVO.setCdEncuestaActual(dtoOs.getEncuesta()==null?null:dtoOs.getEncuesta().getCdEncuesta());
+			detOrdenVO.setNbEncuestaActual(dtoOs.getEncuesta()==null?null:dtoOs.getEncuesta().getNbEncuesta());
+			detOrdenVO.setCdProcesoActual(dtoOs.getProceso()==null?null:dtoOs.getProceso().getCdProceso());
+			detOrdenVO.setNbProcesoActual(dtoOs.getProceso()==null?null:dtoOs.getProceso().getNbProceso());
+			detOrdenVO.setFhCita(dtoOs.getFhCita());
+			detOrdenVO.setFhAtencionIni(dtoOs.getFhAtencionIni());
+			detOrdenVO.setFhAtencionFin(dtoOs.getFhAtencionFin());
+			listiVO.setIncidencia(listIncidenciaOrden);
+			listiVO.setOrdenServicio(detOrdenVO);
+			return listiVO;		
 		} catch (Exception e) {
-				e.printStackTrace();
-				throw new Exception("¡Ha ocurrido un imprevisto! , porfavor contacte al administrador Error: "+e);
+			e.printStackTrace();
+			throw new Exception("¡Ha ocurrido un imprevisto!, porfavor contacte al administrador Error: "+e);
 		}
 	}
 	
@@ -155,17 +153,17 @@ public class MonitoreoIncidenciaServiceImpl implements MonitoreoIncidenciaServic
 		List<IncidenciaDetalleVO> listIncidencia=new ArrayList<IncidenciaDetalleVO>();
 		
 		switch (parametro) {
-		case "ORDEN":
-			listIncidencia =incidenciaDAO.getIncidenciasByIdOrden(id);
-			break;
-		case "PROCESO":
-			listIncidencia =incidenciaDAO.getIncidenciasByProceso(idOrden,id);
-			break;
-		case "ENCUESTA":
-			listIncidencia =incidenciaDAO.getIncidenciasByIdEncuesta(idOrden,id);
-			break;
-		default:
-			break;
+			case "ORDEN":
+				listIncidencia = incidenciaDAO.getIncidenciasByIdOrden(id);
+				break;
+			case "PROCESO":
+				listIncidencia = incidenciaDAO.getIncidenciasByProceso(idOrden,id);
+				break;
+			case "ENCUESTA":
+				listIncidencia = incidenciaDAO.getIncidenciasByIdEncuesta(idOrden,id);
+				break;
+			default:
+				break;
 		}
 		if (!listIncidencia.isEmpty()) {
 			for (IncidenciaDetalleVO inc : listIncidencia) {

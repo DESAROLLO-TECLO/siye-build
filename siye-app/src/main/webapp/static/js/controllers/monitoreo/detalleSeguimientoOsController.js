@@ -14,7 +14,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
         var coordX = 0;
         var coordY = 0;
         var disX = 250;
-        var disY = 150;
+        var disY = 550;
         //se obtiene una referencio del elemento del dom con id  mynetwork
         var container = document.getElementById('mynetwork');
         var nodes, edges;
@@ -80,7 +80,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             $scope.b_detalle = false;
         };
 
-        crearNodo = function (proceso) {
+        crearNodo = function (proceso, padre) {
             if (typeof proceso == "undefined" || proceso == null)
                 return;
 
@@ -89,15 +89,37 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                 shape: 'circularImage',
                 image: 'data:image/png;base64,' + proceso.lbImagen,
                 x: coordX,
-                y: coordY,
+                y: 0,
                 label: proceso.nbProceso,
                 color: { border: proceso.cdRgb, highlight: { border: proceso.cdRgb } },
                 font: { vadjust: 10 }
             });
+            coordY =0;
+            
+            if(proceso.encuestas !=null){
+                let nodoshijos =  proceso.idProceso;
+                for(let x=0; x<proceso.encuestas.length; x++){
+                    // crear nodo encuesta 
+                    nodes.add({
+                        id: proceso.encuestas[x].cdEncuesta,
+                        shape: 'circularImage',
+                        image: 'data:image/png;base64,' + proceso.lbImagen,
+                        x: coordX,
+                        y: coordY+=95,
+                        label: proceso.encuestas[x].nbEncuesta,
+                        color: { border: proceso.encuestas[x].nbColor, highlight: { border: proceso.encuestas[x].nbColor } },
+                        font: { vadjust: 5 }
+                    });
+                    // agregar nodo encuesta 
+                    edges.add({ from:nodoshijos, to: proceso.encuestas[x].cdEncuesta, arrows: 'to' });
+                    nodoshijos = proceso.encuestas[x].cdEncuesta;
+                }
+            }
 
-            if (from != null)
-                edges.add({ from: from, to: proceso.idProceso, arrows: 'to' });
-            from = proceso.idProceso;
+            if (from != null && padre>1)
+                edges.add({ from: from, to: proceso.idProceso, arrows: 'to' });      
+            
+                from = proceso.idProceso;
 
             coordX += disX;
             if (nodes.length % nodosPorFila == 0) {
@@ -105,6 +127,8 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                 coordY += disY;
                 coordX += disX;
             }
+
+
         };
 
         scrollDetail = function () {
@@ -118,9 +142,11 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
         };
 
         obtenerProcesos = function (procesos) {
+            let padre = 1;
             from = null;
             angular.forEach(procesos, function (value, key) {
-                crearNodo(value);
+                crearNodo(value, padre);
+                padre+=1;
             });
         };
 
@@ -161,30 +187,32 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             fitAnimated();
         }
         // Guardar imagen 
-        saveDoc = function (isURL, file, fileName) {
+        $scope.downLoadTimeLine=function(){
+            $scope.flagDownload=true;
+            scrollDetailDestroy()
+             $timeout(function() {
+                html2canvas(document.querySelector("#imgLineTiempo")).then(canvas => {
+                     var dataURL = canvas.toDataURL();
+                     $scope.imgCapture=dataURL;
+                     var file=dataURL.split(",");
+                     $scope.archivo=$scope.b64toBlob(file[1],"image/png"); 
+                     save( $scope.archivo,"image/png");
+                });
+             },15); 
+        };
+
+        save=function(file, fileName) {
+            $scope.flagDownload=false;
+            scrollDetail()
             var url = window.URL || window.webkitURL;
+            var blobUrl = url.createObjectURL(file);
             var a = document.createElement('a');
-            if (isURL)
-                a.href = file;
-            else {
-                var blobUrl = url.createObjectURL(file);
-                showPdf(blobUrl);
-                a.href = blobUrl;
-            }
+            a.href = blobUrl;
             a.target = '_blank';
             a.download = fileName;
             document.body.appendChild(a);
+            a.click();
         }
-
-        showPdf = function (messageTo) {
-            ModalService.showModal({
-                templateUrl: 'views/templatemodal/templateModalPdf.html',
-                controller: 'mensajeModalController',
-                inputs: { message: messageTo }
-            }).then(function (modal) {
-                modal.element.modal();
-            });
-        };
 
         getLineaTiempo = function(os, procesos){
             detalleSeguimientoOsService.getDetalleProcesoEspecifico(os, procesos).success(function(data){
@@ -198,22 +226,84 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             })
         };
 
-        $scope.verImagenesCarrusel = function(params, claseBus, nivel){
-            if(params!=undefined){
-                $scope.paramsRespaldoModal = new Object({
-                    fechaInicio:  $scope.ordenServicioVO.proceso.formBusuqeda.fechaInicio,
-                    fechaFin: $scope.ordenServicioVO.proceso.formBusuqeda.fechaInicio,
-                    idCentroInstalacion:$scope.ordenServicioVO.proceso.idCentroInstalacion
-                });    
-                ModalService.showModal({
-                    templateUrl: 'views/templatemodal/templateModalIncidenciasMonitoreo.html',
-                    controller: 'modalIncidenciasMonitoreoController',
-                    scope: $scope,
-                    inputs: {OrdenServicio :params}
-                }).then(function(modal) {
-                    modal.element.modal();
-                });
+        $scope.verModalEvidencias = function(nivel,opciones){
+            debugger
+            let verModal= false;
+            let parametros = new Object({
+                idOrdenServicio: $scope.ordenServicioVO.detalle.idOrdenServicio,
+                valor: null,
+                nivel: nivel,
+                clase: "sin clase",
+                data:[]
+            });
+
+            if(nivel==='pregunta'){
+                parametros.valor = opciones.idEncuesta;
+                parametros.nbEncuesta = opciones.nbEncuesta;
+            }else if(nivel==='encuesta'){
+                parametros.valor = opciones.idEncuesta;
+                parametros.infoEncuesta = opciones;
+            }else if(nivel==='ordenservicio'){
+                parametros.valor = $scope.ordenServicioVO.detalle.idOrdenServicio;
+                parametros.infoOS = opciones;
             }
+
+            detalleSeguimientoOsService.getSeguimientoImagen(parametros).success(function(data){
+                let mensaje = "",tipo='info';
+                switch(nivel){
+                    case 'pregunta':
+                        if(data.nivelPreguntas!=null){
+                           verModal=true;
+                        }else{
+                            mensaje="No tiene información para mostrar";
+                            tipo='error';
+                        } 
+                    break;
+
+                    case 'encuesta':
+                        if(data.nivelEncuesta.length>0){
+                            verModal=true;
+                        }else{
+                            mensaje="No tiene Imagenes para mostrar";
+                        }
+                    break;
+
+                    case 'ordenservicio':
+                        if(data.nivelOrdenServicio.length>0){
+                            verModal=true;
+                        }else{
+                            mensaje="No tiene Imagenes que mostrar a nivel Orden de Servicio";
+                        }
+                    break;
+
+                    default:
+                        growl.error("Nivel invalido");
+                }
+
+                if(verModal){
+                    parametros.data=data;
+                    verModalDetalle(parametros);
+                }else{
+                    if(tipo==='error'){
+                        growl.error(mensaje);
+                    }else{
+                        growl.info(mensaje);
+                    } 
+                }
+            }).error(function(data){
+                growl.error(data.message);
+            });
+        };
+
+        verModalDetalle = function(elementos){
+            ModalService.showModal({
+                templateUrl: 'views/templatemodal/templateModalEvidenciasPorNivel.html',
+                controller: 'modalSeguimientoNivelController',
+                scope: $scope,
+                inputs: {modalVO :elementos}
+            }).then(function(modal) {
+                modal.element.modal();
+            });
         };
 
         $scope.changeViewTab = function(tipo){

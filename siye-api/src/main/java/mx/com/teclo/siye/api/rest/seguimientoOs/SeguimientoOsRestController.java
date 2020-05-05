@@ -24,6 +24,7 @@ import mx.com.teclo.siye.negocio.service.seguimientoOs.SeguimientoOsService;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.IncidenDetailVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenIncidenciaDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleImagenesOS;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleIncidenciaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.MonitoreoIncidenciasVO;
@@ -96,18 +97,9 @@ public class SeguimientoOsRestController {
 		@RequestParam(value ="idCentroInstalacion") Integer idCentroInstalacion
 	) throws Exception, BusinessException, NotFoundException {
 		String mensajeErr = "";
-		try {
-			UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
-			List<MonitoreoIncidenciasVO> respuesta = monitoreoIncidenciaService.getMonIncidencias(usuario.getId(), fechaInicio, fechaFin, tipoBusqueda, valor, opcion, idCentroInstalacion, mensajeErr);
-			return new ResponseEntity<List<MonitoreoIncidenciasVO>>(respuesta, HttpStatus.OK);
-		} catch (Exception e) {
-			if(mensajeErr != null && !mensajeErr.isEmpty() && !mensajeErr.equals(null)) {
-				throw new NotFoundException(mensajeErr);
-			} else {
-				e.printStackTrace();
-				throw new NotFoundException("¡Ha ocurrido un imprevisto! , porfavor contacte al administrador");
-			}
-		}
+		UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
+		List<MonitoreoIncidenciasVO> respuesta = monitoreoIncidenciaService.getMonIncidencias(usuario.getId(), fechaInicio, fechaFin, tipoBusqueda, valor, opcion, idCentroInstalacion, mensajeErr);
+		return new ResponseEntity<List<MonitoreoIncidenciasVO>>(respuesta, HttpStatus.OK);
 	};
 	
 	@RequestMapping(value = "/getDetalleIncidenciasOS", method = RequestMethod.GET)
@@ -121,7 +113,7 @@ public class SeguimientoOsRestController {
 	@GetMapping(value="/getDetallePregunta")
 	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
 	public ResponseEntity<List<PreguntasDetalleVO>> getDetallePregunta(@RequestParam(value ="idOrden") Long idOrdenServicio,
-															         @RequestParam(value ="idEncuesta") Long idEncuesta) throws NotFoundException{	
+															           @RequestParam(value ="idEncuesta") Long idEncuesta) throws NotFoundException{	
 		List<PreguntasDetalleVO> respuesta = seguimientoService.getDetallePregunta(idOrdenServicio, idEncuesta);
 		if(respuesta.isEmpty()) {
 			throw new NotFoundException("No hay preguntas con respuesta");
@@ -136,18 +128,18 @@ public class SeguimientoOsRestController {
 		return new ResponseEntity<List<ImagenVO>>(listImagenes, HttpStatus.OK);
 	};
 	
-	@GetMapping(value="/getImgSeguimiento")
-	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
-	public ResponseEntity<List<ImagenVO>> getImagenSeguimiento(@RequestParam(value ="idOrdenServicio") Long idOrdenServicio,
-															   @RequestParam(value ="valor") Long valor,
-															   @RequestParam(value ="nivel") String nivel,
-															   @RequestParam(value ="clase") String clase) throws NotFoundException{	
-		List<ImagenVO> respuesta = seguimientoService.getDetalleImagenByNivel(idOrdenServicio, valor, nivel, clase);
-		if(respuesta.isEmpty()) {
-			throw new NotFoundException("No hay imagenes de "+clase);
-		}
-		return new ResponseEntity<List<ImagenVO>>(respuesta, HttpStatus.OK);
-	};
+//	@GetMapping(value="/getImgSeguimiento")
+//	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
+//	public ResponseEntity<List<ImagenVO>> getImagenSeguimiento(@RequestParam(value ="idOrdenServicio") Long idOrdenServicio,
+//															   @RequestParam(value ="valor") Long valor,
+//															   @RequestParam(value ="nivel") String nivel,
+//															   @RequestParam(value ="clase") String clase) throws NotFoundException{	
+//		List<ImagenVO> respuesta = seguimientoService.getDetalleImagenByNivel(idOrdenServicio, valor, nivel, clase);
+//		if(respuesta.isEmpty()) {
+//			throw new NotFoundException("No hay imagenes de "+clase);
+//		}
+//		return new ResponseEntity<List<ImagenVO>>(respuesta, HttpStatus.OK);
+//	};
 	
 	@GetMapping(value="/getDetalleIncidencia")
 	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
@@ -198,7 +190,21 @@ public class SeguimientoOsRestController {
 			throw new BusinessException(e.getMessage());
 		}
 		return new ResponseEntity<String>("Cancelacion de Ordenes de Servicio correcta", HttpStatus.OK);		
-	}
+	};
+	
+	
+	@GetMapping(value="/getDetalleImgOS")
+	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
+	public ResponseEntity<DetalleImagenesOS> getDetalleImgOS(@RequestParam(value ="idOrdenServicio") Long idOrdenServicio,
+															      @RequestParam(value ="valor") Long valor,
+															      @RequestParam(value ="nivel") String nivel,
+															      @RequestParam(value ="clase") String clase) throws NotFoundException{	
+		DetalleImagenesOS respuesta = seguimientoService.getDetalleImgOS(idOrdenServicio, valor, nivel, clase);
+		if(respuesta==null) {
+			throw new NotFoundException("Ha ocurrido un error");
+		}
+		return new ResponseEntity<DetalleImagenesOS>(respuesta, HttpStatus.OK);
+	};
 	
 	
 }

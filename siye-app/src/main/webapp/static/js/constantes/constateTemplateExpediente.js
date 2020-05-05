@@ -163,7 +163,7 @@ var includeDeseing=
     '</div>                                                                                                                                                                                                                                      ';
 	
 var includeDeseingModal=
-	'<div ng-if="showModalBuild" class="modal fade" id="{{idElementUp}}modalUpdateImage" tabindex="-1" role="dialog" aria-hidden="true" 		'+
+	'<div ng-show="showModalBuild" class="modal fade" id="{{idElementUp}}modalUpdateImage" tabindex="-1" role="dialog" aria-hidden="true" 		'+
 	'	data-keyboard="false" data-backdrop="static">                                                            								'+
 	'  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">                                 								'+
 	'    <div class="modal-content">                                                                             								'+
@@ -186,11 +186,11 @@ var includeDeseingModal=
 
 var includeCarouselModal=
 	'	<div ng-if="showModalCarousel" class="modal fade" id="{{idElementUp}}modalCarousel" tabindex="-1" role="dialog" 									'+
-	'						aria-labelledby="myModalLabel" aria-hidden="true">																			    '+
+	'					data-keyboard="false" data-backdrop="static"	 aria-hidden="true">																			    '+
 	'		<div class="modal-dialog modal-lg">                                                                                                             '+
 	'			<div class="modal-content">                                                                                                                 '+
 	'				<div class="modal-header">                                                                                                              '+
-	'					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>              '+
+	'					<button type="button" class="close" ng-click="hideModal()" aria-label="Close"><span aria-hidden="true">×</span></button>              '+
 	'					<h4 class="modal-title" id="gridSystemModalLabel">Imagenes</h4>                                             '+
 	'				</div>                                                                                                                                  '+
 	'				<div class="modal-body">                                                                                                                '+

@@ -108,12 +108,12 @@
 		                    	</div>
 							</div><br/><br/>
 							<div class="row">
-								<div class="col-md-3">
+								<div class="col-xs-3 col-md-3">
 									<h3 class="box-title">
 										Registros Encontrados: <span>{{ (ordenServicio.imagenes | filter:view.filter).length }}</span>
 									</h3>
 								</div>
-								<div class="col-md-3">
+								<div class=" col-xs-3 col-md-3">
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-list-alt"></i>
@@ -125,7 +125,7 @@
 										</select>
 								</div>
 								</div>
-								<div class="col-md-1">
+								<div class="col-xs-2 col-md-1">
 									<span ng-if="clasificCatalogo.showClasifPregunta">Pregunta</span>
 									<label ng-if="clasificCatalogo.showClasifPregunta" 
 		                            	class="containerCheck">
@@ -134,24 +134,22 @@
 		                                <span class="checkmark"></span>
 		                            </label>
 								</div>
-								<div class="col-md-3">
+								<div class="{{clasificCatalogo.showClasifPregunta ? 'col-xs-4' : 'col-xs-6'}} col-md-3">
 									<div class="form-group">
-	                    				<div class="row">
-	                           				<div class="input-group">
-	                               				<input id="searchsomething" type="text" class="form-control" placeholder="Buscar por filtro" 
-	                               					ng-model="view.filter">
-	                               				<span class="input-group-addon"><i class="fa fa-search"></i></span>
-	                           				</div>
-	                    				</div>
+                           				<div class="input-group">
+                               				<input id="searchsomething" type="text" class="form-control" placeholder="Buscar por filtro" 
+                               					ng-model="view.filter">
+                               				<span class="input-group-addon"><i class="fa fa-search"></i></span>
+                           				</div>
 	                				</div>
 								</div>
-								<div class="col-md-2">
-									<div class="col-md-6">                                                                                              
+								<div class="col-xs-6 col-md-2 {{isViewMobile ? 'float-rigth-icon' : ''}}">
+									<div class="col-xs-6 col-md-6">                                                                                              
 										<Button class="btn btn-danger pull-right" ng-click="showModalImages()">
 											<i class="fa fa-camera" aria-hidden="true"></i>                                                                                              
 										</Button>                                                                                                                                                
 									</div>                                                                                                                                                       
-									<div class="col-md-6">                                                                               
+									<div class="col-xs-6 col-md-6">                                                                               
 										<Button class="btn btn-danger pull-right" ng-click="deleteAllImage()" ng-disabled="ordenServicio.imagenes.length == 0">                                               
 											<i class="fa fa-trash fa-lg" aria-hidden="true"></i>                                                                                                 
 										</Button>                                                                                                                                                
@@ -161,7 +159,7 @@
 						</div>
 						
 						<div class="box-body table-responsive no-padding">
-							<table id="fhNoLabTable" class="table table-hover header-fixed">
+							<table id="fhNoLabTable" class="table table-striped table-xs table-sm table-hover header-fixed table-exp-resp">
 								<thead>
 									<tr>
 										<th class="wrap-text">NOMBRE</th>
@@ -174,8 +172,15 @@
 								</thead>
 								<tbody>
 									<tr dir-paginate="imgVO in ordenServicio.imagenes | filter: view.filter | orderBy:order:reverse | itemsPerPage: view.rowsPerPage"
-										pagination-id="ordenServicio.imagenes">
-										<td class="center"><span>{{imgVO.nbExpedienteODS}}</span></td>		                    	
+										pagination-id="imagenes">
+										<td class="center">
+											<a tooltip-placement="top"
+												tooltip="{{imgVO.nbExpedienteODS}}">
+												<span>
+													{{imgVO.nbExpedienteODS.length > 14 ? (imgVO.nbExpedienteODS.substr(0,14)+'...') : imgVO.nbExpedienteODS}}
+												</span>
+											</a>
+										</td>		                    	
 										<td class="center"><span>{{imgVO.size | prettySize}}</span></td>
 										<td class="center">
 											<label ng-if="imgVO.nbNivel.length > 44" tooltip-placement="top"
@@ -213,7 +218,7 @@
                             <div class="fixed-table-pagination" style="display: block;">
                                 <rows-per-page rows="view.rowsPerPage"  array="ordenServicio.imagenes"></rows-per-page>
                                 <div class="pull-right pagination">
-                                    <dir-pagination-controls class="pagination" pagination-id="ordenServicio.imagenes"></dir-pagination-controls>
+                                    <dir-pagination-controls class="pagination" pagination-id="imagenes"></dir-pagination-controls>
                                 </div>
                             </div>
                         </div>
@@ -225,7 +230,7 @@
 		<!-- MODAL CARGA DE IMAGENES -->
 		<form role="form" name="formUploadImage" novalidate>
 			<div class="modal fade" id="modalIploadImage" tabindex="-1" role="dialog"		
-					aria-labelledby="myModalLabel" aria-hidden="true">						
+					aria-hidden="true">						
 				<div class="modal-dialog modal-lg">                                                     
 					<div class="modal-content">                                                         
 						<div class="modal-header">                                                      

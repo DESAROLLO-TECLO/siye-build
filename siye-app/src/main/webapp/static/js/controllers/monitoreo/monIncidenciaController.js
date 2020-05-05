@@ -196,8 +196,11 @@ angular.module(appTeclo).controller('monIncidenciaController',
 	
 	$scope.infoGral = function(){
 		$scope.flags.showParametrosOS = false;
+		$scope.flags.campoValorRequerido = false,
+		$scope.flags.labelValorRequerido = "Valor",
 		$scope.params.tipoBusqueda = -1;
 		$scope.params.valor = "";
+		$scope.formBoxBusqueda.valor.$setPristine();
 		$scope.params.opcion = 1;
 		$scope.params.nbCentroInstalacion = "";
 		$scope.params.idCentroInstalacion = -1;
@@ -219,28 +222,30 @@ angular.module(appTeclo).controller('monIncidenciaController',
 	}
 	//Consulta arbol de incidencia de orden<Proceso<Encuesta>>>
 	$scope.showLineaTiempo=function(orden){
-		let idOrden= orden.idOrdenServicio;
-		let idPlan=orden.idPlan;
+		let idOrden = orden.idOrdenServicio;
+		let idPlan = orden.idPlan;
 		monIncidenciaService.getDetalleIncidenciasOS(idOrden,idPlan).success(function(data) {
-		    if (data!=null) {
-		    	$scope.flags.pantallaLTiempo=true;
-		    	$scope.orden=data;
-		   		scrollDetail();
-		    	}else
-		    	growl.warning("No se encontro informacion")
-				}).error(function(e) {
+			if (data != null) {
+				$scope.flags.pantallaLTiempo = true;
+				$scope.orden = data;
+				scrollDetail();
+			}else{
+				growl.warning("No se encontro informacion")
+			}
+		}).error(function(e) {
 			$scope.flags.pantallaLTiempo=false;
 			$scope.orden = [];
-		    growl.warning(e.message, { ttl: 5000 });
+			growl.warning(e.message, { ttl: 5000 });
 		});
-		
 	};
+	
 	$scope.regresar=function(){
-		$scope.flags.pantallaLTiempo=false;
+		//$scope.consultaDetalle();
+		$scope.flags.pantallaLTiempo = false;
 		$scope.orden = [];
 		scrollDetailDestroy();
-	}
-
+	};
+	
 	//Funcion para destruir el slimscrol de la linea de tiempo(Muestra toda la informacion en columna)
 	scrollDetailDestroy = function() {
 		$('#scrollDetail').slimscroll("destroy");

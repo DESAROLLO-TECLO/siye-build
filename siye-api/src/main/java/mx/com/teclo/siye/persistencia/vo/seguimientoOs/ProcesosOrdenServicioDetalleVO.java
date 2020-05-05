@@ -15,6 +15,7 @@ public class ProcesosOrdenServicioDetalleVO {
 	private String nbPlan;
 	private Date finicio;
 	private Date ffin;
+	private String fhDiferencia;
 	private List<ProcesoDetalleVO> procesos;
 	
 	
@@ -149,6 +150,18 @@ public class ProcesosOrdenServicioDetalleVO {
 	 */
 	public void setProcesos(List<ProcesoDetalleVO> procesos) {
 		this.procesos = procesos;
+	}
+	/**
+	 * @return the fhDiferencia
+	 */
+	public String getFhDiferencia() {
+		return fhDiferencia;
+	}
+	/**
+	 * @param fhDiferencia the fhDiferencia to set
+	 */
+	public void setFhDiferencia(String fhDiferencia) {
+		this.fhDiferencia = fhDiferencia;
 	}
 	
 	

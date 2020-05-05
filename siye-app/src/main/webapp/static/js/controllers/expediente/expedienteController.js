@@ -6,6 +6,8 @@ angular.module(appTeclo).config(function (LightboxProvider) {
 angular.module(appTeclo).controller('expedienteController',
     function($scope,$timeout,$filter,showAlert,growl,expedienteService,Lightbox){
 
+	$scope.isViewMobile=false;
+	
 	const constnteCDClaisfic={
 			TODOS:"TD",
 			ORDEN_SERVICIO:"OS",
@@ -357,9 +359,9 @@ angular.module(appTeclo).controller('expedienteController',
 			if(e.descripcion != undefined){
 	           	growl.error(e.descripcion,{ ttl: 4000 });
 	        }else if(e.message != undefined) {
-	           	growl.error(e.status.message,{ ttl: 4000 });
+	           	growl.error(e.message,{ ttl: 4000 });
 	        }else if(typeof e.status === 'string'){
-	           	growl.error(status,{ ttl: 4000 });
+	           	growl.error(e.status,{ ttl: 4000 });
 	        }else {
 	            showAlert.error('Falló la petición, por favor intente de nuevo');
 	        }
@@ -369,12 +371,25 @@ angular.module(appTeclo).controller('expedienteController',
             	growl.error(e.status.descripcion,{ ttl: 4000 });
             }else if(e.status.message != undefined) {
             	growl.error(e.status.message,{ ttl: 4000 });
-            }else if(typeof status === 'string'){
-            	growl.error(status,{ ttl: 4000 });
+            }else if(typeof e.status === 'string'){
+            	growl.error(e.status,{ ttl: 4000 });
             }else {showAlert.error('Falló la petición');} 
 		}else{
 			growl.error(e,{ ttl: 4000 });
 		 }
 	};
+	
+	showInMobile=function(){
+		var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+		if (isMobile) {
+			$scope.isViewMobile=true;
+			return true;
+		} else {
+			$scope.isViewMobile=false;
+			return false;
+		}
+	};
+	
+	showInMobile();
 	
 });

@@ -20,6 +20,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.PreguntasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.SeccionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.expedienteImg.CompresorImgConfigDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.expedienteImg.ExpedienteImgDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
@@ -31,6 +32,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.configuracion.ConfiguracionO
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.PreguntasDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.expedientesImg.CompresorImgConfigDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.expedientesImg.ExpedientesImgDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
@@ -40,6 +42,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.tipoexpediente.TipoExpedient
 import mx.com.teclo.siye.persistencia.mybatis.dao.proceso.ProcesoDAO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.CargaExpedienteImgVO;
+import mx.com.teclo.siye.persistencia.vo.expedientesImg.CompresorImgConfigVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelPreguntaVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelProcesoVO;
@@ -94,7 +97,8 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 	@Autowired
 	private CatalogoService catalogoService;
 	
-	
+	@Autowired
+	private CompresorImgConfigDAO compresorImgConfigDAO;
 
 	private static Boolean ACTIVO = true, BORRAR = false;
 	private static String PLACA = "PLACA", OS = "ORDEN_SERVICIO", VIN = "VIN";
@@ -459,5 +463,12 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 		
 		return respuesta;
 	}
-
+	
+	@Transactional(readOnly=true)
+	public List<CompresorImgConfigVO> getAllConfigCompress(){
+		List<CompresorImgConfigDTO> listConfDTO=compresorImgConfigDAO.getAllConfoCompress();
+		List<CompresorImgConfigVO> listConfi=ResponseConverter.converterLista(new ArrayList<>(), listConfDTO,CompresorImgConfigVO.class);
+		
+		return listConfi;
+	}
 }

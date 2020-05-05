@@ -62,6 +62,7 @@ appt.directive('updateImage',
 	    	  scope.showProgressBar=false;
 	    	  scope.totalImagesPendig=0;
 	    	  scope.closedFiles=0;
+	    	  scope.listConfigCompress=undefined;
 	    	  
 	    	//Variable con la injeccion por defecto del servicio para expedientes
 	    	  var expedienteService=$injector.get('expedienteService')
@@ -72,17 +73,6 @@ appt.directive('updateImage',
 	    		  bigCurrentPage:1,
 	    		  bigTotalItems:scope.listImages.length
 	    	  });
-	    	  
-	    	  scope.viewPag={
-	    			  currentPage 	: 0,
-	    		      pageSize		: 2,
-	    		      pages 		: []
-	    	  };
-	    	  
-	    	  scope.view={
-	    			  rowsPerPage:2,
-	    			  filter:null
-	    	  };
 	    	  
 	    	  scope.showCombo=false;
 	    	  
@@ -136,13 +126,13 @@ appt.directive('updateImage',
 			  let idDrop=('#zonaDrop'+scope.idElementUp);
 			  var divDropable= $element.find(idDrop);
 			  
-			  const progressBar = document.querySelector('.progress-bar-ex-per[role="progressbar"]');
-			  const remainingBar = document.querySelector('.progress-bar-ex-per[role="remaining"]');
 			  
 			//Metodo principal que ejecuta toda la configuración inicial de la directiva
 			  async function intDirective(){
-	    		  
+				  
 				  await scope.valdComboTpDocuemnt();
+				  
+				  await scope.getConfigComponentBD();
 				  
 				  $timeout(function() {
 					  scope.complementsDataImage();
@@ -253,9 +243,55 @@ appt.directive('updateImage',
 	    		  return lisFiles;
 	    	  };
 	    	  
+	    	  scope.getConfigComponentBD=function(){
+	    		  expedienteService.getConfigCompressImg().success(function(response){
+		    		 scope.listConfigCompress=response;
+		    	 }).error(function (error){
+		    		 scope.listConfigCompress=undefined;
+		    	 });
+	    		  
+	    	  };
+	    	  
+	    	  scope.clasifiQualityByPorcent=function(nuPorcentCompress){
+	    		  switch(nuPorcentCompress){
+	    		  	case 90:
+	    		  		return 0;
+	    		  	case 80:
+	    		  		return 0.2;
+	    		  	case 70:
+	    		  		return 0.4;
+	    		  	case 60:
+	    		  		return 0.6;
+	    		  	case 40:
+	    		  		return 0.8;
+	    		  	case 0:
+	    		  		return 1;
+	    		  	case 5:
+	    		  		return NaN;
+	    		  }
+	    	  };
+	    	  
+	    	  scope.qualityCompressPorcent=function(sizeImage){
+	    		  let quality=0.2;// por defecto comprime la imagen un 83.90%
+	    		  let kb=1024;
+	    		  if(scope.listConfigCompress != undefined && scope.listConfigCompress.length){
+	    			  let i;
+		    		  for(i=0; i<scope.listConfigCompress.length; i++){
+		    			  let sizeInicalBytes=(scope.listConfigCompress[i].nuPesoImgInicial * kb);
+		    			  let sizeFinalBytes=(scope.listConfigCompress[i].nuPesoImgFinal * kb);
+		    			  if(sizeImage >= sizeInicalBytes && sizeImage <= sizeFinalBytes){
+		    				  quality=scope.clasifiQualityByPorcent(scope.listConfigCompress[i].nuPorcentaje);
+		    				  break;
+		    			  }
+		    		  }
+	    		  }
+	    		  return quality;
+	    	  };
+	    	  
 	    	  //Metodo que permite comprimir la imagen
 	    	  scope.getCompress=function(){
-	    		  
+	    		  let progressBar = document.querySelector('.progress-bar-ex-per[role="progressbar"]');
+				  let remainingBar = document.querySelector('.progress-bar-ex-per[role="remaining"]');
 	    		  if(scope.maxNuImage != undefined && scope.listFiles.length >= scope.maxNuImage){
 	    			  scope.listFilesExcedeSize=[];
 	    			  progressBar.style.width = '100%';
@@ -273,9 +309,41 @@ appt.directive('updateImage',
     			 }
 	    		  
 				  let fileItem=scope.listFilesExcedeSize.pop();
+    			  let qualityConfig=scope.qualityCompressPorcent(fileItem.size);
+    			 
+    			  let compress = new Compress();
+    			  let arrayFiles=new Array();
+    			  arrayFiles.push(fileItem);
+    			  compress.compress(arrayFiles, {
+    				    size: 4, // the max size in MB, defaults to 2MB
+    				    quality: qualityConfig, // the quality of the image, max is 1,
+    				    maxWidth: 1920, // the max width of the output image, defaults to 1920px
+    				    maxHeight: 1920, // the max height of the output image, defaults to 1920px
+    				    resize: true, // defaults to true, set false if you do not want to resize the image width and height
+    				  }).then(function (dataList){
+    					  let dataResult=dataList[0];
+    					  let typeUni=dataResult.ext.slice(dataResult.ext.lastIndexOf('/') + 1);
+    					  result=scope.urltoFile(dataResult.data, dataResult.alt, typeUni);
+	    			    	 let unic=(scope.listFiles.length+1);
+	    			    	 result.unic=unic;
+	    			    	 result.isSuccess=false;
+		        		  	 let type = '|' + result.type.slice(result.type.lastIndexOf('/') + 1) + '|';
+		        		  	 let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1);
+		        		  	 result.isImage=isImg;
+		        		  	 result.exedeSize=false;
+		        		  	 result.tpDocumentList=angular.copy(scope.tpDocumentList);
+		        		  	 scope.logobsResult(result);
+		        		  	 scope.listFiles.unshift(result);
+		        		  	 scope.closedFiles++;
+		        		  	 scope.initCalculatePorcentajeProgressBar();
+		        		  	 if(scope.listFilesExcedeSize.length > 0){	
+		        		  		scope.getCompress();
+		        		  		return;
+		        		  	 }
+    				  });
     			  
-    			  new ImageCompressor(fileItem, {
-	    			    quality: 0.2,
+    			  /* new ImageCompressor(fileItem, {
+	    			    quality: qualityConfig,
 	    			    success(result) {
 	    			    	 //scope.$apply(function(){
 	    			    	 let unic=(scope.listFiles.length+1);
@@ -305,7 +373,7 @@ appt.directive('updateImage',
 		        		  		return;
 		        		  	 }
 	    			    },
-	    			  });  
+	    			  }); */
 	    			  
 	    	 };
 	    	 
@@ -324,7 +392,8 @@ appt.directive('updateImage',
 	    		 let percentage = Math.min(Math.max(Math.floor(scope.closedFiles / scope.totalImagesPendig * 100), 0), 100);
 	    		 // calculate remaining percentage
 	    		 let remaining = 100-percentage;
-
+	    		 let progressBar = document.querySelector('.progress-bar-ex-per[role="progressbar"]');
+				 let remainingBar = document.querySelector('.progress-bar-ex-per[role="remaining"]');
 	    		 // apply percentage
 	    		 progressBar.style.width = percentage + '%';
 	    		 progressBar.innerText = isNaN(percentage) ? '100%' : (percentage  + '%');
@@ -370,7 +439,8 @@ appt.directive('updateImage',
 	        		  for(i=0; i<files.length; i++){
 
 	        		  	 if(scope.maxNuImage != undefined && scope.listFiles.length >= scope.maxNuImage){
-	        		  		 
+	        		  		let progressBar = document.querySelector('.progress-bar-ex-per[role="progressbar"]');
+	        				let remainingBar = document.querySelector('.progress-bar-ex-per[role="remaining"]');
 	        		  		progressBar.style.width = '100%';
 	        		  		progressBar.innerText = '100%';
 	       	    		 	remainingBar.style.width ='0%';
@@ -875,7 +945,7 @@ appt.directive('updateImage',
 				  },200);
 			  };
 			  
-			  scope.hideModal=function(srcB64,nemaImg){
+			  scope.hideModal=function(){
 				  $('#'+scope.idElementUp+'modalCarousel').modal('hide');
 				  $('.modal-backdrop').remove();
 				  scope.showModalCarousel=false;
@@ -918,7 +988,7 @@ appt.directive('customOnChange', function() {
         		}
     		}
         	
-            element.change(async function(event){
+            element.change(function(event){
             	
             	let files=element[0].files;
                 let filesResult=[];
