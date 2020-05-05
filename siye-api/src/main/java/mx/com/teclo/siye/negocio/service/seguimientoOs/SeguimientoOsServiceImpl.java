@@ -273,9 +273,9 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 	
 	@Override
 	@Transactional
-	public void hacerCorteDiario(String fecha, Long idUsuario) throws BusinessException{
+	public String hacerCorteDiario(String fecha, Long idUsuario) throws BusinessException{
 		Long ST_CANCELAR_OS = 1L;
-		Date fechaModificacion = new Date(); 		
+		Date fechaModificacion = new Date();
 		//Coonsultar Centro de Instalacion 
 		List<Long> idCentroInstalacion = gerenteSupervisorDAO.getIdCentroInstalacion(idUsuario);
 		
@@ -293,6 +293,7 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 						os.setStSeguimiento(seguimientoDTO);
 						ordenServicioDAO.update(os);					
 					}
+				   return "Cancelacion de Ordenes de Servicio correcta";
 				}else {
 					// error  sin tipo de cancelacion 
 					throw new BusinessException("No existe el estatus de cancelación ");
@@ -304,7 +305,7 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 		}else {
 			// sin centro de instalacion 
 			throw new BusinessException("No tiene Centro de Instalación Asignados ");
-		}	
+		}
 	}
 
 	@Transactional
