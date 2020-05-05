@@ -1,0 +1,87 @@
+.encabezadoOSPadre{
+/* 	border-bottom: 0px !important; */
+	padding: 0px !important;
+	
+/* 	border-bottom: 0px !important; */
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	color: #ffffff;
+	background-color: #cf0a2c;
+/* 	border: 1px solid #ce092b; */
+}
+.encabezadoOSHijo{
+	border-top: 0px !important;
+	padding-top: 0px !important;
+}
+.cursorPointer{
+	cursor: pointer;
+}
+
+.incidenciaSinOrdenServicio{
+	background-color: #f4e2c9 !important;
+}
+
+.incidenciaSinOrdenServicio:hover {
+    background-color: #f4e2c9 !important;
+}
+
+.etiquetaColor {
+	display: inline-block;
+	min-width: 0.7143rem;
+	padding: 0.2143rem 0.0rem;
+	font-size: 0.8857rem;
+	font-weight: 600;
+	line-height: 1;
+	vertical-align: baseline;
+/* 	white-space: nowrap; */
+	text-align: center;
+	border-radius: 0.7143rem;
+	color: #ffffff;
+}
+
+.fieldsetModalIncidencias {
+	padding: 0.3rem 1rem 0 1rem;
+	margin:0;
+	min-height: 360px;
+}
+
+.rowModalIncidencias {
+	padding-bottom: 10px;
+}
+
+.imgNotFount{
+	min-height: 100%;
+	display: flex;
+	align-content: center;
+	justify-content: center;
+}
+
+.table-pagination-IncidenciasModal{
+	display: flex !important;
+	flex-wrap: wrap !important;
+	justify-content: center;
+}
+
+.tableMonIncidencias>.table>thead>tr>th, .table-responsive>.table>tbody>tr>th,
+.tableMonIncidencias>.table>tfoot>tr>th, .table-responsive>.table>thead>tr>td,
+.tableMonIncidencias>.table>tbody>tr>td, .table-responsive>.table>tfoot>tr>td{
+	white-space: initial !important;
+}
+
+@media only screen and (max-width: 801px){	
+/* 	.header-fixed thead,  */
+/* 	.header-fixed tbody tr { */
+/*    		display: table; */
+/*    		table-layout: fixed; */
+/* 	} */
+/* 	.header-fixed thead tr th, */
+/* 	.header-fixed tbody tr td{ */
+/* 		font-size: .87rem; */
+/* 	} */
+
+
+.modalIncidenciasMonitoreo {
+    width: 95% !important;
+}
+
+}

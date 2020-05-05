@@ -7,12 +7,10 @@ public class ExpedienteNivelProcesoVO {
 	private Long idProceso;
 	private String cdProceso;
 	private Long nuMaxImg;
-	private String cdClasif;
+	private String cdNivel;
 	private String nbNivel;
 	private String name;
-	private List<ImagenVO> imagenes;
-	private List<ExpedienteNivelEncuestaVO> listImageClasif;
-	
+	private List<ExpedienteNivelEncuestaVO> listEncuestas;
 	/**
 	 * @return the idProceso
 	 */
@@ -50,40 +48,16 @@ public class ExpedienteNivelProcesoVO {
 		this.nuMaxImg = nuMaxImg;
 	}
 	/**
-	 * @return the imagenes
+	 * @return the cdNivel
 	 */
-	public List<ImagenVO> getImagenes() {
-		return imagenes;
+	public String getCdNivel() {
+		return cdNivel;
 	}
 	/**
-	 * @param imagenes the imagenes to set
+	 * @param cdNivel the cdNivel to set
 	 */
-	public void setImagenes(List<ImagenVO> imagenes) {
-		this.imagenes = imagenes;
-	}
-	/**
-	 * @return the listImageClasif
-	 */
-	public List<ExpedienteNivelEncuestaVO> getListImageClasif() {
-		return listImageClasif;
-	}
-	/**
-	 * @param listImageClasif the listImageClasif to set
-	 */
-	public void setListImageClasif(List<ExpedienteNivelEncuestaVO> listImageClasif) {
-		this.listImageClasif = listImageClasif;
-	}
-	/**
-	 * @return the cdClasif
-	 */
-	public String getCdClasif() {
-		return cdClasif;
-	}
-	/**
-	 * @param cdClasif the cdClasif to set
-	 */
-	public void setCdClasif(String cdClasif) {
-		this.cdClasif = cdClasif;
+	public void setCdNivel(String cdNivel) {
+		this.cdNivel = cdNivel;
 	}
 	/**
 	 * @return the nbNivel
@@ -108,5 +82,17 @@ public class ExpedienteNivelProcesoVO {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	/**
+	 * @return the listEncuestas
+	 */
+	public List<ExpedienteNivelEncuestaVO> getListEncuestas() {
+		return listEncuestas;
+	}
+	/**
+	 * @param listEncuestas the listEncuestas to set
+	 */
+	public void setListEncuestas(List<ExpedienteNivelEncuestaVO> listEncuestas) {
+		this.listEncuestas = listEncuestas;
 	}
 }

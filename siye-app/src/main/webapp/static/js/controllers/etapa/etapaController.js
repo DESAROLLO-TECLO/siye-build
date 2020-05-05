@@ -8,13 +8,24 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
     $scope.ffin = etapaInfo.data[0].fhAtencionFin;
     $scope.fcita = etapaInfo.data[0].fhCita;
     $scope.idOS = $rootScope.idOrdenServ;
+    $scope.formato = '0';
+    $scope.tiempoTranscurridoText = "Sin Iniciar";
 
-    if($scope.finicio != null && $scope.ffin != null){
-        $scope.fechaHoy = $scope.finicio - $scope.ffin;
-    }else{
-        $scope.fechaHoy = null;
-        $scope.fechaHoyText = "Sin Validar";
-    }
+    
+    	let parcial=new Date();
+    	$scope.tiempoTranscurridoOrden=0;
+        let finit =  etapaInfo.data[0].fhAtencionIni;
+        let ffin =   etapaInfo.data[0].fhAtencionFin;
+        if(finit != null && ffin != null){
+            $scope.tiempoTranscurridoOrden += ffin - finit;
+        }else if(finit != null)
+        {
+        	$scope.tiempoTranscurridoOrden += parcial-finit;
+        }
+    
+    
+
+
     $scope.stValidarCheck = false;
 
     $scope.numMaxImg = etapaInfo.data[0].numMaxImagenes;
@@ -69,7 +80,7 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
         var idPlan = $scope.dataEtapa.plan.idPlan;
         var idOrden = $scope.dataEtapa.idOrdenServicio;
         etapaService.getPlan(idPlan, idOrden).success(function(data){
-            $scope.dataPlan = data;
+            $scope.dataPlan = data;       
             var dplength = $scope.dataPlan.length;
             encuestaService.primerProceso=$scope.dataPlan[0].proceso.idProceso;
             for(var i = 0; i < dplength; i++){
@@ -91,8 +102,41 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
         }).error(function(error){
             console.log(error);
         });
+    };
+    
+    cambiaTiempo = function(tiempoTranscurridoFormato) {
+	    if(tiempoTranscurridoFormato)
+		{
+	  	  var ms = tiempoTranscurridoFormato % 1000;
+	  	tiempoTranscurridoFormato = (tiempoTranscurridoFormato - ms) / 1000;
+		  var secs = tiempoTranscurridoFormato % 60;
+		  tiempoTranscurridoFormato = (tiempoTranscurridoFormato - secs) / 60;
+		  var mins = tiempoTranscurridoFormato % 60;
+		  var hrs = (tiempoTranscurridoFormato - mins) / 60
+
+    $scope.segundo = secs;
+    $scope.minuto = mins;
+    $scope.hora = hrs;
+		}
+};
+
+consultarTransportistas = function(){
+	$scope.transportista=[];
+    var idVeh = $scope.dataEtapa.vehiculo.idVehiculo;
+    if(idVeh != null ){
+        etapaService.getTransportistasVehiculo(idVeh).success(function(data){
+            $scope.transportista = data;
+            console.log(data);
+        }).error(function(error){
+            console.log(error);
+            $scope.sintransportista = [];
+        });
     }
+};
+
+consultarTransportistas();
 
     consultaPlan();
+    cambiaTiempo($scope.tiempoTranscurridoOrden);
 
 });

@@ -34,6 +34,8 @@ public class TipoVehiculoDTO implements Serializable {
 	private Long idUsrModifica;
 	@Column(name = "FH_MODIFICACION")	
 	private Date fhModificacion;
+	@Column(name = "ST_TIPO_VEHICULO")
+	private Long stTipoVehiculo;
 	
 	public Long getIdTipoVehiculo() {
 		return idTipoVehiculo;
@@ -89,6 +91,13 @@ public class TipoVehiculoDTO implements Serializable {
 	public void setFhModificacion(Date fhModificacion) {
 		this.fhModificacion = fhModificacion;
 	}
+	public Long getStTipoVehiculo() {
+		return stTipoVehiculo;
+	}
+	public void setStTipoVehiculo(Long stTipoVehiculo) {
+		this.stTipoVehiculo = stTipoVehiculo;
+	}
+	
 	
 	
 	

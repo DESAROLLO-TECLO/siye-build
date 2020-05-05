@@ -70,6 +70,10 @@ public class VehiculoDTO implements Serializable {
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	@JoinColumn(name="ID_CONCESION", referencedColumnName="ID_CONCESION")
 	private ConsecionarioDTO consecionario;
+	
+	@Column(name = "ST_VEHICULO")
+	private Long stVehiculo;
+	
 
 	public Long getIdVehiculo() {
 		return idVehiculo;
@@ -181,6 +185,14 @@ public class VehiculoDTO implements Serializable {
 
 	public void setConsecionario(ConsecionarioDTO consecionario) {
 		this.consecionario = consecionario;
+	}
+
+	public Long getStVehiculo() {
+		return stVehiculo;
+	}
+
+	public void setStVehiculo(Long stVehiculo) {
+		this.stVehiculo = stVehiculo;
 	}
 	
 

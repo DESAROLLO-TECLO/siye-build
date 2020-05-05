@@ -51,11 +51,18 @@ appt.directive('updateImage',
 	      template:'<div id="containerDirective"></div>',
 	      link: function(scope, $element, attrs) {
 	    	  
-	    	   var listImg = scope.$eval(attrs.listImages);
-	    	   
-	    	   scope.listImages=listImg == undefined ? [] : listImg;
+	    	  const imageCompressor = new ImageCompressor();
 	    	  
-	    	  scope.imagePreview=new Object();	    	  
+	    	  var listImg = scope.$eval(attrs.listImages);
+	    	   
+	    	  scope.listImages=listImg == undefined ? [] : listImg;
+	    	  scope.listFiles=new Array();
+	    	  scope.listFilesExcedeSize=new Array();
+	    	  scope.imagePreview=new Object();
+	    	  scope.showProgressBar=false;
+	    	  scope.totalImagesPendig=0;
+	    	  scope.closedFiles=0;
+	    	  scope.listConfigCompress=undefined;
 	    	  
 	    	//Variable con la injeccion por defecto del servicio para expedientes
 	    	  var expedienteService=$injector.get('expedienteService')
@@ -66,17 +73,6 @@ appt.directive('updateImage',
 	    		  bigCurrentPage:1,
 	    		  bigTotalItems:scope.listImages.length
 	    	  });
-	    	  
-	    	  scope.viewPag={
-	    			  currentPage 	: 0,
-	    		      pageSize		: 2,
-	    		      pages 		: []
-	    	  };
-	    	  
-	    	  scope.view={
-	    			  rowsPerPage:2,
-	    			  filter:null
-	    	  };
 	    	  
 	    	  scope.showCombo=false;
 	    	  
@@ -130,203 +126,99 @@ appt.directive('updateImage',
 			  let idDrop=('#zonaDrop'+scope.idElementUp);
 			  var divDropable= $element.find(idDrop);
 			  
+			  
 			//Metodo principal que ejecuta toda la configuración inicial de la directiva
 			  async function intDirective(){
-	    		  
+				  
 				  await scope.valdComboTpDocuemnt();
+				  
+				  await scope.getConfigComponentBD();
 				  
 				  $timeout(function() {
 					  scope.complementsDataImage();
-				  },500);
-	    	
-		    	  scope.configPages();
+				  },450);
 	    	  };
 	    	  
 	    	  scope.complementsDataImage=function(){
 	    		//se asigna un estatus a las imagenes que se obtienen de base de datos, 
 		    	  //sirve de manera local para invocar o no el servicio de eliminacion en back, y se asigna un parametro para identificacion local
 		    	  angular.forEach(scope.listImages, function(item, key) {
-		    		  item.unic=(key+1);
-		    		  item.strBase64=item.lbExpedienteODS;
-		    		  
-		    		  if(item.idExpedienteODS != undefined){
-		    			  item.isSuccess=true;
-		    			  let file= scope.urltoFile(item.lbExpedienteODS, item.nbExpedienteODS, item.cdTipoArchivo);
-		    			  item.name=file.name;
-		    			  item.size=file.size;
-		    			  item.tpDocumentList=angular.copy(scope.tpDocumentList);
-		    			  let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(item.cdTipoArchivo) !== -1);
-		    			  item.isImage=isImg;
-		    			  
-		    			  // SE VALIDA SI TIENE UN TP DE DOCUMENTO PREBIAMENTE ASIGNADO
-		    			  if(item.idTipoExpediente != undefined){
-		    				  let i;
-		    				  let a=item.tpDocumentList;
-		    				  for(i=0; i<a.length; i++){
-		    					  
-		    					  if(item.idTipoExpediente == a[i].idTipoExpediente){
-		    						  item.tipoExpediente = a[i];
-		    						  $timeout(function() {
-		    							  $("#select2-tpDoc"+item.unic+''+scope.idElementUp+"-container").text(item.tipoExpediente.nbTipoExpediente);
-		    						  },500);
-		    						  break;
-		    					  }
-		    				  }
-		    			  }
-		    			  
-		    		  }else{
-		    			  item.isSuccess=false;
-		    		  }
+		    		  let file= scope.urltoFile(item.lbExpedienteODS, item.nbExpedienteODS, item.cdTipoArchivo);
+		    		  file.unic=(key+1);
+		    		  file.strBase64=item.lbExpedienteODS;
+		    		  file.tpDocumentList=angular.copy(scope.tpDocumentList);
+		    		  let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(item.cdTipoArchivo) !== -1);
+		    		  file.isImage=isImg;
+		    		  file.isSuccess = item.idExpedienteODS != undefined;
+		    		  file.idExpedienteODS=item.idExpedienteODS;
+
+		    		// SE VALIDA SI TIENE UN TP DE DOCUMENTO PREBIAMENTE ASIGNADO
+		    		  if(item.idTipoExpediente != undefined){
+	    				  let i;
+	    				  let a=file.tpDocumentList;
+	    				  for(i=0; i<a.length; i++){
+	    					  
+	    					  if(item.idTipoExpediente == a[i].idTipoExpediente){
+	    						  file.tipoExpediente = a[i];
+	    						  $timeout(function() {
+	    							  $("#select2-tpDoc"+file.unic+''+scope.idElementUp+"-container").text(file.tipoExpediente.nbTipoExpediente);
+	    						  },500);
+	    						  break;
+	    					  }
+	    				  }
+	    			  }
+		    		  //hasta aqui control Z
+		    		  scope.listFiles.push(file);
 		    	  });
 	    	  };
 	    	  
-	    	  /*scope.$watch('listImages', function(newVaue,oldValue) {
-	    		  
-	    		  if(newVaue == undefined && oldValue != undefined){
-	    			  scope.listImages=new Array();
-	    		  }else if(newVaue != undefined && oldValue== undefined){
-	    			  intDirective();
-	    		  }else if(newVaue != undefined && oldValue!= undefined){
-	    			  if(newVaue.length == oldValue.length){
-	    				  if(!scope.isEqualsList(newVaue,oldValue))// si existen cambios
-	    					  intDirective();
-	    			  }else if(newVaue.length != oldValue.length){
-	    				  intDirective();
-	    			  }
-	    		  }
-			  });*/
-	    	  
-	    	  scope.isEqualsList=function(newValue,oldValue){
-	    		  
-	    		  let i;
-	    		  let j;
-	    		  for(i=0; i<newValue.length; i++){
-	    			  let itemNew=newValue[i];
-	    			  let isEquelItem=false;
-	    			  for(j=0; j<oldValue; j++){
-	    				  let itemOld=oldValue[j];
-	    				  	if(itemOld.idExpedienteODS == itemNew.idExpedienteODS)
-	    				  		if(itemOld.idOrdenServicio == itemNew.idOrdenServicio)
-	    				  			if(itemOld.idOdsEncuesta == itemNew.idOdsEncuesta)
-	    				  				if(itemOld.idProceso == itemNew.idProceso)
-	    				  					if(itemOld.idPregunta == itemNew.idPregunta)
-	    				  						if(itemOld.idIncidencia == itemNew.idIncidencia)
-	    				  							if(itemOld.idTipoExpediente == itemNew.idTipoExpediente)
-	    				  								if(itemOld.nbExpedienteODS == itemNew.nbExpedienteODS)
-	    				  									if(itemOld.cdTipoArchivo == itemNew.cdTipoArchivo)
-	    				  										if(itemOld.lbExpedienteODS == itemNew.lbExpedienteODS)
-	    				  											isEquelItem=true;	    					
-	    			  }
-	    			  if(!isEquelItem)
-	    				  return false;
-	    		  }
-	    		  
-	    		  return true;
-	    	  }
-	    	  
-	    	  
-	    	  
-	    	  //funcion para iniciar el paginador
-	    	  scope.configPages = function() {
-	    	        scope.viewPag.pages.length = 0;
-	    	        var ini = scope.viewPag.currentPage - 4;
-	    	        var fin = scope.viewPag.currentPage + 5;
-	    	        if (ini < 1) {
-	    	          ini = 1;
-	    	          if (Math.ceil(scope.listImages.length / scope.viewPag.pageSize) > 10)
-	    	            fin = 10;
-	    	          else
-	    	            fin = Math.ceil(scope.listImages.length / scope.viewPag.pageSize);
-	    	        } else {
-	    	          if (ini >= Math.ceil(scope.listImages.length / scope.viewPag.pageSize) - 10) {
-	    	            ini = Math.ceil(scope.listImages.length / scope.viewPag.pageSize) - 10;
-	    	            fin = Math.ceil(scope.listImages.length / scope.viewPag.pageSize);
-	    	          }
-	    	        }
-	    	        if (ini < 1) ini = 1;
-	    	        for (var i = ini; i <= fin; i++) {
-	    	          scope.viewPag.pages.push({
-	    	            no: i
-	    	          });
-	    	        }
-
-	    	        if (scope.viewPag.currentPage >= scope.viewPag.pages.length)
-	    	          scope.viewPag.currentPage = scope.viewPag.pages.length - 1;
-	    	  };
-	    	  
-	    	  scope.setPage = function(index) {
-	    	        scope.viewPag.currentPage = index - 1;
-	    	      };
-	    	  
-	    	      //fin dunciones de paginador
-	    	  
 	    	  //SE VALIDA SI SE OBTIENE TIPO DE DOCUMENTO DESDE SERVICIO
 	    	  scope.valdComboTpDocuemnt=function(){
-		    		
+	    		  scope.showCombo=false;
 					  if(scope.paramConfComponent.listTpDocuemnt != undefined 
 							  && scope.paramConfComponent.listTpDocuemnt.length > 0){
 						  scope.showCombo=true;
 						  scope.tpDocumentList=scope.paramConfComponent.listTpDocuemnt;
 					  }else{
-						  scope.getCatalogoTipoDocumento(); 
+						  scope.getCatalogoTipoDocumento();
 					  }
 	    	  }
 	    	  
 	    	  //Se reciben las imagenes injectadas desde el directiva dragAndropFile
 	    	  scope.fileDropped=function(scopeDragDrop){
-	    		  let filesList = [];
+	    		  let filesList = scopeDragDrop.uploadedFile;
 	    		  
-	    		  angular.forEach(scopeDragDrop.uploadedFile, function(item, key) {
-    				  filesList.push(item);
- 		    	  });
-	    			  
-	    		  // Si exsisten restricciones se omiten los archivos que no las cumplan
-	    		  let files=scope.validRestrcctionsFiles(filesList);
+	    		  filesList= scope.validRestrcctionsFiles(filesList);
 	    		  
 	    		// los files obtenidos se asignan a la lista enviada como parametro
-	    		  scope.reinitListView(files);
-	    		  
+	    		  scope.addImgesToLisViewBiding(filesList);
 	    	  };
 	    	  
 	    	//Se obtienen los archivos en onjetoFiles se ejecuta cuando el componente input file detecta cambios, este componenete esta en el template
 	    	  scope.getFilesFromInput=function(inputFiles){
-	    		  let filesList=[];
-    			  angular.forEach(inputFiles.files, function(item, key) {
-    				  filesList.push(item);
- 		    	  });
-	    			  
-	    		  // Si exsisten restricciones se omiten los archivos que no las cumplan
-	    		  let files=scope.validRestrcctionsFiles(filesList);
 	    		  
-	    		// los files obtenidos se asignan a la lista enviada como parametro
-	    		  scope.reinitListView(files);
+	    		  inputFiles = scope.validRestrcctionsFiles(inputFiles);
+	    		  
+	    		  scope.addImgesToLisViewBiding(inputFiles);
 	    	  };
 	    	  
-	    	  scope.reinitListView=function(filesList){
-	    		// los files obtenidos se asignan a la lista enviada como parametro
-	    		  scope.addImgesToLisViewBiding(filesList);
-	    		  scope.viewPag.currentPage=0;
-	    		  scope.viewPag.pageSize=2;
-	    		  scope.viewPag.pages=[];
-	    		  scope.configPages();
-	    	  }
-	    	  
-	    	  //se vaidan las restrciones en caso de existir
+	    	//se vaidan las restrciones en caso de existir
 	    	  scope.validRestrcctionsFiles=function(lisFiles){
 	    		  if(scope.paramConfComponent != undefined){
 	    			  let errorTypeFile=false;
-	        		  let errorSizeImage=false;
 	        		  let msj='Algunas archivos seleccionados no cumplieron con';
 	        		  let a=scope.paramConfComponent.listTypeExtencion;
 	        		  if(lisFiles != undefined && lisFiles.length > 0){
 	        			let i;
 	        			for(i=0; i<lisFiles.length; i++){
 	        				let item=lisFiles[i];
+	        				item.exedeSize=false;
 	        				if(scope.paramConfComponent.maxSizeMb != undefined &&
 	        						item.size > (constants.VAL_ONE_MB_BY_BYTES * scope.paramConfComponent.maxSizeMb)){
-	        					errorSizeImage=true;
-	        					lisFiles.splice(i,1);
-	        					i--;
+	        					item.exedeSize=true;
+	        					scope.listFilesExcedeSize.push(lisFiles[i]);
+            					lisFiles.splice(i,1);
+            					i--;
 	        				}
 	        				if(scope.paramConfComponent.listTypeExtencion != undefined){
 	        					let type = item.type.slice(item.type.lastIndexOf('/') + 1);
@@ -340,93 +232,251 @@ appt.directive('updateImage',
 	        			}
 	        		  }
 	        		  
-	        		  if(errorSizeImage){
-	    					msj+=' el tamaño minimo ('+scope.paramConfComponent.maxSizeMb+' MB)';
-	    			  }
 	        		  if(errorTypeFile){
 	        			  errorTypeFile=true;
 	        			  let coma=errorSizeImage  ? ',':'';
 	        			  msj+=coma+' la extención admitida';
-	        		  }
-	        		  if(errorSizeImage || errorTypeFile)
 	        			  growl.warning(msj, {ttl: 4000});
+	        		  }
 	    		  }
 	    		  
 	    		  return lisFiles;
 	    	  };
 	    	  
-	    	// se agrega a la lista que mostrará las imagenes en el IU del html
-	    	  scope.addImgesToLisViewBiding=function(files){
+	    	  scope.getConfigComponentBD=function(){
+	    		  expedienteService.getConfigCompressImg().success(function(response){
+		    		 scope.listConfigCompress=response;
+		    	 }).error(function (error){
+		    		 scope.listConfigCompress=undefined;
+		    	 });
 	    		  
-	    		  if(files.length > 0){
-	    			  let i;
-	        		  for(i=0; i<files.length; i++){
-	        			  
-	        			  if(scope.maxNuImage != undefined && scope.listImages.length >= scope.maxNuImage){
-	        				  growl.warning('Algunas archivos no se adjuntaron se llego al limite de archivos', {ttl: 4000});
-	        				  break;
-	        			  }
-	        			  
-	        			  let file=files[i];
-	        			  
-	        			  let imagenVO=new Object({
-	           				  'idOrdenServicio' :	null,
-	           				  'idProceso' 		:	null,
-	           				  'idOdsEncuesta' 	:	null,
-	           				  'idPregunta' 		:	null,
-	           				  'idIncidencia' 	:	null,
-	           				  'nbExpedienteODS'	:	file.name,
-	           				  'cdTipoArchivo'	:	file.type.slice(file.type.lastIndexOf('/') + 1),
-	           				  'lbExpedienteODS'	:	null,
-	           				  'tpDocumentList'  :	angular.copy(scope.tpDocumentList),
-	           				  'idTipoExpediente':	null
-	           			  });
-	           			  
-	           			  if(scope.paramConfSav != undefined){
-	           				imagenVO= scope.getImgVOParamInitial(imagenVO);
-	           			  }
-	           			  
-		           			let unic=(scope.listImages.length+1);
-	          				imagenVO.unic=unic;
-	          				imagenVO.name=file.name;
-	          				imagenVO.file=file;
-	          				imagenVO.type=file.type;
-	          				imagenVO.size=file.size;
-	          				imagenVO.isSuccess=false;
-	          				let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(imagenVO.cdTipoArchivo) !== -1);
-	          				imagenVO.isImage=isImg;
-	          				imagenVO.showProgress=true;
-	          				scope.logobs64(file,imagenVO);
-		          		
-		          		if(scope.listImages==undefined){
-          					scope.listImages=new Array();
-          				}
-          				
-          				//se agrega a la lista envida siempre al inicio
-          				scope.listImages.unshift(imagenVO);
-	        		  }
+	    	  };
+	    	  
+	    	  scope.clasifiQualityByPorcent=function(nuPorcentCompress){
+	    		  switch(nuPorcentCompress){
+	    		  	case 90:
+	    		  		return 0.79;
+	    		  	case 80:
+	    		  		return 0.89;
+	    		  	case 70:
+	    		  		return 0.99;
+	    		  	case 60:
+	    		  		return 1;
+	    		  	default:
+	    		  		return 1;
 	    		  }
 	    	  };
 	    	  
-	    	//crackstillo
-				scope.logobs64=function(file,imagenVO) {
-	    			var reader = new FileReader();
-	    			 reader.onload = function(){
-	    				
-	    				let result_base64=reader.result.replace('data:', '').replace(/^.+,/, '');
-	    				imagenVO.lbExpedienteODS=result_base64;
-        				imagenVO.strBase64=result_base64;
-        				let nameParam=scope.nameParamFile;
-        				if(nameParam != undefined)
-        					imagenVO[nameParam]=result_base64;	
-	    			}
-	    			
-	    			reader.onerror = function(){
-	    				growl.error('No se pudo leer los archivos seleccionados.', {ttl:5000});				
-	    			}
-	    			reader.readAsDataURL(file);
-	    			imagenVO.showProgress=false;
-	    		}
+	    	  scope.qualityCompressPorcent=function(sizeImage){
+	    		  let quality=1;// por defecto comprime la imagen un 60%
+	    		  let kb=1024;
+	    		  if(scope.listConfigCompress != undefined && scope.listConfigCompress.length){
+	    			  let i;
+		    		  for(i=0; i<scope.listConfigCompress.length; i++){
+		    			  let sizeInicalBytes=(scope.listConfigCompress[i].nuPesoImgInicial * kb);
+		    			  let sizeFinalBytes=(scope.listConfigCompress[i].nuPesoImgFinal * kb);
+		    			  if(sizeImage >= sizeInicalBytes && sizeImage <= sizeFinalBytes){
+		    				  quality=scope.clasifiQualityByPorcent(scope.listConfigCompress[i].nuPorcentaje);
+		    				  break;
+		    			  }
+		    		  }
+	    		  }
+	    		  return quality;
+	    	  };
+	    	  
+	    	  //Metodo que permite comprimir la imagen
+	    	  scope.getCompress=function(){
+	    		  let progressBar = document.querySelector('.progress-bar-ex-per[role="progressbar"]');
+				  let remainingBar = document.querySelector('.progress-bar-ex-per[role="remaining"]');
+	    		  if(scope.maxNuImage != undefined && scope.listFiles.length >= scope.maxNuImage){
+	    			  scope.listFilesExcedeSize=[];
+	    			  progressBar.style.width = '100%';
+	 	    		  progressBar.innerText = '100%';
+	 	    		  remainingBar.style.width ='0%';
+	 	    		 $timeout(function() {
+		    			 scope.closedFiles=0;
+		    			 scope.totalImagesPendig=0;
+		    			 scope.showProgressBar=false;
+		    			 let nameDivUnblokig='div.block-'+scope.idElementUp;
+		    			 $(nameDivUnblokig).unblock(); 
+					  },800);
+	    			  growl.warning('Algunas archivos no se adjuntaron se llego al limite de archivos', {ttl: 4000});
+    				  return;
+    			 }
+	    		  
+				  let fileItem=scope.listFilesExcedeSize.pop();
+    			  let qualityConfig=scope.qualityCompressPorcent(fileItem.size);
+    			 
+    			  let compress = new Compress();
+    			  let arrayFiles=new Array();
+    			  arrayFiles.push(fileItem);
+    			  compress.compress(arrayFiles, {
+    				    size: 4, // the max size in MB, defaults to 2MB
+    				    quality: qualityConfig, // the quality of the image, max is 1,
+    				    maxWidth: 1920, // the max width of the output image, defaults to 1920px
+    				    maxHeight: 1920, // the max height of the output image, defaults to 1920px
+    				    resize: true, // defaults to true, set false if you do not want to resize the image width and height
+    				  }).then(function (dataList){
+    					  let dataResult=dataList[0];
+    					  let typeUni=dataResult.ext.slice(dataResult.ext.lastIndexOf('/') + 1);
+    					  result=scope.urltoFile(dataResult.data, dataResult.alt, typeUni);
+	    			    	 let unic=(scope.listFiles.length+1);
+	    			    	 result.unic=unic;
+	    			    	 result.isSuccess=false;
+		        		  	 let type = '|' + result.type.slice(result.type.lastIndexOf('/') + 1) + '|';
+		        		  	 let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1);
+		        		  	 result.isImage=isImg;
+		        		  	 result.exedeSize=false;
+		        		  	 result.tpDocumentList=angular.copy(scope.tpDocumentList);
+		        		  	 scope.logobsResult(result);
+		        		  	 scope.listFiles.unshift(result);
+		        		  	 scope.closedFiles++;
+		        		  	 scope.initCalculatePorcentajeProgressBar();
+		        		  	 if(scope.listFilesExcedeSize.length > 0){	
+		        		  		scope.getCompress();
+		        		  		return;
+		        		  	 }
+    				  });
+    			  
+    			  /* new ImageCompressor(fileItem, {
+	    			    quality: qualityConfig,
+	    			    success(result) {
+	    			    	 //scope.$apply(function(){
+	    			    	 let unic=(scope.listFiles.length+1);
+	    			    	 result.unic=unic;
+	    			    	 result.isSuccess=false;
+		        		  	 let type = '|' + result.type.slice(result.type.lastIndexOf('/') + 1) + '|';
+		        		  	 let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1);
+		        		  	 result.isImage=isImg;
+		        		  	 result.exedeSize=false;
+		        		  	 result.tpDocumentList=angular.copy(scope.tpDocumentList);
+		        		  	 scope.logobsResult(result);
+		        		  	 scope.listFiles.unshift(result);
+		        		  	scope.closedFiles++;
+		        		  	scope.initCalculatePorcentajeProgressBar();
+		        		  	 if(scope.listFilesExcedeSize.length > 0){	
+		        		  		scope.getCompress();
+		        		  		return;
+		        		  	 }
+		        		  	 
+    		                //});
+	    			    },
+	    			    error(e) {
+	    	      			growl.warning('Al gunos archivos no se pudiron adjuntar exedieron el tamaño maxímo ('+
+	    	      							scope.paramConfComponent.maxSizeMb+' Mb) permitido', {ttl: 4000});
+	    	      			if(scope.listFilesExcedeSize.length > 0){
+		        		  		scope.getCompress();
+		        		  		return;
+		        		  	 }
+	    			    },
+	    			  }); */
+	    			  
+	    	 };
+	    	 
+	    	 scope.logobsResult=function(file) {
+	        		if(file != undefined){
+        				let reader = new FileReader();
+        				  reader.onloadend = function () {
+        				    var b64 = reader.result.replace(/^data:.+;base64,/, '');
+        				    file.strBase64=b64;
+        				  };
+        				 reader.readAsDataURL(file);
+	        		}
+	    	}
+	    	 
+	    	 scope.initCalculatePorcentajeProgressBar=function(){
+	    		 let percentage = Math.min(Math.max(Math.floor(scope.closedFiles / scope.totalImagesPendig * 100), 0), 100);
+	    		 // calculate remaining percentage
+	    		 let remaining = 100-percentage;
+	    		 let progressBar = document.querySelector('.progress-bar-ex-per[role="progressbar"]');
+				 let remainingBar = document.querySelector('.progress-bar-ex-per[role="remaining"]');
+	    		 // apply percentage
+	    		 progressBar.style.width = percentage + '%';
+	    		 progressBar.innerText = isNaN(percentage) ? '100%' : (percentage  + '%');
+	    		 remainingBar.style.width = remaining + '%';
+	    		 //remainingBar.innerText = remaining + '%';
+	    		 
+	    		 if(scope.closedFiles == scope.totalImagesPendig){
+	    			 $timeout(function() {
+		    			 scope.closedFiles=0;
+		    			 scope.totalImagesPendig=0;
+		    			 scope.showProgressBar=false;
+		    			 let nameDivUnblokig='div.block-'+scope.idElementUp;
+		    			 $(nameDivUnblokig).unblock(); 
+					  },800);
+	    		 }
+	    	 };
+	    	  
+	    	// se agrega a la lista que mostrará las imagenes en el IU del html
+	    	  scope.addImgesToLisViewBiding=function(files){
+	    		  let idProgressBarDiv="div-progress-"+scope.idElementUp;
+	    		  let nameDivUnblokig='div.block-'+scope.idElementUp;
+	    		  $(nameDivUnblokig).block({
+	                  message: $('#'+idProgressBarDiv), 
+	                  css: {border: 'none', 
+	                      	padding: '15px',
+	                      	width: '40%',
+	                      	backgroundColor: '#000', 
+	                      	'-webkit-border-radius': '10px', 
+	                      	'-moz-border-radius': '10px', 
+	                      	opacity: .8, 
+	                      	color: '#fff'},
+	                  overlayCSS: { 
+	                    	backgroundColor: '#ECF0F3',
+	                    	opacity: .5,
+	                    	  }
+	              }); 
+	    		  
+	    		  scope.totalImagesPendig=scope.listFilesExcedeSize.length + files.length;
+    			  scope.initCalculatePorcentajeProgressBar();
+	    		  scope.showProgressBar=true;
+	    		  if(files.length > 0){
+	    			  let i;
+	        		  for(i=0; i<files.length; i++){
+
+	        		  	 if(scope.maxNuImage != undefined && scope.listFiles.length >= scope.maxNuImage){
+	        		  		let progressBar = document.querySelector('.progress-bar-ex-per[role="progressbar"]');
+	        				let remainingBar = document.querySelector('.progress-bar-ex-per[role="remaining"]');
+	        		  		progressBar.style.width = '100%';
+	        		  		progressBar.innerText = '100%';
+	       	    		 	remainingBar.style.width ='0%';
+		       	    		 $timeout(function() {
+				    			    scope.closedFiles=0;
+				    			    scope.totalImagesPendig=0;
+				    			    scope.showProgressBar=false;
+				    			    let nameDivUnblokig='div.block-'+scope.idElementUp;
+				    			    $(nameDivUnblokig).unblock(); 
+							       },800);
+	        		  		 
+	        				  growl.warning('Algunas archivos no se adjuntaron se llego al limite de archivos', {ttl: 4000});
+	        				  break;
+	        			 }
+	        		  	 
+	        		  	 let file=files[i];
+	        		  	 
+	        		  	 let unic=(scope.listFiles.length+1);
+	        		  	 file.unic=unic;
+	        		  	 file.isSuccess=false;
+	        		  	 let type = '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
+	        		  	 let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1);
+	        		  	 file.isImage=isImg;
+	        		  	 file.tpDocumentList=angular.copy(scope.tpDocumentList);
+	        		  	 
+	        		  	 if(scope.listFiles==undefined){
+	        		  		 scope.listFiles=new Array();
+	        		  	 }
+	        		  	 
+	        		  	 //se agrega a la lista envida siempre al inicio
+	        		  	 scope.listFiles.unshift(file);
+	        		  	scope.closedFiles++;
+	        		  	scope.initCalculatePorcentajeProgressBar();
+	        		  }
+	    		  }
+	    		  if(scope.listFilesExcedeSize.length > 0){	    			  
+	    			  scope.getCompress();  
+	    		  }
+      		  		
+	    	  };
 	 	     
 	 	  //CONVIERTE UNA CADENA BASE64 A OBJETO FILE PARA EL COMPONENTE FILE UPLOADER
 		     scope.urltoFile=function(dataurl, filename, mimeType){
@@ -454,54 +504,97 @@ appt.directive('updateImage',
 		    	 showComboTpDocument:false
 		     });
 		     
-		     scope.getImgVOParamInitial=function(imgVO){
+		     scope.getImgVOParamInitial=function(file,imagenVO){
 		    	 
-		    	 imgVO.idOrdenServicio=scope.paramConfSav.idOrdenServ;
-		    	 imgVO.idProceso=scope.paramConfSav.idProceso;
-		    	 imgVO.idOdsEncuesta=scope.paramConfSav.idEncuesta;
-		    	 imgVO.idPregunta=scope.paramConfSav.idPregunta;
-		    	 imgVO.idIncidencia=scope.paramConfSav.idIncidencia;
+		    	 imagenVO.idOrdenServicio = scope.paramConfSav.idOrdenServ;
+		    	 imagenVO.idProceso = scope.paramConfSav.idProceso;
+		    	 imagenVO.idOdsEncuesta	= scope.paramConfSav.idEncuesta;
+		    	 imagenVO.idPregunta = scope.paramConfSav.idPregunta;
+		    	 imagenVO.idIncidencia = scope.paramConfSav.idIncidencia;
+		    	 imagenVO.nbExpedienteODS = file.name;
+		    	 imagenVO.cdTipoArchivo	= file.type.slice(file.type.lastIndexOf('/') + 1);
+		    	 imagenVO.lbExpedienteODS =	file.strBase64;
+		    	 imagenVO.idTipoExpediente = file.tipoExpediente == undefined ? null : file.tipoExpediente.idTipoExpediente;
+		    	 imagenVO.idExpedienteODS=file.idExpedienteODS;
 		    	 
-		    	 return imgVO;
+		    	 return imagenVO;
 		     };
 		     
 		     scope.getCatalogoTipoDocumento=function(){
 		    	 
 		    	 expedienteService.getCatTpDocumento().success(function(response){
+		    		 
 		    		 scope.tpDocumentList=response;
 		    		 scope.showCombo=true;
+		    		 if(response == undefined || response.length == 0)
+		    			 scope.showCombo=false;
+		    		 
 		    	 }).error(function (error){
-		    		 scope.showCombo=false;
 		    		 if(scope.paramConfComponent.listTpDocuemnt != undefined 
-		    				 && scope.paramConfComponent.listTpDocuemnt.length > 0)
+		    				 && scope.paramConfComponent.listTpDocuemnt.length > 0){
 		    			 scope.tpDocumentList=scope.paramConfComponent.listTpDocuemnt;
-		    		 else
+		    			 scope.showCombo=true;
+		    		 }else{
+		    			 scope.showCombo=false;
 		    			 scope.tpDocumentList=[];
+		    		 }
+		    			 
 		    	 });
 		     };
 		     
 		     //Guarda una imagen consumiendo el servicio
-		     scope.saveImageItem=function(item,form,nameComponent){
+		     scope.saveImageItem= async function(item,form,nameComponent){
 		    	 
+		    	 if(item.exedeSize){
+		    		 growl.warning('La imagen aun se esta cargando, por favor espere', {ttl: 4000});
+		    		 return;
+		    	 }
+		    		
 		    	 if (form[nameComponent].$invalid) {
 		    		 form[nameComponent].$dirty=true;
 		              growl.error('Formulario incompleto');
 		              return;
 		          }
+		    	 let imageVO={};
+		    	 await scope.getImgVOParamInitial(item,imageVO);
 		    	 
 		    	 let listImages=new Array();
-		    	 listImages.push(item);
+		    	 listImages.push(imageVO);
 		    	 scope.serviceSave(listImages);
 		     };
 		     
 		     //metodo que se crea con alcance de controller padre, se puede invocar desde el controller
 		     scope.$parent.$parent.isValidFormImages=function(message){
 		    	 
-		    	 if(scope.listImages == undefined || scope.listImages.length == 0 || scope.formTpDocument.$invalid){
+		    	 let listNotAdd=scope.listFiles.filter(function(item){
+		    		 return item.exedeSize;
+		    	 });
+		    	 
+		    	 if(listNotAdd.length !=  undefined && listNotAdd.length > 0){
+		    		 growl.warning('Las imagenes aun se estan cargando, por favor espere', {ttl: 4000});
+		    		 return false;
+		    	 }
+		    	 
+		    	 if(scope.showCombo){
+		    		 let listNotTpExpedient=scope.listFiles.filter(function(item){
+			    		 return item.tipoExpediente == undefined;
+			    	 });
+		    		 
+		    		 if(listNotTpExpedient.length !=  undefined && listNotTpExpedient.length > 0){
+		    			 showAlert.requiredFields(form);
+		    			 if(message != undefined && message != '')
+			    		 		growl.error(message,{ttl: 4000});
+		    			 
+			    		 return false;
+			    	 }
+		    	 }
+		    	 
+		    	 if(scope.listFiles == undefined || scope.listFiles.length == 0 || scope.formTpDocument.$invalid){
 		    		 	showAlert.requiredFields(scope.formTpDocument);
 		    		 	
 		    		 	if(message != undefined && message != '')
-		    		 		growl.error(message);
+		    		 		growl.error(message,{ttl: 4000});
+		    		 	
 		              return false; 
 		    	 }
 		    	 
@@ -509,55 +602,69 @@ appt.directive('updateImage',
 		     };
 		     
 		     //METODO QUE CON ALCANCE DESDE EL CONTROLADOR PADRE, PERMITE COMPLEMENTAR LA LISTA DE IMAGENES DESDE EL CONTROLER
-		     scope.$parent.$parent.updateViewDirective = function(listImages){
-		    	  angular.forEach(listImages, function(item, key) {
-		    		  item.unic=(key+1);
-		    		  item.strBase64=item.lbExpedienteODS;
-		    		  
-		    		  if(item.idExpedienteODS != undefined){
-		    			  item.isSuccess=true;
-		    			  let file= scope.urltoFile(item.lbExpedienteODS, item.nbExpedienteODS, item.cdTipoArchivo);
-		    			  item.name=file.name;
-		    			  item.size=file.size;
-		    			  item.tpDocumentList=angular.copy(scope.tpDocumentList);
-		    			  let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(item.cdTipoArchivo) !== -1);
-		    			  item.isImage=isImg;
-		    			  
-		    			  // SE VALIDA SI TIENE UN TP DE DOCUMENTO PREBIAMENTE ASIGNADO
-		    			  if(item.idTipoExpediente != undefined){
-		    				  let i;
-		    				  let a=item.tpDocumentList;
-		    				  for(i=0; i<a.length; i++){
-		    					  
-		    					  if(item.idTipoExpediente == a[i].idTipoExpediente){
-		    						  item.tipoExpediente = a[i];
-		    						  $timeout(function() {
-		    							  $("#select2-tpDoc"+item.unic+''+scope.idElementUp+"-container").text(item.tipoExpediente.nbTipoExpediente);
-		    						  },100);
-		    						  break;
-		    					  }
-		    				  }
-		    			  }
-		    			  
-		    		  }else{
-		    			  item.isSuccess=false;
-		    		  }
+		     scope.$parent.$parent.updateViewDirective = function(inListImages){
+		    	 let listImages=[];
+		    	  angular.forEach(inListImages, function(item, key) {
+		    		  let file= scope.urltoFile(item.lbExpedienteODS, item.nbExpedienteODS, item.cdTipoArchivo);
+		    		  file.unic=(key+1);
+		    		  file.strBase64=item.lbExpedienteODS;
+		    		  file.tpDocumentList=angular.copy(scope.tpDocumentList);
+		    		  let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(item.cdTipoArchivo) !== -1);
+		    		  file.isImage=isImg;
+		    		  file.isSuccess = item.idExpedienteODS != undefined;
+		    		  file.idExpedienteODS=item.idExpedienteODS;
+		    		// SE VALIDA SI TIENE UN TP DE DOCUMENTO PREBIAMENTE ASIGNADO
+		    		  if(item.idTipoExpediente != undefined){
+	    				  let i;
+	    				  let a=file.tpDocumentList;
+	    				  for(i=0; i<a.length; i++){
+	    					  
+	    					  if(item.idTipoExpediente == a[i].idTipoExpediente){
+	    						  file.tipoExpediente = a[i];
+	    						  $timeout(function() {
+	    							  $("#select2-tpDoc"+file.unic+''+scope.idElementUp+"-container").text(file.tipoExpediente.nbTipoExpediente);
+	    						  },450);
+	    						  break;
+	    					  }
+	    				  }
+	    			  }
+		    		  listImages.push(file);
 		    	  });
 		    	  
-		    	  scope.listImages=angular.copy(listImages);
+		    	  scope.listFiles=listImages;
 		     };
 		     
 		     scope.$parent.$parent.getValueListImageDirective=function(){
-		    	 let resultImages= angular.copy(scope.listImages);
+		    	 let resultImages= scope.getListImageToSaved();
 		    	return resultImages; 
 		     };
 		     
 		   //Funcion para guardar las imagenes, se valida si se tiene una funcion en especifico
 		     scope.saveImagesAll=function(form){
+		    	 let listNotAdd=scope.listFiles.filter(function(item){
+		    		 return item.exedeSize;
+		    	 });
+		    	 
+		    	 if(scope.showCombo){
+		    		 let listNotTpExpedient=scope.listFiles.filter(function(item){
+			    		 return item.tipoExpediente == undefined;
+			    	 });
+		    		 
+		    		 if(listNotTpExpedient.length !=  undefined && listNotTpExpedient.length > 0){
+		    			 showAlert.requiredFields(form);
+			    		 growl.error('Formulario incompleto', {ttl: 4000});
+			    		 return;
+			    	 }
+		    	 }
+		    	 
+		    	 if(listNotAdd.length !=  undefined && listNotAdd.length > 0){
+		    		 growl.warning('Las imagenes aun se estan cargando, por favor espere', {ttl: 4000});
+		    		 return;
+		    	 }
 		    	 
 		    	 if (form.$invalid) {
 		              showAlert.requiredFields(form);
-		              growl.error('Formulario incompleto');
+		              growl.error('Formulario incompleto', {ttl: 4000});
 		              return;
 		          }
 		    	 
@@ -568,11 +675,6 @@ appt.directive('updateImage',
 		     };
 		     
 		     scope.serviceSave=function(listImages){
-		    	 angular.forEach(listImages, function(item, key) {
-		    		 if(item.tipoExpediente != undefined)
-		    			 item.idTipoExpediente=item.tipoExpediente.idTipoExpediente;
-		    		 	item= scope.getImgVOParamInitial(item);
-		    	 });
 		    	 
 		    	 let service=expedienteService;
 		    	 let nameServiceSave='saveOrUpdateExpediente';
@@ -594,11 +696,11 @@ appt.directive('updateImage',
 		    		 
 		    		 let i;
 		    		 let j;
-		    		 for(i=0; i<scope.listImages.length; i++){
-		    			 let itemUno=scope.listImages[i];
+		    		 for(i=0; i<scope.listFiles.length; i++){
+		    			 let itemUno=scope.listFiles[i];
 		    			 for(j=0; j<response.length; j++){
 		    				 let itemDos=response[j];
-		    				 if(itemUno.nbExpedienteODS == itemDos.nbExpedienteODS){
+		    				 if(itemUno.name == itemDos.nbExpedienteODS){
 		    					 itemUno.isSuccess=true;
 		    					 itemUno.idExpedienteODS=itemDos.idExpedienteODS;
 		    					 break;
@@ -631,10 +733,12 @@ appt.directive('updateImage',
 		   //Retorna la lista de images que se deberá de persistir
 		     scope.getListImageToSaved=function(){
 		    	 let listImagesSaved=[];
-		    	 angular.forEach(scope.listImages, function(item, key) {
+		    	 angular.forEach(scope.listFiles, function(item, key) {
 		    		 //se valida que no se haya enviado a back prebiamente
 		    		 if(!item.isSuccess && item.idExpedienteODS == undefined){
-		    			 listImagesSaved.push(item);
+		    			 let imagenVO={};
+		    			 scope.getImgVOParamInitial(item,imagenVO);
+		    			 listImagesSaved.push(imagenVO);
 		    		 }
 		    	 });
 		    	 
@@ -647,21 +751,21 @@ appt.directive('updateImage',
 	 			// se muestra modal de confirmación
 	 			  showAlert.confirmacion('Se eliminará esta imagen, ¿Desea continuar?',
 		                confirm = () => {
-		                	let indexImg=scope.listImages.indexOf(item);
+		                	let indexImg=scope.listFiles.indexOf(item);
 		                // solamente se asocian a esta lista cuando esta imagen probiene de base de datos
 		          		  if(item.isSuccess){
 		          			 let imgDelete=[];
 		       			     imgDelete.push(item);
 		          			  expedienteService.deleteExpediente(imgDelete)
 			          		  .success(function(reponse){
-			          			scope.listImages.splice(indexImg,1);
-			          			growl.success('Imagenes eliminadas correctamente', { ttl: 4000 });
+			          			scope.listFiles.splice(indexImg,1);
+			          			growl.success('Imagen eliminada correctamente', { ttl: 4000 });
 			          		  }).error(function(error){
 			          			  growl.error(error, { ttl: 4000 });
 			          		  });
 		          			
 		          		  }else{
-		          			scope.listImages.splice(indexImg,1);
+		          			scope.listFiles.splice(indexImg,1);
 		          		  }
 		                }, cancelaNotificar = () => {
 		                    return;
@@ -673,20 +777,26 @@ appt.directive('updateImage',
 		    	 showAlert.confirmacion('Se eliminarán las imagenes, ¿Desea continuar?',
 			                confirm = () => {
 			                // solamente se asocian a esta lista cuando esta imagen probiene de base de datos
-			                	let i;
-			                	for(i=0; i<scope.listImages.length; i++){
-			                		let imagenVO=scope.listImages[i];
-			                		if(!imagenVO.isSuccess){
-			                			scope.listImages.splice(i,1);
-			                			i--;
+			                	let imgDeleList=[];
+			                	let j;
+			                	for(j=0; j<scope.listFiles.length; j++){// de base pero en view
+			                		let file=scope.listFiles[j];
+			                		if(!file.isSuccess){
+			                			scope.listFiles.splice(j,1);
+			                			j--;
+				          			}else{
+				          				let imagenVO={};
+			                			scope.getImgVOParamInitial(file,imagenVO);
+			                			imgDeleList.push(imagenVO);
 				          			}
 			                	}
 			                	
-			                	if(scope.listImages.length > 0){
+			                	if(imgDeleList.length > 0){
 			          			 
 			          			  expedienteService.deleteExpediente(scope.listImages)
 				          		  .success(function(reponse){
 				          			  scope.listImages=[];
+				          			  scope.listFiles=[];
 				          			growl.success('Imagenes eliminadas correctamente', { ttl: 4000 });
 				          		  }).error(function(error){
 				          			growl.error('Las siguientes imagenes no se pudieron eliminar, favor de intentar nuevamente', { ttl: 4000 });
@@ -767,8 +877,8 @@ appt.directive('updateImage',
 				  //si se confirma cerrar modal y descartar imagenes en lista enviada
 				 let isPendient=false;
 				 let i;
-				 for(i=0; i<scope.listImages.length; i++){
-					 let item=scope.listImages[i];
+				 for(i=0; i<scope.listFiles.length; i++){
+					 let item=scope.listFiles[i];
 					 if(item.isSuccess == false){
 						 isPendient=true;
 						 break; 
@@ -779,21 +889,18 @@ appt.directive('updateImage',
 					 $('#'+scope.idElementUp+'modalUpdateImage').modal('hide');
 					  $('.modal-backdrop').remove();
 					  scope.showModalBuild=false;
-					 
+					  scope.listImages=[];
+		   				 scope.listFiles=[];
 				 }else{
 					 showAlert.confirmacion('Hay imagenes sin guardar, ¿Desea continuar?',
 				                confirm = () => {
+				                	
 				                	$('#'+scope.idElementUp+'modalUpdateImage').modal('hide');
 				   				  	$('.modal-backdrop').remove();
 				   				  	scope.showModalBuild=false;
-				   				  	i=0;
-				   				 for(i=0; i<scope.listImages.length; i++){
-									 let item=scope.listImages[i];
-									 if(item.isSuccess == false){
-										 scope.listImages.splice(i,1);
-										 i--;
-									 } 
-								 }
+				   				 scope.listImages=[];
+				   				 scope.listFiles=[];
+				   				 
 				                }, cancelaNotificar = () => {
 				                    return;
 				                });  
@@ -801,11 +908,13 @@ appt.directive('updateImage',
 			  };
 			  
 			//METODO QUE PERMITE IDENTIFICAR EL TIPO DE DISPOSITIVO DONDE SE ESTA CARGANDO LA PANTALLA Y DETERMINA QUE COMPONENTES MOSTRAR
-			  isMobile=function(){
+			  scope.isMobile=function(){
 				  var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 					if (isMobile) {
+//						 scope.paramConfigPage.itemsPerPage=2;
 						return true;
 					} else {
+//						scope.paramConfigPage.itemsPerPage=6;
 						return false;
 					}
 			  }
@@ -824,24 +933,92 @@ appt.directive('updateImage',
 			  //Metodo para mostrar el modal con el carrusel
 			  scope.showModalImg=function(itemImgVO){
 				  scope.showModalCarousel=true;
-				  scope.imagePreview=angular.copy(itemImgVO);
+				  scope.imagePreview=itemImgVO;
 				  $timeout(function() {
 					  let idCarousel='#carousel-'+scope.idElementUp;
 					  $(idCarousel).carousel();
 					  $('#'+scope.idElementUp+'modalCarousel').modal('show');
-				  },100);
+				  },200);
 			  };
 			  
-			  scope.hideModal=function(srcB64,nemaImg){
+			  scope.hideModal=function(){
 				  $('#'+scope.idElementUp+'modalCarousel').modal('hide');
 				  $('.modal-backdrop').remove();
 				  scope.showModalCarousel=false;
 				  scope.imagePreview=new Object();
+				  scope.showProgressBar=false;
+				  let nameDivUnblokig='div.block-'+scope.idElementUp;
+	    		  $(nameDivUnblokig).unblock(); 
 			  };
 			  
+			  scope.isMobile();
 			  intDirective();
+			  
 	   }
 	};    
+});
+
+appt.directive('customOnChange', function() {
+    'use strict';
+
+    return {
+        restrict: "A",
+
+        scope: {
+            handler: '&'
+        },
+        link: function(scope, element){
+        	
+        	scope.logobsResult=function(files) {
+        		if(files != undefined){
+        			let i;
+        			for(i=0; i<files.length; i++){
+        				let file=files[i];
+        				let reader = new FileReader();
+        				  reader.onloadend = function () {
+        				    var b64 = reader.result.replace(/^data:.+;base64,/, '');
+        				    file.strBase64=b64;
+        				  };
+        				 reader.readAsDataURL(file);
+        			}
+        		}
+    		}
+        	
+            element.change(function(event){
+            	
+            	let files=element[0].files;
+                let filesResult=[];
+                let i;
+                for(i=0; i<files.length; i++){
+                	filesResult.push(files[i]);
+                }
+                
+                scope.$apply(function(){
+                    scope.logobsResult(filesResult);
+                    let onject={params: filesResult};
+                    scope.handler(onject);
+                });
+            });
+        }
+
+    };
+});
+
+appt.filter('prettySize',function(){
+	return function(size) {
+		var kilobyte = 1024;
+	    var megabyte = kilobyte * kilobyte;
+
+	    if (size > megabyte) {
+	      return (size / megabyte).toFixed(2) + ' MB';
+	    } else if (size > kilobyte) {
+	      return (size / kilobyte).toFixed(2) + ' KB';
+	    } else if (size >= 0) {
+	      return size + ' B';
+	    }
+
+	    return 'N/A';
+	}
 });
 
 appt.filter('startFromGrid', function() {

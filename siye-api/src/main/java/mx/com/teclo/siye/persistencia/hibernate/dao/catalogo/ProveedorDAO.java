@@ -9,4 +9,6 @@ public interface ProveedorDAO extends BaseDao<ProveedorDTO>{
 	
 	public List<ProveedorDTO> getListProveedor();
 
+	public List<ProveedorDTO> obtenerProveedorVisible(Long value);
+
 }

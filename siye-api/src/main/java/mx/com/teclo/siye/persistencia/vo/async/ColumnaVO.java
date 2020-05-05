@@ -3,10 +3,12 @@ package mx.com.teclo.siye.persistencia.vo.async;
 public class ColumnaVO {
 	private String nbColumna;
 	private String cdTipo;
-	private Long nuOrden;
+	private Integer nuOrden;
 	private String txValorDefecto;
 	private Integer nuLongitudMax;
 	private Boolean stCampoFiltro;
+	private Boolean stInsertable;
+	private String txMascara;
 	
 	public String getNbColumna() {
 		return nbColumna;
@@ -20,10 +22,10 @@ public class ColumnaVO {
 	public void setCdTipo(String cdTipo) {
 		this.cdTipo = cdTipo;
 	}
-	public Long getNuOrden() {
+	public Integer getNuOrden() {
 		return nuOrden;
 	}
-	public void setNuOrden(Long nuOrden) {
+	public void setNuOrden(Integer nuOrden) {
 		this.nuOrden = nuOrden;
 	}
 	public String getTxValorDefecto() {
@@ -44,5 +46,18 @@ public class ColumnaVO {
 	public void setStCampoFiltro(Boolean stCampoFiltro) {
 		this.stCampoFiltro = stCampoFiltro;
 	}
+	public Boolean getStInsertable() {
+		return stInsertable;
+	}
+	public void setStInsertable(Boolean stInsertable) {
+		this.stInsertable = stInsertable;
+	}
+	public String getTxMascara() {
+		return txMascara;
+	}
+	public void setTxMascara(String txMascara) {
+		this.txMascara = txMascara;
+	}
+	
 	
 }

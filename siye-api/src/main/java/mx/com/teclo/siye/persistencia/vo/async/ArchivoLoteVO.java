@@ -16,15 +16,19 @@ public class ArchivoLoteVO {
 	private Long idLoteOds;
 	private String cdLoteOds;
 	private String nbLoteOds;
+	private String nbArchivoFinal;
 	private Long idStSeguimiento;
 	private String cdStSeguimiento;
 	private String nbStSeguimiento;
-	private Integer nuOdsReportados;
-	private Integer nuOdsCargados;
-	private Integer nuOdsAtendidos;
-	private Integer nuOdsPendientes;
-	private Integer nuOdsIncidencia;
+	private String cdColor;
+	private Long nuOdsReportados;
+	private Long nuOdsCargados;
+	private Long nuOdsAtendidos;
+	private Long nuOdsPendientes;
+	private Long nuOdsIncidencia;
+	private Long nuOdsIgnoradas;
 	private String txLoteOds;
+	private Long idTipoLayout;
 	private Boolean stActivo;
 	private Long idUsrCreacion;
 	private Date fhCreacion;
@@ -53,7 +57,15 @@ public class ArchivoLoteVO {
 
 	public void setNbLoteOds(String nbLoteOds) {
 		this.nbLoteOds = nbLoteOds;
-	}	
+	}
+
+	public String getNbArchivoFinal() {
+		return nbArchivoFinal;
+	}
+
+	public void setNbArchivoFinal(String nbArchivoFinal) {
+		this.nbArchivoFinal = nbArchivoFinal;
+	}
 
 	public Long getIdStSeguimiento() {
 		return idStSeguimiento;
@@ -79,44 +91,60 @@ public class ArchivoLoteVO {
 		this.nbStSeguimiento = nbStSeguimiento;
 	}
 
-	public Integer getNuOdsReportados() {
+	public String getCdColor() {
+		return cdColor;
+	}
+
+	public void setCdColor(String cdColor) {
+		this.cdColor = cdColor;
+	}
+
+	public Long getNuOdsReportados() {
 		return nuOdsReportados;
 	}
 
-	public void setNuOdsReportados(Integer nuOdsReportados) {
+	public void setNuOdsReportados(Long nuOdsReportados) {
 		this.nuOdsReportados = nuOdsReportados;
 	}
 
-	public Integer getNuOdsCargados() {
+	public Long getNuOdsCargados() {
 		return nuOdsCargados;
 	}
 
-	public void setNuOdsCargados(Integer nuOdsCargados) {
+	public void setNuOdsCargados(Long nuOdsCargados) {
 		this.nuOdsCargados = nuOdsCargados;
 	}
 
-	public Integer getNuOdsAtendidos() {
+	public Long getNuOdsAtendidos() {
 		return nuOdsAtendidos;
 	}
 
-	public void setNuOdsAtendidos(Integer nuOdsAtendidos) {
+	public void setNuOdsAtendidos(Long nuOdsAtendidos) {
 		this.nuOdsAtendidos = nuOdsAtendidos;
 	}
 
-	public Integer getNuOdsPendientes() {
+	public Long getNuOdsPendientes() {
 		return nuOdsPendientes;
 	}
 
-	public void setNuOdsPendientes(Integer nuOdsPendientes) {
+	public void setNuOdsPendientes(Long nuOdsPendientes) {
 		this.nuOdsPendientes = nuOdsPendientes;
 	}
 
-	public Integer getNuOdsIncidencia() {
+	public Long getNuOdsIncidencia() {
 		return nuOdsIncidencia;
 	}
 
-	public void setNuOdsIncidencia(Integer nuOdsIncidencia) {
+	public void setNuOdsIncidencia(Long nuOdsIncidencia) {
 		this.nuOdsIncidencia = nuOdsIncidencia;
+	}
+
+	public Long getNuOdsIgnoradas() {
+		return nuOdsIgnoradas;
+	}
+
+	public void setNuOdsIgnoradas(Long nuOdsIgnoradas) {
+		this.nuOdsIgnoradas = nuOdsIgnoradas;
 	}
 
 	public String getTxLoteOds() {
@@ -125,6 +153,14 @@ public class ArchivoLoteVO {
 
 	public void setTxLoteOds(String txLoteOds) {
 		this.txLoteOds = txLoteOds;
+	}
+
+	public Long getIdTipoLayout() {
+		return idTipoLayout;
+	}
+
+	public void setIdTipoLayout(Long idTipoLayout) {
+		this.idTipoLayout = idTipoLayout;
 	}
 
 	public Boolean getStActivo() {

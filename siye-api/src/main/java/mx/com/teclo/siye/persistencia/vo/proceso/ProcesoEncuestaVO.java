@@ -14,8 +14,9 @@ public class ProcesoEncuestaVO {
 	private Long nuorden;
 	private Boolean stActivo;
 	
-	//variable para conocer si la encuesta ya esta terminanda o no
-	private Boolean stRespondida=false;
+	//variable para conocer el estatus de la encuesta
+	//private Boolean stRespondida=false;
+	private StSeguimientoVO stSeguimiento;
 	//variable para conocer si la encuesta esta activa
 	private Boolean stActivaMostrar=false;
 	//variable para conocer si la de satisfaccion ya esta activa o no
@@ -59,12 +60,12 @@ public class ProcesoEncuestaVO {
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
 	}
-	public Boolean getStRespondida() {
+	/*public Boolean getStRespondida() {
 		return stRespondida;
 	}
 	public void setStRespondida(Boolean stRespondida) {
 		this.stRespondida = stRespondida;
-	}
+	}*/
 	public Boolean getStActivaMostrar() {
 		return stActivaMostrar;
 	}
@@ -89,8 +90,13 @@ public class ProcesoEncuestaVO {
 	public void setFechaFinProceso(Date fechaFinProceso) {
 		this.fechaFinProceso = fechaFinProceso;
 	}
-	
-	
+	public StSeguimientoVO getStSeguimiento() {
+		return stSeguimiento;
+	}
+	public void setStSeguimiento(StSeguimientoVO stSeguimiento) {
+		this.stSeguimiento = stSeguimiento;
+	}
+
 	
 	
 	

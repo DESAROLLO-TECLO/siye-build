@@ -22,25 +22,25 @@ public class GerenteSupervisorDTO implements Serializable {
 	@Id
 	@SequenceGenerator(name = "sqGerenteSupervisor", sequenceName="SQIE046D_IE_GERENTE_S", allocationSize=1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqGerenteSupervisor")
-	@Column(name = "ID_GERENTE_SUPERVISOR", unique = true, nullable = false, precision = 11, scale = 0)
+	@Column(name = "ID_GERENTE_SUPERVISOR", unique = true, nullable = false, precision = 7, scale = 0)
 	private Long idGerenteSupervisor;
 
-	@Column(name = "ID_GERENTE", nullable = false, length = 15)
+	@Column(name = "ID_GERENTE", nullable = true, precision = 11, scale = 0)
 	private Long gerente;
 
-	@Column(name = "ID_SUPERVISOR", nullable = false, length = 100)
+	@Column(name = "ID_SUPERVISOR", nullable = true, precision = 11, scale = 0)
 	private Long supervisor;
 
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
-	@JoinColumn(name="ID_CENTRO_INSTALACION", referencedColumnName="ID_CENTRO_INSTALACION", insertable=false, updatable=false)
+	@JoinColumn(name="ID_CENTRO_INSTALACION", referencedColumnName="ID_CENTRO_INSTALACION", insertable = false, updatable = false)
 	private CentroInstalacionDTO centroInstalacion;
 
-	@Column(name = "NU_ORDEN", nullable = false, length = 100)
+	@Column(name = "NU_ORDEN", nullable = true, precision = 4, scale = 0)
 	private Long nuOrden;
 
-	@Column(name = "ST_ACTIVO", nullable = true, length = 100)
+	@Column(name = "ST_ACTIVO", nullable = false, precision = 1, scale = 0)
 	private Boolean stActivo;
-
+	
 	public Long getIdGerenteSupervisor() {
 		return idGerenteSupervisor;
 	}

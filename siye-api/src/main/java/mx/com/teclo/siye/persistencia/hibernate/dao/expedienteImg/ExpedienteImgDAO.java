@@ -59,5 +59,28 @@ public interface ExpedienteImgDAO extends BaseDao<ExpedientesImgDTO> {
      * Metodo para traer las imagenes que pertenescan a una OS y que estan en este nivel
      * */
 	public List<ImagenVO> getImgByOrdenServicio(Long OrdenServicio);
-
+	
+	/**
+     * @author Maverick
+     * @param numOrdenServicio
+     * @return List<ImagenVO>
+     * Metodo para traer las iamgenes que pertenes a nivel OS
+     * */
+	public List<ImagenVO> getImagenOS(Long OrdenServicio, String restriccion);
+	/**
+     * @author Mannuel
+     * @param numOrdenServicio
+     * @return List<ImagenVO>
+     * Metodo para traer lista de imagenes por incidencia
+     * */
+	public List<ImagenVO> getImagenesByIdIncidencia(Long idIncidencia);
+	
+	
+	/**
+     * @author Maverick
+     * @param consulta
+     * @return List<ImagenVO>
+     * Metodo para traer las imagenes que pertenescan a un nivel de proceso incidencia o evidencia 
+     * */
+	public List<ImagenVO> getImagenPorNivel(StringBuilder consulta);
 }

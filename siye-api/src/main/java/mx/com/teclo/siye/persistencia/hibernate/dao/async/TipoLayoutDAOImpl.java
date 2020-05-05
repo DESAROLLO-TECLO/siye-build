@@ -11,13 +11,13 @@ import org.springframework.stereotype.Repository;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
 import mx.com.teclo.siye.persistencia.hibernate.dto.async.TipoLayoutDTO;
-import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
+import mx.com.teclo.siye.persistencia.vo.async.ConfigLayoutVO;
 
 @Repository
 public class TipoLayoutDAOImpl extends BaseDaoHibernate<TipoLayoutDTO> implements TipoLayoutDAO {
 
 	@Override
-	public TipoLayoutVO getLayoutVigente() {
+	public ConfigLayoutVO getLayoutVigente() {
 
 		Criteria criteria = getCurrentSession().createCriteria(TipoLayoutDTO.class, "tipoLayout");
 
@@ -34,16 +34,17 @@ public class TipoLayoutDAOImpl extends BaseDaoHibernate<TipoLayoutDTO> implement
 						.add(Projections.property("tipoLayout.cdTamanioMax").as("cdTamanioMax"))
 						.add(Projections.property("tipoLayout.nbDirectorio").as("nbDirectorio"))
 						.add(Projections.property("tipoLayout.stCargaParcial").as("stCargaParcial"))
+						.add(Projections.property("tipoLayout.cdDelimitador").as("charDelimitador"))
 						.add(Projections.property("tipoLayout.stVigente").as("stVigente")));
 		criteria.addOrder(Order.desc("tipoLayout.idTipoLayout"));
 		criteria.setMaxResults(BigDecimal.ONE.intValue());
-		criteria.setResultTransformer(Transformers.aliasToBean(TipoLayoutVO.class));
-		return (TipoLayoutVO) criteria.uniqueResult();
+		criteria.setResultTransformer(Transformers.aliasToBean(ConfigLayoutVO.class));
+		return (ConfigLayoutVO) criteria.uniqueResult();
 	}
 	
 	
 	@Override
-	public TipoLayoutVO getTipoLayoutById(Long idTipoLayout) {
+	public ConfigLayoutVO getTipoLayoutById(Long idTipoLayout) {
 
 		Criteria criteria = getCurrentSession().createCriteria(TipoLayoutDTO.class, "tipoLayout");
 
@@ -60,11 +61,12 @@ public class TipoLayoutDAOImpl extends BaseDaoHibernate<TipoLayoutDTO> implement
 						.add(Projections.property("tipoLayout.cdTamanioMax").as("cdTamanioMax"))
 						.add(Projections.property("tipoLayout.nbDirectorio").as("nbDirectorio"))
 						.add(Projections.property("tipoLayout.stCargaParcial").as("stCargaParcial"))
+						.add(Projections.property("tipoLayout.cdDelimitador").as("charDelimitador"))
 						.add(Projections.property("tipoLayout.stVigente").as("stVigente")));
 		criteria.addOrder(Order.desc("tipoLayout.idTipoLayout"));
 		criteria.setMaxResults(BigDecimal.ONE.intValue());
-		criteria.setResultTransformer(Transformers.aliasToBean(TipoLayoutVO.class));
-		return (TipoLayoutVO) criteria.uniqueResult();
+		criteria.setResultTransformer(Transformers.aliasToBean(ConfigLayoutVO.class));
+		return (ConfigLayoutVO) criteria.uniqueResult();
 	}
 
 }

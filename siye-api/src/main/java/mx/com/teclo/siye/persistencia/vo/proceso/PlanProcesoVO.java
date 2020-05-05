@@ -13,8 +13,9 @@ public class PlanProcesoVO {
 	
 	//Se agrega esta variable para conocer si la etapa esta activa
 	private Boolean statusProceos;
-	//variable para conocer si el proceso ya esta completo
-	private Boolean procesoCompleto;
+	//variable para conocer el estatus del proceso
+	//private Boolean procesoCompleto;
+	private StSeguimientoVO stSeguimiento;
 	
 	
 	public Boolean getStatusProceos() {
@@ -53,12 +54,19 @@ public class PlanProcesoVO {
 	public void setStActivo(Boolean stActivo) {
 		this.stActivo = stActivo;
 	}
-	public Boolean getProcesoCompleto() {
+	/*public Boolean getProcesoCompleto() {
 		return procesoCompleto;
 	}
 	public void setProcesoCompleto(Boolean procesoCompleto) {
 		this.procesoCompleto = procesoCompleto;
+	}*/
+	public StSeguimientoVO getStSeguimiento() {
+		return stSeguimiento;
 	}
+	public void setStSeguimiento(StSeguimientoVO stSeguimiento) {
+		this.stSeguimiento = stSeguimiento;
+	}
+	
 
 	
 	

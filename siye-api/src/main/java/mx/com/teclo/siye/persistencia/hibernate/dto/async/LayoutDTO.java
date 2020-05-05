@@ -49,7 +49,7 @@ public class LayoutDTO implements Serializable {
 	private String txValorDefecto;
 
 	@Column(name = "NU_ORDEN_REGISTRO")
-	private Long nuOrdenRegistro;
+	private Integer nuOrdenRegistro;
 
 	@Column(name = "TX_DESCRIPCION")
 	private String txDescripcion;
@@ -81,6 +81,13 @@ public class LayoutDTO implements Serializable {
 	@Column(name = "FH_MODIFICACION")
 	private Date fhModificacion;
 
+	@Column(name = "ST_CAMPO_FILTRO")
+	private Short stCampoFiltro;
+	
+	@Column(name = "NU_ORDEN_INSERCION")
+	private Integer nuOrdenInsercion;
+	
+	
 	public Long getIdCampo() {
 		return idCampo;
 	}
@@ -153,11 +160,11 @@ public class LayoutDTO implements Serializable {
 		this.txValorDefecto = txValorDefecto;
 	}
 
-	public Long getNuOrdenRegistro() {
+	public Integer getNuOrdenRegistro() {
 		return nuOrdenRegistro;
 	}
 
-	public void setNuOrdenRegistro(Long nuOrdenRegistro) {
+	public void setNuOrdenRegistro(Integer nuOrdenRegistro) {
 		this.nuOrdenRegistro = nuOrdenRegistro;
 	}
 
@@ -232,5 +239,23 @@ public class LayoutDTO implements Serializable {
 	public void setFhModificacion(Date fhModificacion) {
 		this.fhModificacion = fhModificacion;
 	}
+
+	public Short getStCampoFiltro() {
+		return stCampoFiltro;
+	}
+
+	public void setStCampoFiltro(Short stCampoFiltro) {
+		this.stCampoFiltro = stCampoFiltro;
+	}
+
+	public Integer getNuOrdenInsercion() {
+		return nuOrdenInsercion;
+	}
+
+	public void setNuOrdenInsercion(Integer nuOrdenInsercion) {
+		this.nuOrdenInsercion = nuOrdenInsercion;
+	}
+	
+	
 
 }

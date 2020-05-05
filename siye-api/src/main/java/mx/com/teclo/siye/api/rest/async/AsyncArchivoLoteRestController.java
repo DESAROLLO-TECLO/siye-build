@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.siye.negocio.service.async.AsyncArchivoLoteService;
-import mx.com.teclo.siye.persistencia.vo.proceso.LoteOrdenServicioVO;
+import mx.com.teclo.siye.persistencia.vo.async.ArchivoLoteVO;
 
 /**
  * Recibe el archivo lote para registrar masivamente &oacute;rdenes de servicio
@@ -32,16 +31,16 @@ public class AsyncArchivoLoteRestController {
 	@Autowired
 	private AsyncArchivoLoteService asyncLoteService;
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+
 	@PostMapping(value = "/upload", consumes = "multipart/form-data")
-	public ResponseEntity<LoteOrdenServicioVO> recibirArchivoLote(@RequestParam("file") MultipartFile archivoLote)
+	public ResponseEntity<ArchivoLoteVO> recibirArchivoLote(@RequestParam("file") MultipartFile archivoLote)
 			throws IOException, BusinessException {
 
 		Long idFile = asyncLoteService.registrarArchivoLote(archivoLote);
 		LOGGER.debug("Archivo lote registrado con ID " + idFile);
 		asyncLoteService.cargarArchivoLote(idFile);
 
-		return new ResponseEntity<LoteOrdenServicioVO>(asyncLoteService.obtenerArchivoLote(idFile), HttpStatus.OK);
+		return new ResponseEntity<ArchivoLoteVO>(asyncLoteService.obtenerArchivoLote(idFile), HttpStatus.OK);
 	}
 	
 	

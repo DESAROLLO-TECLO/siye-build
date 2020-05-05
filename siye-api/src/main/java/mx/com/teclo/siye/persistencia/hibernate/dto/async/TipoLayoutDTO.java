@@ -27,10 +27,10 @@ public class TipoLayoutDTO implements Serializable {
 	private String nbTipoLayout;
 
 	@Column(name = "NU_MAX_REGISTROS")
-	private Short nuMaxRegistros;
+	private Integer nuMaxRegistros;
 
 	@Column(name = "ID_TIPO_ARCHIVO")
-	private String idTipoArchivo;
+	private Long idTipoArchivo;
 
 	@Column(name = "TX_MASCARA")
 	private String txMascara;
@@ -40,6 +40,9 @@ public class TipoLayoutDTO implements Serializable {
 
 	@Column(name = "NB_DIRECTORIO")
 	private String nbDirectorio;
+	
+	@Column(name = "CD_DELIMITADOR")
+	private String cdDelimitador;
 
 	@Column(name = "ST_CARGA_PARCIAL", precision = 1, scale = 0)
 	private Boolean stCargaParcial;
@@ -86,19 +89,19 @@ public class TipoLayoutDTO implements Serializable {
 		this.nbTipoLayout = nbTipoLayout;
 	}
 
-	public Short getNuMaxRegistros() {
+	public Integer getNuMaxRegistros() {
 		return nuMaxRegistros;
 	}
 
-	public void setNuMaxRegistros(Short nuMaxRegistros) {
+	public void setNuMaxRegistros(Integer nuMaxRegistros) {
 		this.nuMaxRegistros = nuMaxRegistros;
 	}
 
-	public String getIdTipoArchivo() {
+	public Long getIdTipoArchivo() {
 		return idTipoArchivo;
 	}
 
-	public void setIdTipoArchivo(String idTipoArchivo) {
+	public void setIdTipoArchivo(Long idTipoArchivo) {
 		this.idTipoArchivo = idTipoArchivo;
 	}
 
@@ -124,6 +127,14 @@ public class TipoLayoutDTO implements Serializable {
 
 	public void setNbDirectorio(String nbDirectorio) {
 		this.nbDirectorio = nbDirectorio;
+	}
+
+	public String getCdDelimitador() {
+		return cdDelimitador;
+	}
+
+	public void setCdDelimitador(String cdDelimitador) {
+		this.cdDelimitador = cdDelimitador;
 	}
 
 	public Boolean getStCargaParcial() {

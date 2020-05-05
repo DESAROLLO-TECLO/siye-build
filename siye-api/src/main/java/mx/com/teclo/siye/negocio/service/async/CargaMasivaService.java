@@ -2,13 +2,11 @@ package mx.com.teclo.siye.negocio.service.async;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.naming.NamingException;
 
-import org.hibernate.HibernateException;
-
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
+import mx.com.teclo.siye.persistencia.vo.async.ArchivoLoteVO;
 import mx.com.teclo.siye.persistencia.vo.async.ConfigCargaMasivaVO;
 
 public interface CargaMasivaService {
@@ -32,6 +30,12 @@ public interface CargaMasivaService {
 	 * @throws SQLException 
 	 */
 	void procesarLineas(ConfigCargaMasivaVO config) throws BusinessException;
-
 	
+	/**
+	 * Actualiza al estado de cargado un archivo lote
+	 * @param archivoLoteVO
+	 * @throws BusinessException 
+	 */
+	void actualizarCargaMasiva(ArchivoLoteVO archivoLoteVO) throws BusinessException;
+
 }

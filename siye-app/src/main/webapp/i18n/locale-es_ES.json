@@ -171,6 +171,7 @@
                 "label":"Rango de Fechas",
                 "validacion":"El rango de fechas es requerido."
             },
+            "opciones":"OPCIONES SELECCIONADAS",
             "corte":"CORTE AL DIA"
         },
         "resultadosGral":{
@@ -187,10 +188,58 @@
             "titulo":{
                 "ordenServicio":"ORDEN SERVICIO",
                 "nuPlaca":"PLACA",
-                "txEtapa":"ETAPA",
+                "txEtapa":"FECHA ATENCIÓN",
                 "txProceso":"PROCESO",
                 "txIncidensia":"INCIDENCIA",
                 "txEstado":"ESTADO"
+            },
+            "label":{
+                "incidencia":"Incidencia",
+                "evidencia":"Evidencia",
+                "os":"ORDEN SERVICIO",
+                "ci":"CENTRO INSTALACION",
+                "estatus":"ESTATUS",
+                "finicio":"FECHA INICIO",
+                "ffin":"FECHA FIN",
+                "proceso":"TRANSCURRIDO",
+                "kit":"KIT",
+                "plan":"PLAN",
+                "preguntas":"PREGUNTAS",
+                "progreso":"PROGRESO "
+            }
+        },
+        "incidencia":{
+            "titulo":{
+                "cdincidencia":"FOLIO",
+                "nbIncidencia": "INCIDENCIA",
+                "prioridad":"PRIORIDAD",
+                "stIncidencia": "ESTATUS",
+                "nbProceso": "PROCESO",
+                "txIncidencia": "DESCRIPCIÓN",
+                "accion": "ACCIÓN"
+            }
+            
+        },
+        "pestanas":{
+            "nodos":"Orden Servicio",
+            "linea":"Linea de Tiempo"
+        },
+        "modal":{
+            "detalle":{
+                "orden":"ORDEN DE SERVICIO ",
+                "encuesta":"ENCUESTA",
+                "pregunta":"PREGUNTAS",
+                "respuesta":"RESPUESTA",
+                "finicio":"FECHA INICIO",
+                "ffin":"FECHA FIN",
+                "tiempo":"TRANSCURRIDO",
+                "status":"ESTATUS",
+                "tipo":"TIPO",
+                "descripcion": "DESCRIPCIÓN INCIDENCIA",
+                "ci":"CENTRO INSTALACIÓN",
+                "kit":"KIT",
+                "plan":"PLAN",
+                "prioridad":"PRIORIDAD"
             }
         }
     },

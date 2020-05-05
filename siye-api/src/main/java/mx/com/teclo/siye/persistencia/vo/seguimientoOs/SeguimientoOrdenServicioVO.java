@@ -3,6 +3,7 @@ package mx.com.teclo.siye.persistencia.vo.seguimientoOs;
 import java.util.List;
 
 public class SeguimientoOrdenServicioVO {
+	
 	private Long idCentroInstalacion;
 	private String nbModulo;
 	private Long nuEnCurso;

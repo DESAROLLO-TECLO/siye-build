@@ -19,7 +19,7 @@
 	</section>
 
 	<!-- Incidencia -->
-	<boton-incidencia id-orden="ordSer" id-proceso="idProc" id-encuesta="idEncuesta"></boton-incidencia>
+	<boton-incidencia ng-click="guardaAvancePorPagina(paramConfigPage.bigCurrentPage)" id-orden="ordSer" id-proceso="idProc" id-encuesta="idEnc"></boton-incidencia>
 
 	<section class="content">
 		<div class="row">
@@ -31,6 +31,19 @@
 						</div>
 						<div class="panel-body">
 							<div class="row">
+							                            <div class="col-md-6 col-sm-6 ">
+                                <div class="form-group">
+                                    <span class="glyphicon glyphicon glyphicon-time" aria-hidden="true"></span>
+                                    <label>
+                                        <div ng-if="tiempoTranscurridoEncuesta >0">
+                                            <span class="etapa-texto">
+                                                Tiempo Transcurrido: {{horas<10?formato:''}}{{horas}}:{{minutos<10?formato:''}}{{minutos}}:{{segundos<10?formato:''}}{{segundos}}
+                                            </span>
+                                        </div>
+                                    </label>
+                                    
+                                </div>
+                            </div>
 								<div class="col-md-12">
 									<div class="row">
 										<div class="col-md-5">
@@ -77,7 +90,7 @@
 											<div style="float: right;">
 												<update-image id-element-up="Encuesta" show-in-modal="true"
 													param-conf-sav="paramEncImg" max-nu-image="{{numMaxImgEnc}}"
-													param-conf-component="paramConfigImgEnc" list-images="listImagesEnc"></update-image>
+													param-conf-component="paramConfigImgEnc" list-images="{{listImagesEnc}}"></update-image>
 											</div>
 										</div>
 									</div>
@@ -191,7 +204,7 @@
 																							</div>
 																							<div
 																								ng-if="opciones.cdMostrarCausas && opciones.causas"
-																								style="display: inline-block;">
+																								style="display: inline-block; margin-left: 1em;">
 																								<button type="button" class="btn btn-primary"
 																									data-toggle="modal" data-target="#myModal"
 																									ng-click="cargarCausas(opciones,respuesta)">
@@ -199,7 +212,7 @@
 																							</div>
 																							<div
 																								ng-if="opciones.stMarcado && opciones.cdMostrarCausas && !opciones.causas"
-																								style="display: inline-block;">
+																								style="display: inline-block; margin-left: 1em;">
 																								<button type="button" class="btn btn-warning"
 																									data-toggle="modal" data-target="#myModal"
 																									ng-click="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')">
@@ -213,7 +226,7 @@
 																					<div class="media add-img">
 																						<update-image id-element-up="Pregunta{{respuesta.idPregunta}}" show-in-modal="true"
 																							param-conf-sav="respuesta.paramPregImg" max-nu-image="{{respuesta.nuMaxImagenes}}"
-																							param-conf-component="paramConfigImgxPreg" list-images="respuesta.listImagesxPreg">
+																							param-conf-component="paramConfigImgxPreg" list-images="{{respuesta.listImagesxPreg}}">
 																						</update-image>
 																					</div>
 																				</div>

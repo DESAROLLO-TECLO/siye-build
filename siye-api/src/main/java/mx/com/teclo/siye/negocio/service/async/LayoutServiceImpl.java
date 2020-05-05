@@ -2,8 +2,6 @@ package mx.com.teclo.siye.negocio.service.async;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,38 +23,29 @@ import mx.com.teclo.siye.persistencia.vo.async.ColumnaVO;
 import mx.com.teclo.siye.persistencia.vo.async.ConfigCargaMasivaVO;
 import mx.com.teclo.siye.persistencia.vo.async.InsercionTablaVO;
 import mx.com.teclo.siye.persistencia.vo.async.TablaDestinoVO;
-import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
+import mx.com.teclo.siye.persistencia.vo.async.ConfigLayoutVO;
 import mx.com.teclo.siye.util.enumerados.SeccionLayoutEnum;
 
 @Service
 public class LayoutServiceImpl implements LayoutService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LayoutServiceImpl.class);
-	private static final Long ID_ORDEN_INSERCION = 5L;
 	private static final String MSG_LAYOUT_SIN_ORDEN_INSERCION = "El layout no tiene un orden de valores a insertar";
 	private static final String MSG_INSERT_PATTERN = "INSERT INTO {0}({1}) VALUES({2})";
 	private static final String MSG_SELECT_PATTERN = "SELECT {0} FROM {1} WHERE {2} = {3}";
-	public static final String MSG_LAYOUT_VIGENTE_NULO = "No existe un layout vigente. Contacte al administrador.";
+	public static final String MSG_LAYOUT_VIGENTE_NULO = "No es posible continuar el proceso por falta de definiciones sobre lo que se espera recibir en el archivo lote";
 	public static final String MSG_ERROR_LAYOUT_INEXISTENTE = "El archivo lote {0} no tiene un layout asociado";
+	public static final String MSG_ERROR_FALTAN_PARAMETROS = "No es posible continuar el proceso por falta de configuraciones en el sistema";
 	public static final String NULO_SQL = "null";
 	public static final String CARACTER_COMA = ",";
 	public static final String CARACTER_DOS_PUNTOS = ":";
 	public static final String CARACTER_INTERROGACION = "?";
 	public static final String CARACTER_PIPE = "|";
-	private static final String MSG_FORMATTER_DATE = "(TO_DATE('{}',";
 	public static final String SEPARADOR_DIR = System.getProperty("file.separator");
 	public static final String SALTO_LINEA = System.getProperty("line.separator");
 	public static final String MSG_ERROR_LAYOUT_SIN_DETALLE = "El layout no tiene detalle";
 	public static final String MSG_ERROR_LAYOUT_SECCION_INCOMPLETA = "El numero de columnas ''{0}'' no coinciden con las de tipo ''{1}''";
-	private static final String MSG_LAYOUT_SIN_COLUMNAS_CONFIGURADAS = "El layout no tiene columnas configuradas";
-	private static final String MSG_LAYOUT_INCONSISTENTE = "El layout no tiene igual cantidad de columnas en sus diferentes secciones";
-	private static final String MSG_ARCHIVO_COLUMNAS_INVALIDAS = "El n\u00FAmero de columnas del archivo lote no coincide con el layout vigente";
-
-	private static final String MSG_ARCHIVO_REGEX_NAME_NULO = "No hay una regla para validar el nombre del archivo.";
-	private static final String MSG_ARCHIVO_REGEX_NAME_INVALIDO = "El nombre del archivo es inv\u00E1lido.";
 	public static final String MSG_ARCHIVO_TAMANIO_REBASADO = "El tama\u00F1o del archivo excede el m\u00E1ximo de {0} MB";
-	private static final String MSG_DIRECTORIO_ORT_INDEFINIDO = "El directorio ort no ha sido especificado";
-	private static final String MSG_FALTA_FORMATO_PARA_FECHA = "Falta formato fecha para la columna exel n\u00FAmero {0}";
 	public static final String MSG_RECUPERANDO_CONFIG_MASIVA = "Recuperando la configuraci\u00F3n previa a la carga masiva del archivo {0} ";
 
 	private static final Long ID_PROCESO_CON_RECHAZO = 9L;
@@ -75,7 +64,7 @@ public class LayoutServiceImpl implements LayoutService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public TipoLayoutVO getLayoutVigente() {
+	public ConfigLayoutVO getLayoutVigente() {
 		return tipoLayoutDAO.getLayoutVigente();
 	}
 
@@ -87,9 +76,9 @@ public class LayoutServiceImpl implements LayoutService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public InsercionTablaVO getNbsColumnas(String tabla) throws BusinessException {
+	public InsercionTablaVO getNbsColumnas(Long idTipoLayout, String tabla) throws BusinessException {
 
-		List<ColumnaVO> cols = layoutDAO.getNbsColumnas(tabla);
+		List<ColumnaVO> cols = layoutDAO.getNbsColumnas(idTipoLayout, tabla);
 		if (cols == null || cols.isEmpty()) {
 			return null;
 		}
@@ -145,13 +134,14 @@ public class LayoutServiceImpl implements LayoutService {
 		}
 
 		// orden de inserción en tablas
-		cargaMasivaVO.setConfigInsercion(getOrdenInsercionTablas());
+		cargaMasivaVO.setConfigInsercion(getOrdenInsercionTablas(cargaMasivaVO.getConfigLote().getIdTipoLayout()));
 
 		// layout
-		TipoLayoutVO layoutAplicado = tipoLayoutDAO.getTipoLayoutById(cargaMasivaVO.getConfigLote().getIdTipoLayout());
+		ConfigLayoutVO layoutAplicado = tipoLayoutDAO.getTipoLayoutById(cargaMasivaVO.getConfigLote().getIdTipoLayout());
 		cargaMasivaVO.setConfigLayout(layoutAplicado);
 		if (cargaMasivaVO.getConfigLayout() == null) {
-			throw new BusinessException(MSG_ERROR_LAYOUT_INEXISTENTE);
+			throw new BusinessException(
+					MessageFormat.format(MSG_ERROR_LAYOUT_INEXISTENTE, cargaMasivaVO.getConfigLote().getCdLoteOds()));
 		}
 
 		// secciones
@@ -159,46 +149,33 @@ public class LayoutServiceImpl implements LayoutService {
 		validarCantidadColumnas(cargaMasivaVO.getConfigSecciones());
 
 		// moldes SQL
-		cargaMasivaVO.setConfigMoldesSQL(getMoldesSQLPorTbl(cargaMasivaVO.getConfigInsercion()));
+		cargaMasivaVO.setConfigMoldesSQL(getMoldesSQLPorTbl(cargaMasivaVO.getConfigLayout().getIdTipoLayout(),
+				cargaMasivaVO.getConfigInsercion()));
 
 		// columnas esperadas en el archivo
-		cargaMasivaVO.setColumnasEnArchivo(layoutDAO.getColumnasEnArchivo());
+		cargaMasivaVO.setColumnasEnArchivo(
+				layoutDAO.getColumnasEnArchivo(cargaMasivaVO.getConfigLayout().getIdTipoLayout()));
 
 		return cargaMasivaVO;
 	}
 
 	@Override
 	@Transactional
-	public List<TablaDestinoVO> getOrdenInsercionTablas() throws BusinessException {
-		ConfiguracionOSDTO configInsercionTbls = configuracionDAO.findOne(ID_ORDEN_INSERCION);
-		if (configInsercionTbls == null || StringUtils.isBlank(configInsercionTbls.getCdValorConfig())
-				|| configInsercionTbls.getCdValorConfig().indexOf(CARACTER_COMA + CARACTER_COMA) > 0) {
-			throw new BusinessException(MSG_LAYOUT_SIN_ORDEN_INSERCION);
+	public List<TablaDestinoVO> getOrdenInsercionTablas(Long idTipoLayout) throws BusinessException {
+		List<TablaDestinoVO> tablasDestino = layoutDAO.getOrdenInsercionTablas(idTipoLayout);
+		int tblFinal = tablasDestino.size() - 1;
+		for (int i = 0; i < tablasDestino.size(); i++) {
+			tablasDestino.get(i).setIsTblBaseFinal(Boolean.FALSE.booleanValue());
 		}
-		List<TablaDestinoVO> tablasDestino = new ArrayList<TablaDestinoVO>();
-		List<String> nbTablas = Arrays.asList(configInsercionTbls.getCdValorConfig().split(CARACTER_COMA));
-		for (String nombreTbl : nbTablas) {
-			String nombreOriginal = nombreTbl.trim();
-			String nombreFinal = nombreOriginal;
-			boolean isReadOnly = Boolean.TRUE.booleanValue();
-			if (nombreOriginal.startsWith(CARACTER_DOS_PUNTOS)) {
-				isReadOnly = Boolean.FALSE.booleanValue();
-				nombreFinal = nombreOriginal.replace(CARACTER_DOS_PUNTOS, "");
-			}
+		tablasDestino.get(tblFinal).setIsTblBaseFinal(Boolean.TRUE.booleanValue());
 
-			TablaDestinoVO tblDestino = new TablaDestinoVO();
-			tblDestino.setNbTabla(nombreFinal);
-			tblDestino.setIsReadOnly(isReadOnly);
-			tblDestino.setIsTblBase(Boolean.FALSE.booleanValue());
-			tablasDestino.add(tblDestino);
-		}
-		tablasDestino.get(nbTablas.size() - 1).setIsTblBase(Boolean.TRUE.booleanValue());
 		return tablasDestino;
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Map<String, InsercionTablaVO> getMoldesSQLPorTbl(List<TablaDestinoVO> tbls) throws BusinessException {
+	public Map<String, InsercionTablaVO> getMoldesSQLPorTbl(Long idTipoLayout, List<TablaDestinoVO> tbls)
+			throws BusinessException {
 
 		if (tbls == null || tbls.isEmpty()) {
 			throw new BusinessException(MSG_LAYOUT_SIN_ORDEN_INSERCION);
@@ -206,11 +183,12 @@ public class LayoutServiceImpl implements LayoutService {
 
 		Map<String, InsercionTablaVO> insertQueriesMap = new HashMap<String, InsercionTablaVO>();
 		for (TablaDestinoVO nbTbl : tbls) {
-			InsercionTablaVO valInsertVO = getConcatNbCols(nbTbl.getNbTabla());
+			InsercionTablaVO valInsertVO = getConcatNbCols(idTipoLayout, nbTbl.getNbTabla());
 			String insertSQL = MessageFormat.format(MSG_INSERT_PATTERN, nbTbl.getNbTabla(), valInsertVO.getColumnas(),
 					valInsertVO.getComodines());
-			String selectSQL = MessageFormat.format(MSG_SELECT_PATTERN, valInsertVO.getCampoID(), nbTbl.getNbTabla(),
-					valInsertVO.getColumnaFiltro().getNbColumna(), valInsertVO.getColumnaFiltro().getTxValorDefecto());
+			String selectSQL = MessageFormat.format(MSG_SELECT_PATTERN, valInsertVO.getCampoID().getNbColumna(),
+					nbTbl.getNbTabla(), valInsertVO.getColumnaFiltro().getNbColumna(),
+					valInsertVO.getColumnaFiltro().getTxValorDefecto());
 			valInsertVO.setInsertSQL(insertSQL);
 			valInsertVO.setSelectSQL(selectSQL);
 
@@ -223,6 +201,7 @@ public class LayoutServiceImpl implements LayoutService {
 	 * Indica si se rechaza o se registra un archivo inv&aacute;lido
 	 * 
 	 * @return
+	 * @throws BusinessException
 	 */
 	@Override
 	@Transactional
@@ -268,27 +247,38 @@ public class LayoutServiceImpl implements LayoutService {
 
 	}
 
-	private InsercionTablaVO getConcatNbCols(String tabla) throws BusinessException {
+	/**
+	 * Concatena los nombres de las columnas tal como se nombraron en BD para formar
+	 * parte de SQL insert
+	 * 
+	 * @param tabla
+	 * @return
+	 * @throws BusinessException
+	 */
+	private InsercionTablaVO getConcatNbCols(Long idTipoLayout, String tabla) throws BusinessException {
 
-		List<ColumnaVO> cols = layoutDAO.getNbsColumnas(tabla);
+		List<ColumnaVO> cols = layoutDAO.getNbsColumnas(idTipoLayout, tabla);
 		if (cols == null || cols.isEmpty()) {
 			return null;
 		}
+		int totColumnasEnCsv = cols.size();
 		InsercionTablaVO insertVO = new InsercionTablaVO();
-
 		StringBuilder sbCols = new StringBuilder();
-		StringBuilder sbVals = new StringBuilder();
-		StringBuilder sbMaxs = new StringBuilder();
-		StringBuilder sbTipos = new StringBuilder();
 		StringBuilder sbComodines = new StringBuilder();
 		ColumnaVO columnaFiltro = new ColumnaVO();
+		ColumnaVO columnaID = new ColumnaVO();
 
-		for (ColumnaVO col : cols) {
+		for (int i = 0; i < totColumnasEnCsv; i++) {
+			ColumnaVO col = cols.get(i);
+			if (i == BigDecimal.ZERO.intValue()) {
+				columnaID.setNbColumna(col.getNbColumna());
+				columnaID.setNuOrden(col.getNuOrden());
+				columnaID.setCdTipo(col.getCdTipo());
+				columnaID.setTxValorDefecto(getValorSQL(col));
+			}
 			sbCols.append(CARACTER_COMA).append(col.getNbColumna());
 			sbComodines.append(CARACTER_COMA).append(getValorSQL(col));
-			sbVals.append(CARACTER_PIPE).append(getValorSQL(col));
-			sbTipos.append(CARACTER_PIPE).append(col.getCdTipo());
-			sbMaxs.append(CARACTER_PIPE).append(col.getNuLongitudMax());
+
 			if (col.getStCampoFiltro() != null && col.getStCampoFiltro()) {
 				columnaFiltro.setNbColumna(col.getNbColumna());
 				columnaFiltro.setNuOrden(col.getNuOrden());
@@ -298,13 +288,9 @@ public class LayoutServiceImpl implements LayoutService {
 		}
 		insertVO.setColumnas(sbCols.toString().replaceFirst(CARACTER_COMA, ""));
 		insertVO.setComodines(sbComodines.toString().replaceFirst(CARACTER_COMA, ""));
-		insertVO.setValores(sbVals.toString().replaceFirst(CARACTER_PIPE, ""));
-		insertVO.setMaxLengths(sbMaxs.toString().replaceFirst(CARACTER_PIPE, ""));
-		insertVO.setTipos(sbTipos.toString().replaceFirst(CARACTER_PIPE, ""));
 		insertVO.setColumnaFiltro(columnaFiltro);
 
-		String nbColumnaID = insertVO.getColumnas().substring(0, insertVO.getColumnas().indexOf(CARACTER_COMA));
-		insertVO.setCampoID(nbColumnaID);
+		insertVO.setCampoID(columnaID);
 		return insertVO;
 	}
 
@@ -323,32 +309,8 @@ public class LayoutServiceImpl implements LayoutService {
 		} else {
 			if (col.getCdTipo().equals("String")) {
 				colValor = "''{" + col.getNuOrden() + "}''";
-			}else if(col.getCdTipo().equals("Date")){
-				colValor = "TO_DATE(''{" + col.getNuOrden() + "}'' \\, ''"+col.getTxValorDefecto()+ "'')";
-			}
-			else {
-				colValor = "{" + col.getNuOrden() + "}";
-			}
-		}
-		return colValor;
-
-	}
-
-	/**
-	 * Concatena los valores predeterminados a insertar e indica la columna del
-	 * archivo lote a insertar
-	 * 
-	 * @param col
-	 * @return
-	 * @throws BusinessException
-	 */
-	private String determinarPxatronSQL(ColumnaVO col) throws BusinessException {
-		String colValor = "";
-		if (col.getNuOrden() == null) {
-			colValor = StringUtils.isBlank(col.getTxValorDefecto()) ? NULO_SQL : col.getTxValorDefecto();
-		} else {
-			if (col.getCdTipo().equals("String")) {
-				colValor = "''{" + col.getNuOrden() + "}''";
+			} else if (col.getCdTipo().equals("Date")) {
+				colValor = "TO_DATE(''{" + col.getNuOrden() + "}'' \\, ''" + col.getTxValorDefecto() + "'')";
 			} else {
 				colValor = "{" + col.getNuOrden() + "}";
 			}

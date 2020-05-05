@@ -66,11 +66,16 @@
                         <br>
                         <div class="row">
                             <div class="col-sm-6 col-md-3" ng-repeat="item in dataEtapa">
-                                <div ng-if="item.idEncuesta.nbEncuesta != 'Satisfacción'">
+                                <div ng-if="item.idEncuesta.cdEncuesta != 'SAT02' && item.idEncuesta.cdEncuesta != 'SAT01'">
                                     <a ng-class="{'inactiv-click' : item.stActivaMostrar == false}" 
                                     href="#/etapas/proceso/encuesta/{{item.idEncuesta.idEncuesta}}/{{idOrdenServicio}}/{{idProcesoActual}}" 
                                     data-toggle="tooltip" data-placement="bottom" title="{{item.idEncuesta.txEncuesta}}" >
-                                        <div class="dash-info" ng-class="{'color-fondo-contestado': item.stRespondida == true, 'color-fondo-desactivado': item.stActivaMostrar == false, 'color-fondo': item.stActivaMostrar == true}">
+                                        <div class="dash-info" 
+                                            ng-class="{'fn-noini': item.stSeguimiento.cdColor == 'fn-noini',
+                                                        'fn-cance': item.stSeguimiento.cdColor == 'fn-cance', 
+                                                        'fn-final': item.stSeguimiento.cdColor == 'fn-final', 
+                                                        'fn-curso': item.stSeguimiento.cdColor == 'fn-curso',
+                                                        'fn-inactivo': item.stActivaMostrar == false}">
                                             <div class="dash-img">
                                                 <img class="dash-img-img" 
                                                     src="static/dist/img/etapas/004-registration.png">
@@ -81,8 +86,10 @@
                                         </div>
                                     </a>
                                 </div>
-                                <div ng-if="item.idEncuesta.nbEncuesta == 'Satisfacción'">
-                                    <div class="dash-info" ng-class="{'color-fondo-contestado': item.stRespondida == true, 'color-fondo-desactivado': item.stActivaMostrar == false, 'color-fondo': item.stActivaMostrar == true}">
+                                <div ng-if="item.idEncuesta.cdEncuesta == 'SAT02' || item.idEncuesta.cdEncuesta == 'SAT01'">
+                                    <div class="dash-info" 
+                                        ng-class="{'fn-final': item.stSatisfaccion == 1, 
+                                                'fn-cance': item.stSatisfaccion == 0}">
                                         <div class="dash-img">
                                             <img class="dash-img-img" 
                                                 src="static/dist/img/etapas/004-registration.png">

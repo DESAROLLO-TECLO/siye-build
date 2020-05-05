@@ -1,0 +1,444 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>Consulta Orden de Servicio</title>
+</head>
+<body>
+	<section class="content-header">
+		<h1>Consulta</h1>
+		<ol class="breadcrumb">
+			<li><a><i class="fa fa-book"></i>Orden de Servicio</a></li>
+			<li class="active">Consulta</li>
+		</ol>
+	</section>
+	<!-- Main content -->
+
+	<section class="content">
+		<form role="form" name="consultaOrden">
+			<div class="row">
+				<div class="col-md-offset-2 col-md-8 col-md-offset-2">
+					<div class="box box-danger">
+						<div class="box-header with-border text-center">
+							<h3 class="box-title">Búsqueda</h3>
+							  <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+									<i class="fa fa-minus"></i>
+								</button>
+                        </div>
+						</div>
+						<div class="box-body">
+                                <div class="row">
+								<div class="col-md-4" ng-show="!busquedaAvanzada">
+									<div class="form-group">
+										<label>Parámetro Búsqueda:</label>
+										<div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-list"></i></span>
+											<select class="form-control" name="paramBusqueda"
+												id="paramBusqueda"
+												ng-options="filtro.codigo as filtro.nbOpcion for filtro in catalogoParamBusqueda"
+												ng-model="paramBusqueda"
+												ng-change="cambioComboParametro(paramBusqueda)">
+											</select>
+										</div>
+									</div>
+								</div>
+							 <div class="col-md-4" ng-show="busquedaAvanzada">
+									<div class="form-group">
+										<label>Parámetro Búsqueda:</label>
+										<div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-list"></i></span>
+											<select class="form-control" name="paramBusqueda"
+												id="paramBusqueda"
+												ng-options="filtro.codigo as filtro.nbOpcion for filtro in catalogoParamBusqueda2"
+												ng-model="paramBusqueda"
+												ng-change="cambioComboParametro(paramBusqueda)">
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group" ng-class="{'has-error': consultaOrden.valorBusqueda.$invalid && consultaOrden.valorBusqueda.$dirty}">
+										<label ng-if="valorRequerido">*Valor:</label>
+										<label ng-if="!valorRequerido">Valor:</label>
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="fa fa-pencil"></i></span> <input ng-disabled="bloquearValorBusquedaTodo" type="text"
+												ng-model="valorBusqueda" name="valorBusqueda" maxlength="30"
+												ng-required="valorRequerido" class="form-control "
+												capitalize></input> <span class="input-group-btn"> </span>
+										</div>
+										<div
+											ng-show="consultaOrden.valorBusqueda.$error.required  && consultaOrden.valorBusqueda.$dirty"
+											ng-style="{color:'red'}">El valor es requerido</div>
+									</div>
+								</div>
+								
+								<div class="col-md-4">
+								<div class="center">
+								<label >Búsqueda Avanzada</label>
+									<div class="form-grouo">
+										<div class="row centerRow">
+											<switcher class="swTeclo pull-right"
+												id-check="checkTipoBusqudaFecha"
+												false-value="false" 
+												true-value="true"
+												ng-change="cambioBusquedaAvanzada()" 
+												ng-model="busquedaAvanzada"> </switcher>
+										</div>
+									</div>
+									</div>
+								</div>
+								</div>
+								
+							<div class="row" ng-show="busquedaAvanzada">
+								<div class="col-md-3">
+									<label> Periodo:</label>
+									<div class="form-group">
+										<div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-list"></i></span>
+											<select class="form-control" name="tipoFecha" id="tipoFecha"
+												ng-disabled="!checkTipoBusqudaFecha"
+												ng-options="filtro as filtro.nbTipoFecha for filtro in rangoFechas"
+												ng-model="tipoFecha">
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3 center">
+									<label>Rango de Fechas:</label>
+									<div class="form-grouo">
+										<div class="row centerRow">
+											<switcher class="swTeclo pull-right"
+												id-check="checkTipoBusqudaFecha" false-label="Periodo"
+												false-value="true" true-label="Rango" true-value="false"
+												ng-change="changeRangoFechas()" ng-model="checkTipoBusqudaFecha"> </switcher>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-3">
+									<div class="form-group"
+										ng-class="{'has-error': consultaOrden.FHInicio.$invalid && consultaOrden.FHInicio.$dirty}">
+										<label for="fInicio" ng-if="!checkTipoBusqudaFecha">*Fecha Inicio:</label>
+										<label for="fInicio" ng-if="checkTipoBusqudaFecha">Fecha Inicio:</label>
+										<div class="input-group">  
+											<div class="input-group-addon">
+												<i class="fa fa-calendar"></i>
+											</div>
+											<input class="form-control inputFecha" id="FHInicio" name="FHInicio" readonly 
+												date-picker	idioma-dp="{{currentLanguage}}"	ng-model="FHInicio"
+												elemento="'FHFin'" mindate="FHInicio" ng-required="!checkTipoBusqudaFecha" ng-disabled = "checkTipoBusqudaFecha"/>
+										</div>
+										<div
+											ng-show="consultaOrden.FHInicio.$error.required && consultaOrden.FHInicio.$dirty"
+											ng-style="{color:'red'}">La fecha de inicio es
+											requerida</div>
+									</div>
+								</div>
+
+								<div class="col-md-3">
+									<div class="form-group"
+										ng-class="{'has-error': consultaOrden.FHFin.$invalid && consultaOrden.FHFin.$dirty}">
+									   <label for="fFin" ng-if="!checkTipoBusqudaFecha">*Fecha Fin:</label>
+										<label for="fFin" ng-if="checkTipoBusqudaFecha">Fecha Fin:</label>
+										<div class="input-group">  
+											<div class="input-group-addon">
+												<i class="fa fa-calendar"></i>
+											</div>
+												<input class="form-control inputFecha" id="FHFin" name="FHFin" readonly 
+												date-picker	idioma-dp="{{currentLanguage}}"	ng-model="FHFin"
+												elemento="'FHInicio'" maxdate="FHFin" ng-required="!checkTipoBusqudaFecha" 
+												ng-disabled = "checkTipoBusqudaFecha" readonly/>
+										</div>
+										<div
+											ng-show="consultaOrden.FHFin.$error.required && consultaOrden.FHFin.$dirty"
+											ng-style="{color:'red'}">La fecha fin es requerida</div>
+									</div>
+								</div>
+								</div>
+								
+								
+								<div class="row" ng-show="busquedaAvanzada">
+								<div class="col-md-3">
+									<label> Centro de Instalación:</label>
+									<div class="form-group">
+										<div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-list"></i></span>
+											<select class="form-control" select-picker multiple
+											idioma-sp="{{currentLanguage}}"
+											data-actions-box="true"
+											data-selected-text-format="count > 2"
+											ng-required="" data-max-options=""
+											ng-model="centroInst" name="cInstalacion" id="cInstalacion"
+											ng-change=""
+											ng-options="sp.idCentroInstalacion as sp.nbCentroInstalacion for sp in catCentroInstalacion"
+											ng-disabled="">
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<label> Estatus de Seguimiento:</label>
+									<div class="form-group">
+										<div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-list"></i></span>
+											<select class="form-control" select-picker multiple
+											idioma-sp="{{currentLanguage}}"
+											data-actions-box="true"
+											data-selected-text-format="count > 2"
+											ng-required="" data-max-options=""
+											ng-model="statusSegumiento" name="seguimiento" id="seguimiento"
+											ng-change=""
+											ng-options="sp.idStSeguimiento as sp.nbStSeguimiento for sp in catStSeguimiento"
+											ng-disabled="">
+											</select>
+										</div>
+									</div>
+								</div>
+
+								<div class="col-md-offset-1 col-md-2">
+								<label> Origen:</label><br/>
+                                  <label>
+                                  <input type="checkbox" ng-model="isLote" ng-change="changeOrigen()">
+   								   Lote
+ 								  </label><br/>
+ 								  <label>
+   					              <input type="checkbox" ng-model="isIncidencia" ng-change="changeOrigen2()" >
+   								 Incidencia
+  								</label>
+								</div>
+
+								<div class="col-md-3">
+								<div class="form-group" ng-class="{'has-error': consultaOrden.valorOrigen.$invalid && consultaOrden.valorOrigen.$dirty}">
+										<label ng-if="isLote || isIncidencia">*Valor Origen:</label>
+										<label ng-if="!isLote && !isIncidencia">Valor Origen:</label>
+										<div class="input-group">
+											<span class="input-group-addon"><i
+												class="fa fa-pencil"></i></span> <input ng-disabled="!isLote && !isIncidencia" type="text"
+												ng-model="valorOrigen" name="valorOrigen" maxlength="40"
+												ng-required="isLote || isIncidencia" class="form-control "
+												capitalize></input> <span class="input-group-btn"> </span>
+										</div>
+										<div
+											ng-show="consultaOrden.valorOrigen.$error.required  && consultaOrden.valorOrigen.$dirty"
+											ng-style="{color:'red'}">El valor del origen es requerido</div>
+									</div>
+								</div>
+								</div>
+								
+								
+							<div class="row" ng-show="busquedaAvanzada">
+							<div class="col-md-4">
+									<label> Tipo de Kit:</label>
+									<div class="form-group">
+										<div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-list"></i></span>
+											<select class="form-control" select-picker multiple
+											idioma-sp="{{currentLanguage}}"
+											data-actions-box="true"
+											data-selected-text-format="count > 2"
+											ng-required="" data-max-options=""
+											ng-model="tipoKit" name="kit" id="kit"
+											ng-change=""
+											ng-options="sp.idTipoKit as sp.nbTipoKit for sp in catTipoKit"
+											ng-disabled="">
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<label> Tipo de Plan:</label>
+									<div class="form-group">
+										<div class="input-group">
+											<span class="input-group-addon"><i class="fa fa-list"></i></span>
+											<select class="form-control" select-picker multiple
+											idioma-sp="{{currentLanguage}}"
+											data-actions-box="true"
+											data-selected-text-format="count > 2"
+											ng-required="" data-max-options=""
+											ng-model="tipoPlan" name="plan" id="plan"
+											ng-change=""
+											ng-options="sp.idPlan as sp.nbPlan for sp in catPlan"
+											ng-disabled="">
+											</select>
+										</div>
+									</div>
+								</div>
+								</div>
+								
+								 <div class="row">
+								 <div class="col-md-12 center">
+								 <div class="col-md-offset-5 col-md-2">
+								 <button type="button" ng-click="busquedaTramitesParametros()"
+										class="btn btn-danger btn-flat">Buscar</button>
+								 </div>		
+								<div class="box-tools col-md-1 pull-right">
+								<button type="button" class="btn btn-box-tool btn-danger" ng-click="limpiarCampos()" style="font-size: 1.1rem;"
+									data-toggle="tooltip" data-placement="left" title="Refrescar">
+									<i class="fa fa-refresh" ></i>
+								</button>
+							     </div>		
+								</div>
+								 
+								 </div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			
+	<div class="row" ng-show="mostrarTabla">
+        <div class="col-xs-12 col-md-offset-1 col-md-10">
+            <div class="box box-danger">
+                <div class="box-header with-border">
+                    <div class="col-sm-6">
+                        <h3 class="box-title">Registros Encontrados: {{(listOrden | filter:tabla.view.filterSearchVal).length}}</h3>
+                    </div>
+                    <div class="col-sm-6 form-group">
+						<div class="row">
+							<div class="col-md-offset-5 col-md-6 col-xs-8">
+								<div class="input-group pull-right">
+									<input type="text" class="form-control" placeholder="Buscar por filtro" ng-model="tabla.view.filterSearchVal">
+									<div class="input-group-addon">
+										<i class="fa fa-search"></i>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-1">
+								<a ng-click="descargarExcel()"> 
+									<span class="pull-right"> <img src="static/dist/img/excel.png"> </span>
+								</a>
+							</div>
+						</div>
+					</div>
+                </div>
+                <div class="box-body table-responsive">
+	                <table id="tabla_listServicio" class="table table-striped table-hover table-xs table-sm" style="overflow: auto; border-collapse: collapse; width: 100%;">
+	                    <thead>
+	                        <tr>
+									    <th width="15px" sort order="'stSeguimiento.nbStSeguimiento'" by="tabla.order" reverse="tabla.reverse" class="text-center"></th>
+										<th width="130px" sort order="'cdOrdenServicio'" by="tabla.order" reverse="tabla.reverse" class="text-center">ORDEN DE SERVICIO</th>
+										<th width="75px" sort order="'fhCita'" by="tabla.order" reverse="tabla.reverse" class="text-center">FECHA DE CITA</th>
+										<th width="70px" sort order="'vehiculo.cdPlacaVehiculo'" by="tabla.order" reverse="tabla.reverse" class="text-center">PLACA</th>
+										<th width="130px" sort order="'vehiculo.tipoVehiculo.nbTipoVehiculo'" by="tabla.order" reverse="tabla.reverse" class="text-center">TIPO DE VEHÍCULO</th>
+										<th sort order="'kitInstalacion.kitInstalacionDispDTO[0].kitDispositivo.tipoKit.nbTipoKit'" by="tabla.order" reverse="tabla.reverse" class="text-center">TIPO DE KIT</th>
+                                        <th width="80px" sort order="'centroInstalacion.nbCentroInstalacion'" by="tabla.order" reverse="tabla.reverse" class="text-center">CENTRO DE INSTALACIÓN</th>
+                                        <th sort order="'plan.nbPlan'" by="tabla.order" reverse="tabla.reverse" class="text-center">TIPO DE PLAN</th>
+                                        <th width="80px" sort order="'cdOrdenServicio'" by="tabla.order" reverse="tabla.reverse" class="text-center">ORIGEN</th>
+                                        <th sort order="'proceso.nbProceso'" by="tabla.order" reverse="tabla.reverse" class="text-center">PROCESO ACTUAL</th>
+	                        </tr>
+	                    </thead>
+	                    <tbody align="center">
+	                        <tr dir-paginate="orden in listOrden | orderBy:tabla.order:tabla.reverse | filter:tabla.view.filterSearchVal | itemsPerPage:tabla.view.rowsPerPageVal">
+	                                  <td class="center" width="10px" style="background-color: {{orden.stSeguimiento.cdColor}}"
+				                        data-toggle="tooltip" data-placement="left" title="{{orden.stSeguimiento.nbStSeguimiento}}">
+	                           	        </td>
+										<td class="center"><a ng-click="redirigir(orden.idOrdenServicio)" data-toggle="tooltip"
+											data-placement="left" title="Detalle de Orden de Servicio">{{orden.cdOrdenServicio}}</a></td>
+										<td width="70px" class="center">{{orden.fhCita}}</td>
+										<td width="70px" class="center">{{orden.vehiculo.cdPlacaVehiculo}}</td>
+										<td width="130px" class="center">{{orden.vehiculo.tipoVehiculo.nbTipoVehiculo}}</td>
+										<td class="center">{{orden.kitInstalacion.kitInstalacionDispDTO.length>=1?orden.kitInstalacion.kitInstalacionDispDTO[0].kitDispositivo.tipoKit.nbTipoKit:'SIN KIT ASIGNADO'}}</td>
+										<td width="80px" class="center">{{orden.centroInstalacion.nbCentroInstalacion}}</td>
+										<td class="center">{{orden.plan.nbPlan}}</td>
+										<td width="80px" class="center" ng-show="orden.idOrigenOds==1 || orden.idOrigenOds==null">Lote: {{orden.loteOrdenServicio.nbArchivoFinal}}</td>
+										<td width="80px" class="center" ng-show="orden.idOrigenOds==2">Incidencia: {{orden.cdOrdenServicio}}</td>
+										<td class="center">{{orden.proceso==null?"SIN PROCESO":orden.proceso.nbProceso}}</td>
+	                        </tr>
+	                    </tbody>
+	                </table>
+	                <div class="container-fluid">
+	                    <div class="fixed-table-pagination">
+	                        <rows-per-page rows="tabla.view.rowsPerPageVal" filtro="tabla.view.filterSearchVal" array="listOrden"></rows-per-page>
+	                        <dir-pagination-controls class="pull-right pagination-detail"></dir-pagination-controls>
+	                    </div>
+	                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+			<!--  <div class="row" ng-show="mostrarTabla">
+				<div class="col-md-offset-1 col-md-10">
+					<div class="box box-danger">
+						<div class="box-header with-border">
+							<div class="col-md-6">
+								<h3 class="box-title">Registros Encontrados: {{
+									(listOrden | filter : view.searchSomething).length }}</h3>
+							</div>
+							<div class="col-md-offset-2 col-md-3">
+								<div class="input-group">
+									<input type="text" id="searchsomething" class="form-control"
+										placeholder="Buscar por filtro"
+										ng-model="view.searchSomething">
+									<div class="input-group-addon">
+										<i class="fa fa-search"></i>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-1">
+								<a ng-click="descargarExcel()" width="30px"
+									class="img-rounded" title="Descargar Reporte"> <span
+									class="pull-right "> <img
+										src="static/dist/img/excel.png">
+								</span>
+								</a>
+							</div>
+						</div>
+						
+						<div class="box-body table-responsive">
+							<table id="tabla_ordenServicio"
+								class="table table-striped table-hover table-xs table-sm" style="overflow: auto; border-collapse: collapse; width: 100%;">
+								<thead>
+									<tr>
+									    <th width="15px" sort order="'stSeguimiento.nbStSeguimiento'" by="tabla.order" reverse="tabla.reverse" class="text-center"></th>
+										<th width="130px" sort order="'cdOrdenServicio'" by="tabla.order" reverse="tabla.reverse" class="text-center">ORDEN DE SERVICIO</th>
+										<th width="75px" sort order="'fhCita'" by="tabla.order" reverse="tabla.reverse" class="text-center">FECHA DE CITA</th>
+										<th width="70px" sort order="'vehiculo.cdPlacaVehiculo'" by="tabla.order" reverse="tabla.reverse" class="text-center">PLACA</th>
+										<th width="130px" sort order="'vehiculo.tipoVehiculo.nbTipoVehiculo'" by="tabla.order" reverse="tabla.reverse" class="text-center">TIPO DE VEHÍCULO</th>
+										<th sort order="'kitInstalacion.kitInstalacionDispDTO[0].kitDispositivo.tipoKit.nbTipoKit'" by="tabla.order" reverse="tabla.reverse" class="text-center">TIPO DE KIT</th>
+                                        <th width="80px" sort order="'centroInstalacion.nbCentroInstalacion'" by="tabla.order" reverse="tabla.reverse" class="text-center">CENTRO DE INSTALACIÓN</th>
+                                        <th sort order="'plan.nbPlan'" by="tabla.order" reverse="tabla.reverse" class="text-center">TIPO DE PLAN</th>
+                                        <th width="80px" sort order="'cdOrdenServicio'" by="tabla.order" reverse="tabla.reverse" class="text-center">ORIGEN</th>
+                                        <th sort order="'proceso.nbProceso'" by="tabla.order" reverse="tabla.reverse" class="text-center">PROCESO ACTUAL</th>
+                                         
+									</tr>
+								</thead>
+								<tbody>
+									<tr
+										dir-paginate="orden in listOrden | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage">
+				                        <td class="center" width="10px" style="background-color: {{orden.stSeguimiento.cdColor}}"
+				                        data-toggle="tooltip" data-placement="left" title="{{orden.stSeguimiento.nbStSeguimiento}}">
+	                           	        </td>
+										<td class="center"><a ng-click="redirigir(orden.idOrdenServicio)" data-toggle="tooltip"
+											data-placement="left" title="Detalle de Orden de Servicio">{{orden.cdOrdenServicio}}</a></td>
+										<td width="70px" class="center">{{orden.fhCita}}</td>
+										<td width="70px" class="center">{{orden.vehiculo.cdPlacaVehiculo}}</td>
+										<td width="130px" class="center">{{orden.vehiculo.tipoVehiculo.nbTipoVehiculo}}</td>
+										<td class="center">{{orden.kitInstalacion.kitInstalacionDispDTO.length>=1?orden.kitInstalacion.kitInstalacionDispDTO[0].kitDispositivo.tipoKit.nbTipoKit:'SIN KIT ASIGNADO'}}</td>
+										<td width="80px" class="center">{{orden.centroInstalacion.nbCentroInstalacion}}</td>
+										<td class="center">{{orden.plan.nbPlan}}</td>
+										<td width="80px" class="center" ng-show="orden.idOrigenOds==1 || orden.idOrigenOds==null">Lote: {{orden.loteOrdenServicio.nbArchivoFinal}}</td>
+										<td width="80px" class="center" ng-show="orden.idOrigenOds==2">Incidencia: {{orden.cdOrdenServicio}}</td>
+										<td class="center">{{orden.proceso==null?"SIN PROCESO":orden.proceso.nbProceso}}</td>
+									</tr>
+									<tr
+										ng-if="(listOrden | filter:view.searchSomething).length < 1">
+										<td colspan="10" class="text-center"><h4>No se
+												encontraron coincidencias</h4></td>
+									</tr>
+								</tbody>
+							</table>
+		              <div class="container-fluid">
+	                    <div class="fixed-table-pagination">
+	                        <rows-per-page rows="view.rowsPerPage" filtro="view.searchSomething" array="listOrden"></rows-per-page>
+	                        <dir-pagination-controls class="pull-right pagination-detail"></dir-pagination-controls>
+	                    </div>
+	                </div>
+						</div>
+					</div>
+				</div>
+			</div> -->
+		</form>
+	</section>
+<body>
+</html>

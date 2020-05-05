@@ -3,6 +3,7 @@ package mx.com.teclo.siye.persistencia.hibernate.dao.expedienteImg;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
@@ -183,6 +184,70 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 				 .addScalar("lbExpedienteODS",StandardBasicTypes.BINARY)
 				 .addScalar("idTipoExpediente",LongType.INSTANCE)
 				 .setParameter("OrdenServicio", OrdenServicio)
+				 .setResultTransformer(Transformers.aliasToBean(ImagenVO.class)).list();
+		return respuesta;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ImagenVO> getImagenOS(Long OrdenServicio, String restriccion) {
+		StringBuilder consulta = new StringBuilder("SELECT ID_EXPEDIENTE_ODS AS idExpedienteODS," + 
+				"ID_ORDEN_SERVICIO AS idOrdenServicio," + 
+				"ID_ODS_ENCUESTA AS idOdsEncuesta,"+				
+				"ID_PROCESO  AS idProceso," + 
+				"ID_PREGUNTA AS idPregunta," + 
+				"NB_EXPEDIENTE_ODS AS nbExpedienteODS," + 
+				"CD_TIPO_ARCHIVO AS cdTipoArchivo," + 
+				"LB_EXPEDIENTE_ODS AS lbExpedienteODS, " + 
+				"ID_TIPO_EXPEDIENTE AS idTipoExpediente "+
+				" FROM TIE050D_IE_EXPEDIENTES_IMG" + 
+				"   WHERE ID_ORDEN_SERVICIO=:OrdenServicio  AND ST_ACTIVO=1 AND ID_PROCESO IS NULL AND ID_ODS_ENCUESTA IS NULL AND ID_PREGUNTA IS NULL ");
+		consulta.append(restriccion);
+		 List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
+				 .addScalar("idExpedienteODS", LongType.INSTANCE)
+				 .addScalar("idOdsEncuesta", LongType.INSTANCE)
+				 .addScalar("idOrdenServicio", LongType.INSTANCE)
+				 .addScalar("idProceso", LongType.INSTANCE)
+				 .addScalar("idPregunta",LongType.INSTANCE)
+				 .addScalar("nbExpedienteODS", StringType.INSTANCE)
+				 .addScalar("cdTipoArchivo", StringType.INSTANCE)
+				 .addScalar("lbExpedienteODS",StandardBasicTypes.BINARY)
+				 .addScalar("idTipoExpediente",LongType.INSTANCE)
+				 .setParameter("OrdenServicio", OrdenServicio)
+				 .setResultTransformer(Transformers.aliasToBean(ImagenVO.class)).list();
+		return respuesta;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ImagenVO> getImagenesByIdIncidencia(Long idIncidencia) {		
+			String hql = "SELECT ex.idExpedienteODS as idExpedienteODS,ex.nbExpedienteODS as nbExpedienteODS,"
+					+ "ex.cdTipoArchivo as cdTipoArchivo,ex.lbExpedienteODS as lbExpedienteODS "
+					+ "FROM ExpedientesImgDTO as ex "
+					+ "WHERE ex.incidencia.idIncidencia=:idIncidencia "
+					+ "and ex.stActivo=1 ORDER BY ex.nuOrden DESC";
+			Query query = getCurrentSession().createQuery(hql);
+			query.setParameter("idIncidencia", idIncidencia).setResultTransformer(Transformers.aliasToBean(ImagenVO.class));
+			return query.list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ImagenVO> getImagenPorNivel(StringBuilder consulta) {
+		List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
+				 .addScalar("idExpedienteODS", LongType.INSTANCE)
+				 .addScalar("idOdsEncuesta", LongType.INSTANCE)
+				 .addScalar("idOrdenServicio", LongType.INSTANCE)
+				 .addScalar("idProceso", LongType.INSTANCE)
+				 .addScalar("idPregunta",LongType.INSTANCE)
+				 .addScalar("nbExpedienteODS", StringType.INSTANCE)
+				 .addScalar("cdTipoArchivo", StringType.INSTANCE)
+				 .addScalar("idIncidencia",LongType.INSTANCE)
+				 .addScalar("txIncidencia",StringType.INSTANCE)
+				 .addScalar("colorPrioridad",StringType.INSTANCE)
+				 .addScalar("nbPrioridad",StringType.INSTANCE)
+				 .addScalar("lbExpedienteODS",StandardBasicTypes.BINARY)
+				 .addScalar("idTipoExpediente",LongType.INSTANCE)
 				 .setResultTransformer(Transformers.aliasToBean(ImagenVO.class)).list();
 		return respuesta;
 	}

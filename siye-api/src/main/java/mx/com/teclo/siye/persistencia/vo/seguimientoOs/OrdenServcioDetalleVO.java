@@ -1,7 +1,10 @@
 package mx.com.teclo.siye.persistencia.vo.seguimientoOs;
 
+
 public class OrdenServcioDetalleVO {
 
+	private Long idPlan;
+	private Long idOrdenServicio;
 	private String nuOrdenServicio;
 	private String fechaAtencion;
 	private String txTransportista;
@@ -13,7 +16,7 @@ public class OrdenServcioDetalleVO {
 	private String txEtapa;
 	private Long nuIncidencia;
 	private String estado;
-	
+	private String color;
 	
 	/**
 	 * @return the nuOrdenServicio
@@ -146,6 +149,42 @@ public class OrdenServcioDetalleVO {
 	 */
 	public void setTxTecnicoInstalacion(String txTecnicoInstalacion) {
 		this.txTecnicoInstalacion = txTecnicoInstalacion;
+	}
+	/**
+	 * @return the idOrdenServicio
+	 */
+	public Long getIdOrdenServicio() {
+		return idOrdenServicio;
+	}
+	/**
+	 * @param idOrdenServicio the idOrdenServicio to set
+	 */
+	public void setIdOrdenServicio(Long idOrdenServicio) {
+		this.idOrdenServicio = idOrdenServicio;
+	}
+	/**
+	 * @return the idPlan
+	 */
+	public Long getIdPlan() {
+		return idPlan;
+	}
+	/**
+	 * @param idPlan the idPlan to set
+	 */
+	public void setIdPlan(Long idPlan) {
+		this.idPlan = idPlan;
+	}
+	/**
+	 * @return the color
+	 */
+	public String getColor() {
+		return color;
+	}
+	/**
+	 * @param color the color to set
+	 */
+	public void setColor(String color) {
+		this.color = color;
 	}
 	
 }

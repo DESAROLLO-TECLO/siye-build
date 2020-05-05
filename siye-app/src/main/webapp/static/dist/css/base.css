@@ -1,61 +1,63 @@
 	/* ----------------------------------------------------- */
 	/* _______________________ BASE _______________________ */
-	
 	/* ANGULAR BOOTSTRAP */
+	
 	@import url('base/angular-bootstrap.css');
-	
 	/* ADMIN LTE */
+	
 	@import url('base/AdminLTE.css');
-	
 	/* Carga de request */
-	@import url('../../plugins/blockUI/angular-block-ui.min.css');
 	
-	/* Fonts utilizados en la aplicación (iconos) */
+	@import url('../../plugins/blockUI/angular-block-ui.min.css');
+	/* Fonts utilizados en la aplicaciï¿½n (iconos) */
+	
 	@import url('fonts/font-awesome/css/font-awesome.min.css');
 	@import url('fonts/glyphicons/glyphicons.css');
-	
 	/* ------------------------------------------------------- */
 	/* _______________________ PLUGINS ______________________ */
-	
 	/* Plugins para las tablas */
+	
 	@import url('../../plugins/bootstrap-table/bootstrap-table.min.css');
-	
 	/* Plugins de mapas */
+	
 	@import url('../../plugins/jvectormap/jquery-jvectormap-1.2.2.css');
-	
 	/* Plugins de los select */
+	
 	@import url('../../plugins/select2/select2.min.css');
-	
 	/* Plugin del morris */
-	@import url('../../plugins/morris/morris.css');
 	
+	@import url('../../plugins/morris/morris.css');
 	/* Plugins de los inputs de tipo fecha */
+	
 	@import url('../../plugins/datepicker/datepicker3.css');
 	@import url('../../plugins/timepicker/bootstrap-timepicker.min.css');
 	@import url('../../plugins/datetimepicker-v4/bootstrap-datetimepicker.css');
 	@import url('../../plugins/daterangepicker/daterangepicker.css');
 	/* Plugins para los inputs de tipo checkbox y radiobutton */
-	@import url('../../plugins/iCheck/all.css');
 	
+	@import url('../../plugins/iCheck/all.css');
 	/* Plugin para alertas y notificaciones */
+	
 	@import url('../../plugins/notify/notify.css');
 	@import url('../../plugins/notify/prettify.css');
-	
 	/* Plugins para el bootstrapSelect */
+	
 	@import url('../../plugins/bootstrapSelect/bootstrap-select.min.css');
-	
 	/* Plugin WebUI-Popover*/
+	
 	@import url('../../plugins/webui-popover/webui-popover.css');
-	
 	/* Plugin SmartWizard*/
+	
 	@import url('../../plugins/smartWizard/smartWizard.css');
-	
 	/* Plugin GrowlNotify*/
+	
 	@import url('../../plugins/growlNotify/angular-growl.css');
+	/* Plugin AMCHARTS */
 	
-/* 	Componentes de aplicación IMPORTANTE */
+	@import url('../../plugins/amcharts/amcharts.css');
+	/* 	Componentes de aplicaciï¿½n IMPORTANTE */
+	
 	@import url('components.css');
-	
 	@import url('custom/aplicacion/toast-teclo.css');
 	/* Estilo de daterangepiker */
 	
@@ -64,6 +66,6 @@
 	
 	@import url('custom/aplicacion/animate.min.css');
 	@import url('custom/sidebar/sidebar.min.css');
+	/* Nuevo Diseï¿½o de Pantallas */
 	
-	/* Nuevo Diseño de Pantallas */
 	@import url('base/style.css');

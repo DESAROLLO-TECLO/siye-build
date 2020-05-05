@@ -111,6 +111,17 @@
 <!-- CryptoJs -->
 <script src="static/js/lib/cryptoJs-3.1.2.js"></script>
 
+<!-- CompressJS -->
+<script src="static/js/lib/image-compressor.js"></script>
+
+<script src="static/plugins/compress-img/initCompressImage.js"></script>
+
+<!--BlokUi Elements  -->
+<script src="static/js/lib/jquery.blockUI.js"></script>
+<!-- HTML2canvas -->
+<script src="static/js/lib/html2canvas.js"></script>
+
+
 <!--_________________________________.:: PLUGINS ::.___________________________________ -->
 
 <!-- SlimScroll 1.3.0 -->
@@ -316,6 +327,7 @@
 <!-- ORDEN SERVICIO -->
 <script src="static/js/services/ordenServicio/altaServicioService.js"></script>
 <script src="static/js/services/ordenServicio/consultaServicioService.js"></script>
+<script src="static/js/services/ordenServicio/consultaGeneralService.js"></script>
 
 <!-- ADMINISTRACIÓN -->
 <script src="static/js/services/administracion/administracionService.js"></script>
@@ -325,6 +337,8 @@
 <script src="static/js/services/administracion/cambioContraseniaService.js"></script>
 <!-- Configuración aplicación -->
 <script src="static/js/services/aplicacion/configAppService.js"></script>
+<!-- catalogo -->
+<script src="static/js/services/administracion/catalogoService.js"></script>
 
 <!-- Expediente -->
 <script src="static/js/services/expediente/expedienteService.js"></script>
@@ -348,7 +362,7 @@
 <!--Monitoreo y seguimiento OS -->
 <script src="static/js/services/monitoreo/seguimientoOsService.js"></script>
 <script src="static/js/services/monitoreo/detalleSeguimientoOsService.js"></script>
-
+<script src="static/js/services/monitoreo/monIncidenciaService.js"></script>
 
 
 
@@ -379,17 +393,25 @@
 <script src="static/js/controllers/templatemodal/mensajeModalGenericoController.js"></script>
 <script src="static/js/controllers/templatemodal/modalMensajeController.js"></script>
 <script src="static/js/controllers/templatemodal/mensajeTokenModalController.js"></script>
+<script src="static/js/controllers/templatemodal/modalIncidenciasMonitoreoController.js"></script>
+
+<!-- Carga de Archivos OTG-->
+<script src="static/js/controllers/archivoLayout/cargaArchivoLayoutController.js"></script>
+<script src="static/js/services/archivoLayout/cargaArchivoLayoutService.js"></script>
 
 <!-- ORDEN SERVICIO -->
 <script src="static/js/controllers/ordenServicio/altaServicioController.js"></script>
 <script src="static/js/controllers/ordenServicio/consultaServicioController.js"></script>
 <script src="static/js/controllers/ordenServicio/editar/editarOrdenServicioController.js"></script>
+<script src="static/js/controllers/ordenServicio/consultaGeneralController.js"></script>
+<script src="static/js/controllers/ordenServicio/detalleConsultaController.js"></script>
 
 <!-- ADMINISTRACIÓN -->
 <!-- Configuración aplicación -->
 <script src="static/js/controllers/administracion/configuracionAppController.js"></script>
 <!-- Cambiar contraseña -->
 <script src="static/js/controllers/administracion/administracionModificaClaveController.js"></script>
+<script src="static/js/controllers/administracion/catalogoController.js"></script>
 
 <!-- USUARIOS -->
 <script src="static/js/controllers/administracion/usersController.js"></script>
@@ -412,9 +434,15 @@
 <!-- Seguimiento y monitoreo de  OS -->
 <script src="static/js/controllers/monitoreo/seguimientoOsController.js"></script>
 <script src="static/js/controllers/monitoreo/detalleSeguimientoOsController.js"></script>
+<script src="static/js/controllers/templatemodal/modalSeguimientoNivelController.js"></script>
 
 <!--Monitoreo Incidencia -->
-<script src="static/js/controllers/monitoreo/incidencia/incidenciaController.js"></script>
+<script src="static/js/controllers/monitoreo/monIncidenciaController.js"></script>
+<script src="static/js/controllers/monitoreo/detalleIncidenciaController.js"></script>
+
+<!-- DASHBOARD -->
+<script src="static/js/controllers/dashboard/dashboardController.js"></script>
+<script src="static/js/services/dashboard/dashboardService.js"></script>
 
 <!-- Dependencias de los informes teclo-->
 <script src="static/js/directivas/smart-table.js"></script>
@@ -423,5 +451,25 @@
 <script src="static/recursos/formBusquedaController.js"></script>
 <script src="static/recursos/reporteConfiguracionService.js"></script>
 <script src="static/plugins/dataGridAngularjs/pagination.min.js"></script>
+ 
 
+	<!-- AMCHARTS -->
+    <script src="static/plugins/amcharts/amcharts.js"></script>
+    <script src="static/plugins/amcharts/ammap.js"></script>
+    <script src="static/plugins/amcharts/mapMexico-svg.js"></script>
+    <script src="static/plugins/amcharts/serial.js"></script>
+    <script src="static/plugins/amcharts/piechart.js"></script>
+    <script src="static/plugins/amcharts/funnel.js"></script>
+    <script src="static/plugins/amcharts/gantt.js"></script>
+    <script src="static/plugins/amcharts/gauge.js"></script>
+    <script src="static/plugins/amcharts/radar.js"></script>
+    <script src="static/plugins/amcharts/themes/black.js"></script>
+    <script src="static/plugins/amcharts/themes/chalk.js"></script>
+    <script src="static/plugins/amcharts/themes/dark.js"></script>
+    <script src="static/plugins/amcharts/themes/light.js"></script>
+    <script src="static/plugins/amcharts/themes/themeTeclo.js"></script>
+    <script src="static/plugins/amcharts/themes/patterns.js"></script>
+    <script src="static/plugins/amcharts/themes/customThemes.js"></script>
+    <script src="static/plugins/amcharts/export/export.min.js"></script>
+    
 </html>

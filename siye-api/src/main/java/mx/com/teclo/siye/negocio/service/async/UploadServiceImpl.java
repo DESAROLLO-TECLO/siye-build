@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.siye.persistencia.hibernate.dao.configuracion.ConfiguracionOSDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.configuracion.ConfiguracionOSDTO;
-import mx.com.teclo.siye.persistencia.vo.async.TipoLayoutVO;
+import mx.com.teclo.siye.persistencia.vo.async.ConfigLayoutVO;
 
 @Service
 public class UploadServiceImpl implements UploadService {
@@ -39,7 +39,7 @@ public class UploadServiceImpl implements UploadService {
 			throw new BusinessException(MSG_ARCHIVO_VACIO);
 		}
 		// QUE HAYA UNA CONFIGURACION VIGENTE CONTRA LA CUAL SE VALIDARA EL ARCHIVO
-		TipoLayoutVO layoutVigenteVO = layoutService.getLayoutVigente();
+		ConfigLayoutVO layoutVigenteVO = layoutService.getLayoutVigente();
 
 		if (layoutVigenteVO == null) {
 			throw new BusinessException(LayoutServiceImpl.MSG_LAYOUT_VIGENTE_NULO);

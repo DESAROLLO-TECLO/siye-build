@@ -1,5 +1,6 @@
 <head>
 	<meta charset="utf-8">
+<<<<<<< HEAD
 	</head>
 	<body class="backNodes">
 		<header class="content-header">
@@ -71,10 +72,130 @@
 								<div class="row">
 									<div class="col-md-12">
 										<div id="mynetwork"></div>
+=======
+	<style type="text/css">
+		.ligas {
+			text-decoration: none;
+			padding: 5px;
+			font-weight: 600;
+			border-radius: 6px;
+		}
+	</style>
+</head>
+
+<body class="backNodes">
+	<header class="content-header">
+		<h1>Seguimiento</h1>
+		<ol class="breadcrumb">
+			<li><a><i class="fa fa-check-square-o"></i>Seguimiento</a>
+			</li>
+			<li class="active">Orden de Servicio</li>
+		</ol>
+	</header>
+
+	<section class="content">
+		<!--Inicia Vista de nodos -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="box box-danger">
+					<div class="box-header with-border">
+						<ul class="nav nav-tabs preventClic">
+							<li role="presentation" class="tabBox" ng-class="{'active border-box':opciones.verNodos}">
+								<a ng-click="changeViewTab('nodo')">
+									{{'MONITOREO.pestanas.nodos' |	translate}}
+								</a>
+							</li>
+							<li role="presentation" class="tabBox" ng-class="{'active border-box':opciones.verLinea}">
+								<a ng-click="changeViewTab('linea')">
+									{{'MONITOREO.pestanas.linea' | translate}}
+								</a>
+							</li>
+						</ul>
+						<fieldset style="min-height: 16%;">
+							<div class="row">
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-3 col-sm-6 col-xs-6">
+											<label for="centroInstalacion">
+												{{'MONITOREO.detalleOs.label.ci' | translate}}
+											</label>
+											<p>
+												{{ordenServicioVO.detalle.nbModuloAtencion}}
+											</p>
+										</div>
+										<div class="col-md-3 col-sm-6 col-xs-6">
+											<label for="os">
+												{{'MONITOREO.detalleOs.label.os' | translate}}
+											</label>
+											<p>
+												{{ordenServicioVO.detalle.cdOrdenServicio}}
+											</p>
+										</div>
+										<div class="col-md-3 col-sm-6 col-xs-6">
+											<label for="plan">{{'MONITOREO.detalleOs.label.plan' | translate}}</label>
+											<p>{{ordenServicioVO.detalle.nbPlan}}</p>
+										</div>
+										<div class="col-md-3 col-sm-6 col-xs-6">
+											<label for="kit">{{'MONITOREO.detalleOs.label.kit' | translate}}</label>
+											<p>{{ordenServicioVO.detalle.nbKit}}</p>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-md-3 col-sm-6 col-xs-6">
+											<label
+												for="finicio">{{'MONITOREO.detalleOs.label.finicio' | translate}}</label>
+											<p>{{ordenServicioVO.detalle.finicio |date:"dd-MM-yyyy h:mm"}}</p>
+										</div>
+										<div class="col-md-3 col-sm-6 col-xs-6">
+											<label for="ffin">{{'MONITOREO.detalleOs.label.ffin' | translate}}</label>
+											<p>{{ordenServicioVO.detalle.ffin != null ?
+												   ordenServicioVO.detalle.ffin : "SIN TERMINAR" | date:"dd-MM-yyyy h:mm"}}</p>
+										</div>
+										<div class="col-md-3 col-sm-6 col-xs-6">
+											<label
+												for="proceso">{{'MONITOREO.detalleOs.label.proceso' | translate}}</label>
+											<p>{{ordenServicioVO.detalle.fhDiferencia}}</p>
+										</div>
+										<div class="col-md-3 col-sm-6 col-xs-6">
+											<label
+												for="estatus">{{'MONITOREO.detalleOs.label.estatus' | translate}}</label>
+											<p>{{ordenServicioVO.detalle.estatus}}</p>
+										</div>
+									</div>
+									<div class="row">
+										<div class="center">
+											<button class="btn btn-danger"
+												ng-click="verModalEvidencias('ordenservicio',ordenServicioVO.detalle)">
+												{{'MONITOREO.detalleOs.label.incidencia' | translate}}
+											</button>
+										</div>
+									</div>
+									<!-- <div class="row">
+										<div ng-class="center">
+											<a ng-click="downLoadTimeLine()"> <img
+													src="./static/dist/img/incidencia/download.png" class="imgExport"
+													ng-click="funcionPrueba()">
+											</a>
+										</div>
+									</div> -->
+								</div>
+						</fieldset>
+					</div>
+
+					<div class="box-body">
+						<!-- Vista en modo NODOS procesos -->
+						<div ng-show="ordenServicioVO.verProcesos">
+							<section class="content contFullscreen" id="contFullScreen">
+								<div class="row">
+									<div class="col-md-12">
+										<div style="height: 500px;" id="mynetwork"></div>
+>>>>>>> aa23c40c95a7b9a9ba8842027353dcd8df03d1e9
 									</div>
 								</div>
 							</section>
 						</div>
+<<<<<<< HEAD
 						<div class="box-footer">
 							<div class="row">
 								<div class="col-md-4">
@@ -296,10 +417,113 @@
 									</div>
 								</div>
 							</section>
+=======
+
+						<!-- Vista modo linea de tiempo -->
+						<div style="height: 500px; 	overflow-y: scroll;" ng-show="ordenServicioVO.verDetalle" id="imgLineTiempo">
+							<div class="box-body scrollDetail" id="scrollDetail">
+								<ul class="timeline">
+									<li class="time-label" ng-repeat-start="detalle in ordenServicioVO.etapasVO">
+										<span class="bg-dates">
+											{{detalle.nbEncuesta}}
+										</span>
+									</li>
+									<li>
+										<div class="timeline-item">
+											<div class="timeline-body table-responsive">
+												<div class="row">
+													<div class="col-md-12 col-sm-12 col-xs-12">
+														<div class="col-md-3 col-xs-3 col-sm-3">
+															<label
+																for="">{{'MONITOREO.detalleOs.label.finicio' | translate}}</label>
+															<p>{{detalle.fhInicio!=null ? detalle.fhInicio : "SIN FECHA"}}
+															</p>
+														</div>
+														<div class="col-md-3 col-xs-3 col-sm-3">
+															<label
+																for="">{{'MONITOREO.detalleOs.label.ffin' | translate}}</label>
+															<p>{{detalle.fhFin !=null ? detalle.fhFin : "SIN FECHA"}}
+															</p>
+														</div>
+														<div class="col-md-3 col-xs-3 col-sm-3">
+															<label
+																for="">{{'MONITOREO.detalleOs.label.proceso' | translate}}</label>
+															<p>{{detalle.fhDiferencia}}</p>
+														</div>
+														<div class="col-md-3 col-xs-3 col-sm-3">
+															<label
+																for="">{{'MONITOREO.detalleOs.label.preguntas' | translate}}</label>
+															<p>
+																<a class="ligas" href="#"
+																	ng-click="verModalEvidencias('pregunta',detalle)"
+																	style=" border: 2px solid {{detalle.nbColor}}">
+																	{{detalle.preguntas}}
+																</a>
+															</p>
+														</div>
+													</div>
+												</div>
+
+												<div class="row">
+													<div class="col-md-12 col-sm-12 col-xs-12">
+														<div class="col-md-3 col-sm-4 col-xs-4">
+															<label
+																for="estatus">{{'MONITOREO.detalleOs.label.estatus' | translate}}</label>
+															<div class="center"
+																style="width: 50%; background-color:{{detalle.nbColor}};">
+																<strong style="color: white;">
+																	{{detalle.estatus}}
+																</strong>
+															</div>
+														</div>
+														<div class="col-md-3 col-sm-4 col-xs-4">
+															<label
+																for="">{{'MONITOREO.detalleOs.label.preguntas' | translate}}
+																{{detalle.nuPorcentaje}}</label>
+															<div class="progress" style="width: 50%;">
+																<div class="progress-bar" role="progressbar"
+																	aria-valuenow="10" aria-valuemin="0"
+																	aria-valuemax="100"
+																	style="width: {{detalle.nuPorcentaje}}">
+																	{{'MONITOREO.detalleOs.label.progreso' | translate}}
+																	{{detalle.nuPorcentaje}}
+																</div>
+															</div>
+														</div>
+														<div class="col-md-3 col-sm-4 col-xs-4">
+															<button class="btn btn-danger center"
+																ng-click="verModalEvidencias('encuesta', detalle)"
+																class="btn pull-left">
+																{{'MONITOREO.detalleOs.label.evidencia' | translate}}
+															</button>
+														</div>
+													</div>
+
+												</div>
+											</div>
+										</div>
+									</li>
+									<li ng-if="$last" ng-repeat-end>
+										<i class="fa fa-clock-o bg-gray"></i>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="box-footer">
+						<div class="row">
+							<div class="col-md-4">
+								<a type="button" ng-click="regresar()" class="btn pull-left">
+									<i class="fa fa-arrow-circle-left"></i>
+									{{'APP.Base.boton.regresar' | translate}}
+								</a>
+							</div>
+>>>>>>> aa23c40c95a7b9a9ba8842027353dcd8df03d1e9
 						</div>
 					</div>
 				</div>
 			</div>
+<<<<<<< HEAD
 					<!-- Termina de linea de tiempo -->
 	
 		</section>
@@ -313,3 +537,19 @@
 		</script>
 	</body>
 	</html>
+=======
+		</div>
+	</section>
+
+	<script type="text/javascript">
+		$('.botonF1').hover(function () {
+			$('.btn').addClass('animacionVer');
+		})
+		$('.contenedor').mouseleave(function () {
+			$('.btn').removeClass('animacionVer');
+		})
+	</script>
+</body>
+
+</html>
+>>>>>>> aa23c40c95a7b9a9ba8842027353dcd8df03d1e9

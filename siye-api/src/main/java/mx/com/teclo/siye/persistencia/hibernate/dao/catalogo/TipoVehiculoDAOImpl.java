@@ -8,6 +8,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ProveedorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.TipoVehiculoDTO;
 
 @Repository
@@ -23,4 +24,12 @@ public class TipoVehiculoDAOImpl extends BaseDaoHibernate<TipoVehiculoDTO> imple
 		return (List<TipoVehiculoDTO>)criteria.list();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<TipoVehiculoDTO> obtenerTipoVehiculoVisible(Long value) {
+		Criteria c = getCurrentSession().createCriteria(TipoVehiculoDTO.class);
+		c.add(Restrictions.eq("stActivo", true));
+		c.add(Restrictions.eq("stTipoVehiculo", value));
+		return (List<TipoVehiculoDTO>) c.list();
+	}
 }

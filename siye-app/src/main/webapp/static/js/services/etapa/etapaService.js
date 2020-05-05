@@ -19,4 +19,12 @@ function($http, config) {
         });
     }
 
+    this.getTransportistasVehiculo = function(id){
+        return $http.get(config.baseUrl + "/catalogo/getTransportistasVehiculo", {
+            params:{
+                "idVehiculo": id
+            }
+        });
+    }
+
 });

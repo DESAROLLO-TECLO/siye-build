@@ -60,6 +60,10 @@ public class ConductorDTO implements Serializable{
 	@Column(name = "FH_MODIFICACION", nullable = false)
 	private Date fhModificacion;
 	
+	@Column(name = "ST_CONDUCTOR", nullable = false)
+	private Long stCondutor;
+
+	
 	public Integer getIdConductor() {
 		return idConductor;
 	}
@@ -139,4 +143,13 @@ public class ConductorDTO implements Serializable{
 	public void setFhModificacion(Date fhModificacion) {
 		this.fhModificacion = fhModificacion;
 	}
+
+	public Long getStCondutor() {
+		return stCondutor;
+	}
+
+	public void setStCondutor(Long stCondutor) {
+		this.stCondutor = stCondutor;
+	}
+	
 }

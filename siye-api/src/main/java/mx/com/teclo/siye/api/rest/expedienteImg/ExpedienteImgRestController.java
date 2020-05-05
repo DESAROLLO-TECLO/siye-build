@@ -20,6 +20,7 @@ import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.siye.negocio.service.expedienteImg.ExpedienteImgService;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.CargaExpedienteImgVO;
+import mx.com.teclo.siye.persistencia.vo.expedientesImg.CompresorImgConfigVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.tipoExpediente.TipoExpedienteVO;
 
@@ -91,5 +92,14 @@ public class ExpedienteImgRestController {
 			throw new NotFoundException("No tiene evidencias asignadas ");
 		}
 		return new ResponseEntity<List<ImagenVO>>(respuesta, HttpStatus.OK);
+	};
+	
+	@GetMapping(value="/getConfigCompressImg")
+	public ResponseEntity<List<CompresorImgConfigVO>> getConfigCompressImg() throws NotFoundException{	
+		List<CompresorImgConfigVO> respuesta = expedienteImg.getAllConfigCompress();
+		if(respuesta.isEmpty()) {
+			throw new NotFoundException("No se encontraron configuraciones");
+		}
+		return new ResponseEntity<List<CompresorImgConfigVO>>(respuesta, HttpStatus.OK);
 	};
 }
