@@ -308,7 +308,13 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
     //consulta General
     $routeProvider.when("/detalleConsulta/:id", {
         templateUrl: "views/ordenServicio/detalleConsulta.html",
-        controller: "detalleConsultaController"
+        controller: "detalleConsultaController",
+    	resolve: {
+    		ordenInfo: function(consultaServicioService, $route) {
+    			return consultaServicioService.obtenerOrden($route.current.params.id);
+    	}
+    }
+        	
     });
 
 });
