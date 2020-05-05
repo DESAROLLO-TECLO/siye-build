@@ -354,5 +354,10 @@ img.foto-evidencia-1 {
 	width: 100%;
 }
 
+.style-modal-modal{
+	display: table;
+    padding-left: 0px !important;
+}
+
 
 

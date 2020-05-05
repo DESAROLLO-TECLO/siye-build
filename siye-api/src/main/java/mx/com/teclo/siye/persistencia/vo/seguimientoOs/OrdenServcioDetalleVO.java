@@ -1,13 +1,12 @@
 package mx.com.teclo.siye.persistencia.vo.seguimientoOs;
 
-import java.util.Date;
 
 public class OrdenServcioDetalleVO {
 
 	private Long idPlan;
 	private Long idOrdenServicio;
 	private String nuOrdenServicio;
-	private Date fechaAtencion;
+	private String fechaAtencion;
 	private String txTransportista;
 	private String txPlaca;
 	private String txtRepresentante;
@@ -34,13 +33,13 @@ public class OrdenServcioDetalleVO {
 	/**
 	 * @return the fechaAtencion
 	 */
-	public Date getFechaAtencion() {
+	public String getFechaAtencion() {
 		return fechaAtencion;
 	}
 	/**
 	 * @param fechaAtencion the fechaAtencion to set
 	 */
-	public void setFechaAtencion(Date fechaAtencion) {
+	public void setFechaAtencion(String fechaAtencion) {
 		this.fechaAtencion = fechaAtencion;
 	}
 	/**

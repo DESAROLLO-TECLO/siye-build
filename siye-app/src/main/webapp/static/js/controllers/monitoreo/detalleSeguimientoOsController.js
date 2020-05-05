@@ -187,30 +187,32 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             fitAnimated();
         }
         // Guardar imagen 
-        saveDoc = function (isURL, file, fileName) {
+        $scope.downLoadTimeLine=function(){
+            $scope.flagDownload=true;
+            scrollDetailDestroy()
+             $timeout(function() {
+                html2canvas(document.querySelector("#imgLineTiempo")).then(canvas => {
+                     var dataURL = canvas.toDataURL();
+                     $scope.imgCapture=dataURL;
+                     var file=dataURL.split(",");
+                     $scope.archivo=$scope.b64toBlob(file[1],"image/png"); 
+                     save( $scope.archivo,"image/png");
+                });
+             },15); 
+        };
+
+        save=function(file, fileName) {
+            $scope.flagDownload=false;
+            scrollDetail()
             var url = window.URL || window.webkitURL;
+            var blobUrl = url.createObjectURL(file);
             var a = document.createElement('a');
-            if (isURL)
-                a.href = file;
-            else {
-                var blobUrl = url.createObjectURL(file);
-                showPdf(blobUrl);
-                a.href = blobUrl;
-            }
+            a.href = blobUrl;
             a.target = '_blank';
             a.download = fileName;
             document.body.appendChild(a);
+            a.click();
         }
-
-        showPdf = function (messageTo) {
-            ModalService.showModal({
-                templateUrl: 'views/templatemodal/templateModalPdf.html',
-                controller: 'mensajeModalController',
-                inputs: { message: messageTo }
-            }).then(function (modal) {
-                modal.element.modal();
-            });
-        };
 
         getLineaTiempo = function(os, procesos){
             detalleSeguimientoOsService.getDetalleProcesoEspecifico(os, procesos).success(function(data){

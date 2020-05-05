@@ -607,15 +607,15 @@ public class RutinasTiempoImpl {
 		String d="",hr="",min="";
 		
 		if(diffdias!=0) {
-			d="Dias: "+diffdias+" ";
+			d=diffdias+" Dias ";
 		}
 		
 		if(diffHoras!=0) {
-			hr="Horas: "+diffHoras+" ";
+			hr=diffHoras+" Horas";
 		}
 		
 		if(restominutos!=0) {
-			min ="Minutos: "+restominutos;
+			min =restominutos+" Minutos";
 		}
 
 		devolver = String.valueOf(d+hr+min);
