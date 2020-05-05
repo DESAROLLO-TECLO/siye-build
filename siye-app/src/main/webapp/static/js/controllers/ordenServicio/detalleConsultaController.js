@@ -44,6 +44,8 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 			= $scope.ordenInfo.centroInstalacion.nbCentroInstalacion.toUpperCase();  
 	}
 	
+	
+	
 	formateaDatos();
 	calcularDuracion();
 	
