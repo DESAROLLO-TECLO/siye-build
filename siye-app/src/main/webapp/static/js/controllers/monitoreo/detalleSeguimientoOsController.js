@@ -332,6 +332,14 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                 detalleSeguimientoOsService.saveconsultaGeneral(null);
             }
         });
+<<<<<<< HEAD
+    };
+
+    
+    initController();
+    
+=======
+>>>>>>> aa23c40c95a7b9a9ba8842027353dcd8df03d1e9
 
 
         getDetalleOrdenServicio();
