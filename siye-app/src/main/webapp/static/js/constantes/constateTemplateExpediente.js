@@ -185,8 +185,8 @@ var includeDeseingModal=
 
 
 var includeCarouselModal=
-	'	<div ng-if="showModalCarousel" class="modal fade" id="{{idElementUp}}modalCarousel" tabindex="-1" role="dialog" 									'+
-	'					data-keyboard="false" data-backdrop="static"	 aria-hidden="true">																			    '+
+	'	<div ng-show="showModalCarousel" class="modal fade {{ (include && showInModal) ? \'style-modal-modal\' : \'\'}}" id="{{idElementUp}}modalCarousel" tabindex="-1" role="dialog" 								'+
+	'					data-keyboard="false" data-backdrop="static"	 aria-hidden="false" aria-labelledby="modalIploadImage">																			    '+
 	'		<div class="modal-dialog modal-lg">                                                                                                             '+
 	'			<div class="modal-content">                                                                                                                 '+
 	'				<div class="modal-header">                                                                                                              '+

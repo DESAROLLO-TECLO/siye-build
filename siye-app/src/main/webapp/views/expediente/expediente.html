@@ -229,8 +229,8 @@
 		
 		<!-- MODAL CARGA DE IMAGENES -->
 		<form role="form" name="formUploadImage" novalidate>
-			<div class="modal fade" id="modalIploadImage" tabindex="-1" role="dialog"		
-					aria-hidden="true">						
+			<div class="modal fade" id="modalIploadImage"  tabindex="-1" role="dialog"		
+					aria-hidden="true" data-keyboard="false" data-backdrop="static">						
 				<div class="modal-dialog modal-lg">                                                     
 					<div class="modal-content">                                                         
 						<div class="modal-header">                                                      
@@ -307,7 +307,7 @@
 									</div>
 	            				</div>
 	            			</div>
-	            			<update-image id-element-up="Encuesta" include="true" param-conf-sav="paramConfSav" max-nu-image="{{paramConfiguracion.maxNuImage}}"
+	            			<update-image id-element-up="Encuesta" include="true" show-in-modal="true" param-conf-sav="paramConfSav" max-nu-image="{{paramConfiguracion.maxNuImage}}"
                					param-conf-component="paramConfiguracion" list-images="{{listImages}}"></update-image>
 						</div>                                                                          
 					</div><!-- /.modal-content -->                                                      

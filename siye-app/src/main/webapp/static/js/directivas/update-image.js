@@ -255,24 +255,20 @@ appt.directive('updateImage',
 	    	  scope.clasifiQualityByPorcent=function(nuPorcentCompress){
 	    		  switch(nuPorcentCompress){
 	    		  	case 90:
-	    		  		return 0;
+	    		  		return 0.79;
 	    		  	case 80:
-	    		  		return 0.2;
+	    		  		return 0.89;
 	    		  	case 70:
-	    		  		return 0.4;
+	    		  		return 0.99;
 	    		  	case 60:
-	    		  		return 0.6;
-	    		  	case 40:
-	    		  		return 0.8;
-	    		  	case 0:
 	    		  		return 1;
-	    		  	case 5:
-	    		  		return NaN;
+	    		  	default:
+	    		  		return 1;
 	    		  }
 	    	  };
 	    	  
 	    	  scope.qualityCompressPorcent=function(sizeImage){
-	    		  let quality=0.2;// por defecto comprime la imagen un 83.90%
+	    		  let quality=1;// por defecto comprime la imagen un 60%
 	    		  let kb=1024;
 	    		  if(scope.listConfigCompress != undefined && scope.listConfigCompress.length){
 	    			  let i;
