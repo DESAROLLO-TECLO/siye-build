@@ -184,12 +184,13 @@ public class SeguimientoOsRestController {
 	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
 	public ResponseEntity<String> hacerCorteDiario(@RequestParam(value ="fechaCorte") String fechaCorte) throws BusinessException{	
 		UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();	
+		String respuesta ="";
 		try {
-			seguimientoService.hacerCorteDiario(fechaCorte, usuario.getId());
+			 respuesta = seguimientoService.hacerCorteDiario(fechaCorte, usuario.getId());
 		} catch (BusinessException e) {
 			throw new BusinessException(e.getMessage());
 		}
-		return new ResponseEntity<String>("Cancelacion de Ordenes de Servicio correcta", HttpStatus.OK);		
+		return new ResponseEntity<String>(respuesta, HttpStatus.OK);		
 	};
 	
 	
