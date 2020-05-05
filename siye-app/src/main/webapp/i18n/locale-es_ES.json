@@ -204,8 +204,8 @@
                 "proceso":"TRANSCURRIDO",
                 "kit":"KIT",
                 "plan":"PLAN",
-                "preguntas":"Preguntas Contestadas",
-                "progreso":"Progreso: "
+                "preguntas":"PREGUNTAS",
+                "progreso":"PROGRESO "
             }
         },
         "incidencia":{
@@ -228,7 +228,7 @@
             "detalle":{
                 "orden":"ORDEN DE SERVICIO ",
                 "encuesta":"ENCUESTA",
-                "pregunta":"PREGUNTAS CONTESTADAS",
+                "pregunta":"PREGUNTAS",
                 "respuesta":"RESPUESTA",
                 "finicio":"FECHA INICIO",
                 "ffin":"FECHA FIN",
