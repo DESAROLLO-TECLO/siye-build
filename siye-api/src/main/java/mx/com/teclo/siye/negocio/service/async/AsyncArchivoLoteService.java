@@ -3,6 +3,8 @@
  */
 package mx.com.teclo.siye.negocio.service.async;
 
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
@@ -69,5 +71,10 @@ public interface AsyncArchivoLoteService {
 	 */
 	Long crearLote(String nombreFinal, String error) ;
 	
-	
+	/**
+	 * @Descripcion: Obtiene los archivos cargados por dia del usuario en sesión
+	 * @author DanielUnitis
+	 * @return List<ArchivoLoteVO>
+	 */
+	List<ArchivoLoteVO> getFilesUploadToDay();
 }
