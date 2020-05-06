@@ -997,6 +997,7 @@ appt.directive('customOnChange', function() {
                     scope.logobsResult(filesResult);
                     let onject={params: filesResult};
                     scope.handler(onject);
+                    element[0].value="";
                 });
             });
         }

@@ -35,7 +35,7 @@
 										</div>
 									</div>
 								</div>
-								
+
 								<div class="col-md-3 col-xs-6">
 									<div class="form-group">
 										<label for="tipoTramite">Origen:</label>
@@ -47,7 +47,7 @@
 										</div>
 									</div>
 								</div>
-	                            
+
 	                            <div class="col-md-3 col-xs-6">
 									<div class="form-group">
 										<label for="tipoTramite">Centro de Instalación:</label>
@@ -59,7 +59,7 @@
 										</div>
 									</div>
 								</div>
-	                            
+
 	                            <div class="col-md-3 col-xs-6">
 									<div class="form-group">
 										<label for="tipoTramite">Fecha Cita:</label>
@@ -71,21 +71,40 @@
 										</div>
 									</div>
 								</div>
-								
+
 								<hr>
-									                            
+
 	                            <div class="col-md-3 col-xs-6">
 									<div class="form-group">
-										<label for="tipoTramite">Estatus:</label>
+										<a webuipopover data-placement="right" data-trigger="click"
+                                                selector-content="estatus" data-toggle="popover">
+                                         <label for="tipoTramite">Estatus:</label>
+										  </a>
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-list-alt"></i>
 											</div>
 											<span class="form-control">{{ordenInfo.stSeguimiento.nbStSeguimiento}}</span>
 										</div>
+										      <div id="estatus" class="webuipopover-content">
+                                                    <div class="center">
+                                                           <sapn style="font-size: 1.2em;">
+                                                                Actual:
+                                                            </sapn>
+                                                        </div>
+                                                        <div style="border-bottom: 1px solid #cf0a2c; margin-bottom: 1%;"> </div>
+                                                        <div  ng-show="ordenInfo.proceso!=null && ordenInfo.encuesta!=null">
+                                                          <span>Proceso: {{ordenInfo.proceso.nbProceso}}</span></br>
+                                                          <span>Encuesta: {{ordenInfo.encuesta.nbEncuesta}}</span>
+                                                        </div>
+                                                       <div  ng-show="ordenInfo.proceso==null || ordenInfo.encuesta==null">
+                                                          <span>No Ha iniciado la Operación</span></br>
+
+                                                        </div>
+                                             </div>
 									</div>
 								</div>
-	                            
+
 	                            <div class="col-md-3 col-xs-6">
 									<div class="form-group">
 										<label for="tipoTramite">Fecha Inicio:</label>
@@ -97,7 +116,7 @@
 										</div>
 									</div>
 								</div>
-								
+
 								<div class="col-md-3 col-xs-6">
 									<div class="form-group">
 										<label for="tipoTramite">Fecha Conclución:</label>
@@ -109,7 +128,7 @@
 										</div>
 									</div>
 								</div>
-	                            
+
 	                            <div class="col-md-3 col-xs-6">
 									<div class="form-group">
 										<label for="tipoTramite">Duración:</label>
@@ -121,31 +140,91 @@
 										</div>
 									</div>
 								</div>
-	                            
+
 	                            <div class="col-md-3 col-xs-6">
 									<div class="form-group">
+										<a webuipopover data-placement="right" data-trigger="click"
+                                                selector-content="supervision" data-toggle="popover">
 										<label for="tipoTramite">Supervisor:</label>
-										<div class="input-group">
+										  </a>
+										<div class="input-group" ng-if="supervisores.length>1">
 											<div class="input-group-addon">
 												<i class="fa fa-list-alt"></i>
 											</div>
-											<span class="form-control">{{ordenInfo.stSeguimiento.nbStSeguimiento}}</span>
+<!-- 											<input type="text" class="form-control" -->
+<!-- 												readonly id="folioTramite" -->
+<!-- 												ng-model="supervisor"> -->
+												<span class="form-control">{{supervisor}}</span>
 										</div>
+									  <div class="input-group" ng-if="supervisores.length<1">
+											<div class="input-group-addon">
+												<i class="fa fa-list-alt"></i>
+											</div>
+<!-- 											<input type="text" class="form-control" -->
+<!-- 												readonly id="folioTramite" -->
+<!-- 												ng-model="sinSupervisor"> -->
+												<span class="form-control">{{sinSupervisor}}</span>
+										</div>
+											<div id="supervision" class="webuipopover-content">
+                                                    <div class="center">
+                                                           <sapn style="font-size: 1.2em;">
+                                                                Supervisores Involucrados:
+                                                            </sapn>
+                                                        </div>
+                                                        <div style="border-bottom: 1px solid #cf0a2c; margin-bottom: 1%;"> </div>
+                                                        <div class="webuipopover-content-scroll">
+                                                            <ul style="padding-left: 20px;">
+                                                                <li ng-repeat="item in supervisores">
+                                                                    {{item.nbConductor}} {{item.nbApepatConductor}} {{item.nbApematConductor}}
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
 									</div>
 								</div>
-	                            
+
 	                            <div class="col-md-3 col-xs-6">
 									<div class="form-group">
+									<a webuipopover data-placement="right" data-trigger="click"
+                                                selector-content="consultados" data-toggle="popover">
 										<label for="tipoTramite">Transportista:</label>
-										<div class="input-group">
+										  </a>
+										<div class="input-group"  ng-if="transportistas.length>1">
 											<div class="input-group-addon">
 												<i class="fa fa-list-alt"></i>
 											</div>
-											<span class="form-control">{{ordenInfo.stSeguimiento.nbStSeguimiento}}</span>
+<!-- 											<input type="text" class="form-control" -->
+<!-- 												disabled="true" id="folioTramite" -->
+<!-- 												ng-model="transportista"> -->
+											<span class="form-control">{{transportista}}</span>
 										</div>
+										<div class="input-group"  ng-if="transportistas.length<1">
+											<div class="input-group-addon">
+												<i class="fa fa-list-alt"></i>
+											</div>
+<!-- 											<input type="text" class="form-control" -->
+<!-- 												disabled="true" id="folioTramite" -->
+<!-- 												ng-model="sintransportista"> -->
+											<span class="form-control">{{sintransportista}}</span>
+										</div>
+										   <div id="consultados" class="webuipopover-content">
+                                                    <div class="center">
+                                                           <sapn style="font-size: 1.2em;">
+                                                                Transportistas:
+                                                            </sapn>
+                                                        </div>
+                                                        <div style="border-bottom: 1px solid #cf0a2c; margin-bottom: 1%;"> </div>
+                                                        <div class="webuipopover-content-scroll">
+                                                            <ul style="padding-left: 20px;">
+                                                                <li ng-repeat="item in transportistas">
+                                                                    {{item.nbConductor}} {{item.nbApepatConductor}} {{item.nbApematConductor}}
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
 									</div>
 								</div>
-								
+
 								<div class="col-md-3 col-xs-6">
 									<div class="form-group">
 										<label for="tipoTramite">Plan:</label>
@@ -153,15 +232,15 @@
 											<div class="input-group-addon">
 												<i class="fa fa-list-alt"></i>
 											</div>
-											<span class="form-control">{{ordenInfo.plan.nbPlan}}</span> 
+											<span class="form-control">{{ordenInfo.plan.nbPlan}}</span>
 										</div>
 									</div>
 								</div>
-	                            
+
 	                            <div class="col-md-3 col-xs-6 text-center">
 									<a ><img src="static/dist/img/pdf_logo.png" width="50px;"></a>
 								</div>
-								
+
 								<div class="col-md-12" style="padding-left: 26px; padding-right: 26px;">
 									<div class="row">
 										<div class="col-md-12 box collapsed-box"
@@ -208,7 +287,7 @@
 										</div>
 									</div>
 								</div>
-								
+
 								<div class="col-md-12" style="padding-left: 26px; padding-right: 26px;">
 									<div class="row">
 										<div class="col-sm-12 box collapsed-box"
@@ -227,7 +306,7 @@
 													<div class="col-md-3 col-xs-6">
 														<div class="form-group">
 															<label for="tipoTramite">Nombre:</label>
-		
+
 															<div class="input-group">
 																<div class="input-group-addon">
 																	<i class="fa fa-list-alt"></i>
@@ -302,14 +381,14 @@
 															</div>
 														</div>
 													</div>
-													
+
 													<div class="col-md-12">
 														Carrucel
 													</div>
 												</div>
 											</div>
 										</div>
-									</div> 
+									</div>
 								</div>
 							</div>
 						</div>
