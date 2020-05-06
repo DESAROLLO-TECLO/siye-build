@@ -44,8 +44,34 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 			= $scope.ordenInfo.centroInstalacion.nbCentroInstalacion.toUpperCase();  
 	}
 	
+	consultarTransportistas = function(){
+		$scope.transportista=[];
+		$scope.transportista="";
+		$scope.sintransportista = "";
+	    var idVeh = ordenInfo.data.vehiculo.idVehiculo;
+	    if(idVeh != null ){
+	    	consultaServicioService.getTransportistasVehiculo(idVeh).success(function(data){
+	            $scope.transportistas = data;
+	            $scope.transportista=$scope.transportistas[0].nbConductor+" "+$scope.transportistas[0].nbApepatConductor+" "+$scope.transportistas[0].nbApematConductor
+	            $scope.sintransportista = "";
+	        }).error(function(error){
+	            console.log(error);
+	            $scope.transportista=[];
+	            $scope.transportista="";
+	            $scope.sintransportista = "Sin Transportistas";
+	        });
+	    }
+	};
 	
-	
+	consultarSupervisores = function(){
+		$scope.supervisores=[];
+		$scope.supervisor="";
+		$scope.sinSupervisor = "No Hay Supervisores Involucrados";
+	   
+	};
+
+	consultarTransportistas();
+	consultarSupervisores();
 	formateaDatos();
 	calcularDuracion();
 	
