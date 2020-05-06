@@ -7,7 +7,6 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
-import org.hibernate.type.DateType;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
 import org.springframework.stereotype.Repository;
@@ -69,7 +68,11 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 	@Override
 	public List<EncuestaDetalleVO> getDetalleEncuesta(Long idOrdenServicio, List<Long> idProceso) {
 		StringBuilder consulta = new StringBuilder("SELECT tdipe.ID_ENCUESTA  AS idEncuesta, encuesta.NB_ENCUESTA AS nbEncuesta," 
-	            +"tdeuei.FH_INICIO  AS fhInicio, tdeuei.FH_FIN AS fhFin, tdeuei.NU_PREGUNTAS||'/'||tdeuei.NU_PREGUNTAS_CORRECTAS AS preguntas," 
+	            +"TO_CHAR(tdeuei.FH_INICIO,'DD/MM/YYYY HH24:MI') AS fhInicio," 
+	            +"TO_CHAR(tdeuei.FH_FIN,'DD/MM/YYYY HH24:MI') AS fhFin,"
+	            +"tdeuei.FH_INICIO as fecha1,"
+	            +"tdeuei.FH_FIN as fecha2, "
+	            +"tdeuei.NU_PREGUNTAS||'/'||tdeuei.NU_PREGUNTAS_CORRECTAS AS preguntas," 
 				+"st.NB_ST_ENCUESTA AS estatus,"
 	            +"st.CD_COLOR AS nbColor,"
 	            +"CASE tdeuei.ID_ST_CALIFICACION WHEN 3 THEN '0%' "
@@ -84,8 +87,10 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 		List<EncuestaDetalleVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idEncuesta",LongType.INSTANCE)
 				.addScalar("nbEncuesta",StringType.INSTANCE)
-				.addScalar("fhInicio", DateType.INSTANCE)
-				.addScalar("fhFin", DateType.INSTANCE)
+				.addScalar("fhInicio", StringType.INSTANCE)
+				.addScalar("fhFin", StringType.INSTANCE)
+				.addScalar("fecha1", StringType.INSTANCE)
+				.addScalar("fecha2", StringType.INSTANCE)
 				.addScalar("preguntas", StringType.INSTANCE)
 				.addScalar("estatus", StringType.INSTANCE)
 				.addScalar("nbColor",StringType.INSTANCE)
@@ -121,7 +126,7 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				.addScalar("txRespuesta", StringType.INSTANCE)
 				.setParameter("idOrdenServicio", idOrdenServicio)
 				.setParameter("idEncuesta", idEncuesta)
-				.setResultTransformer(Transformers.aliasToBean(EncuestaDetalleVO.class)).list();
+				.setResultTransformer(Transformers.aliasToBean(PreguntasDetalleVO.class)).list();
 		return respuesta;
 	}
 
@@ -145,6 +150,7 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 	public List<EncuestaDetalleVO> getDetalleEncuestaParaNodos(Long idOrdenServicio, Long idProceso) {
 		StringBuilder consulta = new StringBuilder("SELECT "
 				+"tdipe.ID_ENCUESTA  AS idEncuesta, " 
+				+"encuesta.CD_ENCUESTA AS cdEncuesta,"
 				+"encuesta.NB_ENCUESTA AS nbEncuesta, "
 				+"st.NB_ST_ENCUESTA AS estatus, "
 				+"st.CD_COLOR AS nbColor "
@@ -157,6 +163,7 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				"   ORDER BY tdipe.ID_ENCUESTA");		
 		List<EncuestaDetalleVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idEncuesta",LongType.INSTANCE)
+				.addScalar("cdEncuesta",StringType.INSTANCE)
 				.addScalar("nbEncuesta",StringType.INSTANCE)
 				.addScalar("estatus", StringType.INSTANCE)
 				.addScalar("nbColor",StringType.INSTANCE)

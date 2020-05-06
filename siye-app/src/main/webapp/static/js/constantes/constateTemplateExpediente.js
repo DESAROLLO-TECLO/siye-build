@@ -163,7 +163,7 @@ var includeDeseing=
     '</div>                                                                                                                                                                                                                                      ';
 	
 var includeDeseingModal=
-	'<div ng-if="showModalBuild" class="modal fade" id="{{idElementUp}}modalUpdateImage" tabindex="-1" role="dialog" aria-hidden="true" 		'+
+	'<div ng-show="showModalBuild" class="modal fade" id="{{idElementUp}}modalUpdateImage" tabindex="-1" role="dialog" aria-hidden="true" 		'+
 	'	data-keyboard="false" data-backdrop="static">                                                            								'+
 	'  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">                                 								'+
 	'    <div class="modal-content">                                                                             								'+
@@ -185,8 +185,8 @@ var includeDeseingModal=
 
 
 var includeCarouselModal=
-	'	<div ng-if="showModalCarousel" class="modal fade" id="{{idElementUp}}modalCarousel" tabindex="-1" role="dialog" 									'+
-	'					data-keyboard="false" data-backdrop="static"	 aria-hidden="true">																			    '+
+	'	<div ng-show="showModalCarousel" class="modal fade {{ (include && showInModal) ? \'style-modal-modal\' : \'\'}}" id="{{idElementUp}}modalCarousel" tabindex="-1" role="dialog" 								'+
+	'					data-keyboard="false" data-backdrop="static"	 aria-hidden="false" aria-labelledby="modalIploadImage">																			    '+
 	'		<div class="modal-dialog modal-lg">                                                                                                             '+
 	'			<div class="modal-content">                                                                                                                 '+
 	'				<div class="modal-header">                                                                                                              '+

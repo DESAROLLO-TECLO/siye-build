@@ -8,7 +8,6 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
-import org.hibernate.type.DateType;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
 import org.springframework.stereotype.Repository;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Repository;
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenServicioDetVO;
-import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleIncidenciaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServcioDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.SeguimientoOrdenServicioVO;
 
@@ -140,7 +138,7 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 	            "   SELECT OS.ID_PLAN AS idPlan,"+
 				"   OS.ID_ORDEN_SERVICIO AS idOrdenServicio, "+
 				"	OS.CD_ORDEN_SERVICIO AS nuOrdenServicio," + 
-				"	OS.FH_ATENCION_INI AS fechaAtencion," + 
+				"   TO_CHAR(OS.FH_ATENCION_INI,'DD/MM/YYYY HH24:MI') AS fechaAtencion,"+
 				"	CONC.NB_CONCESION AS txTransportista," + 
 				"	V.CD_PLACA_VEHICULO AS txPlaca," + 
 				"	CO.NB_CONDUCTOR ||' ' || CO.NB_APEPAT_CONDUCTOR || ' ' || CO.NB_APEMAT_CONDUCTOR AS txtRepresentante," + 
@@ -174,7 +172,7 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 				.addScalar("idPlan",LongType.INSTANCE)
 				.addScalar("idOrdenServicio", LongType.INSTANCE)
 				.addScalar("nuOrdenServicio",StringType.INSTANCE)
-				.addScalar("fechaAtencion",DateType.INSTANCE)
+				.addScalar("fechaAtencion",StringType.INSTANCE)
 				.addScalar("txTransportista",StringType.INSTANCE)
 				.addScalar("txPlaca",StringType.INSTANCE)
 				.addScalar("txSupervisor",StringType.INSTANCE)
@@ -237,6 +235,7 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 	@Override
 	public List<OrdenServicioDTO> getOrdenServicioByLote(String valor) {
 		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		valor=valor.replace(".CSV", ".csv");
 		//c.createAlias("centroInstalacion", "centroInstalacion");
 		c.createAlias("loteOrdenServicio", "lote");
 		//c.add(Restrictions.eq("centroInstalacion.idCentroInstalacion", centroInstalacion));
@@ -376,8 +375,9 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
         
         if(isLote)
         {
+        	valorLoteIncidencia=valorLoteIncidencia.replace(".CSV", ".csv");
         	c.createAlias("loteOrdenServicio", "lote");
-    		c.add(Restrictions.eq("lote.nbLoteOds", valorLoteIncidencia));
+    		c.add(Restrictions.eq("lote.nbArchivoFinal", valorLoteIncidencia));
     		c.add(Restrictions.eq("idOrigenOds",Long.valueOf(1)));	
         }
         else if(isIncidencia)

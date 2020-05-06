@@ -17,13 +17,13 @@ public class OrdenServicioVO implements Serializable {
 	private KitInstalacionVO kitInstalacion;
 	private PlanVO plan;
 	private StSeguimientoVO stSeguimiento;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss",timezone = "America/Mexico_City")
 	private Date fhCita;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss",timezone = "America/Mexico_City")
 	private Date fhAtencionIni;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss",timezone = "America/Mexico_City")
 	private Date fhAtencionFin;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss",timezone = "America/Mexico_City")
 	private Date fhAtencionParcial;
 	private Long idOrigenOds;
 	private Boolean stActivo;

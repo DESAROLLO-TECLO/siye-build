@@ -244,6 +244,8 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
         $scope.params.colSeleccionada = [];
         $scope.params.colOmitidas = [];
         $scope.tamColumna = 'col-md-' + 12 / (CATAMANO + 1);
+        $scope.tamColumna = $scope.tamColumna +" col-sm-"+ 12 / (CATAMANO + 1);
+        $scope.tamColumna = $scope.tamColumna +" col-xs-"+ 12 / (CATAMANO + 1);
 
         // Obtener las fechas del componente 
         $scope.params.fechaInicio = $scope.rangoFechas.date.startDate.format('DD/MM/YYYY');

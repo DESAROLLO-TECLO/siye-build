@@ -302,7 +302,34 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
     //consulta General
     $routeProvider.when("/consultaGeneral", {
         templateUrl: "views/ordenServicio/consultaGeneral.html",
-        controller: "consultaGeneralController"
+        controller: "consultaGeneralController",
+		resolve:
+		{
+		deDetalle:function($route){
+			return false
+		}
+    }
     });
+    
+    //consulta General
+    $routeProvider.when("/detalleConsulta/:id", {
+        templateUrl: "views/ordenServicio/detalleConsulta.html",
+        controller: "detalleConsultaController"
+    });
+    
+	$routeProvider.when("/consultaGeneral/:deDetalle", {
+        templateUrl: "views/ordenServicio/consultaGeneral.html",
+        controller: "consultaGeneralController",
+		resolve:
+			{
+			deDetalle:function($route){
+				return $route.current.params.deDetalle
+			}
+	    }
+	});
+    
+    
+    
+    
 
 });

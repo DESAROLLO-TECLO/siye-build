@@ -47,4 +47,32 @@ angular.module(appTeclo).service('consultaGeneralService',
 		return $http.get(config.baseUrl + "/catalogo/consultaPlan");
 	};
 	
+    this.descargarReporteExcel = function(rVO) {
+        return $http({
+            method: 'POST',
+            url: config.baseUrl + "/descargaExcel",
+            data: rVO,
+            dataType: "json",
+            header: {
+                "Content-type": "application/json",
+                "Accept": "vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+            },
+            responseType: 'arraybuffer'
+        });
+    };
+    
+    /*UTILITIES*/
+    this.downloadfile = function(file, fileName) {
+        var url = window.URL || window.webkitURL;
+        var blobUrl = url.createObjectURL(file);
+        var a = document.createElement('a');
+        a.href = blobUrl;
+        a.target = '_blank';
+        a.download = fileName;
+        document.body.appendChild(a);
+        $timeout(function() {
+            a.click();
+        }, 100);
+    };
+	
 });

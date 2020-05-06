@@ -56,10 +56,11 @@ public class RptDetalleSeguimientoService {
 		for(OrdenServcioDetalleVO d : info) {
 			List<String> rprt = new ArrayList<String>();
 			rprt.add(d.getNuOrdenServicio());
+			
 			if(d.getFechaAtencion()!=null) {
-				rprt.add(ru.getFecha_ddMMYYYY_hhmmss(d.getFechaAtencion()));
+				rprt.add(d.getFechaAtencion());
 			}else {
-				rprt.add("");
+				rprt.add("SIN FECHA");
 			}
 			rprt.add(d.getTxPlaca());
 			rprt.add(d.getTxProceso());

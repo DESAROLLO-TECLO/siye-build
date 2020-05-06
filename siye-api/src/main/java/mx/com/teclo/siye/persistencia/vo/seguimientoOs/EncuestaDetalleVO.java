@@ -1,20 +1,46 @@
 package mx.com.teclo.siye.persistencia.vo.seguimientoOs;
 
-import java.util.Date;
 
 public class EncuestaDetalleVO {
 	
 	private Long idEncuesta;
+	private String cdEncuesta;
 	private String nbEncuesta;
-	private Date fhInicio;
-	private Date fhFin;
+	private String fhInicio;
+	private String fhFin;
+	private String fecha1;
+	private String fecha2;
+	private String fhDiferencia;
 	private String nuPorcentaje;
 	private String preguntas;
 	private String estatus;
 	private String nbColor;
 	
 	
-	
+	/**
+	 * @return the fecha1
+	 */
+	public String getFecha1() {
+		return fecha1;
+	}
+	/**
+	 * @param fecha1 the fecha1 to set
+	 */
+	public void setFecha1(String fecha1) {
+		this.fecha1 = fecha1;
+	}
+	/**
+	 * @return the fecha2
+	 */
+	public String getFecha2() {
+		return fecha2;
+	}
+	/**
+	 * @param fecha2 the fecha2 to set
+	 */
+	public void setFecha2(String fecha2) {
+		this.fecha2 = fecha2;
+	}	
 	/**
 	 * @return the idEncuesta
 	 */
@@ -42,25 +68,25 @@ public class EncuestaDetalleVO {
 	/**
 	 * @return the fhInicio
 	 */
-	public Date getFhInicio() {
+	public String getFhInicio() {
 		return fhInicio;
 	}
 	/**
 	 * @param fhInicio the fhInicio to set
 	 */
-	public void setFhInicio(Date fhInicio) {
+	public void setFhInicio(String fhInicio) {
 		this.fhInicio = fhInicio;
 	}
 	/**
 	 * @return the fhFin
 	 */
-	public Date getFhFin() {
+	public String getFhFin() {
 		return fhFin;
 	}
 	/**
 	 * @param fhFin the fhFin to set
 	 */
-	public void setFhFin(Date fhFin) {
+	public void setFhFin(String fhFin) {
 		this.fhFin = fhFin;
 	}
 	/**
@@ -110,6 +136,30 @@ public class EncuestaDetalleVO {
 	 */
 	public void setNbColor(String nbColor) {
 		this.nbColor = nbColor;
+	}
+	/**
+	 * @return the cdEncuesta
+	 */
+	public String getCdEncuesta() {
+		return cdEncuesta;
+	}
+	/**
+	 * @param cdEncuesta the cdEncuesta to set
+	 */
+	public void setCdEncuesta(String cdEncuesta) {
+		this.cdEncuesta = cdEncuesta;
+	}
+	/**
+	 * @return the fhDiferencia
+	 */
+	public String getFhDiferencia() {
+		return fhDiferencia;
+	}
+	/**
+	 * @param fhDiferencia the fhDiferencia to set
+	 */
+	public void setFhDiferencia(String fhDiferencia) {
+		this.fhDiferencia = fhDiferencia;
 	}
 	
 }

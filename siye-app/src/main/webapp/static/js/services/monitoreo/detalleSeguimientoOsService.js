@@ -40,5 +40,15 @@ angular.module(appTeclo).service("detalleSeguimientoOsService", function($http, 
 				}
 		});
 	};
+
+	this.getSeguimientoImagen = function(params){
+		return $http.get(END_POINT+"/getDetalleImgOS",{
+			params:{"idOrdenServicio": params.idOrdenServicio,
+					"valor":params.valor,
+				    "nivel":params.nivel,
+					"clase":params.clase
+				}
+		});
+	}
     
 });

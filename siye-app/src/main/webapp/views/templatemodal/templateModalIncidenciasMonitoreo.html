@@ -8,7 +8,7 @@
 					aria-label="Close" ng-click="cerrarModal()">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title center" id="myModalLabel">Incidendias Orden de Servicio: {{OrdenServicioModalIncidencias.cdOrdenServicio}}</h4>
+				<h4 class="modal-title center" id="myModalLabel">Incidencias Orden de Servicio: {{OrdenServicioModalIncidencias.cdOrdenServicio}}</h4>
 			</div>
 			
 			<div class="modal-body">
@@ -16,7 +16,7 @@
 					<div class="row" ng-repeat="incidencia in incidenciasMonVO.slice(((paramConfigPage.bigCurrentPage-1)*paramConfigPage.itemsPerPage),((paramConfigPage.bigCurrentPage)*paramConfigPage.itemsPerPage))">
 						<div class="col-xs-6 col-md-6">
 							<fieldset class="fieldsetModalIncidencias">
-								<legend>Informacion de Incidencia</legend>
+								<legend>Información de Incidencia</legend>
 								<div class="row rowModalIncidencias">
 									<div class="col-xs-6 col-md-6">
 										<div class="form-group">
@@ -91,7 +91,7 @@
 								<div class="row rowModalIncidencias">
 									<div class="col-xs-12 col-md-12">
 										<div class="form-group">
-											<label>Descripcion Incidencia:</label>
+											<label>Descripción Incidencia:</label>
 											<div class="col-xs-12 col-md-12">
 												<textarea id="infra_motivo" class="form-control" rows="7" 
 													style="resize: none;" ng-model="incidencia.txIncidencia" disabled="true">
@@ -101,8 +101,7 @@
 									</div>
 								</div>
 							</fieldset>
-							<div class="container-fluid">
-							
+							<div class="container-fluid">							
 								<uib-pagination previous-text="<"
 									next-text=">"
 									total-items="paramConfigPage.bigTotalItems" num-pages="numPages"

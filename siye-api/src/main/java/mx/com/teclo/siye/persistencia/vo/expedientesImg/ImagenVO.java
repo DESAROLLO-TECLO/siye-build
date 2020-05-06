@@ -17,6 +17,9 @@ public class ImagenVO {
 	private String nbExpedienteODS; 
 	private String cdTipoArchivo;
 	private byte[] lbExpedienteODS;
+	private String txIncidencia;
+	private String colorPrioridad;
+	private String nbPrioridad;
 	private String nbNivel;
 	private String cdNivel;
 	private TipoExpedienteVO tipoExpediente;
@@ -197,5 +200,40 @@ public class ImagenVO {
 	public void setFhCreacion(Date fhCreacion) {
 		this.fhCreacion = fhCreacion;
 	}
-	
+	/**
+	 * @return the txIncidencia
+	 */
+	public String getTxIncidencia() {
+		return txIncidencia;
+	}
+	/**
+	 * @param txIncidencia the txIncidencia to set
+	 */
+	public void setTxIncidencia(String txIncidencia) {
+		this.txIncidencia = txIncidencia;
+	}
+	/**
+	 * @return the colorPrioridad
+	 */
+	public String getColorPrioridad() {
+		return colorPrioridad;
+	}
+	/**
+	 * @param colorPrioridad the colorPrioridad to set
+	 */
+	public void setColorPrioridad(String colorPrioridad) {
+		this.colorPrioridad = colorPrioridad;
+	}
+	/**
+	 * @return the nbPrioridad
+	 */
+	public String getNbPrioridad() {
+		return nbPrioridad;
+	}
+	/**
+	 * @param nbPrioridad the nbPrioridad to set
+	 */
+	public void setNbPrioridad(String nbPrioridad) {
+		this.nbPrioridad = nbPrioridad;
+	}
 }

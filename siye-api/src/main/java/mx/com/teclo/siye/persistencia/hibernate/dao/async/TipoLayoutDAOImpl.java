@@ -34,6 +34,7 @@ public class TipoLayoutDAOImpl extends BaseDaoHibernate<TipoLayoutDTO> implement
 						.add(Projections.property("tipoLayout.cdTamanioMax").as("cdTamanioMax"))
 						.add(Projections.property("tipoLayout.nbDirectorio").as("nbDirectorio"))
 						.add(Projections.property("tipoLayout.stCargaParcial").as("stCargaParcial"))
+						.add(Projections.property("tipoLayout.cdDelimitador").as("charDelimitador"))
 						.add(Projections.property("tipoLayout.stVigente").as("stVigente")));
 		criteria.addOrder(Order.desc("tipoLayout.idTipoLayout"));
 		criteria.setMaxResults(BigDecimal.ONE.intValue());
@@ -60,6 +61,7 @@ public class TipoLayoutDAOImpl extends BaseDaoHibernate<TipoLayoutDTO> implement
 						.add(Projections.property("tipoLayout.cdTamanioMax").as("cdTamanioMax"))
 						.add(Projections.property("tipoLayout.nbDirectorio").as("nbDirectorio"))
 						.add(Projections.property("tipoLayout.stCargaParcial").as("stCargaParcial"))
+						.add(Projections.property("tipoLayout.cdDelimitador").as("charDelimitador"))
 						.add(Projections.property("tipoLayout.stVigente").as("stVigente")));
 		criteria.addOrder(Order.desc("tipoLayout.idTipoLayout"));
 		criteria.setMaxResults(BigDecimal.ONE.intValue());

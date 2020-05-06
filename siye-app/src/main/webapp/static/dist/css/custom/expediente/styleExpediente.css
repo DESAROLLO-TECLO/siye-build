@@ -347,3 +347,17 @@ img.foto-evidencia-1 {
   background-color: #888;
 }
 
+
+.table-exp-resp{
+	overflow: auto; 
+	border-collapse: collapse; 
+	width: 100%;
+}
+
+.style-modal-modal{
+	display: table;
+    padding-left: 0px !important;
+}
+
+
+
