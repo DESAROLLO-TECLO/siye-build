@@ -252,7 +252,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                 let mensaje = "",tipo='info';
                 switch(nivel){
                     case 'pregunta':
-                        if(data.nivelPreguntas!=null){
+                        if(data.nivelPreguntas!=null && data.nivelPreguntas.length>0){
                            verModal=true;
                         }else{
                             mensaje="No tiene información para mostrar";
@@ -332,14 +332,6 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                 detalleSeguimientoOsService.saveconsultaGeneral(null);
             }
         });
-<<<<<<< HEAD
-    };
-
-    
-    initController();
-    
-=======
->>>>>>> aa23c40c95a7b9a9ba8842027353dcd8df03d1e9
 
 
         getDetalleOrdenServicio();
