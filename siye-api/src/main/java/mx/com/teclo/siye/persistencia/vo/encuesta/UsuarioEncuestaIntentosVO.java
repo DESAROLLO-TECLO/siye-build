@@ -40,6 +40,8 @@ public class UsuarioEncuestaIntentosVO {
 	private List<UsuarioEncuestaRespuestaVO> detalleRespuesta;
 	private Integer nuMinConsumidos;
 	private List<SeccionVO> seccionesListVO;
+	private Long transportista;
+	private Integer instalador;
 
 	public UsuarioEncuestaIntentosVO() {
 	}
@@ -271,4 +273,22 @@ public class UsuarioEncuestaIntentosVO {
 	public void setNuPreguntasVacias(Integer nuPreguntasVacias) {
 		this.nuPreguntasVacias = nuPreguntasVacias;
 	}
+
+	public Long getTransportista() {
+		return transportista;
+	}
+
+	public void setTransportista(Long transportista) {
+		this.transportista = transportista;
+	}
+
+	public Integer getInstalador() {
+		return instalador;
+	}
+
+	public void setInstalador(Integer instalador) {
+		this.instalador = instalador;
+	}
+	
+	
 }
