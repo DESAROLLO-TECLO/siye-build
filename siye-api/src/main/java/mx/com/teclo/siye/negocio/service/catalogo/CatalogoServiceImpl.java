@@ -445,6 +445,7 @@ public class CatalogoServiceImpl implements CatalogoService{
 			conductorVO.setNbConductor(actual.getConductor().getNbConductor());
 			conductorVO.setNbApepatConductor(actual.getConductor().getNbApepatConductor());
 			conductorVO.setNbApematConductor(actual.getConductor().getNbApematConductor());
+			conductorVO.setIdVehiculoConductor(actual.getIdVehiculoConductor());
 			
 			listaConductorVO.add(conductorVO);
 		}

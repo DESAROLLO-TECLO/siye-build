@@ -65,4 +65,6 @@ public interface EncuestaService {
 	public Boolean activarODesactivarSatisfaccion(Long idEncuesta, Long idOrdenServicio, Boolean nuevoValor);
 
 	public void actualizaOrdenServFhParcial(Long idUsuEncuIntento);
+	
+	public void actualizaSuperTransInst(Long idTransVehiculo, Integer idInstalador,Long idUsuEncuIntento);
 }
