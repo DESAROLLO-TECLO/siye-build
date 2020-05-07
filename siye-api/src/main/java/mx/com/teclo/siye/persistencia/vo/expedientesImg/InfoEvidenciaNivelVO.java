@@ -7,9 +7,9 @@ public class InfoEvidenciaNivelVO {
 	private Integer tieneImagen;
 	private String fechaIni;
 	private String fechaFin;
-	private String nbSupervisor;
-	private String nbInstalador;
-	private String nbTrasportista;
+	private List<String> nbSupervisor;
+	private List<String> nbInstalador;
+	private List<String> nbTrasportista;
 	private Boolean activo;
 	private List<ImagenVO> imagenes;
 	
@@ -31,22 +31,22 @@ public class InfoEvidenciaNivelVO {
 	public void setFechaFin(String fechaFin) {
 		this.fechaFin = fechaFin;
 	}
-	public String getNbSupervisor() {
+	public List<String> getNbSupervisor() {
 		return nbSupervisor;
 	}
-	public void setNbSupervisor(String nbSupervisor) {
+	public void setNbSupervisor(List<String> nbSupervisor) {
 		this.nbSupervisor = nbSupervisor;
 	}
-	public String getNbInstalador() {
+	public List<String> getNbInstalador() {
 		return nbInstalador;
 	}
-	public void setNbInstalador(String nbInstalador) {
+	public void setNbInstalador(List<String> nbInstalador) {
 		this.nbInstalador = nbInstalador;
 	}
-	public String getNbTrasportista() {
+	public List<String> getNbTrasportista() {
 		return nbTrasportista;
 	}
-	public void setNbTrasportista(String nbTrasportista) {
+	public void setNbTrasportista(List<String> nbTrasportista) {
 		this.nbTrasportista = nbTrasportista;
 	}
 	public List<ImagenVO> getImagenes() {
