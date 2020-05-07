@@ -14,6 +14,7 @@ public class CargaExpedienteImgVO {
 	private String nbNivel;
 	private List<ImagenVO> imagenes;
 	private List<ExpedienteNivelProcesoVO> procesos;
+	private InfoEvidenciaNivelVO infoEvidencia;
 	
 	
 	/**
@@ -136,4 +137,18 @@ public class CargaExpedienteImgVO {
 	public void setNbNivel(String nbNivel) {
 		this.nbNivel = nbNivel;
 	}
+	/**
+	 * @return the infoEvidencia
+	 */
+	public InfoEvidenciaNivelVO getInfoEvidencia() {
+		return infoEvidencia;
+	}
+	/**
+	 * @param infoEvidencia the infoEvidencia to set
+	 */
+	public void setInfoEvidencia(InfoEvidenciaNivelVO infoEvidencia) {
+		this.infoEvidencia = infoEvidencia;
+	}
+	
+	
 }

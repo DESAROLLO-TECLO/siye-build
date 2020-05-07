@@ -21,7 +21,11 @@ import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService
 import mx.com.teclo.siye.negocio.service.expedienteImg.ExpedienteImgService;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.CargaExpedienteImgVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.CompresorImgConfigVO;
+import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelEncuestaVO;
+import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelPreguntaVO;
+import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
+import mx.com.teclo.siye.persistencia.vo.expedientesImg.InfoEvidenciaNivelVO;
 import mx.com.teclo.siye.persistencia.vo.tipoExpediente.TipoExpedienteVO;
 
 @RestController
@@ -101,5 +105,74 @@ public class ExpedienteImgRestController {
 			throw new NotFoundException("No se encontraron configuraciones");
 		}
 		return new ResponseEntity<List<CompresorImgConfigVO>>(respuesta, HttpStatus.OK);
+	};
+	
+	@GetMapping(value="/getInfoOSNivel")
+	//@PreAuthorize("hasAnyAuthority('GET_STATUS_CARGA_EVIDENCIAS')")
+	public ResponseEntity<CargaExpedienteImgVO> getImgExpedienteNivel(
+			@RequestParam(value ="tipoBusqueda") String tipoBusqueda,
+			@RequestParam(value ="valor") String valor) throws NotFoundException{	
+		List<CargaExpedienteImgVO> respuesta = expedienteImg.getInformacionExpediente(tipoBusqueda, valor);
+		if(respuesta.isEmpty() || respuesta == null) {
+			throw new NotFoundException("No se encontro expediente relacionado");
+		}
+		
+		InfoEvidenciaNivelVO infoEvidencia = new InfoEvidenciaNivelVO();
+		
+		List<ImagenVO> imgOS = expedienteImg.getInfoExpedienteByNivel(
+				respuesta.get(0).getIdOrdenServicio(), null, "ORDEN_SERVICIO");
+		infoEvidencia.setImagenes(imgOS);
+		infoEvidencia.setFechaIni("");
+		infoEvidencia.setFechaFin("");
+		infoEvidencia.setNbSupervisor("");
+		infoEvidencia.setNbInstalador("");
+		infoEvidencia.setNbTrasportista("");
+		infoEvidencia.setTieneImagen(!imgOS.isEmpty() || imgOS!=null ? 1 : 0);
+		respuesta.get(0).setInfoEvidencia(infoEvidencia);
+		
+		for(ExpedienteNivelProcesoVO proceso : respuesta.get(0).getProcesos()) {
+			infoEvidencia = new InfoEvidenciaNivelVO();
+			
+			List<ImagenVO> imgPRO = expedienteImg.getInfoExpedienteByNivel(
+					respuesta.get(0).getIdOrdenServicio(), proceso.getIdProceso(), "PROCESO");
+			infoEvidencia.setImagenes(imgPRO);
+			infoEvidencia.setFechaIni("");
+			infoEvidencia.setFechaFin("");
+			infoEvidencia.setNbSupervisor("");
+			infoEvidencia.setNbInstalador("");
+			infoEvidencia.setNbTrasportista("");
+			infoEvidencia.setTieneImagen(!imgPRO.isEmpty() || imgPRO!=null ? 1 : 0);
+			proceso.setInfoEvidencia(infoEvidencia);
+			
+			for(ExpedienteNivelEncuestaVO encuesta : proceso.getListEncuestas()) {
+				List<ImagenVO> imgENC = expedienteImg.getInfoExpedienteByNivel(
+						respuesta.get(0).getIdOrdenServicio(), encuesta.getIdEncuesta(), "ENCUESTA");
+				infoEvidencia.setImagenes(imgENC);
+				infoEvidencia.setFechaIni("");
+				infoEvidencia.setFechaFin("");
+				infoEvidencia.setNbSupervisor("");
+				infoEvidencia.setNbInstalador("");
+				infoEvidencia.setNbTrasportista("");
+				infoEvidencia.setTieneImagen(!imgENC.isEmpty() || imgENC!=null ? 1 : 0);
+				encuesta.setInfoEvidencia(infoEvidencia);
+				
+				for(ExpedienteNivelPreguntaVO pregunta : encuesta.getListPreguntas()) {
+					List<ImagenVO> imgPREG = expedienteImg.getInfoExpedienteByNivel(
+							respuesta.get(0).getIdOrdenServicio(), pregunta.getIdPregunta(), "PREGUNTA");
+					infoEvidencia.setImagenes(imgENC);
+					infoEvidencia.setFechaIni("");
+					infoEvidencia.setFechaFin("");
+					infoEvidencia.setNbSupervisor("");
+					infoEvidencia.setNbInstalador("");
+					infoEvidencia.setNbTrasportista("");
+					infoEvidencia.setTieneImagen(!imgPREG.isEmpty() || imgPREG!=null ? 1 : 0);
+					encuesta.setInfoEvidencia(infoEvidencia);
+				}
+			}
+		}
+		
+		respuesta.get(0).setImagenes(null);
+		
+		return new ResponseEntity<CargaExpedienteImgVO>(respuesta.get(0), HttpStatus.OK);
 	};
 }

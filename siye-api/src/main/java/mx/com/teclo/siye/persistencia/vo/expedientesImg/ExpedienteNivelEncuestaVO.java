@@ -11,6 +11,7 @@ public class ExpedienteNivelEncuestaVO {
 	private String nbNivel;
 	private String name;
 	private List<ExpedienteNivelPreguntaVO> listPreguntas;
+	private InfoEvidenciaNivelVO infoEvidencia;
 	/**
 	 * @return the idEncuesta
 	 */
@@ -94,5 +95,11 @@ public class ExpedienteNivelEncuestaVO {
 	 */
 	public void setListPreguntas(List<ExpedienteNivelPreguntaVO> listPreguntas) {
 		this.listPreguntas = listPreguntas;
+	}
+	public InfoEvidenciaNivelVO getInfoEvidencia() {
+		return infoEvidencia;
+	}
+	public void setInfoEvidencia(InfoEvidenciaNivelVO infoEvidencia) {
+		this.infoEvidencia = infoEvidencia;
 	}
 }
