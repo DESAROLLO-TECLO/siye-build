@@ -66,7 +66,7 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 	consultarSupervisores = function(){
 		$scope.supervisores=[];
 		$scope.supervisor="";
-		$scope.sinSupervisor = "No Hay Supervisores Involucrados";
+		$scope.sinSupervisor = "Sin Supervisores";
 	   
 	};
 
