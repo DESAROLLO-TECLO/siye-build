@@ -29,7 +29,7 @@ public class IeStUsuEncuIntenDTO implements Serializable {
 	@Id
 	@SequenceGenerator(name = "sqIeStUsuEn", sequenceName = "SQIE040B_IE_ST_USU_EN", allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqIeStUsuEn")
-	@Column(name = "ID_ST_USU_ENCU_INTEN", unique = true, nullable = false)
+	@Column(name = "ID_ST_USU_ENCU_INTEN", nullable = false)
 	private Long idStUsuEncuInten;
 	
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -52,7 +52,7 @@ public class IeStUsuEncuIntenDTO implements Serializable {
 	@JoinColumn(name="ID_RH_INSTALADOR", referencedColumnName="ID_PERSONA")
 	private PersonaDTO idRHInstalador;
 	
-	@Column(name = "ST_ACTIVO", nullable = false, precision = 1, scale = 0)
+	@Column(name = "ST_ACTIVO", nullable = false)
 	private Boolean stActivo;
 
 	@Column(name = "ID_USR_CREACION", nullable = false, precision = 7, scale = 0)
