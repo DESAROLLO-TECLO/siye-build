@@ -145,7 +145,58 @@
 											</div>
 										</div>
 										<div class="col-md-10">
-											<form name="evaluacion">
+									<form name="transEInstalador">
+                                     <div class="col-md-6"
+                                     ng-if="preguntasContestadasEncuesta===encuestaDetalle.encuesta.nuPreguntas">
+									<div class="form-group" ng-class="{'has-error': transEInstalador.transp.$invalid && transEInstalador.transp.$dirty}">
+										<label>
+											*Transportista Involucrado
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-list-ul"></i>
+											</div>
+											<select class="form-control" select2
+												idioma-s2="{{currentLanguage}}"
+												ng-model="selectTransportista"
+												name="transp" id="transp"
+												ng-required="true"
+												ng-options="sws as sws.nbConductor+' '+sws.nbApepatConductor+' '+sws.nbApematConductor for sws in transportista track by sws.idConductor">
+												<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+											</select>
+										</div>
+										<div
+										ng-show="transEInstalador.transp.$error.required && transEInstalador.transp.$dirty"
+										ng-style="{color:'red'}">Es necesario ingresar
+										un transportista</div>
+									</div>
+								</div>
+								<div class="col-md-6" ng-if="preguntasContestadasEncuesta===encuestaDetalle.encuesta.nuPreguntas">
+									<div class="form-group" ng-class="{'has-error': transEInstalador.inst.$invalid && transEInstalador.inst.$dirty}">
+										<label>
+											*Instalador Involucrado
+										</label>
+										<div class="input-group">
+											<div class="input-group-addon">
+												<i class="fa fa-list-ul"></i>
+											</div>
+											<select class="form-control" select2
+												idioma-s2="{{currentLanguage}}"
+												ng-model="selectInstalador"
+												name="inst" id="inst"
+												ng-required="true"
+												ng-options="sws as sws.nbPersona+' '+sws.nbPatPersona+' '+sws.nbMatPersona for sws in tecnicos track by sws.idPersona">
+												<option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}</option>
+											</select>
+										</div>
+										<div
+										ng-show="transEInstalador.inst.$error.required && transEInstalador.inst.$dirty"
+										ng-style="{color:'red'}">Es necesario ingresar
+										un instalador</div>
+									</div>
+								</div>
+								</form>
+								<form name="evaluacion">
 												<fieldset>
 													<legend class="scheduler-border text-18">Sección:
 														{{seccionVO.nbSeccion}} {{paramConfigPage.bigCurrentPage}}

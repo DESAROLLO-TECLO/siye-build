@@ -43,7 +43,7 @@
                                                 selector-content="consultados" data-toggle="popover">
                                                 <label >
                                                     Transportista:
-                                                <span class="etapa-texto" ng-if="transportista.length>1">
+                                                <span class="etapa-texto" ng-if="transportista.length>0">
                                                     {{transportista[0].nbConductor}} {{transportista[0].nbApepatConductor}} {{transportista[0].nbApematConductor}}
                                                 </span>
                                                <span class="etapa-texto" ng-if="transportista.length<1">
@@ -56,7 +56,7 @@
                                                             </sapn>
                                                         </div>
                                                         <div style="border-bottom: 1px solid #cf0a2c; margin-bottom: 1%;"> </div>
-                                                        <div class="webuipopover-content-scroll" ng.if="transportista.length>2">
+                                                        <div class="webuipopover-content-scroll" ng.if="transportista.length>0">
                                                             <ul style="padding-left: 20px;">
                                                                 <li ng-repeat="item in transportista">
                                                                     {{item.nbConductor}} {{item.nbApepatConductor}} {{item.nbApematConductor}}
