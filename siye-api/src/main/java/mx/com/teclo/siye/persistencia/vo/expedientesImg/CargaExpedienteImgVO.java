@@ -1,5 +1,7 @@
 package mx.com.teclo.siye.persistencia.vo.expedientesImg;
 
+
+import java.util.Date;
 import java.util.List;
 
 public class CargaExpedienteImgVO {	
@@ -15,7 +17,8 @@ public class CargaExpedienteImgVO {
 	private List<ImagenVO> imagenes;
 	private List<ExpedienteNivelProcesoVO> procesos;
 	private InfoEvidenciaNivelVO infoEvidencia;
-	
+	private Date fechaInicio;
+	private Date fechaFin;
 	
 	/**
 	 * @return the placa
@@ -149,6 +152,19 @@ public class CargaExpedienteImgVO {
 	public void setInfoEvidencia(InfoEvidenciaNivelVO infoEvidencia) {
 		this.infoEvidencia = infoEvidencia;
 	}
+	public Date getFechaInicio() {
+		return fechaInicio;
+	}
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
+	}
+	public Date getFechaFin() {
+		return fechaFin;
+	}
+	public void setFechaFin(Date fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+	
 	
 	
 }

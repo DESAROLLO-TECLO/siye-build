@@ -15,5 +15,7 @@ public interface OrdenProcesoDAO extends BaseDao<OrdenProcesoDTO> {
 	 */
 	
     List<OrdenProcesoDTO> getProcesoPorOrden(Long idOrden);
+    
+    OrdenProcesoDTO getProceso(Long idOrden,Long idProceso);
 
 }

@@ -132,6 +132,8 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 				OSVO.setIdOrdenServicio(os.getIdOrdenServicio());
 				OSVO.setNbNivel("Orden de Servicio");
 				OSVO.setCdNivel("OS");
+				OSVO.setFechaInicio(os.getFhAtencionIni());
+				OSVO.setFechaFin(os.getFhAtencionFin());
 
 				if (os.getPlan().getIdPlan() != null) {
 					List<ExpedienteNivelProcesoVO> procesosByOS = planProcesoDAO.getProcesosPlanVO(os.getPlan().getIdPlan());
