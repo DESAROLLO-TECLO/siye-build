@@ -88,6 +88,7 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 	private static final String MSG_ERROR_NO_ENCONTRADO = "Err: No encontrado";
 	private static final String MSG_ERROR_MAP_IDS_NULO = "Err: Sin resultados";
 	private static final char CHAR_COMA = ',';
+	private static final String ST_RECIBIDO = "RECIBIDO";
 
 	@Autowired
 	private TipoLayoutDAO tipoLayoutDAO;
@@ -507,6 +508,10 @@ public class CargaMasivaServiceImpl implements CargaMasivaService {
 
 		LOGGER.debug(MessageFormat.format(MSG_BLOQUEANDO_ARCHIVO, idArchivoLote));
 		LoteOrdenServicioDTO loteDTO = loteDAO.findOne(idArchivoLote);
+		
+		if(!loteDTO.getStSeguimiento().getCdStSeguimiento().equalsIgnoreCase(ST_RECIBIDO))
+			return;
+		
 		Long lineas = BigDecimal.ZERO.longValue();
 		try {
 			lineas = (long) countLines(new File(loteDTO.getNbLoteOds()));
