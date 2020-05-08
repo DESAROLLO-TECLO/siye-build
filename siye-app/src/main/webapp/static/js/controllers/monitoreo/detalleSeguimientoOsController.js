@@ -41,10 +41,9 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                 if(lineaTiempoVO.data.procesos!=null){
                     initController();
                 }else{
-                    growl.info("No tiene Procesos Asignados ");
+                    growl.info("No tiene Procesos Asignados ", {ttl: 5000});
                     $location.path('/seguimientoOS');
                 }
-               
             } else {
                 $location.path('/seguimientoOS');
                 // growl.error('No hay detalle para esta Orden de Servicio');
@@ -186,6 +185,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             $scope.net = new vis.Network(container, data, options);
             fitAnimated();
         }
+        
         // Guardar imagen 
         $scope.downLoadTimeLine=function(){
             $scope.flagDownload=true;
