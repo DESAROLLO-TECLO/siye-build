@@ -1,5 +1,6 @@
 package mx.com.teclo.siye.persistencia.hibernate.dao.proceso;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,10 +53,19 @@ public class LoteOrdenServicioDAOImpl extends BaseDaoHibernate<LoteOrdenServicio
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ArchivoLoteVO> obtenerLotesPorFecha(Long idUserSession,Date date) {
+		
+		List<String> lisCdStatus=new ArrayList<>();
+		lisCdStatus.add("RECIBIDO");
+		lisCdStatus.add("CARGANDO");
+		
 		Criteria c = getCurrentSession().createCriteria(LoteOrdenServicioDTO.class, "lote");
 		c.createAlias("lote.stSeguimiento", "seguimiento");
 		c.createAlias("lote.tipoLayout", "tipoLayout", JoinType.LEFT_OUTER_JOIN);
+		c.createAlias("seguimiento.tipoSeguimiento", "tipoSeguimiento");
 		//c.add(Restrictions.eq("lote.idUsrCreacion", idUserSession));
+		//c.add(Restrictions.in("seguimiento.cdStSeguimiento", lisCdStatus));
+		c.add(Restrictions.eq("tipoSeguimiento.nbTpSeguimiento", "TIE025D_IE_LOTE_ODS"));
+		
 		c.add(Restrictions.eq("lote.stActivo", Boolean.TRUE.booleanValue()));
 		c.add(Restrictions.sqlRestriction("trunc({alias}.FH_CREACION) = ?", date,
 				org.hibernate.type.StandardBasicTypes.DATE));

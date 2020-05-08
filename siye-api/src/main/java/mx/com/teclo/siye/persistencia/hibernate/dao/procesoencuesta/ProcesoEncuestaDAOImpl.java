@@ -17,6 +17,7 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.EncuestaDetaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EstiloNodosVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
 
 @Repository
@@ -39,10 +40,10 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ExpedienteNivelEncuestaVO> getEncuestasByProcesoVO(Long idProceso) {
-		StringBuilder consulta = new StringBuilder("SELECT encuesta.ID_ENCUESTA  AS idEncuesta, encuesta.NB_ENCUESTA_ORIGEN AS cdEncuesta, encuesta.NU_MAX_IMAGENES AS nuMaxImg " + 
+		StringBuilder consulta = new StringBuilder("SELECT encuesta.ID_ENCUESTA  AS idEncuesta, encuesta.NB_ENCUESTA AS cdEncuesta, encuesta.NU_MAX_IMAGENES AS nuMaxImg " + 
 				"FROM TIE037D_IE_PROCESO_ENCUESTA pE" + 
 				" INNER JOIN TIE001D_EE_ENCUESTAS encuesta ON (pE.ID_ENCUESTA = encuesta.ID_ENCUESTA)" + 
-				"  WHERE encuesta.ST_ACTIVO = 1 AND pE.ID_PROCESO ="+idProceso +"ORDER BY encuesta.NU_ORDEN ASC");
+				"  WHERE encuesta.ST_ACTIVO = 1 AND pE.ID_PROCESO ="+idProceso +"ORDER BY pE.NU_ORDEN ASC");
 		List<ExpedienteNivelEncuestaVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idEncuesta",LongType.INSTANCE)
 				.addScalar("cdEncuesta",StringType.INSTANCE)
@@ -173,6 +174,23 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				.setParameter("idOrdenServicio", idOrdenServicio)
 				.setParameter("idProceso", idProceso)
 				.setResultTransformer(Transformers.aliasToBean(EncuestaDetalleVO.class)).list();
+		return respuesta;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<EstiloNodosVO> getSignificadoColorNodos() {
+		StringBuilder consulta = new StringBuilder("SELECT "
+				+"NB_ST_ENCUESTA AS nbStatus,"
+				+"CD_COLOR AS nbColor,"
+				+"NU_ORDEN AS nuOrden" 
+				+"  FROM TIE018C_EE_ST_ENCUESTAS   " 
+				+"WHERE ST_ACTIVO =1 ORDER BY NU_ORDEN ASC");
+		List<EstiloNodosVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
+				.addScalar("nbStatus",StringType.INSTANCE)
+				.addScalar("nbColor", StringType.INSTANCE)
+				.addScalar("nuOrden", LongType.INSTANCE)
+				.setResultTransformer(Transformers.aliasToBean(EstiloNodosVO.class)).list();
 		return respuesta;
 	}
 
