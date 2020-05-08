@@ -1,14 +1,24 @@
 angular.module(appTeclo).controller("cargaArchivoLayoutController",
 function($scope,$interval,$timeout,ModalService,showAlert,growl, $location, cargaArchivoLayoutService) {
-
+	
 	const MESSAGES=new Object({
 		NOT_ADD_FILE:'No se ha seleccionado ningun archivo',
-		UPLOAD_FILE_SUCCESS:'Se crago el archivo correctamente',
-		UPLOAD_FILE_ERRROR:'No se pudo cargar el archivo seleccionado, vuelva a intetar'
+		UPLOAD_FILE_SUCCESS:'Se cargo el archivo correctamente',
+		UPLOAD_FILE_ERRROR:'No se pudo cargar el archivo seleccionado, vuelva a intetar',
+		FILE_IN_PROCESS:'Actual mente existe un archivo en proceso, por favor espere',
+		TXT_SELECT_DEFAULT:'Sin Refrescar'
+	});
+	
+	const CD_STATUS=new Object({
+		RECIBIDO:'RECIBIDO',
+		CARGANDO:'CARGANDO',
+		CARGADO:'CARGADO',
+		RECHAZADO:'RECHAZADO'
 	});
 	
 	$scope.filesVO=new Object({
-		listFileUploaded : new Array(),
+		fileUploaded : undefined,
+		fileUploadedBackup : undefined,
 		fileUpload: undefined,
 		selectListTimeRefresh : new Array(
 										  { "idTimeRefresh": 2, "nbTimeRefresh": ' 15 Seg ', "timeRefresh": .25 },
@@ -35,34 +45,54 @@ function($scope,$interval,$timeout,ModalService,showAlert,growl, $location, carg
 	
 	//Metodo que recibe los files desde el input file
 	$scope.getFilesFromInput=function(files){
+		$scope.filesVO.fileUploadedBackup = angular.copy($scope.filesVO.fileUploaded);
+		$scope.filesVO.fileUploaded = undefined;
 		$scope.filesVO.fileUpload=files[0];
 	};
 	
 	$scope.resetFile=function(){
-		$scope.filesVO.fileUpload=undefined;
+		$scope.filesVO.fileUploaded = angular.copy($scope.filesVO.fileUploadedBackup);
+		$scope.filesVO.fileUploadedBackup = undefined;
+		$scope.filesVO.fileUpload = undefined;
 	};
 	
 	$scope.uploadFileService=function(form){
+		
+		if($scope.filesVO.fileUploaded != undefined && 
+				($scope.filesVO.fileUploaded.cdStSeguimiento == CD_STATUS.RECIBIDO ||  
+						$scope.filesVO.fileUploaded.cdStSeguimiento == CD_STATUS.CARGANDO)){
+			growl.error(MESSAGES.FILE_IN_PROCESS,{ ttl: 4000 });
+            return;
+		}
 		
 		if ($scope.filesVO.fileUpload == undefined || (form != undefined && form.$invalid)) {
             
 			if(form != undefined && form.$invalid)
 				showAlert.requiredFields(form);
             
-            growl.error(MESSAGES.NOT_ADD_FILE);
+            growl.error(MESSAGES.NOT_ADD_FILE,{ ttl: 4000 });
             return;
         }
 		
 		cargaArchivoLayoutService.uploadFile($scope.filesVO.fileUpload)
 		.success(function(response){
-			if($scope.filesVO.listFileUploaded.length == 0)
-				$scope.filesVO.listFileUploaded.push(response);
-			else
-				$scope.filesVO.listFileUploaded.unshift(response);
+			
+			if(response.cdStSeguimiento == CD_STATUS.RECIBIDO ||  response.cdStSeguimiento == CD_STATUS.CARGANDO){
+				$scope.filesVO.fileUploaded=response;
+				$scope.filesVO.fileUploadedBackup = angular.copy(response);
+			}
+			
+			if(response.txLoteOds != null){
+				let msj='Estatus del archivo: '+response.nbStSeguimiento;
+				growl.error(response.txLoteOds, { title:msj,ttl: 4000 });	
+			}else{
+				growl.success(MESSAGES.UPLOAD_FILE_SUCCESS, { ttl: 4000 });	
+			}
 			
 			$scope.resetFile();
-			growl.success(MESSAGES.UPLOAD_FILE_SUCCESS, { ttl: 4000 });
+			
    	 	}).error(function (error){
+   	 		$scope.filesVO.fileUploaded=undefined;
    	 		showErrorMessage(error);
    	 	});
 		
@@ -70,12 +100,16 @@ function($scope,$interval,$timeout,ModalService,showAlert,growl, $location, carg
 	
 	//Retorna una lista de los archivos cargados del dia, y regresa su estatus actual
 	getListFilesUploadStatus=function(){
-		cargaArchivoLayoutService.getFilesUploadToDay()
-		.success(function(response){
-			$scope.filesVO.listFileUploaded=response;
-   	 	}).error(function (error){
-   	 		$scope.filesVO.listFileUploaded=new Array();
-   	 	});
+		//$("#select2-selectTimeRefresh-container").text(MESSAGES.TXT_SELECT_DEFAULT);
+			cargaArchivoLayoutService.getFilesUploadToDay()
+			.success(function(response){
+				let lote=response[0];
+				$scope.filesVO.fileUploaded=lote;
+				$scope.filesVO.fileUploadedBackup = undefined;
+	   	 	}).error(function (error){
+	   	 		$scope.filesVO.fileUploadedBackup=undefined;
+	   	 		$scope.filesVO.fileUploaded=undefined;
+	   	 	});
 	};
 	
 	//Procesa mensaje de Error
@@ -145,6 +179,24 @@ function($scope,$interval,$timeout,ModalService,showAlert,growl, $location, carg
         cancelarBuscarPorIntervalo();
         getListFilesUploadStatus();
         $scope.cambiaTiempo();
+    };
+    
+    $scope.descargarArchivo = function(idLote) {
+        
+    	if($scope.filesVO.fileUploaded != undefined && 
+				($scope.filesVO.fileUploaded.cdStSeguimiento == CD_STATUS.RECIBIDO ||  
+						$scope.filesVO.fileUploaded.cdStSeguimiento == CD_STATUS.CARGANDO)){
+			growl.error(MESSAGES.FILE_IN_PROCESS,{ ttl: 4000 });
+            return;
+		}
+    	
+    	cargaArchivoLayoutService.dowloadFileByIdLote(idLote).success(function(data, status, headers) {
+            let filename = headers('filename');
+            let file = new Blob([data], { type: 'application/vnd.ms-excel;base64,' });
+            cargaArchivoLayoutService.downloadfile(file, filename);
+        }).error(function(data) {
+        	showErrorMessage(data);
+        });
     };
 	
 	getListFilesUploadStatus();
