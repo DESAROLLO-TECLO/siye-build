@@ -17,6 +17,7 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.EncuestaDetaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EstiloNodosVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
 
 @Repository
@@ -173,6 +174,23 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				.setParameter("idOrdenServicio", idOrdenServicio)
 				.setParameter("idProceso", idProceso)
 				.setResultTransformer(Transformers.aliasToBean(EncuestaDetalleVO.class)).list();
+		return respuesta;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<EstiloNodosVO> getSignificadoColorNodos() {
+		StringBuilder consulta = new StringBuilder("SELECT "
+				+"NB_ST_ENCUESTA AS nbStatus,"
+				+"CD_COLOR AS nbColor,"
+				+"NU_ORDEN AS nuOrden" 
+				+"  FROM TIE018C_EE_ST_ENCUESTAS   " 
+				+"WHERE ST_ACTIVO =1 ORDER BY NU_ORDEN ASC");
+		List<EstiloNodosVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
+				.addScalar("nbStatus",StringType.INSTANCE)
+				.addScalar("nbColor", StringType.INSTANCE)
+				.addScalar("nuOrden", LongType.INSTANCE)
+				.setResultTransformer(Transformers.aliasToBean(EstiloNodosVO.class)).list();
 		return respuesta;
 	}
 
