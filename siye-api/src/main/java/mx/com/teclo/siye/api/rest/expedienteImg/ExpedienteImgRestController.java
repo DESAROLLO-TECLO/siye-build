@@ -140,7 +140,7 @@ public class ExpedienteImgRestController {
 	public ResponseEntity<CargaExpedienteImgVO> getImgExpedienteNivel(
 			@RequestParam(value ="tipoBusqueda") String tipoBusqueda,
 			@RequestParam(value ="valor") String valor) throws NotFoundException{
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy HH:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		List <String> transportistasOrden=new ArrayList<String>();
 		List <String> instaladorOrden=new ArrayList<String>();
 		List <String> supervisorOrden=new ArrayList<String>();
@@ -177,12 +177,13 @@ public class ExpedienteImgRestController {
 			
 			for(ExpedienteNivelEncuestaVO encuesta : proceso.getListEncuestas()) {
 				InfoEvidenciaNivelVO infoEvidenciaEncuesta = new InfoEvidenciaNivelVO();
-				List<ImagenVO> imgENC = expedienteImg.getInfoExpedienteByNivel(
-						respuesta.get(0).getIdOrdenServicio(), encuesta.getIdEncuesta(), "ENCUESTA");
-				infoEvidenciaEncuesta.setImagenes(imgENC);
+				List<ImagenVO> imgENC=new ArrayList<ImagenVO>();
 				UsuarioEncuestaDetalleDTO usuarioEncuestaDetalleDTO=encuestaDetalleDAO.getEncuestaDetalle(encuesta.getIdEncuesta(), respuesta.get(0).getIdOrdenServicio());
 				if(usuarioEncuestaDetalleDTO!=null)
 				{
+					imgENC = expedienteImg.getInfoExpedienteByNivel(
+							respuesta.get(0).getIdOrdenServicio(), encuesta.getIdEncuesta(), "ENCUESTA");
+					infoEvidenciaEncuesta.setImagenes(imgENC);
 				List<UsuarioEncuestaIntentosDTO> usuarioEncuestaIntentosDTO=usuarioEncuestaIntentoDAO.usuarioEncuesta(usuarioEncuestaDetalleDTO.getIdUsuarioEncuesta());
 				if(usuarioEncuestaIntentosDTO!=null)
 				{
@@ -218,7 +219,7 @@ public class ExpedienteImgRestController {
 					infoEvidenciaPregunta.setNbInstalador(encuesta.getInfoEvidencia().getNbInstalador()!=null?encuesta.getInfoEvidencia().getNbInstalador():new ArrayList<String>());
 					infoEvidenciaPregunta.setNbTrasportista(encuesta.getInfoEvidencia().getNbTrasportista()!=null?encuesta.getInfoEvidencia().getNbTrasportista():new ArrayList<String>());
 					infoEvidenciaPregunta.setTieneImagen(imgPREG.size()>0 ? 1 : 0);
-					encuesta.setInfoEvidencia(infoEvidenciaPregunta);
+					pregunta.setInfoEvidencia(infoEvidenciaPregunta);
 				}
 				if(encuesta.getInfoEvidencia().getNbTrasportista().size()>0)
 				transportistasProceso.add(encuesta.getInfoEvidencia().getNbTrasportista().get(0));

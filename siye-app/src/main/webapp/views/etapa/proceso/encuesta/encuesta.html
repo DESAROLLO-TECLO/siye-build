@@ -146,17 +146,51 @@
 										</div>
 										<div class="col-md-10">
 									<form name="transEInstalador">
-                                     <div class="col-md-6"
-                                     ng-if="preguntasContestadasEncuesta===encuestaDetalle.encuesta.nuPreguntas">
+								  <div class="col-md-4" ng-if="estatusEncuesta=='FIN'">
+                                        <div class="form-group">
+                                            <label>
+                                                Supervisor Involucrado:
+                                                </br>
+                                                <span class="etapa-texto">
+                                                    {{supervisoInvolucrado}}
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                     <div class="col-md-4" ng-if="estatusEncuesta=='FIN'">
+                                        <div class="form-group">
+                                            <label>
+                                                Transportista Involucrado:
+                                                </br>
+                                                <span class="etapa-texto">
+                                                    {{transportistaLabel}}
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" ng-if="estatusEncuesta=='FIN'">
+                                        <div class="form-group">
+                                            <label>
+                                                Instalador Involucrado:
+                                                </br>
+                                                <span class="etapa-texto">
+                                                    {{tecnicoLabel}}
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                     <div class="col-md-4"
+                                     ng-if="preguntasContestadasEncuesta===encuestaDetalle.encuesta.nuPreguntas && estatusEncuesta!='FIN'">
 									<div class="form-group" ng-class="{'has-error': transEInstalador.transp.$invalid && transEInstalador.transp.$dirty}">
 										<label>
-											*Transportista Involucrado
+											*Transportista Involucrado:
 										</label>
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-list-ul"></i>
 											</div>
 											<select class="form-control" select2
+											    ng-disabled="estatusEncuesta=='FIN'"
 												idioma-s2="{{currentLanguage}}"
 												ng-model="selectTransportista"
 												name="transp" id="transp"
@@ -171,16 +205,17 @@
 										un transportista</div>
 									</div>
 								</div>
-								<div class="col-md-6" ng-if="preguntasContestadasEncuesta===encuestaDetalle.encuesta.nuPreguntas">
+								<div class="col-md-4" ng-if="preguntasContestadasEncuesta===encuestaDetalle.encuesta.nuPreguntas && estatusEncuesta!='FIN'">
 									<div class="form-group" ng-class="{'has-error': transEInstalador.inst.$invalid && transEInstalador.inst.$dirty}">
 										<label>
-											*Instalador Involucrado
+											*Instalador Involucrado:
 										</label>
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-list-ul"></i>
 											</div>
 											<select class="form-control" select2
+											    ng-disabled="estatusEncuesta=='FIN'"
 												idioma-s2="{{currentLanguage}}"
 												ng-model="selectInstalador"
 												name="inst" id="inst"
