@@ -2,6 +2,7 @@ package mx.com.teclo.siye.api.rest.expedienteImg;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -231,45 +232,27 @@ public class ExpedienteImgRestController {
 			}
 			if(transportistasProceso.size()>0)
 			{
-             List <String> transportistasProcesoNew=new ArrayList<String>();
-             transportistasProcesoNew.add(transportistasProceso.get(0));
-             int tamaño=0;
-		            for (int x = 1; x < transportistasProceso.size(); x++) {
-		            	tamaño=transportistasProcesoNew.size();
-		                if (!transportistasProcesoNew.get(tamaño-1).equals(transportistasProceso.get(x))) {
-		                	transportistasProcesoNew.add(transportistasProceso.get(x));
-		                }
-		            }
+				HashSet<String> hashSet = new HashSet<String>(transportistasProceso);
+				transportistasProceso.clear();
+				transportistasProceso.addAll(hashSet);
 	    
-		    infoEvidenciaProceso.setNbTrasportista(transportistasProcesoNew);
+		    infoEvidenciaProceso.setNbTrasportista(transportistasProceso);
 			}
 			if(instaladorProceso.size()>0)
 			{
-             List <String> instaladorProcesonEW=new ArrayList<String>();
-             instaladorProcesonEW.add(instaladorProceso.get(0));
-             int tamaño=0;
-		            for (int x = 1; x < instaladorProceso.size(); x++) {
-		            	tamaño=instaladorProcesonEW.size();
-		                if (!instaladorProcesonEW.get(tamaño-1).equals(instaladorProceso.get(x))) {
-		                	instaladorProcesonEW.add(instaladorProceso.get(x));
-		                }
-		            }
+				HashSet<String> hashSet = new HashSet<String>(instaladorProceso);
+				instaladorProceso.clear();
+				instaladorProceso.addAll(hashSet);
 	    
-		            infoEvidenciaProceso.setNbSupervisor(instaladorProcesonEW);
+		            infoEvidenciaProceso.setNbSupervisor(instaladorProceso);
 			}
 			if(supervisorProceso.size()>0)
 			{
-             List <String> supervisorProcesoNew=new ArrayList<String>();
-             supervisorProcesoNew.add(supervisorProceso.get(0));
-             int tamaño=0;
-		            for (int x = 1; x < supervisorProceso.size(); x++) {
-		            	tamaño=supervisorProcesoNew.size();
-		                if (!supervisorProcesoNew.get(tamaño-1).equals(supervisorProceso.get(x))) {
-		                	supervisorProcesoNew.add(supervisorProceso.get(x));
-		                }
-		            }
+				HashSet<String> hashSet = new HashSet<String>(supervisorProceso);
+				supervisorProceso.clear();
+				supervisorProceso.addAll(hashSet);
 	    
-		            infoEvidenciaProceso.setNbInstalador(supervisorProcesoNew);
+		            infoEvidenciaProceso.setNbInstalador(supervisorProceso);
 			}
 			
 			proceso.setInfoEvidencia(infoEvidenciaProceso);
@@ -296,47 +279,30 @@ public class ExpedienteImgRestController {
 		
 		if(transportistasOrden.size()>0)
 		{
-         List <String> transportistasProcesoNew=new ArrayList<String>();
-         transportistasProcesoNew.add(transportistasOrden.get(0));
-         int tamaño=0;
-	            for (int x = 1; x < transportistasOrden.size(); x++) {
-	            	tamaño=transportistasProcesoNew.size();
-	                if (!transportistasProcesoNew.get(tamaño-1).equals(transportistasOrden.get(x))) {
-	                	transportistasProcesoNew.add(transportistasOrden.get(x));
-	                }
-	            }
-	    		infoEvidenciaOrden.setNbSupervisor(transportistasProcesoNew);
+			HashSet<String> hashSet = new HashSet<String>(transportistasOrden);
+			transportistasOrden.clear();
+			transportistasOrden.addAll(hashSet);
+	    	
+			infoEvidenciaOrden.setNbSupervisor(transportistasOrden);
 
- 
 		}
 		
 		if(instaladorOrden.size()>0)
 		{
-         List <String> instaladorProcesonEW=new ArrayList<String>();
-         instaladorProcesonEW.add(instaladorOrden.get(0));
-         int tamaño=0;
-	            for (int x = 1; x < instaladorOrden.size(); x++) {
-	            	tamaño=instaladorProcesonEW.size();
-	                if (!instaladorProcesonEW.get(tamaño-1).equals(instaladorOrden.get(x))) {
-	                	instaladorProcesonEW.add(instaladorOrden.get(x));
-	                }
-	            }
-	          infoEvidenciaOrden.setNbInstalador(instaladorProcesonEW);
+			HashSet<String> hashSet = new HashSet<String>(instaladorOrden);
+			instaladorOrden.clear();
+			instaladorOrden.addAll(hashSet);
+			
+	        infoEvidenciaOrden.setNbInstalador(instaladorOrden);
 		}
 		
 		if(supervisorOrden.size()>0)
 		{
-         List <String> supervisorProcesoNew=new ArrayList<String>();
-         supervisorProcesoNew.add(supervisorOrden.get(0));
-         int tamaño=0;
-	            for (int x = 1; x < supervisorOrden.size(); x++) {
-	            	tamaño=supervisorProcesoNew.size();
-	                if (!supervisorProcesoNew.get(tamaño-1).equals(supervisorOrden.get(x))) {
-	                	supervisorProcesoNew.add(supervisorOrden.get(x));
-	                }
-	            }
+			HashSet<String> hashSet = new HashSet<String>(supervisorOrden);
+			supervisorOrden.clear();
+			supervisorOrden.addAll(hashSet);
 	    		
-	    		infoEvidenciaOrden.setNbTrasportista(supervisorProcesoNew);
+	    		infoEvidenciaOrden.setNbTrasportista(supervisorOrden);
 
 		}
 
