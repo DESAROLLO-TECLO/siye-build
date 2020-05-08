@@ -177,12 +177,13 @@ public class ExpedienteImgRestController {
 			
 			for(ExpedienteNivelEncuestaVO encuesta : proceso.getListEncuestas()) {
 				InfoEvidenciaNivelVO infoEvidenciaEncuesta = new InfoEvidenciaNivelVO();
-				List<ImagenVO> imgENC = expedienteImg.getInfoExpedienteByNivel(
-						respuesta.get(0).getIdOrdenServicio(), encuesta.getIdEncuesta(), "ENCUESTA");
-				infoEvidenciaEncuesta.setImagenes(imgENC);
+				List<ImagenVO> imgENC=new ArrayList<ImagenVO>();
 				UsuarioEncuestaDetalleDTO usuarioEncuestaDetalleDTO=encuestaDetalleDAO.getEncuestaDetalle(encuesta.getIdEncuesta(), respuesta.get(0).getIdOrdenServicio());
 				if(usuarioEncuestaDetalleDTO!=null)
 				{
+					imgENC = expedienteImg.getInfoExpedienteByNivel(
+							respuesta.get(0).getIdOrdenServicio(), encuesta.getIdEncuesta(), "ENCUESTA");
+					infoEvidenciaEncuesta.setImagenes(imgENC);
 				List<UsuarioEncuestaIntentosDTO> usuarioEncuestaIntentosDTO=usuarioEncuestaIntentoDAO.usuarioEncuesta(usuarioEncuestaDetalleDTO.getIdUsuarioEncuesta());
 				if(usuarioEncuestaIntentosDTO!=null)
 				{
