@@ -44,7 +44,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                     growl.info("No tiene Procesos Asignados ");
                     $location.path('/seguimientoOS');
                 }
-               
+
             } else {
                 $location.path('/seguimientoOS');
                 // growl.error('No hay detalle para esta Orden de Servicio');
@@ -95,11 +95,11 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                 font: { vadjust: 10 }
             });
             coordY =0;
-            
+
             if(proceso.encuestas !=null){
                 let nodoshijos =  proceso.idProceso;
                 for(let x=0; x<proceso.encuestas.length; x++){
-                    // crear nodo encuesta 
+                    // crear nodo encuesta
                     nodes.add({
                         id: proceso.encuestas[x].cdEncuesta,
                         shape: 'circularImage',
@@ -110,15 +110,15 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                         color: { border: proceso.encuestas[x].nbColor, highlight: { border: proceso.encuestas[x].nbColor } },
                         font: { vadjust: 5 }
                     });
-                    // agregar nodo encuesta 
+                    // agregar nodo encuesta
                     edges.add({ from:nodoshijos, to: proceso.encuestas[x].cdEncuesta, arrows: 'to' });
                     nodoshijos = proceso.encuestas[x].cdEncuesta;
                 }
             }
 
             if (from != null && padre>1)
-                edges.add({ from: from, to: proceso.idProceso, arrows: 'to' });      
-            
+                edges.add({ from: from, to: proceso.idProceso, arrows: 'to' });
+
                 from = proceso.idProceso;
 
             coordX += disX;
@@ -186,7 +186,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             $scope.net = new vis.Network(container, data, options);
             fitAnimated();
         }
-        // Guardar imagen 
+        // Guardar imagen
         $scope.downLoadTimeLine=function(){
             $scope.flagDownload=true;
             scrollDetailDestroy()
@@ -195,10 +195,10 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                      var dataURL = canvas.toDataURL();
                      $scope.imgCapture=dataURL;
                      var file=dataURL.split(",");
-                     $scope.archivo=$scope.b64toBlob(file[1],"image/png"); 
+                     $scope.archivo=$scope.b64toBlob(file[1],"image/png");
                      save( $scope.archivo,"image/png");
                 });
-             },15); 
+             },15);
         };
 
         save=function(file, fileName) {
@@ -252,12 +252,12 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                 let mensaje = "",tipo='info';
                 switch(nivel){
                     case 'pregunta':
-                        if(data.nivelPreguntas!=null && data.nivelPreguntas.length>0){
+                        if(data.nivelPreguntas!=null){
                            verModal=true;
                         }else{
                             mensaje="No tiene información para mostrar";
                             tipo='error';
-                        } 
+                        }
                     break;
 
                     case 'encuesta':
@@ -288,7 +288,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                         growl.error(mensaje);
                     }else{
                         growl.info(mensaje);
-                    } 
+                    }
                 }
             }).error(function(data){
                 growl.error(data.message);
@@ -332,6 +332,14 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                 detalleSeguimientoOsService.saveconsultaGeneral(null);
             }
         });
+<<<<<<< HEAD
+    };
+
+
+    initController();
+
+=======
+>>>>>>> aa23c40c95a7b9a9ba8842027353dcd8df03d1e9
 
 
         getDetalleOrdenServicio();
