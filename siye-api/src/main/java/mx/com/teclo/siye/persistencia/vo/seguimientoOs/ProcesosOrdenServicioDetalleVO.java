@@ -17,6 +17,7 @@ public class ProcesosOrdenServicioDetalleVO {
 	private Date ffin;
 	private String fhDiferencia;
 	private List<ProcesoDetalleVO> procesos;
+	private List<EstiloNodosVO> estiloNodos;
 	
 	
 	/**
@@ -162,6 +163,18 @@ public class ProcesosOrdenServicioDetalleVO {
 	 */
 	public void setFhDiferencia(String fhDiferencia) {
 		this.fhDiferencia = fhDiferencia;
+	}
+	/**
+	 * @return the estiloNodos
+	 */
+	public List<EstiloNodosVO> getEstiloNodos() {
+		return estiloNodos;
+	}
+	/**
+	 * @param estiloNodos the estiloNodos to set
+	 */
+	public void setEstiloNodos(List<EstiloNodosVO> estiloNodos) {
+		this.estiloNodos = estiloNodos;
 	}
 	
 	

@@ -36,6 +36,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
 
         getDetalleOrdenServicio = function () {
             if (lineaTiempoVO != undefined) {
+                debugger
                 $scope.ordenServicioVO.proceso = detalleSeguimientoOsService.getconsultaGeneral();
                 $scope.ordenServicioVO.detalle = lineaTiempoVO.data;
                 if(lineaTiempoVO.data.procesos!=null){
