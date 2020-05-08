@@ -219,6 +219,9 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 							procesoEncuestaDAO.getDetalleEncuestaParaNodos(idOrdenServicio, etapa.getIdProceso()));
 				}
 				respuesta.setProcesos(etapas);
+				
+				// Consultar stilo de colores para nodos de encuestas dentro del proceso 
+				respuesta.setEstiloNodos(procesoEncuestaDAO.getSignificadoColorNodos());
 			}
 		}
 
