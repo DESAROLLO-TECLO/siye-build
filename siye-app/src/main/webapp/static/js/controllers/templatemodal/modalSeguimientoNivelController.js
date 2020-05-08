@@ -20,6 +20,10 @@ angular.module(appTeclo).controller('modalSeguimientoNivelController',
         });
 
         $scope.propsIncidencia = {};
+        $scope.elemento = new Object({
+            listaImagen:[]
+        });
+
         // Metodo para el funcionamiento del modal
         inicializarModal = function () {
             debugger
@@ -41,6 +45,7 @@ angular.module(appTeclo).controller('modalSeguimientoNivelController',
                     $scope.infoOS.status = informacionVO.infoEncuesta.estatus;
                     $scope.infoOS.colorStatus = informacionVO.infoEncuesta.nbColor;
                     $scope.ListaEvidencias = informacionVO.data.nivelEncuesta;
+                    $scope.elemento.listaImagen = informacionVO.data.nivelEncuesta;
                     break;
 
                 case 'ordenservicio':
@@ -63,7 +68,9 @@ angular.module(appTeclo).controller('modalSeguimientoNivelController',
 
         $scope.$watch('active', function (newIndex, oldIndex) {
             if (Number.isFinite(newIndex) && newIndex !== oldIndex) {
-                $scope.propsIncidencia = $scope.ListaEvidencias[newIndex];
+                if($scope.ListaEvidencias!=undefined){
+                    $scope.propsIncidencia = $scope.ListaEvidencias[newIndex];
+                }
             }
         });
 

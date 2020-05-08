@@ -26,9 +26,9 @@ import mx.com.teclo.siye.persistencia.vo.monitoreo.IncidenDetailVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.OrdenIncidenciaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleImagenesOS;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleIncidenciaVO;
-import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.MonitoreoIncidenciasVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesoDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesosOrdenServicioDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ReporteExcelVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.SeguimientoOrdenServicioVO;
@@ -77,13 +77,13 @@ public class SeguimientoOsRestController {
 	
 	@GetMapping(value="/getDetalleProceso")
 	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
-	public ResponseEntity<List<EncuestaDetalleVO>> getDetalleProceso(@RequestParam(value ="idOrden") Long idOrdenServicio,
+	public ResponseEntity<List<ProcesoDetalleVO>> getDetalleProceso(@RequestParam(value ="idOrden") Long idOrdenServicio,
 															         @RequestParam(value ="idProceso") List<Long> idProceso) throws NotFoundException{	
-		List<EncuestaDetalleVO> respuesta = seguimientoService.getDetalleProcesos(idOrdenServicio, idProceso);
+		List<ProcesoDetalleVO> respuesta = seguimientoService.getDetalleProcesos(idOrdenServicio, idProceso);
 		if(respuesta==null) {
 			throw new NotFoundException("No hay información");
 		}
-		return new ResponseEntity<List<EncuestaDetalleVO>>(respuesta, HttpStatus.OK);
+		return new ResponseEntity<List<ProcesoDetalleVO>>(respuesta, HttpStatus.OK);
 	};
 	
 

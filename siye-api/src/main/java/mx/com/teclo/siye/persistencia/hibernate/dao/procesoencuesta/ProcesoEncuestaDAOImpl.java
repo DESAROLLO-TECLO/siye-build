@@ -22,6 +22,8 @@ import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
 @Repository
 public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO> implements ProcesoEncuestaDAO {
 	
+	private static Long SIN_INICIAR =3L;
+	
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -66,7 +68,7 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<EncuestaDetalleVO> getDetalleEncuesta(Long idOrdenServicio, List<Long> idProceso) {
+	public List<EncuestaDetalleVO> getDetalleEncuesta(Long idOrdenServicio, Long idProceso) {
 		StringBuilder consulta = new StringBuilder("SELECT tdipe.ID_ENCUESTA  AS idEncuesta, encuesta.NB_ENCUESTA AS nbEncuesta," 
 	            +"TO_CHAR(tdeuei.FH_INICIO,'DD/MM/YYYY HH24:MI') AS fhInicio," 
 	            +"TO_CHAR(tdeuei.FH_FIN,'DD/MM/YYYY HH24:MI') AS fhFin,"
@@ -82,8 +84,8 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				+"    INNER JOIN TIE002D_EE_ODS_ENCUESTA tdeoe ON (encuesta.ID_ENCUESTA = tdeoe.ID_ENCUESTA)" 
 				+"    INNER JOIN TIE006D_EE_USU_ENCU_INTEN tdeuei ON (tdeoe.ID_ODS_ENCUESTA  = tdeuei.ID_ODS_ENCUESTA)"
 				+"    INNER JOIN TIE018C_EE_ST_ENCUESTAS st ON (tdeuei.ID_ST_CALIFICACION = st.ID_ST_ENCUESTA)"
-				+" WHERE tdipe.ST_ACTIVO =1 AND encuesta.ST_ACTIVO =1 AND tdipe.ID_PROCESO IN (:idProceso) AND tdeoe.ID_ORDEN_SERVICIO=:idOrdenServicio" 
-				+"  AND  tdeuei.FH_INICIO IS NOT NULL   ORDER BY tdipe.ID_ENCUESTA ");
+				+" WHERE tdipe.ST_ACTIVO =1 AND encuesta.ST_ACTIVO =1 AND tdipe.ID_PROCESO =:idProceso AND tdeoe.ID_ORDEN_SERVICIO=:idOrdenServicio" 
+				+"  AND st.ID_ST_ENCUESTA<>:estatus  ORDER BY tdipe.ID_ENCUESTA ");
 		List<EncuestaDetalleVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idEncuesta",LongType.INSTANCE)
 				.addScalar("nbEncuesta",StringType.INSTANCE)
@@ -96,7 +98,8 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				.addScalar("nbColor",StringType.INSTANCE)
 				.addScalar("nuPorcentaje",StringType.INSTANCE)
 				.setParameter("idOrdenServicio", idOrdenServicio)
-				.setParameterList("idProceso", idProceso)
+				.setParameter("idProceso", idProceso)
+				.setParameter("estatus", SIN_INICIAR)
 				.setResultTransformer(Transformers.aliasToBean(EncuestaDetalleVO.class)).list();
 		return respuesta;
 	}

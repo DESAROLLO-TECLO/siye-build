@@ -14,6 +14,7 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     $scope.idEnc = encuestaInfo.data.encuesta.idEncuesta;
     $scope.formato = '0';
     $scope.tiempoTranscurridoEncuesta = 0;
+    $scope.supervisoInvolucrado=encuestaInfo.data.intentoDetalleVO.supervisor!=null?encuestaInfo.data.intentoDetalleVO.supervisor:"";
     var iniciarConteo = undefined;
     
  
@@ -754,6 +755,10 @@ consultarTransportistas = function(){
     if(idVeh != null ){
     	encuestaService.getTransportistasVehiculo(idVeh).success(function(data){
             $scope.transportista = data;
+            if($scope.estatusEncuesta=='FIN')
+            	{
+             $scope.transportistaLabel=encuestaInfo.data.intentoDetalleVO.transportista!=null?encuestaInfo.data.intentoDetalleVO.transportista:"";
+            	}
         }).error(function(error){
         	$scope.transportista=[];
         });
@@ -766,6 +771,10 @@ consultaTecnicos = function(){
     if(idTecnico != null ){
     	encuestaService.getTecnicos(idTecnico).success(function(data){
             $scope.tecnicos = data;
+            if($scope.estatusEncuesta=='FIN')
+        	{
+            $scope.tecnicoLabel=encuestaInfo.data.intentoDetalleVO.tecnico!=null?encuestaInfo.data.intentoDetalleVO.tecnico:""; 
+        	}
         }).error(function(error){
         	$scope.tecnicos=[];
         });

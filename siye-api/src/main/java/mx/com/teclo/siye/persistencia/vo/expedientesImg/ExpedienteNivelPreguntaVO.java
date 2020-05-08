@@ -8,7 +8,7 @@ public class ExpedienteNivelPreguntaVO {
 	private String cdNivel;
 	private String nbNivel;
 	private String name;
-	
+	private InfoEvidenciaNivelVO infoEvidencia;
 	
 	/**
 	 * @return the idPregunta
@@ -81,5 +81,11 @@ public class ExpedienteNivelPreguntaVO {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	public InfoEvidenciaNivelVO getInfoEvidencia() {
+		return infoEvidencia;
+	}
+	public void setInfoEvidencia(InfoEvidenciaNivelVO infoEvidencia) {
+		this.infoEvidencia = infoEvidencia;
 	}
 }

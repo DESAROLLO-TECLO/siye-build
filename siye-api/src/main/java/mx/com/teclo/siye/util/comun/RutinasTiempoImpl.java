@@ -611,11 +611,11 @@ public class RutinasTiempoImpl {
 		}
 		
 		if(diffHoras!=0) {
-			hr=diffHoras+" Horas";
+			hr=diffHoras+" Horas ";
 		}
 		
 		if(restominutos!=0) {
-			min =restominutos+" Minutos";
+			min =restominutos+" Minutos ";
 		}
 
 		devolver = String.valueOf(d+hr+min);
