@@ -74,5 +74,21 @@ function($http, config, $rootScope) {
             }
         });
     };
+    
+    this.getTransportistasVehiculo = function(id){
+        return $http.get(config.baseUrl + "/catalogo/getTransportistasVehiculo", {
+            params:{
+                "idVehiculo": id
+            }
+        });
+    }
+    
+    this.getTecnicos = function(id){
+        return $http.get(config.baseUrl + "/catalogo/getTecnicos", {
+            params:{
+                "idTipoPersona": id
+            }
+        });
+    }
 
 });

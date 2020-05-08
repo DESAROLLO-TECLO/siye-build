@@ -5,6 +5,7 @@ package mx.com.teclo.siye.negocio.service.async;
 
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -25,8 +26,9 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.LoteOrdenServicioDTO
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.vo.async.ArchivoLoteVO;
 import mx.com.teclo.siye.persistencia.vo.async.ConfigCargaMasivaVO;
-import mx.com.teclo.siye.persistencia.vo.async.InsercionTablaVO;
 import mx.com.teclo.siye.persistencia.vo.async.ConfigLayoutVO;
+import mx.com.teclo.siye.persistencia.vo.async.InsercionTablaVO;
+import mx.com.teclo.siye.util.comun.RutinasTiempoImpl;
 import mx.com.teclo.siye.util.enumerados.ArchivoSeguimientoEnum;
 
 @Service
@@ -60,6 +62,9 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 
 	@Autowired
 	private TipoLayoutDAO tipoLayoutDAO;
+	
+	@Autowired
+	private RutinasTiempoImpl rutinasTiempo;
 
 	@Override
 	@Transactional
@@ -189,5 +194,15 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 		return totalTablas == totalQueries;
 
 	}
+
+	@Override
+	@Transactional(readOnly = true)	
+	public List<ArchivoLoteVO> getFilesUploadToDay() {
+		Date dateCurrent=rutinasTiempo.getFechaActual();
+		Long idUserSession=1L;
+		return loteDAO.obtenerLotesPorFecha(idUserSession,dateCurrent);
+	}
+	
+	
 
 }

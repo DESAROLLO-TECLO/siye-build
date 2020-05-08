@@ -21,6 +21,7 @@ public class ConductorVO implements Serializable{
 	private String nbApematConductor;
 	private Boolean existia;
 	private Long stCondutor;
+    private Long idVehiculoConductor;
 	
 	public Integer getIdConductor() {
 		return idConductor;
@@ -58,5 +59,13 @@ public class ConductorVO implements Serializable{
 	public void setStCondutor(Long stCondutor) {
 		this.stCondutor = stCondutor;
 	}
+	public Long getIdVehiculoConductor() {
+		return idVehiculoConductor;
+	}
+	public void setIdVehiculoConductor(Long idVehiculoConductor) {
+		this.idVehiculoConductor = idVehiculoConductor;
+	}
+	
+	
 	
 }

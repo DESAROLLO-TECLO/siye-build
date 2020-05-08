@@ -81,6 +81,9 @@ public class EncuestaRestController {
 			encuestaIntentosVO.setUsuarioEncuesta(null);
 			encuestaIntentosVO.setEsProcesoExitoso(true);
 			encuestaService.actualizaOrdenServFhParcial(usuarioEncuestaIntentosVO.getIdUsuEncuIntento());
+			// guarda instalador, transportista y supervisor
+			if(usuarioEncuestaIntentosVO.getTransportista()!=null && usuarioEncuestaIntentosVO.getInstalador()!=null)
+			encuestaService.actualizaSuperTransInst(usuarioEncuestaIntentosVO.getTransportista(), usuarioEncuestaIntentosVO.getInstalador(), usuarioEncuestaIntentosVO.getIdUsuEncuIntento());
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 			encuestaIntentosVO=new UsuarioEncuestaIntentosVO();

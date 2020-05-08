@@ -1,120 +1,152 @@
 angular.module(appTeclo).controller("cargaArchivoLayoutController",
-function($rootScope,$scope,$window,$translate,$interval,$timeout,ModalService,showAlert,growl, $location, FileUploader, cargaArchivoLayoutService) {
+function($scope,$interval,$timeout,ModalService,showAlert,growl, $location, cargaArchivoLayoutService) {
 
-	
-	$scope.archivoVO = new Object({
-		listaArchivos: new Array()
+	const MESSAGES=new Object({
+		NOT_ADD_FILE:'No se ha seleccionado ningun archivo',
+		UPLOAD_FILE_SUCCESS:'Se crago el archivo correctamente',
+		UPLOAD_FILE_ERRROR:'No se pudo cargar el archivo seleccionado, vuelva a intetar'
 	});
 	
-	
-	$scope.procesaArchivo = function (voObject){
-		$scope.showTabla = true;
-		$scope.mostrarBtnPlan = true;
-		growl.info('La información se validó correctamente.', {title : 'Éxito', ttl:5000});
-	};	
-	
-	$scope.consultaFileVO = [];
-	var uploader = $scope.uploader = new FileUploader({
-		url: this
+	$scope.filesVO=new Object({
+		listFileUploaded : new Array(),
+		fileUpload: undefined,
+		selectListTimeRefresh : new Array(
+										  { "idTimeRefresh": 2, "nbTimeRefresh": ' 15 Seg ', "timeRefresh": .25 },
+										  { "idTimeRefresh": 3, "nbTimeRefresh": ' 30 Seg ', "timeRefresh": .5 }, 
+										  { "idTimeRefresh": 4, "nbTimeRefresh": '  1 Min ', "timeRefresh": 1 }, 
+										  { "idTimeRefresh": 5, "nbTimeRefresh": '  3 Min ', "timeRefresh": 3 }, 
+										  { "idTimeRefresh": 6, "nbTimeRefresh": '  5 Min ', "timeRefresh": 5 }),
+		selectTimeRefresh : undefined
 	});
 	
-	$scope.$watch("uploader.queue.length", function (newVal, olvVal) {
-		if (uploader.queue != undefined && uploader.queue.length > 0) {
-			let index = newVal - 1;
-			let adjuntar = {
-				nbArchivo: uploader.queue[index].file.name,
-				tamano: uploader.queue[index].file.size,
-				file: uploader.queue[index],
-				isNew: true
-			};
-			$scope.consultaFileVO.push(adjuntar);
-		}
-	});
-
-	// an async filter
-	uploader.filters.push({
-		name: 'asyncFilter',
-		fn: function (item /*{File|FileLikeObject}*/, options, deferred) {
-
-			setTimeout(deferred.resolve, 1);
-		}
+	$scope.mostrarTimeRefresh=false;
+	
+	$scope.view =new Object({
+		rowsPerPage:5,
+		filter:undefined
 	});
 	
+	// Iniciar el contador
+    $scope.mostrarTimeRefresh = false; // bandera para mostrar minutero o icono
+    var _TIEMPO_CONSULTA = 0; // intervalo de busqueda en min...
+    var _TIEMPO_COUNT = 0; // contador actual...
+    var _INTERVAL_CONSULTA; // variable de interval
 	
-	// cargar archivos
-	$scope.makeListPicture = (data, nombreArchivo, form, tipo) => {
-
 	
-
-			if (nombreArchivo != undefined) {
-				//	if (validaFormulario(form)) {
-				readFileAsDataURL(data.file._file);
-				$scope.cargarArchivo();
-				
-				//$scope.showConfirmacionCancelarArchivo("¿Desea guardar el archivo?", function () { $scope.cargarArchivo() });
-				//	}
-			} else {
-
-				for (let i = 0; i < data.length; i++) {
-					if (data[i].tipoDocumento != null) {
-						readFileAsDataURL(data[i].file._file);
-					}
-				}
-				 $scope.cargarArchivo()
-			  // $scope.showConfirmacionCancelarArchivo("¿Desea guardar los archivo?", function () { $scope.cargarArchivo() });
-			}
-
-			async function readFileAsDataURL(file) {
-				let result_base64 = await new Promise((resolve) => {
-					let fileReader = new FileReader();
-					fileReader.onload = (e) => resolve(fileReader.result);
-					fileReader.readAsArrayBuffer(file);
-				});
-				var byteArray = new Uint8Array(result_base64);
-				var array = Array.from(byteArray);
-
-				$scope.fileVO = {};
-			//	$scope.fileVO = new Object({ 'nbArchivo': file.name, 'cdExtension': file.type, 'lbArchivo': array });
-				$scope.fileVO = new Object({ 'file': array });
-				$scope.archivoVO.listaArchivos.push($scope.fileVO);
-			}
+	//Metodo que recibe los files desde el input file
+	$scope.getFilesFromInput=function(files){
+		$scope.filesVO.fileUpload=files[0];
+	};
 	
+	$scope.resetFile=function(){
+		$scope.filesVO.fileUpload=undefined;
+	};
+	
+	$scope.uploadFileService=function(form){
 		
-
+		if ($scope.filesVO.fileUpload == undefined || (form != undefined && form.$invalid)) {
+            
+			if(form != undefined && form.$invalid)
+				showAlert.requiredFields(form);
+            
+            growl.error(MESSAGES.NOT_ADD_FILE);
+            return;
+        }
+		
+		cargaArchivoLayoutService.uploadFile($scope.filesVO.fileUpload)
+		.success(function(response){
+			if($scope.filesVO.listFileUploaded.length == 0)
+				$scope.filesVO.listFileUploaded.push(response);
+			else
+				$scope.filesVO.listFileUploaded.unshift(response);
+			
+			$scope.resetFile();
+			growl.success(MESSAGES.UPLOAD_FILE_SUCCESS, { ttl: 4000 });
+   	 	}).error(function (error){
+   	 		showErrorMessage(error);
+   	 	});
+		
 	};
 	
-	$scope.cargarArchivo = function () {
-		cargaArchivoLayoutService.cargarArchivo($scope.archivoVO)
-			.success(function (data) {
-				$scope.error = false;
-				if (data) {
-					showAlert.aviso("Archivo correctamente cargado");
-					$scope.archivoVO = { listaArchivos: [] };
-					listaArchivoCargar =[];
-				}
-			}).error(function (data) {
-				$scope.showError("No se pudo cargar archivo");
-
-			});
+	//Retorna una lista de los archivos cargados del dia, y regresa su estatus actual
+	getListFilesUploadStatus=function(){
+		cargaArchivoLayoutService.getFilesUploadToDay()
+		.success(function(response){
+			$scope.filesVO.listFileUploaded=response;
+   	 	}).error(function (error){
+   	 		$scope.filesVO.listFileUploaded=new Array();
+   	 	});
 	};
 	
-	/* Modal Confirmacion */
-	$scope.showConfirmacionCancelarArchivo = function (messageTo, action) {
-		ModalService.showModal({
-			templateUrl: 'views/templatemodal/templateModalConfirmacion.html',
-			controller: 'mensajeModalController',
-			inputs: { message: messageTo }
-		}).then(function (modal) {
-			modal.element.modal();
-			modal.close.then(function (result) {
-				if (result) {
-					action();
-				} else {
-					$scope.archivoVO = { listaArchivos: [] };
-				}
-			});
-		});
+	//Procesa mensaje de Error
+	showErrorMessage=function(e){
+		if(e.status != undefined && Number.isInteger(e.status)){
+			
+			if(e.descripcion != undefined){
+	           	growl.error(e.descripcion,{ ttl: 4000 });
+	        }else if(e.message != undefined) {
+	           	growl.error(e.message,{ ttl: 4000 });
+	        }else if(typeof e.status === 'string'){
+	           	growl.error(e.status,{ ttl: 4000 });
+	        }else {
+	            showAlert.error('Falló la petición, por favor intente de nuevo');
+	        }
+			
+		}else if(e.status != undefined && typeof e.status === 'object'){
+			if(e.status.descripcion != undefined){
+            	growl.error(e.status.descripcion,{ ttl: 4000 });
+            }else if(e.status.message != undefined) {
+            	growl.error(e.status.message,{ ttl: 4000 });
+            }else if(typeof e.status === 'string'){
+            	growl.error(e.status,{ ttl: 4000 });
+            }else {showAlert.error('Falló la petición');} 
+		}else{
+			growl.error(e,{ ttl: 4000 });
+		 }
 	};
 	
+	// Cambios en el tiempo de refrescado
+    $scope.cambiaTiempo = function() {
+        cancelarBuscarPorIntervalo();
+        if ($scope.filesVO.selectTimeRefresh != null) {
+            _TIEMPO_CONSULTA = $scope.filesVO.selectTimeRefresh.timeRefresh;
+            iniciarConsultaPorIntervalo();
+            $timeout(function() { $scope.mostrarTimeRefresh = true; }, 1000);
+        } else {
+            _TIEMPO_CONSULTA = 0;
+            $scope.mostrarTimeRefresh = false;
+        }
+    };
+    
+    function cancelarBuscarPorIntervalo() {
+        if (angular.isDefined(_INTERVAL_CONSULTA)) {
+            $interval.cancel(_INTERVAL_CONSULTA);
+            _INTERVAL_CONSULTA = undefined;
+            $scope.mostrarTimeRefresh = false;
+        }
+    };
+    
+    function iniciarConsultaPorIntervalo() {
+        _TIEMPO_COUNT = _TIEMPO_CONSULTA * 60;
+        _INTERVAL_CONSULTA = $interval(function() {
+            var min = Math.floor(_TIEMPO_COUNT / 60);
+            var sec = Math.floor(_TIEMPO_COUNT % 60);
+            document.getElementById("select2-selectTimeRefresh-container").innerHTML = (min < 10 ? '0' + min : min) + " : " + (sec < 10 ? '0' + sec : sec);
+            if (--_TIEMPO_COUNT < 0) {
+                cancelarBuscarPorIntervalo();
+                document.getElementById("select2-selectTimeRefresh-container").innerHTML = "00:00";
+                getListFilesUploadStatus();
+                $scope.cambiaTiempo();
+            }
+        }, 1000);
+    };
+    
+    $scope.refrescar = function() {
+        cancelarBuscarPorIntervalo();
+        getListFilesUploadStatus();
+        $scope.cambiaTiempo();
+    };
+	
+	getListFilesUploadStatus();
 	
 });

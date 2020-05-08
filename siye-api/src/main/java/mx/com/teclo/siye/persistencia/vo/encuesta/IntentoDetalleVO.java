@@ -39,6 +39,14 @@ public class IntentoDetalleVO implements Serializable {
 	private OrdenEncuestaDTO usuarioEncuesta;
 	private List<UsuarioEncuestaRespuestaVO> resumenRespuesta;
 	private Integer nuMinConsumidos;
+	
+	//nuevos
+	private String transportista;
+	private Integer  idVehiculoCnductor; 
+	private String supervisor;
+	private Long idGerenteSupervisor;
+	private String tecnico;
+	private Integer idPersona;
 
 	/**
 	 * @return the idUsuEncuIntento
@@ -333,5 +341,54 @@ public class IntentoDetalleVO implements Serializable {
 	public void setNuMinConsumidos(Integer nuMinConsumidos) {
 		this.nuMinConsumidos = nuMinConsumidos;
 	}
+
+	public String getTransportista() {
+		return transportista;
+	}
+
+	public void setTransportista(String transportista) {
+		this.transportista = transportista;
+	}
+
+	public String getSupervisor() {
+		return supervisor;
+	}
+
+	public void setSupervisor(String supervisor) {
+		this.supervisor = supervisor;
+	}
+
+	public String getTecnico() {
+		return tecnico;
+	}
+
+	public void setTecnico(String tecnico) {
+		this.tecnico = tecnico;
+	}
+
+	public Integer getIdVehiculoCnductor() {
+		return idVehiculoCnductor;
+	}
+
+	public void setIdVehiculoCnductor(Integer idVehiculoCnductor) {
+		this.idVehiculoCnductor = idVehiculoCnductor;
+	}
+
+	public Long getIdGerenteSupervisor() {
+		return idGerenteSupervisor;
+	}
+
+	public void setIdGerenteSupervisor(Long idGerenteSupervisor) {
+		this.idGerenteSupervisor = idGerenteSupervisor;
+	}
+
+	public Integer getIdPersona() {
+		return idPersona;
+	}
+
+	public void setIdPersona(Integer idPersona) {
+		this.idPersona = idPersona;
+	}
+	
 
 }

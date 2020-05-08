@@ -14,11 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
+import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.CausasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.EstatusCalificacionDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.PersonaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.VehiculoConductorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestaDetalleDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.IERespCausaDAO;
@@ -29,6 +32,9 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.SeccionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaIntentoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaRespuestaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.IeStUsuEncuIntenDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.UsuarioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.StEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EstatusCalificacionDTO;
@@ -41,7 +47,10 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaDeta
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaIntentosDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuaroEncuestaRespuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuaroEncuestaRespuestaDTOPK;
+import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.IeStUsuEncuIntenDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.usuario.GerenteSupervisorDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.usuario.UsuarioDTO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.IntentoDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.OpcionVO;
@@ -108,6 +117,21 @@ public class EncuestaServiceImpl implements EncuestaService {
 	@Autowired
 	private IERespCausaDAO iERespCausaDAO;
 	
+	@Autowired
+	private GerenteSupervisorDAO gerenteSupervisorDAO;
+	
+	@Autowired
+	private VehiculoConductorDAO vehiculoConductorDAO;
+	
+	@Autowired
+	private PersonaDAO personaDAO;
+	
+	@Autowired
+	private IeStUsuEncuIntenDAO ieStUsuEncuIntenDAO;
+	
+	@Autowired
+	private UsuarioDAO usuarioDAO;
+	
 	@Override
 	@Transactional
 	public UsuarioEncuestaDetalleVO encuestaDetalle(Long idEncuesta,
@@ -135,6 +159,20 @@ public class EncuestaServiceImpl implements EncuestaService {
 				//se agrega fecha inicio, fecha fin
 				idVO.setFhInicio(ueiDTO.getFhInicio());
 				idVO.setFhFin(ueiDTO.getFhFin());
+				IeStUsuEncuIntenDTO ieStUsuEncuIntenDTO=ieStUsuEncuIntenDAO.getInfoByUsuEncInt(ueiDTO.getIdUsuEncuIntento());
+				if(ieStUsuEncuIntenDTO != null) {
+				idVO.setTransportista(ieStUsuEncuIntenDTO.getIdVehiculoConductor().getConductor().getNbConductor()+" "+ieStUsuEncuIntenDTO.getIdVehiculoConductor().getConductor().getNbApepatConductor()+" "+ieStUsuEncuIntenDTO.getIdVehiculoConductor().getConductor().getNbApematConductor());
+				idVO.setIdVehiculoCnductor(ieStUsuEncuIntenDTO.getIdVehiculoConductor().getConductor().getIdConductor());
+				idVO.setTecnico(ieStUsuEncuIntenDTO.getIdRHInstalador().getNbPersona()+" "+ieStUsuEncuIntenDTO.getIdRHInstalador().getNbPatPersona()+" "+ieStUsuEncuIntenDTO.getIdRHInstalador().getNbMatPersona());
+				idVO.setIdPersona(ieStUsuEncuIntenDTO.getIdRHInstalador().getIdPersona());
+				UsuarioDTO usuario = usuarioDAO.findUserById(ieStUsuEncuIntenDTO.getIdGerenteSuoervisor().getSupervisor(),"SIE");
+				if(usuario!=null) {
+				idVO.setSupervisor(usuario.getNbUsuario()+" "+usuario.getNbApaterno()+" "+usuario.getNbApaterno());	
+				idVO.setIdGerenteSupervisor(ieStUsuEncuIntenDTO.getIdGerenteSuoervisor().getIdGerenteSupervisor());
+				}
+
+				}
+				
 			}
 			List<UsuaroEncuestaRespuestaDTO> uerListDTO = usuarioEncuestaRespuestaDAO.repuestas(ueiDTO.getIdUsuEncuIntento());
 			List<UsuarioEncuestaRespuestaVO> uerListVO = detalleIntentoService.fitroUsuarioRespuesta(uerListDTO);
@@ -632,5 +670,25 @@ public class EncuestaServiceImpl implements EncuestaService {
 		OrdenServicioDTO ordenServicioDTO = null;
 		ordenServicioDTO = usuarioEncuestaIntentosDTO.getUsuarioEncuesta().getOrdenServicio();
 		ordenServicioDTO.setFhAtencionParcial(new Date());
-	}	
+	}
+	
+	@Override
+	@Transactional
+	public void actualizaSuperTransInst(Long idTransVehiculo, Integer idInstalador,Long idUsuEncuIntento) {
+		UsuarioFirmadoVO usuario = userSession.getUsuarioFirmadoVO();
+		GerenteSupervisorDTO gerenteSupervisorDTO = gerenteSupervisorDAO.consultaGerenteSupervisorBySupervisor(usuario.getId());
+		IeStUsuEncuIntenDTO newInstalador=new IeStUsuEncuIntenDTO();
+		newInstalador.setIdUsuEncuIntento(usuarioEncuestaIntentoDAO.findOne(idUsuEncuIntento));
+		newInstalador.setIdStEncuesta(newInstalador.getIdUsuEncuIntento().getStEncuesta());
+		newInstalador.setIdGerenteSuoervisor(gerenteSupervisorDAO.findOne(gerenteSupervisorDTO.getIdGerenteSupervisor()));
+		newInstalador.setIdVehiculoConductor(vehiculoConductorDAO.findOne(idTransVehiculo));
+		newInstalador.setIdRHInstalador(personaDAO.findOne(idInstalador));
+		newInstalador.setStActivo(true);
+		newInstalador.setIdUsrCreacion(usuario.getId());
+		newInstalador.setFhCreacion(new Date());
+		newInstalador.setIdUsrModifica(usuario.getId());
+		newInstalador.setFhModificacion(new Date());
+		ieStUsuEncuIntenDAO.save(newInstalador);
+	}
+	
 }

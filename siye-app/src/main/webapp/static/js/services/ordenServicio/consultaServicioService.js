@@ -71,4 +71,12 @@ angular.module(appTeclo).service('consultaServicioService', function($http, conf
             a.click();
         }, 100);
     }
+    
+    this.getTransportistasVehiculo = function(id){
+        return $http.get(config.baseUrl + "/catalogo/getTransportistasVehiculo", {
+            params:{
+                "idVehiculo": id
+            }
+        });
+    }
 });
