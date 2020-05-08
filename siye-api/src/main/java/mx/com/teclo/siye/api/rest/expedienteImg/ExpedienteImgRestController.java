@@ -219,7 +219,7 @@ public class ExpedienteImgRestController {
 					infoEvidenciaPregunta.setNbInstalador(encuesta.getInfoEvidencia().getNbInstalador()!=null?encuesta.getInfoEvidencia().getNbInstalador():new ArrayList<String>());
 					infoEvidenciaPregunta.setNbTrasportista(encuesta.getInfoEvidencia().getNbTrasportista()!=null?encuesta.getInfoEvidencia().getNbTrasportista():new ArrayList<String>());
 					infoEvidenciaPregunta.setTieneImagen(imgPREG.size()>0 ? 1 : 0);
-					encuesta.setInfoEvidencia(infoEvidenciaPregunta);
+					pregunta.setInfoEvidencia(infoEvidenciaPregunta);
 				}
 				if(encuesta.getInfoEvidencia().getNbTrasportista().size()>0)
 				transportistasProceso.add(encuesta.getInfoEvidencia().getNbTrasportista().get(0));
