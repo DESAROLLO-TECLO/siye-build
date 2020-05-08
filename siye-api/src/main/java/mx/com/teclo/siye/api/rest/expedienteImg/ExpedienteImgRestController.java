@@ -221,11 +221,11 @@ public class ExpedienteImgRestController {
 					infoEvidenciaPregunta.setTieneImagen(imgPREG.size()>0 ? 1 : 0);
 					pregunta.setInfoEvidencia(infoEvidenciaPregunta);
 				}
-				if(encuesta.getInfoEvidencia().getNbTrasportista().size()>0)
+				if(encuesta.getInfoEvidencia().getNbTrasportista()!=null)
 				transportistasProceso.add(encuesta.getInfoEvidencia().getNbTrasportista().get(0));
-				if(encuesta.getInfoEvidencia().getNbInstalador().size()>0)
+				if(encuesta.getInfoEvidencia().getNbInstalador()!=null)
 				instaladorProceso.add(encuesta.getInfoEvidencia().getNbInstalador().get(0));
-				if(encuesta.getInfoEvidencia().getNbSupervisor().size()>0)
+				if(encuesta.getInfoEvidencia().getNbSupervisor()!=null)
 				supervisorProceso.add(encuesta.getInfoEvidencia().getNbSupervisor().get(0));
 
 			}
@@ -274,19 +274,19 @@ public class ExpedienteImgRestController {
 			
 			proceso.setInfoEvidencia(infoEvidenciaProceso);
 			
-			if(proceso.getInfoEvidencia().getNbTrasportista().size()>0)
+			if(proceso.getInfoEvidencia().getNbTrasportista()!=null)
 				for(String transportista:proceso.getInfoEvidencia().getNbTrasportista())
 				{
 				transportistasOrden.add(transportista);
 				}
 			
-			if(proceso.getInfoEvidencia().getNbInstalador().size()>0)
+			if(proceso.getInfoEvidencia().getNbInstalador()!=null)
 				for(String instalador:proceso.getInfoEvidencia().getNbInstalador())
 				{
 					instaladorOrden.add(instalador);
 				}
 			
-			if(proceso.getInfoEvidencia().getNbSupervisor().size()>0)
+			if(proceso.getInfoEvidencia().getNbSupervisor()!=null)
 				for(String supervisor:proceso.getInfoEvidencia().getNbSupervisor())
 				{
 					supervisorOrden.add(supervisor);
