@@ -140,7 +140,7 @@ public class ExpedienteImgRestController {
 	public ResponseEntity<CargaExpedienteImgVO> getImgExpedienteNivel(
 			@RequestParam(value ="tipoBusqueda") String tipoBusqueda,
 			@RequestParam(value ="valor") String valor) throws NotFoundException{
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy HH:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		List <String> transportistasOrden=new ArrayList<String>();
 		List <String> instaladorOrden=new ArrayList<String>();
 		List <String> supervisorOrden=new ArrayList<String>();
