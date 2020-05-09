@@ -89,8 +89,7 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 			CentroInstalacion = ordenServicioDAO.getInfoSeguimientoGeneral(consulta, idCentroInstalacion, columnas);
 			if (!CentroInstalacion.isEmpty()) {
 				for (SeguimientoOrdenServicioVO ci : CentroInstalacion) {
-					List<OrdenServcioDetalleVO> detalleOS = ordenServicioDAO.getDetalleOS(ci.getIdCentroInstalacion(),
-							fInicio, fFin);
+					List<OrdenServcioDetalleVO> detalleOS = ordenServicioDAO.getDetalleOS(ci.getIdCentroInstalacion(), fInicio, fFin);
 					if (!detalleOS.isEmpty()) {
 						ci.setDetalleOrdenServicio(detalleOS);
 					}

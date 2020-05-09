@@ -17,21 +17,23 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
         var disY = 550;
         //se obtiene una referencio del elemento del dom con id  mynetwork
         var container = document.getElementById('mynetwork');
+        var infoNetwork = document.getElementById('infoNetwork');
+
         var nodes, edges;
         var nodeInfo, edgeInfo;
 
         // Var datos desde el back
         $scope.ordenServicioVO = new Object({
-            verProcesos:true,
-            verDetalle:false,
-            detalle:[],
-            proceso:[],
-            etapasVO:[]
+            verProcesos: true,
+            verDetalle: false,
+            detalle: [],
+            proceso: [],
+            etapasVO: []
         });
 
         $scope.opciones = new Object({
-            verNodos:true,
-            verLinea:false
+            verNodos: true,
+            verLinea: false
         });
 
         getDetalleOrdenServicio = function () {
@@ -39,10 +41,11 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                 debugger
                 $scope.ordenServicioVO.proceso = detalleSeguimientoOsService.getconsultaGeneral();
                 $scope.ordenServicioVO.detalle = lineaTiempoVO.data;
-                if(lineaTiempoVO.data.procesos!=null){
+                if (lineaTiempoVO.data.procesos != null) {
                     initController();
-                }else{
-                    growl.info("No tiene Procesos Asignados ", {ttl: 5000});
+                    crearInfoNetwork($scope.ordenServicioVO.detalle.estiloNodos);
+                } else {
+                    growl.info("No tiene Procesos Asignados ", { ttl: 5000 });
                     $location.path('/seguimientoOS');
                 }
             } else {
@@ -51,15 +54,16 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             }
         };
 
-        $scope.regresar = function(){
-            if($scope.ordenServicioVO.verProcesos){
+
+        $scope.regresar = function () {
+            if ($scope.ordenServicioVO.verProcesos) {
                 //Regresar consulta gral
                 $location.path('/seguimientoOS');
-            }else{
+            } else {
                 $scope.ordenServicioVO.verProcesos = true;
                 $scope.ordenServicioVO.verDetalle = false;
                 $scope.opciones.verNodos = true;
-                $scope.opciones.verLinea= false;
+                $scope.opciones.verLinea = false;
             }
         };
 
@@ -94,32 +98,32 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                 color: { border: proceso.cdRgb, highlight: { border: proceso.cdRgb } },
                 font: { vadjust: 10 }
             });
-            coordY =0;
-            
-            if(proceso.encuestas !=null){
-                let nodoshijos =  proceso.idProceso;
-                for(let x=0; x<proceso.encuestas.length; x++){
+            coordY = 0;
+
+            if (proceso.encuestas != null) {
+                let nodoshijos = proceso.idProceso;
+                for (let x = 0; x < proceso.encuestas.length; x++) {
                     // crear nodo encuesta 
                     nodes.add({
                         id: proceso.encuestas[x].cdEncuesta,
                         shape: 'circularImage',
                         image: 'data:image/png;base64,' + proceso.lbImagen,
                         x: coordX,
-                        y: coordY+=95,
+                        y: coordY += 100,
                         label: proceso.encuestas[x].nbEncuesta,
                         color: { border: proceso.encuestas[x].nbColor, highlight: { border: proceso.encuestas[x].nbColor } },
                         font: { vadjust: 5 }
                     });
                     // agregar nodo encuesta 
-                    edges.add({ from:nodoshijos, to: proceso.encuestas[x].cdEncuesta, arrows: 'to' });
+                    edges.add({ from: nodoshijos, to: proceso.encuestas[x].cdEncuesta, arrows: 'to' });
                     nodoshijos = proceso.encuestas[x].cdEncuesta;
                 }
             }
 
-            if (from != null && padre>1)
-                edges.add({ from: from, to: proceso.idProceso, arrows: 'to' });      
-            
-                from = proceso.idProceso;
+            if (from != null && padre > 1)
+                edges.add({ from: from, to: proceso.idProceso, arrows: 'to' });
+
+            from = proceso.idProceso;
 
             coordX += disX;
             if (nodes.length % nodosPorFila == 0) {
@@ -146,7 +150,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             from = null;
             angular.forEach(procesos, function (value, key) {
                 crearNodo(value, padre);
-                padre+=1;
+                padre += 1;
             });
         };
 
@@ -157,6 +161,21 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             };
             $scope.net.fit({ animation: options });
         };
+
+        /* funcion para crear nodos en el diagrama informativo */
+        crearInfoNetwork = function (valor) {
+            var x = 0;
+            var y = 0;
+            var optionsAnimation = {
+                duration: 100, easingFunction: 'linear'
+            };
+            debugger
+            angular.forEach(valor, function (value, key) {
+                nodeInfo.add({ id: value.nbStatus, x: x, y: y, label: value.nbStatus, color: { border: value.nbColor } });
+                x += 200;
+            });
+            $scope.infoNet.fit({ animation: optionsAnimation });
+        }
 
         initController = function () {            /* Inicializamos con valores generales para el diagrama principal */
             nodes = new vis.DataSet();
@@ -185,25 +204,46 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             };
             $scope.net = new vis.Network(container, data, options);
             fitAnimated();
-        }
-        
-        // Guardar imagen 
-        $scope.downLoadTimeLine=function(){
-            $scope.flagDownload=true;
-            scrollDetailDestroy()
-             $timeout(function() {
-                html2canvas(document.querySelector("#imgLineTiempo")).then(canvas => {
-                     var dataURL = canvas.toDataURL();
-                     $scope.imgCapture=dataURL;
-                     var file=dataURL.split(",");
-                     $scope.archivo=$scope.b64toBlob(file[1],"image/png"); 
-                     save( $scope.archivo,"image/png");
-                });
-             },15); 
+
+            debugger
+            // nodos de informacion 
+            nodeInfo = new vis.DataSet();
+            edgeInfo = new vis.DataSet();
+
+            var dataInfo = {
+                nodes: nodeInfo,
+                edges: edgeInfo
+            };
+            var optionsInfo = {
+                physics: { enabled: false },
+                nodes: {
+                    borderWidth: 3, size: 15, shape: 'dot', color: { background: '#dae3e4' },
+                    font: { color: '#444', size: pxDf, face: fontFamily, background: 'none', strokeWidth: 0, strokeColor: '#444', align: 'center' }
+                },
+                edges: {},
+                interaction: { dragNodes: false, dragView: false, hover: false, zoomView: false, selectable: false, tooltipDelay: 100 }
+                //			        interaction:{dragNodes:false, dragView: false, hover:false, zoomView:false, tooltipDelay:100}
+            };
+            $scope.infoNet = new vis.Network(infoNetwork, dataInfo, optionsInfo);
         };
 
-        save=function(file, fileName) {
-            $scope.flagDownload=false;
+        // Guardar imagen 
+        $scope.downLoadTimeLine = function () {
+            $scope.flagDownload = true;
+            scrollDetailDestroy()
+            $timeout(function () {
+                html2canvas(document.querySelector("#imgLineTiempo")).then(canvas => {
+                    var dataURL = canvas.toDataURL();
+                    $scope.imgCapture = dataURL;
+                    var file = dataURL.split(",");
+                    $scope.archivo = $scope.b64toBlob(file[1], "image/png");
+                    save($scope.archivo, "image/png");
+                });
+            }, 15);
+        };
+
+        save = function (file, fileName) {
+            $scope.flagDownload = false;
             scrollDetail()
             var url = window.URL || window.webkitURL;
             var blobUrl = url.createObjectURL(file);
@@ -215,103 +255,103 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             a.click();
         }
 
-        getLineaTiempo = function(os, procesos){
-            detalleSeguimientoOsService.getDetalleProcesoEspecifico(os, procesos).success(function(data){
+        getLineaTiempo = function (os, procesos) {
+            detalleSeguimientoOsService.getDetalleProcesoEspecifico(os, procesos).success(function (data) {
                 $scope.ordenServicioVO.etapasVO = data;
                 $scope.ordenServicioVO.verProcesos = false;
                 $scope.ordenServicioVO.verDetalle = true;
                 $scope.opciones.verNodos = false;
-                $scope.opciones.verLinea= true;
-            }).error(function(data){
+                $scope.opciones.verLinea = true;
+            }).error(function (data) {
                 growl.error(data.message);
             })
         };
 
-        $scope.verModalEvidencias = function(nivel,opciones){
+        $scope.verModalEvidencias = function (nivel, opciones) {
             debugger
-            let verModal= false;
+            let verModal = false;
             let parametros = new Object({
                 idOrdenServicio: $scope.ordenServicioVO.detalle.idOrdenServicio,
                 valor: null,
                 nivel: nivel,
                 clase: "sin clase",
-                data:[]
+                data: []
             });
 
-            if(nivel==='pregunta'){
+            if (nivel === 'pregunta') {
                 parametros.valor = opciones.idEncuesta;
                 parametros.nbEncuesta = opciones.nbEncuesta;
-            }else if(nivel==='encuesta'){
+            } else if (nivel === 'encuesta') {
                 parametros.valor = opciones.idEncuesta;
                 parametros.infoEncuesta = opciones;
-            }else if(nivel==='ordenservicio'){
+            } else if (nivel === 'ordenservicio') {
                 parametros.valor = $scope.ordenServicioVO.detalle.idOrdenServicio;
                 parametros.infoOS = opciones;
             }
 
-            detalleSeguimientoOsService.getSeguimientoImagen(parametros).success(function(data){
-                let mensaje = "",tipo='info';
-                switch(nivel){
+            detalleSeguimientoOsService.getSeguimientoImagen(parametros).success(function (data) {
+                let mensaje = "", tipo = 'info';
+                switch (nivel) {
                     case 'pregunta':
-                        if(data.nivelPreguntas!=null && data.nivelPreguntas.length>0){
-                           verModal=true;
-                        }else{
-                            mensaje="No tiene información para mostrar";
-                            tipo='error';
-                        } 
-                    break;
+                        if (data.nivelPreguntas != null && data.nivelPreguntas.length > 0) {
+                            verModal = true;
+                        } else {
+                            mensaje = "No tiene información para mostrar";
+                            tipo = 'error';
+                        }
+                        break;
 
                     case 'encuesta':
-                        if(data.nivelEncuesta.length>0){
-                            verModal=true;
-                        }else{
-                            mensaje="No tiene Imagenes para mostrar";
+                        if (data.nivelEncuesta.length > 0) {
+                            verModal = true;
+                        } else {
+                            mensaje = "No tiene Imagenes para mostrar";
                         }
-                    break;
+                        break;
 
                     case 'ordenservicio':
-                        if(data.nivelOrdenServicio.length>0){
-                            verModal=true;
-                        }else{
-                            mensaje="No tiene Imagenes que mostrar a nivel Orden de Servicio";
+                        if (data.nivelOrdenServicio.length > 0) {
+                            verModal = true;
+                        } else {
+                            mensaje = "No tiene Imagenes que mostrar a nivel Orden de Servicio";
                         }
-                    break;
+                        break;
 
                     default:
                         growl.error("Nivel invalido");
                 }
 
-                if(verModal){
-                    parametros.data=data;
+                if (verModal) {
+                    parametros.data = data;
                     verModalDetalle(parametros);
-                }else{
-                    if(tipo==='error'){
+                } else {
+                    if (tipo === 'error') {
                         growl.error(mensaje);
-                    }else{
+                    } else {
                         growl.info(mensaje);
-                    } 
+                    }
                 }
-            }).error(function(data){
+            }).error(function (data) {
                 growl.error(data.message);
             });
         };
 
-        verModalDetalle = function(elementos){
+        verModalDetalle = function (elementos) {
             ModalService.showModal({
                 templateUrl: 'views/templatemodal/templateModalEvidenciasPorNivel.html',
                 controller: 'modalSeguimientoNivelController',
                 scope: $scope,
-                inputs: {modalVO :elementos}
-            }).then(function(modal) {
+                inputs: { modalVO: elementos }
+            }).then(function (modal) {
                 modal.element.modal();
             });
         };
 
-        $scope.changeViewTab = function(tipo){
-            switch(tipo){
+        $scope.changeViewTab = function (tipo) {
+            switch (tipo) {
                 case 'nodo':
                     $scope.opciones.verNodos = true;
-                    $scope.opciones.verLinea= false;
+                    $scope.opciones.verLinea = false;
                     $scope.ordenServicioVO.verProcesos = true;
                     $scope.ordenServicioVO.verDetalle = false;
                     break;
@@ -319,7 +359,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                 case 'linea':
                     let opciones = $scope.ordenServicioVO.detalle.procesos.length;
                     let proceso = [];
-                    for(let x=0; x<opciones; x++){
+                    for (let x = 0; x < opciones; x++) {
                         proceso.push($scope.ordenServicioVO.detalle.procesos[x].idProceso);
                     }
                     getLineaTiempo($scope.ordenServicioVO.proceso.dtOs.idOrdenServicio, proceso)
