@@ -24,6 +24,19 @@ public class OrdenProcesoDAOImpl extends BaseDaoHibernate<OrdenProcesoDTO>
 		c.add(Restrictions.eq("stActivo", true));
 		return (List<OrdenProcesoDTO>) c.list();
 	}
+	
+
+	@Override
+	public OrdenProcesoDTO getProceso(Long idOrden,Long idProceso)
+	{
+		Criteria c = getCurrentSession().createCriteria(OrdenProcesoDTO.class);
+		c.createAlias("ordenServicio", "orden");
+		c.createAlias("proceso", "proceso");
+		c.add(Restrictions.eq("orden.idOrdenServicio", idOrden));
+		c.add(Restrictions.eq("proceso.idProceso", idProceso));
+		c.add(Restrictions.eq("stActivo", true));
+		return (OrdenProcesoDTO) c.uniqueResult();
+	}
 
 
 

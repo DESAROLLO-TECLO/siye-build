@@ -17,10 +17,13 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.EncuestaDetaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EstiloNodosVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
 
 @Repository
 public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO> implements ProcesoEncuestaDAO {
+	
+	private static Long SIN_INICIAR =3L;
 	
 	
 	@SuppressWarnings("unchecked")
@@ -37,10 +40,10 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ExpedienteNivelEncuestaVO> getEncuestasByProcesoVO(Long idProceso) {
-		StringBuilder consulta = new StringBuilder("SELECT encuesta.ID_ENCUESTA  AS idEncuesta, encuesta.NB_ENCUESTA_ORIGEN AS cdEncuesta, encuesta.NU_MAX_IMAGENES AS nuMaxImg " + 
+		StringBuilder consulta = new StringBuilder("SELECT encuesta.ID_ENCUESTA  AS idEncuesta, encuesta.NB_ENCUESTA AS cdEncuesta, encuesta.NU_MAX_IMAGENES AS nuMaxImg " + 
 				"FROM TIE037D_IE_PROCESO_ENCUESTA pE" + 
 				" INNER JOIN TIE001D_EE_ENCUESTAS encuesta ON (pE.ID_ENCUESTA = encuesta.ID_ENCUESTA)" + 
-				"  WHERE encuesta.ST_ACTIVO = 1 AND pE.ID_PROCESO ="+idProceso +"ORDER BY encuesta.NU_ORDEN ASC");
+				"  WHERE encuesta.ST_ACTIVO = 1 AND pE.ID_PROCESO ="+idProceso +"ORDER BY pE.NU_ORDEN ASC");
 		List<ExpedienteNivelEncuestaVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idEncuesta",LongType.INSTANCE)
 				.addScalar("cdEncuesta",StringType.INSTANCE)
@@ -66,7 +69,7 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<EncuestaDetalleVO> getDetalleEncuesta(Long idOrdenServicio, List<Long> idProceso) {
+	public List<EncuestaDetalleVO> getDetalleEncuesta(Long idOrdenServicio, Long idProceso) {
 		StringBuilder consulta = new StringBuilder("SELECT tdipe.ID_ENCUESTA  AS idEncuesta, encuesta.NB_ENCUESTA AS nbEncuesta," 
 	            +"TO_CHAR(tdeuei.FH_INICIO,'DD/MM/YYYY HH24:MI') AS fhInicio," 
 	            +"TO_CHAR(tdeuei.FH_FIN,'DD/MM/YYYY HH24:MI') AS fhFin,"
@@ -82,8 +85,8 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				+"    INNER JOIN TIE002D_EE_ODS_ENCUESTA tdeoe ON (encuesta.ID_ENCUESTA = tdeoe.ID_ENCUESTA)" 
 				+"    INNER JOIN TIE006D_EE_USU_ENCU_INTEN tdeuei ON (tdeoe.ID_ODS_ENCUESTA  = tdeuei.ID_ODS_ENCUESTA)"
 				+"    INNER JOIN TIE018C_EE_ST_ENCUESTAS st ON (tdeuei.ID_ST_CALIFICACION = st.ID_ST_ENCUESTA)"
-				+" WHERE tdipe.ST_ACTIVO =1 AND encuesta.ST_ACTIVO =1 AND tdipe.ID_PROCESO IN (:idProceso) AND tdeoe.ID_ORDEN_SERVICIO=:idOrdenServicio" 
-				+"  AND  tdeuei.FH_INICIO IS NOT NULL   ORDER BY tdipe.ID_ENCUESTA ");
+				+" WHERE tdipe.ST_ACTIVO =1 AND encuesta.ST_ACTIVO =1 AND tdipe.ID_PROCESO =:idProceso AND tdeoe.ID_ORDEN_SERVICIO=:idOrdenServicio" 
+				+"  AND st.ID_ST_ENCUESTA<>:estatus  ORDER BY tdipe.ID_ENCUESTA ");
 		List<EncuestaDetalleVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idEncuesta",LongType.INSTANCE)
 				.addScalar("nbEncuesta",StringType.INSTANCE)
@@ -96,7 +99,8 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				.addScalar("nbColor",StringType.INSTANCE)
 				.addScalar("nuPorcentaje",StringType.INSTANCE)
 				.setParameter("idOrdenServicio", idOrdenServicio)
-				.setParameterList("idProceso", idProceso)
+				.setParameter("idProceso", idProceso)
+				.setParameter("estatus", SIN_INICIAR)
 				.setResultTransformer(Transformers.aliasToBean(EncuestaDetalleVO.class)).list();
 		return respuesta;
 	}
@@ -170,6 +174,23 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				.setParameter("idOrdenServicio", idOrdenServicio)
 				.setParameter("idProceso", idProceso)
 				.setResultTransformer(Transformers.aliasToBean(EncuestaDetalleVO.class)).list();
+		return respuesta;
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<EstiloNodosVO> getSignificadoColorNodos() {
+		StringBuilder consulta = new StringBuilder("SELECT "
+				+"NB_ST_ENCUESTA AS nbStatus,"
+				+"CD_COLOR AS nbColor,"
+				+"NU_ORDEN AS nuOrden" 
+				+"  FROM TIE018C_EE_ST_ENCUESTAS   " 
+				+"WHERE ST_ACTIVO =1 ORDER BY NU_ORDEN ASC");
+		List<EstiloNodosVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
+				.addScalar("nbStatus",StringType.INSTANCE)
+				.addScalar("nbColor", StringType.INSTANCE)
+				.addScalar("nuOrden", LongType.INSTANCE)
+				.setResultTransformer(Transformers.aliasToBean(EstiloNodosVO.class)).list();
 		return respuesta;
 	}
 

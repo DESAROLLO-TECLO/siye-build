@@ -3,10 +3,15 @@
  */
 package mx.com.teclo.siye.negocio.service.async;
 
+import java.io.IOException;
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
+import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.persistencia.vo.async.ArchivoLoteVO;
+import mx.com.teclo.siye.persistencia.vo.async.ResponseDowloadFileVO;
 import mx.com.teclo.siye.util.enumerados.ArchivoSeguimientoEnum;
 
 /**
@@ -69,5 +74,17 @@ public interface AsyncArchivoLoteService {
 	 */
 	Long crearLote(String nombreFinal, String error) ;
 	
+	/**
+	 * @Descripcion: Obtiene los archivos cargados por dia del usuario en sesión
+	 * @author DanielUnitis
+	 * @return List<ArchivoLoteVO>
+	 */
+	List<ArchivoLoteVO> getFilesUploadToDay();
 	
+	/**
+	 * @Descripcion regresa el arreglo de byte para descragar el archivo del lote por id
+	 * @param idLote
+	 * @return  ResponseDowloadFileVO
+	 */
+	ResponseDowloadFileVO dowloaderFileByIdLote(Long idLote) throws NotFoundException,IOException,BusinessException;
 }

@@ -3,8 +3,14 @@
  */
 package mx.com.teclo.siye.negocio.service.async;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +23,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Path;
+
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
+import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.siye.persistencia.hibernate.dao.async.TipoLayoutDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.LoteOrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
@@ -25,9 +34,12 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.LoteOrdenServicioDTO
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.vo.async.ArchivoLoteVO;
 import mx.com.teclo.siye.persistencia.vo.async.ConfigCargaMasivaVO;
-import mx.com.teclo.siye.persistencia.vo.async.InsercionTablaVO;
 import mx.com.teclo.siye.persistencia.vo.async.ConfigLayoutVO;
+import mx.com.teclo.siye.persistencia.vo.async.InsercionTablaVO;
+import mx.com.teclo.siye.persistencia.vo.async.ResponseDowloadFileVO;
+import mx.com.teclo.siye.util.comun.RutinasTiempoImpl;
 import mx.com.teclo.siye.util.enumerados.ArchivoSeguimientoEnum;
+import mx.com.teclo.siye.util.enumerados.TipoDirectorioStorageEnum;
 
 @Service
 public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
@@ -60,6 +72,9 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 
 	@Autowired
 	private TipoLayoutDAO tipoLayoutDAO;
+	
+	@Autowired
+	private RutinasTiempoImpl rutinasTiempo;
 
 	@Override
 	@Transactional
@@ -190,4 +205,46 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 
 	}
 
+	@Override
+	@Transactional(readOnly = true)	
+	public List<ArchivoLoteVO> getFilesUploadToDay() {
+		Date dateCurrent=rutinasTiempo.getFechaActual();
+		Long idUserSession=1L;
+		return loteDAO.obtenerLotesPorFecha(idUserSession,dateCurrent);
+	}
+	
+	@SuppressWarnings("resource")
+	@Override
+	@Transactional(readOnly = true)
+	public ResponseDowloadFileVO dowloaderFileByIdLote(Long idLote) throws NotFoundException, IOException, BusinessException{
+		ArchivoLoteVO lote=loteDAO.obtenerLote(idLote);
+		
+		if(lote == null || lote.getNbLoteOds() == null)
+			throw new NotFoundException("No se encontro el archivo para su descarga");
+		
+		Path path=storageService.getRutaAlmacenamiento(TipoDirectorioStorageEnum.OUTPUT);
+		String rutaFile=path.toString();
+		
+		File f = new File(rutaFile,lote.getNbArchivoFinal());
+		if(!f.exists() || !f.canRead())
+			throw new NotFoundException("No se encontro el archivo para su descarga");
+			
+	        FileInputStream fis = new FileInputStream(f);
+	       
+	        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	        byte[] buf = new byte[1024];
+	        try {
+	            for (int readNum; (readNum = fis.read(buf)) != -1;) {
+	                bos.write(buf, 0, readNum); //no doubt here is 0
+	            }
+	        } catch (IOException ex) {
+	        	throw new NotFoundException("No se encontro el archivo para su descarga");
+	        }
+		 
+		 ResponseDowloadFileVO respDowFileVO=new ResponseDowloadFileVO();
+		 respDowFileVO.setArrayFile(bos.toByteArray());
+		 respDowFileVO.setNameFile(lote.getNbArchivoFinal());
+		return respDowFileVO;
+	}
+	
 }

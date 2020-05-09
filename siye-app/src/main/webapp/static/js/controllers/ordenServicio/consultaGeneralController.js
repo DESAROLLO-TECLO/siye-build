@@ -384,6 +384,8 @@ function($scope, showAlert, $location, growl, consultaGeneralService,encuestaSer
 	{
 		deDetalle=false;
 		$scope.listOrden=[];
+		if(consultaGeneralService.parametrosBusquedaAnterior)
+			{
 		consultaGeneralService.busquedaTramitesParametros(consultaGeneralService.parametrosBusquedaAnterior).success(function(data) {
 		if(data.length >= $scope.cantidadRegistrosMostrar){
 			growl.info("Su consulta supera los "+$scope.cantidadRegistrosMostrar+" registros. En caso de requerir el reporte completo, solicítelo a soporte.", 'templateModalAviso');
@@ -410,6 +412,24 @@ function($scope, showAlert, $location, growl, consultaGeneralService,encuestaSer
 		growl.warning(data.message);
 		$scope.mostrarTabla=false;
 	});
+			}else
+				{
+			    $scope.listOrden = [];
+			    $scope.mostrarTabla=false;
+				consultaGeneralService.cargarTramitesDia().success(function(data) {
+					if(data.length >= $scope.cantidadRegistrosMostrar){
+						growl.info("Su consulta supera los "+$scope.cantidadRegistrosMostrar+" registros. En caso de requerir el reporte completo, solicítelo a soporte.", 'templateModalAviso');
+					}
+					$scope.listOrden = data;
+					$scope.mostrarTabla=true;
+					
+			}).error(function(data){
+				$scope.listOrden = [];
+				growl.warning(data.message);
+				$scope.mostrarTabla=false;
+			});
+				
+				}
 	}
 
 

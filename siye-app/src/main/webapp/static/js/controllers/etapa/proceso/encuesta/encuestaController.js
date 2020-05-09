@@ -14,6 +14,7 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     $scope.idEnc = encuestaInfo.data.encuesta.idEncuesta;
     $scope.formato = '0';
     $scope.tiempoTranscurridoEncuesta = 0;
+    $scope.supervisoInvolucrado=encuestaInfo.data.intentoDetalleVO.supervisor!=null?encuestaInfo.data.intentoDetalleVO.supervisor:"";
     var iniciarConteo = undefined;
     
  
@@ -98,7 +99,9 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
             nuPreguntas: null,
             nuPreguntasCorrectas: null,
             nuPreguntasIncorr: null,
-            nuPreguntasNoRespondidas: null
+            nuPreguntasNoRespondidas: null,
+            transportista:undefined,
+            instalador:undefined
         };
 	
 
@@ -235,7 +238,6 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
                 causas: undefined,
                 descripcionCausa:undefined
             });
-
             objectEncuesta.idPregunta = listPreguntaSeccion[i].idPregunta;
             for (let j in listPreguntaSeccion[i].opciones) {
                 if (listPreguntaSeccion[i].opciones[j].stMarcado === 1) {
@@ -281,10 +283,18 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     };
     
 	$scope.guardaFinalizaEncuesta=function(numPagina){
+		if($scope.transEInstalador.$invalid){
+			requiredFields()
+		}
+		else
+			{
+			
+			
 		$scope.guardaAvancePorPagina(numPagina);
 		//$timeout(() => {
 			$scope.finalizaEncuesta();
 	   //}, 500);
+			}
 	};
 
 
@@ -411,6 +421,8 @@ $scope.finalizaEncuesta = function(tiempo) {
 };
 
 $scope.testConfirmacion = function(object) {
+	$scope.detalleFinalEncuesta.transportista=$scope.transEInstalador.transp.$viewValue.idVehiculoConductor;
+	$scope.detalleFinalEncuesta.instalador=$scope.transEInstalador.inst.$viewValue.idPersona;	
     encuestaService.finalizaEncuesta($scope.detalleFinalEncuesta).success(function(data) {
         if (data != null) {
         	$scope.flagTimer = false;
@@ -614,10 +626,10 @@ validarGuardadoDeCausas=function()
 };
 
 $scope.pausarEncuesta = function(nuPagina, tiempo) {
-    //$scope.saveTiempo(tiempo)
-    $scope.redireccionar = true;
-    showAlert.confirmacion("¿Desea guardar la evaluación?", $scope.guardaAvancePorPagina, nuPagina, $scope.testCancelConfirmacion2);
-
+	$scope.redireccionar = true;
+	showAlert.confirmacion("¿Desea guardar la evaluación?", $scope.guardaAvancePorPagina, nuPagina, $scope.testCancelConfirmacion2);
+	
+    
 };
 
 $scope.regresarEncuestas = function() {
@@ -737,12 +749,49 @@ function startWatchingForLocationChanges() {
     stopWatchingLocation = $scope.$on("$locationChangeStart", handleLocationChangeStartEvent);
 }
 
-iniciarProcesoIndividual(encuestaInfo.data.intentoDetalleVO.stEncuesta.cdStEncuesta,encuestaInfo.data.encuesta.idEncuesta,encuestaInfo.data.usuario.idOrdenServicio);
+consultarTransportistas = function(){
+	$scope.transportista=[];
+    var idVeh = encuestaInfo.data.usuario.vehiculo.idVehiculo;
+    if(idVeh != null ){
+    	encuestaService.getTransportistasVehiculo(idVeh).success(function(data){
+            $scope.transportista = data;
+            if($scope.estatusEncuesta=='FIN')
+            	{
+             $scope.transportistaLabel=encuestaInfo.data.intentoDetalleVO.transportista!=null?encuestaInfo.data.intentoDetalleVO.transportista:"";
+            	}
+        }).error(function(error){
+        	$scope.transportista=[];
+        });
+    }
+};
 
+consultaTecnicos = function(){
+	$scope.tecnicos=[];
+    var idTecnico = 1;
+    if(idTecnico != null ){
+    	encuestaService.getTecnicos(idTecnico).success(function(data){
+            $scope.tecnicos = data;
+            if($scope.estatusEncuesta=='FIN')
+        	{
+            $scope.tecnicoLabel=encuestaInfo.data.intentoDetalleVO.tecnico!=null?encuestaInfo.data.intentoDetalleVO.tecnico:""; 
+        	}
+        }).error(function(error){
+        	$scope.tecnicos=[];
+        });
+    }
+};
 
+requiredFields = function(){
+	angular.forEach($scope.transEInstalador.$error, function (field) {
+        	angular.forEach(field, function(errorField){
+        	errorField.$setDirty();
+        })
+	})
+};
 
-
-    
+    consultarTransportistas();
+    consultaTecnicos();
+    iniciarProcesoIndividual(encuestaInfo.data.intentoDetalleVO.stEncuesta.cdStEncuesta,encuestaInfo.data.encuesta.idEncuesta,encuestaInfo.data.usuario.idOrdenServicio);
     $scope.getNumPreguntasPorSeccion('TIE019P_NU_PAGINACION');
     $scope.getNumMaxPaginacion('TIE019P_NU_MAX_PAG');
     $scope.getPermiteGuardarAvance('PERMITIR_GUARDAR_AVANCE');

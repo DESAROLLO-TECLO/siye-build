@@ -215,7 +215,7 @@
 										<div class="input-group">
 											<span class="input-group-addon"><i
 												class="fa fa-pencil"></i></span> <input ng-disabled="!isLote && !isIncidencia" type="text"
-												ng-model="valorOrigen" name="valorOrigen" maxlength="30"
+												ng-model="valorOrigen" name="valorOrigen" maxlength="40"
 												ng-required="isLote || isIncidencia" class="form-control "
 												capitalize></input> <span class="input-group-btn"> </span>
 										</div>
@@ -409,7 +409,7 @@
 				                        <td class="center" width="10px" style="background-color: {{orden.stSeguimiento.cdColor}}"
 				                        data-toggle="tooltip" data-placement="left" title="{{orden.stSeguimiento.nbStSeguimiento}}">
 	                           	        </td>
-										<td class="center"><a ng-click="redirigir(orden.idOrdenServicio)" data-toggle="tooltip"
+										<td class="center"><a href="#/detalleConsulta/{{orden.idOrdenServicio}}" data-toggle="tooltip"
 											data-placement="left" title="Detalle de Orden de Servicio">{{orden.cdOrdenServicio}}</a></td>
 										<td width="70px" class="center">{{orden.fhCita}}</td>
 										<td width="70px" class="center">{{orden.vehiculo.cdPlacaVehiculo}}</td>

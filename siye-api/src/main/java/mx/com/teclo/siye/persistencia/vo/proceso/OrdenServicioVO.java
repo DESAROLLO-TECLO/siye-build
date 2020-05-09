@@ -3,6 +3,8 @@ package mx.com.teclo.siye.persistencia.vo.proceso;
 import java.io.Serializable;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import mx.com.teclo.siye.persistencia.vo.encuesta.EncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.incidencia.IncidenciaVO;
 
 public class OrdenServicioVO implements Serializable {
@@ -17,18 +19,19 @@ public class OrdenServicioVO implements Serializable {
 	private KitInstalacionVO kitInstalacion;
 	private PlanVO plan;
 	private StSeguimientoVO stSeguimiento;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss",timezone = "America/Mexico_City")
 	private Date fhCita;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss",timezone = "America/Mexico_City")
 	private Date fhAtencionIni;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss",timezone = "America/Mexico_City")
 	private Date fhAtencionFin;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss",timezone = "America/Mexico_City")
 	private Date fhAtencionParcial;
 	private Long idOrigenOds;
 	private Boolean stActivo;
 	private IncidenciaVO incidencia;
 	private ProcesoVO proceso;
+	private EncuestaVO encuesta;
 	
 	public Long getIdOrdenServicio() {
 		return idOrdenServicio;
@@ -127,4 +130,12 @@ public class OrdenServicioVO implements Serializable {
 	public void setFhAtencionParcial(Date fhAtencionParcial) {
 		this.fhAtencionParcial = fhAtencionParcial;
 	}
+	public EncuestaVO getEncuesta() {
+		return encuesta;
+	}
+	public void setEncuesta(EncuestaVO encuesta) {
+		this.encuesta = encuesta;
+	}
+	
+	
 }
