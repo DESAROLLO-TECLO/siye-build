@@ -234,8 +234,7 @@ appt.directive('updateImage',
 	        		  
 	        		  if(errorTypeFile){
 	        			  errorTypeFile=true;
-	        			  let coma=errorSizeImage  ? ',':'';
-	        			  msj+=coma+' la extención admitida';
+	        			  msj+=' la extención admitida';
 	        			  growl.warning(msj, {ttl: 4000});
 	        		  }
 	    		  }
