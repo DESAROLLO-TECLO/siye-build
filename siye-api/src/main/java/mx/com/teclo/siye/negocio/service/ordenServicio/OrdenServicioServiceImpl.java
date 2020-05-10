@@ -416,7 +416,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			kitDAO.save(kitInstalacion);
 		}
 		
-		kitInstalacion = kitDAO.ultimoId();
+		//kitInstalacion = kitDAO.ultimoId();
 		
 		
 
@@ -461,7 +461,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			kitInstDispDAO.save(kitInsDipDTO);	
 		}	
 		
-		ordenServiDTO = ordenServicioDAO.obtenerOrdenServicioCD_ORDEN_SERVICIO(ordenServiVO.getCdOrden());
+		// ordenServiDTO = ordenServicioDAO.obtenerOrdenServicioCD_ORDEN_SERVICIO(ordenServiVO.getCdOrden());
 		incidenciaDTO = incidenciaDAO.findOne(ordenServiVO.getIdIncidencia());
 		odsIncidencDTO.setIdOrdenServicio(ordenServiDTO);
 		odsIncidencDTO.setIdIncidencia(incidenciaDTO);
