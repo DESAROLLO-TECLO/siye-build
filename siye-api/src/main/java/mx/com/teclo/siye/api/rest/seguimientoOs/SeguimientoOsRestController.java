@@ -180,7 +180,7 @@ public class SeguimientoOsRestController {
        return response;
 	}
 	
-	@RequestMapping(value="/corteDiario", method = RequestMethod.GET)
+	@RequestMapping(value="/corteDiario", method = RequestMethod.GET, produces = "application/json")
 	//@PreAuthorize("hasAnyAuthority('GET_SEGUIMIENTO_OS')")
 	public ResponseEntity<String> hacerCorteDiario(@RequestParam(value ="fechaCorte") String fechaCorte) throws BusinessException{	
 		UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();	
@@ -190,7 +190,7 @@ public class SeguimientoOsRestController {
 		} catch (BusinessException e) {
 			throw new BusinessException(e.getMessage());
 		}
-		return new ResponseEntity<String>(respuesta, HttpStatus.OK);		
+		return new ResponseEntity<String>("\""+respuesta+"\"", HttpStatus.OK);		
 	};
 	
 	

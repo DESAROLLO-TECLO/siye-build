@@ -147,14 +147,14 @@ public class IncidenciaDAOImpl extends BaseDaoHibernate<IncidenciaDTO> implement
 				+"tcip.TX_PROCESO AS nbProceso,"
 				+"tdee.NB_ENCUESTA AS nbEncuesta"
 				+"	FROM TIE058D_IE_ODS_INCIDENCIA tdioi"
-				+" INNER JOIN TIE051D_IE_INCIDENCIA tdii ON (tdioi.ID_INCIDENCIA = tdii.ID_INCIDENCIA) "
-				+" INNER JOIN TIE048C_IE_ST_SEGUIMIENTO tciss ON (tdii.ID_ST_INCIDENCIA = tciss.ID_ST_SEGUIMIENTO) "
-				+" INNER JOIN TIE048C_IE_ST_SEGUIMIENTO tpr ON (tdii.ID_PRIORIDAD = tpr.ID_ST_SEGUIMIENTO ) "
-				+" INNER JOIN TIE048C_IE_ST_SEGUIMIENTO tinci ON (tdii.ID_TP_INCIDENCIA = tinci.ID_ST_SEGUIMIENTO) "
-				+" INNER JOIN TIE048C_IE_ST_SEGUIMIENTO tauntoriza ON (tdii.ID_ST_AUTORIZACION = tauntoriza.ID_ST_SEGUIMIENTO) "
-				+" INNER JOIN TIE048C_IE_ST_SEGUIMIENTO stIncidencia ON (tdii.ID_ST_INCIDENCIA = stIncidencia.ID_ST_SEGUIMIENTO) "
-				+" INNER JOIN TIE035C_IE_PROCESOS tcip ON (tdii.ID_PROCESO = tcip.ID_PROCESO) "
-				+" INNER JOIN TIE001D_EE_ENCUESTAS tdee ON (tdii.ID_ENCUESTA = tdee.ID_ENCUESTA) "
+				+" left JOIN TIE051D_IE_INCIDENCIA tdii ON (tdioi.ID_INCIDENCIA = tdii.ID_INCIDENCIA) "
+				+" left JOIN TIE048C_IE_ST_SEGUIMIENTO tciss ON (tdii.ID_ST_INCIDENCIA = tciss.ID_ST_SEGUIMIENTO) "
+				+" left JOIN TIE048C_IE_ST_SEGUIMIENTO tpr ON (tdii.ID_PRIORIDAD = tpr.ID_ST_SEGUIMIENTO ) "
+				+" left JOIN TIE048C_IE_ST_SEGUIMIENTO tinci ON (tdii.ID_TP_INCIDENCIA = tinci.ID_ST_SEGUIMIENTO) "
+				+" left JOIN TIE048C_IE_ST_SEGUIMIENTO tauntoriza ON (tdii.ID_ST_AUTORIZACION = tauntoriza.ID_ST_SEGUIMIENTO) "
+				+" left JOIN TIE048C_IE_ST_SEGUIMIENTO stIncidencia ON (tdii.ID_ST_INCIDENCIA = stIncidencia.ID_ST_SEGUIMIENTO) "
+				+" left JOIN TIE035C_IE_PROCESOS tcip ON (tdii.ID_PROCESO = tcip.ID_PROCESO) "
+				+" left JOIN TIE001D_EE_ENCUESTAS tdee ON (tdii.ID_ENCUESTA = tdee.ID_ENCUESTA) "
 				+"  WHERE tdioi.ID_ORDEN_SERVICIO=:idOrdenServicio  ORDER BY idIncidencia");
 		List<DetalleIncidenciaVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idOSIncidencia",LongType.INSTANCE)

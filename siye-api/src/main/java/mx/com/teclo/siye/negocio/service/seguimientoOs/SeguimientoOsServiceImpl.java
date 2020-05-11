@@ -89,8 +89,7 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 			CentroInstalacion = ordenServicioDAO.getInfoSeguimientoGeneral(consulta, idCentroInstalacion, columnas);
 			if (!CentroInstalacion.isEmpty()) {
 				for (SeguimientoOrdenServicioVO ci : CentroInstalacion) {
-					List<OrdenServcioDetalleVO> detalleOS = ordenServicioDAO.getDetalleOS(ci.getIdCentroInstalacion(),
-							fInicio, fFin);
+					List<OrdenServcioDetalleVO> detalleOS = ordenServicioDAO.getDetalleOS(ci.getIdCentroInstalacion(), fInicio, fFin);
 					if (!detalleOS.isEmpty()) {
 						ci.setDetalleOrdenServicio(detalleOS);
 					}
@@ -311,7 +310,7 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 						os.setStSeguimiento(seguimientoDTO);
 						ordenServicioDAO.update(os);
 					}
-					return "Cancelacion de Ordenes de Servicio correcta";
+					return "Cancelación de Ordenes de Servicio correcta";
 				} else {
 					// error sin tipo de cancelacion
 					throw new BusinessException("No existe el estatus de cancelación ");

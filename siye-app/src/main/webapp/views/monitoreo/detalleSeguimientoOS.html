@@ -109,117 +109,150 @@
 							<section class="content contFullscreen" id="contFullScreen">
 								<div class="row">
 									<div class="col-md-12">
-										<div style="height: 500px;" id="mynetwork"></div>
+										<div id="infoNetwork"></div>
 									</div>
-								</div>
-								<div class="row">
-									<div ng-repeat="" class="col-md-3">
-
+									<div class="col-md-12">
+										<div style="height: 500px;" id="mynetwork"></div>
 									</div>
 								</div>
 							</section>
 						</div>
 
 						<!-- Vista modo linea de tiempo -->
-						<div style="height: 500px; 	overflow-y: scroll;" ng-show="ordenServicioVO.verDetalle"
-							id="imgLineTiempo">
-							<div class="box-body scrollDetail" id="scrollDetail">
-								<ul class="timeline">
-									<li class="time-label" ng-repeat-start="proceso in ordenServicioVO.etapasVO">
-										<span class="bg-dates">
-											{{proceso.nbProceso}}
-										</span>
-									</li>
-									<li>
-										<div class="timeline-item">
-											<div ng-repeat="detalle in proceso.encuestas">
-												<div class="time-label" style="background-color:white;">
-													<img ng-src="./static/dist/img/incidencia/encuesta.png"
-														tooltip="{{detalle.nbProceso}}" tooltip-placement="right"
-														style="border-color: black;" class="img-circle imgNodes">
-													{{detalle.nbEncuesta}}
+						<div style="height: 500px; 	overflow-y: scroll;" ng-show="ordenServicioVO.verDetalle">
+							<div class="col-md-12">
+								<div class="box-body scrollDetail" id="scrollDetail">
+									<ul class="timeline">
+										<li class="time-label">
+											<div class="fa nodesTimeline" style="background-color:white;">
+												<img ng-src="./static/dist/img/incidencia/start_incidencia.svg"
+													class="img-circle imgNodes" alt="Cinque Terre">
+											</div>
+											<div class="timeline-body table-responsive" style="height: 24px;">
+
+											</div>
+										</li>
+										<li class="time-label" ng-repeat-start="proceso in ordenServicioVO.etapasVO">
+											<!-- Se pintan procesos de orden -->
+											<span class="bg-warning"> {{proceso.nbProceso}} </span>
+											<!-- Inicia tabla de incidencias para procesos -->
+											<div class="timeline-body table-responsive">
+												<table class="table tblsnborder">
+													<thead></thead>
+													<tbody></tbody>
+												</table>
+											</div>
+										</li>
+										<li>
+											<div ng-repeat-start="detalle in proceso.encuestas">
+												<div class="col-md-12">
+													<!--Se pintan nodos de encuestas o etapas como quiera -->
+													<div class="fa nodesTimeline" style="background-color:white;">
+														<img ng-src="./static/dist/img/incidencia/encuesta.png"
+															style="border-color: black;" class="img-circle imgNodes">
+														{{detalle.nbEncuesta}}
+													</div>
 												</div>
 
-												<div class="timeline-body table-responsive">
-													<div class="row">
-														<div class="col-md-12 col-sm-12 col-xs-12">
-															<div class="col-md-3 col-xs-3 col-sm-3">
-																<label
-																	for="">{{'MONITOREO.detalleOs.label.finicio' | translate}}</label>
-																<p>{{detalle.fhInicio!=null ? detalle.fhInicio : "SIN FECHA"}}
-																</p>
-															</div>
-															<div class="col-md-3 col-xs-3 col-sm-3">
-																<label
-																	for="">{{'MONITOREO.detalleOs.label.ffin' | translate}}</label>
-																<p>{{detalle.fhFin !=null ? detalle.fhFin : "SIN FECHA"}}
-																</p>
-															</div>
-															<div class="col-md-3 col-xs-3 col-sm-3">
-																<label
-																	for="">{{'MONITOREO.detalleOs.label.proceso' | translate}}</label>
-																<p>{{detalle.fhDiferencia}}</p>
-															</div>
-															<div class="col-md-3 col-xs-3 col-sm-3">
-																<label
-																	for="">{{'MONITOREO.detalleOs.label.preguntas' | translate}}</label>
-																<p>
-																	<a class="ligas" href="#"
-																		ng-click="verModalEvidencias('pregunta',detalle)"
-																		style=" border: 2px solid {{detalle.nbColor}}">
-																		{{detalle.preguntas}}
-																	</a>
-																</p>
-															</div>
-														</div>
-													</div>
+												<div class="timeline-item">
+													<!-- -Inicia tabla de incidencias para Encuestas -->
+													<div class="timeline-body table-responsive">
+														<div class="row center">
+															<table class="table tblsnborder">
+																<thead>
+																	<tr>
+																		<td class="col-md-3 col-xs-3 col-sm-3">
+																			{{'MONITOREO.detalleOs.label.finicio' | translate}}
+																			<p>{{detalle.fhInicio!=null ? detalle.fhInicio : "SIN FECHA"}}
+																			</p>
+																		</td>
+																		<td class="col-md-3 col-xs-3 col-sm-3">
+																			{{'MONITOREO.detalleOs.label.ffin' | translate}}
+																			<p>{{detalle.fhFin !=null ? detalle.fhFin : "SIN FECHA"}}
+																			</p>
+																		</td>
+																		<td class="col-md-3 col-xs-3 col-sm-3">
+																			{{'MONITOREO.detalleOs.label.proceso' | translate}}
+																			<p>{{detalle.fhDiferencia}}</p>
+																		</td>
+																		<td class="col-md-3 col-xs-3 col-sm-3">
+																			{{'MONITOREO.detalleOs.label.preguntas' | translate}}
+																			<p>
+																				<a class="ligas" href="#"
+																					ng-click="verModalEvidencias('pregunta',detalle)"
+																					style=" border: 2px solid {{detalle.nbColor}}">
+																					{{detalle.preguntas}}
+																				</a>
+																			</p>
+																		</td>
+																	</tr>
+																</thead>
 
-													<div class="row">
-														<div class="col-md-12 col-sm-12 col-xs-12">
-															<div class="col-md-3 col-sm-4 col-xs-4">
-																<label
-																	for="estatus">{{'MONITOREO.detalleOs.label.estatus' | translate}}</label>
-																<div class="center"
-																	style="width: 50%; background-color:{{detalle.nbColor}};">
-																	<strong style="color: white;">
-																		{{detalle.estatus}}
-																	</strong>
-																</div>
-															</div>
-															<div class="col-md-3 col-sm-4 col-xs-4">
-																<label
-																	for="">{{'MONITOREO.detalleOs.label.preguntas' | translate}}
-																	{{detalle.nuPorcentaje}}</label>
-																<div class="progress" style="width: 50%;">
-																	<div class="progress-bar" role="progressbar"
-																		aria-valuenow="10" aria-valuemin="0"
-																		aria-valuemax="100"
-																		style="width: {{detalle.nuPorcentaje}}">
-																		{{'MONITOREO.detalleOs.label.progreso' | translate}}
-																		{{detalle.nuPorcentaje}}
-																	</div>
-																</div>
-															</div>
-															<div class="col-md-3 col-sm-4 col-xs-4">
-																<button class="btn btn-danger center"
-																	ng-click="verModalEvidencias('encuesta', detalle)"
-																	class="btn pull-left">
-																	{{'MONITOREO.detalleOs.label.evidencia' | translate}}
-																</button>
-															</div>
+																<tbody>
+																	<tr class="center">
+																		<td class="col-md-3 col-sm-4 col-xs-4">
+																			{{'MONITOREO.detalleOs.label.estatus' | translate}}
+																			<div
+																				style="margin-left:50px; width: 50%; background-color:{{detalle.nbColor}};">
+																				<strong style="color: white;">
+																					{{detalle.estatus}}
+																				</strong>
+																			</div>
+																		</td>
+
+																		<td class="col-md-3 col-sm-4 col-xs-4">
+																			{{'MONITOREO.detalleOs.label.preguntas' | translate}}
+																			<div class=" center progress-bar"
+																				role="progressbar" aria-valuenow="10"
+																				aria-valuemin="0" aria-valuemax="100"
+																				style="width: {{detalle.nuPorcentaje}}">
+																				{{'MONITOREO.detalleOs.label.progreso' | translate}}
+																				{{detalle.nuPorcentaje}}
+																			</div>
+
+																		</td>
+
+																		<td class="col-md-3 col-sm-4 col-xs-4">
+																			<button class="btn btn-danger center"
+																				ng-click="verModalEvidencias('encuesta', detalle)"
+																				class="btn pull-left">
+																				{{'MONITOREO.detalleOs.label.evidencia' | translate}}
+																			</button>
+																		</td>
+
+
+																	</tr>
+																</tbody>
+															</table>
 														</div>
 
+														<div class="row center">
+															<table class="table tblsnborder">
+																<thead>
+																	<tr>
+
+
+
+
+
+																	</tr>
+																</thead>
+															</table>
+														</div>
 													</div>
 												</div>
 											</div>
-										</div>
-									</li>
-									<li ng-if="$last" ng-repeat-end>
-										<i class="fa fa-clock-o bg-gray"></i>
-									</li>
-								</ul>
+											<div ng-repeat-end></div>
+										</li>
+										<li ng-if="$last" ng-repeat-end>
+											<i class="fa fa-clock-o bg-gray"></i>
+										</li>
+									</ul>
+								</div>
 							</div>
+
 						</div>
+						<!---->
 					</div>
 
 					<div class="box-footer">
