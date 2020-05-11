@@ -5,11 +5,11 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 	$scope.supervisores=[];
 
 	calcularDuracion = function(fhIni, fhFin){
-		if(fhIni!=null){
+		if(fhIni!=null && fhIni!=""){
 			
 			var fecha1 = moment(fhIni, "DD/MM/YYYY HH:mm:ss");
 			var fecha2 = null
-			if(fhFin!=null)
+			if(fhFin!=null && fhFin!="")
 				fecha2 = moment(fhFin, "DD/MM/YYYY HH:mm:ss");
 			else
 				fecha2 = moment();
