@@ -294,7 +294,7 @@
                     <div class="col-sm-6">
                         <h3 class="box-title">Registros Encontrados: {{(listOrden | filter:tabla.view.filterSearchVal).length}}</h3>
                     </div>
-                    <div class="col-sm-6 form-group">
+                    <div class="col-sm-6">
 						<div class="row">
 							<div class="col-md-offset-5 col-md-6 col-xs-8">
 								<div class="input-group pull-right">
@@ -321,29 +321,47 @@
 										<th width="75px" sort order="'fhCita'" by="tabla.order" reverse="tabla.reverse" class="text-center">FECHA DE CITA</th>
 										<th width="70px" sort order="'vehiculo.cdPlacaVehiculo'" by="tabla.order" reverse="tabla.reverse" class="text-center">PLACA</th>
 										<th width="130px" sort order="'vehiculo.tipoVehiculo.nbTipoVehiculo'" by="tabla.order" reverse="tabla.reverse" class="text-center">TIPO DE VEHÍCULO</th>
-										<th sort order="'kitInstalacion.kitInstalacionDispDTO[0].kitDispositivo.tipoKit.nbTipoKit'" by="tabla.order" reverse="tabla.reverse" class="text-center">TIPO DE KIT</th>
+										<th width="100px" sort order="'kitInstalacion.kitInstalacionDispDTO[0].kitDispositivo.tipoKit.nbTipoKit'" by="tabla.order" reverse="tabla.reverse" class="text-center">TIPO DE KIT</th>
                                         <th width="80px" sort order="'centroInstalacion.nbCentroInstalacion'" by="tabla.order" reverse="tabla.reverse" class="text-center">CENTRO DE INSTALACIÓN</th>
-                                        <th sort order="'plan.nbPlan'" by="tabla.order" reverse="tabla.reverse" class="text-center">TIPO DE PLAN</th>
-                                        <th width="80px" sort order="'cdOrdenServicio'" by="tabla.order" reverse="tabla.reverse" class="text-center">ORIGEN</th>
-                                        <th sort order="'proceso.nbProceso'" by="tabla.order" reverse="tabla.reverse" class="text-center">PROCESO ACTUAL</th>
+                                        <th width="100px" sort order="'plan.nbPlan'" by="tabla.order" reverse="tabla.reverse" class="text-center">TIPO DE PLAN</th>
+                                        <th width="100px" sort order="'cdOrdenServicio'" by="tabla.order" reverse="tabla.reverse" class="text-center">ORIGEN</th>
+                                        <th width="100px" sort order="'proceso.nbProceso'" by="tabla.order" reverse="tabla.reverse" class="text-center">PROCESO ACTUAL</th>
 	                        </tr>
 	                    </thead>
 	                    <tbody align="center">
 	                        <tr dir-paginate="orden in listOrden | orderBy:tabla.order:tabla.reverse | filter:tabla.view.filterSearchVal | itemsPerPage:tabla.view.rowsPerPageVal">
-	                                  <td class="center" width="10px" style="background-color: {{orden.stSeguimiento.cdColor}}"
+	                                  <td class="center" width="15px" style="background-color: {{orden.stSeguimiento.cdColor}}"
 				                        data-toggle="tooltip" data-placement="left" title="{{orden.stSeguimiento.nbStSeguimiento}}">
 	                           	        </td>
-										<td class="center"><a ng-click="redirigir(orden.idOrdenServicio)" data-toggle="tooltip"
+										<td width="130px" class="center"><a ng-click="redirigir(orden.idOrdenServicio)" data-toggle="tooltip"
 											data-placement="left" title="Detalle de Orden de Servicio">{{orden.cdOrdenServicio}}</a></td>
-										<td width="70px" class="center">{{orden.fhCita}}</td>
+										<td width="75px" class="center">{{orden.fhCita}}</td>
 										<td width="70px" class="center">{{orden.vehiculo.cdPlacaVehiculo}}</td>
 										<td width="130px" class="center">{{orden.vehiculo.tipoVehiculo.nbTipoVehiculo}}</td>
-										<td class="center">{{orden.kitInstalacion.kitInstalacionDispDTO.length>=1?orden.kitInstalacion.kitInstalacionDispDTO[0].kitDispositivo.tipoKit.nbTipoKit:'SIN KIT ASIGNADO'}}</td>
+										<td width="100px" class="center">{{orden.kitInstalacion.kitInstalacionDispDTO.length>=1?orden.kitInstalacion.kitInstalacionDispDTO[0].kitDispositivo.tipoKit.nbTipoKit:'SIN KIT ASIGNADO'}}</td>
 										<td width="80px" class="center">{{orden.centroInstalacion.nbCentroInstalacion}}</td>
-										<td class="center">{{orden.plan.nbPlan}}</td>
-										<td width="80px" class="center" ng-show="orden.idOrigenOds==1 || orden.idOrigenOds==null">Lote: {{orden.loteOrdenServicio.nbArchivoFinal}}</td>
-										<td width="80px" class="center" ng-show="orden.idOrigenOds==2">Incidencia: {{orden.cdOrdenServicio}}</td>
-										<td class="center">{{orden.proceso==null?"SIN PROCESO":orden.proceso.nbProceso}}</td>
+										<td width="100px" class="center">{{orden.plan.nbPlan}}</td>
+										<td width="100px" class="center" ng-show="orden.idOrigenOds==1 || orden.idOrigenOds==null">
+											<span class="lbUser text-truncate" tooltip-placement="bottom"
+                                                tooltip="Lote: {{orden.loteOrdenServicio.nbArchivoFinal}}"
+                                            	ng-if="(orden.loteOrdenServicio.nbArchivoFinal).length > 10">
+                                            	Lote: {{orden.loteOrdenServicio.nbArchivoFinal | limitTo:10}}...
+                                            </span>
+											<span class="lbUser text-truncate" ng-if="(orden.loteOrdenServicio.nbArchivoFinal).length <= 10">
+												Lote: {{orden.loteOrdenServicio.nbArchivoFinal}}
+											</span>
+										</td>
+										<td width="100px" class="center" ng-show="orden.idOrigenOds==2">
+											<span class="lbUser text-truncate" tooltip-placement="bottom"
+                                                tooltip="Incidencia: {{orden.cdOrdenServicio}}"
+                                            	ng-if="(orden.cdOrdenServicio).length > 10">
+                                            	Incidencia: {{orden.cdOrdenServicio | limitTo:10}}...
+                                            </span>
+											<span class="lbUser text-truncate" ng-if="(orden.cdOrdenServicio).length <= 10">
+												Incidencia: {{orden.cdOrdenServicio}}
+											</span>
+										</td>
+										<td width="100px" class="center">{{orden.proceso==null?"SIN PROCESO":orden.proceso.nbProceso}}</td>
 	                        </tr>
 	                    </tbody>
 	                </table>
