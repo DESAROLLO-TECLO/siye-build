@@ -143,6 +143,11 @@
 	<!--                                         <td style="width: 13%"> -->
 	<!--                                             <a ng-click="mostrarModal(servicio)"><i class="fa fa-pencil fa-lg"></i> </a></td> -->
 	                        </tr>
+	                        <tr
+										ng-if="(listServicio | filter:tabla.view.filterSearchVal).length < 1">
+										<td colspan="10" class="text-center"><h4>No se
+												encontraron coincidencias</h4></td>
+						  </tr>
 	                    </tbody>
 	                </table>
 	                <div class="container-fluid">
