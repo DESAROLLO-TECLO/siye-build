@@ -3,35 +3,46 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 	$scope.ordenInfo = ordenInfo.data;
 
 	calcularDuracion = function(){
-//		$scope.ordenInfo.fhAtencionIni = "2020-05-05 07:30:00";
-		if($scope.ordenInfo.fhAtencionIni!=null){
-	//		var fecha1 = moment("2016-09-30 07:30:00", "YYYY-MM-DD HH:mm");
-	//		var fecha2 = moment("2016-10-03 08:31:26", "YYYY-MM-DD HH:mm");
-			
-			var fecha1 = moment($scope.ordenInfo.fhAtencionIni, "YYYY-MM-DD HH:mm");
-			var fecha2 = null
+		let fdiferencia ="00:00:00";
+
+		if($scope.ordenInfo.fhAtencionIni!=null){		
+			const DATE_FORMAT = "YYYY-MM-DD HH:mm:ss";	
+			let fecha1 = moment($scope.ordenInfo.fhAtencionIni, "YYYY-MM-DD HH:mm");
+			let fecha2 = null;
+			const SegDia=86400, SegHora= 3600, SegMinuto = 60;
+			let dias, horas, minutos,segundos, diff;
+
 			if($scope.ordenInfo.fhAtencionFin!=null){
-				fecha2 = moment($scope.ordenInfo.fhAtencionFin != null , "YYYY-MM-DD HH:mm");
+				fecha2 = moment($scope.ordenInfo.fhAtencionFin, "YYYY-MM-DD HH:mm");
 			}else{
 				fecha2 = moment();
 			}
-			
-			$scope.ordenInfo
-			
-			var now = moment();
-			
-			var diff = fecha2.diff(fecha1, 's'); // Diff in hours
-	//		console.log(diff);
-			
-			var horas = Math.trunc(diff / 3600);
-		    var minutos = Math.trunc((diff-horas*3600)/60);
-		    var segundos = diff-(horas*3600+minutos*60);
-		    console.log(horas + ":" + minutos + ":" + segundos);
-			
-		    $scope.ordenInfo.tpDuracion = horas + ":" + minutos + ":" + segundos;
-		}else{
-			$scope.ordenInfo.tpDuracion = "00:00:00";
+
+			diff = fecha2.diff(fecha1,'s');
+
+			if(diff >0){
+				if(diff>=SegDia){
+					dias = Math.trunc(diff / SegDia);
+					diff = (diff % SegDia);
+					fdiferencia = dias+" Dias ";
+				}
+				if(diff>=SegHora){
+					horas = Math.trunc(diff / SegHora);
+					diff = (diff % SegHora);
+					fdiferencia = fdiferencia + horas+" Horas ";
+				}
+				if(diff>= SegMinuto){
+					minutos = Math.trunc(diff / SegMinuto);
+					diff = (diff % SegMinuto)	
+					fdiferencia = fdiferencia + minutos +" Minutos";
+				}
+			}else{
+				// fechas iguales 
+				fdiferencia = "SIN TIEMPO";
+			}
 		}
+		$scope.ordenInfo.tpDuracion = fdiferencia;
+
 	}
 	
 	formateaDatos = function(){

@@ -1,7 +1,6 @@
 package mx.com.teclo.siye.negocio.service.ordenServicio;
 
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -478,18 +477,12 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	
 	@Transactional
 	@Override
-	public List<OrdenServicioVO> consultaHistorica(Boolean busquedaAvanzada,String cdTipoBusqueda,
-		    String valorBusqueda, String fhInicio, String fhFin,String centroInstalacion,String estatusSeguimiento,
-		    Boolean isLote, Boolean isIncidencia,
-			String valorLoteIncidencia, String tipoKit,
-			String tipoPlan) throws NotFoundException {
+	public List<OrdenServicioVO> consultaHistorica(Boolean busquedaAvanzada,String cdTipoBusqueda, String valorBusqueda, String fhInicio, String fhFin,String centroInstalacion,String estatusSeguimiento,
+		Boolean isLote, Boolean isIncidencia, String valorLoteIncidencia, String tipoKit, String tipoPlan) throws NotFoundException {
+		
 		List<OrdenServicioDTO> listOrdenServicioDTO = new ArrayList<>(); 
-		//UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
-		//GerenteSupervisorDTO gerenteSupervisorDTO = gerenteSupervisorDAO.consultaGerenteSupervisorBySupervisor(usuario.getId());
-		//if(gerenteSupervisorDTO == null)
-			//throw new NotFoundException("No se encontró el centro de instalación, favor de reportar al administrador del sistema.");
-		if(!busquedaAvanzada)
-		{
+
+		if(!busquedaAvanzada){
 			switch(cdTipoBusqueda) {
 				case "TODO":
 					Integer registrosAMostrar;
