@@ -293,7 +293,7 @@
 										<label>*Centro de Instalación</label>
 										<div class="input-group">
 											<div class="input-group-addon">
-												<i class="fa fa-cubes" aria-hidden="true"></i>
+												<i class="fa fa-university" aria-hidden="true"></i>
 											</div>
 											<select class="form-control select2" select2 id="centroI" name="centroI" required
 											ng-options="cntInstalacion.idCentroInstalacion as cntInstalacion.nbCentroInstalacion for cntInstalacion in catalogoProcesos.centrosInstalacion"
@@ -340,7 +340,7 @@
 											<div class="input-group-addon">
 												<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
 											</div>
-											<input type="text" name="serieKit"  class="form-control inputs" ng-model="orden.cdKitIntalacion" capitalize>
+											<input type="text" maxlength="15" name="serieKit"  class="form-control inputs" ng-model="orden.cdKitIntalacion" capitalize>
 										</div>
 <!-- 										<div ng-show="formAltaServicio.serieKit.$invalid  && formAltaServicio.serieKit.$dirty" ng-style="{color:'red'}"> -->
 <!--                                         	<label>La serie del kit es requerido. </label> -->
