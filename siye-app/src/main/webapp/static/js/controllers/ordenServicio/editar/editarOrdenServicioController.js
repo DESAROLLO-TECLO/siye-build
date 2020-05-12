@@ -58,10 +58,8 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
             return;
         } else {
             consultaServicioService.buscaIncidencia(cdIncidencia).success(function(data) {
-                if (data) {
                     angular.copy(data, $scope.general.voIncidencia);
                     $scope.banderas.formEditar = true;
-                }
             }).error(function(data) {
                 if (data != null && data.status != null) {
                     growl.error(data.message, { ttl: 4000 });
