@@ -4,28 +4,6 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 	$scope.evidenciaMostrar = {};
 	$scope.supervisores=[];
 
-<<<<<<< HEAD
-	calcularDuracion = function(fhIni, fhFin){
-		if(fhIni!=null && fhIni!=""){
-			
-			var fecha1 = moment(fhIni, "DD/MM/YYYY HH:mm:ss");
-			var fecha2 = null
-			if(fhFin!=null && fhFin!="")
-				fecha2 = moment(fhFin, "DD/MM/YYYY HH:mm:ss");
-			else
-				fecha2 = moment();
-			
-			var diff = fecha2.diff(fecha1, 's'); // Diff in hours
-			
-			var horas = Math.trunc(diff / 3600);
-		    var minutos = Math.trunc((diff-horas*3600)/60);
-		    var segundos = diff-(horas*3600+minutos*60);
-		    var diferencia =  (horas<10 ? ("0"+horas): horas) + ":" + (minutos<10?("0"+minutos):minutos) + ":" + (segundos<10?("0"+segundos):segundos);
-			
-		    return diferencia;
-		}else{
-			return "00:00:00";
-=======
 	calcularDuracion = function(){
 		let fdiferencia ="00:00:00";
 
@@ -64,7 +42,6 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 				// fechas iguales 
 				fdiferencia = "SIN TIEMPO";
 			}
->>>>>>> 0418b1ab2b0d67e6aed41b2519f7369e318d7bf5
 		}
 		$scope.ordenInfo.tpDuracion = fdiferencia;
 
