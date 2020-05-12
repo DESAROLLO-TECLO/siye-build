@@ -70,7 +70,7 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
     $scope.activarEncuesta = function(idEncuesta){
         $scope.stActivarEncuesta = !$scope.stActivarEncuesta;
         procesoService.activarEncuesta(parseInt(idEncuesta), idord, $scope.stActivarEncuesta).success(function(data){
-            if(data){
+            if(data && $scope.stActivarEncuesta){
                 growl.success('La encuesta fue activada', {title: 'Encuesta Activada'});
             }else{
                 growl.warning('La encuesta fue desactivada', {title: 'Encuesta Inactiva'});
