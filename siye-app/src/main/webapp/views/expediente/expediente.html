@@ -96,135 +96,137 @@
 			</div>
 			<!-- SECCION PARAMETROS DE BÚSQUEDA -->
 			<!-- SECCION PARA TABLA DE RESULTADOS -->
-			<div class="row centerCol">
-				<div class="col-xs-12 col-sm-12 col-md-12" ng-if="ordenServicio != undefined">
-					<div class="box box-danger">
-						<div class="box-header col-md-12">
-							<br/><br/><div class="row">
-								<div class="col-xs-12 col-md-12">
-		                    		<div class="col-xs-4 col-md-4"><label>Placa:</label> {{ordenServicio.placa}}</div>
-		                    		<div class="col-xs-4 col-md-4"><label>VIN:</label> {{ordenServicio.numvim}}</div>
-		                    		<div class="col-xs-4 col-md-4"><label>Consesionario:</label> {{ordenServicio.nameConsesionario}}</div>
-		                    	</div>
-							</div><br/><br/>
-							<div class="row">
-								<div class="col-xs-3 col-md-3">
-									<h3 class="box-title">
-										Registros Encontrados: <span>{{ (ordenServicio.imagenes | filter:view.filter).length }}</span>
-									</h3>
-								</div>
-								<div class=" col-xs-3 col-md-3">
-									<div class="input-group">
-										<div class="input-group-addon">
-											<i class="fa fa-list-alt"></i>
+				<div class="row" ng-show="ordenServicio != undefined">
+			        <div class="col-xs-12 col-md-offset-1 col-md-10">
+			            <div class="box box-danger">
+			                <div class="box-header with-border">
+								<br/><br/>
+								<div class="row">
+									<div class="col-xs-12 col-md-12">
+										<div class="col-xs-4 col-md-4"><label>Placa:</label> {{ordenServicio.placa}}</div>
+										<div class="col-xs-4 col-md-4"><label>VIN:</label> {{ordenServicio.numvim}}</div>
+										<div class="col-xs-4 col-md-4"><label>Consesionario:</label> {{ordenServicio.nameConsesionario}}</div>
+									</div>
+								</div><br/><br/>
+								<div class="row">
+									<div class="col-xs-12 col-sm-12 col-md-12 form-group">
+										<div class="row">
+											<div class="col-xs-12 col-sm-3 col-md-3">
+												<h3 class="box-title">
+													Registros Encontrados: <span>{{ (ordenServicio.imagenes | filter:view.filter).length }}</span>
+												</h3>
+											</div>
+											<div class=" col-xs-6 col-sm-3 col-md-3">
+												<div class="input-group">
+													<div class="input-group-addon">
+														<i class="fa fa-list-alt"></i>
+													</div>
+													<select class="form-control" name="tipoBusqueda" id="tipoBusqueda" ng-required="true" 
+														select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
+														ng-model="clasificCatalogo.clasifSelected" ng-change="clasificImage(clasificCatalogo.clasifSelected)"
+														ng-options="clasif as clasif.nbClasif for clasif in clasificCatalogo.catalogo">
+													</select>
+												</div>
+											</div>
+											<div class="col-xs-2 col-sm-2 col-md-1">
+												<span ng-if="clasificCatalogo.showClasifPregunta">Pregunta</span>
+												<label ng-if="clasificCatalogo.showClasifPregunta" 
+													class="containerCheck">
+													<input type="checkbox" ng-checked="clasificCatalogo.clasifPregunta"
+													 ng-model="clasificCatalogo.clasifPregunta" ng-change="changedClasifLevelAsk(clasificCatalogo.clasifPregunta)">
+													<span class="checkmark"></span>
+												</label>
+											</div>
+											<div class="{{clasificCatalogo.showClasifPregunta ? 'col-xs-4 col-sm-4' : 'col-xs-6 col-sm-6'}} col-md-3">
+												<div class="form-group">
+													<div class="input-group">
+														<input id="searchsomething" type="text" class="form-control" placeholder="Buscar por filtro" 
+															ng-model="view.filter">
+														<span class="input-group-addon"><i class="fa fa-search"></i></span>
+													</div>
+												</div>
+											</div>
+											<div class="col-xs-1 col-sm-8 col-md-1"></div>
+											<div class="col-xs-11 col-sm-4 col-md-2 float-rigth-icon">
+												<div class="col-xs-6 col-sm-6 col-md-6">                                                                                              
+													<Button class="btn btn-danger pull-right" ng-click="showModalImages()">
+														<i class="fa fa-camera" aria-hidden="true"></i>                                                                                              
+													</Button>                                                                                                                                                
+												</div>                                                                                                                                                       
+												<div class="col-xs-6 col-sm-6 col-md-6">                                                                               
+													<Button class="btn btn-danger pull-right" ng-click="deleteAllImage()" ng-disabled="ordenServicio.imagenes.length == 0">                                               
+														<i class="fa fa-trash fa-lg" aria-hidden="true"></i>                                                                                                 
+													</Button>                                                                                                                                                
+												</div>
+											</div>
 										</div>
-										<select class="form-control" name="tipoBusqueda" id="tipoBusqueda" ng-required="true" 
-											select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
-											ng-model="clasificCatalogo.clasifSelected" ng-change="clasificImage(clasificCatalogo.clasifSelected)"
-											ng-options="clasif as clasif.nbClasif for clasif in clasificCatalogo.catalogo">
-										</select>
-								</div>
-								</div>
-								<div class="col-xs-2 col-md-1">
-									<span ng-if="clasificCatalogo.showClasifPregunta">Pregunta</span>
-									<label ng-if="clasificCatalogo.showClasifPregunta" 
-		                            	class="containerCheck">
-		                                <input type="checkbox" ng-checked="clasificCatalogo.clasifPregunta"
-		                                 ng-model="clasificCatalogo.clasifPregunta" ng-change="changedClasifLevelAsk(clasificCatalogo.clasifPregunta)">
-		                                <span class="checkmark"></span>
-		                            </label>
-								</div>
-								<div class="{{clasificCatalogo.showClasifPregunta ? 'col-xs-4' : 'col-xs-6'}} col-md-3">
-									<div class="form-group">
-                           				<div class="input-group">
-                               				<input id="searchsomething" type="text" class="form-control" placeholder="Buscar por filtro" 
-                               					ng-model="view.filter">
-                               				<span class="input-group-addon"><i class="fa fa-search"></i></span>
-                           				</div>
-	                				</div>
-								</div>
-								<div class="col-xs-6 col-md-2 {{isViewMobile ? 'float-rigth-icon' : ''}}">
-									<div class="col-xs-6 col-md-6">                                                                                              
-										<Button class="btn btn-danger pull-right" ng-click="showModalImages()">
-											<i class="fa fa-camera" aria-hidden="true"></i>                                                                                              
-										</Button>                                                                                                                                                
-									</div>                                                                                                                                                       
-									<div class="col-xs-6 col-md-6">                                                                               
-										<Button class="btn btn-danger pull-right" ng-click="deleteAllImage()" ng-disabled="ordenServicio.imagenes.length == 0">                                               
-											<i class="fa fa-trash fa-lg" aria-hidden="true"></i>                                                                                                 
-										</Button>                                                                                                                                                
 									</div>
 								</div>
-							</div>
-						</div>
-						
-						<div class="box-body table-responsive no-padding">
-							<table id="fhNoLabTable" class="table table-striped table-xs table-sm table-hover header-fixed table-exp-resp">
-								<thead>
-									<tr>
-										<th class="wrap-text">NOMBRE</th>
-										<th class="wrap-text">TAMA&Ntilde;O</th>
-										<th class="wrap-text">CLASIFICACI&Oacute;N</th>
-										<th class="wrap-text">TIPO DE DOCUMENTO</th>
-										<th class="wrap-text">FECHA</th>
-										<th class="wrap-text">ACCI&Oacute;N</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr dir-paginate="imgVO in ordenServicio.imagenes | filter: view.filter | orderBy:order:reverse | itemsPerPage: view.rowsPerPage"
-										pagination-id="imagenes">
-										<td class="center">
-											<a tooltip-placement="top"
-												tooltip="{{imgVO.nbExpedienteODS}}">
-												<span>
-													{{imgVO.nbExpedienteODS.length > 14 ? (imgVO.nbExpedienteODS.substr(0,14)+'...') : imgVO.nbExpedienteODS}}
-												</span>
-											</a>
-										</td>		                    	
-										<td class="center"><span>{{imgVO.size | prettySize}}</span></td>
-										<td class="center">
-											<label ng-if="imgVO.nbNivel.length > 44" tooltip-placement="top"
-												tooltip="{{imgVO.nbNivel}}">
-												<a>{{imgVO.nbNivel.length > 44 ? (imgVO.nbNivel.substr(0,44)+'...') : imgVO.nbNivel}}</a>
-											</label>
-											<span ng-if="imgVO.nbNivel.length < 44">{{imgVO.nbNivel}}</span>
-										</td>
-										<td class="center"><span>{{imgVO.tipoExpediente.nbTipoExpediente}}</span></td>
-										<td class="center"><span>{{imgVO.fhCreacion | date : "dd/MM/yyyy" }}</span></td>
-										<td class="text-center tableAnimateIn">
-											<button class="btn btn-box-tool btn-sm btn-danger"
-												tooltip-placement="left"
-												tooltip="Ver imagen" 
-												ng-click="viewImage(imgVO)">
-												<i class="fa fa-eye" aria-hidden="true"></i>
-											</button>
-											<button class="btn btn-box-tool btn-sm btn-danger" 
-												tooltip-placement="left"
-                                                tooltip="Borrar imagen"
-												ng-click="deleteImage(imgVO)">
-												<i class="fa fa-trash" aria-hidden="true"></i>
-											</button>
-                                       </td>
-									</tr>
-									<tr ng-if="(ordenServicio.imagenes | filter:view.filter).length == 0 || ordenServicio.imagenes.length == 0">
-                        				<td colspan="5" class="text-center">
-                            				<h4>{{ordenServicio.imagenes.length == 0 ? 'No se encontraron registros' : 'No se encontraron coincidencias'}}</h4>
-                        				</td>
-                    				</tr>
-								</tbody>
-							</table>
-						</div>
-						<div class="container-fluid">
-                            <div class="fixed-table-pagination" style="display: block;">
-                                <rows-per-page rows="view.rowsPerPage"  array="ordenServicio.imagenes"></rows-per-page>
-                                <div class="pull-right pagination">
-                                    <dir-pagination-controls class="pagination" pagination-id="imagenes"></dir-pagination-controls>
-                                </div>
-                            </div>
-                        </div>
-					</div>
-				</div>
-			</div>
+			                </div>
+			                <div class="box-body table-responsive">
+				                <table id="tabla_listServicio" class="table table-striped table-hover table-xs table-sm" style="overflow: auto; border-collapse: collapse; width: 100%;">
+				                    <thead>
+				                        <tr>
+											<th width="130px" class="wrap-text" sort order="'imgVO.nbExpedienteODS'" by="tabla.order" reverse="view.reverse">NOMBRE</th>
+											<th width="130px" class="wrap-text" sort order="'imgVO.size'" by="tabla.order" reverse="view.reverse">TAMA&Ntilde;O</th>
+											<th width="130px" class="wrap-text" sort order="'imgVO.nbNivel'" by="tabla.order" reverse="view.reverse">CLASIFICACI&Oacute;N</th>
+											<th width="130px" class="wrap-text" sort order="'imgVO.tipoExpediente.nbTipoExpediente'" by="tabla.order" reverse="view.reverse">TIPO DE DOCUMENTO</th>
+											<th width="130px" class="wrap-text" sort order="'imgVO.fhCreacion'" by="tabla.order" reverse="view.reverse">FECHA</th>
+											<th width="130px" class="wrap-text">ACCI&Oacute;N</th>
+				                        </tr>
+				                    </thead>
+				                    <tbody align="center">
+										<tr dir-paginate="imgVO in ordenServicio.imagenes | orderBy:order:reverse | filter: view.filter | itemsPerPage: view.rowsPerPage">
+											<td class="center">
+												<a tooltip-placement="top"
+													tooltip="{{imgVO.nbExpedienteODS}}">
+													<span>
+														{{imgVO.nbExpedienteODS.length > 14 ? (imgVO.nbExpedienteODS.substr(0,14)+'...') : imgVO.nbExpedienteODS}}
+													</span>
+												</a>
+											</td>		                    	
+											<td class="center"><span>{{imgVO.size | prettySize}}</span></td>
+											<td class="center">
+												<label ng-if="imgVO.nbNivel.length > 44" tooltip-placement="top"
+													tooltip="{{imgVO.nbNivel}}">
+													<a>{{imgVO.nbNivel.length > 44 ? (imgVO.nbNivel.substr(0,44)+'...') : imgVO.nbNivel}}</a>
+												</label>
+												<span ng-if="imgVO.nbNivel.length < 44">{{imgVO.nbNivel}}</span>
+											</td>
+											<td class="center"><span>{{imgVO.tipoExpediente.nbTipoExpediente}}</span></td>
+											<td class="center"><span>{{imgVO.fhCreacion | date : "dd/MM/yyyy" }}</span></td>
+											<td class="text-center tableAnimateIn">
+												<button class="btn btn-box-tool btn-sm btn-danger"
+													tooltip-placement="left"
+													tooltip="Ver imagen" 
+													ng-click="viewImage(imgVO)">
+													<i class="fa fa-eye" aria-hidden="true"></i>
+												</button>
+												<button class="btn btn-box-tool btn-sm btn-danger" 
+													tooltip-placement="left"
+													tooltip="Borrar imagen"
+													ng-click="deleteImage(imgVO)">
+													<i class="fa fa-trash" aria-hidden="true"></i>
+												</button>
+										   </td>
+										</tr>
+										<tr ng-if="(ordenServicio.imagenes | filter:view.filter).length == 0 || ordenServicio.imagenes.length == 0">
+											<td colspan="6" class="text-center">
+												<h4>{{ordenServicio.imagenes.length == 0 ? 'No se encontraron registros' : 'No se encontraron coincidencias'}}</h4>
+											</td>
+										</tr>
+									</tbody>
+				                </table>
+				                <div class="container-fluid">
+				                    <div class="fixed-table-pagination">
+				                        <rows-per-page rows="view.rowsPerPage" filtro="view.filter" array="ordenServicio.imagenes"></rows-per-page>
+				                        <dir-pagination-controls class="pull-right pagination-detail"></dir-pagination-controls>
+				                    </div>
+				                </div>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
 		</section>
 		
 		<!-- MODAL CARGA DE IMAGENES -->
@@ -234,9 +236,6 @@
 				<div class="modal-dialog modal-lg">                                                     
 					<div class="modal-content">                                                         
 						<div class="modal-header">                                                      
-							<button type="button" class="close" ng-click="hideModalImages()" aria-label="Close">
-								<span aria-hidden="true">×</span>
-							</button>              
 							<h4 class="modal-title" id="gridSystemModalLabel">Carga de Imagenes de la orden: {{ordenServicio.cdOrdenServicio}} </h4>    
 						</div>                                                                          
 						<div class="modal-body">
@@ -309,6 +308,9 @@
 	            			</div>
 	            			<update-image id-element-up="Encuesta" include="true" show-in-modal="true" param-conf-sav="paramConfSav" max-nu-image="{{paramConfiguracion.maxNuImage}}"
                					param-conf-component="paramConfiguracion" list-images="{{listImages}}"></update-image>
+						</div> 
+						<div class="modal-footer">
+						    <button class="btn bg-red-active btnMargin" type="button" ng-click="hideModalImages()">Cerrar</button>
 						</div>                                                                          
 					</div><!-- /.modal-content -->                                                      
 				</div><!-- /.modal-dialog -->                                                           

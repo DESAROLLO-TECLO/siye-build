@@ -78,6 +78,7 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
         procesoService.activarEncuesta(parseInt(idEncuesta), idord, $scope.stActivarEncuesta).success(function(data){
             if(data){
                 growl.success(mensajeSatsifaccion, {title: 'Encuesta'});
+
             }
             
         }).error(function(error){
