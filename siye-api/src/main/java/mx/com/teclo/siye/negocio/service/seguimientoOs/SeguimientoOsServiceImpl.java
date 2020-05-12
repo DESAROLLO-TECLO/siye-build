@@ -51,34 +51,33 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 
 	@Autowired
 	private ProcesoEncuestaDAO procesoEncuestaDAO;
-	
+
 	@Autowired
 	private IncidenciaDAO incidenciaDAO;
-	
+
 	@Autowired
 	private RptGralSeguimientoService rptGeneral;
-	
+
 	@Autowired
-	private RptDetalleSeguimientoService  rptDetalle;
-	
+	private RptDetalleSeguimientoService rptDetalle;
+
 	@Autowired
 	private RptIncidenciaSeguimientoService rptIncidencia;
-	
+
 	@Autowired
 	private StSeguimientoDAO stSeguimientoDAO;
-	
 
 	private final String ENCURSO = "EN_CURSO", COMPLETA = "COMPLETADAS", PROGRAMADA = "PROGRAMADA",
 			NOPROGRAMADA = "NO_PROGRAMADA", INCIDENCIA = "INCIDENCIAS";
 
 	RutinasTiempoImpl tiempo = new RutinasTiempoImpl();
-	
+
 	@Transactional
 	@Override
 	public List<SeguimientoOrdenServicioVO> getSeguimientoOrdenServicio(Long idSupervisor, List<String> columnas,
 			List<String> colOmitidas, String fInicio, String fFin) {
 		List<SeguimientoOrdenServicioVO> CentroInstalacion = new ArrayList<SeguimientoOrdenServicioVO>();
-		
+
 		// Consultar Centro Instalacion adminsitrados
 		List<Long> idCentroInstalacion = gerenteSupervisorDAO.getIdCentroInstalacion(idSupervisor);
 
@@ -86,7 +85,7 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 			// Consultar informacion de seguimiento de OS , por cantidades, dependiendo las
 			// columnas enviadas desde front
 			StringBuilder consulta = generarConsulta(columnas, colOmitidas, fInicio, fFin);
-			
+
 			CentroInstalacion = ordenServicioDAO.getInfoSeguimientoGeneral(consulta, idCentroInstalacion, columnas);
 			if (!CentroInstalacion.isEmpty()) {
 				for (SeguimientoOrdenServicioVO ci : CentroInstalacion) {
@@ -200,23 +199,28 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 			respuesta.setNbKit(OrdenServicioDTO.getKitInstalacion().getCdKitInstalacion());
 			respuesta.setFinicio(OrdenServicioDTO.getFhAtencionIni());
 			respuesta.setFfin(OrdenServicioDTO.getFhAtencionFin());
-			if(OrdenServicioDTO.getFhAtencionIni()!=null) {
+			if (OrdenServicioDTO.getFhAtencionIni() != null) {
 				DateFormat fechaHora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String fechaInicio = fechaHora.format(OrdenServicioDTO.getFhAtencionIni());
-				String fechaFin = fechaHora.format(OrdenServicioDTO.getFhAtencionFin()!=null ?OrdenServicioDTO.getFhAtencionFin() : new Date());
+				String fechaFin = fechaHora.format(
+						OrdenServicioDTO.getFhAtencionFin() != null ? OrdenServicioDTO.getFhAtencionFin() : new Date());
 				respuesta.setFhDiferencia(tiempo.tiempoEntreDosFechas(fechaInicio, fechaFin));
-			}else {
+			} else {
 				respuesta.setFhDiferencia("SIN INICIAR");
 			}
 			respuesta.setEstatus(OrdenServicioDTO.getStSeguimiento().getNbStSeguimiento());
 			respuesta.setNuPorcentaje(0.0);
 			List<ProcesoDetalleVO> etapas = planProcesoDAO.getEtapasParaSeguimiento(idOrdenServicio);
 			if (!etapas.isEmpty()) {
-				//Consultar avance de encuestas del proceso 
-				for(ProcesoDetalleVO etapa: etapas) {
-					etapa.setEncuestas(procesoEncuestaDAO.getDetalleEncuestaParaNodos(idOrdenServicio, etapa.getIdProceso()));
+				// Consultar avance de encuestas del proceso
+				for (ProcesoDetalleVO etapa : etapas) {
+					etapa.setEncuestas(
+							procesoEncuestaDAO.getDetalleEncuestaParaNodos(idOrdenServicio, etapa.getIdProceso()));
 				}
 				respuesta.setProcesos(etapas);
+				
+				// Consultar stilo de colores para nodos de encuestas dentro del proceso 
+				respuesta.setEstiloNodos(procesoEncuestaDAO.getSignificadoColorNodos());
 			}
 		}
 
@@ -225,20 +229,31 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 
 	@Transactional
 	@Override
-	public List<EncuestaDetalleVO> getDetalleProcesos(Long idOrdenServicio, List<Long> idProceso) {
-		List<EncuestaDetalleVO> respuesta = procesoEncuestaDAO.getDetalleEncuesta(idOrdenServicio, idProceso);
-		if(!respuesta.isEmpty()) {
-			DateFormat fechaHora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String convertido = fechaHora.format(new Date());	
-			for(EncuestaDetalleVO obj: respuesta) {
-				if(obj.getFhInicio() !=null) {
-					String fecha = obj.getFhFin()!=null ? obj.getFecha2() : convertido; 
-					obj.setFhDiferencia(tiempo.tiempoEntreDosFechas(obj.getFecha1(), fecha));
-				}else {
-					obj.setFhDiferencia("SIN INICIAR");
+	public List<ProcesoDetalleVO> getDetalleProcesos(Long idOrdenServicio, List<Long> idProceso) {
+		// Consultar Procesos para grupo de encuestas
+		DateFormat fechaHora = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String convertido = fechaHora.format(new Date());
+
+		List<ProcesoDetalleVO> respuesta = planProcesoDAO.getEtapasParaSeguimiento(idOrdenServicio);
+		if (!respuesta.isEmpty()) {
+			for (ProcesoDetalleVO etapa : respuesta) {
+				// Consultar estatus de las encuestas que tiene ese proceso por orden de
+				// servicio solo iniciadas
+				List<EncuestaDetalleVO> encuestas = procesoEncuestaDAO.getDetalleEncuesta(idOrdenServicio, etapa.getIdProceso()); 
+				if (!encuestas.isEmpty()) {
+					for (EncuestaDetalleVO obj : encuestas) {
+						if (obj.getFhInicio() != null) {
+							String fecha = obj.getFhFin() != null ? obj.getFecha2() : convertido;
+							obj.setFhDiferencia(tiempo.tiempoEntreDosFechas(obj.getFecha1(), fecha));
+						} else {
+							obj.setFhDiferencia("SIN INICIAR");
+						}
+					}
+
+					etapa.setEncuestas(encuestas);
 				}
 			}
-		}	
+		}
 		return respuesta;
 	}
 
@@ -259,51 +274,53 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 
 	@Override
 	public ByteArrayOutputStream getReporteSeguimientoOs(ReporteExcelVO listaObj) {
-		ByteArrayOutputStream respuesta = new ByteArrayOutputStream();		
-		if(listaObj.getNivel().equals("general")){
-			respuesta = rptGeneral.generarReporte(listaObj.getNivelGeneral(), listaObj.getColumnas(), listaObj.getFechaInicio(), listaObj.getFechaFin());
-		}else if(listaObj.getNivel().equals("detalle")) {
-			respuesta = rptDetalle.generarReporte(listaObj.getNivelDetalle(), listaObj.getCentroInstalacion(), listaObj.getFechaInicio(), listaObj.getFechaFin());
-		}else if(listaObj.getNivel().equals("incidencia")) {
-			respuesta = rptIncidencia.generarReporte(listaObj.getNivelIncidencia(), listaObj.getCentroInstalacion(),listaObj.getFechaInicio(), listaObj.getFechaFin());
+		ByteArrayOutputStream respuesta = new ByteArrayOutputStream();
+		if (listaObj.getNivel().equals("general")) {
+			respuesta = rptGeneral.generarReporte(listaObj.getNivelGeneral(), listaObj.getColumnas(),
+					listaObj.getFechaInicio(), listaObj.getFechaFin());
+		} else if (listaObj.getNivel().equals("detalle")) {
+			respuesta = rptDetalle.generarReporte(listaObj.getNivelDetalle(), listaObj.getCentroInstalacion(),
+					listaObj.getFechaInicio(), listaObj.getFechaFin());
+		} else if (listaObj.getNivel().equals("incidencia")) {
+			respuesta = rptIncidencia.generarReporte(listaObj.getNivelIncidencia(), listaObj.getCentroInstalacion(),
+					listaObj.getFechaInicio(), listaObj.getFechaFin());
 		}
 		return respuesta;
 	}
 
-	
 	@Override
 	@Transactional
-	public String hacerCorteDiario(String fecha, Long idUsuario) throws BusinessException{
+	public String hacerCorteDiario(String fecha, Long idUsuario) throws BusinessException {
 		Long ST_CANCELAR_OS = 1L;
 		Date fechaModificacion = new Date();
-		//Coonsultar Centro de Instalacion 
+		// Coonsultar Centro de Instalacion
 		List<Long> idCentroInstalacion = gerenteSupervisorDAO.getIdCentroInstalacion(idUsuario);
-		
-		if(!idCentroInstalacion.isEmpty()) {
-			// Ordenes de Servicio para cancelar 
+
+		if (!idCentroInstalacion.isEmpty()) {
+			// Ordenes de Servicio para cancelar
 			List<OrdenServicioDTO> listaOrden = ordenServicioDAO.hacerCorteDiarioOS(fecha, idCentroInstalacion);
-			
-			if(!listaOrden.isEmpty()) {
-				// Consulta de el nuevo status para las OS que se cancelaran 
-				StSeguimientoDTO seguimientoDTO =  stSeguimientoDAO.findOne(ST_CANCELAR_OS);
-				if(seguimientoDTO!= null) {
-					for(OrdenServicioDTO os: listaOrden) {
+
+			if (!listaOrden.isEmpty()) {
+				// Consulta de el nuevo status para las OS que se cancelaran
+				StSeguimientoDTO seguimientoDTO = stSeguimientoDAO.findOne(ST_CANCELAR_OS);
+				if (seguimientoDTO != null) {
+					for (OrdenServicioDTO os : listaOrden) {
 						os.setFhModificacion(fechaModificacion);
 						os.setIdUsrModifica(idUsuario);
 						os.setStSeguimiento(seguimientoDTO);
-						ordenServicioDAO.update(os);					
+						ordenServicioDAO.update(os);
 					}
-				   return "Cancelacion de Ordenes de Servicio correcta";
-				}else {
-					// error  sin tipo de cancelacion 
+					return "Cancelación de Ordenes de Servicio correcta";
+				} else {
+					// error sin tipo de cancelacion
 					throw new BusinessException("No existe el estatus de cancelación ");
 				}
-			}else {
-				// sin OS 
+			} else {
+				// sin OS
 				throw new BusinessException("No tiene Ordenes de Servicio para terminar ");
 			}
-		}else {
-			// sin centro de instalacion 
+		} else {
+			// sin centro de instalacion
 			throw new BusinessException("No tiene Centro de Instalación Asignados ");
 		}
 	}
@@ -313,82 +330,83 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 	public DetalleImagenesOS getDetalleImgOS(Long idOrdenServicio, Long valor, String nivel, String clase) {
 		DetalleImagenesOS respuesta = new DetalleImagenesOS();
 		OrdenServicioDTO OrdenServicioDTO = ordenServicioDAO.findOne(idOrdenServicio);
-		if(OrdenServicioDTO!=null) {
+		if (OrdenServicioDTO != null) {
 			respuesta.setIdOrdenServicio(OrdenServicioDTO.getIdOrdenServicio());
 			respuesta.setCdOrdenServicio(OrdenServicioDTO.getCdOrdenServicio());
 			respuesta.setCentroInstalacion(OrdenServicioDTO.getCentroInstalacion().getNbCentroInstalacion());
 		}
-		
-		switch(nivel) {
+
+		switch (nivel) {
 		case "pregunta":
-			List<PreguntasDetalleVO> nivelPregunta = procesoEncuestaDAO.getSeguimientoDetallePregunta(idOrdenServicio, valor);
-			if(!nivelPregunta.isEmpty()) {
-				for(PreguntasDetalleVO pregunta: nivelPregunta) {
+			List<PreguntasDetalleVO> nivelPregunta = procesoEncuestaDAO.getSeguimientoDetallePregunta(idOrdenServicio,
+					valor);
+			if (!nivelPregunta.isEmpty()) {
+				for (PreguntasDetalleVO pregunta : nivelPregunta) {
 					pregunta.setListaImagen(getImagenes(idOrdenServicio, pregunta.getIdPegunta(), nivel));
 				}
 			}
 			respuesta.setNivelPreguntas(nivelPregunta);
 			break;
-			
+
 		case "encuesta":
 			respuesta.setNivelEncuesta(getImagenes(idOrdenServicio, valor, nivel));
 			break;
-			
+
 		case "ordenservicio":
 			respuesta.setNivelOrdenServicio(getImagenes(idOrdenServicio, valor, nivel));
 			break;
 		}
-		
+
 		return respuesta;
 	};
-	
-	public List<ImagenVO> getImagenes(Long idOrdenServicio, Long valor, String nivel){
+
+	public List<ImagenVO> getImagenes(Long idOrdenServicio, Long valor, String nivel) {
 		List<ImagenVO> respuesta = new ArrayList<ImagenVO>();
-		StringBuilder consulta = new StringBuilder("SELECT img.ID_EXPEDIENTE_ODS AS idExpedienteODS," + 
-				"img.ID_ORDEN_SERVICIO AS idOrdenServicio," + 
-				"img.ID_ODS_ENCUESTA AS idOdsEncuesta,"+				
-				"img.ID_PROCESO  AS idProceso," + 
-				"img.ID_PREGUNTA AS idPregunta," + 
-				"img.NB_EXPEDIENTE_ODS AS nbExpedienteODS," + 
-				"img.CD_TIPO_ARCHIVO AS cdTipoArchivo," + 
-				"img.LB_EXPEDIENTE_ODS AS lbExpedienteODS, " + 
-				"img.ID_TIPO_EXPEDIENTE AS idTipoExpediente, "+
-				"img.ID_INCIDENCIA AS idIncidencia,"+
-				"incidencia.TX_INCIDENCIA AS txIncidencia,"
-		        +"pref.CD_COLOR AS colorPrioridad,"
-		        +"pref.CD_ST_SEGUIMIENTO AS nbPrioridad"+
-				" FROM TIE050D_IE_EXPEDIENTES_IMG img "
-				+" LEFT JOIN TIE051D_IE_INCIDENCIA incidencia ON (img.ID_INCIDENCIA = incidencia.ID_INCIDENCIA) "
-				+" LEFT JOIN TIE048C_IE_ST_SEGUIMIENTO pref ON (incidencia.ID_PRIORIDAD = pref.ID_ST_SEGUIMIENTO)"
-				+ "WHERE img.ID_ORDEN_SERVICIO="+idOrdenServicio +" AND img.ST_ACTIVO=1 ");
-		
-		switch(nivel) {		
+		StringBuilder consulta = new StringBuilder("SELECT img.ID_EXPEDIENTE_ODS AS idExpedienteODS,"
+				+ "img.ID_ORDEN_SERVICIO AS idOrdenServicio," + "img.ID_ODS_ENCUESTA AS idOdsEncuesta,"
+				+ "img.ID_PROCESO  AS idProceso," + "img.ID_PREGUNTA AS idPregunta,"
+				+ "img.NB_EXPEDIENTE_ODS AS nbExpedienteODS," + "img.CD_TIPO_ARCHIVO AS cdTipoArchivo,"
+				+ "img.LB_EXPEDIENTE_ODS AS lbExpedienteODS, " + "img.ID_TIPO_EXPEDIENTE AS idTipoExpediente, "
+				+ "img.ID_INCIDENCIA AS idIncidencia," + "incidencia.TX_INCIDENCIA AS txIncidencia,"
+				+ "pref.CD_COLOR AS colorPrioridad," + "pref.CD_ST_SEGUIMIENTO AS nbPrioridad"
+				+ " FROM TIE050D_IE_EXPEDIENTES_IMG img "
+				+ " LEFT JOIN TIE051D_IE_INCIDENCIA incidencia ON (img.ID_INCIDENCIA = incidencia.ID_INCIDENCIA) "
+				+ " LEFT JOIN TIE048C_IE_ST_SEGUIMIENTO pref ON (incidencia.ID_PRIORIDAD = pref.ID_ST_SEGUIMIENTO)  ");
+
+		switch (nivel) {
 		case "ordenservicio":
+			consulta.append("WHERE img.ID_ORDEN_SERVICIO=" + idOrdenServicio + " AND img.ST_ACTIVO=1");
 			consulta.append(" AND img.ID_PROCESO IS NULL AND img.ID_ODS_ENCUESTA IS NULL AND img.ID_PREGUNTA IS NULL");
 			respuesta = expedienteImgDAO.getImagenPorNivel(consulta);
 			break;
-			
+
 		case "proceso":
-			consulta.append(" AND img.ID_PROCESO="+valor+ " AND img.ID_ODS_ENCUESTA IS NULL AND img.ID_PREGUNTA IS NULL");
+			consulta.append("WHERE img.ID_ORDEN_SERVICIO=" + idOrdenServicio + " AND img.ST_ACTIVO=1");
+			consulta.append(
+					" AND img.ID_PROCESO=" + valor + " AND img.ID_ODS_ENCUESTA IS NULL AND img.ID_PREGUNTA IS NULL");
 			respuesta = expedienteImgDAO.getImagenPorNivel(consulta);
 			break;
-			
+
 		case "encuesta":
-			consulta.append("AND img.ID_ODS_ENCUESTA="+ valor +" AND img.ID_PREGUNTA IS NULL");
+			consulta.append(
+					"LEFT JOIN TIE002D_EE_ODS_ENCUESTA encuesta ON (img.ID_ODS_ENCUESTA  = encuesta.ID_ODS_ENCUESTA)");
+			consulta.append("WHERE img.ID_ORDEN_SERVICIO=" + idOrdenServicio
+					+ " AND img.ST_ACTIVO=1 AND encuesta.ID_ENCUESTA =" + valor + " AND img.ID_PREGUNTA IS NULL");
 			respuesta = expedienteImgDAO.getImagenPorNivel(consulta);
 			break;
-			
+
 		case "pregunta":
-			consulta.append("AND img.ID_PREGUNTA="+valor);
+			consulta.append("WHERE img.ID_ORDEN_SERVICIO=" + idOrdenServicio + " AND img.ST_ACTIVO=1");
+			consulta.append("AND img.ID_PREGUNTA=" + valor);
 			respuesta = expedienteImgDAO.getImagenPorNivel(consulta);
 			break;
-			
+
 		case "incidencia":
-			consulta.append(" AND img.ID_INCIDENCIA="+valor);
+			consulta.append(" AND img.ID_INCIDENCIA=" + valor);
 			respuesta = expedienteImgDAO.getImagenPorNivel(consulta);
 			break;
 		}
-		
+
 		return respuesta;
 	}
 

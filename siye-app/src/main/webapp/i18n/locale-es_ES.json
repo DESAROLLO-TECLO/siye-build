@@ -172,7 +172,7 @@
                 "validacion":"El rango de fechas es requerido."
             },
             "opciones":"OPCIONES SELECCIONADAS",
-            "corte":"CORTE AL DIA"
+            "corte":"Corte al día"
         },
         "resultadosGral":{
             "titulo":{
@@ -195,7 +195,7 @@
             },
             "label":{
                 "incidencia":"Incidencia",
-                "evidencia":"Evidencia",
+                "evidencia":"Expediente",
                 "os":"ORDEN SERVICIO",
                 "ci":"CENTRO INSTALACION",
                 "estatus":"ESTATUS",

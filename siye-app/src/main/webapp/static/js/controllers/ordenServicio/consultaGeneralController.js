@@ -376,8 +376,6 @@ function($scope, showAlert, $location, growl, consultaGeneralService,encuestaSer
     
 	$scope.redirigir = function(id_orden){
 		$location.path('/detalleConsulta/'+id_orden);
-			
-	
 	};
 	
 	if(deDetalle)

@@ -190,7 +190,6 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
                 $scope.evidenciaVO.verEvidencia = true;
                 $scope.seguimientoVO.busquedaOk = false;
                 $scope.seguimientoVO.verDetalleOS = false;
-                console.log("datos de insidencia ", data )
             }).error(function(data){
                 growl.error(data.message)
             })
@@ -219,7 +218,7 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
         let fecha =  moment().endOf('day').format('DD/MM/YYYY');
         $scope.showConfirmacion("¿Desea Realizar el Corte del dia "+ fecha +" ?", function () {             
             seguimientoOsService.hacerCorteDiario(fecha).success(function(data){
-                growl.success(data.message);
+                growl.success(data);
             }).error(function(data){
                 growl.info(data.message);
             });

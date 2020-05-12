@@ -1,11 +1,11 @@
 angular.module(appTeclo)
 .controller("procesoController",
-function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,procesoInfo,idord,idpro,encuestaService) {
+function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,procesoInfo,idord,idpro,encuestaService,nbOrden) {
     
-    $rootScope.idProceso = procesoInfo.data[0].idProceso.idProceso;
+
     $scope.idOrdenServicio=idord;
 	$scope.idProcesoActual=idpro;
-    $scope.numOrden = $rootScope.numOS;
+    $scope.numOrden = idord;
     $scope.encuestas=procesoInfo.data;
     $scope.formato = '0';
     $scope.tiempoTranscurridoText = "Sin Iniciar";
@@ -16,9 +16,9 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
     $scope.numMaxImgPro = procesoInfo.data[0].idProceso.nuMaxImagenes;    
     $scope.listImagesPro = [];
     $scope.paramProcImg = new Object({
-        idOrdenServ: $rootScope.idOrdenServ,
-        cdOrdenServicio: $rootScope.cdOrdenServicio,
-        idProceso: $rootScope.idProceso
+        idOrdenServ: idord,
+        cdOrdenServicio: nbOrden,
+        idProceso: procesoInfo.data[0].idProceso.idProceso
     });
     $scope.paramConfigImgPro = new Object({
         maxSizeMb: 1,
@@ -26,7 +26,8 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
     });
 
     if(procesoInfo != null){
-        $scope.nombreEtapa = "Orden de Servicio: " + $rootScope.nomOrdenServicio + " - Proceso: " + procesoInfo.data[0].idProceso.nbProceso;
+        $scope.nombreEtapa = "Orden de Servicio: " + nbOrden + " - Proceso: " + procesoInfo.data[0].idProceso.nbProceso;
+        $scope.nombreProceso=procesoInfo.data[0].idProceso.nbProceso;
         $scope.dataEtapa = procesoInfo.data;
         $rootScope.nomSeguimiento = $scope.nombreEtapa;
         $scope.tiempoTranscurrido = 0;
@@ -68,7 +69,7 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
 
     $scope.activarEncuesta = function(idEncuesta){
         $scope.stActivarEncuesta = !$scope.stActivarEncuesta;
-        procesoService.activarEncuesta(parseInt(idEncuesta), $rootScope.idOrSer, $scope.stActivarEncuesta).success(function(data){
+        procesoService.activarEncuesta(parseInt(idEncuesta), idord, $scope.stActivarEncuesta).success(function(data){
             if(data){
                 growl.success('La encuesta fue activada', {title: 'Encuesta Activada'});
             }else{

@@ -73,7 +73,7 @@
                                             <label>
                                                 Cita Programada: 
                                                 <span class="etapa-texto">
-                                                    {{fcita | date:" dd / MM / yyyy - HH:MM"}}
+                                                    {{fcita | date:" dd / MM / yyyy - HH:mm:ss"}}
                                                 </span>
                                             </label>
                                         </div>
@@ -327,7 +327,7 @@
                             <div class="row">
                                 <div class="col-sm-6 col-md-4" ng-repeat="item in dataPlan">
                                     <a ng-class="{'inactiv-click' : item.statusProceos == false}"
-                                        href="#/etapas/proceso/{{item.proceso.idProceso}}/{{dataEtapa.idOrdenServicio}}" 
+                                        href="#/etapas/proceso/{{item.proceso.idProceso}}/{{dataEtapa.idOrdenServicio}}/{{cdOrdenServicio}}" 
                                         data-toggle="tooltip" data-placement="bottom" title="{{item.proceso.nbProceso}}">
                                         <div class="dash-info"
                                             ng-class="{'fn-noini': item.stSeguimiento.cdColor == 'fn-noini',

@@ -58,4 +58,11 @@ function($http, config) {
    this.setParams = function(params){
    	paramsCof=params;
    };
+   
+   this.getInfoDetalleOSNivel = function(tipoBusqueda,valor){
+		return $http.get(ENDPOINT + "/getInfoOSNivel", {
+				params:{"tipoBusqueda": tipoBusqueda,
+						"valor": valor}
+		});
+	};
 });

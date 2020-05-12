@@ -8,6 +8,7 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.monitoreo.EncuestaDetaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EstiloNodosVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
 
 public interface ProcesoEncuestaDAO extends BaseDao<ProcesoEncuestaDTO>{
@@ -35,7 +36,7 @@ public interface ProcesoEncuestaDAO extends BaseDao<ProcesoEncuestaDTO>{
 	 * @return List<EncuestaDetalleVO>
 	 *metodo para consultar el avance de las encuestas de una os y proceso en especifico
 	 * */
-	public List<EncuestaDetalleVO> getDetalleEncuesta(Long idOrdenServicio, List<Long> idProceso);
+	public List<EncuestaDetalleVO> getDetalleEncuesta(Long idOrdenServicio, Long idProceso);
 	
 
 	/**
@@ -75,6 +76,14 @@ public interface ProcesoEncuestaDAO extends BaseDao<ProcesoEncuestaDTO>{
 	 *  metodo para consultar avance de OS por etapa y dentro de cada etapa us encuestas 
 	 * */
 	public List<EncuestaDetalleVO> getDetalleEncuestaParaNodos(Long idOrdenServicio, Long idProceso);
+	
+	
+	/**
+	 * @Author Maverick
+	 * @return List<EstiloNodosVO>
+	 *  metodo para consultar significado de cada color de estatus aplicado en las encuestas de proceso  
+	 * */
+	public List<EstiloNodosVO> getSignificadoColorNodos();
 
 
 }

@@ -2,6 +2,7 @@ package mx.com.teclo.siye.api.rest.expedienteImg;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,7 +141,7 @@ public class ExpedienteImgRestController {
 	public ResponseEntity<CargaExpedienteImgVO> getImgExpedienteNivel(
 			@RequestParam(value ="tipoBusqueda") String tipoBusqueda,
 			@RequestParam(value ="valor") String valor) throws NotFoundException{
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 		List <String> transportistasOrden=new ArrayList<String>();
 		List <String> instaladorOrden=new ArrayList<String>();
 		List <String> supervisorOrden=new ArrayList<String>();
@@ -149,132 +150,163 @@ public class ExpedienteImgRestController {
 			throw new NotFoundException("No se encontro expediente relacionado");
 		}
 		
-		InfoEvidenciaNivelVO infoEvidencia = new InfoEvidenciaNivelVO();
+		InfoEvidenciaNivelVO infoEvidenciaOrden = new InfoEvidenciaNivelVO();
 		
 		List<ImagenVO> imgOS = expedienteImg.getInfoExpedienteByNivel(
 				respuesta.get(0).getIdOrdenServicio(), null, "ORDEN_SERVICIO");
-		infoEvidencia.setImagenes(imgOS);
-		infoEvidencia.setFechaIni(sdf.format(respuesta.get(0).getFechaInicio()!=null?respuesta.get(0).getFechaInicio():""));
-		infoEvidencia.setFechaFin(sdf.format(respuesta.get(0).getFechaFin()!=null?respuesta.get(0).getFechaFin():""));
-		//infoEvidencia.setNbSupervisor("");
-		//infoEvidencia.setNbInstalador("");
-		//infoEvidencia.setNbTrasportista("");
-		infoEvidencia.setTieneImagen(!imgOS.isEmpty() || imgOS!=null ? 1 : 0);
-		respuesta.get(0).setInfoEvidencia(infoEvidencia);
-		
+		infoEvidenciaOrden.setImagenes(imgOS);
+		infoEvidenciaOrden.setFechaIni(respuesta.get(0).getFechaInicio()!=null?sdf.format(respuesta.get(0).getFechaInicio()):"");
+		infoEvidenciaOrden.setFechaFin(respuesta.get(0).getFechaFin()!=null?sdf.format(respuesta.get(0).getFechaFin()):"");
+		infoEvidenciaOrden.setTieneImagen(imgOS.size()>0 ? 1 : 0);
 		for(ExpedienteNivelProcesoVO proceso : respuesta.get(0).getProcesos()) {
-			infoEvidencia = new InfoEvidenciaNivelVO();
+			InfoEvidenciaNivelVO infoEvidenciaProceso = new InfoEvidenciaNivelVO();
 			List <String> transportistasProceso=new ArrayList<String>();
 			List <String> instaladorProceso=new ArrayList<String>();
 			List <String> supervisorProceso=new ArrayList<String>();
 			
 			List<ImagenVO> imgPRO = expedienteImg.getInfoExpedienteByNivel(
 					respuesta.get(0).getIdOrdenServicio(), proceso.getIdProceso(), "PROCESO");
-			infoEvidencia.setImagenes(imgPRO);
+			infoEvidenciaProceso.setImagenes(imgPRO);
 			
 			OrdenProcesoDTO ordenProcesoDTO=ordenProcesoDAO.getProceso(respuesta.get(0).getIdOrdenServicio(), proceso.getIdProceso());
 			if(ordenProcesoDTO!=null)
 					{
-				infoEvidencia.setFechaIni(sdf.format(ordenProcesoDTO.getFhInicioProceso()!=null?ordenProcesoDTO.getFhInicioProceso():""));
-				infoEvidencia.setFechaFin(sdf.format(ordenProcesoDTO.getFhInicioProceso()!=null?ordenProcesoDTO.getFhInicioProceso():""));
+				infoEvidenciaProceso.setFechaIni(ordenProcesoDTO.getFhInicioProceso()!=null?sdf.format(ordenProcesoDTO.getFhInicioProceso()):"");
+				infoEvidenciaProceso.setFechaFin(ordenProcesoDTO.getFhFinProceso()!=null?sdf.format(ordenProcesoDTO.getFhFinProceso()):"");
 					}
-			infoEvidencia.setTieneImagen(!imgPRO.isEmpty() || imgPRO!=null ? 1 : 0);
-			proceso.setInfoEvidencia(infoEvidencia);
+			infoEvidenciaProceso.setTieneImagen(imgPRO.size()>0 ? 1 : 0);
 			
 			for(ExpedienteNivelEncuestaVO encuesta : proceso.getListEncuestas()) {
-				List<ImagenVO> imgENC = expedienteImg.getInfoExpedienteByNivel(
-						respuesta.get(0).getIdOrdenServicio(), encuesta.getIdEncuesta(), "ENCUESTA");
-				infoEvidencia.setImagenes(imgENC);
+				InfoEvidenciaNivelVO infoEvidenciaEncuesta = new InfoEvidenciaNivelVO();
+				List<ImagenVO> imgENC=new ArrayList<ImagenVO>();
 				UsuarioEncuestaDetalleDTO usuarioEncuestaDetalleDTO=encuestaDetalleDAO.getEncuestaDetalle(encuesta.getIdEncuesta(), respuesta.get(0).getIdOrdenServicio());
 				if(usuarioEncuestaDetalleDTO!=null)
 				{
+					imgENC = expedienteImg.getInfoExpedienteByNivel(
+							respuesta.get(0).getIdOrdenServicio(), encuesta.getIdEncuesta(), "ENCUESTA");
+					infoEvidenciaEncuesta.setImagenes(imgENC);
 				List<UsuarioEncuestaIntentosDTO> usuarioEncuestaIntentosDTO=usuarioEncuestaIntentoDAO.usuarioEncuesta(usuarioEncuestaDetalleDTO.getIdUsuarioEncuesta());
 				if(usuarioEncuestaIntentosDTO!=null)
 				{
-					infoEvidencia.setFechaIni(sdf.format(usuarioEncuestaIntentosDTO.get(0).getFhInicio()!=null?usuarioEncuestaIntentosDTO.get(0).getFhInicio():""));
-					infoEvidencia.setFechaFin(sdf.format(usuarioEncuestaIntentosDTO.get(0).getFhFin()!=null?usuarioEncuestaIntentosDTO.get(0).getFhFin():""));
+					infoEvidenciaEncuesta.setFechaIni(usuarioEncuestaIntentosDTO.get(0).getFhInicio()!=null?sdf.format(usuarioEncuestaIntentosDTO.get(0).getFhInicio()):"");
+					infoEvidenciaEncuesta.setFechaFin(usuarioEncuestaIntentosDTO.get(0).getFhFin()!=null?sdf.format(usuarioEncuestaIntentosDTO.get(0).getFhFin()):"");
 					IeStUsuEncuIntenDTO infoIntsSuperTrans=ieStUsuEncuIntenDAO.getInfoByUsuEncInt(usuarioEncuestaIntentosDTO.get(0).getIdUsuEncuIntento());
 					if(infoIntsSuperTrans != null) {
 						List <String> transportistas=new ArrayList<String>();
 						List <String> instalador=new ArrayList<String>();
 						List <String> supervisor=new ArrayList<String>();
 						transportistas.add(infoIntsSuperTrans.getIdVehiculoConductor().getConductor().getNbConductor()+" "+infoIntsSuperTrans.getIdVehiculoConductor().getConductor().getNbApepatConductor()+" "+infoIntsSuperTrans.getIdVehiculoConductor().getConductor().getNbApematConductor());
-						infoEvidencia.setNbTrasportista(transportistas);
+						infoEvidenciaEncuesta.setNbTrasportista(transportistas);
 						instalador.add(infoIntsSuperTrans.getIdRHInstalador().getNbPersona()+" "+infoIntsSuperTrans.getIdRHInstalador().getNbPatPersona()+" "+infoIntsSuperTrans.getIdRHInstalador().getNbMatPersona());
-						infoEvidencia.setNbInstalador(instalador);
+						infoEvidenciaEncuesta.setNbInstalador(instalador);
 						UsuarioDTO usuario = usuarioDAO.findUserById(infoIntsSuperTrans.getIdGerenteSuoervisor().getSupervisor(),"SIE");
 						if(usuario!=null) {
 						supervisor.add(usuario.getNbUsuario()+" "+usuario.getNbApaterno()+" "+usuario.getNbApaterno());
-						infoEvidencia.setNbSupervisor(supervisor);
+						infoEvidenciaEncuesta.setNbSupervisor(supervisor);
 						}
 						}
 				}
 				}
 
-				infoEvidencia.setTieneImagen(!imgENC.isEmpty() || imgENC!=null ? 1 : 0);
-				encuesta.setInfoEvidencia(infoEvidencia);
+				infoEvidenciaEncuesta.setTieneImagen(imgENC.size()>0 ? 1 : 0);
+				encuesta.setInfoEvidencia(infoEvidenciaEncuesta);
 				
 				for(ExpedienteNivelPreguntaVO pregunta : encuesta.getListPreguntas()) {
+					InfoEvidenciaNivelVO infoEvidenciaPregunta = new InfoEvidenciaNivelVO();
 					List<ImagenVO> imgPREG = expedienteImg.getInfoExpedienteByNivel(
 							respuesta.get(0).getIdOrdenServicio(), pregunta.getIdPregunta(), "PREGUNTA");
-					infoEvidencia.setImagenes(imgENC);
-					infoEvidencia.setNbSupervisor(encuesta.getInfoEvidencia().getNbSupervisor());
-					infoEvidencia.setNbInstalador(encuesta.getInfoEvidencia().getNbInstalador());
-					infoEvidencia.setNbTrasportista(encuesta.getInfoEvidencia().getNbTrasportista());
-					infoEvidencia.setTieneImagen(!imgPREG.isEmpty() || imgPREG!=null ? 1 : 0);
-					encuesta.setInfoEvidencia(infoEvidencia);
+					infoEvidenciaPregunta.setImagenes(imgPREG);
+					infoEvidenciaPregunta.setNbSupervisor(encuesta.getInfoEvidencia().getNbSupervisor()!=null?encuesta.getInfoEvidencia().getNbSupervisor():new ArrayList<String>());
+					infoEvidenciaPregunta.setNbInstalador(encuesta.getInfoEvidencia().getNbInstalador()!=null?encuesta.getInfoEvidencia().getNbInstalador():new ArrayList<String>());
+					infoEvidenciaPregunta.setNbTrasportista(encuesta.getInfoEvidencia().getNbTrasportista()!=null?encuesta.getInfoEvidencia().getNbTrasportista():new ArrayList<String>());
+					infoEvidenciaPregunta.setTieneImagen(imgPREG.size()>0 ? 1 : 0);
+					pregunta.setInfoEvidencia(infoEvidenciaPregunta);
 				}
-				
+				if(encuesta.getInfoEvidencia().getNbTrasportista()!=null)
 				transportistasProceso.add(encuesta.getInfoEvidencia().getNbTrasportista().get(0));
+				if(encuesta.getInfoEvidencia().getNbInstalador()!=null)
 				instaladorProceso.add(encuesta.getInfoEvidencia().getNbInstalador().get(0));
+				if(encuesta.getInfoEvidencia().getNbSupervisor()!=null)
 				supervisorProceso.add(encuesta.getInfoEvidencia().getNbSupervisor().get(0));
 
 			}
-			if(transportistasProceso!=null)
+			if(transportistasProceso.size()>0)
 			{
-             List <String> transportistasProcesoNew=new ArrayList<String>();
-             transportistasProcesoNew.add(transportistasProceso.get(0));
-             int tamaño=0;
-		            for (int x = 1; x < transportistasProceso.size(); x++) {
-		            	tamaño=transportistasProcesoNew.size();
-		                if (!transportistasProcesoNew.get(tamaño-1).equals(transportistasProceso.get(x))) {
-		                	transportistasProcesoNew.add(transportistasProceso.get(x));
-		                }
-		            }
+				HashSet<String> hashSet = new HashSet<String>(transportistasProceso);
+				transportistasProceso.clear();
+				transportistasProceso.addAll(hashSet);
 	    
-		       infoEvidencia.setNbTrasportista(transportistasProcesoNew);
+		    infoEvidenciaProceso.setNbTrasportista(transportistasProceso);
 			}
-			if(instaladorProceso!=null)
+			if(instaladorProceso.size()>0)
 			{
-             List <String> instaladorProcesonEW=new ArrayList<String>();
-             instaladorProcesonEW.add(instaladorProceso.get(0));
-             int tamaño=0;
-		            for (int x = 1; x < instaladorProceso.size(); x++) {
-		            	tamaño=instaladorProcesonEW.size();
-		                if (!instaladorProcesonEW.get(tamaño-1).equals(instaladorProceso.get(x))) {
-		                	instaladorProcesonEW.add(instaladorProceso.get(x));
-		                }
-		            }
+				HashSet<String> hashSet = new HashSet<String>(instaladorProceso);
+				instaladorProceso.clear();
+				instaladorProceso.addAll(hashSet);
 	    
-		            infoEvidencia.setNbSupervisor(instaladorProcesonEW);
+		            infoEvidenciaProceso.setNbSupervisor(instaladorProceso);
 			}
-			if(supervisorProceso!=null)
+			if(supervisorProceso.size()>0)
 			{
-             List <String> supervisorProcesoNew=new ArrayList<String>();
-             supervisorProcesoNew.add(supervisorProceso.get(0));
-             int tamaño=0;
-		            for (int x = 1; x < supervisorProceso.size(); x++) {
-		            	tamaño=supervisorProcesoNew.size();
-		                if (!supervisorProcesoNew.get(tamaño-1).equals(supervisorProceso.get(x))) {
-		                	supervisorProcesoNew.add(supervisorProceso.get(x));
-		                }
-		            }
+				HashSet<String> hashSet = new HashSet<String>(supervisorProceso);
+				supervisorProceso.clear();
+				supervisorProceso.addAll(hashSet);
 	    
-		            infoEvidencia.setNbInstalador(supervisorProcesoNew);
+		            infoEvidenciaProceso.setNbInstalador(supervisorProceso);
 			}
 			
+			proceso.setInfoEvidencia(infoEvidenciaProceso);
+			
+			if(proceso.getInfoEvidencia().getNbTrasportista()!=null)
+				for(String transportista:proceso.getInfoEvidencia().getNbTrasportista())
+				{
+				transportistasOrden.add(transportista);
+				}
+			
+			if(proceso.getInfoEvidencia().getNbInstalador()!=null)
+				for(String instalador:proceso.getInfoEvidencia().getNbInstalador())
+				{
+					instaladorOrden.add(instalador);
+				}
+			
+			if(proceso.getInfoEvidencia().getNbSupervisor()!=null)
+				for(String supervisor:proceso.getInfoEvidencia().getNbSupervisor())
+				{
+					supervisorOrden.add(supervisor);
+				}
+
 		}
 		
+		if(transportistasOrden.size()>0)
+		{
+			HashSet<String> hashSet = new HashSet<String>(transportistasOrden);
+			transportistasOrden.clear();
+			transportistasOrden.addAll(hashSet);
+	    	
+			infoEvidenciaOrden.setNbSupervisor(transportistasOrden);
+
+		}
+		
+		if(instaladorOrden.size()>0)
+		{
+			HashSet<String> hashSet = new HashSet<String>(instaladorOrden);
+			instaladorOrden.clear();
+			instaladorOrden.addAll(hashSet);
+			
+	        infoEvidenciaOrden.setNbInstalador(instaladorOrden);
+		}
+		
+		if(supervisorOrden.size()>0)
+		{
+			HashSet<String> hashSet = new HashSet<String>(supervisorOrden);
+			supervisorOrden.clear();
+			supervisorOrden.addAll(hashSet);
+	    		
+	    		infoEvidenciaOrden.setNbTrasportista(supervisorOrden);
+
+		}
+
+		respuesta.get(0).setInfoEvidencia(infoEvidenciaOrden);
 		respuesta.get(0).setImagenes(null);
 		
 		return new ResponseEntity<CargaExpedienteImgVO>(respuesta.get(0), HttpStatus.OK);
