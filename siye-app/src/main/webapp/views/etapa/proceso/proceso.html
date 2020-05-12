@@ -68,7 +68,7 @@
                             <div class="col-sm-6 col-md-3" ng-repeat="item in dataEtapa">
                                 <div ng-if="item.idEncuesta.cdEncuesta != 'SAT02' && item.idEncuesta.cdEncuesta != 'SAT01'">
                                     <a ng-class="{'inactiv-click' : item.stActivaMostrar == false}" 
-                                    href="#/etapas/proceso/encuesta/{{item.idEncuesta.idEncuesta}}/{{idOrdenServicio}}/{{idProcesoActual}}" 
+                                    href="#/etapas/proceso/encuesta/{{item.idEncuesta.idEncuesta}}/{{idOrdenServicio}}/{{idProcesoActual}}/{{nombreProceso}}" 
                                     data-toggle="tooltip" data-placement="bottom" title="{{item.idEncuesta.txEncuesta}}" >
                                         <div class="dash-info" 
                                             ng-class="{'fn-noini': item.stSeguimiento.cdColor == 'fn-noini',
