@@ -369,12 +369,26 @@
 									</td>
 									<td class="center">{{orden.plan.nbPlan}}</td>
 									<td class="center" ng-show="orden.idOrigenOds==1 || orden.idOrigenOds==null">Lote:
-										{{orden.loteOrdenServicio.nbArchivoFinal}}</td>
+											<span class="lbUser text-truncate" tooltip-placement="bottom"
+                                                tooltip="Lote: {{orden.loteOrdenServicio.nbArchivoFinal}}"
+                                            	ng-if="(orden.loteOrdenServicio.nbArchivoFinal).length > 10">
+                                            	Lote: {{orden.loteOrdenServicio.nbArchivoFinal | limitTo:10}}...
+                                            </span>
+											<span class="lbUser text-truncate" ng-if="(orden.loteOrdenServicio.nbArchivoFinal).length <= 10">
+												Lote: {{orden.loteOrdenServicio.nbArchivoFinal}}
+											</span>
 									<td class="center" ng-show="orden.idOrigenOds==2">Incidencia:
 										{{orden.cdOrdenServicio}}</td>
 									<td class="center">{{orden.proceso==null?"SIN PROCESO":orden.proceso.nbProceso}}
 									</td>
-								</tr>
+											<span class="lbUser text-truncate" tooltip-placement="bottom"
+                                                tooltip="Incidencia: {{orden.cdOrdenServicio}}"
+                                            	ng-if="(orden.cdOrdenServicio).length > 10">
+                                            	Incidencia: {{orden.cdOrdenServicio | limitTo:10}}...
+                                            </span>
+											<span class="lbUser text-truncate" ng-if="(orden.cdOrdenServicio).length <= 10">
+												Incidencia: {{orden.cdOrdenServicio}}
+											</span>	
 								<tr
 								ng-show="(listOrden | filter:tabla.view.filterSearchVal).length < 1">
 								<td colspan="12" class="center">
