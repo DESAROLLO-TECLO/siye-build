@@ -271,9 +271,11 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	@Override
 	@Transactional
 	public OrdenServicioVO findOrdenServiciobyCD_ORDEN_SERVICIO(String  cdOrdenServicio) throws NotFoundException, BusinessException {
-		OrdenServicioVO osVo = new OrdenServicioVO();
+		OrdenServicioVO osVo = null; 
 		OrdenServicioDTO osDto = ordenServicioDAO.obtenerOrdenServicioCD_ORDEN_SERVICIO(cdOrdenServicio);
-		osVo = ResponseConverter.copiarPropiedadesFull(osDto, OrdenServicioVO.class);
+		if(osDto!=null) {
+			osVo = ResponseConverter.copiarPropiedadesFull(osDto, OrdenServicioVO.class);
+		}		
 		return osVo;
 	}
 	
