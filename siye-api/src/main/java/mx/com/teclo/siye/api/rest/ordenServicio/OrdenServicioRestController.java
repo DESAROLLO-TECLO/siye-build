@@ -1,15 +1,11 @@
 package mx.com.teclo.siye.api.rest.ordenServicio;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,13 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
-import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.negocio.service.ordenServicio.OrdenServicioService;
-import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
-import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
 import mx.com.teclo.siye.persistencia.vo.ordenServicio.OrdenServiVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
-import mx.com.teclo.siye.persistencia.vo.proceso.ProcesoEncuestaVO;
 
 @RestController
 @RequestMapping("/ordenServicio")
@@ -118,15 +110,13 @@ public class OrdenServicioRestController {
 				@RequestParam(name="tipoKit", required = false) String tipoKit,
 				@RequestParam(name="tipoPlan", required = false) String tipoPlan
 				) throws NotFoundException {
-		 try
-		 {
-			List<OrdenServicioVO> listOrdenServicioVO = ordenServicioService.consultaHistorica(busquedaAvanzada, cdTipoBusqueda, valor, fechaInicio, fechaFin, centroInstalacion, estatusSeguimiento, isLote, isIncidencia, valorLoteIncidencia, tipoKit, tipoPlan);
-			return new ResponseEntity<List<OrdenServicioVO>>(listOrdenServicioVO, HttpStatus.OK);
-
-       }catch(Exception e)
-       {
-    	   
+		 
+		 List<OrdenServicioVO> listOrdenServicioVO = null;
+		 try{
+		  listOrdenServicioVO = ordenServicioService.consultaHistorica(busquedaAvanzada, cdTipoBusqueda, valor, fechaInicio, fechaFin, centroInstalacion, estatusSeguimiento, isLote, isIncidencia, valorLoteIncidencia, tipoKit, tipoPlan);
+       }catch(Exception e){
    		throw new NotFoundException(!e.getMessage().equals(null)?e.getMessage():"Ha ocurrido un imprevisto!, por favor contacte al administrador.");
        }
+		 return new ResponseEntity<List<OrdenServicioVO>>(listOrdenServicioVO, HttpStatus.OK);
      }
 }
