@@ -27,8 +27,7 @@ var includeDeseing=
     '                </div>                                                                                                                                                                                                                      '+
     '            </div>                                                                                                                                                                                                                          '+
     '            <div class="col-xs-12 col-sm-12 col-md-12">                                                                                                                                                                                     '+
-    '                <div class="col-xs-12 col-sm-12 col-md-12"                                                                                                                                                                                  '+
-    '                            ng-scrollbar scrollbar-config="{show: false}">                                                                                                                                                                  '+
+    '                <div class="col-xs-12 col-sm-12 col-md-12">                                                                                                                                                                  				 '+
     '                    <div class="col-xs-12 col-sm-12 col-md-12 border-div"  file-drop on-image-drop="fileDropped">                                                                                                                           '+
     '                        <div ng-if="listFiles == undefined || listFiles.length == 0" id="zonaDrop{{idElementUp}}"                                                                                                                           '+
     '                           class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-8 col-md-offset-2 border-punteado-div">                                                                                                         '+
@@ -43,7 +42,7 @@ var includeDeseing=
     '                            <div ng-repeat="file in listFiles  | startFromGrid: ((paramConfigPage.bigCurrentPage-1)*paramConfigPage.itemsPerPage) | limitTo: paramConfigPage.itemsPerPage">                                                 '+
     '                                <div class="col-xs-12 col-sm-12 col-md-12 padding-per">                                                                                                                                                     '+
     '                                    <div class="row border-div-child">                                                                                                                                                                      '+
-    '                                        <div class="{{showCombo ? \'col-xs-4 col-sm-2 col-md-2 style-parent\' : \'col-xs-6 col-sm-4 col-md-3 style-parent\'}}">                                                                             '+
+    '                                        <div class="text-center {{showCombo ? \'col-xs-4 col-sm-4 col-md-2 style-parent\' : \'col-xs-6 col-sm-4 col-md-3 style-parent\'}}">                                                                             '+
     '                                            <div ng-if="file.isImage">                                                                                                                                                                      '+
     '                                                 <div ng-if="file.strBase64 != undefined">                                                                                                                                                  '+
     '                                                    <img id="img-{{idElementUp+unic}}"                                                                                                                                                      '+
@@ -51,15 +50,20 @@ var includeDeseing=
     '                                                        class="stile-puntero-pointer img-img-fluid style-rep-img"                                                                                                                           '+
     '                                                        ng-src="data:image/jpeg;base64, {{file.strBase64}}" />                                                                                                                              '+
     '                                                </div>                                                                                                                                                                                      '+
-    '                                                <div class="form-group" ng-if="file.strBase64 == undefined">                                                                                                                                '+
-    '                                                        <label><i class="fa-li fa fa-spinner fa-2x fa-spin img-img-fluid style-rep-img text-success"></i></label>                                                                           '+
+    '                                                <div ng-if="file.strBase64 == undefined">                                                                                                                                					 '+
+    '													<div class="form-group"> 																																								 '+
+    '														<label>&nbsp;</label> 																																								 '+
+    '														<div>																																							 					 '+
+    '                                                    		<i class="fa fa-spinner fa-2x fa-spin text-success"></i>                                                                           												 '+
+    '														</div>																																												 '+
+    '													</div>																																													 '+
     '                                                </div>                                                                                                                                                                                      '+
     '                                            </div>                                                                                                                                                                                          '+
     '                                            <div ng-if="!file.isImage">                                                                                                                                                                     '+
     '                                                <i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>                                                                                                                                    '+
     '                                            </div>                                                                                                                                                                                          '+
     '                                        </div>                                                                                                                                                                                              '+
-    '                                        <div class="{{showCombo ? \'col-xs-4 col-sm-5 col-md-2\' : \' col-xs-6 col-sm-2 col-md-2\'}}">                                                                                                      '+
+    '                                        <div class="{{showCombo ? \'col-xs-4 col-sm-4 col-md-2\' : \' col-xs-6 col-sm-2 col-md-2\'}}">                                                                                                      '+
     '                                            <div class="form-group">                                                                                                                                                                        '+
     '                                                <label>Nombre: </label>                                                                                                                                                                     '+
     '                                                <div class="input-group">                                                                                                                                                                   '+
@@ -67,7 +71,7 @@ var includeDeseing=
     '                                                </div>                                                                                                                                                                                      '+
     '                                            </div>                                                                                                                                                                                          '+
     '                                        </div>                                                                                                                                                                                              '+
-    '                                        <div class="{{showCombo ? \'col-xs-4 col-sm-5 col-md-2\' : \' col-xs-6 col-sm-2 col-md-2\'}}">                                                                                                      '+
+    '                                        <div class="{{showCombo ? \'col-xs-4 col-sm-4 col-md-2\' : \' col-xs-6 col-sm-2 col-md-2\'}}">                                                                                                      '+
     '                                            <div class="form-group">                                                                                                                                                                        '+
     '                                                <label>Tama&ntilde;o:</label>                                                                                                                                                               '+
     '                                                <div class="input-group">                                                                                                                                                                   '+
@@ -88,7 +92,7 @@ var includeDeseing=
     '                                                    <select ng-if="file.unic != undefined" class="form-control" name="tpDoc{{file.unic+\'\'+idElementUp}}" id="tpDoc{{file.unic+\'\'+idElementUp}}"                                         '+
     '                                                        ng-required="showCombo" select2 data-minimum-results-for-search="Infinity"                                                                                                          '+
     '                                                        idioma-s2="{{currentLanguage}}" ng-model="file.tipoExpediente"                                                                                                                      '+
-    '                                                        ng-options="tipo as tipo.nbTipoExpediente for tipo in file.tpDocumentList">                                                                                                         '+
+    '                                                        ng-options="tipo as tipo.nbTipoExpediente for tipo in file.tpDocumentList | orderBy:\'nuOrden\'">                                                                                                         '+
     '                                                        <option value="">{{\'APP.Base.mensaje.seleccioneOpcion\' | translate}}</option>                                                                                                     '+
     '                                                    </select>                                                                                                                                                                               '+
     '                                                </div>                                                                                                                                                                                      '+
@@ -145,6 +149,7 @@ var includeDeseing=
     '                                max-size="paramConfigPage.maxSize"                                                                                                                                                                          '+
     '                                items-per-page="paramConfigPage.itemsPerPage"                                                                                                                                                               '+
     '                                class="pagination-md pull-right" boundary-link-numbers="true"                                                                                                                                               '+
+    '								 ng-change="pageChanged(listFiles)"																																													 '+
     '                                direction-links="true" rotate="false">                                                                                                                                                                      '+
     '                            </uib-pagination>                                                                                                                                                                                               '+
     '                        </div>                                                                                                                                                                                                              '+
@@ -190,7 +195,6 @@ var includeCarouselModal=
 	'		<div class="modal-dialog modal-lg">                                                                                                             '+
 	'			<div class="modal-content">                                                                                                                 '+
 	'				<div class="modal-header">                                                                                                              '+
-	'					<button type="button" class="close" ng-click="hideModal()" aria-label="Close"><span aria-hidden="true">×</span></button>              '+
 	'					<h4 class="modal-title" id="gridSystemModalLabel">Imagenes</h4>                                             '+
 	'				</div>                                                                                                                                  '+
 	'				<div class="modal-body">                                                                                                                '+
@@ -220,6 +224,9 @@ var includeCarouselModal=
 	'						</a>                                                                                                                            '+
 	'					</div>                                                                                                                              '+
 	'				</div>                                                                                                                                  '+
+	'				<div class="modal-footer">																												'+
+    '					<button class="btn bg-red-active btnMargin" type="button" ng-click="hideModal()">Cerrar</button>								'+
+    '				</div>																																	'+  
 	'			</div><!-- /.modal-content -->                                                                                                              '+
 	'		</div><!-- /.modal-dialog -->                                                                                                                   '+
 	'	</div><!-- /.modal -->                                                                                                                              ';

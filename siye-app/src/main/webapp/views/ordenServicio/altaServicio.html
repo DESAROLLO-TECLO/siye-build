@@ -171,7 +171,7 @@
 															
 														</div>
 														<select class="form-control select2" select2  id="tipopVehiculo" name="tipopVehiculo"
-															ng-options="tpVehiculo.nbTipoVehiculo  for tpVehiculo in catalogoTipoVehiculo track by tpVehiculo.idTipoVehiculo"
+															ng-options="tpVehiculo.nbTipoVehiculo  for tpVehiculo in catalogoProcesos.tipoVehiculo track by tpVehiculo.idTipoVehiculo"
 															ng-model="orden.vehiculoVO.tpVehiculo"
 															style="width:100%" ng-disabled="banderadeshabilitar" required>
 															<option value="">Seleccione</option>
