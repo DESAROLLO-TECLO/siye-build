@@ -92,7 +92,7 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
                 }
             }).error(function(data) {
                 if (data != null && data.status != null) {
-                    growl.error(data.message, { ttl: 4000 });
+                    growl.info(data.message, { ttl: 4000 });
                 } else {
                     growl.error('Ocurrió un error al tratar de consultar el servicio', { ttl: 4000 });
                 }
