@@ -14,6 +14,7 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TblCatalogosVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoKitVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
+import mx.com.teclo.siye.persistencia.vo.ordenServicio.CatalogosAltaOrdenServicioVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.ConsecionarioVO;
@@ -185,4 +186,6 @@ public interface CatalogoService {
 	public List<TipoKitVO> consultaTipoKit() throws NotFoundException;
 	
 	public List<PlanVO> consultaPlan() throws NotFoundException;
+	
+	public CatalogosAltaOrdenServicioVO getCatalogosAltaOrdenServicio() throws NotFoundException;
 }

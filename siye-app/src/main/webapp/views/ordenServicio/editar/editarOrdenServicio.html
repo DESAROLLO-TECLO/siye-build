@@ -88,7 +88,9 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-barcode"></i>
                                         </div>
-                                        <input type="text" capitalize  class="form-control" name="cdOrdenServicio" id="cdOrdenServicio" ng-model="general.voModal.cdOrdenServicio" required ng-disabled="banderas.folioDisable" />
+
+                                        <input type="text" capitalize class="form-control" name="cdOrdenServicio" id="cdOrdenServicio" ng-model="general.voModal.cdOrdenServicio" required ng-disabled="banderas.folioDisable" />
+
                                         <span class="input-group-btn" ng-if="!banderas.folioDisable">
                                             <button type="button" 
                                             ng-click="buscaServicio(general.voModal.cdOrdenServicio, editarOS)" 
