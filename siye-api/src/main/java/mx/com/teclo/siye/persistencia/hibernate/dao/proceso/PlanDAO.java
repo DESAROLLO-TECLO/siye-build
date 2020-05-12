@@ -15,15 +15,6 @@ import mx.com.teclo.siye.persistencia.vo.proceso.PlanVO;
  *
  */
 public interface PlanDAO extends BaseDao<PlanDTO> {
-
-	/**
-	 * Obtiene un plan de instalaci&oacute;n por su identificador
-	 * 
-	 * @param idPlan
-	 * @return PlanVO
-	 */
-	public PlanVO obtenerKitInstalacion(Long idPlan);
-	
 	
 	/**
 	 * Obtiene todos los planes
@@ -34,7 +25,7 @@ public interface PlanDAO extends BaseDao<PlanDTO> {
 	
 	public PlanDTO getId(Long idPlan);
 	
-	
+	List<PlanVO> getCatPlan();
 	
 
 }
