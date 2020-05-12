@@ -4,6 +4,7 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 	$scope.evidenciaMostrar = {};
 	$scope.supervisores=[];
 
+<<<<<<< HEAD
 	calcularDuracion = function(fhIni, fhFin){
 		if(fhIni!=null && fhIni!=""){
 			
@@ -24,7 +25,49 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 		    return diferencia;
 		}else{
 			return "00:00:00";
+=======
+	calcularDuracion = function(){
+		let fdiferencia ="00:00:00";
+
+		if($scope.ordenInfo.fhAtencionIni!=null){		
+			const DATE_FORMAT = "YYYY-MM-DD HH:mm:ss";	
+			let fecha1 = moment($scope.ordenInfo.fhAtencionIni, "YYYY-MM-DD HH:mm");
+			let fecha2 = null;
+			const SegDia=86400, SegHora= 3600, SegMinuto = 60;
+			let dias, horas, minutos,segundos, diff;
+
+			if($scope.ordenInfo.fhAtencionFin!=null){
+				fecha2 = moment($scope.ordenInfo.fhAtencionFin, "YYYY-MM-DD HH:mm");
+			}else{
+				fecha2 = moment();
+			}
+
+			diff = fecha2.diff(fecha1,'s');
+
+			if(diff >0){
+				if(diff>=SegDia){
+					dias = Math.trunc(diff / SegDia);
+					diff = (diff % SegDia);
+					fdiferencia = dias+" Dias ";
+				}
+				if(diff>=SegHora){
+					horas = Math.trunc(diff / SegHora);
+					diff = (diff % SegHora);
+					fdiferencia = fdiferencia + horas+" Horas ";
+				}
+				if(diff>= SegMinuto){
+					minutos = Math.trunc(diff / SegMinuto);
+					diff = (diff % SegMinuto)	
+					fdiferencia = fdiferencia + minutos +" Minutos";
+				}
+			}else{
+				// fechas iguales 
+				fdiferencia = "SIN TIEMPO";
+			}
+>>>>>>> 0418b1ab2b0d67e6aed41b2519f7369e318d7bf5
 		}
+		$scope.ordenInfo.tpDuracion = fdiferencia;
+
 	}
 	
 	formateaDatos = function(){
