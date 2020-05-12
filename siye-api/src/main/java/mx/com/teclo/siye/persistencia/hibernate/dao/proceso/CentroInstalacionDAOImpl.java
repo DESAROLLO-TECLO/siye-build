@@ -4,11 +4,12 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import mx.com.teclo.arquitectura.persistencia.comun.dao.BaseDaoHibernate;
-import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
 
@@ -53,4 +54,20 @@ public class CentroInstalacionDAOImpl extends BaseDaoHibernate<CentroInstalacion
 		return centroInstalacionDTO.getIdCentroInstalacion();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<CentroInstalacionVO> getCatCentroInstalacion() {
+		Criteria c = getCurrentSession().createCriteria(CentroInstalacionDTO.class, "centro");
+		c.add(Restrictions.eq("centro.stActivo", true));
+		c.setProjection(
+				Projections.projectionList()
+						.add(Projections.property("centro.idCentroInstalacion").as("idCentroInstalacion"))
+						.add(Projections.property("centro.cdCentroInstalacion").as("cdCentroInstalacion"))
+						.add(Projections.property("centro.nbCentroInstalacion").as("nbCentroInstalacion")));
+		c.addOrder(Order.asc("centro.nuOrden"));		
+		c.setResultTransformer(Transformers.aliasToBean(CentroInstalacionVO.class));		
+		return (List<CentroInstalacionVO>) c.list();
+	}
+
+	
 }
