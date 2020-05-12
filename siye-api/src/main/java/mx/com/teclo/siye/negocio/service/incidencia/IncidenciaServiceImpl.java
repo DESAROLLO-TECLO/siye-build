@@ -80,9 +80,7 @@ public class IncidenciaServiceImpl implements IncidenciaService {
 		if (iDTO == null) {
 			throw new NotFoundException(MSG_ERROR_INCIDENCIA_NULA);
 		}
-		
-		iVO = ResponseConverter.copiarPropiedadesFull(iDTO, IncidenciaVO.class);
-		
+		iVO = ResponseConverter.copiarPropiedadesFull(iDTO, IncidenciaVO.class);		
 		return iVO;
 	}
 	
