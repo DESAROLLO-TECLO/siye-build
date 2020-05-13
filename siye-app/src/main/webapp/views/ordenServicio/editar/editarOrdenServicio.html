@@ -62,39 +62,36 @@
     </form>
     <form role="form" name="editarOS" novalidate>
         <div class="row" ng-if="banderas.formEditar">
-
-            <div class="col-md-12">
-                <fieldset class="scheduler-border fieldsetCustom">
-                    <legend class="scheduler-border text-center">Incidencia</legend>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <tr>
-                                        <td>
-                                            <dt>Folio:</dt>
-                                        </td>
-                                        <td>{{general.voIncidencia.cdIncidencia}}</td>
-                                        <td>
-                                            <dt>Nombre:</dt>
-                                        </td>
-                                        <td>{{general.voIncidencia.nbIncidencia}}</td>
-                                        <td>
-                                            <dt>Descripción:</dt>
-                                        </td>
-                                        <td>{{general.voIncidencia.txIncidencia}}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-
-            </div>
-
             <div class="col-md-12">
                 <div class="box box-danger">
                     <div class="box-body">
+                    	<div class="row" style="margin-left: 0px;margin-right: 0px;">
+			                <fieldset class="scheduler-border fieldsetCustom">
+			                    <legend class="scheduler-border text-center">Incidencia</legend>
+			                    <div class="row">
+			                        <div class="form-group">
+			                            <div class="table-responsive">
+			                                <table class="table">
+			                                    <tr>
+			                                        <td>
+			                                            <dt>Folio:</dt>
+			                                        </td>
+			                                        <td>{{general.voIncidencia.cdIncidencia}}</td>
+			                                        <td>
+			                                            <dt>Nombre:</dt>
+			                                        </td>
+			                                        <td>{{general.voIncidencia.nbIncidencia}}</td>
+			                                        <td>
+			                                            <dt>Descripción:</dt>
+			                                        </td>
+			                                        <td>{{general.voIncidencia.txIncidencia}}</td>
+			                                    </tr>
+			                                </table>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </fieldset>
+			             </div>
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group"
