@@ -216,12 +216,9 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-list-ul"></i>
                                         </div>
-                                        <select id="kit" name="kit" class="form-control" select2
-                                            idioma-s2="{{currentLanguage}}" ng-model="general.voModal.kitInstalacion"
-                                            ng-options="m as m.cdKitInstalacion for m in listas.kitInstalacion track by m.idKitInstalacion">
-                                            <option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}
-                                            </option>
-                                        </select>
+                                        <input type="text" capitalize class="form-control" name="kit" id="kit"
+                                               ng-model="general.voModal.kitInstalacion.cdKitInstalacion"
+                                        />
                                     </div>
                                 </div>
                             </div>
