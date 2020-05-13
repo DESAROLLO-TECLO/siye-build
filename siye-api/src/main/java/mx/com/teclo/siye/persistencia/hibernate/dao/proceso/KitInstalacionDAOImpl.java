@@ -45,10 +45,6 @@ public class KitInstalacionDAOImpl extends BaseDaoHibernate<KitInstalacionDTO> i
 		return (KitInstalacionDTO)c.setMaxResults(1).uniqueResult();
 	}
 
-	@Override
-	public List<KitInstalacionVO> getCatKitInstalacion() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 }
