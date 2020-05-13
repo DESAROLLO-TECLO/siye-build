@@ -110,7 +110,7 @@ function($scope, showAlert, $location, growl, consultaGeneralService,encuestaSer
 			$scope.mostrarTabla=false;
 			validarParametros();	
 			consultaGeneralService.busquedaTramitesParametros($scope.parametrosBusqueda).success(function(data) {
-						if(data.length >= $scope.cantidadRegistrosMostrar){
+						if(data.length == $scope.cantidadRegistrosMostrar){
 							growl.info("Su consulta supera los "+$scope.cantidadRegistrosMostrar+" registros. En caso de requerir el reporte completo, solicítelo a soporte.", 'templateModalAviso');
 						}
 						consultaGeneralService.parametrosBusquedaAnterior=$scope.parametrosBusqueda;

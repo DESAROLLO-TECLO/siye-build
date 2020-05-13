@@ -508,6 +508,7 @@ $scope.guardarCausa=function()
         });
     }else
     	{
+    	$scope.evaluacion.causa.$setPristine();
     	for(let a in $scope.seccionVO.preguntas)
     		{
     		if ($scope.seccionVO.preguntas[a].idPregunta==$scope.respuestaActual.idPregunta)
@@ -582,6 +583,7 @@ $scope.uncheckOpcion=function(){
 	var tieneCausas=validarGuardadoDeCausas()
 	if($scope.estatusEncuesta!="FIN" && !tieneCausas)
 		{
+		$scope.evaluacion.causa.$setPristine();
 	for (let i in $scope.encuestaDetalle.encuesta.secciones) {
 		for (let j in $scope.encuestaDetalle.encuesta.secciones[i].preguntas) {
 			for (const k in $scope.encuestaDetalle.encuesta.secciones[i].preguntas[j].opciones) {
@@ -599,6 +601,7 @@ $scope.uncheckOpcion=function(){
 			}
 		}
 	}
+
 backOpcionMarcada=new Object({opcion:undefined,pregunta:undefined});
 		}
 };

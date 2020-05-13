@@ -79,7 +79,6 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
             if(data){
                 growl.success(mensajeSatsifaccion, {title: 'Encuesta'});
             }
-            
         }).error(function(error){
             growl.error(error.message, {title: '- ERROR -'});
         });

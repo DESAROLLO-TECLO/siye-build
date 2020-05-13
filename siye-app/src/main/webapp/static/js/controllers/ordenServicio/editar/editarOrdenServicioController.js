@@ -100,7 +100,7 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
     };
 
     function catalogos() {
-        consultaServicioService.catalogosOrdenServicio().success(function(data) {
+        consultaServicioService.getCatalogos().success(function(data) {
             angular.copy(data.centrosInstalacion, $scope.listas.centroInstalacion);
             angular.copy(data.kitInstalacion, $scope.listas.kitInstalacion);
             angular.copy(data.plan, $scope.listas.planInstalacion);
