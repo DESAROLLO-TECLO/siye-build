@@ -112,7 +112,7 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
             $scope.seguimientoVO.respaldo = angular.copy(data);
             $scope.seguimientoVO.datosTabla = data;
         }).error(function (data) {
-            growl.error(data.message);
+            growl.info(data.message);
         });
     };
 
