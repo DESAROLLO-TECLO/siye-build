@@ -32,7 +32,7 @@
                                 <div class="form-group"
                                     ng-class="{'has-error': consultaIncidencia.valorBusqueda.$invalid && consultaIncidencia.valorBusqueda.$dirty}">
                                     <label for="">
-                                        *{{'ORDENSERVICIO.AltaServicio.seleccionadores.valor.label' | translate}}
+                                        *Folio de Incidencia
                                     </label>
                                     <div class="input-group">
                                         <span class="input-group-addon"> <i class="fa fa-pencil"> </i> </span>
@@ -99,13 +99,14 @@
                             <div class="col-md-4">
                                 <div class="form-group"
                                     ng-class="{ 'has-error' : editarOS.cdOrdenServicio.$invalid && editarOS.cdOrdenServicio.$dirty}">
-                                    <label><span class="asteriskReq">*</span>Folio de Servicio</label>
+                                    <label><span class="asteriskReq">*</span>Orden de Servicio</label>
                                     <div class="input-group">
                                         <div class="input-group-addon">
                                             <i class="fa fa-barcode"></i>
                                         </div>
-
-                                        <input type="text" capitalize class="form-control" name="cdOrdenServicio" id="cdOrdenServicio" ng-model="general.voModal.cdOrdenServicio" required ng-disabled="banderas.folioDisable" />
+                                        <input type="text" capitalize class="form-control" name="cdOrdenServicio"
+                                            id="cdOrdenServicio" ng-model="general.voModal.cdOrdenServicio" required
+                                            ng-disabled="banderas.folioDisable" maxlength="50" />
 
                                         <span class="input-group-btn" ng-if="!banderas.folioDisable">
                                             <button type="button"
@@ -141,7 +142,7 @@
                             <div class="col-md-4">
                                 <div class="form-group"
                                     ng-class="{ 'has-error' : editarOS.nbCentroInstalacion.$invalid && editarOS.nbCentroInstalacion.$dirty}">
-                                    <label><span class="asteriskReq">*</span>Centro Instalación</label>
+                                    <label><span class="asteriskReq">*</span>Centro de Instalación</label>
                                     <div class="input-group">
                                         <div class="input-group-addon">
                                             <i class="fa fa-list-ul"></i>
@@ -210,7 +211,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Kit</label>
+                                    <label>Serie de Kit</label>
                                     <div class="input-group">
                                         <div class="input-group-addon">
                                             <i class="fa fa-list-ul"></i>
@@ -254,13 +255,13 @@
                             <div class="col-md-4">
                                 <div class="form-group"
                                     ng-class="{ 'has-error' : editarOS.cdPlaca.$invalid && editarOS.cdPlaca.$dirty}">
-                                    <label><span class="asteriskReq">*</span>Placa</label>
+                                    <label><span class="asteriskReq">*</span>Placa Vehicular</label>
                                     <div class="input-group">
                                         <div class="input-group-addon">
                                             <i class="fa fa-barcode"></i>
                                         </div>
                                         <input type="text" class="form-control" name="cdPlaca" id="cdPlaca" capitalize
-                                            ng-model="general.voModal.vehiculo.cdPlacaVehiculo" required />
+                                            ng-model="general.voModal.vehiculo.cdPlacaVehiculo" maxlength="15" required />
                                     </div>
                                     <div ng-show="editarOS.cdPlaca.$invalid && editarOS.cdPlaca.$dirty">
                                         <span class="help-block">La placa es requerida</span>
@@ -270,13 +271,13 @@
                             <div class="col-md-4">
                                 <div class="form-group"
                                     ng-class="{ 'has-error' : editarOS.cdVin.$invalid && editarOS.cdVin.$dirty}">
-                                    <label><span class="asteriskReq">*</span>VIN</label>
+                                    <label><span class="asteriskReq">*</span>C&oacute;digo VIN</label>
                                     <div class="input-group">
                                         <div class="input-group-addon">
                                             <i class="fa fa-barcode"></i>
                                         </div>
                                         <input type="text" class="form-control" name="cdVin" id="cdVin"
-                                            ng-model="general.voModal.vehiculo.cdVin" required />
+                                            ng-model="general.voModal.vehiculo.cdVin" maxlength="100" required />
                                     </div>
                                     <div ng-show="editarOS.cdVin.$invalid && editarOS.cdVin.$dirty">
                                         <span class="help-block">El VIN del vehículo es requerido</span>
@@ -285,13 +286,13 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label>Tarjeta Circulación</label>
+                                    <label>Tarjeta de Circulación</label>
                                     <div class="input-group">
                                         <div class="input-group-addon">
                                             <i class="fa fa-barcode"></i>
                                         </div>
                                         <input type="text" class="form-control" name="cdTarjetaDeCirculacion"
-                                            id="cdTarjetaDeCirculacion"
+                                            id="cdTarjetaDeCirculacion" maxlength="30"
                                             ng-model="general.voModal.vehiculo.cdTarjetaDeCirculacion" />
                                     </div>
                                 </div>
@@ -323,7 +324,7 @@
                                             <i class="fa fa-barcode"></i>
                                         </div>
                                         <input type="text" class="form-control" name="nbMarca" id="nbMarca"
-                                            ng-model="general.voModal.vehiculo.nbMarca" />
+                                            ng-model="general.voModal.vehiculo.nbMarca" maxlength="30" />
                                     </div>
                                 </div>
                             </div>
@@ -335,7 +336,7 @@
                                             <i class="fa fa-barcode"></i>
                                         </div>
                                         <input type="text" class="form-control" name="nbSubMarca" id="nbSubMarca"
-                                            ng-model="general.voModal.vehiculo.nbSubMarca" />
+                                            ng-model="general.voModal.vehiculo.nbSubMarca" maxlength="30" />
                                     </div>
                                 </div>
                             </div>
