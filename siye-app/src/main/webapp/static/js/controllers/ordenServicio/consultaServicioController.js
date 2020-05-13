@@ -65,10 +65,10 @@ angular.module(appTeclo).controller('consultaServicioController', function($scop
     }
 
     $scope.validarSelect = function () {
-    	if($scope.parametroBusqueda.tipoBusqueda.idTipoBusqueda == 0){
+    	//if($scope.parametroBusqueda.tipoBusqueda.idTipoBusqueda == 0){
     		$scope.parametroBusqueda.valor = null;
     		$scope.formConsultaServicio.valorBusqueda.$setPristine();
-    	}
+    	//}
     }
 
     $scope.direccionar = function(idOrdenServicio) {

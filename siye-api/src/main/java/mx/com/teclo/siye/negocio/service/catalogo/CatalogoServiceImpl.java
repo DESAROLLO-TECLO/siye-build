@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Formatter;
 import java.util.List;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,7 +50,6 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.VehiculoConductorDT
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.ConsecionarioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.KitInstalacionDTO;
-import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.PlanDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.TipoVehiculoDTO;
@@ -70,6 +69,7 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.TblCatalogosVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoKitVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.VehiculoConductorVO;
+import mx.com.teclo.siye.persistencia.vo.ordenServicio.CatalogosAltaOrdenServicioVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.ConsecionarioVO;
@@ -671,6 +671,20 @@ public class CatalogoServiceImpl implements CatalogoService{
 			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
 		List<PlanVO> planVO = ResponseConverter.converterLista(new ArrayList<>(), planDTO, PlanVO.class);
 		return planVO;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public CatalogosAltaOrdenServicioVO getCatalogosAltaOrdenServicio() throws NotFoundException {
+		CatalogosAltaOrdenServicioVO copVO = new CatalogosAltaOrdenServicioVO();			
+		copVO.setCentrosInstalacion(centroInstalacionDAO.getCatCentroInstalacion()); // Centros de Instalacion		
+		copVO.setPlan(planDAO.getCatPlan()); // Plan		
+		copVO.setTipoVehiculo(tipoVehiculoDAO.getCatTipoVehiculo()); // tipo Vehiculo		
+		copVO.setTipoKit(tipoKitDAO.getCatTipoKit()); //tipo Kit
+		copVO.setProveedorVO(proveedorDAO.getCatProveedor());		
+		copVO.setConcesionariaVO(concesionariaDAO.getCatConcesionaria()); //catalogo de concesiones
+		
+		return copVO;
 	}
 	
 	

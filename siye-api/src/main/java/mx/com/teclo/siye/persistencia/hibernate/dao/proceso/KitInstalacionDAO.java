@@ -35,4 +35,5 @@ public interface KitInstalacionDAO extends BaseDao<KitInstalacionDTO> {
 	public KitInstalacionDTO kitIns(String cdKitIns);
 	
 	public KitInstalacionDTO ultimoId();
+	
 }
