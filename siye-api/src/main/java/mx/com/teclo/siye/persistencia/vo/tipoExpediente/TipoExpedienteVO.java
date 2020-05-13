@@ -6,6 +6,7 @@ public class TipoExpedienteVO {
 	private Long idTipoExpediente;
 	private String cdTipoExpediente;
 	private String nbTipoExpediente;
+	private Integer nuOrden;
 	
 	
 	/**
@@ -43,6 +44,18 @@ public class TipoExpedienteVO {
 	 */
 	public void setNbTipoExpediente(String nbTipoExpediente) {
 		this.nbTipoExpediente = nbTipoExpediente;
+	}
+	/**
+	 * @return the nuOrden
+	 */
+	public Integer getNuOrden() {
+		return nuOrden;
+	}
+	/**
+	 * @param nuOrden the nuOrden to set
+	 */
+	public void setNuOrden(Integer nuOrden) {
+		this.nuOrden = nuOrden;
 	}
 
 }

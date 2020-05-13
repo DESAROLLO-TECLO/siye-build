@@ -1,16 +1,16 @@
 angular.module(appTeclo)
 .controller("encuestaController",
-function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo,encuestaService,growl,showAlert,$location,$interval,idpro) {
+function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo,encuestaService,growl,showAlert,$location,$interval,idpro,nbProceso) {
     
 	$scope.idProcesoActual=idpro;
-    $scope.nombEncuesta = $rootScope.nomSeguimiento + " - Encuesta " + encuestaInfo.data.encuesta.nbEncuesta;
+    $scope.nombEncuesta = "Orden de Servicio: "+encuestaInfo.data.usuario.cdOrdenServicio+" - Proceso: "+nbProceso+" - Encuesta " + encuestaInfo.data.encuesta.nbEncuesta;
     $scope.nombSeccion = encuestaInfo.data.encuesta.secciones[0].nbSeccion;
     $scope.seccEncuesta = encuestaInfo.data.encuesta.secciones[0];
     var backOpcionMarcada=new Object({opcion:undefined,pregunta:undefined});
     $scope.estatusEncuesta=encuestaInfo.data.intentoDetalleVO.stEncuesta.cdStEncuesta;
     $scope.redireccionar = false;
-    $scope.ordSer = $rootScope.idOrdenServ;
-    $scope.idProc = $rootScope.idProceso;
+    $scope.ordSer = encuestaInfo.data.usuario.idOrdenServicio;
+    $scope.idProc = idpro;
     $scope.idEnc = encuestaInfo.data.encuesta.idEncuesta;
     $scope.formato = '0';
     $scope.tiempoTranscurridoEncuesta = 0;
@@ -33,9 +33,9 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
    $scope.numMaxImgEnc = encuestaInfo.data.encuesta.nuMaxImagenes;    
     $scope.listImagesEnc = [];
     $scope.paramEncImg = new Object({
-        idOrdenServ: $rootScope.idOrdenServ,
-        cdOrdenServicio: $rootScope.cdOrdenServicio,
-        idProceso: $rootScope.idProceso,
+        idOrdenServ: encuestaInfo.data.usuario.idOrdenServicio,
+        cdOrdenServicio: encuestaInfo.data.usuario.cdOrdenServicio,
+        idProceso: idpro,
         idEncuesta: encuestaInfo.data.encuesta.idEncuesta
     });
     $scope.paramConfigImgEnc = new Object({
@@ -45,9 +45,9 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
 
     $scope.idPrgeunta = 1;
     $scope.paramPregImg = new Object({
-        idOrdenServ: $rootScope.idOrdenServ,
-        cdOrdenServicio: $rootScope.cdOrdenServicio,
-        idProceso: $rootScope.idProceso,
+        idOrdenServ: encuestaInfo.data.usuario.idOrdenServicio,
+        cdOrdenServicio: encuestaInfo.data.usuario.cdOrdenServicio,
+        idProceso: idpro,
         idEncuesta: encuestaInfo.data.encuesta.idEncuesta,
         idPregunta:  $scope.idPrgeunta
     });
@@ -458,7 +458,7 @@ $scope.asignarValores = function(datos) {
 };
 
 $scope.estatusFinalizaEncuesta = function() {
-	$location.path('/etapas/proceso/'+$scope.idProcesoActual+'/'+$scope.encuestaDetalle.usuario.idOrdenServicio);
+	$location.path('/etapas/proceso/'+$scope.idProcesoActual+'/'+$scope.encuestaDetalle.usuario.idOrdenServicio+'/'+$scope.encuestaDetalle.usuario.cdOrdenServicio);
    /* $timeout(() => {
         let wizardExampled = WizardHandler.wizard('wizardExample');
         if ($scope.paramConfigPage.flagFinalizaEncueta) {
@@ -633,7 +633,7 @@ $scope.pausarEncuesta = function(nuPagina, tiempo) {
 };
 
 $scope.regresarEncuestas = function() {
-	$location.path('/etapas/proceso/'+$scope.idProcesoActual+'/'+$scope.encuestaDetalle.usuario.idOrdenServicio);
+	$location.path('/etapas/proceso/'+$scope.idProcesoActual+'/'+$scope.encuestaDetalle.usuario.idOrdenServicio+'/'+$scope.encuestaDetalle.usuario.cdOrdenServicio);
     /*$scope.controllerActual = 'NA';
     $location.path("/encuestas");
     //$scope.redireccionar=false;*/

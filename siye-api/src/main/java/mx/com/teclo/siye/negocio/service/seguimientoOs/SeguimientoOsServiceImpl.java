@@ -310,7 +310,7 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 						os.setStSeguimiento(seguimientoDTO);
 						ordenServicioDAO.update(os);
 					}
-					return "Cancelacion de Ordenes de Servicio correcta";
+					return "Cancelación de Ordenes de Servicio correcta";
 				} else {
 					// error sin tipo de cancelacion
 					throw new BusinessException("No existe el estatus de cancelación ");

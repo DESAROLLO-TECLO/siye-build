@@ -58,13 +58,11 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
             return;
         } else {
             consultaServicioService.buscaIncidencia(cdIncidencia).success(function(data) {
-                if (data) {
                     angular.copy(data, $scope.general.voIncidencia);
                     $scope.banderas.formEditar = true;
-                }
             }).error(function(data) {
                 if (data != null && data.status != null) {
-                    growl.error(data.message, { ttl: 4000 });
+                    growl.info(data.message, { ttl: 4000 });
                 } else {
                     growl.error('Ocurrió un error al tratar de actualizar datos del servicio', { ttl: 4000 });
                 }
@@ -92,7 +90,7 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
                 }
             }).error(function(data) {
                 if (data != null && data.status != null) {
-                    growl.error(data.message, { ttl: 4000 });
+                    growl.info(data.message, { ttl: 4000 });
                 } else {
                     growl.error('Ocurrió un error al tratar de consultar el servicio', { ttl: 4000 });
                 }

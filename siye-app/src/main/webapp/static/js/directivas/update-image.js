@@ -54,7 +54,7 @@ appt.directive('updateImage',
 	    	  const imageCompressor = new ImageCompressor();
 	    	  
 	    	  var listImg = scope.$eval(attrs.listImages);
-	    	   
+	    	  var isIncompletForm=false;
 	    	  scope.listImages=listImg == undefined ? [] : listImg;
 	    	  scope.listFiles=new Array();
 	    	  scope.listFilesExcedeSize=new Array();
@@ -188,6 +188,13 @@ appt.directive('updateImage',
 	    	  scope.fileDropped=function(scopeDragDrop){
 	    		  let filesList = scopeDragDrop.uploadedFile;
 	    		  
+	    		  let imagesTotal=((scope.listFiles != undefined && scope.listFiles.length != undefined) ? scope.listFiles.length : 0);
+	    		  if(scope.maxNuImage != undefined && (filesList.length + imagesTotal) > parseInt(scope.maxNuImage, 10)){
+	    			  
+	    			  growl.warning('El número de imagenes seleccionado excede el número permitido ', {ttl: 4000});
+    				  return;
+    			  }
+	    		  
 	    		  filesList= scope.validRestrcctionsFiles(filesList);
 	    		  
 	    		// los files obtenidos se asignan a la lista enviada como parametro
@@ -196,6 +203,12 @@ appt.directive('updateImage',
 	    	  
 	    	//Se obtienen los archivos en onjetoFiles se ejecuta cuando el componente input file detecta cambios, este componenete esta en el template
 	    	  scope.getFilesFromInput=function(inputFiles){
+	    		  let imagesTotal=((scope.listFiles != undefined && scope.listFiles.length != undefined) ? scope.listFiles.length : 0);
+	    		  if(scope.maxNuImage != undefined && (inputFiles.length + imagesTotal) > parseInt(scope.maxNuImage, 10)){
+	    			  
+	    			  growl.warning('El número de imagenes seleccionado excede el número permitido ', {ttl: 4000});
+    				  return;
+    			  }
 	    		  
 	    		  inputFiles = scope.validRestrcctionsFiles(inputFiles);
 	    		  
@@ -234,8 +247,7 @@ appt.directive('updateImage',
 	        		  
 	        		  if(errorTypeFile){
 	        			  errorTypeFile=true;
-	        			  let coma=errorSizeImage  ? ',':'';
-	        			  msj+=coma+' la extención admitida';
+	        			  msj+=' la extención admitida';
 	        			  growl.warning(msj, {ttl: 4000});
 	        		  }
 	    		  }
@@ -286,24 +298,6 @@ appt.directive('updateImage',
 	    	  
 	    	  //Metodo que permite comprimir la imagen
 	    	  scope.getCompress=function(){
-	    		  let progressBar = document.querySelector('.progress-bar-ex-per[role="progressbar"]');
-				  let remainingBar = document.querySelector('.progress-bar-ex-per[role="remaining"]');
-	    		  if(scope.maxNuImage != undefined && scope.listFiles.length >= scope.maxNuImage){
-	    			  scope.listFilesExcedeSize=[];
-	    			  progressBar.style.width = '100%';
-	 	    		  progressBar.innerText = '100%';
-	 	    		  remainingBar.style.width ='0%';
-	 	    		 $timeout(function() {
-		    			 scope.closedFiles=0;
-		    			 scope.totalImagesPendig=0;
-		    			 scope.showProgressBar=false;
-		    			 let nameDivUnblokig='div.block-'+scope.idElementUp;
-		    			 $(nameDivUnblokig).unblock(); 
-					  },800);
-	    			  growl.warning('Algunas archivos no se adjuntaron se llego al limite de archivos', {ttl: 4000});
-    				  return;
-    			 }
-	    		  
 				  let fileItem=scope.listFilesExcedeSize.pop();
     			  let qualityConfig=scope.qualityCompressPorcent(fileItem.size);
     			 
@@ -337,40 +331,6 @@ appt.directive('updateImage',
 		        		  		return;
 		        		  	 }
     				  });
-    			  
-    			  /* new ImageCompressor(fileItem, {
-	    			    quality: qualityConfig,
-	    			    success(result) {
-	    			    	 //scope.$apply(function(){
-	    			    	 let unic=(scope.listFiles.length+1);
-	    			    	 result.unic=unic;
-	    			    	 result.isSuccess=false;
-		        		  	 let type = '|' + result.type.slice(result.type.lastIndexOf('/') + 1) + '|';
-		        		  	 let isImg=('|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1);
-		        		  	 result.isImage=isImg;
-		        		  	 result.exedeSize=false;
-		        		  	 result.tpDocumentList=angular.copy(scope.tpDocumentList);
-		        		  	 scope.logobsResult(result);
-		        		  	 scope.listFiles.unshift(result);
-		        		  	scope.closedFiles++;
-		        		  	scope.initCalculatePorcentajeProgressBar();
-		        		  	 if(scope.listFilesExcedeSize.length > 0){	
-		        		  		scope.getCompress();
-		        		  		return;
-		        		  	 }
-		        		  	 
-    		                //});
-	    			    },
-	    			    error(e) {
-	    	      			growl.warning('Al gunos archivos no se pudiron adjuntar exedieron el tamaño maxímo ('+
-	    	      							scope.paramConfComponent.maxSizeMb+' Mb) permitido', {ttl: 4000});
-	    	      			if(scope.listFilesExcedeSize.length > 0){
-		        		  		scope.getCompress();
-		        		  		return;
-		        		  	 }
-	    			    },
-	    			  }); */
-	    			  
 	    	 };
 	    	 
 	    	 scope.logobsResult=function(file) {
@@ -408,12 +368,12 @@ appt.directive('updateImage',
 	    	 };
 	    	  
 	    	// se agrega a la lista que mostrará las imagenes en el IU del html
-	    	  scope.addImgesToLisViewBiding=function(files){
+	    	  scope.addImgesToLisViewBiding = function(files){
 	    		  let idProgressBarDiv="div-progress-"+scope.idElementUp;
 	    		  let nameDivUnblokig='div.block-'+scope.idElementUp;
 	    		  $(nameDivUnblokig).block({
-	                  message: $('#'+idProgressBarDiv), 
-	                  css: {border: 'none', 
+	                  message: $('#'+idProgressBarDiv),
+	                  css: {border: 'none',
 	                      	padding: '15px',
 	                      	width: '40%',
 	                      	backgroundColor: '#000', 
@@ -433,24 +393,6 @@ appt.directive('updateImage',
 	    		  if(files.length > 0){
 	    			  let i;
 	        		  for(i=0; i<files.length; i++){
-
-	        		  	 if(scope.maxNuImage != undefined && scope.listFiles.length >= scope.maxNuImage){
-	        		  		let progressBar = document.querySelector('.progress-bar-ex-per[role="progressbar"]');
-	        				let remainingBar = document.querySelector('.progress-bar-ex-per[role="remaining"]');
-	        		  		progressBar.style.width = '100%';
-	        		  		progressBar.innerText = '100%';
-	       	    		 	remainingBar.style.width ='0%';
-		       	    		 $timeout(function() {
-				    			    scope.closedFiles=0;
-				    			    scope.totalImagesPendig=0;
-				    			    scope.showProgressBar=false;
-				    			    let nameDivUnblokig='div.block-'+scope.idElementUp;
-				    			    $(nameDivUnblokig).unblock(); 
-							       },800);
-	        		  		 
-	        				  growl.warning('Algunas archivos no se adjuntaron se llego al limite de archivos', {ttl: 4000});
-	        				  break;
-	        			 }
 	        		  	 
 	        		  	 let file=files[i];
 	        		  	 
@@ -475,7 +417,6 @@ appt.directive('updateImage',
 	    		  if(scope.listFilesExcedeSize.length > 0){	    			  
 	    			  scope.getCompress();  
 	    		  }
-      		  		
 	    	  };
 	 	     
 	 	  //CONVIERTE UNA CADENA BASE64 A OBJETO FILE PARA EL COMPONENTE FILE UPLOADER
@@ -565,7 +506,7 @@ appt.directive('updateImage',
 		     
 		     //metodo que se crea con alcance de controller padre, se puede invocar desde el controller
 		     scope.$parent.$parent.isValidFormImages=function(message){
-		    	 
+		    	 isIncompletForm=false;
 		    	 let listNotAdd=scope.listFiles.filter(function(item){
 		    		 return item.exedeSize;
 		    	 });
@@ -581,10 +522,10 @@ appt.directive('updateImage',
 			    	 });
 		    		 
 		    		 if(listNotTpExpedient.length !=  undefined && listNotTpExpedient.length > 0){
-		    			 showAlert.requiredFields(form);
+		    			 showAlert.requiredFields(scope.formTpDocument);
 		    			 if(message != undefined && message != '')
 			    		 		growl.error(message,{ttl: 4000});
-		    			 
+		    			 isIncompletForm=true;
 			    		 return false;
 			    	 }
 		    	 }
@@ -641,11 +582,13 @@ appt.directive('updateImage',
 		     
 		   //Funcion para guardar las imagenes, se valida si se tiene una funcion en especifico
 		     scope.saveImagesAll=function(form){
+		    	 isIncompletForm=false;
 		    	 let listNotAdd=scope.listFiles.filter(function(item){
 		    		 return item.exedeSize;
 		    	 });
 		    	 
 		    	 if(scope.showCombo){
+		    		 
 		    		 let listNotTpExpedient=scope.listFiles.filter(function(item){
 			    		 return item.tipoExpediente == undefined;
 			    	 });
@@ -653,6 +596,7 @@ appt.directive('updateImage',
 		    		 if(listNotTpExpedient.length !=  undefined && listNotTpExpedient.length > 0){
 		    			 showAlert.requiredFields(form);
 			    		 growl.error('Formulario incompleto', {ttl: 4000});
+			    		 isIncompletForm=true;
 			    		 return;
 			    	 }
 		    	 }
@@ -672,6 +616,24 @@ appt.directive('updateImage',
 		    	 
 		    	 scope.serviceSave(listImages);
 		    	 
+		     };
+		     
+		     scope.pageChanged=function(listFiles){
+		    	 if(isIncompletForm){
+		    		 
+		    		 $timeout(function() {
+						  let i;
+						  for(i=0; i<listFiles.length; i++){
+							  let file=listFiles[i];
+							  if(scope.formTpDocument['tpDoc'+file.unic+scope.idElementUp] != undefined){
+								  scope.formTpDocument['tpDoc'+file.unic+scope.idElementUp].$invalid=true;
+								  scope.formTpDocument['tpDoc'+file.unic+scope.idElementUp].$dirty=true;
+							  }
+						  }
+					  },100);
+		    		 
+		    		 showAlert.requiredFields(scope.formTpDocument);
+		    	 }
 		     };
 		     
 		     scope.serviceSave=function(listImages){
