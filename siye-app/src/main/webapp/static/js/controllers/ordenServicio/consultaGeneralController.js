@@ -38,6 +38,8 @@ function($scope, showAlert, $location, growl, consultaGeneralService,encuestaSer
 		 {"idOpcion" : 3, "codigo" : 'PLACA', "nbOpcion" : 'Placa'},
 		 {"idOpcion" : 4, "codigo" : 'VIN', "nbOpcion" : 'VIN'}
 		 ];
+
+		 $scope.bloquearValorBusquedaTodo = true;
 	
 	iniciarValores=function()
 	{
