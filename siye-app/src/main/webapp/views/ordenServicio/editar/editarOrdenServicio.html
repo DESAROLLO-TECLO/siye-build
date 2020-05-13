@@ -62,39 +62,36 @@
     </form>
     <form role="form" name="editarOS" novalidate>
         <div class="row" ng-if="banderas.formEditar">
-
-            <div class="col-md-12">
-                <fieldset class="scheduler-border fieldsetCustom">
-                    <legend class="scheduler-border text-center">Incidencia</legend>
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <tr>
-                                        <td>
-                                            <dt>Folio:</dt>
-                                        </td>
-                                        <td>{{general.voIncidencia.cdIncidencia}}</td>
-                                        <td>
-                                            <dt>Nombre:</dt>
-                                        </td>
-                                        <td>{{general.voIncidencia.nbIncidencia}}</td>
-                                        <td>
-                                            <dt>Descripción:</dt>
-                                        </td>
-                                        <td>{{general.voIncidencia.txIncidencia}}</td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-
-            </div>
-
             <div class="col-md-12">
                 <div class="box box-danger">
                     <div class="box-body">
+                    	<div class="row" style="margin-left: 0px;margin-right: 0px;">
+			                <fieldset class="scheduler-border fieldsetCustom">
+			                    <legend class="scheduler-border text-center">Incidencia</legend>
+			                    <div class="row">
+			                        <div class="form-group">
+			                            <div class="table-responsive">
+			                                <table class="table">
+			                                    <tr>
+			                                        <td>
+			                                            <dt>Folio:</dt>
+			                                        </td>
+			                                        <td>{{general.voIncidencia.cdIncidencia}}</td>
+			                                        <td>
+			                                            <dt>Nombre:</dt>
+			                                        </td>
+			                                        <td>{{general.voIncidencia.nbIncidencia}}</td>
+			                                        <td>
+			                                            <dt>Descripción:</dt>
+			                                        </td>
+			                                        <td>{{general.voIncidencia.txIncidencia}}</td>
+			                                    </tr>
+			                                </table>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </fieldset>
+			             </div>
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group"
@@ -216,12 +213,9 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-list-ul"></i>
                                         </div>
-                                        <select id="kit" name="kit" class="form-control" select2
-                                            idioma-s2="{{currentLanguage}}" ng-model="general.voModal.kitInstalacion"
-                                            ng-options="m as m.cdKitInstalacion for m in listas.kitInstalacion track by m.idKitInstalacion">
-                                            <option value="">{{'APP.Base.mensaje.seleccioneOpcion' | translate}}
-                                            </option>
-                                        </select>
+                                        <input type="text" capitalize class="form-control" name="kit" id="kit"
+                                               ng-model="general.voModal.kitInstalacion.cdKitInstalacion"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -374,7 +368,3 @@
         </div>
     </form>
 </section>
-
-<!--<section class="content">
-    
-</section>-->
