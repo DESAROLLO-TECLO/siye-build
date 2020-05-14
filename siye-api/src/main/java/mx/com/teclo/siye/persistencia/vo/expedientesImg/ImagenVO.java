@@ -14,7 +14,7 @@ public class ImagenVO {
 	private Long idIncidencia;
 	private Long idTipoExpediente;
 	private Long nuOrden;
-	private String nbExpedienteODS; 
+	private String nbExpedienteODS;
 	private String cdTipoArchivo;
 	private byte[] lbExpedienteODS;
 	private String txIncidencia;
@@ -23,6 +23,7 @@ public class ImagenVO {
 	private String nbNivel;
 	private String cdNivel;
 	private TipoExpedienteVO tipoExpediente;
+	private String nbTpDocumneto;
 	private Date fhCreacion;
 	
 	/**
@@ -236,4 +237,17 @@ public class ImagenVO {
 	public void setNbPrioridad(String nbPrioridad) {
 		this.nbPrioridad = nbPrioridad;
 	}
+	/**
+	 * @return the nbTpDocumneto
+	 */
+	public String getNbTpDocumneto() {
+		return nbTpDocumneto;
+	}
+	/**
+	 * @param nbTpDocumneto the nbTpDocumneto to set
+	 */
+	public void setNbTpDocumneto(String nbTpDocumneto) {
+		this.nbTpDocumneto = nbTpDocumneto;
+	}
+	
 }
