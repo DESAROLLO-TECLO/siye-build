@@ -38,6 +38,8 @@ function($scope, showAlert, $location, growl, consultaGeneralService,encuestaSer
 		 {"idOpcion" : 3, "codigo" : 'PLACA', "nbOpcion" : 'Placa'},
 		 {"idOpcion" : 4, "codigo" : 'VIN', "nbOpcion" : 'VIN'}
 		 ];
+
+		 $scope.bloquearValorBusquedaTodo = true;
 	
 	iniciarValores=function()
 	{
@@ -110,7 +112,7 @@ function($scope, showAlert, $location, growl, consultaGeneralService,encuestaSer
 			$scope.mostrarTabla=false;
 			validarParametros();	
 			consultaGeneralService.busquedaTramitesParametros($scope.parametrosBusqueda).success(function(data) {
-						if(data.length >= $scope.cantidadRegistrosMostrar){
+						if(data.length == $scope.cantidadRegistrosMostrar){
 							growl.info("Su consulta supera los "+$scope.cantidadRegistrosMostrar+" registros. En caso de requerir el reporte completo, solicítelo a soporte.", 'templateModalAviso');
 						}
 						consultaGeneralService.parametrosBusquedaAnterior=$scope.parametrosBusqueda;
@@ -376,8 +378,6 @@ function($scope, showAlert, $location, growl, consultaGeneralService,encuestaSer
     
 	$scope.redirigir = function(id_orden){
 		$location.path('/detalleConsulta/'+id_orden);
-			
-	
 	};
 	
 	if(deDetalle)

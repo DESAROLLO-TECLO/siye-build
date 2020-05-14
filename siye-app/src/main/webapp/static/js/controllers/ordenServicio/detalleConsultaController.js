@@ -4,27 +4,47 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 	$scope.evidenciaMostrar = {};
 	$scope.supervisores=[];
 
-	calcularDuracion = function(fhIni, fhFin){
-		if(fhIni!=null && fhIni!=""){
-			
-			var fecha1 = moment(fhIni, "DD/MM/YYYY HH:mm:ss");
-			var fecha2 = null
-			if(fhFin!=null && fhFin!="")
-				fecha2 = moment(fhFin, "DD/MM/YYYY HH:mm:ss");
-			else
+	calcularDuracion = function(){
+		let fdiferencia ="00:00:00";
+
+		if($scope.ordenInfo.fhAtencionIni!=null){		
+			const DATE_FORMAT = "YYYY-MM-DD HH:mm:ss";	
+			let fecha1 = moment($scope.ordenInfo.fhAtencionIni, "YYYY-MM-DD HH:mm");
+			let fecha2 = null;
+			const SegDia=86400, SegHora= 3600, SegMinuto = 60;
+			let dias, horas, minutos,segundos, diff;
+
+			if($scope.ordenInfo.fhAtencionFin!=null){
+				fecha2 = moment($scope.ordenInfo.fhAtencionFin, "YYYY-MM-DD HH:mm");
+			}else{
 				fecha2 = moment();
-			
-			var diff = fecha2.diff(fecha1, 's'); // Diff in hours
-			
-			var horas = Math.trunc(diff / 3600);
-		    var minutos = Math.trunc((diff-horas*3600)/60);
-		    var segundos = diff-(horas*3600+minutos*60);
-		    var diferencia =  (horas<10 ? ("0"+horas): horas) + ":" + (minutos<10?("0"+minutos):minutos) + ":" + (segundos<10?("0"+segundos):segundos);
-			
-		    return diferencia;
-		}else{
-			return "00:00:00";
+			}
+
+			diff = fecha2.diff(fecha1,'s');
+
+			if(diff >0){
+				if(diff>=SegDia){
+					dias = Math.trunc(diff / SegDia);
+					diff = (diff % SegDia);
+					fdiferencia = dias+" Dias ";
+				}
+				if(diff>=SegHora){
+					horas = Math.trunc(diff / SegHora);
+					diff = (diff % SegHora);
+					fdiferencia = fdiferencia + horas+" Horas ";
+				}
+				if(diff>= SegMinuto){
+					minutos = Math.trunc(diff / SegMinuto);
+					diff = (diff % SegMinuto)	
+					fdiferencia = fdiferencia + minutos +" Minutos";
+				}
+			}else{
+				// fechas iguales 
+				fdiferencia = "SIN TIEMPO";
+			}
 		}
+		$scope.ordenInfo.tpDuracion = fdiferencia;
+
 	}
 	
 	formateaDatos = function(){

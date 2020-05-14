@@ -111,7 +111,7 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
         }
     });
 
-    $routeProvider.when("/etapas/proceso/:idpro/:idord", {
+    $routeProvider.when("/etapas/proceso/:idpro/:idord/:nbOrden", {
         templateUrl: "views/etapa/proceso/proceso.html",
         controller: "procesoController",
         resolve: {
@@ -124,10 +124,14 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
             idpro: function($route) {
                 return $route.current.params.idpro;
             }
+            ,
+            nbOrden: function($route) {
+                return $route.current.params.nbOrden;
+            }
         }
     });
 
-    $routeProvider.when("/etapas/proceso/encuesta/:idencuesta/:idorden/:idproceso", {
+    $routeProvider.when("/etapas/proceso/encuesta/:idencuesta/:idorden/:idproceso/:nbProceso", {
         templateUrl: "views/etapa/proceso/encuesta/encuesta.html",
         controller: "encuestaController",
         resolve: {
@@ -136,6 +140,9 @@ angular.module(appTeclo).config(function($routeProvider, $locationProvider) {
             },
             idpro: function($route) {
                 return $route.current.params.idproceso;
+            },
+            nbProceso: function($route) {
+                return $route.current.params.nbProceso;
             }
         }
     });

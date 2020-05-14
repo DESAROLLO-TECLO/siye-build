@@ -71,7 +71,7 @@ angular.module(appTeclo).service('consultaServicioService', function($http, conf
             a.click();
         }, 100);
     }
-    
+
     this.getTransportistasVehiculo = function(id){
         return $http.get(config.baseUrl + "/catalogo/getTransportistasVehiculo", {
             params:{
@@ -79,18 +79,22 @@ angular.module(appTeclo).service('consultaServicioService', function($http, conf
             }
         });
     }
-    
-    this.descargarReporteDetalle =  function(id){
-    	return $http({
-            method: 'GET',
-            url: config.baseUrl + "/reporte/reporteDetOS",
-            params: { "idOrdenservicio":id},
-            dataType: "json",
-            header: {
-                "Content-type": "application/json",
-                "Accept": "application/pdf"
-            },
-            responseType: 'arraybuffer'
-        });
-    }
+
+    this.getCatalogos = function(){
+		return $http.get(config.baseUrl + "/catalogo/alta/ordenServicio")
+	};
+
+  this.descargarReporteDetalle =  function(id){
+    return $http({
+          method: 'GET',
+          url: config.baseUrl + "/reporte/reporteDetOS",
+          params: { "idOrdenservicio":id},
+          dataType: "json",
+          header: {
+              "Content-type": "application/json",
+              "Accept": "application/pdf"
+          },
+          responseType: 'arraybuffer'
+      });
+  }
 });
