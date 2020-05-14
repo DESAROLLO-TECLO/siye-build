@@ -150,7 +150,7 @@
 								</div>
 								
 								<div class="col-lg-2 col-md-4 col-sm-4">
-									<button ng-click="" class="btn btn-danger">
+									<button ng-click="descargarDetalleOS()" class="btn btn-danger">
 										<span class="fa fa-file-pdf-o"></span>&nbsp Descargar
 						            </button>
 								</div>
@@ -501,6 +501,17 @@
 															<div class="col-md-8 col-sm-12 container">  
 																<div class="box box-danger">
 																	<div uib-carousel active="0">
+																		<div uib-slide index="0" ng-if="!evidencia.infoEvidencia.tieneImagen">
+																			<div class="box-title">
+<!-- 																				<h4 class="box-title">{{img.nombre}}</h4> -->
+																			</div>
+																			<div class="box-body">
+																				<figure class="figure">
+																					<img src="static/dist/img/sin_imagen.jpg"
+																						style="height: 330px; class="img-responsive center-block figure-img img-fluid img-rounded">
+																				</figure>
+																			</div>
+																		</div>
 																		<div uib-slide ng-repeat="img in evidenciaMostrar.listImg" index="$index">
 																			<div class="box-title">
 <!-- 																				<h4 class="box-title">{{img.nombre}}</h4> -->

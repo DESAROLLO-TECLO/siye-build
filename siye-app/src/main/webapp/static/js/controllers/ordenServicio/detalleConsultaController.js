@@ -142,6 +142,20 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 		obj.infoEvidencia.activo = true;
 	}
 
+	$scope.descargarDetalleOS = function(){
+		consultaServicioService.descargarReporteDetalle($scope.ordenInfo.idOrdenServicio)
+			.success(function(data, status, headers) {
+				$scope.error = false;
+				var filename = data.nombreArchivo;
+				var extension = data.nombreArchivo.split('.')[1];
+				var file = $scope.b64toBlob(data.bdPath, "application/pdf");
+				$scope.error = false;
+				consultaServicioService.downloadfile(file, filename);
+			}).error(function(data) {
+				$scope.error=data;
+			});
+	};
+	
 	consultarTransportistas();
 	consultarSupervisores();
 	formateaDatos();
