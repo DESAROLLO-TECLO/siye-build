@@ -20,15 +20,18 @@ public class SeccionDAOImpl extends BaseDaoHibernate<SeccionDTO> implements Secc
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ExpedienteNivelPreguntaVO> getPreguntasByEncuestaVO(Long idEncuesta) {
-		StringBuilder consulta = new StringBuilder("SELECT pregunta.ID_PREGUNTA  AS idPregunta, pregunta.TX_PREGUNTA  AS cdPregunta, pregunta.NU_MAX_IMAGENES  AS nuMaxImg" + 
+	public List<ExpedienteNivelPreguntaVO> getPreguntasByEncuestaVO(List<Long> idEncuesta) {
+		StringBuilder consulta = new StringBuilder("SELECT pregunta.ID_PREGUNTA  AS idPregunta, pregunta.TX_PREGUNTA  AS cdPregunta, pregunta.NU_MAX_IMAGENES  AS nuMaxImg," + 
+				" seccion.ID_ENCUESTA as idEncuesta"+
 				" FROM TIE004D_EE_SECCION seccion" + 
 				"  INNER JOIN TIE005D_EE_PREGUNTAS pregunta ON (seccion.ID_SECCION = pregunta.ID_SECCION)" + 
-				"   WHERE seccion.ID_ENCUESTA ="+ idEncuesta+" AND pregunta.ST_ACTIVO = 1 ORDER BY seccion.NU_ORDEN ASC,pregunta.NU_ORDEN ASC");
+				"   WHERE seccion.ID_ENCUESTA IN (:idEncuesta) AND pregunta.ST_ACTIVO = 1 ORDER BY seccion.NU_ORDEN ASC,pregunta.NU_ORDEN ASC");
 		List<ExpedienteNivelPreguntaVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				 .addScalar("idPregunta",LongType.INSTANCE)
 					.addScalar("cdPregunta",StringType.INSTANCE)
 					.addScalar("nuMaxImg", LongType.INSTANCE)
+					.addScalar("idEncuesta", LongType.INSTANCE)
+					.setParameterList("idEncuesta", idEncuesta)
 					.setResultTransformer(Transformers.aliasToBean(ExpedienteNivelPreguntaVO.class)).list();
 		return respuesta;
 	}

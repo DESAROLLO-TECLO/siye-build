@@ -45,4 +45,6 @@ public class KitInstalacionDAOImpl extends BaseDaoHibernate<KitInstalacionDTO> i
 		return (KitInstalacionDTO)c.setMaxResults(1).uniqueResult();
 	}
 
+
+
 }

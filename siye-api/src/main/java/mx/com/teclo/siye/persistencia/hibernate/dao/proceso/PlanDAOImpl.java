@@ -2,9 +2,11 @@ package mx.com.teclo.siye.persistencia.hibernate.dao.proceso;
 
 import java.util.List;
 
-
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
@@ -14,12 +16,6 @@ import mx.com.teclo.siye.persistencia.vo.proceso.PlanVO;
 
 @Repository
 public class PlanDAOImpl extends BaseDaoHibernate<PlanDTO> implements PlanDAO {
-
-	@Override
-	public PlanVO obtenerKitInstalacion(Long idPlan) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -35,6 +31,22 @@ public class PlanDAOImpl extends BaseDaoHibernate<PlanDTO> implements PlanDAO {
 		c.add(Restrictions.eq("stActivo", true));
 		c.add(Restrictions.eq("idPlan", idPlan));
 		return (PlanDTO)c.uniqueResult();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<PlanVO> getCatPlan() {
+		Criteria c = getCurrentSession().createCriteria(PlanDTO.class, "plan");
+		c.add(Restrictions.eq("plan.stActivo", true));
+		c.setProjection(
+				Projections.projectionList()
+						.add(Projections.property("plan.idPlan").as("idPlan"))
+						.add(Projections.property("plan.cdPlan").as("cdPlan"))
+						.add(Projections.property("plan.nbPlan").as("nbPlan"))
+						.add(Projections.property("plan.txPlan").as("txPlan")));
+		c.addOrder(Order.asc("plan.idPlan"));		
+		c.setResultTransformer(Transformers.aliasToBean(PlanVO.class));		
+		return (List<PlanVO>) c.list();
 	}
 
 }

@@ -55,7 +55,7 @@
                                     <label for="">*Placa Vehícular: </label>
                                     <div class="input-group">
                                         <span class="input-group-addon"> <i class="fa fa-pencil"> </i> </span>
-                                        <input type="text" ng-model="cdPlacaVehiculo" maxlength="11" name="valorBusqueda" ng-required="true" class="form-control" capitalize>
+                                        <input type="text" ng-model="cdPlacaVehiculo" maxlength="15" name="valorBusqueda" ng-required="true" class="form-control" capitalize>
                                         
 	                                        <span class="input-group-btn">
 							                      	<button type="button" ng-click="buscarVehculoPorPlaca(cdPlacaVehiculo)" class="btn btn-danger btn-flat" >
@@ -171,7 +171,7 @@
 															
 														</div>
 														<select class="form-control select2" select2  id="tipopVehiculo" name="tipopVehiculo"
-															ng-options="tpVehiculo.nbTipoVehiculo  for tpVehiculo in catalogoTipoVehiculo track by tpVehiculo.idTipoVehiculo"
+															ng-options="tpVehiculo.nbTipoVehiculo  for tpVehiculo in catalogoProcesos.tipoVehiculo track by tpVehiculo.idTipoVehiculo"
 															ng-model="orden.vehiculoVO.tpVehiculo"
 															style="width:100%" ng-disabled="banderadeshabilitar" required>
 															<option value="">Seleccione</option>
@@ -191,7 +191,7 @@
 											<div class="input-group-addon">
 												<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
 											</div>
-												<input maxlength="10" type="text" id="marca" class="form-control"
+												<input maxlength="30" type="text" id="marca" class="form-control"
                                             				name="marca" ng-model="orden.vehiculoVO.marca" capitalize
                                             				autocomplete="off" required ng-disabled="banderadeshabilitar">
 										</div>
@@ -209,7 +209,7 @@
 														<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
 														
 													</div>
-													<input maxlength="10" type="text" id="subMarca" class="form-control"
+													<input maxlength="30" type="text" id="subMarca" class="form-control"
                                             				name="subMarca" ng-model="orden.vehiculoVO.subMarca" capitalize
                                             				autocomplete="off" required ng-disabled="banderadeshabilitar">
 												</div>
@@ -279,7 +279,7 @@
 												<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
 											</div>
 											<input type="text" class="form-control inputs" name="cdOrden"
-											ng-model="orden.cdOrden" placeholder="" maxlength="15" required capitalize>
+											ng-model="orden.cdOrden" placeholder="" maxlength="50" required capitalize>
 										</div>
 										<div ng-show="formAltaServicio.cdOrden.$invalid  && formAltaServicio.cdOrden.$dirty" ng-style="{color:'red'}">
                                         <label> La orden de servicio es requerida. </label>
@@ -356,7 +356,7 @@
 							<div class="row" ng-repeat="rango in range track by $index">
 								<div class="col-md-4">
 									<div class="form-group">
-										<label form="">Dispósitivo:</label>
+										<label form="">Dispositivo:</label>
 											<div class="input-group">
 												<div class="input-group-addon">
 														<i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>

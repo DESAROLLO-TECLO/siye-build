@@ -48,4 +48,5 @@ public interface CentroInstalacionDAO extends BaseDao<CentroInstalacionDTO> {
 	 */
 	public Long getUltimoId();
 	
+	List<CentroInstalacionVO> getCatCentroInstalacion();
 }

@@ -101,27 +101,86 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 	private CompresorImgConfigDAO compresorImgConfigDAO;
 
 	private static Boolean ACTIVO = true, BORRAR = false;
-	private static String PLACA = "PLACA", OS = "ORDEN_SERVICIO", VIN = "VIN";
+	private static String PLACA = "PLACA", OS = "ORDEN_SERVICIO", VIN = "VIN",ID_OREDEN="ID_OREDEN";
 	private final String CDOS = "ORDEN_SERVICIO", CDPROCESO = "PROCESO", CDENCUESTA = "ENCUESTA", CDPREGUNTA = "PREGUNTA";
 
 	@Override
 	@Transactional(readOnly=true)
 	public List<CargaExpedienteImgVO> getInformacionExpediente(String tipoBusqueda, String valor) {
 		List<OrdenServicioDTO> OSDTO = null;
-		List<CargaExpedienteImgVO> respuesta = new ArrayList<CargaExpedienteImgVO>();
+		List<CargaExpedienteImgVO> respuesta = new ArrayList<>();
 
 		ConfiguracionOSDTO config = configuracionDAO.getConfigByCdConfig("TIE026_NU_MAX_IMAGENES");
 		Long numeroMaximo = config != null ? Long.parseLong(config.getCdValorConfig()) : null;
-
+		List<TipoExpedienteVO> lisTpExpedienteVO=tipoExpedienteDAO.getTipoExpedientes();
 		if (tipoBusqueda.equals(OS)) {
 			OSDTO = ordenServicioDAO.consultaOrdenByOrdenServicio(valor);
 		} else if (tipoBusqueda.equals(PLACA)) {
-			OSDTO = ordenServicioDAO.consultaOrdenByPlaca(valor);
+			OSDTO = ordenServicioDAO.consultaOrdenByPlacaOnly(valor);
 		} else if (tipoBusqueda.equals(VIN)) {
-			OSDTO = ordenServicioDAO.consultaOrdenByVin(valor);
+			OSDTO = ordenServicioDAO.consultaOrdenByVinOnly(valor);
+		}else if(tipoBusqueda.equals(ID_OREDEN)){
+			Long idOs=Long.parseLong(valor);
+			
+			OrdenServicioDTO osDTO=ordenServicioDAO.obtenerOrdenServicio(idOs);
+			if(osDTO == null){
+				return respuesta;
+			}else{
+				OSDTO=new ArrayList<>();
+				OSDTO.add(osDTO);
+			}
 		}
 
-		if (!OSDTO.isEmpty() && OSDTO!=null) {
+		if (OSDTO!=null && !OSDTO.isEmpty()) {
+			List<Long> idsPlanAll=new ArrayList<>();
+			List<Long> idsOrdenServ= new ArrayList<>();
+			// se obtiene la lista de planes del resultado de las ordenes de servicio consultadas, y los ids de las ordenes
+			for(OrdenServicioDTO os : OSDTO){
+				if(!idsPlanAll.contains(os.getPlan().getIdPlan()))
+					idsPlanAll.add(os.getPlan().getIdPlan());
+				
+				if(!idsOrdenServ.contains(os.getIdOrdenServicio()))
+					idsOrdenServ.add(os.getIdOrdenServicio());
+			}
+			
+			List<ImagenVO> listImagenVOAll=expedienteImgDAO.getAllExpedientesImgVO(idsOrdenServ);
+			
+			List<ExpedienteNivelProcesoVO> procesosByOS = null;
+			List<ExpedienteNivelProcesoVO> procesosAll = null;
+			
+			List<ExpedienteNivelEncuestaVO> lisEncuestas = null;
+			List<ExpedienteNivelEncuestaVO> lisEncuestasAll = null;
+			
+			List<ExpedienteNivelPreguntaVO> listPreguntas = null;
+			List<ExpedienteNivelPreguntaVO> listPreguntasAll = null;
+			List<ImagenVO> listImg=null;
+			// se obtiene el total de procesos por planes
+			if(idsPlanAll.size() > 0){
+				procesosAll=planProcesoDAO.getProcesosPlanVO(idsPlanAll);
+				List<Long> idsProcesoAll=new ArrayList<>();
+				if(procesosAll != null){
+					for(ExpedienteNivelProcesoVO pp: procesosAll){
+						if(!idsProcesoAll.contains(pp.getIdProceso()))
+							idsProcesoAll.add(pp.getIdProceso());
+					}
+					if(!idsProcesoAll.isEmpty()){
+						// se obtiene el total de encuestas por porcesos
+						lisEncuestasAll=procesoEncuestaDAO.getEncuestasByProcesoVO(idsProcesoAll);
+						
+						if(lisEncuestasAll != null){
+							List<Long> idsEncuestasAll=new ArrayList<>();
+							for(ExpedienteNivelEncuestaVO enc: lisEncuestasAll){
+								if(!idsEncuestasAll.contains(enc.getIdEncuesta()))
+									idsEncuestasAll.add(enc.getIdEncuesta());
+							}
+							if(!idsEncuestasAll.isEmpty())
+								listPreguntasAll = seccionDAO.getPreguntasByEncuestaVO(idsEncuestasAll);
+						}
+					}
+					
+				}
+			}
+			
 			for (OrdenServicioDTO os : OSDTO) {
 				CargaExpedienteImgVO OSVO = new CargaExpedienteImgVO();
 				OSVO.setNameConsesionario(os.getVehiculo().getConsecionario().getNbConsecion());
@@ -134,21 +193,24 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 				OSVO.setCdNivel("OS");
 				OSVO.setFechaInicio(os.getFhAtencionIni());
 				OSVO.setFechaFin(os.getFhAtencionFin());
-
+				OSVO.setFhCita(os.getFhCita());
 				if (os.getPlan().getIdPlan() != null) {
-					List<ExpedienteNivelProcesoVO> procesosByOS = planProcesoDAO.getProcesosPlanVO(os.getPlan().getIdPlan());
+					
+					// se obtienen los procesos por plan de orden de servicio
+					procesosByOS = processclasificaByIdPlan(os.getPlan().getIdPlan(),procesosAll);
+					
 					if (!procesosByOS.isEmpty()) {
 						for (ExpedienteNivelProcesoVO proceso : procesosByOS) {
 							proceso.setNbNivel("Proceso");
 							proceso.setCdNivel("PRC");
 							proceso.setName(proceso.getCdProceso());
-							List<ExpedienteNivelEncuestaVO> LisEncuestas = procesoEncuestaDAO.getEncuestasByProcesoVO(proceso.getIdProceso());
-							if (!LisEncuestas.isEmpty()) {
-								for (ExpedienteNivelEncuestaVO encuesta : LisEncuestas) {
+							lisEncuestas = processClasificByIdProcess(proceso.getIdProceso(),lisEncuestasAll);
+							if (!lisEncuestas.isEmpty()) {
+								for (ExpedienteNivelEncuestaVO encuesta : lisEncuestas) {
 									encuesta.setNbNivel("Encuesta");
 									encuesta.setCdNivel("ENC");
 									encuesta.setName(encuesta.getCdEncuesta());
-									List<ExpedienteNivelPreguntaVO> listPreguntas = seccionDAO.getPreguntasByEncuestaVO(encuesta.getIdEncuesta());
+									listPreguntas =processClasificByIdEnuesta(encuesta.getIdEncuesta(),listPreguntasAll);
 									for (ExpedienteNivelPreguntaVO pregunta : listPreguntas) {
 										pregunta.setNbNivel("Pregunta");
 										pregunta.setName(pregunta.getCdPregunta());
@@ -158,66 +220,14 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 								}
 								
 							}	
-							proceso.setListEncuestas(LisEncuestas);
+							proceso.setListEncuestas(lisEncuestas);
 						}
 					}
 					OSVO.setProcesos(procesosByOS);
 				}
-				
-				List<ExpedientesImgDTO> listDTO=expedienteImgDAO.getAllExpedientesDTO(os.getIdOrdenServicio());
-				List<ImagenVO> listVO= new ArrayList<>();
-				ImagenVO imgVO=null;
-				
-				for(ExpedientesImgDTO dto: listDTO){
-					imgVO = new ImagenVO();
-					imgVO.setIdOrdenServicio(os.getIdOrdenServicio());
-					imgVO.setCdTipoArchivo(dto.getCdTipoArchivo());
-					imgVO.setFhCreacion(dto.getFhCreacion());
-					imgVO.setIdExpedienteODS(dto.getIdExpedienteODS());
-					imgVO.setLbExpedienteODS(dto.getLbExpedienteODS());
-					imgVO.setNbExpedienteODS(dto.getNbExpedienteODS());
-					
-					if(dto.getTipoExpediente() != null){
-						TipoExpedienteVO tpExpVO=new TipoExpedienteVO();
-						tpExpVO.setIdTipoExpediente(dto.getTipoExpediente().getIdDispositivo());
-						tpExpVO.setCdTipoExpediente(dto.getTipoExpediente().getCdTipoExpediente());
-						tpExpVO.setNbTipoExpediente(dto.getTipoExpediente().getNbTipoExpediente());
-						imgVO.setTipoExpediente(tpExpVO);
-						imgVO.setIdTipoExpediente(dto.getTipoExpediente().getIdDispositivo());
-					}
-					
-					//Clasificacion de imagenes
-					if(dto.getIdOrdenServicio()!=null && dto.getIdProceso()==null && dto.getIdOdsEncuesta()==null && dto.getIdPregunta()==null) {
-						//Nivel OS
-						imgVO.setCdNivel("OS");
-						imgVO.setNbNivel("Orden de Servicio");
-						
-					}else if(dto.getIdOrdenServicio()!=null && dto.getIdProceso()!=null && dto.getIdOdsEncuesta()==null && dto.getIdPregunta()==null) {
-						//Nivel Procso 
-						imgVO.setCdNivel("PRC");
-						imgVO.setNbNivel("Proceso/"+dto.getIdProceso().getNbProceso());
-						imgVO.setIdProceso(dto.getIdProceso().getIdProceso());
-					}else if(dto.getIdOrdenServicio()!=null && dto.getIdProceso()!=null && dto.getIdOdsEncuesta()!=null && dto.getIdPregunta()==null) {
-						//Nivel Encuesta 
-						imgVO.setCdNivel("ENC");
-						imgVO.setNbNivel("Encuesta/"+dto.getIdOdsEncuesta().getEncuesta().getNbEncuesta());
-						imgVO.setIdProceso(dto.getIdProceso().getIdProceso());
-						imgVO.setIdOdsEncuesta(dto.getIdOdsEncuesta().getEncuesta().getIdEncuesta());
-					}else if(dto.getIdOrdenServicio()!=null && dto.getIdProceso()!=null && dto.getIdOdsEncuesta()!=null && dto.getIdPregunta()!=null) {
-						//Nivel Pregunta
-						imgVO.setCdNivel("PREG");
-						String nbEncuest=dto.getIdOdsEncuesta() == null ? "Pregunta" : dto.getIdOdsEncuesta().getEncuesta().getNbEncuesta();
-						imgVO.setNbNivel(nbEncuest+"/"+dto.getIdPregunta().getTxPregunta());
-						imgVO.setIdProceso(dto.getIdProceso().getIdProceso());
-						imgVO.setIdOdsEncuesta(dto.getIdOdsEncuesta().getEncuesta().getIdEncuesta());
-						imgVO.setIdPregunta(dto.getIdPregunta().getIdPregunta());
-					}
-					
-					listVO.add(imgVO);
-				}
-				OSVO.setImagenes(listVO);
-				
-				
+				listImg=processImagesByIdOrdenServicio(os.getIdOrdenServicio(),listImagenVOAll,lisTpExpedienteVO);
+				OSVO.setImagenes(listImg);
+				OSVO.setNuTotalImagenes(listImg == null ? 0 : listImg.size());
 				
 				respuesta.add(OSVO);
 			}
@@ -228,6 +238,67 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 		return respuesta;
 	}
 
+	public List<ExpedienteNivelProcesoVO> processclasificaByIdPlan(Long idPlan,List<ExpedienteNivelProcesoVO> list){
+		
+		List<ExpedienteNivelProcesoVO> reulst=new ArrayList<>();
+		int i;
+		int size=list == null ? 0 : list.size();
+		for(i=0; i<size; i++){
+			if(idPlan.equals(list.get(i).getIdPlan()))
+				reulst.add(list.get(i));
+		}
+		
+		return reulst;
+	}
+	
+	public List<ExpedienteNivelEncuestaVO> processClasificByIdProcess(Long idProceso,List<ExpedienteNivelEncuestaVO> list){
+		List<ExpedienteNivelEncuestaVO> reulst=new ArrayList<>();
+		int i;
+		int size=list == null ? 0 : list.size();
+		for(i=0; i<size; i++){
+			if(idProceso.equals(list.get(i).getIdProceso()))
+				reulst.add(list.get(i));
+		}
+		return reulst;
+	}
+	
+	public List<ExpedienteNivelPreguntaVO> processClasificByIdEnuesta(Long idEncuesta,List<ExpedienteNivelPreguntaVO> list){
+		List<ExpedienteNivelPreguntaVO> reulst=new ArrayList<>();
+		int i;
+		int size=list == null ? 0 : list.size();
+		for(i=0; i<size; i++){
+			if(idEncuesta.equals(list.get(i).getIdEncuesta()))
+				reulst.add(list.get(i));
+		}
+		
+		return reulst;
+	}
+	
+	public List<ImagenVO> processImagesByIdOrdenServicio(Long idOrdenServicio,List<ImagenVO> list,List<TipoExpedienteVO> lisTpEx){
+		List<ImagenVO> reulst=new ArrayList<>();
+		int i;
+		int size=list == null ? 0 : list.size();
+		for(i=0; i<size; i++){
+			if(idOrdenServicio.equals(list.get(i).getIdOrdenServicio())){
+				asignaTpExedienteVO(list.get(i),lisTpEx);
+				reulst.add(list.get(i));
+			}
+				
+		}
+		return reulst;
+	}
+	
+	public void asignaTpExedienteVO(ImagenVO imgVO,List<TipoExpedienteVO> lisTpEx){
+		int i;
+		int size=lisTpEx == null ? 0 : lisTpEx.size();
+		for(i=0; i<size; i++){
+			if(lisTpEx.get(i).getIdTipoExpediente().equals(imgVO.getIdTipoExpediente())){
+				imgVO.setTipoExpediente(lisTpEx.get(i));
+				break;
+			}
+		}
+	}
+	
 	@Transactional
 	@Override
 	public List<ImagenVO> saveExpediente(List<ImagenVO> expedientes, Long idUsuario) throws BusinessException,BadRequestHttpResponse{
@@ -244,21 +315,37 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 		try{
 			if(expediente.getIdOrdenServicio()!=null && expediente.getIdProceso()==null && expediente.getIdOdsEncuesta()==null && expediente.getIdPregunta()==null) {
 				//Nivel OS
+				if(!isValidNuImagesTosaved(expediente.getIdOrdenServicio(),CDOS,null,numeroMaximo,expedientes.size()))
+					throw new BusinessException("Actualmente se cuentan con imagenes que cubren el numero maxímo admitido");
+					
 				expedientes = saveImagenEvidencia(expedientes, idUsuario, fechaCarga, numeroMaximo);
 				
 			}else if(expediente.getIdOrdenServicio()!=null && expediente.getIdProceso()!=null && expediente.getIdOdsEncuesta()==null && expediente.getIdPregunta()==null) {
 				//Nivel Procso 
 				IEprocesosDTO numax = ieProcesosDAO.findOne(expediente.getIdProceso());
+				
+				if(!isValidNuImagesTosaved(expediente.getIdOrdenServicio(),CDPROCESO,expediente.getIdProceso(),numax.getNuMaxImagenes(),expedientes.size()))
+					throw new BusinessException("Actualmente se cuentan con imagenes que cubren el numero maxímo admitido");
+				
 				expedientes = saveImagenEvidencia(expedientes, idUsuario, fechaCarga, numax.getNuMaxImagenes());
 				
 			}else if(expediente.getIdOrdenServicio()!=null && expediente.getIdProceso()!=null && expediente.getIdOdsEncuesta()!=null && expediente.getIdPregunta()==null) {
 				//Nivel Encuesta 
 				EncuestasDTO numax = encuestasDAO.findOne(expediente.getIdOdsEncuesta());
+				
+				if(!isValidNuImagesTosaved(expediente.getIdOrdenServicio(),CDENCUESTA,expediente.getIdOdsEncuesta(),numax.getNuMaxImagenes(),expedientes.size()))
+					throw new BusinessException("Actualmente se cuentan con imagenes que cubren el numero maxímo admitido");
+				
 				expedientes = saveImagenEvidencia(expedientes, idUsuario, fechaCarga, numax.getNuMaxImagenes());
 				
 			}else if(expediente.getIdOrdenServicio()!=null && expediente.getIdProceso()!=null && expediente.getIdOdsEncuesta()!=null && expediente.getIdPregunta()!=null) {
 				//Nivel Pregunta
 				PreguntasDTO numax = preguntaDAO.findOne(expediente.getIdPregunta());
+				
+				
+				if(!isValidNuImagesTosaved(expediente.getIdOrdenServicio(),CDPREGUNTA,expediente.getIdPregunta(),numax.getNuMaxImagenes(),expedientes.size()))
+					throw new BusinessException("Actualmente se cuentan con imagenes que cubren el numero maxímo admitido");
+				
 				expedientes = saveImagenEvidencia(expedientes, idUsuario, fechaCarga, numax.getNuMaxImagenes());
 			}
 		}catch(BusinessException bs){
@@ -268,6 +355,21 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 		return expedientes;
 	};
 
+	public boolean isValidNuImagesTosaved(Long idOrdenServicio,String cdLevel,Long level,Long nuMaxImages,Integer nuImagesView){
+		
+		List<ImagenVO> lisImgPrevSaved=getInfoExpedienteByNivel(idOrdenServicio,level,cdLevel);
+		Integer nuImages=0;
+		if(lisImgPrevSaved != null)
+			nuImages=(lisImgPrevSaved.size() + nuImagesView) ;
+		else
+			nuImages=nuImagesView;
+		
+		if(nuImages > nuMaxImages.intValue())
+			return false;
+		
+		return true;
+	}
+	
 	public List<ImagenVO> saveImagenEvidencia(List<ImagenVO> expedientes, Long idUsuario, 
 			Date fechaCarga,Long nuMaximoImagenes) throws BusinessException{
 		Long nuOrden =0L;

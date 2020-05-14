@@ -176,4 +176,20 @@ public interface OrdenServicioDAO extends BaseDao<OrdenServicioDTO>{
 	 * @param idCentroInstalacion
 	 */
 	public List<OrdenServicioDTO> hacerCorteDiarioOS(String fechaCorte, List<Long> idCentroInstalacion);
+	
+	/**
+	 * @Descripcion: Regresa una lista de ordenes de servicio mediante el unico filtro de vin
+	 * @author DanielUnitis
+	 * @param vin
+	 * @return List<OrdenServicioDTO>
+	 */
+	public List<OrdenServicioDTO> consultaOrdenByVinOnly(String vin);
+	
+	/**
+	 * @Descripcion: Regresa una lista de ordenes de servicio mediante el unico filtro de placa
+	 * @author DanielUnitis
+	 * @param vin
+	 * @return List<OrdenServicioDTO>
+	 */
+	public List<OrdenServicioDTO> consultaOrdenByPlacaOnly(String placa);
 }

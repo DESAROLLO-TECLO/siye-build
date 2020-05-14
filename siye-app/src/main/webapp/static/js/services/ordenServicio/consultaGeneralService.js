@@ -1,7 +1,7 @@
 angular.module(appTeclo).service('consultaGeneralService', 
 		function($http, config, $timeout) {
 	
-	parametrosBusquedaAnterior={};
+	let parametrosBusquedaAnterior={};
 	
 	
 	this.busquedaTramitesParametros = function(parametrosBusqueda){

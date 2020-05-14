@@ -18,7 +18,6 @@ import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.negocio.service.catalogo.CatalogoService;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.OpcionCausaDTO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.CatTipoFechasVO;
-import mx.com.teclo.siye.persistencia.vo.catalogo.ConcesionariaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.ConfiguracionVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.OpcionCausaVO;
@@ -29,6 +28,7 @@ import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TblCatalogosVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoKitVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
+import mx.com.teclo.siye.persistencia.vo.ordenServicio.CatalogosAltaOrdenServicioVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CatalogosOrdenProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.CentroInstalacionVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.ConsecionarioVO;
@@ -226,5 +226,10 @@ public class CatalogoRestController {
 		return new ResponseEntity<List<PlanVO>>(planVO, HttpStatus.OK);
 	}
 
-	
+	@RequestMapping(value = "/alta/ordenServicio", method =  RequestMethod.GET)
+	@PreAuthorize("hasAnyAuthority('SERVICE_CAT_CENTRO_INSTA')")
+	public ResponseEntity<CatalogosAltaOrdenServicioVO> getCatalogosAltaOrdenServicio()  throws NotFoundException {
+		CatalogosAltaOrdenServicioVO ciVO = catalogoService.getCatalogosAltaOrdenServicio();
+		return new ResponseEntity<CatalogosAltaOrdenServicioVO>(ciVO, HttpStatus.OK);
+	}
 }

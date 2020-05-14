@@ -2,6 +2,7 @@ package mx.com.teclo.siye.persistencia.vo.expedientesImg;
 
 public class ExpedienteNivelPreguntaVO {
 	
+	private Long idEncuesta;
 	private Long idPregunta;
 	private String cdPregunta;
 	private Long nuMaxImg;
@@ -87,5 +88,17 @@ public class ExpedienteNivelPreguntaVO {
 	}
 	public void setInfoEvidencia(InfoEvidenciaNivelVO infoEvidencia) {
 		this.infoEvidencia = infoEvidencia;
+	}
+	/**
+	 * @return the idEncuesta
+	 */
+	public Long getIdEncuesta() {
+		return idEncuesta;
+	}
+	/**
+	 * @param idEncuesta the idEncuesta to set
+	 */
+	public void setIdEncuesta(Long idEncuesta) {
+		this.idEncuesta = idEncuesta;
 	}
 }

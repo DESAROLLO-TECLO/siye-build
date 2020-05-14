@@ -79,4 +79,8 @@ angular.module(appTeclo).service('consultaServicioService', function($http, conf
             }
         });
     }
+    
+    this.getCatalogos = function(){
+		return $http.get(config.baseUrl + "/catalogo/alta/ordenServicio")
+	};
 });

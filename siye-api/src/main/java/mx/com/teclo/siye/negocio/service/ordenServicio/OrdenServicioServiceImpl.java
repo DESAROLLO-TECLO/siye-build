@@ -1,7 +1,6 @@
 package mx.com.teclo.siye.negocio.service.ordenServicio;
 
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -219,8 +218,10 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		}
 		
 		if(osVO.getKitInstalacion() != null) {
-			KitInstalacionDTO kiDTO = new KitInstalacionDTO();
-			kiDTO.setIdKitInstalacion(osVO.getKitInstalacion().getIdKitInstalacion());
+			KitInstalacionDTO kiDTO = kitDAO.findOne(osVO.getKitInstalacion().getIdKitInstalacion());
+			kiDTO.setCdKitInstalacion(osVO.getKitInstalacion().getCdKitInstalacion());
+			kiDTO.setFhModificacion(new Date());
+			kitDAO.update(kiDTO);
 			osDTO.setKitInstalacion(kiDTO);
 		}
 		
@@ -272,9 +273,11 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	@Override
 	@Transactional
 	public OrdenServicioVO findOrdenServiciobyCD_ORDEN_SERVICIO(String  cdOrdenServicio) throws NotFoundException, BusinessException {
-		OrdenServicioVO osVo = new OrdenServicioVO();
+		OrdenServicioVO osVo = null; 
 		OrdenServicioDTO osDto = ordenServicioDAO.obtenerOrdenServicioCD_ORDEN_SERVICIO(cdOrdenServicio);
-		osVo = ResponseConverter.copiarPropiedadesFull(osDto, OrdenServicioVO.class);
+		if(osDto!=null) {
+			osVo = ResponseConverter.copiarPropiedadesFull(osDto, OrdenServicioVO.class);
+		}		
 		return osVo;
 	}
 	
@@ -448,7 +451,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			
 			KitInstalacionDispDTO kitInsDipDTO = new KitInstalacionDispDTO();
 			
-			KitDispositivoDTO dispDTO = dispositivoDAO.getByDispositivo(ordenServiVO.getKitInstalacionVO().get(i).getIdDispositivo());
+			KitDispositivoDTO dispDTO = dispositivoDAO.getByDispositivo(ordenServiVO.getKitInstalacionVO().get(i).getIdDispositivo(),ordenServiVO.getTpKit());
 //			kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion());
 			ProveedorDTO provee = proveedorDAO.findOne(ordenServiVO.getKitInstalacionVO().get(i).getProveedor());
 			
@@ -478,18 +481,12 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	
 	@Transactional
 	@Override
-	public List<OrdenServicioVO> consultaHistorica(Boolean busquedaAvanzada,String cdTipoBusqueda,
-		    String valorBusqueda, String fhInicio, String fhFin,String centroInstalacion,String estatusSeguimiento,
-		    Boolean isLote, Boolean isIncidencia,
-			String valorLoteIncidencia, String tipoKit,
-			String tipoPlan) throws NotFoundException {
+	public List<OrdenServicioVO> consultaHistorica(Boolean busquedaAvanzada,String cdTipoBusqueda, String valorBusqueda, String fhInicio, String fhFin,String centroInstalacion,String estatusSeguimiento,
+		Boolean isLote, Boolean isIncidencia, String valorLoteIncidencia, String tipoKit, String tipoPlan) throws NotFoundException {
+		
 		List<OrdenServicioDTO> listOrdenServicioDTO = new ArrayList<>(); 
-		//UsuarioFirmadoVO usuario = usuarioFirmadoService.getUsuarioFirmadoVO();
-		//GerenteSupervisorDTO gerenteSupervisorDTO = gerenteSupervisorDAO.consultaGerenteSupervisorBySupervisor(usuario.getId());
-		//if(gerenteSupervisorDTO == null)
-			//throw new NotFoundException("No se encontró el centro de instalación, favor de reportar al administrador del sistema.");
-		if(!busquedaAvanzada)
-		{
+
+		if(!busquedaAvanzada){
 			switch(cdTipoBusqueda) {
 				case "TODO":
 					Integer registrosAMostrar;

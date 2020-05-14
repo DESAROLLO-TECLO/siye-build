@@ -227,6 +227,19 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 		
 	};
 	
-	$scope.consultTipoVehiculos();
-	$scope.consultaCentroInstalacion();
+	$scope.getCatalogos = function(){
+		altaServicioService.getCatalogos()
+		.success(function(data){
+			$scope.catalogoProcesos = data;
+			$scope.error = false;
+			
+		})
+		.error(function(data){
+			$scope.catalogoProcesos ={};
+			$scope.error=true;
+			
+		})
+	};
+	
+	$scope.getCatalogos();
 });
