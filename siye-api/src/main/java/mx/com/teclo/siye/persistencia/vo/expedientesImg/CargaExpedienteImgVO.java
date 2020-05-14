@@ -19,6 +19,8 @@ public class CargaExpedienteImgVO {
 	private InfoEvidenciaNivelVO infoEvidencia;
 	private Date fechaInicio;
 	private Date fechaFin;
+	private Date fhCita;
+	private Integer nuTotalImagenes;
 	
 	/**
 	 * @return the placa
@@ -164,7 +166,28 @@ public class CargaExpedienteImgVO {
 	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
 	}
-	
-	
-	
+	/**
+	 * @return the fhCita
+	 */
+	public Date getFhCita() {
+		return fhCita;
+	}
+	/**
+	 * @param fhCita the fhCita to set
+	 */
+	public void setFhCita(Date fhCita) {
+		this.fhCita = fhCita;
+	}
+	/**
+	 * @return the nuTotalImagenes
+	 */
+	public Integer getNuTotalImagenes() {
+		return nuTotalImagenes;
+	}
+	/**
+	 * @param nuTotalImagenes the nuTotalImagenes to set
+	 */
+	public void setNuTotalImagenes(Integer nuTotalImagenes) {
+		this.nuTotalImagenes = nuTotalImagenes;
+	}
 }

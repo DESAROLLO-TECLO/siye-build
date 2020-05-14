@@ -39,15 +39,18 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ExpedienteNivelEncuestaVO> getEncuestasByProcesoVO(Long idProceso) {
-		StringBuilder consulta = new StringBuilder("SELECT encuesta.ID_ENCUESTA  AS idEncuesta, encuesta.NB_ENCUESTA AS cdEncuesta, encuesta.NU_MAX_IMAGENES AS nuMaxImg " + 
+	public List<ExpedienteNivelEncuestaVO> getEncuestasByProcesoVO(List<Long> idProceso) {
+		StringBuilder consulta = new StringBuilder("SELECT encuesta.ID_ENCUESTA  AS idEncuesta, encuesta.NB_ENCUESTA AS cdEncuesta, encuesta.NU_MAX_IMAGENES AS nuMaxImg, " + 
+				" pE.ID_PROCESO as idProceso "+
 				"FROM TIE037D_IE_PROCESO_ENCUESTA pE" + 
 				" INNER JOIN TIE001D_EE_ENCUESTAS encuesta ON (pE.ID_ENCUESTA = encuesta.ID_ENCUESTA)" + 
-				"  WHERE encuesta.ST_ACTIVO = 1 AND pE.ID_PROCESO ="+idProceso +"ORDER BY pE.NU_ORDEN ASC");
+				"  WHERE encuesta.ST_ACTIVO = 1 AND pE.ID_PROCESO IN (:idProceso) ORDER BY pE.NU_ORDEN ASC");
 		List<ExpedienteNivelEncuestaVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idEncuesta",LongType.INSTANCE)
 				.addScalar("cdEncuesta",StringType.INSTANCE)
 				.addScalar("nuMaxImg", LongType.INSTANCE)
+				.addScalar("idProceso", LongType.INSTANCE)
+				.setParameterList("idProceso", idProceso)
 				.setResultTransformer(Transformers.aliasToBean(ExpedienteNivelEncuestaVO.class)).list();
 		return respuesta;
 	}

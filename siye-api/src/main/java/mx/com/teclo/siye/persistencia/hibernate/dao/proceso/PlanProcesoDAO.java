@@ -26,7 +26,7 @@ public interface PlanProcesoDAO extends BaseDao<PlanProcesoDTO> {
 	 * @return List<ExpedienteNivelProcesoVO>
 	 * Maverick
 	 */
-	public List<ExpedienteNivelProcesoVO> getProcesosPlanVO(Long idPlan);
+	public List<ExpedienteNivelProcesoVO> getProcesosPlanVO(List<Long> idPlan);
 	
 	/**
 	 * Obtiene los procesos del plan
