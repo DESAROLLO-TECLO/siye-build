@@ -3,6 +3,7 @@ angular.module(appTeclo)
 function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo,encuestaService,growl,showAlert,$location,$interval,idpro,nbProceso) {
     
 	$scope.idProcesoActual=idpro;
+	$scope.nombreProceso=nbProceso;
     $scope.nombEncuesta = "Orden de Servicio: "+encuestaInfo.data.usuario.cdOrdenServicio+" - Proceso: "+nbProceso+" - Encuesta " + encuestaInfo.data.encuesta.nbEncuesta;
     $scope.nombSeccion = encuestaInfo.data.encuesta.secciones[0].nbSeccion;
     $scope.seccEncuesta = encuestaInfo.data.encuesta.secciones[0];

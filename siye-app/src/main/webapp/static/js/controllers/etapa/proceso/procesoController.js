@@ -5,6 +5,7 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
 
     $scope.idOrdenServicio=idord;
 	$scope.idProcesoActual=idpro;
+	$scope.nombreOrden=nbOrden;
     $scope.numOrden = idord;
     $scope.encuestas=procesoInfo.data;
     $scope.formato = '0';
