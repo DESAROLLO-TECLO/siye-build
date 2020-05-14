@@ -36,5 +36,4 @@ public interface KitInstalacionDAO extends BaseDao<KitInstalacionDTO> {
 	
 	public KitInstalacionDTO ultimoId();
 	
-	List<KitInstalacionVO> getCatKitInstalacion();
 }
