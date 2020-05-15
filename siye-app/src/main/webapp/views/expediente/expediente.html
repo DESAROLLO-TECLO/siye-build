@@ -157,7 +157,8 @@
 												<td class="center">{{orden.vehiculo.tipoVehiculo.nbTipoVehiculo}}
 												</td>
 												<td class="center" ng-show="orden.idOrigenOds==1 || orden.idOrigenOds==null">Lote:
-														<span class="lbUser text-truncate" tooltip-placement="bottom"
+														<span class="lbUser text-truncate" 
+															tooltip-placement="bottom"
 			                                                tooltip="Lote: {{orden.loteOrdenServicio.nbArchivoFinal}}"
 			                                            	ng-if="(orden.loteOrdenServicio.nbArchivoFinal).length > 10">
 			                                            	Lote: {{orden.loteOrdenServicio.nbArchivoFinal | limitTo:10}}...
@@ -166,11 +167,13 @@
 															Lote: {{orden.loteOrdenServicio.nbArchivoFinal}}
 														</span>
 												</td>
+												<td class="center" ng-show="!(orden.idOrigenOds==1 || orden.idOrigenOds==null)">
+														Incidencia: {{orden.cdOrdenServicio}}
+												</td>
 												<td class="center">
 													{{orden.proceso==null?"SIN PROCESO":orden.proceso.nbProceso}}
 												</td>
-											<tr
-											ng-show="(listOrden | filter:tabla.view.filterSearchVal).length < 1">
+											<tr ng-show="(listOrden | filter:tabla.view.filterSearchVal).length < 1">
 											<td colspan="12" class="center">
 												<h4>{{'APP.Base.mensaje.noRegistros' | translate}}</h4>
 											</td>
@@ -205,7 +208,7 @@
 											<div class="input-group-addon">
 												<i class="fa fa-list-alt"></i>
 											</div>
-											<select class="form-control" name="tipoBusqueda" id="tipoBusqueda" ng-required="true" 
+											<select class="form-control" name="clasifImg" id="clasifImg" ng-required="true" 
 												select2 data-minimum-results-for-search="Infinity" idioma-s2="{{currentLanguage}}" 
 												ng-model="clasificCatalogo.clasifSelected" ng-change="clasificImage(clasificCatalogo.clasifSelected)"
 												ng-options="clasif as clasif.nbClasif for clasif in clasificCatalogo.catalogo">
@@ -412,7 +415,7 @@
                					param-conf-component="paramConfiguracion" list-images="{{listImages}}"></update-image>
 						</div> 
 						<div class="modal-footer">
-						    <button class="btn bg-red-active btnMargin" type="button" ng-click="hideModalImages()">Cerrar</button>
+						    <button class="btn bg-red-active btnMargin" type="button" ng-click="hideModalImages(ordenServicio.idOrdenServicio)">Cerrar</button>
 						</div>                                                                          
 					</div><!-- /.modal-content -->                                                      
 				</div><!-- /.modal-dialog -->                                                           
