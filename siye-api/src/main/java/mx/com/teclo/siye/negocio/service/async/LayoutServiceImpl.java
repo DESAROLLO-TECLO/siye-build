@@ -2,17 +2,21 @@ package mx.com.teclo.siye.negocio.service.async;
 
 import java.math.BigDecimal;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.util.ArrayUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import io.jsonwebtoken.lang.Collections;
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.siye.persistencia.hibernate.dao.async.LayoutDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.async.TipoLayoutDAO;
@@ -33,8 +37,9 @@ public class LayoutServiceImpl implements LayoutService {
 	private static final String MSG_LAYOUT_SIN_ORDEN_INSERCION = "El layout no tiene un orden de valores a insertar";
 	private static final String MSG_INSERT_PATTERN = "INSERT INTO {0}({1}) VALUES({2})";
 	private static final String MSG_SELECT_PATTERN = "SELECT {0} FROM {1} WHERE {2} = {3}";
-	public static final String MSG_LAYOUT_VIGENTE_NULO = "No es posible continuar el proceso por falta de definiciones sobre lo que se espera recibir en el archivo lote";
+	public static final String MSG_LAYOUT_VIGENTE_NULO = "No es posible continuar el proceso por falta de un layout";
 	public static final String MSG_ERROR_LAYOUT_INEXISTENTE = "El archivo lote {0} no tiene un layout asociado";
+	public static final String MSG_ERROR_FALTA_CONFIG_TBLS_INSERCION = "Falta configurar orden de inserción";
 	public static final String MSG_ERROR_FALTAN_PARAMETROS = "No es posible continuar el proceso por falta de configuraciones en el sistema";
 	public static final String NULO_SQL = "null";
 	public static final String CARACTER_COMA = ",";
@@ -44,6 +49,7 @@ public class LayoutServiceImpl implements LayoutService {
 	public static final String SEPARADOR_DIR = System.getProperty("file.separator");
 	public static final String SALTO_LINEA = System.getProperty("line.separator");
 	public static final String MSG_ERROR_LAYOUT_SIN_DETALLE = "El layout no tiene detalle";
+	public static final String MSG_ERROR_LAYOUT_SIN_TABLAS_DESTINO = "El layout no tiene tablas destino";
 	public static final String MSG_ERROR_LAYOUT_SECCION_INCOMPLETA = "El numero de columnas ''{0}'' no coinciden con las de tipo ''{1}''";
 	public static final String MSG_ARCHIVO_TAMANIO_REBASADO = "El tama\u00F1o del archivo excede el m\u00E1ximo de {0} MB";
 	public static final String MSG_RECUPERANDO_CONFIG_MASIVA = "Recuperando la configuraci\u00F3n previa a la carga masiva del archivo {0} ";
@@ -135,7 +141,13 @@ public class LayoutServiceImpl implements LayoutService {
 
 		// orden de inserción en tablas
 		cargaMasivaVO.setConfigInsercion(getOrdenInsercionTablas(cargaMasivaVO.getConfigLote().getIdTipoLayout()));
-
+		
+		if(cargaMasivaVO.getConfigInsercion() == null || cargaMasivaVO.getConfigInsercion().isEmpty()) {
+			throw new BusinessException(
+					MessageFormat.format(MSG_ERROR_FALTA_CONFIG_TBLS_INSERCION, cargaMasivaVO.getConfigLote().getCdLoteOds()));
+			
+		}
+		
 		// layout
 		ConfigLayoutVO layoutAplicado = tipoLayoutDAO.getTipoLayoutById(cargaMasivaVO.getConfigLote().getIdTipoLayout());
 		cargaMasivaVO.setConfigLayout(layoutAplicado);
@@ -155,6 +167,10 @@ public class LayoutServiceImpl implements LayoutService {
 		// columnas esperadas en el archivo
 		cargaMasivaVO.setColumnasEnArchivo(
 				layoutDAO.getColumnasEnArchivo(cargaMasivaVO.getConfigLayout().getIdTipoLayout()));
+		if (cargaMasivaVO.getColumnasEnArchivo() == null || cargaMasivaVO.getColumnasEnArchivo().isEmpty()) {
+			throw new BusinessException(
+					MessageFormat.format(MSG_ERROR_LAYOUT_INEXISTENTE, cargaMasivaVO.getConfigLote().getCdLoteOds()));
+		}
 
 		return cargaMasivaVO;
 	}
@@ -163,6 +179,9 @@ public class LayoutServiceImpl implements LayoutService {
 	@Transactional
 	public List<TablaDestinoVO> getOrdenInsercionTablas(Long idTipoLayout) throws BusinessException {
 		List<TablaDestinoVO> tablasDestino = layoutDAO.getOrdenInsercionTablas(idTipoLayout);
+		if(tablasDestino == null || tablasDestino.isEmpty()) {
+			return java.util.Collections.emptyList();
+		}
 		int tblFinal = tablasDestino.size() - 1;
 		for (int i = 0; i < tablasDestino.size(); i++) {
 			tablasDestino.get(i).setIsTblBaseFinal(Boolean.FALSE.booleanValue());

@@ -1,6 +1,8 @@
 package mx.com.teclo.siye.negocio.service.async;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,15 +48,7 @@ public class UploadServiceImpl implements UploadService {
 		}
 
 		// VALIDAR CONTENT TYPE
-		ConfiguracionOSDTO contentTypeDTO = configuracionDAO.findOne(ID_CONTENT_TYPE);
-
-		if (contentTypeDTO == null || StringUtils.isBlank(contentTypeDTO.getCdValorConfig())) {
-			throw new BusinessException(MSG_PARAM_CONTENT_TYPE_NULO);
-		}
-
-		if (!archivoLote.getContentType().equalsIgnoreCase(contentTypeDTO.getCdValorConfig())) {
-			throw new BusinessException(MSG_ARCHIVO_CONTENT_TYPE_INVALIDO);
-		}
+		validarContentType(archivoLote);
 
 		// VALIDAR EL LARGO DEL NOMBRE
 		if (archivoLote.getOriginalFilename().length() > MAX_LARGO_NOMBRE_ARCHIVO) {
@@ -72,6 +66,42 @@ public class UploadServiceImpl implements UploadService {
 			}
 
 		}
+	}
+	
+	private void  validarContentType(MultipartFile archivoLote) throws BusinessException{
+		List<String> tiposValidos = new ArrayList<>();
+		
+		ConfiguracionOSDTO contentTypeDTO = configuracionDAO.findOne(ID_CONTENT_TYPE);
+		
+		if (contentTypeDTO == null || StringUtils.isBlank(contentTypeDTO.getCdValorConfig())) {
+			throw new BusinessException(MSG_PARAM_CONTENT_TYPE_NULO);
+		}
+		String contentValido = contentTypeDTO.getCdValorConfig();
+		
+		if(contentValido.indexOf(",")>=0) {
+			String[] arrContentType = contentValido.split(",");
+			for (String tipo : arrContentType) {
+				tiposValidos.add(tipo.trim());
+			}
+		}
+		
+		if (tiposValidos.isEmpty() && !archivoLote.getContentType().equalsIgnoreCase(contentTypeDTO.getCdValorConfig())) {
+			throw new BusinessException(MSG_ARCHIVO_CONTENT_TYPE_INVALIDO);
+		}
+		
+		boolean isValido = false;
+		
+		if (!tiposValidos.isEmpty()) {			
+			for (String tipo : tiposValidos) {
+				if(archivoLote.getContentType().equalsIgnoreCase(tipo)) {
+					isValido = true;
+					break;				
+				}
+			}
+			if(!isValido) {
+				throw new BusinessException(MSG_ARCHIVO_CONTENT_TYPE_INVALIDO);	
+			}
+		}		
 	}
 
 }

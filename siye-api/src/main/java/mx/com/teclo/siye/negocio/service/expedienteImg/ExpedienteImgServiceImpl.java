@@ -391,6 +391,12 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 		
 		if(imagen.getIdOdsEncuesta()!=null) {
 			 ordenEncuestaDTO = usuarioEncuesta.consultaByIdOrdernIdEncuesta(imagen.getIdOrdenServicio(), imagen.getIdOdsEncuesta());
+			 if(ordenEncuestaDTO == null){
+				 String msj="No se puede guardar la imagen,";
+				 if(expedientes.size() > 1)
+					 msj="No se pueden guardar las imagenes,";
+				 throw new BusinessException(msj+" la encuesta seleccionada no esta asociada a la orden de servicio");
+			 }
 		}
 		if(imagen.getIdPregunta()!=null) {
 			preguntaDTO = preguntaDAO.findOne(imagen.getIdPregunta());
