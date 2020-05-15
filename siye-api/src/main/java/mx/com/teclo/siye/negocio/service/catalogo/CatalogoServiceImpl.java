@@ -676,10 +676,8 @@ public class CatalogoServiceImpl implements CatalogoService{
 	@Override
 	@Transactional(readOnly = true)
 	public CatalogosAltaOrdenServicioVO getCatalogosAltaOrdenServicio() throws NotFoundException {
-		CatalogosAltaOrdenServicioVO copVO = new CatalogosAltaOrdenServicioVO();
-				
+		CatalogosAltaOrdenServicioVO copVO = new CatalogosAltaOrdenServicioVO();			
 		copVO.setCentrosInstalacion(centroInstalacionDAO.getCatCentroInstalacion()); // Centros de Instalacion		
-		copVO.setKitInstalacion(kitInstalacionDAO.getCatKitInstalacion()); // Kit de instalacion		
 		copVO.setPlan(planDAO.getCatPlan()); // Plan		
 		copVO.setTipoVehiculo(tipoVehiculoDAO.getCatTipoVehiculo()); // tipo Vehiculo		
 		copVO.setTipoKit(tipoKitDAO.getCatTipoKit()); //tipo Kit

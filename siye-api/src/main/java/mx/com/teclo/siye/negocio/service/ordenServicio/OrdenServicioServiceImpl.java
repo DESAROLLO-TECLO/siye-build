@@ -218,8 +218,10 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		}
 		
 		if(osVO.getKitInstalacion() != null) {
-			KitInstalacionDTO kiDTO = new KitInstalacionDTO();
-			kiDTO.setIdKitInstalacion(osVO.getKitInstalacion().getIdKitInstalacion());
+			KitInstalacionDTO kiDTO = kitDAO.findOne(osVO.getKitInstalacion().getIdKitInstalacion());
+			kiDTO.setCdKitInstalacion(osVO.getKitInstalacion().getCdKitInstalacion());
+			kiDTO.setFhModificacion(new Date());
+			kitDAO.update(kiDTO);
 			osDTO.setKitInstalacion(kiDTO);
 		}
 		
@@ -449,7 +451,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			
 			KitInstalacionDispDTO kitInsDipDTO = new KitInstalacionDispDTO();
 			
-			KitDispositivoDTO dispDTO = dispositivoDAO.getByDispositivo(ordenServiVO.getKitInstalacionVO().get(i).getIdDispositivo());
+			KitDispositivoDTO dispDTO = dispositivoDAO.getByDispositivo(ordenServiVO.getKitInstalacionVO().get(i).getIdDispositivo(),ordenServiVO.getTpKit());
 //			kitInstalacion = kitDAO.kitIns(ordenServiVO.getCdKitIntalacion());
 			ProveedorDTO provee = proveedorDAO.findOne(ordenServiVO.getKitInstalacionVO().get(i).getProveedor());
 			
