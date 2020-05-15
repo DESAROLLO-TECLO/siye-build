@@ -755,7 +755,7 @@ appt.directive('updateImage',
 			                	
 			                	if(imgDeleList.length > 0){
 			          			 
-			          			  expedienteService.deleteExpediente(scope.listImages)
+			          			  expedienteService.deleteExpediente(imgDeleList)
 				          		  .success(function(reponse){
 				          			  scope.listImages=[];
 				          			  scope.listFiles=[];
