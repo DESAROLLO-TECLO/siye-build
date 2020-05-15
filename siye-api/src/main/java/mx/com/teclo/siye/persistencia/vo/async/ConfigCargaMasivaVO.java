@@ -9,7 +9,6 @@ public class ConfigCargaMasivaVO {
 	private Map<String, List<ColumnaVO>> configSecciones;
 	private List<TablaDestinoVO> configInsercion;
 	private Map<String, InsercionTablaVO> configMoldesSQL;
-	private int totalColsEsperadas;
 	private List<ColumnaArchivoVO> columnasEnArchivo;
 	
 	
@@ -43,12 +42,7 @@ public class ConfigCargaMasivaVO {
 	public void setConfigMoldesSQL(Map<String, InsercionTablaVO> configMoldesSQL) {
 		this.configMoldesSQL = configMoldesSQL;
 	}
-	public int getTotalColsEsperadas() {
-		return totalColsEsperadas;
-	}
-	public void setTotalColsEsperadas(int totalColsEsperadas) {
-		this.totalColsEsperadas = totalColsEsperadas;
-	}
+	
 	public List<ColumnaArchivoVO> getColumnasEnArchivo() {
 		return columnasEnArchivo;
 	}
