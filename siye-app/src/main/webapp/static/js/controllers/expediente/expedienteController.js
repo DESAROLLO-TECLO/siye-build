@@ -18,7 +18,8 @@ angular.module(appTeclo).controller('expedienteController',
 	
 	const mensajes={
 		CONFIMR_IMAGES:'Existen imagenes sin guardar las cuales se descartaran, ¿Desea continuar?',
-		SELECCIONE_OPTION:'Seleccione una opcion'
+		SELECCIONE_OPTION:'Seleccione una opción',
+		NOT_FOUND_IMAGES:'No se encontraron imagenes para la orden de servicio'
 	};
 	
 	//Variables de TipoBusqueda
@@ -140,7 +141,7 @@ angular.module(appTeclo).controller('expedienteController',
 				$scope.ordenServicio=response[lastIndex];
 				$scope.paramConfiguracion.maxNuImage=$scope.ordenServicio.nuMaxImg;
 				$scope.paramConfSav.idOrdenServ=$scope.ordenServicio.idOrdenServicio;
-				if($scope.ordenServicio.imagenes != undefined){
+				if($scope.ordenServicio.imagenes != undefined && $scope.ordenServicio.imagenes.length > 0){
 					let i;
 					for(i=0; i<$scope.ordenServicio.imagenes.length; i++){
 						let file= urltoFile($scope.ordenServicio.imagenes[i].lbExpedienteODS, $scope.ordenServicio.imagenes[i].nbExpedienteODS, $scope.ordenServicio.imagenes[i].cdTipoArchivo);
@@ -149,6 +150,8 @@ angular.module(appTeclo).controller('expedienteController',
 						$scope.ordenServicio.imagenes[i].url=imgBase64;
 						$scope.ordenServicio.imagenes[i].thumbUrl=imgBase64;
 					}
+				}else{
+					growl.warning(mensajes.NOT_FOUND_IMAGES);
 				}
 				
 				listImagesVOBackup=angular.copy($scope.ordenServicio.imagenes);
@@ -163,23 +166,25 @@ angular.module(appTeclo).controller('expedienteController',
 	
 	$scope.clasificImage=function(tpClasific){
 		
-		$scope.clasificCatalogo.clasifPregunta=false;
-		$scope.clasificCatalogo.showClasifPregunta=false;
-		
-		switch(tpClasific.cdClasif){
-			case constnteCDClaisfic.TODOS:
-				$scope.ordenServicio.imagenes=angular.copy(listImagesVOBackup);
-				break;
-			case constnteCDClaisfic.ORDEN_SERVICIO:
-				$scope.ordenServicio.imagenes=getListByFilter("cdNivel",constnteCDClaisfic.ORDEN_SERVICIO,listImagesVOBackup);
-				break;
-			case constnteCDClaisfic.PROCESO:
-				$scope.ordenServicio.imagenes=getListByFilter("cdNivel",constnteCDClaisfic.PROCESO,listImagesVOBackup);
-				break;
-			case constnteCDClaisfic.ENCUESTA:
-				$scope.clasificCatalogo.showClasifPregunta=true;
-				$scope.ordenServicio.imagenes=getListByFilter("cdNivel",constnteCDClaisfic.ENCUESTA,listImagesVOBackup);
-				break;
+		if($scope.ordenServicio != undefined){
+			$scope.clasificCatalogo.clasifPregunta=false;
+			$scope.clasificCatalogo.showClasifPregunta=false;
+			
+			switch(tpClasific.cdClasif){
+				case constnteCDClaisfic.TODOS:
+					$scope.ordenServicio.imagenes=angular.copy(listImagesVOBackup);
+					break;
+				case constnteCDClaisfic.ORDEN_SERVICIO:
+					$scope.ordenServicio.imagenes=getListByFilter("cdNivel",constnteCDClaisfic.ORDEN_SERVICIO,listImagesVOBackup);
+					break;
+				case constnteCDClaisfic.PROCESO:
+					$scope.ordenServicio.imagenes=getListByFilter("cdNivel",constnteCDClaisfic.PROCESO,listImagesVOBackup);
+					break;
+				case constnteCDClaisfic.ENCUESTA:
+					$scope.clasificCatalogo.showClasifPregunta=true;
+					$scope.ordenServicio.imagenes=getListByFilter("cdNivel",constnteCDClaisfic.ENCUESTA,listImagesVOBackup);
+					break;
+			}	
 		}
 	};
 	
@@ -297,7 +302,7 @@ angular.module(appTeclo).controller('expedienteController',
 		 },100);
 	};
 	
-	$scope.hideModalImages=function(){
+	$scope.hideModalImages=function(idOrdenServicio){
 		
 		let listImagesNoTSaved=$scope.getValueListImageDirective();
 		
@@ -305,13 +310,13 @@ angular.module(appTeclo).controller('expedienteController',
 			  showAlert.confirmacion('Existen imagenes sin guardar, ¿Desea continuar?',
 		              confirm = () => {
 		            	  resetModal();
-		            	  $scope.getImagesOrderServices($scope.busqueda.tpBusqueda,$scope.busqueda.valorBusqueda,undefined);
+		            	  $scope.getImagesOrderServices(idOrdenServicio);
 		              }, cancelaNotificar = () => {
 		                  return;
 		              });
 		  }else{
 			  resetModal();
-			  $scope.getImagesOrderServices($scope.busqueda.tpBusqueda,$scope.busqueda.valorBusqueda,undefined);
+			  $scope.getImagesOrderServices(idOrdenServicio);
 		  }
 		  
 	};
@@ -337,12 +342,10 @@ angular.module(appTeclo).controller('expedienteController',
 	$scope.filterImagesByProcess=function(optionSelected){
 		let newOption=angular.copy(optionSelected);
 		if(existenImagenesSinGurdar()){// se solicita confirmacion para cambiar la vista
-			
-			marckOptionTextCombo('proceso',constnteCDClaisfic.PROCESO,$scope.optionSelectedOld);
+			marckOptionTextCombo('proceso',constnteCDClaisfic.PROCESO,$scope.optionSelectedOld.optionProcess);
 			genericComfirm(mensajes.CONFIMR_IMAGES, actionChangedFilterImageProcess,newOption);
 		}else{
-			$scope.optionSelectedOld.optionProcess = angular.copy(optionSelected);
-			actionChangedFilterImageEncuesta(optionSelected);
+			actionChangedFilterImageProcess(optionSelected);
 		}
 		
 	};
@@ -373,10 +376,9 @@ angular.module(appTeclo).controller('expedienteController',
 	$scope.filterImagesByEnecuesta=function(optionSelected){
 		let newOption=angular.copy(optionSelected);
 		if(existenImagenesSinGurdar()){// se solicita confirmacion para cambiar la vista
-			marckOptionTextCombo('encuesta',constnteCDClaisfic.ENCUESTA,$scope.optionSelectedOld);
+			marckOptionTextCombo('encuesta',constnteCDClaisfic.ENCUESTA,$scope.optionSelectedOld.optionEncuesta);
 			genericComfirm(mensajes.CONFIMR_IMAGES, actionChangedFilterImageEncuesta,newOption);
 		}else{
-			$scope.optionSelectedOld.optionEncuesta = angular.copy(optionSelected);
 			actionChangedFilterImageEncuesta(optionSelected);
 		}
 		
@@ -385,7 +387,6 @@ angular.module(appTeclo).controller('expedienteController',
 	actionChangedFilterImageEncuesta=function(optionSelected){
 		$scope.optionSelectedOld.optionEncuesta = angular.copy(optionSelected);
 		marckOptionTextCombo('encuesta',constnteCDClaisfic.ENCUESTA,optionSelected);
-		$("#select2-pregunta-container").text(MENSAJE_OPTION);
 		$scope.paramConfSav.idPregunta=null;
 		$scope.optionSelectedOld.optionPregunta=null;
 		if(optionSelected == undefined){
@@ -407,10 +408,9 @@ angular.module(appTeclo).controller('expedienteController',
 	$scope.filterImageByPregunta=function(optionSelected){
 		let newOption=angular.copy(optionSelected);
 		if(existenImagenesSinGurdar()){// se solicita confirmacion para cambiar la vista
-			marckOptionTextCombo('pregunta',constnteCDClaisfic.PREGUNTA,$scope.optionSelectedOld);
+			marckOptionTextCombo('pregunta',constnteCDClaisfic.PREGUNTA,$scope.optionSelectedOld.optionPregunta);
 			genericComfirm(mensajes.CONFIMR_IMAGES, actionChangedFilterImagePregunta,newOption);
 		}else{
-			$scope.optionSelectedOld.optionPregunta=angular.copy(optionSelected);
 			actionChangedFilterImagePregunta(optionSelected);
 		}
 		
@@ -457,20 +457,20 @@ angular.module(appTeclo).controller('expedienteController',
 		if(e.status != undefined && Number.isInteger(e.status)){
 			
 			if(e.descripcion != undefined){
-	           	growl.error(e.descripcion,{ ttl: 4000 });
+	           	growl.warning(e.descripcion,{ ttl: 4000 });
 	        }else if(e.message != undefined) {
-	           	growl.error(e.message,{ ttl: 4000 });
+	           	growl.warning(e.message,{ ttl: 4000 });
 	        }else if(typeof e.status === 'string'){
-	           	growl.error(e.status,{ ttl: 4000 });
+	           	growl.warning(e.status,{ ttl: 4000 });
 	        }else {
 	            showAlert.error('Falló la petición, por favor intente de nuevo');
 	        }
 			
 		}else if(e.status != undefined && typeof e.status === 'object'){
 			if(e.status.descripcion != undefined){
-            	growl.error(e.status.descripcion,{ ttl: 4000 });
+            	growl.warning(e.status.descripcion,{ ttl: 4000 });
             }else if(e.status.message != undefined) {
-            	growl.error(e.status.message,{ ttl: 4000 });
+            	growl.warning(e.status.message,{ ttl: 4000 });
             }else if(typeof e.status === 'string'){
             	growl.error(e.status,{ ttl: 4000 });
             }else {showAlert.error('Falló la petición');} 
@@ -500,6 +500,24 @@ angular.module(appTeclo).controller('expedienteController',
 	$scope.showTableResumenOrden=function(){
 		$scope.view.showTableResumeOrden = true;
 		$scope.view.showTableImagesByOrden = false;
+		$scope.view.filter=undefined;
+		$scope.view.order='';
+		$scope.view.reverse=false;
+		
+		if($scope.clasificCatalogo.clasifSelected.cdClasif != constnteCDClaisfic.TODOS){
+		
+			let i;
+			let size=$scope.clasificCatalogo.catalogo.length;
+			for(i=0; i<size; i++){
+				if($scope.clasificCatalogo.catalogo[i].cdClasif == constnteCDClaisfic.TODOS){
+					$scope.clasificCatalogo.clasifSelected=	$scope.clasificCatalogo.catalogo[i];
+					$("#select2-clasifImg-container").text($scope.clasificCatalogo.catalogo[i].nbClasif);
+					break;
+				}
+				
+			}
+			
+		}
 	};
 	
 	$scope.showTableImagesByOrden=function(){
@@ -515,8 +533,8 @@ angular.module(appTeclo).controller('expedienteController',
 		case constnteCDClaisfic.PROCESO:
 			
 			if(optionMarck != undefined){
-				idOption=optionMarck.optionProcess.idProceso;
-				$("#select2-"+nameCombo+"-container").text(optionMarck.optionProcess.cdProceso);
+				idOption=optionMarck.idProceso;
+				$("#select2-"+nameCombo+"-container").text(optionMarck.cdProceso);
 				size=$scope.ordenServicio.procesos.length;
 				for(i=0; i<size; i++){
 					if(idOption == $scope.ordenServicio.procesos[i].idProceso){
@@ -532,9 +550,9 @@ angular.module(appTeclo).controller('expedienteController',
 			break;
 		case constnteCDClaisfic.ENCUESTA:
 			
-			if(optionMarck.optionEncuesta != undefined){
-				idOption=optionMarck.optionEncuesta.idEncuesta;
-				$("#select2-"+nameCombo+"-container").text(optionMarck.optionEncuesta.cdEncuesta);
+			if(optionMarck != undefined){
+				idOption=optionMarck.idEncuesta;
+				$("#select2-"+nameCombo+"-container").text(optionMarck.cdEncuesta);
 				size=$scope.optionSelected.optionProcess.listEncuestas.length;
 				for(i=0; i<size; i++){
 					if(idOption == $scope.optionSelected.optionProcess.listEncuestas[i].idEncuesta){
@@ -550,9 +568,9 @@ angular.module(appTeclo).controller('expedienteController',
 			break;
 		case constnteCDClaisfic.PREGUNTA:
 
-			if(optionMarck.optionPregunta != undefined){
-				idOption=optionMarck.optionPregunta.idPregunta;
-				$("#select2-"+nameCombo+"-container").text(optionMarck.optionPregunta.cdPregunta);
+			if(optionMarck != undefined){
+				idOption=optionMarck.idPregunta;
+				$("#select2-"+nameCombo+"-container").text(optionMarck.cdPregunta);
 				size=$scope.optionSelected.optionEncuesta.listPreguntas.length;
 				for(i=0; i<size; i++){
 					if(idOption == $scope.optionSelected.optionEncuesta.listPreguntas[i].idPregunta){
