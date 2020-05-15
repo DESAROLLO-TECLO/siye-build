@@ -432,7 +432,28 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 		return (List<OrdenServicioDTO>)c.list();	
 	};
 
-
-
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrdenServicioDTO> consultaOrdenByVinOnly(String vin) {
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		c.createAlias("vehiculo", "vehiculo");
+		c.add(Restrictions.eq("vehiculo.cdVin", vin));
+		c.add(Restrictions.eq("vehiculo.stActivo", true));
+		c.add(Restrictions.eq("stActivo", true));
+		c.addOrder(Order.desc("fhCita"));
+		return (List<OrdenServicioDTO>)c.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<OrdenServicioDTO> consultaOrdenByPlacaOnly(String placa) {
+		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		c.createAlias("vehiculo", "vehiculo");
+		c.add(Restrictions.eq("vehiculo.cdPlacaVehiculo", placa));
+		c.add(Restrictions.eq("vehiculo.stActivo", true));
+		c.add(Restrictions.eq("stActivo", true));
+		c.addOrder(Order.desc("fhCita"));
+		return (List<OrdenServicioDTO>)c.list();
+	}
 }
 	

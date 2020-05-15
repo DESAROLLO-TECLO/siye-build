@@ -19,7 +19,7 @@ public interface ProcesoEncuestaDAO extends BaseDao<ProcesoEncuestaDTO>{
 	 * @return List<ExpedienteNivelEncuestaVO>
 	 * metodo que retorna una lista con los datos de las encuestas que pertenecen al proceso 
 	 * */
-	public List<ExpedienteNivelEncuestaVO> getEncuestasByProcesoVO(Long idProceso);
+	public List<ExpedienteNivelEncuestaVO> getEncuestasByProcesoVO(List<Long> idProceso);
 
 	/**
 	 * Obtiene las encuestas del proceso

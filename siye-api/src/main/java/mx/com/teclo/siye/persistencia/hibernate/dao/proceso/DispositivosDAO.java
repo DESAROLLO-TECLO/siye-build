@@ -11,6 +11,6 @@ public interface DispositivosDAO extends BaseDao<KitDispositivoDTO>{
 	
 	public List<KitDispositivoDTO> getListDispositivos(Long idTipoKit);
 	
-	public KitDispositivoDTO getByDispositivo(Long idDisp);
+	public KitDispositivoDTO getByDispositivo(Long idDisp,Long idTipoKit);
 
 }

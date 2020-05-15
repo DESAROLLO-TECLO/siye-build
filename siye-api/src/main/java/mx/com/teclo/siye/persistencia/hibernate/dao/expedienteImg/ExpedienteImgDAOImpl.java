@@ -7,6 +7,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
+import org.hibernate.type.DateType;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.StringType;
@@ -35,18 +36,43 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ImagenVO> getAllExpedientesImgVO(List<Long> idOrdenServicio) {
-		StringBuilder consulta = new StringBuilder("SELECT ID_EXPEDIENTE_ODS AS idExpedienteODS," + 
-				"ID_ORDEN_SERVICIO AS idOrdenServicio," + 
-				"ID_ODS_ENCUESTA AS idOdsEncuesta,"+				
-				"ID_PROCESO  AS idProceso," + 
-				"ID_PREGUNTA AS idPregunta," + 
-				"NB_EXPEDIENTE_ODS AS nbExpedienteODS," + 
-				"CD_TIPO_ARCHIVO AS cdTipoArchivo," + 
-				"LB_EXPEDIENTE_ODS AS lbExpedienteODS, " +
-				"ID_INCIDENCIA AS idIncidencia,"+
-				"ID_TIPO_EXPEDIENTE AS idTipoExpediente"+
-				" FROM TIE050D_IE_EXPEDIENTES_IMG" + 
-				"   WHERE ID_ORDEN_SERVICIO IN (:idOrdenServicio) AND ST_ACTIVO =1 ORDER BY NU_ORDEN ASC");
+		StringBuilder consulta = new StringBuilder();
+		consulta.append("SELECT  TIE050.ID_EXPEDIENTE_ODS as idExpedienteODS,");
+		consulta.append("TIE050.ID_ORDEN_SERVICIO as idOrdenServicio,TIE050.ID_ODS_ENCUESTA as idOdsEncuesta,");
+		consulta.append("TIE050.ID_PROCESO  as idProceso,TIE050.ID_PREGUNTA as idPregunta,");
+		consulta.append("TIE050.ID_TIPO_EXPEDIENTE as idTipoExpediente,TIE050.NB_EXPEDIENTE_ODS as nbExpedienteODS,");
+		consulta.append("TIE050.CD_TIPO_ARCHIVO as cdTipoArchivo,TIE050.LB_EXPEDIENTE_ODS as lbExpedienteODS,");
+		consulta.append("TIE050.FH_CREACION as fhCreacion, (CASE");
+		consulta.append(" WHEN TIE050.ID_PROCESO IS NULL AND TIE050.ID_ODS_ENCUESTA IS NULL AND TIE050.ID_PREGUNTA IS NULL");
+		consulta.append(" THEN 'Orden de Servicio'");
+		consulta.append(" WHEN TIE050.ID_PROCESO IS NOT NULL AND TIE050.ID_ODS_ENCUESTA IS NULL AND TIE050.ID_PREGUNTA IS NULL");
+		consulta.append(" THEN ('Proceso/' || TIE035.NB_PROCESO)");
+		consulta.append(" WHEN TIE050.ID_PROCESO IS NOT NULL AND TIE050.ID_ODS_ENCUESTA IS NOT NULL AND TIE050.ID_PREGUNTA IS NULL");
+		consulta.append(" THEN ('Encuesta/' || TIE001.NB_ENCUESTA)");
+		consulta.append(" WHEN TIE050.ID_PROCESO IS NOT NULL AND TIE050.ID_ODS_ENCUESTA IS NOT NULL AND TIE050.ID_PREGUNTA IS NOT NULL");
+		consulta.append(" THEN (TIE001.NB_ENCUESTA || '/' || TIE005.TX_PREGUNTA)");
+		consulta.append(" ELSE 'Sin clasificación' END) AS nbNivel, ");
+		consulta.append("(CASE WHEN TIE050.ID_PROCESO IS NULL AND TIE050.ID_ODS_ENCUESTA IS NULL AND TIE050.ID_PREGUNTA IS NULL");
+		consulta.append(" THEN 'OS'");
+		consulta.append(" WHEN TIE050.ID_PROCESO IS NOT NULL AND TIE050.ID_ODS_ENCUESTA IS NULL AND TIE050.ID_PREGUNTA IS NULL");
+		consulta.append(" THEN 'PRC'");
+		consulta.append(" WHEN TIE050.ID_PROCESO IS NOT NULL AND TIE050.ID_ODS_ENCUESTA IS NOT NULL AND TIE050.ID_PREGUNTA IS NULL");
+		consulta.append(" THEN 'ENC'");
+		consulta.append(" WHEN TIE050.ID_PROCESO IS NOT NULL AND TIE050.ID_ODS_ENCUESTA IS NOT NULL AND TIE050.ID_PREGUNTA IS NOT NULL");
+		consulta.append(" THEN 'PREG'");
+		consulta.append(" ELSE 'N/A' END) AS cdNivel,");
+		consulta.append(" TIE054.NB_TIPO_EXPEDIENTE AS nbTpDocumneto,");
+		consulta.append(" TIE050.NU_ORDEN AS nuOrden, TIE050.ID_INCIDENCIA AS idIncidencia");
+		consulta.append(" FROM TIE050D_IE_EXPEDIENTES_IMG TIE050 JOIN TIE026D_IE_ORDEN_SERVICIOS TIE026");
+		consulta.append(" ON TIE050.ID_ORDEN_SERVICIO = TIE026.ID_ORDEN_SERVICIO LEFT JOIN TIE035C_IE_PROCESOS TIE035");
+		consulta.append(" ON TIE035.ID_PROCESO = TIE050.ID_PROCESO LEFT JOIN TIE002D_EE_ODS_ENCUESTA TIE002");
+		consulta.append(" ON TIE002.ID_ORDEN_SERVICIO =TIE026.ID_ORDEN_SERVICIO AND TIE002.ID_ODS_ENCUESTA = TIE050.ID_ODS_ENCUESTA");
+		consulta.append(" LEFT JOIN TIE001D_EE_ENCUESTAS TIE001 ON TIE001.ID_ENCUESTA = TIE002.ID_ENCUESTA");
+		consulta.append(" LEFT JOIN TIE005D_EE_PREGUNTAS TIE005  ON TIE005.ID_PREGUNTA = TIE050.ID_PREGUNTA");
+		consulta.append(" LEFT JOIN TIE054C_IE_TIPO_EXPEDIENTE TIE054 ON TIE054.ID_TIPO_EXPEDIENTE = TIE050.ID_TIPO_EXPEDIENTE");
+		consulta.append(" WHERE TIE026.ID_ORDEN_SERVICIO IN (:idOrdenServicio) AND TIE050.ST_ACTIVO=1");
+		consulta.append(" ORDER BY TIE050.ID_EXPEDIENTE_ODS ASC");
+
 		 List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				 .addScalar("idExpedienteODS", LongType.INSTANCE)
 				 .addScalar("idOdsEncuesta", LongType.INSTANCE)
@@ -56,13 +82,16 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 				 .addScalar("nbExpedienteODS", StringType.INSTANCE)
 				 .addScalar("cdTipoArchivo", StringType.INSTANCE)
 				 .addScalar("lbExpedienteODS",StandardBasicTypes.BINARY)
-				 .addScalar("idIncidencia",LongType.INSTANCE)
 				 .addScalar("idTipoExpediente",LongType.INSTANCE)
+				 .addScalar("fhCreacion",DateType.INSTANCE)
+				 .addScalar("nbNivel",StringType.INSTANCE)
+				 .addScalar("cdNivel",StringType.INSTANCE)
+				 .addScalar("nuOrden",LongType.INSTANCE)
+				 .addScalar("idIncidencia",LongType.INSTANCE)
+				 .addScalar("nbTpDocumneto",StringType.INSTANCE)
 				 .setParameterList("idOrdenServicio", idOrdenServicio)
 				 .setResultTransformer(Transformers.aliasToBean(ImagenVO.class)).list();
 		return respuesta;
-		
-		
 	}
 
 	@Override
