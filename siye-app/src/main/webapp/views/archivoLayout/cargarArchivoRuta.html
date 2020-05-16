@@ -50,7 +50,8 @@
 														<label for="{{(filesVO.fileUploaded == undefined || (filesVO.fileUploaded.cdStSeguimiento != 'RECIBIDO' && filesVO.fileUploaded.cdStSeguimiento != 'CARGANDO')) 
 																		? 'fileUpload' : ''}}" class="btn btn-danger"
 															ng-disabled="filesVO.fileUploaded.cdStSeguimiento == 'RECIBIDO' || filesVO.fileUploaded.cdStSeguimiento == 'CARGANDO'" 
-															tooltip="Examinar" tooltip-placement="right">
+															uib-tooltip="Examinar" tooltip-placement="right"
+															tooltip-enable="{{isUseTooltip}}">
 															<i class="fa fa-upload"></i>
 														</label>
 													</div>
@@ -108,9 +109,13 @@
 									<h3 class="box-title">{{filesVO.fileUploaded.cdStSeguimiento == 'CARGADO' ? 'Archivo Cargado' : 'Archivo en Proceso'}}</h3>
 								</div>
 								<div class="col-xs-4 col-md-4">
-									<div ng-if="filesVO.fileUploaded.cdStSeguimiento == 'CARGADO'" tooltip-placement="left" tooltip="Descargar Archivo">
+									<div ng-if="filesVO.fileUploaded.cdStSeguimiento == 'CARGADO'">
 										<a ng-click="descargarArchivo(filesVO.fileUploaded.idLoteOds)"> 
-											<span class="pull-right"> <img src="static/dist/img/excel.png"> </span>
+											<span class="pull-right"> 
+												<img tooltip-placement="left" uib-tooltip="Descargar Archivo"
+													tooltip-enable="{{isUseTooltip}}"
+												 src="static/dist/img/excel.png"> 
+											</span>
 										</a>
 									</div>
 								</div>
