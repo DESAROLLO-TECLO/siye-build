@@ -33,6 +33,10 @@ public class IncidenciaDAOImpl extends BaseDaoHibernate<IncidenciaDTO> implement
 	public Long getUltimoId(){
 		Criteria c = getCurrentSession().createCriteria(IncidenciaDTO.class);
 		c.addOrder(Order.desc("idIncidencia"));
+		
+		if(c.list().isEmpty())
+			return new Long(0);
+		
 		IncidenciaDTO incidenciaDTO = (IncidenciaDTO)c.list().get(0);
 		return incidenciaDTO.getIdIncidencia();
 	}

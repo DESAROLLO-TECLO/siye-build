@@ -33,15 +33,18 @@ public class PlanProcesoDAOImpl extends BaseDaoHibernate<PlanProcesoDTO> impleme
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ExpedienteNivelProcesoVO> getProcesosPlanVO(Long idPlan) {
-		StringBuilder consulta = new StringBuilder("SELECT pp.ID_PROCESO AS idProceso, proceso.TX_PROCESO AS cdProceso, proceso.NU_MAX_IMAGENES AS nuMaxImg " + 
+	public List<ExpedienteNivelProcesoVO> getProcesosPlanVO(List<Long> idPlan) {
+		StringBuilder consulta = new StringBuilder("SELECT pp.ID_PROCESO AS idProceso, proceso.TX_PROCESO AS cdProceso, proceso.NU_MAX_IMAGENES AS nuMaxImg, " + 
+				" pp.ID_PLAN as idPlan"+
 				"   FROM TIE036D_IE_PLAN_PROCESO pp" + 
 				"     INNER JOIN TIE035C_IE_PROCESOS proceso ON (pp.ID_PROCESO  = proceso.ID_PROCESO)" + 
-				"     WHERE pp.ID_PLAN ="+ idPlan +" AND pp.ST_ACTIVO =1 AND proceso.ST_ACTIVO =1 ORDER BY pp.NU_ORDEN ASC");
+				"     WHERE pp.ID_PLAN IN (:idPlan) AND pp.ST_ACTIVO =1 AND proceso.ST_ACTIVO =1 ORDER BY pp.NU_ORDEN ASC");
 		List<ExpedienteNivelProcesoVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idProceso",LongType.INSTANCE)
 				.addScalar("cdProceso",StringType.INSTANCE)
 				.addScalar("nuMaxImg",LongType.INSTANCE)
+				.addScalar("idPlan",LongType.INSTANCE)
+				.setParameterList("idPlan", idPlan)
 				.setResultTransformer(Transformers.aliasToBean(ExpedienteNivelProcesoVO.class)).list();
 		return respuesta;
 	}

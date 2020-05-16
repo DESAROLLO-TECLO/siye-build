@@ -4,6 +4,7 @@ import java.util.List;
 
 public class ExpedienteNivelEncuestaVO {
 	
+	private Long idProceso;
 	private Long idEncuesta;
 	private String cdEncuesta;
 	private Long nuMaxImg;
@@ -101,5 +102,17 @@ public class ExpedienteNivelEncuestaVO {
 	}
 	public void setInfoEvidencia(InfoEvidenciaNivelVO infoEvidencia) {
 		this.infoEvidencia = infoEvidencia;
+	}
+	/**
+	 * @return the idProceso
+	 */
+	public Long getIdProceso() {
+		return idProceso;
+	}
+	/**
+	 * @param idProceso the idProceso to set
+	 */
+	public void setIdProceso(Long idProceso) {
+		this.idProceso = idProceso;
 	}
 }
