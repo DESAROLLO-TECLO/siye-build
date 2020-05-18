@@ -176,7 +176,7 @@
         },
         "resultadosGral":{
             "titulo":{
-                "moduloAtencion":"Modulo de Atención",
+                "moduloAtencion":"Módulo de Atención",
                 "EnCurso":"En Curso",
                 "completa":"Completadas",
                 "programada":"Programadas",
@@ -222,7 +222,7 @@
         },
         "pestanas":{
             "nodos":"Orden Servicio",
-            "linea":"Linea de Tiempo"
+            "linea":"Línea de Tiempo"
         },
         "modal":{
             "detalle":{
