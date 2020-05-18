@@ -69,26 +69,15 @@
 			                <fieldset class="scheduler-border fieldsetCustom">
 			                    <legend class="scheduler-border text-center">Incidencia</legend>
 			                    <div class="row">
-			                        <div class="form-group">
-			                            <div class="table-responsive">
-			                                <table class="table">
-			                                    <tr>
-			                                        <td>
-			                                            <dt>Folio:</dt>
-			                                        </td>
-			                                        <td>{{general.voIncidencia.cdIncidencia}}</td>
-			                                        <td>
-			                                            <dt>Nombre:</dt>
-			                                        </td>
-			                                        <td>{{general.voIncidencia.nbIncidencia}}</td>
-			                                        <td>
-			                                            <dt>Descripción:</dt>
-			                                        </td>
-			                                        <td>{{general.voIncidencia.txIncidencia}}</td>
-			                                    </tr>
-			                                </table>
-			                            </div>
-			                        </div>
+			                    	<div class="col-xs-6 col-sm-2 col-md-2">
+			                    		<label>Folio: </label>{{general.voIncidencia.cdIncidencia}}
+			                    	</div>
+			                    	<div class="col-xs-6 col-sm-2 col-md-2">
+			                    		<label>Nombre: </label>{{general.voIncidencia.nbIncidencia}}
+			                    	</div>
+			                    	<div class="col-xs-12 col-sm-8 col-md-8">
+			                    		<label>Descripción:</label> <p>{{general.voIncidencia.txIncidencia}}</p>
+			                    	</div>
 			                    </div>
 			                </fieldset>
 			             </div>
@@ -163,14 +152,17 @@
                             <div class="col-md-4">
                                 <div class="form-group"
                                     ng-class="{ 'has-error' : editarOS.hrCita.$invalid && editarOS.hrCita.$dirty}">
-                                    <label><span class="asteriskReq">*</span>Hora de Servicio</label>
-                                    <div class="input-group">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-clock-o"></i>
-                                        </div>
-                                        <input class="form-control inputFecha" ng-disabled="true" name="hrCita"
-                                            id="hrCita" ng-model="general.voModal.fhCita" readonly />
-                                    </div>
+                                    <label><span class="asteriskReq">*</span>Fecha y Hora de Servicio</label>
+                                    <div class="input-group" datetime-picker	idioma-dtp="{{currentLanguage}}"
+										options="dateTimePickerOptions"
+										ng-change="setMinDateToStartDate(general.voModal.fhCita)"
+										ng-model="general.voModal.fhCita">
+										<div class="input-group-addon labelCheck">
+											<i class="fa fa-calendar-plus-o"></i>
+										</div>
+										<input class="form-control inputFecha" name="hrCita" 
+                                            id="hrCita"  readonly />
+									</div>
                                     <div ng-show="editarOS.hrCita.$invalid && editarOS.hrCita.$dirty">
                                         <span class="help-block">Es necesario especificar la hora</span>
                                     </div>
@@ -184,8 +176,9 @@
                                             <i class="fa fa-calendar"></i>
                                         </div>
                                         <input class="form-control inputFecha" id="fhAtencionIni" date-picker
-                                            idioma-dp="{{currentLanguage}}" mindate="'29/01/2018'"
-                                            maxdate="'09/02/2018'" elemento="'fhAtencionIni'"
+                                            idioma-dp="{{currentLanguage}}"
+                                             mindate="general.voModal.fhAtencionIni"
+                                             elemento="'fhAtencionFin'" 
                                             ng-model="general.voModal.fhAtencionIni" readonly />
                                     </div>
                                 </div>
@@ -198,8 +191,9 @@
                                             <i class="fa fa-calendar"></i>
                                         </div>
                                         <input class="form-control inputFecha" id="fhAtencionFin" date-picker
-                                            idioma-dp="{{currentLanguage}}" mindate="'29/01/2018'"
-                                            maxdate="'09/02/2018'" elemento="'fhAtencionFin'"
+                                            idioma-dp="{{currentLanguage}}"
+                                            maxdate="general.voModal.fhAtencionFin" 
+                                            elemento="'fhAtencionIni'"
                                             ng-model="general.voModal.fhAtencionFin" readonly />
                                     </div>
                                 </div>
