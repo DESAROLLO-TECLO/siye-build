@@ -127,11 +127,7 @@
 										<label for="tipoTramite">Fecha Conclución:</label>
 										<div class="input-group">
 											<p>{{ordenInfo.fhAtencionFin}}</p>
-											<div class="input-group-addon">
-												<i class="fa fa-list-alt"></i>
-											</div>
-											<span class="form-control">{{ordenInfo.fhAtencionFin !=null ? 
-												ordenInfo.fhAtencionFin: "SIN TERMINAR"}}</span>
+
 										</div>
 									</div>
 								</div>
@@ -314,39 +310,12 @@
 																<p>{{ordenInfo.vehiculo.consecionario.nbConsecion}}</p>
 															</div>
 														</div>
-												<div class="row centerCol">
-													<div class="col-xs-12">
-														<table class="table">
-															<tr>
-																<th colspan="1">PLACA:</th>
-																<td colspan="1">{{ordenInfo.vehiculo.cdPlacaVehiculo}}</td>
-																<th colspan="1">VIN:</th>
-																<td colspan="1">{{ordenInfo.vehiculo.cdVin}}</td>
-																<th colspan="1">TARJETA CIRCULACIÓN:</th>
-																<td colspan="1">{{ordenInfo.vehiculo.cdTarjetaDeCirculacion}}</td>
-															</tr>
-															<tr>
-																<th colspan="1">TIPO:</th>
-																<td colspan="1">{{ordenInfo.vehiculo.tipoVehiculo.nbTipoVehiculo}}</td>
-																<th colspan="1">MARCA:</th>
-																<td colspan="1">{{ordenInfo.vehiculo.nbMarca}}</td>
-																<th colspan="1">SUB-MARCA:</th>
-																<td colspan="1">{{ordenInfo.vehiculo.nbSubMarca}}</td>
-															</tr>
-															<tr>
-																<th colspan="1">MODELO:</th>
-																<td colspan="1">{{ordenInfo.vehiculo.cdModelo}}</td>
-																<th colspan="1">CONCESIONARIO:</th>
-																<td colspan="3">{{ordenInfo.vehiculo.consecionario.nbConsecion}}</td>
-															</tr>
-														</table>
 													</div>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-								
 								<div class="col-md-12"></div>
 								
 							</div>
@@ -565,7 +534,7 @@
 									</div>
 								</div>
 							</div>
-							<div class="row" id="div4">
+							<div class="row" id="div5">
 							  <div class="col-md-6">
                                     <div style="float: right;">
                                         <a class="btn btn-primary" href="#/consultaGeneral/true" role="button">Regresar</a>
