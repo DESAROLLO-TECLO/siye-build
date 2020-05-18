@@ -32,14 +32,15 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
             showAlert.requiredFields(form);
             growl.warning('Formulario incompleto', { ttl: 5000 });
             return;
-            T
         } else {
             if (angular.equals(vo, $scope.general.voModalBackup)) {
                 growl.warning('No se han detectado cambios por guardar, favor de validar', { ttl: 4000 });
                 return;
             } else {
                 vo.incidencia = $scope.general.voIncidencia; // agregamos la incidencia que estará asociada
-                consultaServicioService.actualizarServicio(vo).success(function(data) {
+                let petitionVO=angular.copy(vo);
+                petitionVO.fhCita=moment(vo.fhCita).format('DD/MM/YYYY HH:mm');
+                consultaServicioService.actualizarServicio(petitionVO).success(function(data) {
                     if (data) {
                         // Cuando toda la petición sea correcta, debemos actualizar el objeto del array aztualizado
                         angular.copy(data, $scope.general.voModal);
@@ -118,7 +119,9 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
     $scope.resetActualData = function() {
         $scope.banderas.folioDisable = false;
         $scope.general.voModal = {};
+        $scope.general.voModal.fhCita=null;
         $scope.general.voModalBackup = {};
+        $scope.cleanComponentDateTimePiker();
         $("#select2-nbCentroInstalacion-container").text('Seleccione una opción');
         $("#select2-kit-container").text('Seleccione una opción');
         $("#select2-plan-container").text('Seleccione una opción');
@@ -129,14 +132,15 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
         $location.path("/consulta/" + $routeParams.opt + "/" + $routeParams.val);
     };
     
-    $scope.setMinDateToStartDate=function(minDate){
-    	let dateStr=minDate._i;
-    	let array=dateStr.split(' ');
-    	let momentDateInit=moment(array[0],'DD/MM/YYYY').format('DD/MM/YYYY');
-    	$('#fhAtencionIni').datepicker('setStartDate', array[0]);
-    	$('#fhAtencionFin').datepicker('setStartDate', array[0]);
-    	//$scope.general.voModal.fhAtencionFin=undefined;
-    	//$scope.general.voModal.fhAtencionIni=undefined;
+    $scope.setMinDateToStartDate=function(minDate,newdate){
+    	
+    	if(minDate != undefined){
+    		let momenStr=moment(minDate).format('DD/MM/YYYY');
+        	let momentDateInit=moment(momenStr,'DD/MM/YYYY').format('DD/MM/YYYY');
+        	$('#fhAtencionIni').datepicker('setStartDate', momenStr);
+        	$('#fhAtencionFin').datepicker('setStartDate', momenStr);
+    	}
+    	
     };
 
     catalogos();
