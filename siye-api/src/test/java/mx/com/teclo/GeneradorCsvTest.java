@@ -27,7 +27,7 @@ public class GeneradorCsvTest {
 	
 	
 	private static final String NA = "NA";
-	private static final String COMA = ",";
+	private static final String CD_DELIMITADOR = ",";
 	// De las placas y vins se excluyen letras i, ñ, o, q
 	private static final String CHARS_LETRAS = "ABCDEFGHJKLMNPRSTUVWXYZ";
 	private static final String CHARS_ALFANUMERICOS = "ABCDEFGHJKLMNPRSTUVWXYZ0123456789";
@@ -36,7 +36,7 @@ public class GeneradorCsvTest {
 	private static final String GUION = "-";
 	private static final String DOS_PUNTOS = ":";
 	// No repetir nombres de los headers
-	private static final String HEADERS = "CD ORDEN SERVICIO,FH CITA,FH ATENCION INI,FH ATENCION FIN,FH ATENCION PARCIAL,TX MOTIVO CAMBIO,CD PLACA VEHICULO,CD VIN,CD TARJETA CIRCULACION,NB MARCA,NB SUB MARCA,CD MODELO,ST VEHICULO,CD TIPO VEHICULO,NB TIPO VEHICULO,NU ORDEN VEHICULO,ST TIPO VEHICULO,CD CENTRO INSTALACION,NB CENTRO INSTALACION,NB CALLE,NU EXTERIOR,NB ENTRE CALLE,NB Y CALLE,NB COLONIA,NB ALCALDIA,NB DIAS ATENCION,HR ATENCION INI,HR ATENCION FIN,NU ORDEN CENTRO INST.,ST CENTRO INSTALACION,CD KIT INSTALACION,CD PLAN,NB PLAN,TX PLAN,CD CONCESION,NB CONCESION,NU ORDEN KIT,ST CONCESION";
+	private static final String HEADERS = "CD ORDEN SERVICIO,FH CITA,FH ATENCION INI,FH ATENCION FIN,FH ATENCION PARCIAL,NU TIEMPO DURACION,TX MOTIVO CAMBIO,CD PLACA VEHICULO,CD VIN,CD TARJETA CIRCULACION,NB MARCA,NB SUB MARCA,CD MODELO,ST VEHICULO,CD TIPO VEHICULO,NB TIPO VEHICULO,NU ORDEN VEHICULO,ST TIPO VEHICULO,CD CENTRO INSTALACION,NB CENTRO INSTALACION,NB CALLE,NU EXTERIOR,NB ENTRE CALLE,NB Y CALLE,NB COLONIA,NB ALCALDIA,NB DIAS ATENCION,HR ATENCION INI,HR ATENCION FIN,NU ORDEN CENTRO INST.,ST CENTRO INSTALACION,CD KIT INSTALACION,CD PLAN,NB PLAN,TX PLAN,CD CONCESION,NB CONCESION,NU ORDEN KIT,ST CONCESION";
 	private static SecureRandom rnd = new SecureRandom();
 	private List<String> rutas = new ArrayList<String>();
 	private List<String> alcaldias = new ArrayList<String>();
@@ -45,7 +45,7 @@ public class GeneradorCsvTest {
 	private SimpleDateFormat sdfCodigoOrdenServicio = new SimpleDateFormat("yyyyMMdd");
 	private SimpleDateFormat sdfCita = new SimpleDateFormat("dd/MM/yyyy");
 	private int diaAnio = 365;
-	private static final String RUTA_CSV_GENERADO = "C:\\Users\\UNITIS-ODM2\\Desktop\\CSV_DEMO_3.csv";
+	private static final String RUTA_CSV_GENERADO = "C:\\Users\\UNITIS-ODM2\\Desktop\\CSV_DEMO_ENTREGA.csv";
 
 	@PostConstruct
 	public void init() {
@@ -118,7 +118,7 @@ public class GeneradorCsvTest {
 		sbLin.append(segundo);
 		sbLin.append(GUION);
 		sbLin.append(placa);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 
 		// FH CITA
 		sbLin.append(sdfCita.format(fechaCita));
@@ -128,7 +128,7 @@ public class GeneradorCsvTest {
 		sbLin.append(minuto);
 		sbLin.append(DOS_PUNTOS);
 		sbLin.append(segundo);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 
 		// FH ATENCION INI
 		sbLin.append(sdfCita.format(fechaCita));
@@ -138,7 +138,7 @@ public class GeneradorCsvTest {
 		sbLin.append(minuto);
 		sbLin.append(DOS_PUNTOS);
 		sbLin.append(segundo);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 
 		// FH ATENCION FIN
 		sbLin.append(sdfCita.format(fechaCita));
@@ -148,7 +148,7 @@ public class GeneradorCsvTest {
 		sbLin.append(minuto);
 		sbLin.append(DOS_PUNTOS);
 		sbLin.append(segundo);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 
 		// FH ATENCION PARCIAL
 		sbLin.append(sdfCita.format(fechaCita));
@@ -158,113 +158,117 @@ public class GeneradorCsvTest {
 		sbLin.append(minuto);
 		sbLin.append(DOS_PUNTOS);
 		sbLin.append(segundo);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
+		
+		// NU TIEMPO DURACION
+		sbLin.append(BigDecimal.ZERO.intValue());
+		sbLin.append(CD_DELIMITADOR);
 
 		// TX MOTIVO CAMBIO
 		sbLin.append(NA);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// CD PLACA VEHICULO
 		sbLin.append(placa);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// CD VIN
 		sbLin.append(getCodigoVin());
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 
 		// CD TARJETA CIRCULACION
 		sbLin.append(getNumTarjeta());
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// NB MARCA
 		sbLin.append(NA);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// NB SUB MARCA
 		sbLin.append(NA);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// CD MODELO
 		sbLin.append(2020 - rnd.nextInt(10));
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// ST VEHICULO
 		sbLin.append(BigDecimal.ONE.intValue());
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 
 		// CD TIPO VEHICULO
 		sbLin.append(par ? "AUTOMOVIL" : "CAMION");
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 
 		// NB TIPO VEHICULO
 		sbLin.append(NA);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// NU ORDEN
 		sbLin.append(BigDecimal.ONE.intValue());
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// ST TIPO VEHICULO
 		sbLin.append(BigDecimal.ONE.intValue());
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// CD CENTRO INSTALACION
 		sbLin.append(codeAlcaldia);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// NB CENTRO INSTALACION
 		sbLin.append(NA);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// NB CALLE
 		sbLin.append(NA);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// NU EXTERIOR
 		sbLin.append(NA);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// NB ENTRE CALLE
 		sbLin.append(NA);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// NB Y CALLE
 		sbLin.append(NA);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// NB COLONIA
 		sbLin.append(NA);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// NB ALCALDIA
 		sbLin.append(NA);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// NB DIAS ATENCION
 		sbLin.append(NA);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// HR ATENCION INI
 		sbLin.append("09:00:00");
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// HR ATENCION FIN
 		sbLin.append("17:00:00");
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// NU ORDEN
 		sbLin.append(BigDecimal.ONE.intValue());
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// ST CENTRO INSTALACION
 		sbLin.append(BigDecimal.ONE.intValue());
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 		// CD KIT INSTALACION
 		sbLin.append(getKit());
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 
 		// CD PLAN
 		sbLin.append(plan);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 
 		// NB PLAN
 		sbLin.append(NA);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 
 		// TX PLAN
 		sbLin.append(NA);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 
 		// CD CONCESION
 		sbLin.append(concesion);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 
 		// NB CONCESION
 		sbLin.append(NA);
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 
 		// NU ORDEN
 		sbLin.append(BigDecimal.ONE.intValue());
-		sbLin.append(COMA);
+		sbLin.append(CD_DELIMITADOR);
 
 		// ST CONCESION
 		sbLin.append(BigDecimal.ONE.intValue());
@@ -336,6 +340,8 @@ public class GeneradorCsvTest {
 	}
 
 	private void cargarCatalogos() {
+		//CAT CONCESIONARIAS 
+		// VERIFICAR QUE EXISTAN LOS CODIGOS
 		rutas.add("R-001");
 		rutas.add("R-010");
 		rutas.add("R-100");
@@ -417,7 +423,8 @@ public class GeneradorCsvTest {
 		rutas.add("R-094");
 		rutas.add("R-095");
 		rutas.add("R-099");
-
+		//CAT CENTROS DE INSTALACION
+		//VERIFICAR QUE EXISTAN LOS MISMOS CODIGOS
 		alcaldias.add("TLPN");
 		alcaldias.add("VCAR");
 		alcaldias.add("AZCP");

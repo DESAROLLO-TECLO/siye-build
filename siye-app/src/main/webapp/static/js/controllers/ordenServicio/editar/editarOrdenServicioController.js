@@ -23,6 +23,10 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
         tipoVehiculo: []
     };
 
+    $scope.dateTimePickerOptions=new Object({
+    	useCurrent:false
+    });
+    
     $scope.guardar = function(vo, form) {
         if (form.$invalid) {
             showAlert.requiredFields(form);
@@ -123,6 +127,16 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
 
     $scope.regresar = function() {
         $location.path("/consulta/" + $routeParams.opt + "/" + $routeParams.val);
+    };
+    
+    $scope.setMinDateToStartDate=function(minDate){
+    	let dateStr=minDate._i;
+    	let array=dateStr.split(' ');
+    	let momentDateInit=moment(array[0],'DD/MM/YYYY').format('DD/MM/YYYY');
+    	$('#fhAtencionIni').datepicker('setStartDate', array[0]);
+    	$('#fhAtencionFin').datepicker('setStartDate', array[0]);
+    	//$scope.general.voModal.fhAtencionFin=undefined;
+    	//$scope.general.voModal.fhAtencionIni=undefined;
     };
 
     catalogos();

@@ -224,13 +224,17 @@ angular.module(appTeclo).controller('monIncidenciaController',
 	$scope.showLineaTiempo=function(orden){
 		let idOrden = orden.idOrdenServicio;
 		let idPlan = orden.idPlan;
+		if(idOrden == undefined){
+			growl.warning("La incidencia no cuenta con una orden de servicio asociada");
+			return;
+		}
 		monIncidenciaService.getDetalleIncidenciasOS(idOrden,idPlan).success(function(data) {
 			if (data != null) {
 				$scope.flags.pantallaLTiempo = true;
 				$scope.orden = data;
 				scrollDetail();
 			}else{
-				growl.warning("No se encontro informacion")
+				growl.warning("No se encontro informacion");
 			}
 		}).error(function(e) {
 			$scope.flags.pantallaLTiempo=false;

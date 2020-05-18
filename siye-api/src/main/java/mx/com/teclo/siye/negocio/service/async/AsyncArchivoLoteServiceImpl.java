@@ -6,8 +6,8 @@ package mx.com.teclo.siye.negocio.service.async;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.List;
@@ -22,8 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.nio.file.Path;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
@@ -107,17 +105,31 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void cargarArchivoLote(Long idArchivoLote) throws BusinessException {
 		LOGGER.info(MessageFormat.format(MSG_INICIANDO_CARGA_MASIVA, idArchivoLote));
+		LoteOrdenServicioDTO loteDTO = loteDAO.findOne(idArchivoLote);
 
+		if (!loteDTO.getStSeguimiento().getCdStSeguimiento()
+				.equalsIgnoreCase(ArchivoSeguimientoEnum.RECIBIDO.getCdArchivoSeg())) {
+			return;
+		}
+		
 		cargaMasivaService.iniciarCargaMasiva(idArchivoLote);
 
-		ConfigCargaMasivaVO config = layoutService.getConfigCargaMasiva(idArchivoLote);
+		ConfigCargaMasivaVO config = null;
+		
+		try {
+			config = layoutService.getConfigCargaMasiva(idArchivoLote);
+		}catch(BusinessException e) {
+			actualizarSeguimiento(idArchivoLote, ArchivoSeguimientoEnum.FINALIZADO,
+					e.getMessage());
+			return;
+		}
 
 		if (isMapaSQLValido(config)) {
 			LOGGER.info(MessageFormat.format(MSG_CONFIG_CARGA_MASIVA_EXITOSA, idArchivoLote));
 			cargaMasivaService.procesarLineas(config);
 
 		} else {
-			actualizarSeguimiento(idArchivoLote, ArchivoSeguimientoEnum.CARGADO,
+			actualizarSeguimiento(idArchivoLote, ArchivoSeguimientoEnum.FINALIZADO,
 					MessageFormat.format(MSG_ERROR_QUERIES_INCOMPLETOS, idArchivoLote));
 
 		}
@@ -193,6 +205,11 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 	 * @throws BusinessException
 	 */
 	private boolean isMapaSQLValido(ConfigCargaMasivaVO configCargaMasivaVO) throws BusinessException {
+				
+		if(configCargaMasivaVO.getConfigInsercion() == null || 
+				configCargaMasivaVO.getConfigInsercion().isEmpty()) {
+			
+		}
 		int totalTablas = configCargaMasivaVO.getConfigInsercion().size();
 		int totalQueries = 0;
 		for (Map.Entry<String, InsercionTablaVO> entry : configCargaMasivaVO.getConfigMoldesSQL().entrySet()) {
@@ -237,6 +254,8 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 	            for (int readNum; (readNum = fis.read(buf)) != -1;) {
 	                bos.write(buf, 0, readNum); //no doubt here is 0
 	            }
+	            bos.close();
+	            fis.close();
 	        } catch (IOException ex) {
 	        	throw new NotFoundException("No se encontro el archivo para su descarga");
 	        }
