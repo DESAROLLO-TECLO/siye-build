@@ -254,6 +254,8 @@ public class AsyncArchivoLoteServiceImpl implements AsyncArchivoLoteService {
 	            for (int readNum; (readNum = fis.read(buf)) != -1;) {
 	                bos.write(buf, 0, readNum); //no doubt here is 0
 	            }
+	            bos.close();
+	            fis.close();
 	        } catch (IOException ex) {
 	        	throw new NotFoundException("No se encontro el archivo para su descarga");
 	        }
