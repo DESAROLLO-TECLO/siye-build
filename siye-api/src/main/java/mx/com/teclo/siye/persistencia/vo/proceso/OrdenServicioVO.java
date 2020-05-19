@@ -19,7 +19,7 @@ public class OrdenServicioVO implements Serializable {
 	private KitInstalacionVO kitInstalacion;
 	private PlanVO plan;
 	private StSeguimientoVO stSeguimiento;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss",timezone = "America/Mexico_City")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm",timezone = "America/Mexico_City")
 	private Date fhCita;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss",timezone = "America/Mexico_City")
 	private Date fhAtencionIni;
