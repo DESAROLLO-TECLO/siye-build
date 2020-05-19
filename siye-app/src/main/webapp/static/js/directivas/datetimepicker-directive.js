@@ -24,9 +24,9 @@
                 },
                 link: function ($scope, $element, $attrs, ngModel) {
                 	
+                	var dpElement = $element.parent().hasClass('input-group') ? $element.parent() : $element;
+                	
                 	$scope.$watch('idiomaDtp', function(lang) {
-
-                		var dpElement = $element.parent().hasClass('input-group') ? $element.parent() : $element;
                 		
                 		var dtmtoday 		 = '',
 	                		dtmclear 		 = '',
@@ -110,10 +110,19 @@
 	                	});
 	                	
 	                    $scope.$watch('options', function (newValue) {
-	                        var dtp = dpElement.data('DateTimePicker');
+	                    	var dtp = dpElement.data('DateTimePicker');
+	                        if(newValue != undefined && newValue != null){
+	                        	dtp.clear();
+	                        	dtp.hide();
+	                        	dtp.options(newValue);
+	                        	if(newValue.defaultDate){
+	                        		dtp.date(newValue.defaultDate);
+	                        	}
+	                        }
+	                    	/*var dtp = dpElement.data('DateTimePicker');
 	                        $.map(newValue, function (value, key) {
 	                            dtp[key](value);
-	                        });
+	                        });*/
 	                    }, true);
 	
 	                    ngModel.$render = function () {
@@ -123,9 +132,9 @@
 	                            dpElement.data('DateTimePicker').clear();
 	                        } else if (ngModel.$viewValue) {
 	                            // otherwise make sure it is moment object
-	                            if (!moment.isMoment(ngModel.$viewValue)) {
+	                            /*if (!moment.isMoment(ngModel.$viewValue)) {
 	                                ngModel.$setViewValue(moment(ngModel.$viewValue));
-	                            }
+	                            }*/
 	                            dpElement.data('DateTimePicker').date(ngModel.$viewValue);
 	                        }
 	                    };
@@ -136,9 +145,9 @@
 	
 	                    dpElement.on('dp.change', function (e) {
 	                        if (!isDateEqual(e.date, ngModel.$viewValue)) {
+
 	                            var newValue = e.date === false ? null : e.date;
 	                            ngModel.$setViewValue(newValue);
-	
 	                            $timeout(function () {
 	                                if (typeof $scope.onChange === 'function') {
 	                                    $scope.onChange();
@@ -189,6 +198,15 @@
 	                    
 	                    dpElement.datetimepicker($scope.options);
                     });
+                	
+                	
+                	//METODO QUE SE PUEDE LLAMAR DESDE EL CONTROLLER DONDE SE INVOCA ESTA DIRECTIVA
+                	$scope.$parent.$parent.cleanComponentDateTimePiker=function(){
+                		let elemenDate = dpElement.data('DateTimePicker');
+                        elemenDate.clear();
+                	};
+                	
+                	
                 }
             };
         }

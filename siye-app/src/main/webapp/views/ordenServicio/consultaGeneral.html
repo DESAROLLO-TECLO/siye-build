@@ -349,11 +349,11 @@
 							<tbody>
 								<tr
 									dir-paginate="orden in listOrden | orderBy:tabla.order:tabla.reverse | filter:tabla.view.filterSearchVal | itemsPerPage:tabla.view.rowsPerPageVal">
-									<td class="center" data-toggle="tooltip" data-placement="top"
-										title="{{orden.stSeguimiento.nbStSeguimiento}}">
-										<div style="width:50%; background-color: {{orden.stSeguimiento.cdColor}};">
-										</div>
-									</td>
+									<td class="center" style="width: 2%">
+		                              	<span class="etiquetaCancelado" style="background-color: {{orden.stSeguimiento.cdColor}}; min-height: 30px; height: 100%;" 
+		                               		data-toggle="tooltip" data-placement="left" title="{{orden.stSeguimiento.nbStSeguimiento}}">
+										</span>
+	                           		</td>
 									<td class="center">
 										<a ng-click="redirigir(orden.idOrdenServicio)" data-toggle="tooltip"
 											data-placement="left"
