@@ -57,6 +57,11 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 			= $scope.ordenInfo.centroInstalacion.nbCentroInstalacion.toUpperCase();
 		
 		$scope.ordenInfo.tpDuracion = calcularDuracion($scope.ordenInfo.fhAtencionIni, $scope.ordenInfo.fhAtencionFin);
+		
+		if($scope.ordenInfo.fhAtencionIni==null || $scope.ordenInfo.fhAtencionIni==null || $scope.ordenInfo.fhAtencionIni=="")
+			$scope.ordenInfo.fhAtencionIni = "Sin fecha";
+		if($scope.ordenInfo.fhAtencionFin==null || $scope.ordenInfo.fhAtencionFin==null || $scope.ordenInfo.fhAtencionFin=="")
+			$scope.ordenInfo.fhAtencionFin = "Sin fecha";
 	}
 	
 	consultarTransportistas = function(){
@@ -145,6 +150,7 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 		$scope.evidenciaMostrar.instaladores = obj.infoEvidencia.nbInstalador;
 		$scope.evidenciaMostrar.transportistas = obj.infoEvidencia.nbTrasportista;
 		
+		$scope.evidencia.infoEvidencia.tieneImagen = obj.infoEvidencia.tieneImagen;
 		
 		$scope.evidenciaMostrar.listImg = obj.infoEvidencia.imagenes;
 		
