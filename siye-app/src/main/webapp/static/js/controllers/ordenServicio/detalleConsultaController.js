@@ -162,8 +162,8 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 		obj.infoEvidencia.activo = true;
 	}
 
-	$scope.descargarDetalleOS = function(){
-		consultaServicioService.descargarReporteDetalle($scope.ordenInfo.idOrdenServicio)
+	descargarDetalleOS = function(conImagenes){
+		consultaServicioService.descargarReporteDetalle($scope.ordenInfo.idOrdenServicio, conImagenes)
 			.success(function(archivo) {
 				$scope.error = false;
 //				var filename = data.nombreArchivo;
@@ -177,6 +177,19 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 				$scope.error=data;
 			});
 	};
+	
+	$scope.confirmaImagenesReporte = function() {
+        showAlert.confirmacion("¿Incluir imagenes en el reporte?",
+            //Aceptar
+            function() {
+        	descargarDetalleOS(true);
+            },
+            //Cancelar
+            function() {
+            	descargarDetalleOS(false);
+            }
+        );
+    };
 	
 	consultarTransportistas();
 	consultarSupervisores();
