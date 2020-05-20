@@ -468,14 +468,14 @@
 																 		ng-click="mostrarInfoEvidencia('Orden de Servicio', evidencia)">
 																 		
 																 		<p class="list-group-item-text">
-																 			Orden de Servicio &nbsp &nbsp &nbsp<span class="fa fa-camera" ng-if="evidencia.infoEvidencia.tieneImagen"></span></p>
+																 			Orden de Servicio &nbsp &nbsp &nbsp<span class="fa fa-camera" ng-if="evidencia.infoEvidencia.imagenes != undefined && evidencia.infoEvidencia.imagenes.length > 0"></span></p>
 																 	</a>
 																 	<div ng-repeat="proc in evidencia.procesos">
 																	 	<a class="list-group-item list-group-item-warning" style="text-indent: 10px;"
 																	 		ng-class="{'nivelActivo': proc.infoEvidencia.activo}" 
  																			ng-click="mostrarInfoEvidencia(proc.name, proc)">
 																	 		<p class="list-group-item-text">
-																	 			{{proc.name}} &nbsp &nbsp &nbsp<span class="fa fa-camera" ng-if="proc.infoEvidencia.tieneImagen"></span></p>
+																	 			{{proc.name}} &nbsp &nbsp &nbsp<span class="fa fa-camera" ng-if="proc.infoEvidencia.imagenes != undefined && proc.infoEvidencia.imagenes.length > 0"></span></p>
 																	 	</a>
 																	 	
 																	 	<div ng-repeat="enc in proc.listEncuestas">
@@ -483,7 +483,7 @@
 																		 		ng-class="{'nivelActivo': enc.infoEvidencia.activo}"
 																				ng-click="mostrarInfoEvidencia(enc.name, enc)">
 																		 		<p class="list-group-item-text">
-																		 			{{enc.name}} &nbsp &nbsp &nbsp<span class="fa fa-camera" ng-if="enc.infoEvidencia.tieneImagen"></span></p>
+																		 			{{enc.name}} &nbsp &nbsp &nbsp<span class="fa fa-camera" ng-if="enc.infoEvidencia.imagenes != undefined && enc.infoEvidencia.imagenes.length > 0"></span></p>
 																		 	</a>
 																	
 																		 	<div ng-repeat="preg in enc.listPreguntas">
@@ -491,7 +491,7 @@
 																		 			ng-class="{'nivelActivo': preg.infoEvidencia.activo}" 
 																		 			ng-click="mostrarInfoEvidencia(preg.name, preg)">
 																		 			<p class="list-group-item-text">
-																		 				{{preg.name}} &nbsp &nbsp &nbsp<span class="fa fa-camera" ng-if="preg.infoEvidencia.tieneImagen"></span></p>
+																		 				{{preg.name}} &nbsp &nbsp &nbsp<span class="fa fa-camera" ng-if="preg.infoEvidencia.imagenes != undefined && preg.infoEvidencia.imagenes.length > 0"></span></p>
 																		 		</a>
 																 			</div>
 																 		</div>
@@ -501,7 +501,7 @@
 															<div class="col-md-8 col-sm-12 container">  
 																<div class="box box-danger">
 																	<div uib-carousel active="0">
-																		<div uib-slide index="0" ng-if="!evidencia.infoEvidencia.tieneImagen">
+																		<div uib-slide index="0" ng-if="evidenciaMostrar.listImg == undefined || evidenciaMostrar.listImg.length == 0">
 																			<div class="box-title">
 <!-- 																				<h4 class="box-title">{{img.nombre}}</h4> -->
 																			</div>
@@ -519,7 +519,7 @@
 																			<div class="box-body">
 																				<figure class="figure">
 																					<img ng-src="data:image/img.cdTipoArchivo;base64,{{img.lbExpedienteODS}}"
-																						style="height: 330px; class="img-responsive center-block figure-img img-fluid img-rounded">
+																						style="height: 330px;" class="img-responsive center-block figure-img img-fluid img-rounded">
 																				</figure>
 																			</div>
 																		</div>

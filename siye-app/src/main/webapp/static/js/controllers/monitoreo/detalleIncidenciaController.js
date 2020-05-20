@@ -18,19 +18,37 @@ angular.module(appTeclo).controller('detalleIncidenciaController',
 			growl.warning(data.message)
 		});
 	}
+  
 	//Funcion para exportar la linea de tiempo 
 	$scope.downLoadTimeLine=function(){
 		$scope.flagDownload=true;
-		scrollDetailDestroy()
+		scrollDetailDestroy();
+		var div = $("#scape1")[0];
+		//var rect = div.getBoundingClientRect();
 		$timeout(function() {
-			html2canvas(document.querySelector("#scape1")).then(canvas => {
-				var dataURL = canvas.toDataURL();
-				$scope.imgCapture=dataURL;
-				var file=dataURL.split(",");
-				$scope.archivo=$scope.b64toBlob(file[1],"image/png"); 
-				save( $scope.archivo,"image/png");
+			/*var canvas = document.createElement("canvas");
+			canvas.width = rect.width;
+			canvas.height = rect.height;
+
+			var ctx = canvas.getContext("2d");
+			ctx.translate(-rect.left,-rect.top);*/
+
+			html2canvas(div, {
+			    onrendered: function(canvas) {
+			        var dataURL = canvas.toDataURL();
+					$scope.imgCapture=dataURL;
+					var file=dataURL.split(",");
+					//$scope.archivo=$scope.b64toBlob(file[1],"image/png"); 
+					//save( $scope.archivo,"image/png");
+	                canvas.toBlob(function(blob) {
+	                	$scope.archivo=blob;
+	                	save(blob, "image/png"); 
+					});
+			        
+			    }
 			});
-		},15);
+			
+		},50);
 	};
 	
 	//Filra expedientes cargados a incidencia para cargar a la directiva lightbox

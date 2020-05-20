@@ -116,8 +116,8 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 							$scope.evidencia.procesos[proceso].listEncuestas[encuesta].infoEvidencia.nbInstalador;
 						$scope.evidencia.procesos[proceso].listEncuestas[encuesta].listPreguntas[pregunta].infoEvidencia.nbTrasportista = 
 							$scope.evidencia.procesos[proceso].listEncuestas[encuesta].infoEvidencia.nbTrasportista;
-						$scope.evidencia.procesos[proceso].listEncuestas[encuesta].listPreguntas[pregunta].infoEvidencia.imagenes = 
-							$scope.evidencia.procesos[proceso].listEncuestas[encuesta].infoEvidencia.imagenes;
+						/*$scope.evidencia.procesos[proceso].listEncuestas[encuesta].listPreguntas[pregunta].infoEvidencia.imagenes = 
+							$scope.evidencia.procesos[proceso].listEncuestas[encuesta].infoEvidencia.imagenes;*/
 					}
 				}
 			}
