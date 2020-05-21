@@ -160,7 +160,7 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 		$scope.ordenVO = $scope.orden;
 		$scope.ordenVO.idIncidencia = $scope.incidenciaVO.idIncidencia;
 		console.log($scope.ordenVO);
-		
+		valorDos.fhCita=moment(valorDos.fhCita).format('DD/MM/YYYY HH:mm');
 		altaServicioService.altaOrdenServicio(valorDos).success(function(data){
 			$scope.error = false;
 			growl.success("Se ha generado una nueva orden de servicio con folio " + data.cdOrden , { ttl: 5000 });
@@ -188,7 +188,9 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 			}
 			$('#fhCita').val('');
 			
-
+			$scope.formAltaServicio.fhCita.$invalid=false;
+			$scope.formAltaServicio.fhCita.$dirty=false;
+			$scope.formAltaServici.$setPristine();
 			$scope.formAltaServicio.$setUntouched();
 			
 		}).error(function(data){
