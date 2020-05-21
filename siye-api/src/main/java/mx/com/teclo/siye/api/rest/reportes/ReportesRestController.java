@@ -72,8 +72,11 @@ public class ReportesRestController {
 	@Transactional
 	@RequestMapping(value="/reporteDetOS", method = RequestMethod.GET)
 	public ResponseEntity<byte[]> reporteDetOrdenServicio(
-			@RequestParam(value="idOrdenservicio", required=true) Long id) throws NotFoundException, BusinessException{
+			@RequestParam(value="idOrdenservicio", required=true) Long id, 
+			@RequestParam(value="conImagenes", required=false) Boolean conImagenes) throws NotFoundException, BusinessException{
 		
+		if(conImagenes==null)
+			conImagenes = true;
 		OrdenServicioVO osVO = ordenServicioService.findOrdenServicio(id);
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
@@ -249,7 +252,7 @@ public class ReportesRestController {
 //		Aqui se empieza la parte del reporte
 //		##
 		
-		ByteArrayOutputStream os = reportesService.getReporteDOS(osVO, respuesta.get(0));
+		ByteArrayOutputStream os = reportesService.getReporteDOS(osVO, respuesta.get(0), conImagenes);
 		byte [] byteToReturn = reportesService.getPDF(os);
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.parseMediaType("application/pdf"));
