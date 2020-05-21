@@ -57,6 +57,11 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 			= $scope.ordenInfo.centroInstalacion.nbCentroInstalacion.toUpperCase();
 		
 		$scope.ordenInfo.tpDuracion = calcularDuracion($scope.ordenInfo.fhAtencionIni, $scope.ordenInfo.fhAtencionFin);
+		
+		if($scope.ordenInfo.fhAtencionIni==null || $scope.ordenInfo.fhAtencionIni==null || $scope.ordenInfo.fhAtencionIni=="")
+			$scope.ordenInfo.fhAtencionIni = "Sin fecha";
+		if($scope.ordenInfo.fhAtencionFin==null || $scope.ordenInfo.fhAtencionFin==null || $scope.ordenInfo.fhAtencionFin=="")
+			$scope.ordenInfo.fhAtencionFin = "Sin fecha";
 	}
 	
 	consultarTransportistas = function(){
@@ -116,8 +121,8 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 							$scope.evidencia.procesos[proceso].listEncuestas[encuesta].infoEvidencia.nbInstalador;
 						$scope.evidencia.procesos[proceso].listEncuestas[encuesta].listPreguntas[pregunta].infoEvidencia.nbTrasportista = 
 							$scope.evidencia.procesos[proceso].listEncuestas[encuesta].infoEvidencia.nbTrasportista;
-						$scope.evidencia.procesos[proceso].listEncuestas[encuesta].listPreguntas[pregunta].infoEvidencia.imagenes = 
-							$scope.evidencia.procesos[proceso].listEncuestas[encuesta].infoEvidencia.imagenes;
+						/*$scope.evidencia.procesos[proceso].listEncuestas[encuesta].listPreguntas[pregunta].infoEvidencia.imagenes = 
+							$scope.evidencia.procesos[proceso].listEncuestas[encuesta].infoEvidencia.imagenes;*/
 					}
 				}
 			}
@@ -145,6 +150,7 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 		$scope.evidenciaMostrar.instaladores = obj.infoEvidencia.nbInstalador;
 		$scope.evidenciaMostrar.transportistas = obj.infoEvidencia.nbTrasportista;
 		
+		$scope.evidencia.infoEvidencia.tieneImagen = obj.infoEvidencia.tieneImagen;
 		
 		$scope.evidenciaMostrar.listImg = obj.infoEvidencia.imagenes;
 		
@@ -162,8 +168,8 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 		obj.infoEvidencia.activo = true;
 	}
 
-	$scope.descargarDetalleOS = function(){
-		consultaServicioService.descargarReporteDetalle($scope.ordenInfo.idOrdenServicio)
+	descargarDetalleOS = function(conImagenes){
+		consultaServicioService.descargarReporteDetalle($scope.ordenInfo.idOrdenServicio, conImagenes)
 			.success(function(archivo) {
 				$scope.error = false;
 //				var filename = data.nombreArchivo;
@@ -177,6 +183,19 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 				$scope.error=data;
 			});
 	};
+	
+	$scope.confirmaImagenesReporte = function() {
+        showAlert.confirmacion("¿Incluir imagenes en el reporte?",
+            //Aceptar
+            function() {
+        	descargarDetalleOS(true);
+            },
+            //Cancelar
+            function() {
+            	descargarDetalleOS(false);
+            }
+        );
+    };
 	
 	consultarTransportistas();
 	consultarSupervisores();
