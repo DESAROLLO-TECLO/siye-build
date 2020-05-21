@@ -157,7 +157,7 @@ public class ExpedienteImgRestController {
 		infoEvidenciaOrden.setImagenes(imgOS);
 		infoEvidenciaOrden.setFechaIni(respuesta.get(0).getFechaInicio()!=null?sdf.format(respuesta.get(0).getFechaInicio()):"");
 		infoEvidenciaOrden.setFechaFin(respuesta.get(0).getFechaFin()!=null?sdf.format(respuesta.get(0).getFechaFin()):"");
-		infoEvidenciaOrden.setTieneImagen(imgOS.size()>0 ? 1 : 0);
+		infoEvidenciaOrden.setTieneImagen(imgOS!=null && imgOS.size()>0 ? 1 : 0);
 		for(ExpedienteNivelProcesoVO proceso : respuesta.get(0).getProcesos()) {
 			InfoEvidenciaNivelVO infoEvidenciaProceso = new InfoEvidenciaNivelVO();
 			List <String> transportistasProceso=new ArrayList<String>();
@@ -174,7 +174,7 @@ public class ExpedienteImgRestController {
 				infoEvidenciaProceso.setFechaIni(ordenProcesoDTO.getFhInicioProceso()!=null?sdf.format(ordenProcesoDTO.getFhInicioProceso()):"");
 				infoEvidenciaProceso.setFechaFin(ordenProcesoDTO.getFhFinProceso()!=null?sdf.format(ordenProcesoDTO.getFhFinProceso()):"");
 					}
-			infoEvidenciaProceso.setTieneImagen(imgPRO.size()>0 ? 1 : 0);
+			infoEvidenciaProceso.setTieneImagen(imgPRO!=null && imgPRO.size()>0 ? 1 : 0);
 			
 			for(ExpedienteNivelEncuestaVO encuesta : proceso.getListEncuestas()) {
 				InfoEvidenciaNivelVO infoEvidenciaEncuesta = new InfoEvidenciaNivelVO();
@@ -208,7 +208,7 @@ public class ExpedienteImgRestController {
 				}
 				}
 
-				infoEvidenciaEncuesta.setTieneImagen(imgENC.size()>0 ? 1 : 0);
+				infoEvidenciaEncuesta.setTieneImagen(imgENC!=null && imgENC.size()>0 ? 1 : 0);
 				encuesta.setInfoEvidencia(infoEvidenciaEncuesta);
 				
 				for(ExpedienteNivelPreguntaVO pregunta : encuesta.getListPreguntas()) {
@@ -219,7 +219,7 @@ public class ExpedienteImgRestController {
 					infoEvidenciaPregunta.setNbSupervisor(encuesta.getInfoEvidencia().getNbSupervisor()!=null?encuesta.getInfoEvidencia().getNbSupervisor():new ArrayList<String>());
 					infoEvidenciaPregunta.setNbInstalador(encuesta.getInfoEvidencia().getNbInstalador()!=null?encuesta.getInfoEvidencia().getNbInstalador():new ArrayList<String>());
 					infoEvidenciaPregunta.setNbTrasportista(encuesta.getInfoEvidencia().getNbTrasportista()!=null?encuesta.getInfoEvidencia().getNbTrasportista():new ArrayList<String>());
-					infoEvidenciaPregunta.setTieneImagen(imgPREG.size()>0 ? 1 : 0);
+					infoEvidenciaPregunta.setTieneImagen(imgPREG!=null && imgPREG.size()>0 ? 1 : 0);
 					pregunta.setInfoEvidencia(infoEvidenciaPregunta);
 				}
 				if(encuesta.getInfoEvidencia().getNbTrasportista()!=null)
