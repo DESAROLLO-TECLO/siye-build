@@ -18,6 +18,7 @@ public class EvidenciaReporteVO implements Serializable {
 	private String instaladores;
 	private String trasportistas;
 	private List<ImagenesEvidenciaReporteVO> listImagenes;
+	private List<ImagenesEvidenciaReporteVO> listImagenes2;
 //	private List<ByteArrayInputStream> listImagenes;
 	
 	public String getNombre() {
@@ -73,5 +74,11 @@ public class EvidenciaReporteVO implements Serializable {
 	}
 	public void setListImagenes(List<ImagenesEvidenciaReporteVO> listImagenes) {
 		this.listImagenes = listImagenes;
+	}
+	public List<ImagenesEvidenciaReporteVO> getListImagenes2() {
+		return listImagenes2;
+	}
+	public void setListImagenes2(List<ImagenesEvidenciaReporteVO> listImagenes2) {
+		this.listImagenes2 = listImagenes2;
 	}
 }

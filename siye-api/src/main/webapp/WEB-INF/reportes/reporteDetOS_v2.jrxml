@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="561e685e-83a4-4113-8990-d0b6b1ad1f42">
 	<property name="ireport.zoom" value="1.3636363636363635"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="458"/>
+	<property name="ireport.y" value="0"/>
 	<subDataset name="dataset1_1" uuid="7356e04b-deb6-48ba-889d-e716b5f8c716">
 		<field name="_THIS" class="java.lang.String"/>
 	</subDataset>
@@ -268,70 +268,7 @@ $P{FOLIO}]]></textFieldExpression>
 				<graphicElement fill="Solid"/>
 			</rectangle>
 		</band>
-		<band height="235">
-			<componentElement>
-				<reportElement x="0" y="23" width="555" height="208" uuid="bdeee23a-b1c8-4bdc-96ca-e375fbeb3555"/>
-				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
-					<datasetRun subDataset="dataset4" uuid="45fe71be-fe25-4f47-adee-0ef43eff486f">
-						<dataSourceExpression><![CDATA[$P{LIST_EVIDENCIA}]]></dataSourceExpression>
-					</datasetRun>
-					<jr:listContents height="208" width="555">
-						<textField>
-							<reportElement x="15" y="4" width="526" height="20" uuid="62151bc2-5395-4ca8-a3bd-047a9f1da0fa"/>
-							<textFieldExpression><![CDATA["Nombre: " + $F{nombre}]]></textFieldExpression>
-						</textField>
-						<textField>
-							<reportElement x="15" y="28" width="175" height="19" uuid="7e8ccafa-4314-455e-bd31-40ced190b9f0"/>
-							<textFieldExpression><![CDATA["Fecha Inicio: "+ $F{fhInicio}]]></textFieldExpression>
-						</textField>
-						<textField>
-							<reportElement x="207" y="28" width="175" height="18" uuid="6e7eea38-c121-4a17-b400-3e200e46f1a3"/>
-							<textFieldExpression><![CDATA["Fecha Fin: " + $F{fhFin}]]></textFieldExpression>
-						</textField>
-						<textField>
-							<reportElement x="396" y="28" width="144" height="18" uuid="e9881fe9-f6c2-43d5-b583-2530188370c9"/>
-							<textFieldExpression><![CDATA["Duración: " + $F{duracion}]]></textFieldExpression>
-						</textField>
-						<textField>
-							<reportElement x="15" y="51" width="526" height="20" uuid="af2a3bf6-20b6-4c6a-b94f-d3b1c0030abf"/>
-							<textFieldExpression><![CDATA["Supervisores: " + $F{supervisores}]]></textFieldExpression>
-						</textField>
-						<textField>
-							<reportElement x="15" y="102" width="526" height="20" uuid="8eaa0e6c-66f6-46d7-9bbd-d4a521adfe35"/>
-							<textFieldExpression><![CDATA["Trasportistas: " + $F{trasportistas}]]></textFieldExpression>
-						</textField>
-						<textField>
-							<reportElement x="15" y="76" width="526" height="20" uuid="8f5cfc5c-0ed5-4e33-a189-909f5dde4599"/>
-							<textFieldExpression><![CDATA["Instaladores: " + $F{instaladores}]]></textFieldExpression>
-						</textField>
-						<line>
-							<reportElement x="18" y="207" width="523" height="1" uuid="81b4c42b-3be4-469c-ba2b-d1749f97244d"/>
-							<graphicElement>
-								<pen lineStyle="Dashed"/>
-							</graphicElement>
-						</line>
-						<componentElement>
-							<reportElement key="table" x="15" y="134" width="525" height="62" uuid="ae96df08-49f6-45e7-8eb1-374c5ed001de">
-								<printWhenExpression><![CDATA[$F{listImagenes}.size() > 0]]></printWhenExpression>
-							</reportElement>
-							<jr:table>
-								<datasetRun subDataset="dataset4" uuid="47c066a5-9ab9-46c4-aa57-f5d4168397c9">
-									<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.JREmptyDataSource()]]></dataSourceExpression>
-								</datasetRun>
-								<jr:column width="236" uuid="90fb9e8d-0ebe-4252-910f-37b6db8f0ea8">
-									<jr:detailCell height="162" rowSpan="1">
-										<image scaleImage="RetainShape" hAlign="Left" vAlign="Top">
-											<reportElement mode="Transparent" x="0" y="0" width="236" height="162" forecolor="#000000" backcolor="#FFFFFF" uuid="2b657c0e-5dcb-48ae-9ce2-40564732ec26"/>
-											<graphicElement fill="Solid"/>
-											<imageExpression><![CDATA[$F{listImagenes}]]></imageExpression>
-										</image>
-									</jr:detailCell>
-								</jr:column>
-							</jr:table>
-						</componentElement>
-					</jr:listContents>
-				</jr:list>
-			</componentElement>
+		<band height="171">
 			<textField>
 				<reportElement x="150" y="0" width="281" height="23" uuid="ffaa6aa5-e063-4186-bf5f-d806b3463861"/>
 				<textElement textAlignment="Center">
@@ -339,6 +276,11 @@ $P{FOLIO}]]></textFieldExpression>
 				</textElement>
 				<textFieldExpression><![CDATA["Evidencia"]]></textFieldExpression>
 			</textField>
+			<subreport>
+				<reportElement x="16" y="23" width="525" height="141" uuid="00b1bd31-ddde-4bfd-9a24-283f2e82c7d3"/>
+				<dataSourceExpression><![CDATA[$P{LIST_EVIDENCIA}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[".\\subReporteEvidencia.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</detail>
 	<pageFooter>

@@ -92,8 +92,7 @@ angular.module(appTeclo).controller('expedienteController',
 	//Variables para manejo de datos de MODAL
 	
 	urltoFile=function(dataurl, filename, mimeType){
-    	 var arr = dataurl.split(','),
-         bstr = atob(dataurl), 
+    	 var bstr = atob(dataurl), 
          n = bstr.length, 
          u8arr = new Uint8Array(n);
          
@@ -295,7 +294,7 @@ angular.module(appTeclo).controller('expedienteController',
 	
 	$scope.showModalImages=function(){
 		//imagenes nivel OS
-		$scope.listImages=getListByFilter("cdNivel",constnteCDClaisfic.ORDEN_SERVICIO,$scope.ordenServicio.imagenes);
+		$scope.listImages=getListByFilter("cdNivel",constnteCDClaisfic.ORDEN_SERVICIO,listImagesVOBackup);
 		$timeout(function() {
 			  $('#modalIploadImage').modal('show');
 			  $scope.updateViewDirective($scope.listImages);// metodo se encuntra en la directoa update-image
@@ -363,12 +362,12 @@ angular.module(appTeclo).controller('expedienteController',
 			//imagenes nivel OS
 			$scope.paramConfSav.idProceso=null;
 			$scope.paramConfiguracion.maxNuImage=$scope.ordenServicio.nuMaxImg;
-			$scope.listImages=getListByFilter("cdNivel",constnteCDClaisfic.ORDEN_SERVICIO,$scope.ordenServicio.imagenes);
+			$scope.listImages=getListByFilter("cdNivel",constnteCDClaisfic.ORDEN_SERVICIO,listImagesVOBackup);
 		}else{
 			//imagenes nivel proceso
 			$scope.paramConfSav.idProceso=optionSelected.idProceso;
 			$scope.paramConfiguracion.maxNuImage=optionSelected.nuMaxImg;
-			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.PROCESO,"idProceso",optionSelected.idProceso,$scope.ordenServicio.imagenes);
+			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.PROCESO,"idProceso",optionSelected.idProceso,listImagesVOBackup);
 		}
 		$scope.updateViewDirective($scope.listImages);// metodo se encuntra en la directoa update-image
 	};
@@ -393,12 +392,12 @@ angular.module(appTeclo).controller('expedienteController',
 			//imagenes nivel proceso
 			$scope.paramConfSav.idEncuesta=null;
 			$scope.paramConfiguracion.maxNuImage=$scope.optionSelected.optionProcess.nuMaxImg;
-			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.PROCESO,"idProceso",$scope.optionSelected.optionProcess.idProceso,$scope.ordenServicio.imagenes);
+			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.PROCESO,"idProceso",$scope.optionSelected.optionProcess.idProceso,listImagesVOBackup);
 		}else{
 			//imagenes nivel encuesta
 			$scope.paramConfSav.idEncuesta=optionSelected.idEncuesta;
 			$scope.paramConfiguracion.maxNuImage=optionSelected.nuMaxImg;
-			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.ENCUESTA,"idOdsEncuesta",optionSelected.idEncuesta,$scope.ordenServicio.imagenes);
+			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.ENCUESTA,"idOdsEncuesta",optionSelected.idEncuesta,listImagesVOBackup);
 		}
 		
 		$scope.updateViewDirective($scope.listImages);// metodo se encuntra en la directoa update-image
@@ -423,12 +422,12 @@ angular.module(appTeclo).controller('expedienteController',
 			//imagenes nivel encuesta
 			$scope.paramConfSav.idPregunta=null;
 			$scope.paramConfiguracion.maxNuImage=$scope.optionSelected.optionEncuesta.nuMaxImg;
-			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.ENCUESTA,"idOdsEncuesta",$scope.optionSelected.optionEncuesta.idEncuesta,$scope.ordenServicio.imagenes);
+			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.ENCUESTA,"idOdsEncuesta",$scope.optionSelected.optionEncuesta.idEncuesta,listImagesVOBackup);
 		}else{
 			//imagenes nivel pregunta
 			$scope.paramConfSav.idPregunta=optionSelected.idPregunta;
 			$scope.paramConfiguracion.maxNuImage=$scope.optionSelected.optionPregunta.nuMaxImg;
-			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.PREGUNTA,"idPregunta",optionSelected.idPregunta,$scope.ordenServicio.imagenes);
+			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.PREGUNTA,"idPregunta",optionSelected.idPregunta,listImagesVOBackup);
 		}
 		$scope.updateViewDirective($scope.listImages);// metodo se encuntra en la directoa update-image
 	};

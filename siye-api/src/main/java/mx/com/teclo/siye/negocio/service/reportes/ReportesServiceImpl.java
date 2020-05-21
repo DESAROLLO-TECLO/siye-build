@@ -48,7 +48,7 @@ public class ReportesServiceImpl implements ReportesService {
 
 	@Transactional
 	@Override
-	public ByteArrayOutputStream getReporteDOS(OrdenServicioVO os, CargaExpedienteImgVO detalle) {
+	public ByteArrayOutputStream getReporteDOS(OrdenServicioVO os, CargaExpedienteImgVO detalle, Boolean conImagenes) {
 //		##Aqui esmpieza lo nuevo
 //		ConfigReporteDTO configReporteDTO 
 		Map<String, Object> param = new HashMap<>();
@@ -98,7 +98,8 @@ public class ReportesServiceImpl implements ReportesService {
 		
 //		##Bloque de Evidencia
 		
-		List<EvidenciaReporteVO> listEvidencia = getListEvidenciaReporte(detalle);
+		List<EvidenciaReporteVO> listEvidencia = getListEvidenciaReporte(detalle, conImagenes);
+//		param.put("LIST_EVIDENCIA", listEvidencia);
 		JRBeanCollectionDataSource evidencia = new JRBeanCollectionDataSource(listEvidencia);
 		param.put("LIST_EVIDENCIA", evidencia);
 		
@@ -158,15 +159,18 @@ public class ReportesServiceImpl implements ReportesService {
 		return r;
 	}
 	
-	private List<EvidenciaReporteVO> getListEvidenciaReporte(CargaExpedienteImgVO detalle) {
+	private List<EvidenciaReporteVO> getListEvidenciaReporte(CargaExpedienteImgVO detalle, Boolean conImagenes) {
 		List<EvidenciaReporteVO> lista = new ArrayList<EvidenciaReporteVO>();
 		EvidenciaReporteVO e = new EvidenciaReporteVO();
 		
 		List<ImagenesEvidenciaReporteVO> listImagenes = new ArrayList<ImagenesEvidenciaReporteVO>();
+		List<ImagenesEvidenciaReporteVO> listImagenes2 = new ArrayList<ImagenesEvidenciaReporteVO>();
 //		List<ByteArrayInputStream> listImagenes = new ArrayList<ByteArrayInputStream>();
 		ImagenesEvidenciaReporteVO imgEv = new ImagenesEvidenciaReporteVO();
 		
 		ByteArrayInputStream bimg;
+		int contador=0;
+		
 		e.setNombre("Orden de Servicio");
 		e.setFhInicio(detalle.getFechaInicio() != null ? rutinasTiempo.getStringDateFromFormta("dd/MM/yyyy HH:mm:ss", detalle.getFechaInicio()) : "Sin Fecha");
 		e.setFhFin(detalle.getFechaFin() != null  ? rutinasTiempo.getStringDateFromFormta("dd/MM/yyyy HH:mm:ss", detalle.getFechaFin()) : "Sin Fecha");
@@ -174,22 +178,29 @@ public class ReportesServiceImpl implements ReportesService {
 		e.setSupervisores(listToString(detalle.getInfoEvidencia().getNbSupervisor(), "Sin Superervisor"));
 		e.setInstaladores(listToString(detalle.getInfoEvidencia().getNbInstalador(), "Sin Instalador"));
 		e.setTrasportistas(listToString(detalle.getInfoEvidencia().getNbTrasportista(), "Sin Trasportista"));
-		if(detalle.getInfoEvidencia().getImagenes()!=null) {
+		if(detalle.getInfoEvidencia().getImagenes()!=null && conImagenes) {
 			for(ImagenVO i : detalle.getInfoEvidencia().getImagenes()) {
+				contador++;
+				imgEv = new ImagenesEvidenciaReporteVO();
 				imgEv.setFilename(i.getNbExpedienteODS());
 				bimg = new ByteArrayInputStream(i.getLbExpedienteODS()); 	  
 				imgEv.setFileBase64toBlob(bimg);
-				listImagenes.add(imgEv);
+				if(contador <= Math.round(detalle.getInfoEvidencia().getImagenes().size()/2))
+					listImagenes.add(imgEv);
+				else
+					listImagenes2.add(imgEv);
 //				listImagenes.add(bimg);
 			}
 		}
 		e.setListImagenes(listImagenes);
+		e.setListImagenes2(listImagenes2);
 		lista.add(e);
 		
 		for(ExpedienteNivelProcesoVO p : detalle.getProcesos()) {
 			e = new EvidenciaReporteVO();
 //			listImagenes = new ArrayList<ByteArrayInputStream>();
 			listImagenes = new ArrayList<ImagenesEvidenciaReporteVO>();
+			listImagenes2 = new ArrayList<ImagenesEvidenciaReporteVO>();
 			e = new EvidenciaReporteVO();
 			e.setNombre(p.getName());
 			e.setFhInicio(p.getInfoEvidencia().getFechaIni() == null ? "Sin Fecha" : p.getInfoEvidencia().getFechaIni());
@@ -198,22 +209,30 @@ public class ReportesServiceImpl implements ReportesService {
 			e.setSupervisores(listToString(p.getInfoEvidencia().getNbSupervisor(), "Sin Superervisor"));
 			e.setInstaladores(listToString(p.getInfoEvidencia().getNbInstalador(), "Sin Instalador"));
 			e.setTrasportistas(listToString(p.getInfoEvidencia().getNbTrasportista(), "Sin Trasportista"));
-			if(p.getInfoEvidencia().getImagenes()!=null) {
+			if(p.getInfoEvidencia().getImagenes()!=null && conImagenes) {
+				contador=0;
 				for(ImagenVO i : p.getInfoEvidencia().getImagenes()) {
+					contador++;
+					imgEv = new ImagenesEvidenciaReporteVO();
 					imgEv.setFilename(i.getNbExpedienteODS());
 					bimg = new ByteArrayInputStream(i.getLbExpedienteODS()); 	  
 					imgEv.setFileBase64toBlob(bimg);
-					listImagenes.add(imgEv);
+					if(contador <= Math.round(p.getInfoEvidencia().getImagenes().size()/2))
+						listImagenes.add(imgEv);
+					else
+						listImagenes2.add(imgEv);
 //					listImagenes.add(bimg);
 				}
 			}
 			e.setListImagenes(listImagenes);
+			e.setListImagenes2(listImagenes2);
 			lista.add(e);
 			
 			for(ExpedienteNivelEncuestaVO enc : p.getListEncuestas()) {
 				e = new EvidenciaReporteVO();
 //				listImagenes = new ArrayList<ByteArrayInputStream>();
 				listImagenes = new ArrayList<ImagenesEvidenciaReporteVO>();
+				listImagenes2 = new ArrayList<ImagenesEvidenciaReporteVO>();
 				e = new EvidenciaReporteVO();
 				e.setNombre(enc.getName());
 				e.setFhInicio(enc.getInfoEvidencia().getFechaIni() == null ? "Sin Fecha" : enc.getInfoEvidencia().getFechaIni());
@@ -222,40 +241,53 @@ public class ReportesServiceImpl implements ReportesService {
 				e.setSupervisores(listToString(enc.getInfoEvidencia().getNbSupervisor(), "Sin Superervisor"));
 				e.setInstaladores(listToString(enc.getInfoEvidencia().getNbInstalador(), "Sin Instalador"));
 				e.setTrasportistas(listToString(enc.getInfoEvidencia().getNbTrasportista(), "Sin Trasportista"));
-				if(enc.getInfoEvidencia().getImagenes()!=null) {
+				if(enc.getInfoEvidencia().getImagenes()!=null && conImagenes) {
+					contador=0;
 					for(ImagenVO i : enc.getInfoEvidencia().getImagenes()) {
+						imgEv = new ImagenesEvidenciaReporteVO();
 						imgEv.setFilename(i.getNbExpedienteODS());
 						bimg = new ByteArrayInputStream(i.getLbExpedienteODS()); 	  
 						imgEv.setFileBase64toBlob(bimg);
-						listImagenes.add(imgEv);
+						if(contador<= Math.round(enc.getInfoEvidencia().getImagenes().size()/2))
+							listImagenes.add(imgEv);
+						else
+							listImagenes2.add(imgEv);
 //						listImagenes.add(bimg);
 					}
 				}
 				e.setListImagenes(listImagenes);
+				e.setListImagenes2(listImagenes2);
 				lista.add(e);
 				
 				for(ExpedienteNivelPreguntaVO preg : enc.getListPreguntas()) {
 					e = new EvidenciaReporteVO();
 //					listImagenes = new ArrayList<ByteArrayInputStream>();
 					listImagenes = new ArrayList<ImagenesEvidenciaReporteVO>();
+					listImagenes2 = new ArrayList<ImagenesEvidenciaReporteVO>();
 					e = new EvidenciaReporteVO();
-					e.setNombre(preg.getName());
+					e.setNombre("Encuesta: " + enc.getName() + ". Pregunta: " + preg.getName());
 					e.setFhInicio(preg.getInfoEvidencia().getFechaIni() == null ? "Sin Fecha" : preg.getInfoEvidencia().getFechaIni());
 					e.setFhFin(preg.getInfoEvidencia().getFechaFin() == null ? "Sin Fecha" : preg.getInfoEvidencia().getFechaFin());
 					e.setDuracion(getDuracion(preg.getInfoEvidencia().getFechaIni(), preg.getInfoEvidencia().getFechaFin()));
 					e.setSupervisores(listToString(preg.getInfoEvidencia().getNbSupervisor(), "Sin Superervisor"));
 					e.setInstaladores(listToString(preg.getInfoEvidencia().getNbInstalador(), "Sin Instalador"));
 					e.setTrasportistas(listToString(preg.getInfoEvidencia().getNbTrasportista(), "Sin Trasportista"));
-					if(preg.getInfoEvidencia().getImagenes()!=null) {
+					if(preg.getInfoEvidencia().getImagenes()!=null && conImagenes) {
+						contador=0;
 						for(ImagenVO i : preg.getInfoEvidencia().getImagenes()) {
+							imgEv = new ImagenesEvidenciaReporteVO();
 							imgEv.setFilename(i.getNbExpedienteODS());
 							bimg = new ByteArrayInputStream(i.getLbExpedienteODS()); 	  
 							imgEv.setFileBase64toBlob(bimg);
-							listImagenes.add(imgEv);
+							if(contador<=Math.round(preg.getInfoEvidencia().getImagenes().size()/2))
+								listImagenes.add(imgEv);
+							else
+								listImagenes2.add(imgEv);
 //							listImagenes.add(bimg);
 						}
 					}
 					e.setListImagenes(listImagenes);
+					e.setListImagenes2(listImagenes2);
 					lista.add(e);
 				}
 			}
