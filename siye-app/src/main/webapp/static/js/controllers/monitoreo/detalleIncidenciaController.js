@@ -57,7 +57,7 @@ angular.module(appTeclo).controller('detalleIncidenciaController',
 		var idx = 0;
 		angular.forEach($scope.evidencias, function(arch, key) {
 			var imagen;
-			if(arch.cdTipoArchivo.includes("jpg")|| arch.cdTipoArchivo.includes("png")){
+			if(!(arch.cdTipoArchivo.includes("video") || arch.cdTipoArchivo.includes("audio"))){
 				imagen  = ("data:" +"image/"+arch.cdTipoArchivo + ";base64,").concat(arch.lbExpedienteODS);				
 			}else if(arch.cdTipoArchivo.includes("video") || arch.cdTipoArchivo.includes("audio")){
 				contentType = arch.cdTipoArchivo;

@@ -147,7 +147,7 @@ angular.module(appTeclo).controller('altaIncidenciaController', function($scope,
     
     $scope.regresar = function (){
 //    	console.log(p.replace('-', '/'));
-    	$location.path(dataInfo.urlActual.replace(/-/g, '/'));
+    	$location.path(dataInfo.urlActual.replace(/\$/g, '/'));
     }
 //    $scope.guardar(false);
     getParamIncidencia();

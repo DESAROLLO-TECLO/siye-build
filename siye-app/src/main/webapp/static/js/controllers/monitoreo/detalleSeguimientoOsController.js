@@ -38,7 +38,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
 
         getDetalleOrdenServicio = function () {
             if (lineaTiempoVO != undefined) {
-                debugger
+                
                 $scope.ordenServicioVO.proceso = detalleSeguimientoOsService.getconsultaGeneral();
                 $scope.ordenServicioVO.detalle = lineaTiempoVO.data;
                 if (lineaTiempoVO.data.procesos != null) {
@@ -169,7 +169,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             var optionsAnimation = {
                 duration: 100, easingFunction: 'linear'
             };
-            debugger
+            
             angular.forEach(valor, function (value, key) {
                 nodeInfo.add({ id: value.nbStatus, x: x, y: y, label: value.nbStatus, color: { border: value.nbColor } });
                 x += 200;
@@ -205,7 +205,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             $scope.net = new vis.Network(container, data, options);
             fitAnimated();
 
-            debugger
+            
             // nodos de informacion 
             nodeInfo = new vis.DataSet();
             edgeInfo = new vis.DataSet();
@@ -268,7 +268,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
         };
 
         $scope.verModalEvidencias = function (nivel, opciones) {
-            debugger
+            
             let verModal = false;
             let parametros = new Object({
                 idOrdenServicio: $scope.ordenServicioVO.detalle.idOrdenServicio,
