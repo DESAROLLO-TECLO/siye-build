@@ -1,5 +1,6 @@
 package mx.com.teclo.siye.negocio.service.async;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -107,17 +108,20 @@ public class FileStorageServiceImpl implements FileStorageService {
 	 * @throws BusinessException
 	 */
 	private void crearDirectorio(Path path) throws BusinessException {
-		boolean isDirectorioExistente = Files.exists(path, new LinkOption[] { LinkOption.NOFOLLOW_LINKS });
-		if (!isDirectorioExistente) {
+		File f = new File(path.toString());
+//		boolean isDirectorioExistente = Files.exists(path, new LinkOption[] { LinkOption.NOFOLLOW_LINKS });
+//		if (!isDirectorioExistente) {
+		if (!f.exists()) {
 			try {
-				Files.createDirectory(path);
-			} catch (FileAlreadyExistsException e) {
-				LOGGER.info(MessageFormat.format(MSG_ERROR_YA_EXISTE_DIRECTORIO,
-						TipoDirectorioStorageEnum.INPUT.getCdTipo()));
-			} catch (IOException e) {
+				f.mkdirs();
+			}catch (Exception e) {
+				LOGGER.info(MessageFormat.format(MSG_ERROR_CREACION_PATH, TipoDirectorioStorageEnum.INPUT.getCdTipo()) + " " + e);
 				throw new BusinessException(
 						MessageFormat.format(MSG_ERROR_CREACION_PATH, TipoDirectorioStorageEnum.INPUT.getCdTipo()));
 			}
+		}else {
+			LOGGER.info(MessageFormat.format(MSG_ERROR_YA_EXISTE_DIRECTORIO,
+					TipoDirectorioStorageEnum.INPUT.getCdTipo()));
 		}
 
 	}
