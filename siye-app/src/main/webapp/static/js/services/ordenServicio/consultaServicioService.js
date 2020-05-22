@@ -84,13 +84,13 @@ angular.module(appTeclo).service('consultaServicioService', function($http, conf
 		return $http.get(config.baseUrl + "/catalogo/alta/ordenServicio")
 	};
 
-  this.descargarReporteDetalle =  function(id, conImagenes){
+    this.descargarReporteDetalle =  function(id, conImagenes){
     return $http({
           method: 'GET',
           url: config.baseUrl + "/reporte/reporteDetOS",
           params: { 
-        	  "idOrdenservicio":id, 
-        	  "conImagenes": conImagenes },
+              "idOrdenservicio":id, 
+              "conImagenes": conImagenes },
           dataType: "json",
           header: {
               "Content-type": "application/json",
