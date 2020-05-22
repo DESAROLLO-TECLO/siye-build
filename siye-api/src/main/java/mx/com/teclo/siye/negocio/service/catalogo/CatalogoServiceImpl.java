@@ -185,6 +185,15 @@ public class CatalogoServiceImpl implements CatalogoService{
 	
 	@Transactional
 	@Override
+	public List<ConductorVO> getTransportistasSinVehiculo() throws NotFoundException{
+		List<ConductorVO> listaConductorVO = conductorDAO.getTransportistasSinVehiculo();
+		if(listaConductorVO.isEmpty())
+			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
+		return listaConductorVO;
+	}
+	
+	@Transactional
+	@Override
 	public List<PersonaVO> getTecnicos(Integer idTipoPersona) throws NotFoundException {
 		List<PersonaTipoDTO> listaPersonaTipoDTO = personaTipoDAO.getTecnicos(idTipoPersona);
 		if(listaPersonaTipoDTO.isEmpty())

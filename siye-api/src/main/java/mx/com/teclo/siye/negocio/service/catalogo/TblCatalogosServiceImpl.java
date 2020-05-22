@@ -157,7 +157,7 @@ public class TblCatalogosServiceImpl implements TblCatalogosService{
 	@Transactional
 	public String altaPersona (PersonaVO personaVO) throws BusinessException {
 		String respuesta = "";	
-		Integer serial = personaDAO.getUltimoId() + 1;
+		Long serial = personaDAO.getUltimoId() + 1;
 		String serie = "";
 		if  (serial < 10) {
 			serie = "00000" + serial;
@@ -182,7 +182,7 @@ public class TblCatalogosServiceImpl implements TblCatalogosService{
 		personaDTO.setCdPersona("CDP"+serie);
 		personaDTO.setNbPatPersona(personaVO.getNbPatPersona());
 		personaDTO.setNbMatPersona(personaVO.getNbMatPersona());
-		personaDTO.setNuOrden(serial);
+		personaDTO.setNuOrden(serial.intValue());
 		personaDTO.setFhCreacion(new Date());
 		personaDTO.setFhModificacion(new Date());
 		personaDTO.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
@@ -237,7 +237,7 @@ public class TblCatalogosServiceImpl implements TblCatalogosService{
 	
 	@Transactional
 	@Override
-	public PersonaVO findPersona(Integer idPersona) {
+	public PersonaVO findPersona(Long idPersona) {
 		PersonaVO personaVO = new PersonaVO();
 		PersonaDTO personaDTO = personaDAO.obtenerPersonaId(idPersona);
 		ResponseConverter.copiarPropriedades(personaVO, personaDTO);

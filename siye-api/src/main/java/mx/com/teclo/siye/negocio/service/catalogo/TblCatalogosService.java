@@ -19,5 +19,5 @@ public interface TblCatalogosService {
 
 	public Boolean actualizaPersona(PersonaVO personaVO) throws NotFoundException, BusinessException;
 
-	public PersonaVO findPersona(Integer idPersona);
+	public PersonaVO findPersona(Long idPersona);
 }

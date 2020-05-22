@@ -8,18 +8,18 @@ public class PersonaGenericaVO  implements Serializable{
 	 */
 	private static final long serialVersionUID = -2088734124464508286L;
 	
-	private Integer idPersona;
+	private Long idPersona;
 	private String nombre;
 	private String cdPersona;
 	private String aPaterno;
 	private String aMaterno;
-	private Integer idTipoPersona;
+	private Long idTipoPersona;
 	private Boolean existia;
 	
-	public Integer getIdPersona() {
+	public Long getIdPersona() {
 		return idPersona;
 	}
-	public void setIdPersona(Integer idPersona) {
+	public void setIdPersona(Long idPersona) {
 		this.idPersona = idPersona;
 	}
 	public String getNombre() {
@@ -47,10 +47,10 @@ public class PersonaGenericaVO  implements Serializable{
 	public void setaMaterno(String aMaterno) {
 		this.aMaterno = aMaterno;
 	}
-	public Integer getIdTipoPersona() {
+	public Long getIdTipoPersona() {
 		return idTipoPersona;
 	}
-	public void setIdTipoPersona(Integer idTipoPersona) {
+	public void setIdTipoPersona(Long idTipoPersona) {
 		this.idTipoPersona = idTipoPersona;
 	}
 	public Boolean getExistia() {

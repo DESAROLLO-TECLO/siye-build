@@ -31,7 +31,7 @@ public class ConductorDTO implements Serializable{
 	@SequenceGenerator(name = "sqie044cIEConductor", sequenceName="SQIE044C_IE_CONDUCTOR", allocationSize=1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqie044cIEConductor")
 	@Column(name = "ID_CONDUCTOR", unique = true, nullable = false, precision = 4, scale = 0)
-	private Integer idConductor;
+	private Long idConductor;
 	
 	@Column(name = "NB_CONDUCTOR", nullable = false, length = 50)
 	private String nbConductor;
@@ -64,11 +64,11 @@ public class ConductorDTO implements Serializable{
 	private Long stCondutor;
 
 	
-	public Integer getIdConductor() {
+	public Long getIdConductor() {
 		return idConductor;
 	}
 
-	public void setIdConductor(Integer idConductor) {
+	public void setIdConductor(Long idConductor) {
 		this.idConductor = idConductor;
 	}
 

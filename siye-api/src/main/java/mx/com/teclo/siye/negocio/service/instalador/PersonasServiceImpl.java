@@ -60,7 +60,7 @@ public class PersonasServiceImpl implements PersonasService{
 			String nombre = personaGenericaVO.getNombre().toUpperCase();
 			String aPaterno = personaGenericaVO.getaPaterno().toUpperCase();
 			String aMaterno = personaGenericaVO.getaMaterno().toUpperCase();
-			Integer idTipoPersona = personaGenericaVO.getIdTipoPersona();
+			Long idTipoPersona = personaGenericaVO.getIdTipoPersona();
 			 
 			if(idTipoPersona == null || idTipoPersona < 1) {
 				mensajeErr = "El tipo de la persona no puede estar vacío.";
@@ -81,7 +81,7 @@ public class PersonasServiceImpl implements PersonasService{
 				if(listaPersonaDTO.size() > 0) {
 					existePersona = true;
 					personaDTO = listaPersonaDTO.get(0);
-					Integer idPersona = personaDTO.getIdPersona();
+					Long idPersona = personaDTO.getIdPersona();
 					personaTipoDTO = personaTipoDAO.getTecnicosXIdPersonaYIdTipoPersona(idPersona, idTipoPersona);
 					
 					if(personaTipoDTO != null) {
@@ -118,7 +118,7 @@ public class PersonasServiceImpl implements PersonasService{
 				}
 				
 				if(existePersonaTipo == false) {
-					Integer idPersona = resultPersonaGenericaVO.getIdPersona();
+					Long idPersona = resultPersonaGenericaVO.getIdPersona();
 					PersonaTipoDTO insertPersonaTipoDTO = new PersonaTipoDTO();
 					insertPersonaTipoDTO.setPersona(personaDTO);
 					

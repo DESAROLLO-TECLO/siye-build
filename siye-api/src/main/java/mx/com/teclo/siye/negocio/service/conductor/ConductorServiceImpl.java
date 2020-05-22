@@ -76,7 +76,7 @@ public class ConductorServiceImpl implements ConductorService{
 					conductorDTO.setFhModificacion(new Date());
 					conductorDAO.save(conductorDTO);
 					
-					conductorDTO.setNuOrden(conductorDTO.getIdConductor());
+					conductorDTO.setNuOrden(conductorDTO.getIdConductor().intValue());
 					conductorDAO.update(conductorDTO);
 					
 					resultPersonaGenericaVO.setIdPersona(conductorDTO.getIdConductor());
