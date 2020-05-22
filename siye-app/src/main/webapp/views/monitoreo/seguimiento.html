@@ -16,6 +16,8 @@
           text-align: center;
           padding: 4px;
         }
+        
+        .pointer{cursor:pointer;}
         </style>
 </head>
 
@@ -193,16 +195,16 @@
                                         <tbody>
                                             <tr dir-paginate="modulo in seguimientoVO.datosTabla | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage"
                                                 ng-click="verDetalle(modulo)">
-                                                <td class="col-md-2 col-ms-2 text-center">{{modulo.nbModulo}}</td>
-                                                <td ng-if="verColumna.col1" class="tamColumna text-center">
+                                                <td class="col-md-2 col-ms-2 text-center pointer">{{modulo.nbModulo}}</td>
+                                                <td ng-if="verColumna.col1" class="tamColumna text-center pointer">
                                                     {{modulo.nuEnCurso}}</td>
-                                                <td ng-if="verColumna.col2" class="tamColumna text-center">
+                                                <td ng-if="verColumna.col2" class="tamColumna text-center pointer">
                                                     {{modulo.nuCompleta}}</td>
-                                                <td ng-if="verColumna.col3" class="tamColumna text-center">
+                                                <td ng-if="verColumna.col3" class="tamColumna text-center pointer">
                                                     {{modulo.nuProgramado}}</td>
-                                                <td ng-if="verColumna.col4" class="tamColumna text-center">
+                                                <td ng-if="verColumna.col4" class="tamColumna text-center pointer">
                                                     {{modulo.nuNoProgramado}}</td>
-                                                <td ng-if="verColumna.col5" class="tamColumna text-center">
+                                                <td ng-if="verColumna.col5" class="tamColumna text-center pointer">
                                                     {{modulo.nuIncidencias}}</td>
                                             </tr>
                                             <tr
