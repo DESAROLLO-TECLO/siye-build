@@ -510,7 +510,8 @@ public class EncuestaServiceImpl implements EncuestaService {
 		if(l.isEmpty())// No se guardar ni procesa nada
 			return true;
 		Long idIntento = l.isEmpty() ? 0L: l.get(0).getIdIntento();		
-		UsuarioEncuestaIntentosDTO ueDTO = usuarioEncuestaIntentoDAO.getIntentoById(idIntento);	
+		UsuarioEncuestaIntentosDTO ueDTO = usuarioEncuestaIntentoDAO.getIntentoById(idIntento);
+		Long idEncuesta=l.get(0).getIdEncuesta();
 		// Obtenemos la encuesta actual del usuario
 		if(ueDTO.getStEncuesta().getCdStEncuesta().equals("FIN"))
 			throw new BusinessException("Esta encuesta ya fue finalizada, favor de validar.");
@@ -532,6 +533,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 					// Obtenemos la opción medianta su identificador unico recibido
 					OpcionesDTO oDTO = opcionesDAO.opcion(urVO.getIdOpcion());
 					uDTO.setFhRespuesta(new Date());
+					uDTO.setStCorrecto(oDTO.getStCorrecto());
 					uDTO.setOpcionesDTO(oDTO);
 				}
 				uDTO.setFhLectura(new Date());
@@ -591,7 +593,35 @@ public class EncuestaServiceImpl implements EncuestaService {
 
 			
 		}
+		//Se actualizan los contadores de preguntas correctas, no correctas, total de preguntas coontestadas y total de preguntas vacias
+		updateTablaSeguimiento(ueDTO,idEncuesta);
+		
 		return true;	
+	}
+	
+	
+	//Se actualizan los contadores de preguntas correctas, no correctas, total de preguntas coontestadas y total de preguntas vacias
+	public void updateTablaSeguimiento(UsuarioEncuestaIntentosDTO ueDTO,Long idEncuesta){
+		List<UsuaroEncuestaRespuestaDTO> ulitsDTO = usuarioEncuestaRespuestaDAO.getRespuestas(ueDTO.getIdUsuEncuIntento(), idEncuesta);
+		Integer totalCorrectas=0;
+		Integer totalIncorrectas=0;
+		Integer toltaPreguntasVacias=ueDTO.getNuPreguntas();
+		if(ulitsDTO != null && !ulitsDTO.isEmpty()){
+			for(UsuaroEncuestaRespuestaDTO uDTO: ulitsDTO){
+				if(uDTO.getOpcionesDTO() != null){
+					if(uDTO.getOpcionesDTO().getStCorrecto().intValue() == 1){
+						totalCorrectas++;
+					}else if(uDTO.getOpcionesDTO().getStCorrecto().intValue() == 0){
+						totalIncorrectas++;
+					}
+					toltaPreguntasVacias--;
+				}
+			}
+		}
+		ueDTO.setNuPreguntasCorrectas(totalCorrectas);
+		ueDTO.setNuPreguntasIncorr(totalIncorrectas);
+		ueDTO.setNuPreguntasVacias(toltaPreguntasVacias);
+		usuarioEncuestaIntentoDAO.update(ueDTO);
 	}
 	
 	@Transactional
