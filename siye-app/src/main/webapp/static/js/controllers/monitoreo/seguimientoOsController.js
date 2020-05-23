@@ -87,6 +87,8 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
         }else{
             getRangoFechas();
         }
+        
+        $scope.validaSeleccion($scope.catTipoBusqueda);
     };
 
     getRangoFechas = function () {
@@ -372,6 +374,15 @@ angular.module(appTeclo).controller('seguimientoOsController', function ($rootSc
             detalleSeguimientoOsService.saveconsultaGeneral(null);
         }
     });
-
+    
+    $scope.validaSeleccion = function(seleccion){
+    	$scope.estatusSeleccionados = [];
+    	for(var x in seleccion){
+    		if(!isNaN(x)){
+    			$scope.estatusSeleccionados.push(seleccion[x].txTipoBusqueda);
+			}
+		}
+    }
+    
     starController();
 });

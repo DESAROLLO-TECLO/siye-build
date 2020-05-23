@@ -22,7 +22,8 @@ angular.module(appTeclo).directive('catalogoGenericoList', function($injector) {
         	nameSaveService:'=',
         	modelResult:'=?',
         	nameSaveEndPointService:'=',
-        	nameConsultEndPointService:'='
+        	nameConsultEndPointService:'=',
+        	listOptionDisables:'='
          },
          /*Se construye componente y se inyecta directiva se reciben paranetros*/
         link: function(scope, el, attr, ngModel) {
@@ -41,10 +42,38 @@ angular.module(appTeclo).directive('catalogoGenericoList', function($injector) {
         	/*Se consume el enpoint del servicio dado desde html*/
         	consultService[nameConsultEmpServ](paramBusqueda).success(function(response){
         	/*Se obtiene la lista y se iguala  ala variable mandada desde html*/
-        		scope.modelResult=response;
+        		if(scope.listOptionDisables == undefined)
+        			scope.modelResult=response;
+        		else
+        			scope.modelResult=getOptions(response);
+        		
         	}).error(function(error){
         		scope.modelResult=[];
-        	}); 	
+        	});
+        	
+        	function getOptions(listOption){
+        		if(listOption != undefined && listOption.length > 0
+						&& scope.listOptionDisables != undefined && scope.listOptionDisables.length > 0){
+					let i;
+					let size=listOption.length;
+					let j;
+					let tamanio=scope.listOptionDisables.length;
+					for(i=0; i<size; i++){
+						let itemT=listOption[i];
+						for(j=0; j<tamanio; j++){
+							let itemC=scope.listOptionDisables[j];
+							if(scope.objectId != undefined && itemT[scope.objectId] == itemC[scope.objectId]){
+								listOption.splice(i,1);
+								i--;
+								size=listOption.length;
+								break;
+							}
+						}
+					}
+				}
+        		return listOption;
+        	};
+        	
         	/* si se desea agregar un registro "NUEVO" ,que sirva para lanzar modal como el boton de + 
     		$(el).on("change",function(){
     			if (scope.opcionSelec!=null) {
@@ -80,10 +109,16 @@ angular.module(appTeclo).directive('catalogoGenericoList', function($injector) {
     	 				  if (datos!=null) {
     	 				  var flagIdObject=scope.objectId==null?false:true;
     					   if(datos.existe===false){
-    						   scope.modelResult=datos.newList;
+    						   if(scope.listOptionDisables == undefined)
+    			        			scope.modelResult=datos.newList;
+    			        		else
+    			        			scope.modelResult=getOptions(datos.newList);
     					   }
     					   var folioPersona=datos.newObject.cdPersona==null?"":" ("+datos.newObject.cdPersona+")";
-    					   $("#select2-"+nameContex+"-container").text(datos.newObject.nombre+" "+datos.newObject.aPaterno+" "+datos.newObject.aMaterno+folioPersona);
+    					   let componenteCombo=$("#select2-"+nameContex+"-container");
+    					   if(componenteCombo != undefined)
+    						   componenteCombo.text(datos.newObject.nombre+" "+datos.newObject.aPaterno+" "+datos.newObject.aMaterno+folioPersona);
+    					   
     			    		if (!flagIdObject) 
     			    			scope.opcionSelec=datos.newObject.idPersona;
 								 else	
@@ -94,8 +129,17 @@ angular.module(appTeclo).directive('catalogoGenericoList', function($injector) {
     			    		 });
     	 				  }
     				   }); 
-    			 }); 
-    	    };	
+    			 });
+    	    };
+    	    
+    	    //Metdod que le da alcance al controlador anfitron de la directiva
+    	    scope.$parent.$parent.getListViewCombo = function(){
+    	    	return scope.modelResult;
+    	    };
+    	    
+    	    scope.$parent.$parent.setListViewCombo = function(listOptions){
+    	    	scope.modelResult=listOptions;
+    	    };
         }           
     }
 });
