@@ -169,7 +169,10 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 		$scope.ordenVO = $scope.orden;
 		$scope.ordenVO.idIncidencia = $scope.incidenciaVO.idIncidencia;
 		console.log($scope.ordenVO);
-		valorDos.fhCita=moment(valorDos.fhCita).format('DD/MM/YYYY HH:mm');
+		if(typeof valorDos.fhCita != 'string'){
+			valorDos.fhCita=moment(valorDos.fhCita).format('DD/MM/YYYY HH:mm');	
+		}
+		
 		valorDos.conductores=valorDos.transportista;
 		altaServicioService.altaOrdenServicio(valorDos).success(function(data){
 			$scope.error = false;
@@ -197,11 +200,10 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 			for ( var i = 0; i < temp.length ; i++ ) {				
 				$("#select2-proveedor-"+i+"-container").text('Seleccione');
 			}
-			$('#fhCita').val('');
 			
+			$scope.cleanComponentDateTimePiker();
 			$scope.formAltaServicio.fhCita.$invalid=false;
 			$scope.formAltaServicio.fhCita.$dirty=false;
-			$scope.formAltaServici.$setPristine();
 			$scope.formAltaServicio.$setUntouched();
 			
 		}).error(function(data){
