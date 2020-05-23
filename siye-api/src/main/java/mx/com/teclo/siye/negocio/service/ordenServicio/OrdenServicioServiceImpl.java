@@ -16,9 +16,11 @@ import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
 import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ConductorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ConfiguracionParamDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.ProveedorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.TipoVehiculoDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.VehiculoConductorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.OdsIncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.CentroInstalacionDAO;
@@ -33,8 +35,10 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.VehiculoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConductorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ConfiguracionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.ProveedorDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.VehiculoConductorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.IncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.OdsIncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.CentroInstalacionDTO;
@@ -50,6 +54,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.TipoVehiculoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.VehiculoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.usuario.GerenteSupervisorDTO;
+import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.ordenServicio.OrdenServiVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
 import mx.com.teclo.siye.util.enumerados.RespuestaHttp;
@@ -117,6 +122,12 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	
 	@Autowired
 	private  ConfiguracionParamDAO configuracionDAO;
+	
+	@Autowired
+	private VehiculoConductorDAO vehiculoConductorDAO;
+	
+	@Autowired
+	private ConductorDAO conductorDAO;
 	
 	@Transactional
 	@Override
@@ -372,9 +383,9 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		IncidenciaDTO incidenciaDTO = new IncidenciaDTO();
 		KitInstalacionDTO kitInstalacion  = new KitInstalacionDTO();
 		 // TIE027_VEHICULO
-		
+		Date currentDate=new Date();
 		VehiculoDTO vehiculo = vehiculoDAO.buscarVehiculoPorPlaca(ordenServiVO.getVehiculoVO().getPlaca());
-		
+		Long idUuserFirmado=usuarioFirmadoService.getUsuarioFirmadoVO().getId();
 		if(vehiculo == null){
 			
 			vehiculo = new VehiculoDTO();
@@ -391,44 +402,56 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			vehiculo.setCdModelo(ordenServiVO.getVehiculoVO().getCdModelo());
 			vehiculo.setConsecionario(concesinarioDTO);
 			vehiculo.setStActivo(true);
-			vehiculo.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
-			vehiculo.setFhCreacion(new Date());
-			vehiculo.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
-			vehiculo.setFhModificacion(new Date());
+			vehiculo.setIdUsrCreacion(idUuserFirmado);
+			vehiculo.setFhCreacion(currentDate);
+			vehiculo.setIdUsrModifica(idUuserFirmado);
+			vehiculo.setFhModificacion(currentDate);
 			vehiculoDAO.save(vehiculo);
 		}
 		
-		if(ordenServiVO.getCdKitIntalacion() == null){
-			
-			kitInstalacion.setStActivo(true);
-			kitInstalacion.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
-			kitInstalacion.setFhCreacion(new Date());
-			kitInstalacion.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
-			kitInstalacion.setFhModificacion(new Date());
-			kitDAO.save(kitInstalacion);
-			
+		//Se guarda el conductor y la relacion entre el vehiculo y el conductor
+		if(ordenServiVO.getConductores() != null && !ordenServiVO.getConductores().isEmpty()){
+			ConductorDTO coDTO;
+			VehiculoConductorDTO vhCoDTO;
+			int nuOrden=1;
+			for(ConductorVO coVO: ordenServiVO.getConductores()){
+				
+					vhCoDTO=new VehiculoConductorDTO();
+					vhCoDTO.setVehiculo(vehiculo);
+					coVO.setStCondutor(1L);
+					coDTO=ResponseConverter.copiarPropiedadesFull(coVO, ConductorDTO.class);
+					
+					if(coVO.getIdConductor() == null){
+						coDTO.setFhCreacion(currentDate);
+						coDTO.setFhModificacion(currentDate);
+						conductorDAO.save(coDTO);
+						coVO.setIdConductor(coDTO.getIdConductor());
+					}
+					vhCoDTO.setConductor(coDTO);
+					vhCoDTO.setStActivo(true);
+					vhCoDTO.setNuOrden(nuOrden);
+					nuOrden++;
+					vehiculoConductorDAO.save(vhCoDTO);
+			}
 		}
-		else{
-			
-			kitInstalacion.setCdKitInstalacion(ordenServiVO.getCdKitIntalacion());
-			kitInstalacion.setStActivo(true);
-			kitInstalacion.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
-			kitInstalacion.setFhCreacion(new Date());
-			kitInstalacion.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
-			kitInstalacion.setFhModificacion(new Date());
-			kitDAO.save(kitInstalacion);
-		}
+		
+		kitInstalacion.setCdKitInstalacion(ordenServiVO.getCdKitIntalacion() == null ? "Sin serie" : ordenServiVO.getCdKitIntalacion());
+		kitInstalacion.setStActivo(true);
+		kitInstalacion.setIdUsrCreacion(idUuserFirmado);
+		kitInstalacion.setFhCreacion(currentDate);
+		kitInstalacion.setIdUsrModifica(idUuserFirmado);
+		kitInstalacion.setFhModificacion(currentDate);
+		kitDAO.save(kitInstalacion);
+		
 		
 		//kitInstalacion = kitDAO.ultimoId();
 		
+		//vehiculo = vehiculoDAO.buscarVehiculoPorPlaca(ordenServiVO.getVehiculoVO().getPlaca());
 		
-
-		
-		vehiculo = vehiculoDAO.buscarVehiculoPorPlaca(ordenServiVO.getVehiculoVO().getPlaca());
 		CentroInstalacionDTO centroInst = centroInstalacionDAO.findOne(ordenServiVO.getCentroI());
 		
 		PlanDTO planDTO = planDAO.getId(ordenServiVO.getPlan());
-		StSeguimientoDTO stSeguimiento =seguimientoDAO.obtenerSeguimientoDos(1l);
+		StSeguimientoDTO stSeguimiento =seguimientoDAO.obtenerSeguimientoDos(1L);
 		
 		ordenServiDTO.setCdOrdenServicio(ordenServiVO.getCdOrden());
 		ordenServiDTO.setVehiculo(vehiculo);
@@ -440,10 +463,10 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		//contemplar para front
 		ordenServiDTO.setFhCita(ordenServiVO.getFhCita());
 		ordenServiDTO.setStActivo(true);
-		ordenServiDTO.setIdUsrCreacion(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
-		ordenServiDTO.setFhCreacion(new Date());
-		ordenServiDTO.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
-		ordenServiDTO.setFhModificacion(new Date());
+		ordenServiDTO.setIdUsrCreacion(idUuserFirmado);
+		ordenServiDTO.setFhCreacion(currentDate);
+		ordenServiDTO.setIdUsrModifica(idUuserFirmado);
+		ordenServiDTO.setFhModificacion(currentDate);
 		ordenServicioDAO.save(ordenServiDTO);
 		
 	
@@ -473,8 +496,8 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		
 		StSeguimientoDTO stSeguimiento3 =seguimientoDAO.obtenerSeguimientoDos(3l);
 		incidenciaDTO.setStIncidencia(stSeguimiento3);
-		incidenciaDTO.setIdUsrModifica(usuarioFirmadoService.getUsuarioFirmadoVO().getId());
-		incidenciaDTO.setFhModificacion(new Date());
+		incidenciaDTO.setIdUsrModifica(idUuserFirmado);
+		incidenciaDTO.setFhModificacion(currentDate);
 		incidenciaDAO.update(incidenciaDTO);
 		
 	}

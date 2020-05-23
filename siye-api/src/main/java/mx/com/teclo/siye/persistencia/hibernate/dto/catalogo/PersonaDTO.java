@@ -31,7 +31,7 @@ public class PersonaDTO implements Serializable {
 	@SequenceGenerator(name = "sqie045cIERHInstal", sequenceName="SQIE045C_IE_RH_INSTAL", allocationSize=1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqie045cIERHInstal")
 	@Column(name = "ID_PERSONA", unique = true, nullable = false, precision = 6, scale = 0)
-	private Integer idPersona;
+	private Long idPersona;
 	
 	@Column(name = "NB_PERSONA", nullable = false, length = 50)
 	private String nbPersona;
@@ -66,11 +66,11 @@ public class PersonaDTO implements Serializable {
 	@Column(name = "ST_PERSONA", nullable = false)
 	private Long stPersona;
 
-	public Integer getIdPersona() {
+	public Long getIdPersona() {
 		return idPersona;
 	}
 
-	public void setIdPersona(Integer idPersona) {
+	public void setIdPersona(Long idPersona) {
 		this.idPersona = idPersona;
 	}
 

@@ -13,7 +13,7 @@ public interface PersonaDAO  extends BaseDao<PersonaDTO>{
 
 	public List<PersonaDTO> obtenerPersonaVisible(Long value);
 
-	public Integer getUltimoId();
+	public Long getUltimoId();
 
-	public PersonaDTO obtenerPersonaId(Integer idPersona);
+	public PersonaDTO obtenerPersonaId(Long idPersona);
 }
