@@ -17,7 +17,9 @@
           padding: 4px;
         }
         
-        .pointer{cursor:pointer;}
+        .pointer{
+        	cursor:pointer;
+        }
         </style>
 </head>
 
@@ -61,7 +63,7 @@
                                             <select class="form-control" name="tipoBusqueda" id="tipoBusqueda"
                                                 select-picker multiple idioma-sp="{{currentLanguage}}"
                                                 data-actions-box="true" data-selected-text-format="count > 2"
-                                                ng-model="params.colSeleccionada" ng-required="true"
+                                                ng-model="params.colSeleccionada" ng-required="true" ng-change="validaSeleccion(params.colSeleccionada)"
                                                 ng-options="sp as sp.txTipoBusqueda for sp in catTipoBusqueda">
                                             </select>
                                         </div>
@@ -89,7 +91,8 @@
                                 </div>
                             </div>
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <input class="form-control" type="text" placeholder="{{params.opcMarcadas}}" readonly>
+                            	<span class="form-control">{{estatusSeleccionados+""}} </span>
+<!--                                 <input class="form-control" type="text" placeholder="{{params.opcMarcadas}}" readonly /> -->
                             </div>
                             <div class="row"></div>
 
