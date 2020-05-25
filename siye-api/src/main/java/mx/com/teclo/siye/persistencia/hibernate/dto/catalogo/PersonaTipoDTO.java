@@ -32,7 +32,7 @@ public class PersonaTipoDTO implements Serializable {
 	@SequenceGenerator(name = "sqie059dIEPersonaT", sequenceName="SQIE059D_IE_PERSONA_T", allocationSize=1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqie059dIEPersonaT")
 	@Column(name = "ID_PERSONA_TIPO", unique = true, nullable = false, precision = 6, scale = 0)
-	private Integer idPersonaTipo;
+	private Long idPersonaTipo;
 
 	@JoinColumn(name = "ID_PERSONA", referencedColumnName = "ID_PERSONA", nullable = false)
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
@@ -42,11 +42,11 @@ public class PersonaTipoDTO implements Serializable {
 	@ManyToOne(optional = false, fetch = FetchType.LAZY)
 	private TipoPersonaDTO tipoPersona;
 
-	public Integer getIdPersonaTipo() {
+	public Long getIdPersonaTipo() {
 		return idPersonaTipo;
 	}
 
-	public void setIdPersonaTipo(Integer idPersonaTipo) {
+	public void setIdPersonaTipo(Long idPersonaTipo) {
 		this.idPersonaTipo = idPersonaTipo;
 	}
 

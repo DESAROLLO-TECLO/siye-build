@@ -12,7 +12,7 @@ public class PersonaCompVO implements Serializable{
 	 */
 	private static final long serialVersionUID = 6450793529068488324L;
 	
-	private Integer idPersona;
+	private Long idPersona;
 	private String nbPersona;
 	private String nbPatPersona;
 	private String cdPersona;
@@ -24,10 +24,10 @@ public class PersonaCompVO implements Serializable{
 	private Long idUsrModifica;
 	private Date fhModificacion;
 	
-	public Integer getIdPersona() {
+	public Long getIdPersona() {
 		return idPersona;
 	}
-	public void setIdPersona(Integer idPersona) {
+	public void setIdPersona(Long idPersona) {
 		this.idPersona = idPersona;
 	}
 	public String getNbPersona() {

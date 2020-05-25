@@ -29,5 +29,18 @@ public class VehiculoConductorDAOImpl extends BaseDaoHibernate<VehiculoConductor
 		return (List<VehiculoConductorDTO>)criteria.list();
 
 	}
+	
+	@Override
+	public VehiculoConductorDTO getVhiculoConductor(Long idVehiculo,Long idConductor) {
+		Criteria criteria = getCurrentSession().createCriteria(VehiculoConductorDTO.class);
+		criteria.createAlias("vehiculo", "vehiculo");
+		criteria.createAlias("conductor", "conductor");
+		criteria.add(Restrictions.eq("vehiculo.idVehiculo", idVehiculo));
+		criteria.add(Restrictions.eq("conductor.idConductor", idConductor));
+		criteria.add(Restrictions.eq("stActivo", true));
+		criteria.addOrder(Order.desc("nuOrden"));
+		return (VehiculoConductorDTO)criteria.uniqueResult();
+
+	}
 
 }

@@ -68,6 +68,12 @@ public class CatalogoRestController {
 		return new ResponseEntity<List<ConductorVO>>(listaConductorVO, HttpStatus.OK);
 	}
 	
+	@RequestMapping(value="/getTransportistasSinVehiculo", method = RequestMethod.GET)
+	public ResponseEntity<List<ConductorVO>> getTransportistasSinVehiculo() throws NotFoundException{
+		List<ConductorVO> listaConductorVO = catalogoService.getTransportistasSinVehiculo();
+		return new ResponseEntity<List<ConductorVO>>(listaConductorVO, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value="/getTecnicos", method = RequestMethod.GET)
 	public ResponseEntity<List<PersonaVO>> getTecnicos(
 		@RequestParam("idTipoPersona") Integer idTipoPersona

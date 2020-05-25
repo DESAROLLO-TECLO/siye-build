@@ -73,23 +73,25 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<EncuestaDetalleVO> getDetalleEncuesta(Long idOrdenServicio, Long idProceso) {
-		StringBuilder consulta = new StringBuilder("SELECT tdipe.ID_ENCUESTA  AS idEncuesta, encuesta.NB_ENCUESTA AS nbEncuesta," 
-	            +"TO_CHAR(tdeuei.FH_INICIO,'DD/MM/YYYY HH24:MI') AS fhInicio," 
-	            +"TO_CHAR(tdeuei.FH_FIN,'DD/MM/YYYY HH24:MI') AS fhFin,"
-	            +"tdeuei.FH_INICIO as fecha1,"
+		StringBuilder consulta = new StringBuilder(
+				"SELECT tdipe.ID_ENCUESTA  AS idEncuesta, encuesta.NB_ENCUESTA AS nbEncuesta, " 
+	            +"TO_CHAR(tdeuei.FH_INICIO,'DD/MM/YYYY HH24:MI') AS fhInicio, " 
+	            +"TO_CHAR(tdeuei.FH_FIN,'DD/MM/YYYY HH24:MI') AS fhFin, "
+	            +"tdeuei.FH_INICIO as fecha1, "
 	            +"tdeuei.FH_FIN as fecha2, "
-	            +"tdeuei.NU_PREGUNTAS||'/'||tdeuei.NU_PREGUNTAS_CORRECTAS AS preguntas," 
-				+"st.NB_ST_ENCUESTA AS estatus,"
-	            +"st.CD_COLOR AS nbColor,"
-	            +"CASE tdeuei.ID_ST_CALIFICACION WHEN 3 THEN '0%' "
-				+"  ELSE tdeuei.NU_PREGUNTAS /(tdeuei.NU_PREGUNTAS_CORRECTAS + tdeuei.NU_PREGUNTAS_INCORR + tdeuei.NU_PREGUNTAS_VACIAS)*100 || '%' END AS nuPorcentaje"
+	            +"tdeuei.NU_PREGUNTAS_CORRECTAS||'/'|| tdeuei.NU_PREGUNTAS AS preguntas, " 
+				+"st.NB_ST_ENCUESTA AS estatus, "
+	            +"st.CD_COLOR AS nbColor, "
+	            +"(CASE  WHEN tdeuei.ID_ST_ENCUESTA= 3 THEN '0%' "
+	            +"when (tdeuei.NU_PREGUNTAS_CORRECTAS + tdeuei.NU_PREGUNTAS_INCORR) = 0 THEN '0%' "
+				+"  ELSE (((tdeuei.NU_PREGUNTAS_CORRECTAS + tdeuei.NU_PREGUNTAS_INCORR)*100) /tdeuei.NU_PREGUNTAS) || '%' END) AS nuPorcentaje"
 	            +" FROM TIE037D_IE_PROCESO_ENCUESTA tdipe" 
 				+"    INNER JOIN TIE001D_EE_ENCUESTAS encuesta ON (tdipe.ID_ENCUESTA = encuesta.ID_ENCUESTA)" 
 				+"    INNER JOIN TIE002D_EE_ODS_ENCUESTA tdeoe ON (encuesta.ID_ENCUESTA = tdeoe.ID_ENCUESTA)" 
 				+"    INNER JOIN TIE006D_EE_USU_ENCU_INTEN tdeuei ON (tdeoe.ID_ODS_ENCUESTA  = tdeuei.ID_ODS_ENCUESTA)"
-				+"    INNER JOIN TIE018C_EE_ST_ENCUESTAS st ON (tdeuei.ID_ST_CALIFICACION = st.ID_ST_ENCUESTA)"
+				+"    INNER JOIN TIE018C_EE_ST_ENCUESTAS st ON (tdeuei.ID_ST_ENCUESTA = st.ID_ST_ENCUESTA)"
 				+" WHERE tdipe.ST_ACTIVO =1 AND encuesta.ST_ACTIVO =1 AND tdipe.ID_PROCESO =:idProceso AND tdeoe.ID_ORDEN_SERVICIO=:idOrdenServicio" 
-				+"  AND st.ID_ST_ENCUESTA<>:estatus  ORDER BY tdipe.ID_ENCUESTA ");
+				+" ORDER BY tdipe.ID_ENCUESTA ");
 		List<EncuestaDetalleVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				.addScalar("idEncuesta",LongType.INSTANCE)
 				.addScalar("nbEncuesta",StringType.INSTANCE)
@@ -103,7 +105,6 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 				.addScalar("nuPorcentaje",StringType.INSTANCE)
 				.setParameter("idOrdenServicio", idOrdenServicio)
 				.setParameter("idProceso", idProceso)
-				.setParameter("estatus", SIN_INICIAR)
 				.setResultTransformer(Transformers.aliasToBean(EncuestaDetalleVO.class)).list();
 		return respuesta;
 	}

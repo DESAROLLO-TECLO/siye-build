@@ -10,7 +10,7 @@ public class ConductorCompVO implements Serializable{
 	 */
 	private static final long serialVersionUID = -4793024118322833723L;
 	
-	private Integer idConductor;
+	private Long idConductor;
 	private String nbConductor;
 	private String nbApepatConductor;
 	private String nbApematConductor;
@@ -21,10 +21,10 @@ public class ConductorCompVO implements Serializable{
 	private Long idUsrModifica;
 	private Date fhModificacion;
 	
-	public Integer getIdConductor() {
+	public Long getIdConductor() {
 		return idConductor;
 	}
-	public void setIdConductor(Integer idConductor) {
+	public void setIdConductor(Long idConductor) {
 		this.idConductor = idConductor;
 	}
 	public String getNbConductor() {

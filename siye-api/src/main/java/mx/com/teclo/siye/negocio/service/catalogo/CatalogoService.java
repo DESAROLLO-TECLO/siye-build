@@ -32,6 +32,14 @@ public interface CatalogoService {
 	
 	public List<ConductorVO> getTransportistas() throws NotFoundException;
 	
+	/**
+	 * @Descripcion: Regresa una lista de transportiasta (conductores) que no tienen asociado un vehiculo
+	 * @author DanielUitis
+	 * @return List<ConductorVO>
+	 * @throws NotFoundException
+	 */
+	public List<ConductorVO> getTransportistasSinVehiculo() throws NotFoundException;
+	
 	public List<PersonaVO> getTecnicos(Integer idTipoPersona) throws NotFoundException;
 	
 	public CatalogosOrdenProcesoVO getCatalogosOrdenProceso() throws NotFoundException;
