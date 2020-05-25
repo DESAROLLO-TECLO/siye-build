@@ -9,6 +9,7 @@ public class ImagenVO {
 	private Long idExpedienteODS;
 	private Long idOrdenServicio;
 	private Long idOdsEncuesta;
+	private Long idEncuesta;
 	private Long idProceso;
 	private Long idPregunta;
 	private Long idIncidencia;
@@ -249,5 +250,16 @@ public class ImagenVO {
 	public void setNbTpDocumneto(String nbTpDocumneto) {
 		this.nbTpDocumneto = nbTpDocumneto;
 	}
-	
+	/**
+	 * @return the idEncuesta
+	 */
+	public Long getIdEncuesta() {
+		return idEncuesta;
+	}
+	/**
+	 * @param idEncuesta the idEncuesta to set
+	 */
+	public void setIdEncuesta(Long idEncuesta) {
+		this.idEncuesta = idEncuesta;
+	}
 }
