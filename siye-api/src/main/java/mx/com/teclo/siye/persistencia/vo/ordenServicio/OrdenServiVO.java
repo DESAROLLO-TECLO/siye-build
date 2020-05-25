@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.KitInstDispVO;
 
 
@@ -20,9 +23,11 @@ public class OrdenServiVO implements Serializable{
 	private List<KitInstDispVO> kitInstalacionVO;
 	private VehiculoOSVO vehiculoVO;
 	private Long idProcesoActual;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm",timezone = "America/Mexico_City")
 	private Date fhCita;
 	private Long idIncidencia;
-
+	private List<ConductorVO> conductores;
+	
 	public VehiculoOSVO getVehiculoVO() {
 		return vehiculoVO;
 	}
@@ -83,6 +88,16 @@ public class OrdenServiVO implements Serializable{
 	public void setIdIncidencia(Long idIncidencia) {
 		this.idIncidencia = idIncidencia;
 	}
-	
-
+	/**
+	 * @return the conductores
+	 */
+	public List<ConductorVO> getConductores() {
+		return conductores;
+	}
+	/**
+	 * @param conductores the conductores to set
+	 */
+	public void setConductores(List<ConductorVO> conductores) {
+		this.conductores = conductores;
+	}
 }

@@ -48,7 +48,7 @@ public class PersonaDAOImpl extends BaseDaoHibernate<PersonaDTO> implements Pers
 	
 	
 	@Override
-	public Integer getUltimoId(){
+	public Long getUltimoId(){
 		Criteria c = getCurrentSession().createCriteria(PersonaDTO.class);
 		c.addOrder(Order.desc("idPersona"));
 		PersonaDTO personaDTO = (PersonaDTO)c.list().get(0);
@@ -56,7 +56,7 @@ public class PersonaDAOImpl extends BaseDaoHibernate<PersonaDTO> implements Pers
 	}
 	
 	@Override
-	public PersonaDTO obtenerPersonaId(Integer idPersona) {
+	public PersonaDTO obtenerPersonaId(Long idPersona) {
 		Criteria c = getCurrentSession().createCriteria(PersonaDTO.class);
 		c.add(Restrictions.eq("stActivo", true));
 		c.add(Restrictions.eq("idPersona", idPersona));

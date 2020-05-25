@@ -9,5 +9,7 @@ public interface VehiculoConductorDAO extends BaseDao<VehiculoConductorDTO> {
 	
 	
 	public List<VehiculoConductorDTO> getTransportistas(Long idVehiculo);
+	
+	public VehiculoConductorDTO getVhiculoConductor(Long idVehiculo,Long idConductor);
 
 }

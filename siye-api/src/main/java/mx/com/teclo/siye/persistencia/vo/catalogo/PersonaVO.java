@@ -15,7 +15,7 @@ public class PersonaVO implements Serializable {
 	 */
 	private static final long serialVersionUID = -8559002806050553531L;
 	
-	private Integer idPersona;
+	private Long idPersona;
 	private String nbPersona;
 	private String cdPersona;
 	private String nbPatPersona;
@@ -24,10 +24,10 @@ public class PersonaVO implements Serializable {
 	private Boolean existia;
 	private Long stPersona;
 	
-	public Integer getIdPersona() {
+	public Long getIdPersona() {
 		return idPersona;
 	}
-	public void setIdPersona(Integer idPersona) {
+	public void setIdPersona(Long idPersona) {
 		this.idPersona = idPersona;
 	}
 	public String getNbPersona() {

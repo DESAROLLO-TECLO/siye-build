@@ -26,7 +26,7 @@ public class PersonaTipoDAOImpl extends BaseDaoHibernate<PersonaTipoDTO> impleme
 	}
 	
 	@Override
-	public PersonaTipoDTO getTecnicosXIdPersonaYIdTipoPersona(Integer idPersona, Integer idTipoPersona) {
+	public PersonaTipoDTO getTecnicosXIdPersonaYIdTipoPersona(Long idPersona, Long idTipoPersona) {
 		Criteria criteria = getCurrentSession().createCriteria(PersonaTipoDTO.class);
 		criteria.createAlias("tipoPersona", "tipoPersona");
 		criteria.createAlias("persona", "persona");

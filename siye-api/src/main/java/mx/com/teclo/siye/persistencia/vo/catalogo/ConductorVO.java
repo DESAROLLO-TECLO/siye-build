@@ -15,7 +15,7 @@ public class ConductorVO implements Serializable{
 	 */
 	private static final long serialVersionUID = -621002232129680385L;
 	
-	private Integer idConductor;
+	private Long idConductor;
 	private String nbConductor;
 	private String nbApepatConductor;
 	private String nbApematConductor;
@@ -23,10 +23,10 @@ public class ConductorVO implements Serializable{
 	private Long stCondutor;
     private Long idVehiculoConductor;
 	
-	public Integer getIdConductor() {
+	public Long getIdConductor() {
 		return idConductor;
 	}
-	public void setIdConductor(Integer idConductor) {
+	public void setIdConductor(Long idConductor) {
 		this.idConductor = idConductor;
 	}
 	public String getNbConductor() {

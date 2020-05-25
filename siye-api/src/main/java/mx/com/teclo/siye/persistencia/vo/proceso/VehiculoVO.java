@@ -1,7 +1,9 @@
 package mx.com.teclo.siye.persistencia.vo.proceso;
 
 import java.io.Serializable;
+import java.util.List;
 
+import mx.com.teclo.siye.persistencia.vo.catalogo.ConductorVO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.TipoVehiculoVO;
 
 public class VehiculoVO implements Serializable {
@@ -23,6 +25,8 @@ public class VehiculoVO implements Serializable {
 	private String cdTipoVehiculo;
 	private String nbTipoVehiculo;
 	private Long stVehiculo;
+	
+	private List<ConductorVO> listConductores;
 
 	public Long getIdVehiculo() {
 		return idVehiculo;
@@ -136,7 +140,18 @@ public class VehiculoVO implements Serializable {
 	public void setStVehiculo(Long stVehiculo) {
 		this.stVehiculo = stVehiculo;
 	}
-	
 
-	
+	/**
+	 * @return the listConductores
+	 */
+	public List<ConductorVO> getListConductores() {
+		return listConductores;
+	}
+
+	/**
+	 * @param listConductores the listConductores to set
+	 */
+	public void setListConductores(List<ConductorVO> listConductores) {
+		this.listConductores = listConductores;
+	}
 }

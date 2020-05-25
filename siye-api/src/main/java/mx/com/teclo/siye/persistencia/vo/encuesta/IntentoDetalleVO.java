@@ -42,11 +42,11 @@ public class IntentoDetalleVO implements Serializable {
 	
 	//nuevos
 	private String transportista;
-	private Integer  idVehiculoCnductor; 
+	private Long  idVehiculoCnductor; 
 	private String supervisor;
 	private Long idGerenteSupervisor;
 	private String tecnico;
-	private Integer idPersona;
+	private Long idPersona;
 
 	/**
 	 * @return the idUsuEncuIntento
@@ -366,11 +366,11 @@ public class IntentoDetalleVO implements Serializable {
 		this.tecnico = tecnico;
 	}
 
-	public Integer getIdVehiculoCnductor() {
+	public Long getIdVehiculoCnductor() {
 		return idVehiculoCnductor;
 	}
 
-	public void setIdVehiculoCnductor(Integer idVehiculoCnductor) {
+	public void setIdVehiculoCnductor(Long idVehiculoCnductor) {
 		this.idVehiculoCnductor = idVehiculoCnductor;
 	}
 
@@ -382,11 +382,11 @@ public class IntentoDetalleVO implements Serializable {
 		this.idGerenteSupervisor = idGerenteSupervisor;
 	}
 
-	public Integer getIdPersona() {
+	public Long getIdPersona() {
 		return idPersona;
 	}
 
-	public void setIdPersona(Integer idPersona) {
+	public void setIdPersona(Long idPersona) {
 		this.idPersona = idPersona;
 	}
 	
