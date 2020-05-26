@@ -1,5 +1,6 @@
 package mx.com.teclo.siye.persistencia.hibernate.dao.proceso;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -424,12 +425,17 @@ public class OrdenServicioDAOImpl extends BaseDaoHibernate<OrdenServicioDTO> imp
 	@SuppressWarnings("unchecked")
 	public List<OrdenServicioDTO> hacerCorteDiarioOS(String fechaCorte, List<Long> idCentroInstalacion) {
 		Criteria c= getCurrentSession().createCriteria(OrdenServicioDTO.class);
+		List<String> cdStatus=new ArrayList<>();
+		cdStatus.add("NUEVO");
+		cdStatus.add("CURSO");
 		c.createAlias("centroInstalacion", "centroDTO");
+		c.createAlias("stSeguimiento", "stSeguimiento");
 		c.add(Restrictions.in("centroDTO.idCentroInstalacion", idCentroInstalacion));
+		c.add(Restrictions.in("stSeguimiento.cdStSeguimiento", cdStatus));
 		c.add(Restrictions.sqlRestriction("trunc(FH_CITA) = trunc(?)", new Date(), org.hibernate.type.StandardBasicTypes.DATE));
 		c.add(Restrictions.isNull("fhAtencionFin"));
 		c.add(Restrictions.eq("stActivo", true));
-		return (List<OrdenServicioDTO>)c.list();	
+		return (List<OrdenServicioDTO>)c.list();
 	};
 
 	@SuppressWarnings("unchecked")
