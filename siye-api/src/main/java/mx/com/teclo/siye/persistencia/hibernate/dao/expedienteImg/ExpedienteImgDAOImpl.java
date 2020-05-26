@@ -39,6 +39,7 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 		StringBuilder consulta = new StringBuilder();
 		consulta.append("SELECT  TIE050.ID_EXPEDIENTE_ODS as idExpedienteODS,");
 		consulta.append("TIE050.ID_ORDEN_SERVICIO as idOrdenServicio,TIE050.ID_ODS_ENCUESTA as idOdsEncuesta,");
+		consulta.append("TIE001.ID_ENCUESTA as idEncuesta,");
 		consulta.append("TIE050.ID_PROCESO  as idProceso,TIE050.ID_PREGUNTA as idPregunta,");
 		consulta.append("TIE050.ID_TIPO_EXPEDIENTE as idTipoExpediente,TIE050.NB_EXPEDIENTE_ODS as nbExpedienteODS,");
 		consulta.append("TIE050.CD_TIPO_ARCHIVO as cdTipoArchivo,TIE050.LB_EXPEDIENTE_ODS as lbExpedienteODS,");
@@ -76,6 +77,7 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 		 List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())
 				 .addScalar("idExpedienteODS", LongType.INSTANCE)
 				 .addScalar("idOdsEncuesta", LongType.INSTANCE)
+				 .addScalar("idEncuesta", LongType.INSTANCE)				 
 				 .addScalar("idOrdenServicio", LongType.INSTANCE)
 				 .addScalar("idProceso", LongType.INSTANCE)
 				 .addScalar("idPregunta",LongType.INSTANCE)
