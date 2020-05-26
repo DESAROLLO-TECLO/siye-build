@@ -187,6 +187,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 	@Override
 	public Boolean actualizaOrdenServicio(OrdenServicioVO osVO) throws NotFoundException, BusinessException{
 		OrdenServicioDTO osDTO = ordenServicioDAO.obtenerOrdenServicio(osVO.getIdOrdenServicio());
+		Date currentDate=new Date();
 		if(osDTO == null)
 			throw new NotFoundException("El registro que intenta actualizar no existe");
 		
@@ -218,9 +219,36 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 			vehiculoDAO.update(vDTO);
 			
 			osDTO.setVehiculo(vDTO);
+			
+			if(osVO.getConductores() != null && !osVO.getConductores().isEmpty()){
+				ConductorDTO coDTO;
+				VehiculoConductorDTO vhCoDTO;
+				int nuOrden=1;
+				for(ConductorVO coVO: osVO.getConductores()){
+					
+						vhCoDTO=new VehiculoConductorDTO();
+						vhCoDTO.setVehiculo(vDTO);
+						coVO.setStCondutor(1L);
+						coDTO=ResponseConverter.copiarPropiedadesFull(coVO, ConductorDTO.class);
+						
+						if(coVO.getIdConductor() == null){
+							coDTO.setFhCreacion(currentDate);
+							coDTO.setFhModificacion(currentDate);
+							conductorDAO.save(coDTO);
+							coVO.setIdConductor(coDTO.getIdConductor());
+						}
+						VehiculoConductorDTO vhCoFind=vehiculoConductorDAO.getVhiculoConductor(vDTO.getIdVehiculo(),coDTO.getIdConductor());
+						if(vhCoFind == null){
+							vhCoDTO.setConductor(coDTO);
+							vhCoDTO.setStActivo(true);
+							vhCoDTO.setNuOrden(nuOrden);
+							nuOrden++;
+							vehiculoConductorDAO.save(vhCoDTO);
+						}
+				}
+			}	
+			
 		}
-		
-		
 		
 		if(osVO.getCentroInstalacion() != null) {
 			CentroInstalacionDTO ciDTO = new CentroInstalacionDTO();
@@ -276,6 +304,22 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		OrdenServicioVO osVo = new OrdenServicioVO();
 		OrdenServicioDTO osDto = ordenServicioDAO.obtenerOrdenServicio(idOrdenServico);
 		osVo = ResponseConverter.copiarPropiedadesFull(osDto, OrdenServicioVO.class);
+		
+		//Se valida si el vehiculo tiene conductores asociados
+		if(osDto.getVehiculo() != null){
+			List<VehiculoConductorDTO> listConductores=vehiculoConductorDAO.getTransportistas(osDto.getVehiculo().getIdVehiculo());
+			
+			if(listConductores != null && !listConductores.isEmpty()){
+				ConductorVO conductor;
+				List<ConductorVO> listCondutorVO=new ArrayList<>();
+				for(VehiculoConductorDTO vcDTO : listConductores){
+					conductor=ResponseConverter.copiarPropiedadesFull(vcDTO.getConductor(), ConductorVO.class);
+					listCondutorVO.add(conductor);
+				}
+				osVo.getVehiculo().setListConductores(listCondutorVO);
+			}
+		}
+		
 		return osVo;
 	}
 	
@@ -288,6 +332,20 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		OrdenServicioDTO osDto = ordenServicioDAO.obtenerOrdenServicioCD_ORDEN_SERVICIO(cdOrdenServicio);
 		if(osDto!=null) {
 			osVo = ResponseConverter.copiarPropiedadesFull(osDto, OrdenServicioVO.class);
+			//Se valida si el vehiculo tiene conductores asociados
+			if(osDto.getVehiculo() != null){
+				List<VehiculoConductorDTO> listConductores=vehiculoConductorDAO.getTransportistas(osDto.getVehiculo().getIdVehiculo());
+				
+				if(listConductores != null && !listConductores.isEmpty()){
+					ConductorVO conductor;
+					List<ConductorVO> listCondutorVO=new ArrayList<>();
+					for(VehiculoConductorDTO vcDTO : listConductores){
+						conductor=ResponseConverter.copiarPropiedadesFull(vcDTO.getConductor(), ConductorVO.class);
+						listCondutorVO.add(conductor);
+					}
+					osVo.getVehiculo().setListConductores(listCondutorVO);
+				}
+			}
 		}		
 		return osVo;
 	}
@@ -427,11 +485,15 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 						conductorDAO.save(coDTO);
 						coVO.setIdConductor(coDTO.getIdConductor());
 					}
-					vhCoDTO.setConductor(coDTO);
-					vhCoDTO.setStActivo(true);
-					vhCoDTO.setNuOrden(nuOrden);
-					nuOrden++;
-					vehiculoConductorDAO.save(vhCoDTO);
+					
+					VehiculoConductorDTO vhCoFind=vehiculoConductorDAO.getVhiculoConductor(vehiculo.getIdVehiculo(),coDTO.getIdConductor());
+					if(vhCoFind == null){
+						vhCoDTO.setConductor(coDTO);
+						vhCoDTO.setStActivo(true);
+						vhCoDTO.setNuOrden(nuOrden);
+						nuOrden++;
+						vehiculoConductorDAO.save(vhCoDTO);
+					}
 			}
 		}
 		
