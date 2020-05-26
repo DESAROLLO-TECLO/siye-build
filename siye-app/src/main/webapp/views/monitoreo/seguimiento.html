@@ -81,7 +81,7 @@
                                             *{{'MONITOREO.busqueda.rangoFechas.label' | translate}}
                                         </label>
                                         <div class="input-group">
-                                            <div class="input-group-addon labelCheck">
+                                            <div class="input-group-addon">
                                                 <i class="fa fa-calendar-plus-o"></i>
                                             </div>
                                             <input date-range-picker class="form-control date-picker" type="text"
@@ -89,11 +89,13 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-                            	<span class="form-control">{{estatusSeleccionados+""}} </span>
+                                
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                            		<span class="form-control">{{estatusSeleccionados+""}} </span>
 <!--                                 <input class="form-control" type="text" placeholder="{{params.opcMarcadas}}" readonly /> -->
+                            	</div>
                             </div>
+                            
                             <div class="row"></div>
 
                             <!-- renglon de opociones -->
@@ -268,11 +270,13 @@
                                                     </button>
                                                 </td>
                                                 <td class="col-md-2 col-sm-2 col-xs-2 text-center" ng-click="verDetalleStatus(detalle)">
-                                                    <span style="background-color: {{detalle.color}}">
-                                                        <strong>
-                                                            {{detalle.estado}}
-                                                        </strong>
-                                                    </span>
+                                                    <a>
+                                                    	<span class="badge" style="font-size:12px !important; background-color: {{detalle.color}}">
+                                                    		<strong>
+                                                            	{{detalle.estado}}
+                                                        	</strong>
+                                                    	</span>
+                                                    </a>
                                                 </td>
                                             </tr>
                                             <tr

@@ -397,7 +397,7 @@ angular.module(appTeclo).controller('expedienteController',
 			//imagenes nivel encuesta
 			$scope.paramConfSav.idEncuesta=optionSelected.idEncuesta;
 			$scope.paramConfiguracion.maxNuImage=optionSelected.nuMaxImg;
-			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.ENCUESTA,"idOdsEncuesta",optionSelected.idEncuesta,listImagesVOBackup);
+			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.ENCUESTA,"idEncuesta",optionSelected.idEncuesta,listImagesVOBackup);
 		}
 		
 		$scope.updateViewDirective($scope.listImages);// metodo se encuntra en la directoa update-image
@@ -422,7 +422,7 @@ angular.module(appTeclo).controller('expedienteController',
 			//imagenes nivel encuesta
 			$scope.paramConfSav.idPregunta=null;
 			$scope.paramConfiguracion.maxNuImage=$scope.optionSelected.optionEncuesta.nuMaxImg;
-			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.ENCUESTA,"idOdsEncuesta",$scope.optionSelected.optionEncuesta.idEncuesta,listImagesVOBackup);
+			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.ENCUESTA,"idEncuesta",$scope.optionSelected.optionEncuesta.idEncuesta,listImagesVOBackup);
 		}else{
 			//imagenes nivel pregunta
 			$scope.paramConfSav.idPregunta=optionSelected.idPregunta;

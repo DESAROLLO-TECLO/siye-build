@@ -293,22 +293,24 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 						   
 						   if($scope.orden.transportista == undefined)
 							   $scope.orden.transportista=new Array();
-						  let i;
-						  let size=$scope.orden.transportista.length;
-						  for(i=0; i<size; i++){
-							  let itemSe=$scope.orden.transportista[i];
-							  if(item.idConductor == itemSe.idConductor){
-								  $scope.orden.transportista[i]=item;
-							  }
-						  }
-						   
+						  
 						   $scope.orden.transportista.push(item);
-						   
-						   $('#transportista').selectpicker('val', $scope.orden.transportista);
-						   $('#transportista').selectpicker('render');
-						   $('#transportista').selectpicker('refresh');
+					   }
+					   let i;
+					   let size=$scope.orden.transportista.length;
+					   for(i=0; i<size; i++){
+						   let itemSe=$scope.orden.transportista[i];
+						   if(itemSe.idConductor == item.idConductor){
+							   $scope.orden.transportista[i]=item;
+							   break;
+						   }
 					   }
 				   });
+				   
+				   $('#transportista').selectpicker('val', $scope.orden.transportista);
+				   $('#transportista').selectpicker('render');
+				   $('#transportista').selectpicker('refresh');
+				   
  				  }
 			   }); 
 		 });
