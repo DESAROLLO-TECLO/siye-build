@@ -97,7 +97,7 @@
 
         "Login": {
             "nombreAplicacion": "Sistema de Inspección y Evaluaciones",
-            "nombreCliente": "SSC CDMX",
+            "nombreCliente": "SEMOVI",
             "usuario": {
                 "label": "Usuario",
                 "placeholder": "Usuario",
