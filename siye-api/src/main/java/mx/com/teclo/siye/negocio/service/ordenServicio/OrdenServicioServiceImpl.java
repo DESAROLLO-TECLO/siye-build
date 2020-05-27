@@ -276,7 +276,7 @@ public class OrdenServicioServiceImpl implements OrdenServicioService{
 		osDTO.setFhAtencionFin(osVO.getFhAtencionFin());
 		osDTO.setFhAtencionIni(osVO.getFhAtencionIni());
 		osDTO.setIdOrigenOds(1L);
-	
+		
 		if (osVO.getIncidencia() != null) {
 				OdsIncidenciaDTO oiDTO = new OdsIncidenciaDTO();
 				IncidenciaDTO iDTO = new IncidenciaDTO();

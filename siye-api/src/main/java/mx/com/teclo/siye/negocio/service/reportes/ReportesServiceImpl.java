@@ -170,7 +170,7 @@ public class ReportesServiceImpl implements ReportesService {
 		
 		ByteArrayInputStream bimg;
 		int contador=0;
-		
+		float media = 0;
 		e.setNombre("Orden de Servicio");
 		e.setFhInicio(detalle.getFechaInicio() != null ? rutinasTiempo.getStringDateFromFormta("dd/MM/yyyy HH:mm:ss", detalle.getFechaInicio()) : "Sin Fecha");
 		e.setFhFin(detalle.getFechaFin() != null  ? rutinasTiempo.getStringDateFromFormta("dd/MM/yyyy HH:mm:ss", detalle.getFechaFin()) : "Sin Fecha");
@@ -185,7 +185,9 @@ public class ReportesServiceImpl implements ReportesService {
 				imgEv.setFilename(i.getNbExpedienteODS());
 				bimg = new ByteArrayInputStream(i.getLbExpedienteODS()); 	  
 				imgEv.setFileBase64toBlob(bimg);
-				if(contador <= Math.round(detalle.getInfoEvidencia().getImagenes().size()/2))
+				media = detalle.getInfoEvidencia().getImagenes().size();
+				media = media/2;
+				if(contador <= Math.ceil(media))
 					listImagenes.add(imgEv);
 				else
 					listImagenes2.add(imgEv);
@@ -217,7 +219,9 @@ public class ReportesServiceImpl implements ReportesService {
 					imgEv.setFilename(i.getNbExpedienteODS());
 					bimg = new ByteArrayInputStream(i.getLbExpedienteODS()); 	  
 					imgEv.setFileBase64toBlob(bimg);
-					if(contador <= Math.round(p.getInfoEvidencia().getImagenes().size()/2))
+					media = p.getInfoEvidencia().getImagenes().size();
+					media = media/2;
+					if(contador <= Math.ceil(media))
 						listImagenes.add(imgEv);
 					else
 						listImagenes2.add(imgEv);
@@ -248,7 +252,9 @@ public class ReportesServiceImpl implements ReportesService {
 						imgEv.setFilename(i.getNbExpedienteODS());
 						bimg = new ByteArrayInputStream(i.getLbExpedienteODS()); 	  
 						imgEv.setFileBase64toBlob(bimg);
-						if(contador<= Math.round(enc.getInfoEvidencia().getImagenes().size()/2))
+						media = enc.getInfoEvidencia().getImagenes().size();
+						media = media/2;
+						if(contador<= Math.ceil(media))
 							listImagenes.add(imgEv);
 						else
 							listImagenes2.add(imgEv);
@@ -279,7 +285,9 @@ public class ReportesServiceImpl implements ReportesService {
 							imgEv.setFilename(i.getNbExpedienteODS());
 							bimg = new ByteArrayInputStream(i.getLbExpedienteODS()); 	  
 							imgEv.setFileBase64toBlob(bimg);
-							if(contador<=Math.round(preg.getInfoEvidencia().getImagenes().size()/2))
+							media = preg.getInfoEvidencia().getImagenes().size();
+							media = media/2;
+							if(contador<=Math.ceil(media))
 								listImagenes.add(imgEv);
 							else
 								listImagenes2.add(imgEv);

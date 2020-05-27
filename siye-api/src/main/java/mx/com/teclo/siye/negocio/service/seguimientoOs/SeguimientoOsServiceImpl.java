@@ -291,7 +291,6 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 	@Override
 	@Transactional
 	public String hacerCorteDiario(String fecha, Long idUsuario) throws BusinessException {
-		Long ST_CANCELAR_OS = 1L;
 		Date fechaModificacion = new Date();
 		// Coonsultar Centro de Instalacion
 		List<Long> idCentroInstalacion = gerenteSupervisorDAO.getIdCentroInstalacion(idUsuario);
@@ -302,7 +301,7 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 
 			if (!listaOrden.isEmpty()) {
 				// Consulta de el nuevo status para las OS que se cancelaran
-				StSeguimientoDTO seguimientoDTO = stSeguimientoDAO.findOne(ST_CANCELAR_OS);
+				StSeguimientoDTO seguimientoDTO = stSeguimientoDAO.obtenerStSeguimientoByCodigo("FIN_INCOPLETO", "ID_ST_SEGUIMIENTO", "TIE026D_IE_ORDEN_SERVICIOS");
 				if (seguimientoDTO != null) {
 					for (OrdenServicioDTO os : listaOrden) {
 						os.setFhModificacion(fechaModificacion);
