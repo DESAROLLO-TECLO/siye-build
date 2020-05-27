@@ -176,12 +176,12 @@
         },
         "resultadosGral":{
             "titulo":{
-                "moduloAtencion":"Módulo de Atención",
-                "EnCurso":"En Curso",
-                "completa":"Completadas",
-                "programada":"Programadas",
-                "noProgramada":"No Programadas",
-                "incidencia":"Incidencias"
+                "moduloAtencion":"MÓDULO DE ATENCIóN",
+                "EnCurso":"EN CURSO",
+                "completa":"COMPLETADAS",
+                "programada":"PROGRAMADAS",
+                "noProgramada":"NO PROGRAMADAS",
+                "incidencia":"INCIDENCIAS"
             }
         },
         "detalleOs":{
