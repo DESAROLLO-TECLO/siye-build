@@ -1,5 +1,5 @@
 angular.module(appTeclo).controller('editarOrdenServicioController', function($scope, showAlert,
-    growl, consultaServicioService, $timeout, $location, $routeParams,catalogoGenericoService) {
+    growl, consultaServicioService, $timeout, $location, $routeParams,catalogoGenericoService,$injector) {
     $scope.banderas = {
         modal: false
     };
@@ -50,6 +50,9 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
                         angular.copy(data, $scope.general.voModal);
                         angular.copy(data, $scope.general.voModalBackup);
                         growl.success('Orden de servicio actualizado correctamente', { ttl: 4000 });
+                        getTransportistas();
+                        if($scope.general.voModal.vehiculo != undefined && $scope.general.voModal.vehiculo.listConductores != undefined && $scope.general.voModal.vehiculo.listConductores.length > 0)
+            				        $scope.listTransportista=getOptions($scope.listTransportista);
                     }
                 }).error(function(data) {
                     growl.error('Ocurrió un error al tratar de actualizar datos del servicio', { ttl: 4000 });
@@ -69,6 +72,7 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
             consultaServicioService.buscaIncidencia(cdIncidencia).success(function(data) {
                     angular.copy(data, $scope.general.voIncidencia);
                     $scope.banderas.formEditar = true;
+                    getTransportistas();
             }).error(function(data) {
                 if (data != null && data.status != null) {
                     growl.info(data.message, { ttl: 4000 });
@@ -187,24 +191,26 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
 				   angular.forEach($scope.listTransportista,function(item,index){
 					   if (item.idConductor==datos.newObject.idPersona) {
 						   
-						   if($scope.orden.transportista == undefined)
-							   $scope.orden.transportista=new Array();
-						  let i;
-						  let size=$scope.orden.transportista.length;
-						  for(i=0; i<size; i++){
-							  let itemSe=$scope.orden.transportista[i];
-							  if(item.idConductor == itemSe.idConductor){
-								  $scope.orden.transportista[i]=item;
-							  }
-						  }
+						   if($scope.general.voModal.conductores == undefined)
+							   $scope.general.voModal.conductores=new Array();
 						   
-						   $scope.orden.transportista.push(item);
-						   
-						   $('#transportista').selectpicker('val', $scope.orden.transportista);
-						   $('#transportista').selectpicker('render');
-						   $('#transportista').selectpicker('refresh');
+						   $scope.general.voModal.conductores.push(item);
+					   }
+					   let i;
+					   let size=$scope.general.voModal.conductores.length;
+					   for(i=0; i<size; i++){
+						   let itemSe=$scope.general.voModal.conductores[i];
+						   if(itemSe.idConductor == item.idConductor){
+							   $scope.general.voModal.conductores[i]=item;
+							   break;
+						   }
 					   }
 				   });
+				   
+				   $('#transportista').selectpicker('val', $scope.general.voModal.conductores);
+				   $('#transportista').selectpicker('render');
+				   $('#transportista').selectpicker('refresh');
+				   
  				  }
 			   }); 
 		 });
@@ -240,6 +246,7 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
 			}
 			 $timeout(function() {
 				 $('#transportista').selectpicker();
+				 $('#transportista').selectpicker('render');
 				 $('#transportista').selectpicker('refresh');
 			  }, 100);
 		}

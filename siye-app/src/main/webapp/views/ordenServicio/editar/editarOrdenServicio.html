@@ -357,11 +357,12 @@
 											data-actions-box="true"
 											data-selected-text-format="count > 1"
 											data-max-options="5"
+											data-live-search="true"
 											name="transportista" id="transportista" 
 											ng-required="general.voModal.vehiculo.listConductores == undefined || general.voModal.vehiculo.listConductores.length == 0"
 											ng-model="general.voModal.conductores" 
 											ng-options="x as x.nbConductor+' '+x.nbApepatConductor+' '+x.nbApematConductor for x in listTransportista"> 
-										</select> 
+										</select>
 										<div class="input-group-btn">
 											<label id="btnTransportista" class="btn btn-primary"
 												ng-click="openModalTransportista()">
