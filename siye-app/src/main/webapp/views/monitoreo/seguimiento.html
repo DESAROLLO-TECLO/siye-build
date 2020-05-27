@@ -270,11 +270,13 @@
                                                     </button>
                                                 </td>
                                                 <td class="col-md-2 col-sm-2 col-xs-2 text-center" ng-click="verDetalleStatus(detalle)">
-                                                    <span style="background-color: {{detalle.color}}">
-                                                        <strong>
-                                                            {{detalle.estado}}
-                                                        </strong>
-                                                    </span>
+                                                    <a>
+                                                    	<span class="badge" style="font-size:12px !important; background-color: {{detalle.color}}">
+                                                    		<strong>
+                                                            	{{detalle.estado}}
+                                                        	</strong>
+                                                    	</span>
+                                                    </a>
                                                 </td>
                                             </tr>
                                             <tr
