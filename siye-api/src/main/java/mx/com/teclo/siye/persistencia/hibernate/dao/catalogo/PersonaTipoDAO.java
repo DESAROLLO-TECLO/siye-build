@@ -7,7 +7,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.PersonaTipoDTO;
 
 public interface PersonaTipoDAO extends BaseDao<PersonaTipoDTO>{
 	
-	public List<PersonaTipoDTO> getTecnicos(Integer idTipoPersona);
+	public List<PersonaTipoDTO> getTecnicos(Long idTipoPersona);
 	
 	public List<PersonaTipoDTO> getTecnicoByCd(String cdPersona);
 

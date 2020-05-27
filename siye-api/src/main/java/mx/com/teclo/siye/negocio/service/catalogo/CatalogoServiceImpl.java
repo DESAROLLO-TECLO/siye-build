@@ -194,7 +194,7 @@ public class CatalogoServiceImpl implements CatalogoService{
 	
 	@Transactional
 	@Override
-	public List<PersonaVO> getTecnicos(Integer idTipoPersona) throws NotFoundException {
+	public List<PersonaVO> getTecnicos(Long idTipoPersona) throws NotFoundException {
 		List<PersonaTipoDTO> listaPersonaTipoDTO = personaTipoDAO.getTecnicos(idTipoPersona);
 		if(listaPersonaTipoDTO.isEmpty())
 			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
@@ -330,7 +330,7 @@ public class CatalogoServiceImpl implements CatalogoService{
 
 	@Override
 	@Transactional
-	public PersonaGenericaVO buscarPersona(String cdPersona, Integer idTipoPersona) throws NotFoundException {
+	public PersonaGenericaVO buscarPersona(String cdPersona, Long idTipoPersona) throws NotFoundException {
 		PersonaGenericaVO personaVO=new PersonaGenericaVO();
 		List<PersonaTipoDTO> listpersonaTipoDTO =personaTipoDAO.getTecnicoByCd(cdPersona);
 		PersonaTipoDTO personaTipoDTO=new PersonaTipoDTO();
@@ -338,7 +338,7 @@ public class CatalogoServiceImpl implements CatalogoService{
 		if(listpersonaTipoDTO.isEmpty())
 			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
 			for (PersonaTipoDTO personaTipoDTO2 : listpersonaTipoDTO) {
-			if (personaTipoDTO2.getTipoPersona().getIdTipoPersona()==idTipoPersona){ 
+			if (personaTipoDTO2.getTipoPersona().getIdTipoPersona().intValue()==idTipoPersona.intValue()){ 
 				existe=true;
 				}
 			}
@@ -354,7 +354,7 @@ public class CatalogoServiceImpl implements CatalogoService{
 
 	@Override
 	@Transactional
-	public String generaFolioEmpl(Integer idPersona) throws NotFoundException {
+	public String generaFolioEmpl(Long idPersona) throws NotFoundException {
 		Formatter fmt = new Formatter();
 		String folioEmpleado="";
 		ConfiguracionDTO conf =  configuracionDAO.configuracion("CODIGO_PERSONA");

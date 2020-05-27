@@ -40,7 +40,7 @@ public interface CatalogoService {
 	 */
 	public List<ConductorVO> getTransportistasSinVehiculo() throws NotFoundException;
 	
-	public List<PersonaVO> getTecnicos(Integer idTipoPersona) throws NotFoundException;
+	public List<PersonaVO> getTecnicos(Long idTipoPersona) throws NotFoundException;
 	
 	public CatalogosOrdenProcesoVO getCatalogosOrdenProceso() throws NotFoundException;
 
@@ -69,7 +69,7 @@ public interface CatalogoService {
 	 * @author Manuel Dirsio
 	 * @return PersonaVO
 	 */
-	public PersonaGenericaVO buscarPersona(String cdPersona,Integer idTipoPersona)throws NotFoundException;
+	public PersonaGenericaVO buscarPersona(String cdPersona,Long idTipoPersona)throws NotFoundException;
 
 
 	/**
@@ -77,7 +77,7 @@ public interface CatalogoService {
 	 * @author Manuel Dirsio
 	 * @return String
 	 */
-	public String generaFolioEmpl(Integer idPersona) throws NotFoundException;
+	public String generaFolioEmpl(Long idPersona) throws NotFoundException;
 	
 	//ParametrosFolioDTO getParametroById(Long idParametro);
 

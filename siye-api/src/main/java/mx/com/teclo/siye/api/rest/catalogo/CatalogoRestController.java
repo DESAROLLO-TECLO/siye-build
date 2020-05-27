@@ -76,7 +76,7 @@ public class CatalogoRestController {
 	
 	@RequestMapping(value="/getTecnicos", method = RequestMethod.GET)
 	public ResponseEntity<List<PersonaVO>> getTecnicos(
-		@RequestParam("idTipoPersona") Integer idTipoPersona
+		@RequestParam("idTipoPersona") Long idTipoPersona
 	) throws NotFoundException{
 		List<PersonaVO> listaInstaladorVO = catalogoService.getTecnicos(idTipoPersona);
 		return new ResponseEntity<List<PersonaVO>>(listaInstaladorVO, HttpStatus.OK);
@@ -133,7 +133,7 @@ public class CatalogoRestController {
 	}
 	
 	@RequestMapping(value="/buscarPersona", method = RequestMethod.GET)
-	public ResponseEntity<PersonaGenericaVO> buscarPersona(@RequestParam("cdPersona") String cdPersona,@RequestParam("idTipoPersona") Integer idTipoPersona) throws NotFoundException {
+	public ResponseEntity<PersonaGenericaVO> buscarPersona(@RequestParam("cdPersona") String cdPersona,@RequestParam("idTipoPersona") Long idTipoPersona) throws NotFoundException {
 		PersonaGenericaVO personaVO = catalogoService.buscarPersona(cdPersona,idTipoPersona);
 		if(personaVO == null)
 			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());

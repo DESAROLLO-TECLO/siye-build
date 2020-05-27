@@ -10,7 +10,7 @@ public class TipoPersonaVO implements Serializable {
 	 */
 	private static final long serialVersionUID = 2468763049156427121L;
 	
-	private Integer idTipoPersona;
+	private Long idTipoPersona;
 	private String cdTipoPersona;
 	private String nbTipoPersona;
 	private String txTipoPersona;
@@ -21,10 +21,10 @@ public class TipoPersonaVO implements Serializable {
 	private Long idUsrModifica;
 	private Date fhModificacion;
 	
-	public Integer getIdTipoPersona() {
+	public Long getIdTipoPersona() {
 		return idTipoPersona;
 	}
-	public void setIdTipoPersona(Integer idTipoPersona) {
+	public void setIdTipoPersona(Long idTipoPersona) {
 		this.idTipoPersona = idTipoPersona;
 	}
 	public String getCdTipoPersona() {

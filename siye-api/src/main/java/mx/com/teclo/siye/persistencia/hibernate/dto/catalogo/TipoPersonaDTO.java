@@ -42,7 +42,7 @@ public class TipoPersonaDTO implements Serializable {
 	@SequenceGenerator(name = "sqie060cIETipoPers", sequenceName="SQIE060C_IE_TIPO_PERS", allocationSize=1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sqie060cIETipoPers")
 	@Column(name = "ID_TIPO_PERSONA", unique = true, nullable = false, precision = 6, scale = 0)
-	private Integer idTipoPersona;
+	private Long idTipoPersona;
 	
 	@Column(name = "CD_TIPO_PERSONA", nullable = false, length = 50)
 	private String cdTipoPersona;
@@ -71,11 +71,11 @@ public class TipoPersonaDTO implements Serializable {
 	@Column(name = "FH_MODIFICACION", nullable = false)
 	private Date fhModificacion;
 
-	public Integer getIdTipoPersona() {
+	public Long getIdTipoPersona() {
 		return idTipoPersona;
 	}
 
-	public void setIdTipoPersona(Integer idTipoPersona) {
+	public void setIdTipoPersona(Long idTipoPersona) {
 		this.idTipoPersona = idTipoPersona;
 	}
 
