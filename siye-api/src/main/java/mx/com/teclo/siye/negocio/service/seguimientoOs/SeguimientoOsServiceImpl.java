@@ -13,16 +13,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
+import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
 import mx.com.teclo.siye.persistencia.hibernate.dao.expedienteImg.ExpedienteImgDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.OdsIncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.OrdenServicioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanProcesoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.procesoencuesta.ProcesoEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.OdsIncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
+import mx.com.teclo.siye.persistencia.vo.incidencia.IncidencVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleImagenesOS;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleIncidenciaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
@@ -66,6 +70,9 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 
 	@Autowired
 	private StSeguimientoDAO stSeguimientoDAO;
+	
+	@Autowired
+	private OdsIncidenciaDAO odsIncidenciaDAO;
 
 	private final String ENCURSO = "EN_CURSO", COMPLETA = "COMPLETADAS", PROGRAMADA = "PROGRAMADA",
 			NOPROGRAMADA = "NO_PROGRAMADA", INCIDENCIA = "INCIDENCIAS";
@@ -329,6 +336,9 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 	public DetalleImagenesOS getDetalleImgOS(Long idOrdenServicio, Long valor, String nivel, String clase) {
 		DetalleImagenesOS respuesta = new DetalleImagenesOS();
 		OrdenServicioDTO OrdenServicioDTO = ordenServicioDAO.findOne(idOrdenServicio);
+		List<OdsIncidenciaDTO> listInsidenciasDTO=null;
+		List<IncidencVO> listInsidencias=null;
+		IncidencVO incidencia=null;
 		if (OrdenServicioDTO != null) {
 			respuesta.setIdOrdenServicio(OrdenServicioDTO.getIdOrdenServicio());
 			respuesta.setCdOrdenServicio(OrdenServicioDTO.getCdOrdenServicio());
@@ -349,10 +359,27 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 
 		case "encuesta":
 			respuesta.setNivelEncuesta(getImagenes(idOrdenServicio, valor, nivel));
+			//se obtienen las incidencias por encuesta
+			listInsidenciasDTO=odsIncidenciaDAO.getInsidencisByIdOrdenAndIdEncuesta(idOrdenServicio, valor);
+			listInsidencias=new ArrayList<>();
+			for(OdsIncidenciaDTO osIncDTO: listInsidenciasDTO){
+				incidencia= ResponseConverter.copiarPropiedadesFull(osIncDTO.getIdIncidencia(), IncidencVO.class);
+				listInsidencias.add(incidencia);
+			}
+			respuesta.setListIncidenciasNivel(listInsidencias);
 			break;
 
 		case "ordenservicio":
 			respuesta.setNivelOrdenServicio(getImagenes(idOrdenServicio, valor, nivel));
+			//se obtienen las incidencias por encuesta
+			listInsidenciasDTO=odsIncidenciaDAO.getInsidencisByIdOrden(idOrdenServicio);
+			listInsidencias=new ArrayList<>();
+			incidencia=null;
+			for(OdsIncidenciaDTO osIncDTO: listInsidenciasDTO){
+				incidencia= ResponseConverter.copiarPropiedadesFull(osIncDTO.getIdIncidencia(), IncidencVO.class);
+				listInsidencias.add(incidencia);
+			}
+			respuesta.setListIncidenciasNivel(listInsidencias);
 			break;
 		}
 

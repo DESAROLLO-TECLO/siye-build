@@ -3,6 +3,8 @@ package mx.com.teclo.siye.persistencia.vo.seguimientoOs;
 import java.util.List;
 
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
+import mx.com.teclo.siye.persistencia.vo.incidencia.IncidencVO;
+import mx.com.teclo.siye.persistencia.vo.incidencia.IncidenciaVO;
 
 public class DetalleImagenesOS {
 	
@@ -12,7 +14,7 @@ public class DetalleImagenesOS {
 	private List<ImagenVO> nivelOrdenServicio;
 	private List<PreguntasDetalleVO> nivelPreguntas;
 	private List<ImagenVO> nivelEncuesta;
-	
+	private List<IncidencVO> listIncidenciasNivel;
 	
 	/**
 	 * @return the idOrdenServicio
@@ -85,6 +87,18 @@ public class DetalleImagenesOS {
 	 */
 	public void setNivelOrdenServicio(List<ImagenVO> nivelOrdenServicio) {
 		this.nivelOrdenServicio = nivelOrdenServicio;
+	}
+	/**
+	 * @return the listIncidenciasNivel
+	 */
+	public List<IncidencVO> getListIncidenciasNivel() {
+		return listIncidenciasNivel;
+	}
+	/**
+	 * @param listIncidenciasNivel the listIncidenciasNivel to set
+	 */
+	public void setListIncidenciasNivel(List<IncidencVO> listIncidenciasNivel) {
+		this.listIncidenciasNivel = listIncidenciasNivel;
 	}
 
 }

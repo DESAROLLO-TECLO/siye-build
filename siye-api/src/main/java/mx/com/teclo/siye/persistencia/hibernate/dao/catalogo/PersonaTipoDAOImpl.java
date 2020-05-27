@@ -15,7 +15,7 @@ public class PersonaTipoDAOImpl extends BaseDaoHibernate<PersonaTipoDTO> impleme
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<PersonaTipoDTO> getTecnicos(Integer idTipoPersona) {
+	public List<PersonaTipoDTO> getTecnicos(Long idTipoPersona) {
 		Criteria criteria = getCurrentSession().createCriteria(PersonaTipoDTO.class);
 		criteria.createAlias("tipoPersona", "tipoPersona");
 		criteria.createAlias("persona", "persona");
