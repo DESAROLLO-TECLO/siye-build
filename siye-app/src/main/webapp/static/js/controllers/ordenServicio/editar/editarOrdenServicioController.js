@@ -216,7 +216,7 @@ angular.module(appTeclo).controller('editarOrdenServicioController', function($s
 		 });
     };
     
-    async function getTransportistas(){
+    function getTransportistas(){
 		catalogoGenericoService.getTransportistas().success(function(response){
         	/*Se obtiene la lista y se iguala  ala variable mandada desde html*/
         	$scope.listTransportista=getOptions(response);

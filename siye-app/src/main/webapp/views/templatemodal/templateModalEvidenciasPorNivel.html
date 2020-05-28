@@ -105,10 +105,16 @@
                                     <div class="form-group">
                                         <label>{{'MONITOREO.modal.detalle.descripcion' | translate}}</label>
                                         <div class="col-xs-12 col-md-12">
-                                            <textarea id="infra_motivo" class="form-control" rows="7"
-                                                style="resize: none;" ng-model="propsIncidencia.txIncidencia"
-                                                disabled="true">
-                                            </textarea>
+                                        	<fieldset class="fieldsetDescripcionModalIncidencias">
+                                        		<div ng-if="infoOS.listIncidenciasNivel == undefined || infoOS.listIncidenciasNivel.length ==0">
+                                        			<h4>No hay incidencias</h4>
+                                        		</div>
+                                        		<div ng-if="infoOS.listIncidenciasNivel != undefined && infoOS.listIncidenciasNivel.length > 0">
+                                        			<div ng-repeat="incidencia in infoOS.listIncidenciasNivel" class="row">
+                                        				<div class="col-md-12">{{incidencia.txIncidencia}}</div>
+                                        			</div>
+                                        		</div>
+                                        	</fieldset>
                                         </div>
                                     </div>
                                 </div>
@@ -192,10 +198,16 @@
                                     <div class="form-group">
                                         <label>{{'MONITOREO.modal.detalle.descripcion' | translate}}</label>
                                         <div class="col-xs-12 col-md-12">
-                                            <textarea id="infra_motivo" class="form-control" rows="7"
-                                                style="resize: none;" ng-model="propsIncidencia.txIncidencia"
-                                                disabled="true">
-                                            </textarea>
+                                            <fieldset class="fieldsetDescripcionModalIncidencias">
+												<div ng-if="infoOS.listIncidenciasNivel == undefined || infoOS.listIncidenciasNivel.length ==0">
+                                        			<h4>No hay incidencias</h4>
+                                        		</div>
+                                        		<div ng-if="infoOS.listIncidenciasNivel != undefined && infoOS.listIncidenciasNivel.length > 0">
+                                        			<div ng-repeat="incidencia in infoOS.listIncidenciasNivel" class="row">
+                                        				<div class="col-md-12">{{incidencia.txIncidencia}}</div>
+                                        			</div>
+                                        		</div>
+                                        	</fieldset>
                                         </div>
                                     </div>
                                 </div>
@@ -259,10 +271,16 @@
                                     <div class="form-group">
                                         <label>{{'MONITOREO.modal.detalle.descripcion' | translate}}</label>
                                         <div class="col-xs-12 col-md-12">
-                                            <textarea id="infra_motivo" class="form-control" rows="7"
-                                                style="resize: none;" ng-model="propsIncidencia.txIncidencia"
-                                                disabled="true">
-                                            </textarea>
+                                            <fieldset class="fieldsetDescripcionModalIncidencias">
+												<div ng-if="infoOS.listIncidenciasNivel == undefined || infoOS.listIncidenciasNivel.length ==0">
+                                        			<h4>No hay incidencias</h4>
+                                        		</div>
+                                        		<div ng-if="infoOS.listIncidenciasNivel != undefined && infoOS.listIncidenciasNivel.length > 0">
+                                        			<div ng-repeat="incidencia in infoOS.listIncidenciasNivel" class="row">
+                                        				<div class="col-md-12">{{incidencia.txIncidencia}}</div>
+                                        			</div>
+                                        		</div>
+                                        	</fieldset>
                                         </div>
                                     </div>
                                 </div>

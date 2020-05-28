@@ -107,7 +107,7 @@
 												<span>Encuesta: {{ordenInfo.encuesta.nbEncuesta}}</span>
 											</div>
 											<div  ng-show="ordenInfo.proceso==null || ordenInfo.encuesta==null">
-												<span>No Ha iniciado la Operación</span></br>
+												<span>No ha iniciado la operación</span></br>
 											</div>
 										</div>
 									</div>
@@ -501,7 +501,7 @@
 															<div class="col-md-8 col-sm-12 container">
 																<div class="box box-danger">
 																	<div uib-carousel active="0">
-																		<div uib-slide index="0" ng-if="evidencia.infoEvidencia.tieneImagen == 0 ">
+																		<div uib-slide index="0" ng-if="evidenciaMostrar.listImg == undefined || evidenciaMostrar.listImg.length == 0 ">
 																			<div class="box-title">
 <!-- 																				<h4 class="box-title">{{img.nombre}}</h4> -->
 																			</div>
