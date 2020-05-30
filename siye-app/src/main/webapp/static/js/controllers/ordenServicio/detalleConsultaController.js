@@ -185,7 +185,7 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 	};
 	
 	$scope.confirmaImagenesReporte = function() {
-        showAlert.confirmacion("¿Incluir imagenes en el reporte?",
+        showAlert.confirmacion("¿Incluir imágenes en el reporte?",
             //Aceptar
             function() {
         	descargarDetalleOS(true);
