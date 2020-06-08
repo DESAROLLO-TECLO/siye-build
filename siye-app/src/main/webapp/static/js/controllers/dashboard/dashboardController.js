@@ -84,7 +84,7 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
 
             case 'General':
                 $scope.titulos = {
-                    general: "Grafica General"
+                    general: "Gráfica General"
                 }
                 $scope.generalShow = true;
 
@@ -178,7 +178,7 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
             case 'Incidencias':
                 $scope.incidenciasShow = true;
                 $scope.titulos = {
-                    pastel: 'Incidencias por modulo',
+                    pastel: 'Incidencias por módulo',
                     barras: 'Suspensión de Actividades Durante el Periodo',
                     barrasHorizontal: 'Top 10 de Actividades más Suspendidas',
                     barras3D_2: 'Incidencias Recurrentes',
@@ -465,13 +465,13 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
     // incidencias
 
     $scope.dataGraphPastel1IN = [{
-        "title": "Modulo 1",
+        "title": "Módulo 1",
         "value": 46385
     }, {
-        "title": "Modulo 2",
+        "title": "Módulo 2",
         "value": 11345
     }, {
-        "title": "Modulo 3",
+        "title": "Módulo 3",
         "value": 9863
     }];
 
@@ -538,17 +538,17 @@ angular.module(appTeclo).controller("dashboardController", function($scope, $fil
 // Modulos
 
 $scope.dataPruebasModulo = [{
-    "year": "Modulo 1",
+    "year": "Módulo 1",
     "income": 10,
     "expenses": 10000
 },
 {
-    "year": "Modulo 2",
+    "year": "Módulo 2",
     "income": 8,
     "expenses": 9000
 },
 {
-    "year": "Modulo 3",
+    "year": "Módulo 3",
     "income": 13,
     "expenses": 8000
 }
@@ -722,13 +722,13 @@ $scope.dataPruebasModulo = [{
 
 
    $scope.generalData = [{
-        "date": "Modulo  1",
+        "date": "Módulo  1",
         "market1": 71,
         "market2": 75,
         "sales1": 75,
         "sales2": 78
       }, {
-        "date": "Modulo 2",
+        "date": "Módulo 2",
         "market1": 74,
         "market2": 78,
         "sales1": 84,
@@ -876,15 +876,15 @@ $scope.dataPruebasModulo = [{
         "useGraphSettings": true
     },
     "dataProvider": [{
-        "year": "Modulo 1",
-        "en curso": 1,
+        "year": "Módulo 1",
+        "En curso": 1,
         "Nuevo": 5,
         "Finalizadas": 3,
         "Finalizadas con Incidencia": 6,
         "Finalizadas Incompletas": 8
     }, {
-        "year": "Modulo 2",
-        "en curso": 1,
+        "year": "Módulo 2",
+        "En curso": 1,
         "Nuevo": 2,
         "Finalizadas": 6,
         "Finalizadas con Incidencia": 6,
@@ -906,8 +906,8 @@ $scope.dataPruebasModulo = [{
         "balloonText": "[[category]]: [[value]]",
         "bullet": "round",
         "hidden": false,
-        "title": "en curso",
-        "valueField": "en curso",
+        "title": "En curso",
+        "valueField": "En curso",
     "fillAlphas": 0
     }, {
         "balloonText": "[[category]]: [[value]]",
@@ -1009,7 +1009,7 @@ $scope.dataPruebasModulo = [{
               "lineThickness": 2,
               "lineColor": "#20acd4",
               "type": "smoothedLine",
-              "title": "En Curso",
+              "title": "En curso",
               "useLineColorForBulletBorder": true,
               "valueField": "market1",
               "balloonText": "[[title]]<br/><b style='font-size: 130%'>[[value]]</b>"

@@ -126,7 +126,7 @@ angular.module(appTeclo).controller('consultaServicioController', function($scop
             elemento.push(list[i].centroInstalacion.nbCentroInstalacion);
             elemento.push(list[i].fhCita);
             elemento.push(list[i].plan.nbPlan);
-            elemento.push(list[i].proceso.nbProceso == null ? "SIN PROCESO" : list[i].proceso.nbProceso);
+            elemento.push((list[i].proceso == null || list[i].proceso.nbProceso == null) ? "SIN PROCESO" : list[i].proceso.nbProceso);
             array.push(elemento);
         }
         return array;

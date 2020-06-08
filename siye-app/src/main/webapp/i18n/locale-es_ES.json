@@ -97,7 +97,7 @@
 
         "Login": {
             "nombreAplicacion": "Sistema de Inspección y Evaluaciones",
-            "nombreCliente": "SSC CDMX",
+            "nombreCliente": "SEMOVI",
             "usuario": {
                 "label": "Usuario",
                 "placeholder": "Usuario",
@@ -176,12 +176,12 @@
         },
         "resultadosGral":{
             "titulo":{
-                "moduloAtencion":"Modulo de Atención",
-                "EnCurso":"En Curso",
-                "completa":"Completadas",
-                "programada":"Programadas",
-                "noProgramada":"No Programadas",
-                "incidencia":"Incidencias"
+                "moduloAtencion":"MÓDULO DE ATENCIóN",
+                "EnCurso":"EN CURSO",
+                "completa":"COMPLETADAS",
+                "programada":"PROGRAMADAS",
+                "noProgramada":"NO PROGRAMADAS",
+                "incidencia":"INCIDENCIAS"
             }
         },
         "detalleOs":{
@@ -222,7 +222,7 @@
         },
         "pestanas":{
             "nodos":"Orden Servicio",
-            "linea":"Linea de Tiempo"
+            "linea":"Línea de Tiempo"
         },
         "modal":{
             "detalle":{

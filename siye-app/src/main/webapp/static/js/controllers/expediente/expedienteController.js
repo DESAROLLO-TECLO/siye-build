@@ -4,7 +4,7 @@ angular.module(appTeclo).config(function (LightboxProvider) {
 });
 
 angular.module(appTeclo).controller('expedienteController',
-    function($scope,$timeout,$filter,showAlert,growl,expedienteService,Lightbox){
+    function($scope,$timeout,$filter,showAlert,growl,expedienteService,Lightbox,consultaGeneralService){
 
 	$scope.isViewMobile=false;
 	
@@ -15,6 +15,13 @@ angular.module(appTeclo).controller('expedienteController',
 			ENCUESTA:"ENC",
 			PREGUNTA:"PREG"
 	};
+	
+	const mensajes={
+		CONFIMR_IMAGES:'Existen imagenes sin guardar las cuales se descartaran, ¿Desea continuar?',
+		SELECCIONE_OPTION:'Seleccione una opción',
+		NOT_FOUND_IMAGES:'No se encontraron imagenes para la orden de servicio'
+	};
+	
 	//Variables de TipoBusqueda
 	$scope.busqueda=new Object({
 		tpBusqueda:undefined,
@@ -22,7 +29,7 @@ angular.module(appTeclo).controller('expedienteController',
 		catalogo:new Array(
 	            { idTipoBusqueda: "1", cdTipoBusqueda: "PLACA", nbTipoBusqueda: "PLACA", txTipoBusqueda: "PLACA" },
 	            { idTipoBusqueda: "2", cdTipoBusqueda: "ORDEN_SERVICIO", nbTipoBusqueda: "ORDEN DE SERVICIO", txTipoBusqueda: "ORDEN DE SERVICIO" },
-	            { idTipoBusqueda: "3", cdTipoBusqueda: "VIN", nbTipoBusqueda: "VIN", txTipoBusqueda: "VIN" }		
+	            { idTipoBusqueda: "3", cdTipoBusqueda: "VIN", nbTipoBusqueda: "VIN", txTipoBusqueda: "VIN"}
 		)
 	});
 	var optionAll={cdClasif:"TD",nbClasif:"TODOS"};
@@ -38,9 +45,15 @@ angular.module(appTeclo).controller('expedienteController',
 	
 	$scope.view =new Object({
 			rowsPerPage:5,
-			filter:undefined
+			filter:undefined,
+			order: '',
+			reverse: false,
+			showTableResumeOrden:false,
+			showTableImagesByOrden:false
+			
 	});
 	
+	$scope.listOrden=new Array();
 	$scope.ordenServicio=null;
 	var listImagesVOBackup=new Array();
 	
@@ -48,7 +61,12 @@ angular.module(appTeclo).controller('expedienteController',
 	const MENSAJE_OPTION='Seleccione una opción';
 	$scope.listImages=new Array();
 	$scope.nuMaxImg=5;
-	var optionBacupSelected=null;
+	
+	$scope.optionSelectedOld=new Object({
+		optionProcess:null,
+		optionEncuesta:null,
+		optionPregunta:null
+	});
 	
 	$scope.optionSelected=new Object({
 		optionProcess:null,
@@ -74,8 +92,7 @@ angular.module(appTeclo).controller('expedienteController',
 	//Variables para manejo de datos de MODAL
 	
 	urltoFile=function(dataurl, filename, mimeType){
-    	 var arr = dataurl.split(','),
-         bstr = atob(dataurl), 
+    	 var bstr = atob(dataurl), 
          n = bstr.length, 
          u8arr = new Uint8Array(n);
          
@@ -86,15 +103,36 @@ angular.module(appTeclo).controller('expedienteController',
 	     return new File([u8arr], filename, {type:'image/'+mimeType});
      };
 	
-	$scope.getImagesOrderServices=function(tpBusqueda,valor,form){
+     $scope.getListOrdenServicio=function(tpBusqueda,valor,form){
+    	
+    	 $scope.hideTablesResult();
+    	 
+    	if (form != undefined && form.$invalid) {
+            showAlert.requiredFields(form);
+            growl.error('Formulario incompleto');
+            return;
+        }
+    	
+    	let params= {
+            "cdTipoBusqueda": tpBusqueda.cdTipoBusqueda,
+            "valor": valor,
+            "busquedaAvanzada":false
+        };
+    	
+    	consultaGeneralService.busquedaTramitesParametros(params)
+    		.success(function(response){
+    			$scope.listOrden=response;
+    			$scope.showTableResumenOrden();
+    		}).error(function(error){
+    			$scope.listOrden=new Array();
+    			showErrorMessage(error);
+    		});
+    	
+    };
+     
+	$scope.getImagesOrderServices=function(idOrden){
 		
-		 if (form != undefined && form.$invalid) {
-             showAlert.requiredFields(form);
-             growl.error('Formulario incompleto');
-             return;
-         }
-		
-		expedienteService.getInfoOs(tpBusqueda.cdTipoBusqueda,valor)
+		expedienteService.getInfoOs("ID_OREDEN",idOrden)
 			.success(function(response) {
 				
 				let lastIndex=(response.length-1);
@@ -102,7 +140,7 @@ angular.module(appTeclo).controller('expedienteController',
 				$scope.ordenServicio=response[lastIndex];
 				$scope.paramConfiguracion.maxNuImage=$scope.ordenServicio.nuMaxImg;
 				$scope.paramConfSav.idOrdenServ=$scope.ordenServicio.idOrdenServicio;
-				if($scope.ordenServicio.imagenes != undefined){
+				if($scope.ordenServicio.imagenes != undefined && $scope.ordenServicio.imagenes.length > 0){
 					let i;
 					for(i=0; i<$scope.ordenServicio.imagenes.length; i++){
 						let file= urltoFile($scope.ordenServicio.imagenes[i].lbExpedienteODS, $scope.ordenServicio.imagenes[i].nbExpedienteODS, $scope.ordenServicio.imagenes[i].cdTipoArchivo);
@@ -110,37 +148,42 @@ angular.module(appTeclo).controller('expedienteController',
 						let imgBase64='data:'+file.type+';base64,'+$scope.ordenServicio.imagenes[i].lbExpedienteODS;
 						$scope.ordenServicio.imagenes[i].url=imgBase64;
 						$scope.ordenServicio.imagenes[i].thumbUrl=imgBase64;
-						//$scope.ordenServicio.imagenes[i].caption=file.name;
 					}
+				}else{
+					growl.warning(mensajes.NOT_FOUND_IMAGES);
 				}
 				
 				listImagesVOBackup=angular.copy($scope.ordenServicio.imagenes);
+				$scope.showTableImagesByOrden();
 			}).error(function(error){
 				$scope.ordenServicio=null;
 				listImagesVOBackup=new Array();
 				showErrorMessage(error);
+				$scope.showTableImagesByOrden();
 			});
 	};
 	
 	$scope.clasificImage=function(tpClasific){
 		
-		$scope.clasificCatalogo.clasifPregunta=false;
-		$scope.clasificCatalogo.showClasifPregunta=false;
-		
-		switch(tpClasific.cdClasif){
-			case constnteCDClaisfic.TODOS:
-				$scope.ordenServicio.imagenes=angular.copy(listImagesVOBackup);
-				break;
-			case constnteCDClaisfic.ORDEN_SERVICIO:
-				$scope.ordenServicio.imagenes=getListByFilter("cdNivel",constnteCDClaisfic.ORDEN_SERVICIO,listImagesVOBackup);
-				break;
-			case constnteCDClaisfic.PROCESO:
-				$scope.ordenServicio.imagenes=getListByFilter("cdNivel",constnteCDClaisfic.PROCESO,listImagesVOBackup);
-				break;
-			case constnteCDClaisfic.ENCUESTA:
-				$scope.clasificCatalogo.showClasifPregunta=true;
-				$scope.ordenServicio.imagenes=getListByFilter("cdNivel",constnteCDClaisfic.ENCUESTA,listImagesVOBackup);
-				break;
+		if($scope.ordenServicio != undefined){
+			$scope.clasificCatalogo.clasifPregunta=false;
+			$scope.clasificCatalogo.showClasifPregunta=false;
+			
+			switch(tpClasific.cdClasif){
+				case constnteCDClaisfic.TODOS:
+					$scope.ordenServicio.imagenes=angular.copy(listImagesVOBackup);
+					break;
+				case constnteCDClaisfic.ORDEN_SERVICIO:
+					$scope.ordenServicio.imagenes=getListByFilter("cdNivel",constnteCDClaisfic.ORDEN_SERVICIO,listImagesVOBackup);
+					break;
+				case constnteCDClaisfic.PROCESO:
+					$scope.ordenServicio.imagenes=getListByFilter("cdNivel",constnteCDClaisfic.PROCESO,listImagesVOBackup);
+					break;
+				case constnteCDClaisfic.ENCUESTA:
+					$scope.clasificCatalogo.showClasifPregunta=true;
+					$scope.ordenServicio.imagenes=getListByFilter("cdNivel",constnteCDClaisfic.ENCUESTA,listImagesVOBackup);
+					break;
+			}	
 		}
 	};
 	
@@ -251,14 +294,14 @@ angular.module(appTeclo).controller('expedienteController',
 	
 	$scope.showModalImages=function(){
 		//imagenes nivel OS
-		$scope.listImages=getListByFilter("cdNivel",constnteCDClaisfic.ORDEN_SERVICIO,$scope.ordenServicio.imagenes);
+		$scope.listImages=getListByFilter("cdNivel",constnteCDClaisfic.ORDEN_SERVICIO,listImagesVOBackup);
 		$timeout(function() {
 			  $('#modalIploadImage').modal('show');
 			  $scope.updateViewDirective($scope.listImages);// metodo se encuntra en la directoa update-image
 		 },100);
 	};
 	
-	$scope.hideModalImages=function(){
+	$scope.hideModalImages=function(idOrdenServicio){
 		
 		let listImagesNoTSaved=$scope.getValueListImageDirective();
 		
@@ -266,13 +309,13 @@ angular.module(appTeclo).controller('expedienteController',
 			  showAlert.confirmacion('Existen imagenes sin guardar, ¿Desea continuar?',
 		              confirm = () => {
 		            	  resetModal();
-		            	  $scope.getImagesOrderServices($scope.busqueda.tpBusqueda,$scope.busqueda.valorBusqueda,undefined);
+		            	  $scope.getImagesOrderServices(idOrdenServicio);
 		              }, cancelaNotificar = () => {
 		                  return;
 		              });
 		  }else{
 			  resetModal();
-			  $scope.getImagesOrderServices($scope.busqueda.tpBusqueda,$scope.busqueda.valorBusqueda,undefined);
+			  $scope.getImagesOrderServices(idOrdenServicio);
 		  }
 		  
 	};
@@ -296,37 +339,65 @@ angular.module(appTeclo).controller('expedienteController',
 	};
 	
 	$scope.filterImagesByProcess=function(optionSelected){
+		let newOption=angular.copy(optionSelected);
+		if(existenImagenesSinGurdar()){// se solicita confirmacion para cambiar la vista
+			marckOptionTextCombo('proceso',constnteCDClaisfic.PROCESO,$scope.optionSelectedOld.optionProcess);
+			genericComfirm(mensajes.CONFIMR_IMAGES, actionChangedFilterImageProcess,newOption);
+		}else{
+			actionChangedFilterImageProcess(optionSelected);
+		}
+		
+	};
+	
+	actionChangedFilterImageProcess=function(optionSelected){
+		$scope.optionSelectedOld.optionProcess = angular.copy(optionSelected);
+		marckOptionTextCombo('proceso',constnteCDClaisfic.PROCESO,optionSelected);
 		$("#select2-encuesta-container").text(MENSAJE_OPTION);
 		$("#select2-pregunta-container").text(MENSAJE_OPTION);
 		$scope.paramConfSav.idEncuesta=null;
 		$scope.paramConfSav.idPregunta=null;
+		$scope.optionSelectedOld.optionEncuesta=null;
+		$scope.optionSelectedOld.optionPregunta=null;
 		if(optionSelected == undefined){
 			//imagenes nivel OS
 			$scope.paramConfSav.idProceso=null;
 			$scope.paramConfiguracion.maxNuImage=$scope.ordenServicio.nuMaxImg;
-			$scope.listImages=getListByFilter("cdNivel",constnteCDClaisfic.ORDEN_SERVICIO,$scope.ordenServicio.imagenes);
+			$scope.listImages=getListByFilter("cdNivel",constnteCDClaisfic.ORDEN_SERVICIO,listImagesVOBackup);
 		}else{
 			//imagenes nivel proceso
 			$scope.paramConfSav.idProceso=optionSelected.idProceso;
 			$scope.paramConfiguracion.maxNuImage=optionSelected.nuMaxImg;
-			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.PROCESO,"idProceso",optionSelected.idProceso,$scope.ordenServicio.imagenes);
+			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.PROCESO,"idProceso",optionSelected.idProceso,listImagesVOBackup);
 		}
 		$scope.updateViewDirective($scope.listImages);// metodo se encuntra en la directoa update-image
 	};
 	
 	$scope.filterImagesByEnecuesta=function(optionSelected){
-		$("#select2-pregunta-container").text(MENSAJE_OPTION);
+		let newOption=angular.copy(optionSelected);
+		if(existenImagenesSinGurdar()){// se solicita confirmacion para cambiar la vista
+			marckOptionTextCombo('encuesta',constnteCDClaisfic.ENCUESTA,$scope.optionSelectedOld.optionEncuesta);
+			genericComfirm(mensajes.CONFIMR_IMAGES, actionChangedFilterImageEncuesta,newOption);
+		}else{
+			actionChangedFilterImageEncuesta(optionSelected);
+		}
+		
+	};
+	
+	actionChangedFilterImageEncuesta=function(optionSelected){
+		$scope.optionSelectedOld.optionEncuesta = angular.copy(optionSelected);
+		marckOptionTextCombo('encuesta',constnteCDClaisfic.ENCUESTA,optionSelected);
 		$scope.paramConfSav.idPregunta=null;
+		$scope.optionSelectedOld.optionPregunta=null;
 		if(optionSelected == undefined){
 			//imagenes nivel proceso
 			$scope.paramConfSav.idEncuesta=null;
 			$scope.paramConfiguracion.maxNuImage=$scope.optionSelected.optionProcess.nuMaxImg;
-			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.PROCESO,"idProceso",$scope.optionSelected.optionProcess.idProceso,$scope.ordenServicio.imagenes);
+			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.PROCESO,"idProceso",$scope.optionSelected.optionProcess.idProceso,listImagesVOBackup);
 		}else{
 			//imagenes nivel encuesta
 			$scope.paramConfSav.idEncuesta=optionSelected.idEncuesta;
 			$scope.paramConfiguracion.maxNuImage=optionSelected.nuMaxImg;
-			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.ENCUESTA,"idOdsEncuesta",optionSelected.idEncuesta,$scope.ordenServicio.imagenes);
+			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.ENCUESTA,"idEncuesta",optionSelected.idEncuesta,listImagesVOBackup);
 		}
 		
 		$scope.updateViewDirective($scope.listImages);// metodo se encuntra en la directoa update-image
@@ -334,43 +405,71 @@ angular.module(appTeclo).controller('expedienteController',
 	};
 	
 	$scope.filterImageByPregunta=function(optionSelected){
+		let newOption=angular.copy(optionSelected);
+		if(existenImagenesSinGurdar()){// se solicita confirmacion para cambiar la vista
+			marckOptionTextCombo('pregunta',constnteCDClaisfic.PREGUNTA,$scope.optionSelectedOld.optionPregunta);
+			genericComfirm(mensajes.CONFIMR_IMAGES, actionChangedFilterImagePregunta,newOption);
+		}else{
+			actionChangedFilterImagePregunta(optionSelected);
+		}
 		
+	};
+	
+	actionChangedFilterImagePregunta=function(optionSelected){
+		$scope.optionSelectedOld.optionPregunta=angular.copy(optionSelected);
+		marckOptionTextCombo('pregunta',constnteCDClaisfic.PREGUNTA,optionSelected);
 		if(optionSelected == undefined){
 			//imagenes nivel encuesta
 			$scope.paramConfSav.idPregunta=null;
 			$scope.paramConfiguracion.maxNuImage=$scope.optionSelected.optionEncuesta.nuMaxImg;
-			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.ENCUESTA,"idOdsEncuesta",$scope.optionSelected.optionEncuesta.idEncuesta,$scope.ordenServicio.imagenes);
+			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.ENCUESTA,"idEncuesta",$scope.optionSelected.optionEncuesta.idEncuesta,listImagesVOBackup);
 		}else{
 			//imagenes nivel pregunta
 			$scope.paramConfSav.idPregunta=optionSelected.idPregunta;
 			$scope.paramConfiguracion.maxNuImage=$scope.optionSelected.optionPregunta.nuMaxImg;
-			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.PREGUNTA,"idPregunta",optionSelected.idPregunta,$scope.ordenServicio.imagenes);
+			$scope.listImages=getListByFilterImagesLevel("cdNivel",constnteCDClaisfic.PREGUNTA,"idPregunta",optionSelected.idPregunta,listImagesVOBackup);
 		}
 		$scope.updateViewDirective($scope.listImages);// metodo se encuntra en la directoa update-image
 	};
 	
+	genericComfirm=function(message,functionActionConfirm,param){
+		showAlert.confirmacion(message,
+                confirm = () => {
+                	functionActionConfirm(param);
+                }, cancelaNotificar = () => {
+                    return;
+                });
+	}
+	
 	//METODOS PARA MODAL DE CARGA DE IMAGENES POR CLASIFICACION
 	
+	existenImagenesSinGurdar=function(){
+		let listImages=$scope.getValueListImageDirective();
+		if(listImages != undefined && listImages.length > 0)
+			return true;
+		else
+			return false;
+	}
 	
 	//Procesa mensaje de Error
 	showErrorMessage=function(e){
 		if(e.status != undefined && Number.isInteger(e.status)){
 			
 			if(e.descripcion != undefined){
-	           	growl.error(e.descripcion,{ ttl: 4000 });
+	           	growl.warning(e.descripcion,{ ttl: 4000 });
 	        }else if(e.message != undefined) {
-	           	growl.error(e.message,{ ttl: 4000 });
+	           	growl.warning(e.message,{ ttl: 4000 });
 	        }else if(typeof e.status === 'string'){
-	           	growl.error(e.status,{ ttl: 4000 });
+	           	growl.warning(e.status,{ ttl: 4000 });
 	        }else {
 	            showAlert.error('Falló la petición, por favor intente de nuevo');
 	        }
 			
 		}else if(e.status != undefined && typeof e.status === 'object'){
 			if(e.status.descripcion != undefined){
-            	growl.error(e.status.descripcion,{ ttl: 4000 });
+            	growl.warning(e.status.descripcion,{ ttl: 4000 });
             }else if(e.status.message != undefined) {
-            	growl.error(e.status.message,{ ttl: 4000 });
+            	growl.warning(e.status.message,{ ttl: 4000 });
             }else if(typeof e.status === 'string'){
             	growl.error(e.status,{ ttl: 4000 });
             }else {showAlert.error('Falló la petición');} 
@@ -383,10 +482,108 @@ angular.module(appTeclo).controller('expedienteController',
 		var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 		if (isMobile) {
 			$scope.isViewMobile=true;
+			$scope.isUseTooltip=false;
 			return true;
 		} else {
 			$scope.isViewMobile=false;
+			$scope.isUseTooltip=true;
 			return false;
+		}
+	};
+	
+	$scope.hideTablesResult=function(){
+		$scope.view.showTableResumeOrden = false;
+		$scope.view.showTableImagesByOrden = false;
+	};
+	
+	$scope.showTableResumenOrden=function(){
+		$scope.view.showTableResumeOrden = true;
+		$scope.view.showTableImagesByOrden = false;
+		$scope.view.filter=undefined;
+		$scope.view.order='';
+		$scope.view.reverse=false;
+		
+		if($scope.clasificCatalogo.clasifSelected.cdClasif != constnteCDClaisfic.TODOS){
+		
+			let i;
+			let size=$scope.clasificCatalogo.catalogo.length;
+			for(i=0; i<size; i++){
+				if($scope.clasificCatalogo.catalogo[i].cdClasif == constnteCDClaisfic.TODOS){
+					$scope.clasificCatalogo.clasifSelected=	$scope.clasificCatalogo.catalogo[i];
+					$("#select2-clasifImg-container").text($scope.clasificCatalogo.catalogo[i].nbClasif);
+					break;
+				}
+				
+			}
+			
+		}
+	};
+	
+	$scope.showTableImagesByOrden=function(){
+		$scope.view.showTableResumeOrden = false;
+		$scope.view.showTableImagesByOrden = true;
+	};
+	
+	marckOptionTextCombo=function(nameCombo,codeCombo,optionMarck){
+		let i;
+		let size;
+		let idOption=undefined;
+		switch(codeCombo){
+		case constnteCDClaisfic.PROCESO:
+			
+			if(optionMarck != undefined){
+				idOption=optionMarck.idProceso;
+				$("#select2-"+nameCombo+"-container").text(optionMarck.cdProceso);
+				size=$scope.ordenServicio.procesos.length;
+				for(i=0; i<size; i++){
+					if(idOption == $scope.ordenServicio.procesos[i].idProceso){
+						$scope.optionSelected.optionProcess=$scope.ordenServicio.procesos[i];		
+						break;
+					}
+				}
+			}else{
+				$("#select2-"+nameCombo+"-container").text(mensajes.SELECCIONE_OPTION);
+				$scope.optionSelected.optionProcess=undefined;
+			}
+			
+			break;
+		case constnteCDClaisfic.ENCUESTA:
+			
+			if(optionMarck != undefined){
+				idOption=optionMarck.idEncuesta;
+				$("#select2-"+nameCombo+"-container").text(optionMarck.cdEncuesta);
+				size=$scope.optionSelected.optionProcess.listEncuestas.length;
+				for(i=0; i<size; i++){
+					if(idOption == $scope.optionSelected.optionProcess.listEncuestas[i].idEncuesta){
+						$scope.optionSelected.optionEncuesta=$scope.optionSelected.optionProcess.listEncuestas[i];		
+						break;
+					}
+				}
+			}else{
+				$("#select2-"+nameCombo+"-container").text(mensajes.SELECCIONE_OPTION);
+				$scope.optionSelected.optionEncuesta=undefined;
+			}
+			
+			break;
+		case constnteCDClaisfic.PREGUNTA:
+
+			if(optionMarck != undefined){
+				idOption=optionMarck.idPregunta;
+				$("#select2-"+nameCombo+"-container").text(optionMarck.cdPregunta);
+				size=$scope.optionSelected.optionEncuesta.listPreguntas.length;
+				for(i=0; i<size; i++){
+					if(idOption == $scope.optionSelected.optionEncuesta.listPreguntas[i].idPregunta){
+						$scope.optionSelected.optionPregunta=$scope.optionSelected.optionEncuesta.listPreguntas[i];		
+						break;
+					}
+				}
+				
+			}else{
+				$("#select2-"+nameCombo+"-container").text(mensajes.SELECCIONE_OPTION);
+				$scope.optionSelected.optionPregunta=undefined;
+			}
+			
+			break;
 		}
 	};
 	

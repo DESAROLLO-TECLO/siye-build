@@ -1,9 +1,10 @@
-angular.module(appTeclo).controller('altaServicioController', function($scope,showAlert,growl, altaServicioService) {
+angular.module(appTeclo).controller('altaServicioController', function($scope,showAlert,growl, 
+		altaServicioService,$timeout,$injector,catalogoGenericoService) {
 
 	$scope.parametroBusqueda = {};
-	$scope.orden = {fhCita: ""};
+	$scope.orden = {fhCita: "",
+					vehiculoVO : new Object()};
 	$scope.incidencia = {};
-	$scope.orden.vehiculoVO = {};
 	$scope.banderaVehiculo = false;
 	$scope.kitInstalacionVO = {};
 	$scope.range = [] ;
@@ -16,7 +17,10 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 	$scope.parametroBusqueda.incidencia="";
 	$scope.cdPlacaVehiculo="";
 	$scope.vehicPlaca=false;
-	
+	$scope.dateTimePickerOptions=new Object({
+		useCurrent:false
+	});
+	$scope.listTransportista=new Array();
 	
 	$scope.consultTipoVehiculos = function(){
 		altaServicioService.buscarTipoVehiculos()
@@ -53,7 +57,8 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 		altaServicioService.buscarVehiculo(placa)
 		.success(function(data){
 			$scope.vehiculoResult  = data;
-			
+			$scope.orden = {fhCita: "",
+					vehiculoVO : new Object()};
 			$scope.orden.vehiculoVO.placa = $scope.vehiculoResult.cdPlacaVehiculo;
 			$scope.orden.vehiculoVO.cdVIN=$scope.vehiculoResult.cdVin;
 			$scope.orden.vehiculoVO.tjtCirculacion = $scope.vehiculoResult.cdTarjetaDeCirculacion;
@@ -65,15 +70,19 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 			$("#select2-tipopVehiculo-container").text($scope.vehiculoResult.tipoVehiculo.nbTipoVehiculo);
 			$scope.orden.vehiculoVO.concesionaria = $scope.vehiculoResult.consecionario;
 			$("#select2-catConcesionario-container").text($scope.vehiculoResult.consecionario.nbConsecion);
-			
+			$scope.orden.vehiculoVO.listConductores = data.listConductores;	
 			$scope.banderaVehiculo = true;
 			$scope.banderadeshabilitar = true;
 			$scope.error = false;
+			
+			if(data.listConductores != undefined)
+				$scope.listTransportista=getOptions($scope.listTransportista);
 		})
 		.error(function(data){
 			
 			$scope.error = true;
-			$scope.orden.vehiculoVO={};
+			$scope.orden = {fhCita: "",
+					vehiculoVO : new Object()};
 			$scope.orden.vehiculoVO.placa = placa;
 			growl.warning("No se encontro vehículo con esa placa", { ttl: 5000 });
 			$scope.banderaVehiculo = true;
@@ -160,14 +169,19 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 		$scope.ordenVO = $scope.orden;
 		$scope.ordenVO.idIncidencia = $scope.incidenciaVO.idIncidencia;
 		console.log($scope.ordenVO);
+		if(typeof valorDos.fhCita != 'string'){
+			valorDos.fhCita=moment(valorDos.fhCita).format('DD/MM/YYYY HH:mm');	
+		}
 		
+		valorDos.conductores=valorDos.transportista;
 		altaServicioService.altaOrdenServicio(valorDos).success(function(data){
 			$scope.error = false;
 			growl.success("Se ha generado una nueva orden de servicio con folio " + data.cdOrden , { ttl: 5000 });
 			$scope.parametroBusqueda.incidencia="";
 			$scope.cdPlacaVehiculo="";
 			$scope.orden.fhCita = null;
-			$scope.orden={};
+			$scope.orden = {fhCita: "",
+					vehiculoVO : new Object()};
 			$scope.ordenVO={};
 			$scope.mostrarAlta=false;
 			$scope.formAltaServicio.$setPristine(); 
@@ -186,9 +200,10 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 			for ( var i = 0; i < temp.length ; i++ ) {				
 				$("#select2-proveedor-"+i+"-container").text('Seleccione');
 			}
-			$('#fhCita').val('');
 			
-
+			$scope.cleanComponentDateTimePiker();
+			$scope.formAltaServicio.fhCita.$invalid=false;
+			$scope.formAltaServicio.fhCita.$dirty=false;
 			$scope.formAltaServicio.$setUntouched();
 			
 		}).error(function(data){
@@ -241,5 +256,100 @@ angular.module(appTeclo).controller('altaServicioController', function($scope,sh
 		})
 	};
 	
+	//FUNCIONES PARA COMPONENTE DE TRANSPORTISTA
+	$scope.openModalTransportista=function(){
+		let serviceModal=$injector.get('ModalService');
+		let nameModal="Transportista";
+		let saveService=$injector.get('conductorService');
+		let consultService=$injector.get('catalogoGenericoService');
+		abrirModal(nameModal,undefined, serviceModal,saveService,consultService, 'nuevoConductor','getTransportistas');
+	};
+	
+     abrirModal = function(nameModal,paramBusqueda, serviceModal,saveService,consultService, nameSaveEmpServ,nameConsultEmpServ){
+    	serviceModal['showModal']({
+ 			   templateUrl: 'views/templatemodal/templateModalGenerico.html',
+ 			   controller: 'mensajeModalGenericoController',
+ 				   inputs:{
+ 					  nameModal:nameModal,
+ 					  idTipo: paramBusqueda,
+ 					  saveService:saveService,
+ 					  consultService:consultService,
+ 					  nameSaveEmpServ:nameSaveEmpServ,
+ 					  nameConsultEmpServ:nameConsultEmpServ
+ 				   }
+ 		   }).then(function(modal){
+ 			  modal.element.modal();
+ 			  modal.close.then(function(datos) {
+ 				  if (datos!=null) {
+				   if(datos.existe===false){
+					   if($scope.orden.vehiculoVO.listConductores == undefined)
+						   $scope.listTransportista=datos.newList;
+		        		else
+		        			$scope.listTransportista=getOptions(datos.newList);
+				   }
+				   
+				   angular.forEach($scope.listTransportista,function(item,index){
+					   if (item.idConductor==datos.newObject.idPersona) {
+						   
+						   if($scope.orden.transportista == undefined)
+							   $scope.orden.transportista=new Array();
+						  
+						   $scope.orden.transportista.push(item);
+					   }
+					   let i;
+					   let size=$scope.orden.transportista.length;
+					   for(i=0; i<size; i++){
+						   let itemSe=$scope.orden.transportista[i];
+						   if(itemSe.idConductor == item.idConductor){
+							   $scope.orden.transportista[i]=item;
+							   break;
+						   }
+					   }
+				   });
+				   
+				   $('#transportista').selectpicker('val', $scope.orden.transportista);
+				   $('#transportista').selectpicker('render');
+				   $('#transportista').selectpicker('refresh');
+				   
+ 				  }
+			   }); 
+		 });
+    };
+    
+    getOptions = function(listOption){
+		if(listOption != undefined && listOption.length > 0
+				&& $scope.orden.vehiculoVO.listConductores != undefined && $scope.orden.vehiculoVO.listConductores.length > 0){
+			let i;
+			let size=listOption.length;
+			let j;
+			let tamanio=$scope.orden.vehiculoVO.listConductores.length;
+			for(i=0; i<size; i++){
+				let itemT=listOption[i];
+				for(j=0; j<tamanio; j++){
+					let itemC=$scope.orden.vehiculoVO.listConductores[j];
+					if(itemT.idConductor == itemC.idConductor){
+						listOption.splice(i,1);
+						i--;
+						size=listOption.length;
+						break;
+					}
+				}
+			}
+		}
+		return listOption;
+	};
+    
+	getTransportistas=function(){
+		catalogoGenericoService.getTransportistas().success(function(response){
+        	/*Se obtiene la lista y se iguala  ala variable mandada desde html*/
+        	$scope.listTransportista=getOptions(response);
+        		
+        	}).error(function(error){
+        		$scope.listTransportista=[];
+        	});
+	};
+	
+	//FUNCIONES PARA COMPONENTE DE TRANSPORTISTA
+	getTransportistas();
 	$scope.getCatalogos();
 });

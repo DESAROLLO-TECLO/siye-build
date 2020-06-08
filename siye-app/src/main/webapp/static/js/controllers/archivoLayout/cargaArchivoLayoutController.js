@@ -15,19 +15,21 @@ function($scope,$interval,$timeout,ModalService,showAlert,growl, $location, carg
 		CARGADO:'CARGADO',
 		RECHAZADO:'RECHAZADO'
 	});
-	
+	var catOptionRefresh=new Array(
+			  { "idTimeRefresh": 2, "nbTimeRefresh": ' 15 Seg ', "timeRefresh": .25 },
+			  { "idTimeRefresh": 3, "nbTimeRefresh": ' 30 Seg ', "timeRefresh": .5 }, 
+			  { "idTimeRefresh": 4, "nbTimeRefresh": '  1 Min ', "timeRefresh": 1 }, 
+			  { "idTimeRefresh": 5, "nbTimeRefresh": '  3 Min ', "timeRefresh": 3 }, 
+			  { "idTimeRefresh": 6, "nbTimeRefresh": '  5 Min ', "timeRefresh": 5 });
 	$scope.filesVO=new Object({
 		fileUploaded : undefined,
 		fileUploadedBackup : undefined,
 		fileUpload: undefined,
-		selectListTimeRefresh : new Array(
-										  { "idTimeRefresh": 2, "nbTimeRefresh": ' 15 Seg ', "timeRefresh": .25 },
-										  { "idTimeRefresh": 3, "nbTimeRefresh": ' 30 Seg ', "timeRefresh": .5 }, 
-										  { "idTimeRefresh": 4, "nbTimeRefresh": '  1 Min ', "timeRefresh": 1 }, 
-										  { "idTimeRefresh": 5, "nbTimeRefresh": '  3 Min ', "timeRefresh": 3 }, 
-										  { "idTimeRefresh": 6, "nbTimeRefresh": '  5 Min ', "timeRefresh": 5 }),
-		selectTimeRefresh : undefined
+		selectListTimeRefresh : catOptionRefresh,
+		selectTimeRefresh : catOptionRefresh[0]
 	});
+	
+	$scope.isUseTooltip=true;
 	
 	$scope.mostrarTimeRefresh=false;
 	
@@ -198,7 +200,27 @@ function($scope,$interval,$timeout,ModalService,showAlert,growl, $location, carg
         	showErrorMessage(data);
         });
     };
+    
+    
+    isMobile=function(){
+		  var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+			if (isMobile) {
+				$scope.isUseTooltip=false;
+				return true;
+			} else {
+				$scope.isUseTooltip=true;
+				return false;
+			}
+	  };
+	  
+	  $scope.$on('$locationChangeSuccess',function(event, current, previous) {
+			
+			cancelarBuscarPorIntervalo();			
+			
+		});
 	
 	getListFilesUploadStatus();
+	$scope.cambiaTiempo();
+	isMobile();
 	
 });

@@ -275,18 +275,18 @@
 				</div>
 			</div>
 		</form>
-	</section>
+	
 
-	<section ng-if="mostrarTabla">
+	<div class="row" ng-if="mostrarTabla">
 		<div class="col-xs-12 col-ms-12 col-md-12">
 			<div class="box box-danger">
 				<div class="box-header with-border">
-					<div class="col-sm-6 col-md-6 col-xs-6">
+					<div class="col-sm-6 col-md-8 col-xs-12">
 						<h3 class="box-title">Registros Encontrados:
 							{{(listOrden | filter:tabla.view.filterSearchVal).length}}</h3>
 					</div>
-					<div class="col-sm-6 col-md-6 col-xs-6 form-group">
-						<div class="col-md-offset-6 col-md-5 col-sm-5 col-xs-5 ">
+					<div class="col-sm-6 col-md-4 col-xs-12 form-group">
+						<div class="col-md-10 col-sm-10 col-xs-9 ">
 							<div class="input-group pull-right">
 								<input type="text" class="form-control" placeholder="Buscar por filtro"
 									ng-model="tabla.view.filterSearchVal">
@@ -295,7 +295,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-md-1 col-sm-1 col-xs-1">
+						<div class="col-md-2 col-sm-2 col-xs-3">
 							<a ng-click="descargarExcel()">
 								<span class="pull-right"> <img src="static/dist/img/excel.png"> </span>
 							</a>
@@ -349,11 +349,11 @@
 							<tbody>
 								<tr
 									dir-paginate="orden in listOrden | orderBy:tabla.order:tabla.reverse | filter:tabla.view.filterSearchVal | itemsPerPage:tabla.view.rowsPerPageVal">
-									<td class="center" data-toggle="tooltip" data-placement="top"
-										title="{{orden.stSeguimiento.nbStSeguimiento}}">
-										<div style="width:50%; background-color: {{orden.stSeguimiento.cdColor}};">
-										</div>
-									</td>
+									<td class="center" style="width: 2%">
+		                              	<span class="etiquetaCancelado" style="background-color: {{orden.stSeguimiento.cdColor}}; min-height: 30px; height: 100%;" 
+		                               		data-toggle="tooltip" data-placement="left" title="{{orden.stSeguimiento.nbStSeguimiento}}">
+										</span>
+	                           		</td>
 									<td class="center">
 										<a ng-click="redirigir(orden.idOrdenServicio)" data-toggle="tooltip"
 											data-placement="left"
@@ -368,7 +368,7 @@
 									<td class="center">{{orden.centroInstalacion.nbCentroInstalacion}}
 									</td>
 									<td class="center">{{orden.plan.nbPlan}}</td>
-									<td class="center" ng-show="orden.idOrigenOds==1 || orden.idOrigenOds==null">Lote:
+									<td class="center" ng-show="orden.idOrigenOds==1 || orden.idOrigenOds==null">
 											<span class="lbUser text-truncate" tooltip-placement="bottom"
                                                 tooltip="Lote: {{orden.loteOrdenServicio.nbArchivoFinal}}"
                                             	ng-if="(orden.loteOrdenServicio.nbArchivoFinal).length > 10">
@@ -377,18 +377,19 @@
 											<span class="lbUser text-truncate" ng-if="(orden.loteOrdenServicio.nbArchivoFinal).length <= 10">
 												Lote: {{orden.loteOrdenServicio.nbArchivoFinal}}
 											</span>
-									<td class="center" ng-show="orden.idOrigenOds==2">Incidencia:
-										{{orden.cdOrdenServicio}}</td>
-									<td class="center">{{orden.proceso==null?"SIN PROCESO":orden.proceso.nbProceso}}
 									</td>
-											<span class="lbUser text-truncate" tooltip-placement="bottom"
-                                                tooltip="Incidencia: {{orden.cdOrdenServicio}}"
-                                            	ng-if="(orden.cdOrdenServicio).length > 10">
-                                            	Incidencia: {{orden.cdOrdenServicio | limitTo:10}}...
-                                            </span>
-											<span class="lbUser text-truncate" ng-if="(orden.cdOrdenServicio).length <= 10">
-												Incidencia: {{orden.cdOrdenServicio}}
-											</span>	
+									<td class="center" ng-show="orden.idOrigenOds==2">
+										<span class="lbUser text-truncate" tooltip-placement="bottom"
+                                            tooltip="Incidencia: {{orden.cdOrdenServicio}}"
+                                        	ng-if="(orden.cdOrdenServicio).length > 10">
+                                        	Incidencia: {{orden.cdOrdenServicio | limitTo:10}}...
+                                        </span>
+										<span class="lbUser text-truncate" ng-if="(orden.cdOrdenServicio).length <= 10">
+											Incidencia: {{orden.cdOrdenServicio}}
+										</span>	
+									</td>
+									<td class="center">{{orden.proceso==null?"SIN PROCESO":orden.proceso.nbProceso}}
+									</td>											
 								<tr
 								ng-show="(listOrden | filter:tabla.view.filterSearchVal).length < 1">
 								<td colspan="12" class="center">
@@ -409,7 +410,8 @@
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
+</section>
 </body>
 
 </html>

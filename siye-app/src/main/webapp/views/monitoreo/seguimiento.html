@@ -16,6 +16,10 @@
           text-align: center;
           padding: 4px;
         }
+        
+        .pointer{
+        	cursor:pointer;
+        }
         </style>
 </head>
 
@@ -59,7 +63,7 @@
                                             <select class="form-control" name="tipoBusqueda" id="tipoBusqueda"
                                                 select-picker multiple idioma-sp="{{currentLanguage}}"
                                                 data-actions-box="true" data-selected-text-format="count > 2"
-                                                ng-model="params.colSeleccionada" ng-required="true"
+                                                ng-model="params.colSeleccionada" ng-required="true" ng-change="validaSeleccion(params.colSeleccionada)"
                                                 ng-options="sp as sp.txTipoBusqueda for sp in catTipoBusqueda">
                                             </select>
                                         </div>
@@ -77,7 +81,7 @@
                                             *{{'MONITOREO.busqueda.rangoFechas.label' | translate}}
                                         </label>
                                         <div class="input-group">
-                                            <div class="input-group-addon labelCheck">
+                                            <div class="input-group-addon">
                                                 <i class="fa fa-calendar-plus-o"></i>
                                             </div>
                                             <input date-range-picker class="form-control date-picker" type="text"
@@ -85,10 +89,13 @@
                                         </div>
                                     </div>
                                 </div>
+                                
+                                <div class="col-md-12 col-sm-12 col-xs-12">
+                            		<span class="form-control">{{estatusSeleccionados+""}} </span>
+<!--                                 <input class="form-control" type="text" placeholder="{{params.opcMarcadas}}" readonly /> -->
+                            	</div>
                             </div>
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                <input class="form-control" type="text" placeholder="{{params.opcMarcadas}}" readonly>
-                            </div>
+                            
                             <div class="row"></div>
 
                             <!-- renglon de opociones -->
@@ -193,16 +200,16 @@
                                         <tbody>
                                             <tr dir-paginate="modulo in seguimientoVO.datosTabla | orderBy:order:reverse | filter:view.searchSomething | itemsPerPage: view.rowsPerPage"
                                                 ng-click="verDetalle(modulo)">
-                                                <td class="col-md-2 col-ms-2 text-center">{{modulo.nbModulo}}</td>
-                                                <td ng-if="verColumna.col1" class="tamColumna text-center">
+                                                <td class="col-md-2 col-ms-2 text-center pointer">{{modulo.nbModulo}}</td>
+                                                <td ng-if="verColumna.col1" class="tamColumna text-center pointer">
                                                     {{modulo.nuEnCurso}}</td>
-                                                <td ng-if="verColumna.col2" class="tamColumna text-center">
+                                                <td ng-if="verColumna.col2" class="tamColumna text-center pointer">
                                                     {{modulo.nuCompleta}}</td>
-                                                <td ng-if="verColumna.col3" class="tamColumna text-center">
+                                                <td ng-if="verColumna.col3" class="tamColumna text-center pointer">
                                                     {{modulo.nuProgramado}}</td>
-                                                <td ng-if="verColumna.col4" class="tamColumna text-center">
+                                                <td ng-if="verColumna.col4" class="tamColumna text-center pointer">
                                                     {{modulo.nuNoProgramado}}</td>
-                                                <td ng-if="verColumna.col5" class="tamColumna text-center">
+                                                <td ng-if="verColumna.col5" class="tamColumna text-center pointer">
                                                     {{modulo.nuIncidencias}}</td>
                                             </tr>
                                             <tr
@@ -263,11 +270,13 @@
                                                     </button>
                                                 </td>
                                                 <td class="col-md-2 col-sm-2 col-xs-2 text-center" ng-click="verDetalleStatus(detalle)">
-                                                    <span style="background-color: {{detalle.color}}">
-                                                        <strong>
-                                                            {{detalle.estado}}
-                                                        </strong>
-                                                    </span>
+                                                    <a>
+                                                    	<span class="badge" style="font-size:12px !important; background-color: {{detalle.color}}">
+                                                    		<strong>
+                                                            	{{detalle.estado}}
+                                                        	</strong>
+                                                    	</span>
+                                                    </a>
                                                 </td>
                                             </tr>
                                             <tr

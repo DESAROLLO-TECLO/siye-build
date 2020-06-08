@@ -36,7 +36,7 @@ function($rootScope,$scope,$window,$translate,$timeout, growl, etapaService, eta
     });
     $scope.paramConfigImg = new Object({
         maxSizeMb: 1,
-        title: "Agregar Evidencia por Etapa"
+        title: "Agregar Evidencia por Orden de Servicio"
     });
     
     if(etapaInfo != null){

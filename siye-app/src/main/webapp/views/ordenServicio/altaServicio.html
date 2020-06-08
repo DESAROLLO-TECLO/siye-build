@@ -201,7 +201,7 @@
 									</div>
 								</div>
 
-											<div class="col-md-3">
+											<div class="col-md-4">
 												<div class="form-group" ng-class="{'has-error': formAltaServicio.subMarca.$invalid && formAltaServicio.subMarca.$dirty}">
 												<label form="">*Sub Marca:</label>
 												<div class="input-group">
@@ -222,7 +222,7 @@
 										</div>
 <!-- 										TERCERA FILA -->
 										<div class="row">
-												<div class="col-md-6">
+												<div class="col-md-4">
 												<div class="form-group" ng-class="{'has-error': formAltaServicio.cdModelo.$invalid && formAltaServicio.cdModelo.$dirty}">
 												<label form="">*Año Modelo:</label>
 												<div class="input-group">
@@ -235,14 +235,14 @@
                                             				autocomplete="off" required ng-disabled="banderadeshabilitar">
 												</div>
 												<div ng-show="formAltaServicio.cdModelo.$invalid  && formAltaServicio.cdModelo.$dirty" ng-style="{color:'red'}">
-             										<label> El año del modelo es requerido. </label>
+             										<label> El año debe ser con cuatro números. </label>
 												</div>
 												</div>
 											</div>
 											
 											<div class="col-md-4">
 											  <div class="form-group" ng-class="{'has-error': formAltaServicio.catConcesionario.$invalid && formAltaServicio.catConcesionario.$dirty}">
-												<label>*Concesionaria :</label>
+												<label>*Concesionaria:</label>
 													<div class="input-group">
 														<div class="input-group-addon">
 															<i class="fa fa-list-ul"></i>
@@ -261,11 +261,69 @@
 													
 													</div>
 											</div>
+											
+											<div class="col-md-4">
+				                        		<div class="form-group" ng-class="{'has-error': formAltaServicio.transportista.$invalid && formAltaServicio.transportista.$dirty}">
+					                        		<label for=""> <span ng-show="orden.vehiculoVO.listConductores == undefined || orden.vehiculoVO.listConductores.length == 0">
+					                        							*
+					                        						</span>
+					                        						{{'ALTAINCIDENCIA.AltaIncidencia.transportista.label' | translate}} </label>
+													<div class="input-group">
+														<div class="input-group-addon">
+															<i class="fa fa-list-ul"></i>
+														</div>
+														
+														<select class="form-control" 
+															select-picker multiple
+															idioma-sp="{{currentLanguage}}"
+															data-actions-box="true"
+															data-selected-text-format="count > 1"
+															data-max-options="5"
+															data-live-search="true"
+															name="transportista" id="transportista" 
+															ng-required="orden.vehiculoVO.listConductores == undefined || orden.vehiculoVO.listConductores.length == 0"
+															ng-model="orden.transportista" 
+															ng-options="x as x.nbConductor+' '+x.nbApepatConductor+' '+x.nbApematConductor for x in listTransportista"> 
+														</select> 
+														<div class="input-group-btn">
+															<label id="btnTransportista" class="btn btn-primary"
+																ng-click="openModalTransportista()">
+																<i class="fa fa-plus" aria-hidden="true"></i></label>
+														</div>
+													</div>
+													<div ng-show="formAltaServicio.transportista.$invalid && formAltaServicio.transportista.$dirty" ng-style="{color:'red'}">
+				                                        <label> El transportista es requerido </label>
+				                                    </div>
+												</div>
+												
+				                        	</div>
+											
 										</div>
 									</fieldset>
 								</div>
 							</div>
-						
+							<!-- Datos del transportista -->
+							
+							<div class="row">
+								<div class="col-md-12" ng-show="orden.vehiculoVO.listConductores != undefined && orden.vehiculoVO.listConductores.length > 0">
+									<fieldset style="min-height:auto !important;">
+										<legend>Datos de Transportista</legend>
+										<div ng-repeat="conductor in orden.vehiculoVO.listConductores">
+											<div class="col-xs-6 col-sm-4 col-md-4">
+												<div class="form-group">
+													<label>Nombre:</label>
+													<div class="input-group">
+														<span>{{conductor.nbConductor}}</span>&nbsp;
+														<span>{{conductor.nbApepatConductor}}</span>&nbsp;
+														<span>{{conductor.nbApematConductor}}</span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</fieldset>
+								</div>
+							</div>
+							<!-- Datos del transportista -->
 <!-- 							TERMINA SEGUNDO ROW -->
 
 <!-- 							INICIA TERCER ROW -->
@@ -290,7 +348,7 @@
 																	
 								<div class="col-md-6">
 									<div class="form-group" ng-class="{'has-error': formAltaServicio.centroI.$invalid && formAltaServicio.centroI.$dirty}">
-										<label>*Centro de Instalación</label>
+										<label>*Centro de Instalación:</label>
 										<div class="input-group">
 											<div class="input-group-addon">
 												<i class="fa fa-university" aria-hidden="true"></i>

@@ -19,7 +19,8 @@
 	</section>
 
 	<!-- Incidencia -->
-	<boton-incidencia ng-click="guardaAvancePorPagina(paramConfigPage.bigCurrentPage)" id-orden="ordSer" id-proceso="idProc" id-encuesta="idEnc"></boton-incidencia>
+	<boton-incidencia ng-click="guardaAvancePorPagina(paramConfigPage.bigCurrentPage)" id-orden="ordSer" id-proceso="idProc" id-encuesta="idEnc"
+	url-actual="'$etapas$proceso$encuesta$'+idEnc+'$'+ordSer+'$'+idProc+'$'+nombreProceso"></boton-incidencia>
 
 	<section class="content">
 		<div class="row">

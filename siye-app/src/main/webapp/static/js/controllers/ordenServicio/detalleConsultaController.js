@@ -4,18 +4,18 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 	$scope.evidenciaMostrar = {};
 	$scope.supervisores=[];
 
-	calcularDuracion = function(){
+	calcularDuracion = function(fhIni, fhFin){
 		let fdiferencia ="00:00:00";
 
-		if($scope.ordenInfo.fhAtencionIni!=null){		
+		if(fhIni!=null){		
 			const DATE_FORMAT = "YYYY-MM-DD HH:mm:ss";	
-			let fecha1 = moment($scope.ordenInfo.fhAtencionIni, "YYYY-MM-DD HH:mm");
+			let fecha1 = moment(fhIni, "YYYY-MM-DD HH:mm");
 			let fecha2 = null;
 			const SegDia=86400, SegHora= 3600, SegMinuto = 60;
 			let dias, horas, minutos,segundos, diff;
 
-			if($scope.ordenInfo.fhAtencionFin!=null){
-				fecha2 = moment($scope.ordenInfo.fhAtencionFin, "YYYY-MM-DD HH:mm");
+			if(fhFin!=null){
+				fecha2 = moment(fhFin, "YYYY-MM-DD HH:mm");
 			}else{
 				fecha2 = moment();
 			}
@@ -43,7 +43,7 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 				fdiferencia = "SIN TIEMPO";
 			}
 		}
-		$scope.ordenInfo.tpDuracion = fdiferencia;
+		return fdiferencia;
 
 	}
 	
@@ -57,6 +57,11 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 			= $scope.ordenInfo.centroInstalacion.nbCentroInstalacion.toUpperCase();
 		
 		$scope.ordenInfo.tpDuracion = calcularDuracion($scope.ordenInfo.fhAtencionIni, $scope.ordenInfo.fhAtencionFin);
+		
+		if($scope.ordenInfo.fhAtencionIni==null || $scope.ordenInfo.fhAtencionIni==null || $scope.ordenInfo.fhAtencionIni=="")
+			$scope.ordenInfo.fhAtencionIni = "Sin fecha";
+		if($scope.ordenInfo.fhAtencionFin==null || $scope.ordenInfo.fhAtencionFin==null || $scope.ordenInfo.fhAtencionFin=="")
+			$scope.ordenInfo.fhAtencionFin = "Sin fecha";
 	}
 	
 	consultarTransportistas = function(){
@@ -116,8 +121,8 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 							$scope.evidencia.procesos[proceso].listEncuestas[encuesta].infoEvidencia.nbInstalador;
 						$scope.evidencia.procesos[proceso].listEncuestas[encuesta].listPreguntas[pregunta].infoEvidencia.nbTrasportista = 
 							$scope.evidencia.procesos[proceso].listEncuestas[encuesta].infoEvidencia.nbTrasportista;
-						$scope.evidencia.procesos[proceso].listEncuestas[encuesta].listPreguntas[pregunta].infoEvidencia.imagenes = 
-							$scope.evidencia.procesos[proceso].listEncuestas[encuesta].infoEvidencia.imagenes;
+						/*$scope.evidencia.procesos[proceso].listEncuestas[encuesta].listPreguntas[pregunta].infoEvidencia.imagenes = 
+							$scope.evidencia.procesos[proceso].listEncuestas[encuesta].infoEvidencia.imagenes;*/
 					}
 				}
 			}
@@ -145,6 +150,7 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 		$scope.evidenciaMostrar.instaladores = obj.infoEvidencia.nbInstalador;
 		$scope.evidenciaMostrar.transportistas = obj.infoEvidencia.nbTrasportista;
 		
+		$scope.evidencia.infoEvidencia.tieneImagen = obj.infoEvidencia.tieneImagen;
 		
 		$scope.evidenciaMostrar.listImg = obj.infoEvidencia.imagenes;
 		
@@ -162,6 +168,35 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 		obj.infoEvidencia.activo = true;
 	}
 
+	descargarDetalleOS = function(conImagenes){
+		consultaServicioService.descargarReporteDetalle($scope.ordenInfo.idOrdenServicio, conImagenes)
+			.success(function(archivo) {
+				$scope.error = false;
+//				var filename = data.nombreArchivo;
+				var filename = "Detalle Orden de Servicio Folio: " + $scope.ordenInfo.cdOrdenServicio;
+//	    		let file = new Blob([data.bdPath], { type: 'application/pdf' });
+	    		let file = new Blob([archivo], { type: 'application/pdf' });
+//				var file = $scope.b64toBlob(data.bdPath, "application/pdf");
+				$scope.error = false;
+				consultaServicioService.downloadfile(file, filename);
+			}).error(function(data) {
+				$scope.error=data;
+			});
+	};
+	
+	$scope.confirmaImagenesReporte = function() {
+        showAlert.confirmacion("¿Incluir imágenes en el reporte?",
+            //Aceptar
+            function() {
+        	descargarDetalleOS(true);
+            },
+            //Cancelar
+            function() {
+            	descargarDetalleOS(false);
+            }
+        );
+    };
+	
 	consultarTransportistas();
 	consultarSupervisores();
 	formateaDatos();

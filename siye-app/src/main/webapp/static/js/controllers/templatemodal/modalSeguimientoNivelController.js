@@ -29,7 +29,7 @@ angular.module(appTeclo).controller('modalSeguimientoNivelController',
             debugger
             $scope.infoOS.nivel = informacionVO.nivel;
             $scope.infoOS.cdOrdenServicio = informacionVO.data.cdOrdenServicio;
-
+            $scope.infoOS.listIncidenciasNivel = informacionVO.data.listIncidenciasNivel;
             switch (informacionVO.nivel) {
                 case 'pregunta':
                     $scope.infoOS.nbEncuesta = informacionVO.nbEncuesta;

@@ -6,6 +6,10 @@ this.getTransportistas = function () {
 	return $http.get(config.baseUrl + END_POINT + "/getTransportistas");
 };
 
+this.getTransportistasSinVehiculo = function () {
+	return $http.get(config.baseUrl + END_POINT + "/getTransportistasSinVehiculo");
+};
+
 this.getTecnicos = function (param) {
 	return $http.get(config.baseUrl + END_POINT + "/getTecnicos",
 			{params:{"idTipoPersona":param==null?1:param}});
