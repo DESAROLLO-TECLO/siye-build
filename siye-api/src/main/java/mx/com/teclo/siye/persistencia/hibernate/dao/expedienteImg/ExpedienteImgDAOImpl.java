@@ -52,7 +52,7 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 		consulta.append(" THEN ('Encuesta/' || TIE001.NB_ENCUESTA)");
 		consulta.append(" WHEN TIE050.ID_PROCESO IS NOT NULL AND TIE050.ID_ODS_ENCUESTA IS NOT NULL AND TIE050.ID_PREGUNTA IS NOT NULL");
 		consulta.append(" THEN (TIE001.NB_ENCUESTA || '/' || TIE005.TX_PREGUNTA)");
-		consulta.append(" ELSE 'Sin clasificación' END) AS nbNivel, ");
+		consulta.append(" ELSE 'Sin clasificaciï¿½n' END) AS nbNivel, ");
 		consulta.append("(CASE WHEN TIE050.ID_PROCESO IS NULL AND TIE050.ID_ODS_ENCUESTA IS NULL AND TIE050.ID_PREGUNTA IS NULL");
 		consulta.append(" THEN 'OS'");
 		consulta.append(" WHEN TIE050.ID_PROCESO IS NOT NULL AND TIE050.ID_ODS_ENCUESTA IS NULL AND TIE050.ID_PREGUNTA IS NULL");
@@ -72,6 +72,7 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 		consulta.append(" LEFT JOIN TIE005D_EE_PREGUNTAS TIE005  ON TIE005.ID_PREGUNTA = TIE050.ID_PREGUNTA");
 		consulta.append(" LEFT JOIN TIE054C_IE_TIPO_EXPEDIENTE TIE054 ON TIE054.ID_TIPO_EXPEDIENTE = TIE050.ID_TIPO_EXPEDIENTE");
 		consulta.append(" WHERE TIE026.ID_ORDEN_SERVICIO IN (:idOrdenServicio) AND TIE050.ST_ACTIVO=1");
+		consulta.append(" AND TIE035.ST_ACTIVO = 1 AND TIE002.ST_ACTIVO = 1 AND TIE001.ST_ACTIVO = 1 AND TIE005.ST_ACTIVO = 1");
 		consulta.append(" ORDER BY TIE050.ID_EXPEDIENTE_ODS ASC");
 
 		 List<ImagenVO> respuesta = getCurrentSession().createSQLQuery(consulta.toString())

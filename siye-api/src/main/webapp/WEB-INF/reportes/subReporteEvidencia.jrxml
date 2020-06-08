@@ -71,14 +71,14 @@
 				<textElement>
 					<font size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Duración " + $F{duracion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Duración: " + $F{duracion}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="8" y="61" width="537" height="24" uuid="f3e737b7-1b4a-4905-8ecf-2ccb080f4c66"/>
 				<textElement>
 					<font size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Supervisores " + $F{supervisores}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Supervisores: " + $F{supervisores}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="8" y="91" width="537" height="24" uuid="db4ec2bf-efe0-488d-bcef-3e6e993fb82d"/>
@@ -92,7 +92,7 @@
 				<textElement>
 					<font size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Trasportistas: " + $F{trasportistas}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Transportistas: " + $F{trasportistas}]]></textFieldExpression>
 			</textField>
 		</band>
 		<band height="60">
