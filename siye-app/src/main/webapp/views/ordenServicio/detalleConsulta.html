@@ -253,7 +253,7 @@
 														<div class="form-group">
 															<label for="tipoTramite">VIN:</label>
 															<div class="input-group">
-																<p>{{ordenInfo.vehiculo.cdPlacaVehiculo}}</p>
+																<p>{{ordenInfo.vehiculo.cdVin}}</p>
 															</div>
 														</div>
 													</div>
@@ -547,6 +547,33 @@
 			</div>
 		</form>
 	</section>
+<!-- 	#### Modal de confirmación-->
+	<modal visible="mostraConfirmacion" size-modal="md" noescape modalstatic on-hide="mostraConfirmacion = false">
+            <modal-header title="Confirmación"></modal-header>
+            <modal-body>
+               	<div class="row">
+               		<div class="col-md-3 center">
+               			<img src="static/dist/img/interrogacion.png" style="height: 42px; 
+               				class="img-responsive center-block figure-img img-fluid img-rounded">
+               		</div>
+               		<div class="col-md-8 center">
+               			<br>
+               			<label>¿Desea incluir imágenes en el reporte?</label>
+               		</div>
+				</div>
+            </modal-body>
+            <modal-footer class="center">
+                <button type="button" ng-click="descargarDetalleOS(true)" class="btn btn-danger btn-flat">
+					<span class="fa fa-check"></span>&nbsp Si
+				</button>
+				<button type="button" ng-click="descargarDetalleOS(true)" class="btn btn-danger btn-flat">
+					<span class="fa fa-times"></span>&nbsp No
+				</button>
+                <button type="button" ng-click="cerrarMostraConfirmacion()" class="btn btn-danger btn-flat">
+					<span class="fa fa-window-close"></span>&nbsp Cerrar
+				</button>
+            </modal-footer>
+        </modal>
 </body>
 
 </html>
