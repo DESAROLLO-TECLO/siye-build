@@ -144,7 +144,8 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr dir-paginate="orden in listOrden | orderBy:tabla.order:tabla.reverse | filter:tabla.view.filterSearchVal | itemsPerPage:tabla.view.rowsPerPageVal">
+											<tr dir-paginate="orden in listOrden | orderBy:tabla.order:tabla.reverse | filter:tabla.view.filterSearchVal | itemsPerPage:tabla.view.rowsPerPageVal"
+												pagination-id="listOrden">
 												<td class="center">
 													<a ng-click="getImagesOrderServices(orden.idOrdenServicio)"
 														uib-tooltip="Detalle de imagenes de Orden"
@@ -185,7 +186,8 @@
 									<div class="fixed-table-pagination">
 										<rows-per-page rows="tabla.view.rowsPerPageVal" filtro="tabla.view.filterSearchVal"
 											array="listOrden"></rows-per-page>
-										<dir-pagination-controls class="pull-right pagination-detail">
+										<dir-pagination-controls class="pull-right pagination-detail"
+											pagination-id="listOrden">
 										</dir-pagination-controls>
 									</div>
 								</div>
@@ -278,7 +280,8 @@
 											</tr>
 										</thead>
 										<tbody>
-											<tr dir-paginate="imgVO in ordenServicio.imagenes | orderBy:view.order:view.reverse | filter: view.filter | itemsPerPage: view.rowsPerPage">
+											<tr dir-paginate="imgVO in ordenServicio.imagenes | orderBy:view.order:view.reverse | filter: view.filter | itemsPerPage: view.rowsPerPage"
+												pagination-id="imagenes">
 												<td class="center">
 													<a tooltip-placement="top"
 														uib-tooltip="{{imgVO.nbExpedienteODS}}">
@@ -325,7 +328,7 @@
 								<div class="container-fluid">
 				                    <div class="fixed-table-pagination">
 				                        <rows-per-page rows="view.rowsPerPage" filtro="view.filter" array="ordenServicio.imagenes"></rows-per-page>
-				                        <dir-pagination-controls class="pull-right pagination-detail"></dir-pagination-controls>
+				                        <dir-pagination-controls class="pull-right pagination-detail" pagination-id="imagenes"></dir-pagination-controls>
 				                    </div>
 				                </div>
 							</div>
