@@ -92,7 +92,7 @@ appt.directive('updateImage',
 			  //se valida como se mostraran el componente componentes
 				let div ='';
 				let buttonModal='<button class="btn btn-danger"> '+                                          
-									'<i class="fa fa-picture-o" aria-hidden="true"></i></i> Cargar Imagenes' +                         
+									'<i class="fa fa-picture-o" aria-hidden="true"></i></i> Cargar Imágenes' +                         
 								'</button>';
 				
 			  if(scope.include != undefined && scope.include){
@@ -191,7 +191,7 @@ appt.directive('updateImage',
 	    		  let imagesTotal=((scope.listFiles != undefined && scope.listFiles.length != undefined) ? scope.listFiles.length : 0);
 	    		  if(scope.maxNuImage != undefined && (filesList.length + imagesTotal) > parseInt(scope.maxNuImage, 10)){
 	    			  
-	    			  growl.warning('El número de imagenes seleccionado excede el número permitido ', {ttl: 4000});
+	    			  growl.warning('El número de imágenes seleccionado excede el número permitido ', {ttl: 4000});
     				  return;
     			  }
 	    		  
@@ -206,7 +206,7 @@ appt.directive('updateImage',
 	    		  let imagesTotal=((scope.listFiles != undefined && scope.listFiles.length != undefined) ? scope.listFiles.length : 0);
 	    		  if(scope.maxNuImage != undefined && (inputFiles.length + imagesTotal) > parseInt(scope.maxNuImage, 10)){
 	    			  
-	    			  growl.warning('El número de imagenes seleccionado excede el número permitido ', {ttl: 4000});
+	    			  growl.warning('El número de imágenes seleccionado excede el número permitido ', {ttl: 4000});
     				  return;
     			  }
 	    		  
@@ -275,7 +275,7 @@ appt.directive('updateImage',
 	    		  	case 60:
 	    		  		return 1;
 	    		  	default:
-	    		  		return 1;
+	    		  		return 0.99;
 	    		  }
 	    	  };
 	    	  
@@ -512,7 +512,7 @@ appt.directive('updateImage',
 		    	 });
 		    	 
 		    	 if(listNotAdd.length !=  undefined && listNotAdd.length > 0){
-		    		 growl.warning('Las imagenes aun se estan cargando, por favor espere', {ttl: 4000});
+		    		 growl.warning('Las imágenes aun se estan cargando, por favor espere', {ttl: 4000});
 		    		 return false;
 		    	 }
 		    	 
@@ -602,7 +602,7 @@ appt.directive('updateImage',
 		    	 }
 		    	 
 		    	 if(listNotAdd.length !=  undefined && listNotAdd.length > 0){
-		    		 growl.warning('Las imagenes aun se estan cargando, por favor espere', {ttl: 4000});
+		    		 growl.warning('Las imágenes aun se estan cargando, por favor espere', {ttl: 4000});
 		    		 return;
 		    	 }
 		    	 
@@ -654,7 +654,7 @@ appt.directive('updateImage',
 		    	 }
 		    	 
 		    	 service[nameServiceSave](listImages).success(function(response){
-		    		 growl.success('Imagenes guardadas correctamente', { ttl: 4000 });
+		    		 growl.success('Imágenes guardadas correctamente', { ttl: 4000 });
 		    		 
 		    		 let i;
 		    		 let j;
@@ -736,7 +736,7 @@ appt.directive('updateImage',
 		     
 		  // se eliminan las todas las imagenes
 		     scope.cancelAllImage=function(){
-		    	 showAlert.confirmacion('Se eliminarán las imagenes, ¿Desea continuar?',
+		    	 showAlert.confirmacion('Se eliminarán las imágenes, ¿Desea continuar?',
 			                confirm = () => {
 			                // solamente se asocian a esta lista cuando esta imagen probiene de base de datos
 			                	let imgDeleList=[];
@@ -759,9 +759,9 @@ appt.directive('updateImage',
 				          		  .success(function(reponse){
 				          			  scope.listImages=[];
 				          			  scope.listFiles=[];
-				          			growl.success('Imagenes eliminadas correctamente', { ttl: 4000 });
+				          			growl.success('Imágenes eliminadas correctamente', { ttl: 4000 });
 				          		  }).error(function(error){
-				          			growl.error('Las siguientes imagenes no se pudieron eliminar, favor de intentar nuevamente', { ttl: 4000 });
+				          			growl.error('Las siguientes imágenes no se pudieron eliminar, favor de intentar nuevamente', { ttl: 4000 });
 				          		  });
 			          		  	}
 			                }, cancelaNotificar = () => {
@@ -854,7 +854,7 @@ appt.directive('updateImage',
 					  scope.listImages=[];
 		   				 scope.listFiles=[];
 				 }else{
-					 showAlert.confirmacion('Hay imagenes sin guardar, ¿Desea continuar?',
+					 showAlert.confirmacion('Hay imágenes sin guardar, ¿Desea continuar?',
 				                confirm = () => {
 				                	
 				                	$('#'+scope.idElementUp+'modalUpdateImage').modal('hide');

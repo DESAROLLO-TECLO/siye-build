@@ -215,77 +215,116 @@
                         </fieldset>
                     </div>
 
-                    <div ng-if="infoOS.nivel === 'pregunta'" class="col-xs-6 col-md-6">
-                        <fieldset class="fieldsetModalIncidencias">
-                            <legend>{{'MONITOREO.modal.detalle.encuesta' | translate}} {{infoOS.nbEncuesta}}
-                            </legend>
-                            <div
-                                ng-repeat="elemento in ListaEvidencias.slice(((paramConfigPage.bigCurrentPage-1)*paramConfigPage.itemsPerPage),((paramConfigPage.bigCurrentPage)*paramConfigPage.itemsPerPage))">
-                                <div class="row rowModalIncidencias">
-                                    <div class="col-xs-12 col-md-12">
-                                        <div class="form-group">
-                                            <label>{{'MONITOREO.modal.detalle.pregunta' | translate}}</label>
-                                            <div class="col-xs-12 col-md-12" style="height: 65%;">
-                                                {{elemento.txPregunta}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row rowModalIncidencias">
-                                    <div class="col-xs-12 col-md-12">
-                                        <div class="form-group">
-                                            <label>{{'MONITOREO.modal.detalle.respuesta' | translate}}</label>
-                                            <div class="col-xs-12 col-md-12">
-                                                {{elemento.txRespuesta}}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row rowModalIncidencias">
-                                <div class="col-xs-6 col-md-6">
-                                    <div class="form-group" style="margin-bottom: 0px;">
-                                        <label>{{'MONITOREO.modal.detalle.tipo' | translate}}</label>
-                                        <div class="">
-                                            <span style="width:100%;">
-                                                {{propsIncidencia.idIncidencia !=null ? "INCIDENCIA" : "EVIDENCIA"}}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-6 col-md-6" ng-if="propsIncidencia.idIncidencia != null">
-                                    <div class="form-group" style="margin-bottom: 0px;">
-                                        <label>{{'MONITOREO.modal.detalle.prioridad' | translate}}</label>
-                                        <div class="center" style="width: 50%; background-color:{{propsIncidencia.colorPrioridad}}; color:#F4F4F4;">
-                                            <font color="black">
-                                                <strong>
-                                                    {{propsIncidencia.nbPrioridad}}
-                                                </strong>
-                                            </font>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row rowModalIncidencias">
-                                <div class="col-xs-12 col-md-12">
-                                    <div class="form-group">
-                                        <label>{{'MONITOREO.modal.detalle.descripcion' | translate}}</label>
-                                        <div class="col-xs-12 col-md-12">
-                                            <fieldset class="fieldsetDescripcionModalIncidencias">
-												<div ng-if="infoOS.listIncidenciasNivel == undefined || infoOS.listIncidenciasNivel.length ==0">
-                                        			<h4>No hay incidencias</h4>
-                                        		</div>
-                                        		<div ng-if="infoOS.listIncidenciasNivel != undefined && infoOS.listIncidenciasNivel.length > 0">
-                                        			<div ng-repeat="incidencia in infoOS.listIncidenciasNivel" class="row">
-                                        				<div class="col-md-12">{{incidencia.txIncidencia}}</div>
-                                        			</div>
-                                        		</div>
-                                        	</fieldset>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </fieldset>
+                    <div ng-if="infoOS.nivel === 'pregunta'" class="col-xs-12 col-md-12">
+                    	<div ng-repeat="elemento in ListaEvidencias.slice(((paramConfigPage.bigCurrentPage-1)*paramConfigPage.itemsPerPage),((paramConfigPage.bigCurrentPage)*paramConfigPage.itemsPerPage))">
+                    		<div class="col-xs-6 col-md-6">
+	                    		<fieldset class="fieldsetModalPregunta">
+	                    			<legend>{{'MONITOREO.modal.detalle.encuesta' | translate}} {{infoOS.nbEncuesta}}
+	                            	</legend>
+	                            	<div class="row rowModalIncidencias">
+	                                    <div class="col-xs-12 col-md-12">
+	                                        <div class="form-group">
+	                                            <label>{{'MONITOREO.modal.detalle.pregunta' | translate}}</label>
+	                                            <div class="col-xs-12 col-md-12" style="height: 65%;">
+	                                                {{elemento.txPregunta}}
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                <div class="row rowModalIncidencias">
+	                                    <div class="col-xs-12 col-md-12">
+	                                        <div class="form-group">
+	                                            <label>{{'MONITOREO.modal.detalle.respuesta' | translate}}</label>
+	                                            <div class="col-xs-12 col-md-12">
+	                                                {{elemento.txRespuesta}}
+	                                            </div>
+	                                        </div>
+	                                    </div>
+	                                </div>
+	                                
+	                                <div class="row rowModalIncidencias">
+		                                <div class="col-xs-6 col-md-6">
+		                                    <div class="form-group" style="margin-bottom: 0px;">
+		                                        <label>{{'MONITOREO.modal.detalle.tipo' | translate}}</label>
+		                                        <div class="">
+		                                            <span style="width:100%;">
+		                                                {{propsIncidencia.idIncidencia !=null ? "INCIDENCIA" : "EVIDENCIA"}}
+		                                            </span>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                                <div class="col-xs-6 col-md-6" ng-if="propsIncidencia.idIncidencia != null">
+		                                    <div class="form-group" style="margin-bottom: 0px;">
+		                                        <label>{{'MONITOREO.modal.detalle.prioridad' | translate}}</label>
+		                                        <div class="center" style="width: 50%; background-color:{{propsIncidencia.colorPrioridad}}; color:#F4F4F4;">
+		                                            <font color="black">
+		                                                <strong>
+		                                                    {{propsIncidencia.nbPrioridad}}
+		                                                </strong>
+		                                            </font>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                            
+		                            <div class="row rowModalIncidencias">
+		                                <div class="col-xs-12 col-md-12">
+		                                    <div class="form-group">
+		                                        <label>{{'MONITOREO.modal.detalle.descripcion' | translate}}</label>
+		                                        <div class="col-xs-12 col-md-12">
+		                                            <fieldset class="fieldsetDescripcionModalIncidencias">
+														<div ng-if="infoOS.listIncidenciasNivel == undefined || infoOS.listIncidenciasNivel.length ==0">
+		                                        			<h4>No hay incidencias</h4>
+		                                        		</div>
+		                                        		<div ng-if="infoOS.listIncidenciasNivel != undefined && infoOS.listIncidenciasNivel.length > 0">
+		                                        			<div ng-repeat="incidencia in infoOS.listIncidenciasNivel" class="row">
+		                                        				<div class="col-md-12">{{incidencia.txIncidencia}}</div>
+		                                        			</div>
+		                                        		</div>
+		                                        	</fieldset>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            </div>
+	                    		</fieldset>
+                    		</div>
+                    		
+                    		<div class="col-xs-6 col-md-6">
+		                        <fieldset class="fieldsetModalPregunta">
+		                            <legend>Evidencias</legend>
+		                            <div class="row rowModalIncidencias">
+		                                <div class="col-xs-12 col-md-12">
+		                                    <div
+		                                        ng-show="elemento.listaImagen == undefined || elemento.listaImagen.length == 0">
+		                                        <div class="text-center">
+		                                            <h4 class="box-title">*Sin imágenes</h4>
+		                                        </div>
+		                                        <div class="imgNotFount">
+		                                            <img ng-src="static/dist/img/image-not-found.svg" style="width: 38rem;"
+		                                                class="img-responsive center-block figure-img img-fluid img-rounded">
+		                                        </div>
+		                                    </div>
+		                                    <div uib-carousel active="active" ng-show="elemento.listaImagen.length > 0">
+		                                        <div uib-slide ng-repeat="img in elemento.listaImagen"
+		                                            ng-init="indexImg = $index" index="$index">
+		                                            <div class="box-title">
+		                                                <h4 class="box-title">{{img.nbExpedienteODS}}</h4>
+		                                            </div>
+		                                            <div class="box-body">
+		                                                <figure class="figure">
+		                                                    <img ng-src="data:image/img.cdTipoArchivo;base64,{{img.lbExpedienteODS}}"
+		                                                        class="img-responsive center-block figure-img img-fluid img-rounded">
+		                                                </figure>
+		                                            </div>
+		                                        </div>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                        </fieldset>
+		                    </div>
+                    		
+                    	</div>
+                    	
                         <div class="container-fluid">
                             <uib-pagination previous-text="<" next-text=">" total-items="paramConfigPage.bigTotalItems"
                                 num-pages="numPages" ng-model="paramConfigPage.bigCurrentPage"
@@ -296,7 +335,7 @@
                         </div>
                     </div>
                     
-                    <div class="col-xs-6 col-md-6">
+                    <div class="col-xs-6 col-md-6" ng-if="infoOS.nivel !== 'pregunta'">
                         <fieldset class="fieldsetModalIncidencias">
                             <legend>Evidencias</legend>
                             <div class="row rowModalIncidencias">
