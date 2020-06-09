@@ -3,6 +3,7 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 	$scope.ordenInfo = ordenInfo.data;
 	$scope.evidenciaMostrar = {};
 	$scope.supervisores=[];
+	$scope.mostraConfirmacion=false;
 
 	calcularDuracion = function(fhIni, fhFin){
 		let fdiferencia ="00:00:00";
@@ -168,7 +169,7 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 		obj.infoEvidencia.activo = true;
 	}
 
-	descargarDetalleOS = function(conImagenes){
+	$scope.descargarDetalleOS = function(conImagenes){
 		consultaServicioService.descargarReporteDetalle($scope.ordenInfo.idOrdenServicio, conImagenes)
 			.success(function(archivo) {
 				$scope.error = false;
@@ -185,17 +186,12 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 	};
 	
 	$scope.confirmaImagenesReporte = function() {
-        showAlert.confirmacion("¿Incluir imágenes en el reporte?",
-            //Aceptar
-            function() {
-        	descargarDetalleOS(true);
-            },
-            //Cancelar
-            function() {
-            	descargarDetalleOS(false);
-            }
-        );
+		$scope.mostraConfirmacion = true;
     };
+    
+    $scope.cerrarMostraConfirmacion = function(){
+    	$scope.mostraConfirmacion = false;
+    }
 	
 	consultarTransportistas();
 	consultarSupervisores();
