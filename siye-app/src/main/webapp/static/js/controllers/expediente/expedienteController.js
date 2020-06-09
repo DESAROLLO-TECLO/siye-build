@@ -1,6 +1,10 @@
 
 angular.module(appTeclo).config(function (LightboxProvider) {
 	LightboxProvider.fullScreenMode = true;
+	LightboxProvider.alwaysShowNavOnTouchDevices = true;
+	LightboxProvider.disableScrolling = true;
+	LightboxProvider.showImageNumberLabel = true;
+	LightboxProvider.templateUrl = "views/templatedirectivas/templateLightBox.html";
 });
 
 angular.module(appTeclo).controller('expedienteController',
@@ -17,9 +21,9 @@ angular.module(appTeclo).controller('expedienteController',
 	};
 	
 	const mensajes={
-		CONFIMR_IMAGES:'Existen imagenes sin guardar las cuales se descartaran, ¿Desea continuar?',
+		CONFIMR_IMAGES:'Existen imágenes sin guardar las cuales se descartaran, ¿Desea continuar?',
 		SELECCIONE_OPTION:'Seleccione una opción',
-		NOT_FOUND_IMAGES:'No se encontraron imagenes para la orden de servicio'
+		NOT_FOUND_IMAGES:'No se encontraron imágenes para la orden de servicio'
 	};
 	
 	//Variables de TipoBusqueda
@@ -51,6 +55,13 @@ angular.module(appTeclo).controller('expedienteController',
 			showTableResumeOrden:false,
 			showTableImagesByOrden:false
 			
+	});
+	
+	$scope.paramConfigPage= new Object({
+		bigCurrentPage:1,
+		itemsPerPage:1,
+		maxSize:5,
+		bigCurrentPage:1
 	});
 	
 	$scope.listOrden=new Array();
@@ -148,6 +159,7 @@ angular.module(appTeclo).controller('expedienteController',
 						let imgBase64='data:'+file.type+';base64,'+$scope.ordenServicio.imagenes[i].lbExpedienteODS;
 						$scope.ordenServicio.imagenes[i].url=imgBase64;
 						$scope.ordenServicio.imagenes[i].thumbUrl=imgBase64;
+						$scope.ordenServicio.imagenes[i].caption=$scope.ordenServicio.imagenes[i].nbNivel;
 					}
 				}else{
 					growl.warning(mensajes.NOT_FOUND_IMAGES);
@@ -272,7 +284,7 @@ angular.module(appTeclo).controller('expedienteController',
 	};
 	
 	$scope.deleteAllImage=function(){
-		showAlert.confirmacion('Se borrarán todas las imagenes, ¿Desea continuar?',
+		showAlert.confirmacion('Se borrarán todas las imágenes, ¿Desea continuar?',
 	              confirm = () => {
 	            	 
 	    			  expedienteService.deleteExpediente(listImagesVOBackup)
@@ -280,7 +292,7 @@ angular.module(appTeclo).controller('expedienteController',
 	          			$scope.ordenServicio.imagenes=new Array();
 	          			listImagesVOBackup=new Array();
 	          			
-	          			growl.success('Las imagenes se borraron correctamente', { ttl: 4000 });
+	          			growl.success('Las imágenes se borraron correctamente', { ttl: 4000 });
 	          		  }).error(function(error){
 	          			showErrorMessage(error);
 	          		  });
@@ -306,7 +318,7 @@ angular.module(appTeclo).controller('expedienteController',
 		let listImagesNoTSaved=$scope.getValueListImageDirective();
 		
 		  if(listImagesNoTSaved != undefined && listImagesNoTSaved.length > 0){// si existen imagenes sin guardar se pregunta si desea cerrar el modal
-			  showAlert.confirmacion('Existen imagenes sin guardar, ¿Desea continuar?',
+			  showAlert.confirmacion('Existen imágenes sin guardar, ¿Desea continuar?',
 		              confirm = () => {
 		            	  resetModal();
 		            	  $scope.getImagesOrderServices(idOrdenServicio);
