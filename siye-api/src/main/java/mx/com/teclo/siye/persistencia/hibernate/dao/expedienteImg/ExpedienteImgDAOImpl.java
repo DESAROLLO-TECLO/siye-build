@@ -52,7 +52,7 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 		consulta.append(" THEN ('Encuesta/' || TIE001.NB_ENCUESTA)");
 		consulta.append(" WHEN TIE050.ID_PROCESO IS NOT NULL AND TIE050.ID_ODS_ENCUESTA IS NOT NULL AND TIE050.ID_PREGUNTA IS NOT NULL");
 		consulta.append(" THEN (TIE001.NB_ENCUESTA || '/' || TIE005.TX_PREGUNTA)");
-		consulta.append(" ELSE 'Sin clasificaci�n' END) AS nbNivel, ");
+		consulta.append(" ELSE 'Sin clasificación' END) AS nbNivel, ");
 		consulta.append("(CASE WHEN TIE050.ID_PROCESO IS NULL AND TIE050.ID_ODS_ENCUESTA IS NULL AND TIE050.ID_PREGUNTA IS NULL");
 		consulta.append(" THEN 'OS'");
 		consulta.append(" WHEN TIE050.ID_PROCESO IS NOT NULL AND TIE050.ID_ODS_ENCUESTA IS NULL AND TIE050.ID_PREGUNTA IS NULL");
