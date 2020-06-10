@@ -194,6 +194,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 				OSVO.setFechaInicio(os.getFhAtencionIni());
 				OSVO.setFechaFin(os.getFhAtencionFin());
 				OSVO.setFhCita(os.getFhCita());
+				OSVO.setNbProceso(os.getProceso() != null ? os.getProceso().getNbProceso() : "SIN PROCESO");
 				if (os.getPlan().getIdPlan() != null) {
 					
 					// se obtienen los procesos por plan de orden de servicio
