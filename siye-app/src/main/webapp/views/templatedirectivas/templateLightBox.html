@@ -1,0 +1,72 @@
+<div class="modal-body"
+    ng-swipe-left="Lightbox.nextImage()"
+    ng-swipe-right="Lightbox.prevImage()">
+  <!-- navigation -->
+  <div class="lightbox-nav">
+    <!-- close button -->
+    
+    <div class="box-tools pull-right">
+		<button type="button" class="btn btn-box-tool"
+			aria-hidden="true" ng-click="$dismiss()">
+			<i class="fa fa-times"></i>
+		</button>
+	</div>
+  </div>
+
+  <div class="lightbox-image-container">
+    <!-- caption -->
+    <div class="lightbox-image-caption">
+      <h3>{{Lightbox.imageCaption}}</h3>
+    </div>
+    
+    <div class="row">
+    	<div class="col-md-12">
+	    	<!-- image -->
+		    <img ng-if="!Lightbox.isVideo(Lightbox.image)"
+		        lightbox-src="{{Lightbox.imageUrl}}">
+		
+		    <!-- video -->
+		    <div ng-if="Lightbox.isVideo(Lightbox.image)"
+		        class="embed-responsive embed-responsive-16by9">
+		      <!-- video file embedded directly -->
+		      <video ng-if="!Lightbox.isSharedVideo(Lightbox.image)"
+		          lightbox-src="{{Lightbox.imageUrl}}"
+		          controls
+		          autoplay="true">
+		      </video>
+		
+		      <!-- video embedded with an external service using
+		           `ng-videosharing-embed` -->
+		      <embed-video ng-if="Lightbox.isSharedVideo(Lightbox.image)"
+		          lightbox-src="{{Lightbox.imageUrl}}"
+		          ng-href="{{Lightbox.imageUrl}}"
+		          iframe-id="lightbox-video"
+		          class="embed-responsive-item">
+		        <a ng-href="{{Lightbox.imageUrl}}">Ver video</a>
+		      </embed-video>
+		    </div>
+    	</div>	    
+    </div>
+  </div>
+  
+  <div class="row" ng-if="Lightbox.images.length > 1">
+  	<div class="col-md-12">
+  		<div class="col-md-5">
+  			<div ng-show="false">{{Lightbox.modelIndex=(Lightbox.index + 1)}}</div>
+  		</div>
+  		<div class="col-md-7">
+	  		<uib-pagination previous-text="Anterior"
+				next-text="Siguiente"
+				total-items="Lightbox.images.length" num-pages="numPages"
+				ng-model="Lightbox.modelIndex"
+				max-size="'5'"  
+				items-per-page="'1'"
+				class="pagination-md pull-right" boundary-link-numbers="true"
+				ng-change="Lightbox.setImage((Lightbox.modelIndex)-1)"
+				direction-links="true" rotate="false">
+			</uib-pagination>
+  		</div>
+  	</div>
+  </div>
+  
+</div>

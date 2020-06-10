@@ -195,7 +195,7 @@ var includeCarouselModal=
 	'		<div class="modal-dialog modal-lg">                                                                                                             '+
 	'			<div class="modal-content">                                                                                                                 '+
 	'				<div class="modal-header">                                                                                                              '+
-	'					<h4 class="modal-title" id="gridSystemModalLabel">Imagenes</h4>                                             '+
+	'					<h4 class="modal-title" id="gridSystemModalLabel">Imágenes</h4>                                             '+
 	'				</div>                                                                                                                                  '+
 	'				<div class="modal-body">                                                                                                                '+
 	'					<div id="carousel-{{idElementUp}}" class="carousel slide" data-ride="carousel">                                                     '+
