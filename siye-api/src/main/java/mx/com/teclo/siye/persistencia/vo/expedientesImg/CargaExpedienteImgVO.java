@@ -21,6 +21,7 @@ public class CargaExpedienteImgVO {
 	private Date fechaFin;
 	private Date fhCita;
 	private Integer nuTotalImagenes;
+	private String nbProceso;
 	
 	/**
 	 * @return the placa
@@ -189,5 +190,17 @@ public class CargaExpedienteImgVO {
 	 */
 	public void setNuTotalImagenes(Integer nuTotalImagenes) {
 		this.nuTotalImagenes = nuTotalImagenes;
+	}
+	/**
+	 * @return the nbProceso
+	 */
+	public String getNbProceso() {
+		return nbProceso;
+	}
+	/**
+	 * @param nbProceso the nbProceso to set
+	 */
+	public void setNbProceso(String nbProceso) {
+		this.nbProceso = nbProceso;
 	}
 }

@@ -79,7 +79,7 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 	            +"TO_CHAR(tdeuei.FH_FIN,'DD/MM/YYYY HH24:MI') AS fhFin, "
 	            +"tdeuei.FH_INICIO as fecha1, "
 	            +"tdeuei.FH_FIN as fecha2, "
-	            +"tdeuei.NU_PREGUNTAS_CORRECTAS||'/'|| tdeuei.NU_PREGUNTAS AS preguntas, " 
+	            +"(tdeuei.NU_PREGUNTAS_CORRECTAS + tdeuei.NU_PREGUNTAS_INCORR) ||'/'|| tdeuei.NU_PREGUNTAS AS preguntas, " 
 				+"st.NB_ST_ENCUESTA AS estatus, "
 	            +"st.CD_COLOR AS nbColor, "
 	            +"(CASE  WHEN tdeuei.ID_ST_ENCUESTA= 3 THEN '0%' "

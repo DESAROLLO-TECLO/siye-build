@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="561e685e-83a4-4113-8990-d0b6b1ad1f42">
 	<property name="ireport.zoom" value="1.3636363636363635"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="344"/>
 	<subDataset name="dataset1_1" uuid="7356e04b-deb6-48ba-889d-e716b5f8c716">
 		<field name="_THIS" class="java.lang.String"/>
 	</subDataset>
@@ -90,7 +90,7 @@
 				<textElement>
 					<font size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Folio \n" +
+				<textFieldExpression><![CDATA["Folio: \n" +
 $P{FOLIO}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
@@ -176,7 +176,7 @@ $P{FOLIO}]]></textFieldExpression>
 				<textElement>
 					<font size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Trasportistas: "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Transportistas: "]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="15" y="63" width="219" height="20" uuid="9a1a5416-09bf-4c45-822b-3c37f5c69559"/>
