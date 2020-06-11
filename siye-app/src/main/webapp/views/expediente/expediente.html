@@ -145,13 +145,14 @@
 										</thead>
 										<tbody>
 											<tr dir-paginate="orden in listOrden | orderBy:tabla.order:tabla.reverse | filter:tabla.view.filterSearchVal | itemsPerPage:tabla.view.rowsPerPageVal"
-												pagination-id="listOrden">
+												pagination-id="listOrden"
+												ng-click="getImagesOrderServices(orden.idOrdenServicio)"
+												uib-tooltip="Detalle de imágenes de Orden"
+												tooltip-placement="top"
+												tooltip-enable="{{isUseTooltip}}"
+												style="cursor: pointer;">
 												<td class="center">
-													<a ng-click="getImagesOrderServices(orden.idOrdenServicio)"
-														uib-tooltip="Detalle de imagenes de Orden"
-														tooltip-placement="top"
-														tooltip-enable="{{isUseTooltip}}">{{orden.cdOrdenServicio}}
-													</a>
+													{{orden.cdOrdenServicio}}
 												</td>
 												<td class="center">{{orden.fhCita}}</td>
 												<td class="center">{{orden.vehiculo.cdPlacaVehiculo}}</td>
@@ -260,10 +261,12 @@
 								</div>
 								<br/><br/>
 								<div class="row">
-									<div class="col-xs-6 col-sm-6 col-md-3"><label>Folio:</label> {{ordenServicio.cdOrdenServicio}}</div>
-									<div class="col-xs-6 col-sm-6 col-md-3"><label>Placa:</label> {{ordenServicio.placa}}</div>
-									<div class="col-xs-6 col-sm-6 col-md-3"><label>VIN:</label> {{ordenServicio.numvim}}</div>
-									<div class="col-xs-6 col-sm-6 col-md-3"><label>Consesionario:</label> {{ordenServicio.nameConsesionario}}</div>
+									<div class="col-xs-6 col-sm-4 col-md-3"><label>FOLIO:</label> {{ordenServicio.cdOrdenServicio}}</div>
+									<div class="col-xs-6 col-sm-4 col-md-3"><label>PLACA:</label> {{ordenServicio.placa}}</div>									
+									<div class="col-xs-6 col-sm-4 col-md-3"><label>VIN:</label> {{ordenServicio.numvim}}</div>
+									<div class="col-xs-6 col-sm-4 col-md-3"><label>CONSESIONARIO:</label> {{ordenServicio.nameConsesionario}}</div>
+									<div class="col-xs-6 col-sm-4 col-md-3"><label>FECHA DE CITA:</label> {{ordenServicio.fhCita | date: "dd/MM/yyyy HH:mm"}}</div>	
+									<div class="col-xs-6 col-sm-4 col-md-3"><label>PROCESO ACTUAL:</label> {{ordenServicio.nbProceso}}</div>
 								</div><br/><br/>
 							</div>
 							<div class="box-body table-responsive">
@@ -271,26 +274,17 @@
 									<table id="tabla_listServicio" class="table table-striped table-hover">
 										<thead>
 											<tr>
-												<th width="130px" class="wrap-text" sort order="'imgVO.nbExpedienteODS'" by="view.order" reverse="view.reverse">NOMBRE</th>
-												<th width="130px" class="wrap-text" sort order="'imgVO.size'" by="view.order" reverse="view.reverse">TAMA&Ntilde;O</th>
 												<th width="130px" class="wrap-text" sort order="'imgVO.nbNivel'" by="view.order" reverse="view.reverse">CLASIFICACI&Oacute;N</th>
 												<th width="130px" class="wrap-text" sort order="'imgVO.nbTpDocumneto'" by="view.order" reverse="view.reverse">TIPO DE DOCUMENTO</th>
 												<th width="130px" class="wrap-text" sort order="'imgVO.fhCreacion'" by="view.order" reverse="view.reverse">FECHA</th>
+												<th width="130px" class="wrap-text" sort order="'imgVO.nbExpedienteODS'" by="view.order" reverse="view.reverse">NOMBRE</th>
+												<th width="130px" class="wrap-text" sort order="'imgVO.size'" by="view.order" reverse="view.reverse">TAMA&Ntilde;O</th>
 												<th width="130px" class="wrap-text">ACCI&Oacute;N</th>
 											</tr>
 										</thead>
 										<tbody>
 											<tr dir-paginate="imgVO in ordenServicio.imagenes | orderBy:view.order:view.reverse | filter: view.filter | itemsPerPage: view.rowsPerPage"
 												pagination-id="imagenes">
-												<td class="center">
-													<a tooltip-placement="top"
-														uib-tooltip="{{imgVO.nbExpedienteODS}}">
-														<span>
-															{{imgVO.nbExpedienteODS.length > 14 ? (imgVO.nbExpedienteODS.substr(0,14)+'...') : imgVO.nbExpedienteODS}}
-														</span>
-													</a>
-												</td>		                    	
-												<td class="center"><span>{{imgVO.size | prettySize}}</span></td>
 												<td class="center">
 													<label ng-if="imgVO.nbNivel.length > 44" tooltip-placement="top"
 														uib-tooltip="{{imgVO.nbNivel}}">
@@ -300,6 +294,15 @@
 												</td>
 												<td class="center"><span>{{imgVO.nbTpDocumneto}}</span></td>
 												<td class="center"><span>{{imgVO.fhCreacion | date : "dd/MM/yyyy" }}</span></td>
+												<td class="center">
+													<a tooltip-placement="top"
+														uib-tooltip="{{imgVO.nbExpedienteODS}}">
+														<span>
+															{{imgVO.nbExpedienteODS.length > 14 ? (imgVO.nbExpedienteODS.substr(0,14)+'...') : imgVO.nbExpedienteODS}}
+														</span>
+													</a>
+												</td>		                    	
+												<td class="center"><span>{{imgVO.size | prettySize}}</span></td>
 												<td class="text-center tableAnimateIn">
 													<button class="btn btn-box-tool btn-sm btn-danger"
 														tooltip-enable="{{isUseTooltip}}"
@@ -344,7 +347,7 @@
 				<div class="modal-dialog modal-lg">                                                     
 					<div class="modal-content">                                                         
 						<div class="modal-header">                                                      
-							<h4 class="modal-title" id="gridSystemModalLabel">Carga de Imagenes de la orden: {{ordenServicio.cdOrdenServicio}} </h4>    
+							<h4 class="modal-title" id="gridSystemModalLabel">Carga de Imágenes de la orden: {{ordenServicio.cdOrdenServicio}} </h4>    
 						</div>                                                                          
 						<div class="modal-body">
 							<div class="row">
