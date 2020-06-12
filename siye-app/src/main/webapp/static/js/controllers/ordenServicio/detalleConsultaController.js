@@ -180,6 +180,7 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 //				var file = $scope.b64toBlob(data.bdPath, "application/pdf");
 				$scope.error = false;
 				consultaServicioService.downloadfile(file, filename);
+				$scope.cerrarMostraConfirmacion();
 			}).error(function(data) {
 				$scope.error=data;
 			});

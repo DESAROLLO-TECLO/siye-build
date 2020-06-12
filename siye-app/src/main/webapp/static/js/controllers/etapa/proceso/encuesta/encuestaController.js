@@ -54,6 +54,7 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     });
     $scope.paramConfigImgxPreg = new Object({
         maxSizeMb: 1,
+        listTypeExtencion: ['jpg', 'png', 'jpeg'],
         title: "Agregar Evidencia por Pregunta",
         templateButonModal: '<a href="#"> <img class="add-img-img"' +
                             'src="static/dist/img/etapas/add.png">' +
@@ -333,7 +334,7 @@ $scope.checkPregunta =function(opcion,respuesta){
 			respuesta.opciones[i].descripcionCausa=null;
 	      }
 		}
-
+	$scope.mostraRespuesta = respuesta.txPregunta;
 	
 };
 
