@@ -6,17 +6,17 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 	$scope.mostraConfirmacion=false;
 
 	calcularDuracion = function(fhIni, fhFin){
-		let fdiferencia ="00:00:00";
+		let fdiferencia ="";
 
 		if(fhIni!=null){		
-			const DATE_FORMAT = "YYYY-MM-DD HH:mm:ss";	
-			let fecha1 = moment(fhIni, "YYYY-MM-DD HH:mm");
+			const DATE_FORMAT = "DD/MM/YYYY HH:mm:ss";	
+			let fecha1 = moment(fhIni, "DD/MM/YYYY HH:mm:ss");
 			let fecha2 = null;
 			const SegDia=86400, SegHora= 3600, SegMinuto = 60;
 			let dias, horas, minutos,segundos, diff;
 
-			if(fhFin!=null){
-				fecha2 = moment(fhFin, "YYYY-MM-DD HH:mm");
+			if(fhFin!=null && fhFin!="" && fhFin!=" "){
+				fecha2 = moment(fhFin, "DD/MM/YYYY HH:mm:ss");
 			}else{
 				fecha2 = moment();
 			}
@@ -66,7 +66,7 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 	}
 	
 	consultarTransportistas = function(){
-		$scope.transportista=[];
+		$scope.transportistas=[];
 		$scope.transportista="";
 		$scope.sintransportista = "";
 	    var idVeh = ordenInfo.data.vehiculo.idVehiculo;
@@ -141,7 +141,7 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 	$scope.mostrarInfoEvidencia = function(nivelNombre, obj){
 		$scope.evidenciaMostrar.nombre = nivelNombre;
 		$scope.evidenciaMostrar.fhIni = obj.infoEvidencia.fechaIni;
-		$scope.evidenciaMostrar.fhFin = obj.infoEvidencia.fechaFin;
+		$scope.evidenciaMostrar.fhFin = (obj.infoEvidencia.fechaFin!=null && obj.infoEvidencia.fechaFin != "" ) ? obj.infoEvidencia.fechaFin: "Sin Terminar";
 		$scope.evidenciaMostrar.duracion = calcularDuracion(obj.infoEvidencia.fechaIni, obj.infoEvidencia.fechaFin); 
 		$scope.evidenciaMostrar.supervisor = obj.infoEvidencia.nbSupervisor != null ? obj.infoEvidencia.nbSupervisor[0] : "Sin Supervisor";
 		$scope.evidenciaMostrar.instalador = obj.infoEvidencia.nbInstalador != null ? obj.infoEvidencia.nbInstalador[0] : "Sin Instalador";

@@ -194,7 +194,7 @@
 	                                                selector-content="consultados" data-toggle="popover">
 											<label for="tipoTramite">Transportista:</label>
 										</a>
-										<div class="input-group"  ng-if="transportistas.length>1">
+										<div class="input-group"  ng-if="transportistas.length>=1">
 											<p>{{transportista}}</p>
 										</div>
 										<div class="input-group"  ng-if="transportistas.length<1">
@@ -202,9 +202,9 @@
 										</div>
 										<div id="consultados" class="webuipopover-content">
 											<div class="center">
-												<sapn style="font-size: 1.2em;">
+												<span style="font-size: 1.2em;">
 													Transportistas:
-												</sapn>
+												</span>
 											</div>
 											<div style="border-bottom: 1px solid #cf0a2c; margin-bottom: 1%;"> </div>
 											<div class="webuipopover-content-scroll">
