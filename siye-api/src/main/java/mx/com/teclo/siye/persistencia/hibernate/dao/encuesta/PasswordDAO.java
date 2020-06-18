@@ -8,4 +8,6 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.comun.PasswordDTO;
 public interface PasswordDAO extends BaseDao<PasswordDTO>{
 	
 	public Boolean validarContraseniaTransportista(String password);
+	
+	PasswordDTO getClaveActual();
 }

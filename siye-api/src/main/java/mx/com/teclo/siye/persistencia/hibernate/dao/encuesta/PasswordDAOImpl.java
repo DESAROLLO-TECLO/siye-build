@@ -27,4 +27,13 @@ public class PasswordDAOImpl extends BaseDaoHibernate<PasswordDTO> implements Pa
 		}
 		return result;
 	}
+
+	@Override
+	public PasswordDTO getClaveActual() {
+		Criteria criteria = getCurrentSession().createCriteria(PasswordDTO.class);
+		criteria.add(Restrictions.eq("stActivo", true));
+		criteria.add(Restrictions.eq("stActual", true));
+
+		return (PasswordDTO) criteria.uniqueResult();
+	}
 }
