@@ -10,7 +10,7 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
     $scope.encuestas=procesoInfo.data;
     $scope.formato = '0';
     $scope.tiempoTranscurridoText = "Sin Iniciar";
-	
+	$scope.mostraClave = false;
 	
 	
 
@@ -94,6 +94,21 @@ function($rootScope,$scope,$window,$translate,$timeout,growl,procesoService,proc
     	encuestaService.primerEncuesta=EncuestasInfo[0].idEncuesta.idEncuesta;
     	
     }
+    
+    $scope.abrirModal = function(){
+    	encuestaService.getClaveDiaria().success(function(data){
+    		$scope.claveDiaria = data;
+    		$scope.mostraClave = true;
+    		$scope.error = false;
+    	}).error(function(data){
+    		$scope.claveDiaria = {}
+    		$scope.error = data;
+    	});
+    };
+    
+    $scope.cerrarModal = function(){
+    	$scope.mostraClave = false;
+    };
     
     obtenerPrimeraEncuestaPrimerProceso(procesoInfo.data);
     cambiaTiempo($scope.tiempoTranscurrido);

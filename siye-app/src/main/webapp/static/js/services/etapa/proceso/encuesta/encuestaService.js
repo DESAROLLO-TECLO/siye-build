@@ -90,5 +90,9 @@ function($http, config, $rootScope) {
             }
         });
     }
+    
+    this.getClaveDiaria = function(){
+    	return $http.get(config.baseUrl + "/clave");
+    };
 
 });

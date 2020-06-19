@@ -116,6 +116,9 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6">
+                            	<div style="float: left;" ng-if = "stActivarEncuesta">
+                                    <a class="btn btn-primary" ng-click="abrirModal()" role="button">Ver contraseña</a>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div style="float: right;">
@@ -128,5 +131,41 @@
             </div>
         </div>
     </section>
-</body>
+    <modal visible="mostraClave" size-modal="md" noescape modalstatic on-hide="mostraClave = false">
+            <modal-header title="Contraseña de encuesta de satisfacción"></modal-header>
+            <modal-body>
+               	<div class="row">
+               		<div class="col-md-4">
+               			<div class="form-group">
+							<label>Contraseña:</label>
+							<div class="input-group">
+								<p>{{claveDiaria.txValor}}</p>
+							</div>
+						</div>
+               		</div>
+               		<div class="col-md-4">
+               			<div class="form-group">
+							<label>Vigencia Inicial:</label>
+							<div class="input-group">
+								<p>{{claveDiaria.fhVigenciaIni}}</p>
+							</div>
+						</div>
+               		</div>
+               		<div class="col-md-4">
+               			<div class="form-group">
+							<label>Vigencia Final:</label>
+							<div class="input-group">
+								<p>{{claveDiaria.fhVigenciaFin}}l</p>
+							</div>
+						</div>
+               		</div>
+				</div>
+            </modal-body>
+            <modal-footer class="center">
+                <button type="button" ng-click="cerrarModal()" class="btn btn-danger btn-flat">
+					<span class="fa fa-window-close"></span>&nbsp Cerrar
+				</button>
+            </modal-footer>
+        </modal>
+	</body>
 </html>
