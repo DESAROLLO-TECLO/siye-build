@@ -1,8 +1,6 @@
-<<<<<<< HEAD
+
 # sie-build
-=======
-# sie-build 
->>>>>>> 92d843b32ed4966ee47bfdb445b809e4c0b123d8
+
 Sistema de Inspección y Evaluaciones (SIE)
 <pre>
 1.- El archivo SCRIPT-BASE.SQL contienes los script necesario para crear una nueva aplicación desde cero
