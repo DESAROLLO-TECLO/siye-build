@@ -19,7 +19,7 @@
 	</section>
 
 	<!-- Incidencia -->
-	<boton-incidencia ng-click="guardaAvancePorPagina(paramConfigPage.bigCurrentPage)" id-orden="ordSer" id-proceso="idProc" id-encuesta="idEnc"
+	<boton-incidencia ng-click="changedView(paramConfigPage.bigCurrentPage)" id-orden="ordSer" id-proceso="idProc" id-encuesta="idEnc"
 	url-actual="'$etapas$proceso$encuesta$'+idEnc+'$'+ordSer+'$'+idProc+'$'+nombreProceso"></boton-incidencia>
 
 	<section class="content">
@@ -191,7 +191,7 @@
 												<i class="fa fa-list-ul"></i>
 											</div>
 											<select class="form-control" select2
-											    ng-disabled="estatusEncuesta=='FIN'"
+											    ng-disabled="estatusEncuesta=='FIN' || encuestInprocess"
 												idioma-s2="{{currentLanguage}}"
 												ng-model="selectTransportista"
 												name="transp" id="transp"
@@ -216,7 +216,7 @@
 												<i class="fa fa-list-ul"></i>
 											</div>
 											<select class="form-control" select2
-											    ng-disabled="estatusEncuesta=='FIN'"
+											    ng-disabled="estatusEncuesta=='FIN' || encuestInprocess"
 												idioma-s2="{{currentLanguage}}"
 												ng-model="selectInstalador"
 												name="inst" id="inst"
@@ -263,7 +263,7 @@
 																								ng-if="!opciones.cdMostrarCausas || (opciones.cdMostrarCausas && opciones.causas)"
 																								style="display: inline-block;">
 																								<label class="content-input"> <input
-																									ng-disabled="estatusEncuesta=='FIN'"
+																									ng-disabled="estatusEncuesta=='FIN' || encuestInprocess"
 																									type="radio" name="{{respuesta.txPregunta}}"
 																									id="{{opciones.idOpcion}}" ng-value=1
 																									ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
@@ -276,7 +276,7 @@
 																								ng-if="opciones.cdMostrarCausas && !opciones.causas"
 																								style="display: inline-block;">
 																								<label class="content-input"> <input
-																									ng-disabled="estatusEncuesta=='FIN'"
+																									ng-disabled="estatusEncuesta=='FIN' || encuestInprocess"
 																									type="radio" name="{{respuesta.txPregunta}}"
 																									id="{{opciones.idOpcion}}" ng-value=1
 																									ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
@@ -443,7 +443,7 @@
 																					ng-model="causas" name="causa" id="causa"
 																					ng-change="changeComboCausa()"
 																					ng-options="sp.idCausa as sp.nbCausa for sp in comboCausasList"
-																					ng-disabled="estatusEncuesta=='FIN'">
+																					ng-disabled="estatusEncuesta=='FIN' || encuestInprocess">
 
 																				</select>
 																			</div>
@@ -461,7 +461,7 @@
 																	<div class="col-md-12">
 																		<label> Descripción: </label>
 																		<textarea ng-model="descripcionCausa"
-																			ng-disabled="estatusEncuesta=='FIN'"
+																			ng-disabled="estatusEncuesta=='FIN' || encuestInprocess"
 																			class="form-control" rows="4"></textarea>
 																	</div>
 																</div>
@@ -470,7 +470,7 @@
 																<!--  <button type="button" class="btn btn-default"
 																	data-dismiss="modal">Salir sin guardar</button>-->
 																<button type="button" class="btn btn-primary"
-																	ng-disabled="estatusEncuesta=='FIN'"
+																	ng-disabled="estatusEncuesta=='FIN' || encuestInprocess"
 																	ng-click="guardarCausa()">Guardar</button>
 															</div>
 														</div>
@@ -484,7 +484,7 @@
 
 													<div style="float: left;">
 														
-														<button class="btn btn-danger" ng-show="estatusEncuesta=='FIN'"
+														<button class="btn btn-danger" ng-show="estatusEncuesta=='FIN' || encuestInprocess"
 															ng-click="regresarEncuestas() ">
 															<div style="display: block;">Regresar</div>
 														</button>
@@ -506,13 +506,13 @@
 																</a>
 															</div>
 															<button class="btn btn-danger w-100 mb-2"
-																ng-disabled="estatusEncuesta=='FIN'"
+																ng-disabled="estatusEncuesta=='FIN' || encuestInprocess"
 																ng-click="guardaFinalizaEncuesta(paramConfigPage.bigCurrentPage) ">
 																<div style="display: block;">Finalizar</div>
 															</button>
 														</div>
-														<div
-															ng-if="preguntasContestadasEncuesta!=encuestaDetalle.encuesta.nuPreguntas && banderaPermiteGuardarAvance=='VERDADERO'"
+														<div ng-if="(preguntasContestadasEncuesta!=encuestaDetalle.encuesta.nuPreguntas 
+																		&& banderaPermiteGuardarAvance=='VERDADERO') && !encuestInprocess"
 															class="w-100">
 															<div style="display: block; margin: 0 auto;"
 																ng-if="myVar">

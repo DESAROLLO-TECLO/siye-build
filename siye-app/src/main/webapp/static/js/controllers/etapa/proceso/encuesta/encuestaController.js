@@ -1,6 +1,7 @@
 angular.module(appTeclo)
 .controller("encuestaController",
-function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo,encuestaService,growl,showAlert,$location,$interval,idpro,nbProceso) {
+function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo,
+		encuestaService,growl,showAlert,$location,$interval,idpro,nbProceso) {
     
 	$scope.idProcesoActual=idpro;
 	$scope.nombreProceso=nbProceso;
@@ -9,6 +10,7 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
     $scope.seccEncuesta = encuestaInfo.data.encuesta.secciones[0];
     var backOpcionMarcada=new Object({opcion:undefined,pregunta:undefined});
     $scope.estatusEncuesta=encuestaInfo.data.intentoDetalleVO.stEncuesta.cdStEncuesta;
+    $scope.encuestInprocess = encuestaInfo.data.encuestInprocess;
     $scope.redireccionar = false;
     $scope.ordSer = encuestaInfo.data.usuario.idOrdenServicio;
     $scope.idProc = idpro;
@@ -225,6 +227,23 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
         $scope.saveEncuesta(seccionVO);
     };
     
+    //Actualizar la encuesta para que este disponible para otro usuario
+    updateEncuestaEnProceso = function(){
+    	encuestaService.updateEncuestaEnProceso($scope.ordSer,$scope.idEnc,false).success(function(data) {
+    		if(data)
+    			console.log("se actualiza la encuesta para que sea editable a otros usuarios si aun no es finalizada");
+    		else
+    			console.log("No se actualiza la encuesta para que sea editable a otros usuarios si aun no es finalizada");	
+        }).error(function(data) {
+        	console.log("No se actualiza la encuesta para que sea editable a otros usuarios si aun no es finalizada");
+        });
+    };
+    
+    $scope.changedView=function(numPagina){
+    	$scope.guardaAvancePorPagina(numPagina);
+    	updateEncuestaEnProceso();
+    }
+    
     $scope.saveEncuesta = function(seccionVO) {
         var guardarSeccion = false;
         var seccionContestada = new Array();
@@ -253,34 +272,36 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
                 seccionContestada.push(objectEncuesta);
             }
         }
-        encuestaService.saveRespuestaEncuesta(seccionContestada).success(function(data) {
-            if (data == true) {
-                if ($scope.redireccionar) {
-                    //$timeout(() => {
-                	$scope.flagTimer=false;
-                        $scope.regresarEncuestas()
-                        
-                    //}, 1000);
+        if(!$scope.encuestInprocess){// solamente se guadan las respuestas cuando la encueta no este siendo ocupado por otro usuario
+        	encuestaService.saveRespuestaEncuesta(seccionContestada).success(function(data) {
+                if (data == true) {
+                    if ($scope.redireccionar) {
+                        //$timeout(() => {
+                    	$scope.flagTimer=false;
+                            $scope.regresarEncuestas()
+                            
+                        //}, 1000);
+                    }
+                    guardarSeccion = true;
+                    //  growl.success("Se guardaron respuestas ",{ ttl: 5000 });
+                } else
+                    growl.success("No se pudieron guardar respuestas", { ttl: 5000 });
+                guardarSeccion = false;
+            }).error(function(data) {
+                if (data != null && data.status != null && data.status == 400) {
+                    $scope.paramConfigPage.tiempoReanuda = true;
+                    $scope.paramConfigPage.flagFinalizaEncueta = true;
+                    showAlert.aviso(data.message, $scope.regresarEncuestas2);
+                    // growl.error(data.message, { ttl: 3000 });
+                    /// $scope.consultaEvaEvaluados();
+                } else {
+                    growl.error('Ha ocurrido un error al tratar de activar la evaluación, favor de validar.', { ttl: 4000 });
                 }
-                guardarSeccion = true;
-                //  growl.success("Se guardaron respuestas ",{ ttl: 5000 });
-            } else
-                growl.success("No se pudieron guardar respuestas", { ttl: 5000 });
-            guardarSeccion = false;
 
-        }).error(function(data) {
-            if (data != null && data.status != null && data.status == 400) {
-                $scope.paramConfigPage.tiempoReanuda = true;
-                $scope.paramConfigPage.flagFinalizaEncueta = true;
-                showAlert.aviso(data.message, $scope.regresarEncuestas2);
-                // growl.error(data.message, { ttl: 3000 });
-                /// $scope.consultaEvaEvaluados();
-            } else {
-                growl.error('Ha ocurrido un error al tratar de activar la evaluación, favor de validar.', { ttl: 4000 });
-            }
-
-            guardarSeccion = false;
-        });
+                guardarSeccion = false;
+            });	
+        }
+        
         return guardarSeccion;
     };
     
@@ -632,7 +653,13 @@ validarGuardadoDeCausas=function()
 
 $scope.pausarEncuesta = function(nuPagina, tiempo) {
 	$scope.redireccionar = true;
-	showAlert.confirmacion("¿Desea guardar la evaluación?", $scope.guardaAvancePorPagina, nuPagina, $scope.testCancelConfirmacion2);
+	showAlert.confirmacion("¿Desea guardar la evaluación?",
+			function(){
+				$scope.guardaAvancePorPagina(nuPagina);
+				updateEncuestaEnProceso();
+			}
+			, null, 
+			$scope.testCancelConfirmacion2);
 	
     
 };
@@ -794,6 +821,14 @@ requiredFields = function(){
 	})
 };
 
+	initValidController = function(){
+		if($scope.encuestInprocess){// si se detecta que otro usuario ya esta requisitando la encuesta, se muestra un modal
+			showAlert.aviso("Por el momento la encuesta esta inhabilitada, otro usuario se encuentra requisitandola en este momento",null);
+		}
+	};
+	
+
+	initValidController();
     consultarTransportistas();
     consultaTecnicos();
     iniciarProcesoIndividual(encuestaInfo.data.intentoDetalleVO.stEncuesta.cdStEncuesta,encuestaInfo.data.encuesta.idEncuesta,encuestaInfo.data.usuario.idOrdenServicio);

@@ -94,5 +94,14 @@ function($http, config, $rootScope) {
     this.getClaveDiaria = function(){
     	return $http.get(config.baseUrl + "/clave");
     };
+    
+    this.updateEncuestaEnProceso=function(idOrden,idEncuesta,encInProceso){
+    	let request=new Object({
+    		idEncuesta:idEncuesta,
+    		idOrdenServicio:idOrden,
+    		encInProcess:encInProceso
+    	});
+	return $http.put(config.baseUrl + "/encuesta/updateEncuestaEnProceso",request);
+    };
 
 });
