@@ -42,6 +42,13 @@ public class OrdenEncuestaDTO implements Serializable {
 	@Basic(optional = false)
 	@Column(name = "ST_APLICA_ENCUESTA", nullable = false)
 	private Boolean stAplicaEncuesta;
+	
+	@Column(name = "ENC_EN_PROCESO", nullable = false)
+	private Boolean encEnProceso;
+	
+	@Column(name = "FH_EN_INI_ENC", nullable = false)
+	private Date fhEnIniEnc;
+	
 	@Column(name = "ST_ACTIVO")
 	private Boolean stActivo;
 	@Basic(optional = false)
@@ -147,6 +154,34 @@ public class OrdenEncuestaDTO implements Serializable {
 
 	public void setEncuesta(EncuestasDTO encuesta) {
 		this.encuesta = encuesta;
+	}
+
+	/**
+	 * @return the encEnProceso
+	 */
+	public Boolean getEncEnProceso() {
+		return encEnProceso;
+	}
+
+	/**
+	 * @param encEnProceso the encEnProceso to set
+	 */
+	public void setEncEnProceso(Boolean encEnProceso) {
+		this.encEnProceso = encEnProceso;
+	}
+
+	/**
+	 * @return the fhEnIniEnc
+	 */
+	public Date getFhEnIniEnc() {
+		return fhEnIniEnc;
+	}
+
+	/**
+	 * @param fhEnIniEnc the fhEnIniEnc to set
+	 */
+	public void setFhEnIniEnc(Date fhEnIniEnc) {
+		this.fhEnIniEnc = fhEnIniEnc;
 	}
 
 

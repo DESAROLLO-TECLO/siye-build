@@ -395,7 +395,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 			 if(ordenEncuestaDTO == null){
 				 String msj="No se puede guardar la imagen,";
 				 if(expedientes.size() > 1)
-					 msj="No se pueden guardar las imagenes,";
+					 msj="No se pueden guardar las imágenes,";
 				 throw new BusinessException(msj+" la encuesta seleccionada no esta asociada a la orden de servicio");
 			 }
 		}

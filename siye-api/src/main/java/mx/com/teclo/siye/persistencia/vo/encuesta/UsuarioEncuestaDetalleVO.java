@@ -17,6 +17,7 @@ public class UsuarioEncuestaDetalleVO implements Serializable{
 	private Boolean stAplicaEncuesta;
 	private EncuestaDetalleVO encuesta;
 	private IntentoDetalleVO intentoDetalleVO;
+	private Boolean encuestInprocess;
 	/**
 	 * @return the idUsuarioEncuesta
 	 */
@@ -89,5 +90,16 @@ public class UsuarioEncuestaDetalleVO implements Serializable{
 	public void setIntentoDetalleVO(IntentoDetalleVO intentoDetalleVO) {
 		this.intentoDetalleVO = intentoDetalleVO;
 	}
-	
+	/**
+	 * @return the encuestInprocess
+	 */
+	public Boolean getEncuestInprocess() {
+		return encuestInprocess;
+	}
+	/**
+	 * @param encuestInprocess the encuestInprocess to set
+	 */
+	public void setEncuestInprocess(Boolean encuestInprocess) {
+		this.encuestInprocess = encuestInprocess;
+	}
 }

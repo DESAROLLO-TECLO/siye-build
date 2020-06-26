@@ -67,4 +67,13 @@ public interface EncuestaService {
 	public void actualizaOrdenServFhParcial(Long idUsuEncuIntento);
 	
 	public void actualizaSuperTransInst(Long idTransVehiculo, Integer idInstalador,Long idUsuEncuIntento);
+	
+	/**
+	 * @Descripcion: Se actualiza la tabla intermedia orden de servicio y encuesta
+	 * @param idOrden
+	 * @param idEncuesta
+	 * @param inProceso
+	 * @param idUser
+	 */
+	public Boolean updateEncuestaEnProceso(Long idOrden,Long idEncuesta,boolean inProceso,Long idUser);
 }

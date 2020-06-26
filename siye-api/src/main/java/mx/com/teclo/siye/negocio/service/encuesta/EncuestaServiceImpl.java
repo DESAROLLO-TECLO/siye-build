@@ -22,27 +22,30 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.EstatusCalificacion
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.PersonaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.StEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.catalogo.VehiculoConductorDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.configuracion.ConfiguracionOSDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestaDetalleDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.IERespCausaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.OpcionesDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.OrdenEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.PasswordDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.PreguntasDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.SeccionDAO;
-import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaIntentoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaIntentoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaRespuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.IeStUsuEncuIntenDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.UsuarioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.StEncuestaDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.configuracion.ConfiguracionOSDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EncuestasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.EstatusCalificacionDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.IERespCausaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OpcionesDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.PreguntasDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.SeccionDTO;
-import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaDetalleDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaIntentosDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuaroEncuestaRespuestaDTO;
@@ -61,6 +64,7 @@ import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaIntentosVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaRespuestaVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaVO;
+import mx.com.teclo.siye.util.comun.RutinasTiempoImpl;
 import mx.com.teclo.siye.util.enumerados.RespuestaHttp;
 
 @Service
@@ -132,6 +136,21 @@ public class EncuestaServiceImpl implements EncuestaService {
 	@Autowired
 	private UsuarioDAO usuarioDAO;
 	
+	@Autowired
+	private OrdenEncuestaDAO ordenEncuestaDAO;
+
+	@Autowired
+	private ConfiguracionOSDAO configuracionOSDAO;
+	
+	@Autowired
+	private RutinasTiempoImpl rutinasTiempo;
+	
+	@Autowired
+	private UsuarioFirmadoService usuarioFirmadoService;
+	
+	private static final Boolean ENC_EN_PROCESO=true;
+	private static final Boolean ENC_NO_EN_PROCESO=false;
+	
 	@Override
 	@Transactional
 	public UsuarioEncuestaDetalleVO encuestaDetalle(Long idEncuesta,
@@ -141,9 +160,15 @@ public class EncuestaServiceImpl implements EncuestaService {
 		
 		UsuarioEncuestaDetalleVO uedVO = new UsuarioEncuestaDetalleVO();
 		UsuarioEncuestaDetalleDTO uedDTO = encuestaDetalleDAO.getEncuestaDetalle(idEncuesta,idOrdenServicio);
+		Long idUser=usuarioFirmadoService.getUsuarioFirmadoVO().getId();
 		if(uedDTO == null)
 			throw new NotFoundException(RespuestaHttp.NOT_FOUND.getMessage());
 		uedVO = ResponseConverter.copiarPropiedadesFull(uedDTO, UsuarioEncuestaDetalleVO.class);
+		
+		// se valida si previamente ya esta en proceso la encuesta con otro usuario
+		Long idUserSession=usuarioFirmadoService.getUsuarioFirmadoVO().getId();
+		Boolean encInProcess = encEnProceso(idOrdenServicio,idEncuesta,idUserSession);
+		uedVO.setEncuestInprocess(encInProcess);
 		
 		// Obtener el detalle del intento actual
 		UsuarioEncuestaIntentosDTO ueiDTO = usuarioEncuestaIntentoDAO.getEncuestaByUsuario(uedDTO.getEncuesta().getIdEncuesta(), idOrdenServicio);
@@ -161,16 +186,15 @@ public class EncuestaServiceImpl implements EncuestaService {
 				idVO.setFhFin(ueiDTO.getFhFin());
 				IeStUsuEncuIntenDTO ieStUsuEncuIntenDTO=ieStUsuEncuIntenDAO.getInfoByUsuEncInt(ueiDTO.getIdUsuEncuIntento());
 				if(ieStUsuEncuIntenDTO != null) {
-				idVO.setTransportista(ieStUsuEncuIntenDTO.getIdVehiculoConductor().getConductor().getNbConductor()+" "+ieStUsuEncuIntenDTO.getIdVehiculoConductor().getConductor().getNbApepatConductor()+" "+ieStUsuEncuIntenDTO.getIdVehiculoConductor().getConductor().getNbApematConductor());
-				idVO.setIdVehiculoCnductor(ieStUsuEncuIntenDTO.getIdVehiculoConductor().getConductor().getIdConductor());
-				idVO.setTecnico(ieStUsuEncuIntenDTO.getIdRHInstalador().getNbPersona()+" "+ieStUsuEncuIntenDTO.getIdRHInstalador().getNbPatPersona()+" "+ieStUsuEncuIntenDTO.getIdRHInstalador().getNbMatPersona());
-				idVO.setIdPersona(ieStUsuEncuIntenDTO.getIdRHInstalador().getIdPersona());
-				UsuarioDTO usuario = usuarioDAO.findUserById(ieStUsuEncuIntenDTO.getIdGerenteSuoervisor().getSupervisor(),"SIE");
-				if(usuario!=null) {
-				idVO.setSupervisor(usuario.getNbUsuario()+" "+usuario.getNbApaterno()+" "+usuario.getNbApaterno());	
-				idVO.setIdGerenteSupervisor(ieStUsuEncuIntenDTO.getIdGerenteSuoervisor().getIdGerenteSupervisor());
-				}
-
+					idVO.setTransportista(ieStUsuEncuIntenDTO.getIdVehiculoConductor().getConductor().getNbConductor()+" "+ieStUsuEncuIntenDTO.getIdVehiculoConductor().getConductor().getNbApepatConductor()+" "+ieStUsuEncuIntenDTO.getIdVehiculoConductor().getConductor().getNbApematConductor());
+					idVO.setIdVehiculoCnductor(ieStUsuEncuIntenDTO.getIdVehiculoConductor().getConductor().getIdConductor());
+					idVO.setTecnico(ieStUsuEncuIntenDTO.getIdRHInstalador().getNbPersona()+" "+ieStUsuEncuIntenDTO.getIdRHInstalador().getNbPatPersona()+" "+ieStUsuEncuIntenDTO.getIdRHInstalador().getNbMatPersona());
+					idVO.setIdPersona(ieStUsuEncuIntenDTO.getIdRHInstalador().getIdPersona());
+					UsuarioDTO usuario = usuarioDAO.findUserById(ieStUsuEncuIntenDTO.getIdGerenteSuoervisor().getSupervisor(),"SIE");
+					if(usuario!=null) {
+						idVO.setSupervisor(usuario.getNbUsuario()+" "+usuario.getNbApaterno()+" "+usuario.getNbApaterno());	
+						idVO.setIdGerenteSupervisor(ieStUsuEncuIntenDTO.getIdGerenteSuoervisor().getIdGerenteSupervisor());
+					}
 				}
 				
 			}
@@ -187,6 +211,12 @@ public class EncuestaServiceImpl implements EncuestaService {
 //			listPp = quitarSeccionesInactivas(listPp);
 //			uedVO.getEncuesta().setSecciones(listPp);
 		}
+		
+		//SE ACTUALIZA EL ESTATUS PARA INDICAR QUE ESTE USUARIO ES EL QUE ESTA CONTESTANDO LA ENCUESTA 
+		//Y NADIE MAS PUEDA CONTESTARLA HASTA QUE SE FINALIZE O EL TIEMPO DEFINIDO PARA EL APARTADO TERMINE
+		if(!encInProcess)
+			updateEncuestaEnProceso(idOrdenServicio,idEncuesta,ENC_EN_PROCESO,idUser);
+		
 		return uedVO;
 
 
@@ -372,6 +402,14 @@ public class EncuestaServiceImpl implements EncuestaService {
 			List<UsuarioEncuestaIntentosDTO> encuestaIntentosDTOs=new ArrayList<>();
 			encuestaIntentosDTOs.add(usuarioEncuestaIntentosDTO);
 			List<UsuarioEncuestaIntentosVO> listReturn =ResponseConverter.converterLista(new ArrayList<>(), encuestaIntentosDTOs, UsuarioEncuestaIntentosVO.class);
+			
+			//SE ACTUALIZA EL ESTATUS PARA INDICAR QUE ESTE USUARIO ES EL QUE ESTA CONTESTANDO LA ENCUESTA 
+			//Y NADIE MAS PUEDA CONTESTARLA HASTA QUE SE FINALIZE O EL TIEMPO DEFINIDO PARA EL APARTADO TERMINE
+			Long idOrden=usuarioEncuestaIntentosDTO.getUsuarioEncuesta().getOrdenServicio().getIdOrdenServicio();
+			Long idEncuesta=usuarioEncuestaIntentosDTO.getUsuarioEncuesta().getEncuesta().getIdEncuesta();
+			Long idUserSession=usuarioFirmadoService.getUsuarioFirmadoVO().getId();
+			updateEncuestaEnProceso(idOrden,idEncuesta,ENC_NO_EN_PROCESO,idUserSession);
+			
 			return listReturn.get(0);
 		}else if(finEnc == true){
 			usuarioEncuestaIntentosDTO.setStMostrar(true);
@@ -382,6 +420,14 @@ public class EncuestaServiceImpl implements EncuestaService {
 			List<UsuarioEncuestaIntentosDTO> encuestaIntentosDTOs=new ArrayList<>();
 			encuestaIntentosDTOs.add(usuarioEncuestaIntentosDTO);
 			List<UsuarioEncuestaIntentosVO> listReturn = ResponseConverter.converterLista(new ArrayList<>(), encuestaIntentosDTOs, UsuarioEncuestaIntentosVO.class);
+			
+			//SE ACTUALIZA EL ESTATUS PARA INDICAR QUE ESTE USUARIO ES EL QUE ESTA CONTESTANDO LA ENCUESTA 
+			//Y NADIE MAS PUEDA CONTESTARLA HASTA QUE SE FINALIZE O EL TIEMPO DEFINIDO PARA EL APARTADO TERMINE
+			Long idOrden=usuarioEncuestaIntentosDTO.getUsuarioEncuesta().getOrdenServicio().getIdOrdenServicio();
+			Long idEncuesta=usuarioEncuestaIntentosDTO.getUsuarioEncuesta().getEncuesta().getIdEncuesta();
+			Long idUserSession=usuarioFirmadoService.getUsuarioFirmadoVO().getId();
+			updateEncuestaEnProceso(idOrden,idEncuesta,ENC_NO_EN_PROCESO,idUserSession);
+			
 			return listReturn.get(0);
 		}
 		return null;
@@ -515,6 +561,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 		// Obtenemos la encuesta actual del usuario
 		if(ueDTO.getStEncuesta().getCdStEncuesta().equals("FIN"))
 			throw new BusinessException("Esta encuesta ya fue finalizada, favor de validar.");
+		
 		
 		if(ueDTO != null)
 		for(UserRespuestaVO urVO: l) {
@@ -676,6 +723,15 @@ public class EncuestaServiceImpl implements EncuestaService {
 		usuarioEncuestaIntentosDTO.getUsuarioEncuesta().setNuIntegerentos(usuarioEncuestaIntentosDTO.getUsuarioEncuesta().getNuIntegerentos() + 1);
 
 		usuarioEncuestaIntentoDAO.update(usuarioEncuestaIntentosDTO);
+		
+		//SE ACTUALIZA EL ESTATUS PARA INDICAR QUE ESTE USUARIO ES EL QUE ESTA CONTESTANDO LA ENCUESTA 
+		//Y NADIE MAS PUEDA CONTESTARLA HASTA QUE SE FINALIZE O EL TIEMPO DEFINIDO PARA EL APARTADO TERMINE
+		Long idUserSession=usuarioFirmadoService.getUsuarioFirmadoVO().getId();
+		Boolean encInProcess = encEnProceso(idOrdenServicio,idEncuesta,idUserSession);
+		
+		if(!encInProcess)
+			updateEncuestaEnProceso(idOrdenServicio,idEncuesta,ENC_EN_PROCESO,idUsuario);
+		
 	}
 	
 	@Override
@@ -719,6 +775,68 @@ public class EncuestaServiceImpl implements EncuestaService {
 		newInstalador.setIdUsrModifica(usuario.getId());
 		newInstalador.setFhModificacion(new Date());
 		ieStUsuEncuIntenDAO.save(newInstalador);
+	}
+	
+	
+	@Transactional(readOnly = true)
+	public Boolean encEnProceso(Long idOrden,Long idEncuesta,Long idUserSession){
+		
+		OrdenEncuestaDTO ordenEncuestaDTO = ordenEncuestaDAO.getOrdenEncuestaByIdOrdAndIdEnc(idOrden,idEncuesta);
+		
+		if(ordenEncuestaDTO == null)
+			return false;
+		
+		Long idUserInprocessEnc=ordenEncuestaDTO.getIdUsrModifica() == null ? 0L : ordenEncuestaDTO.getIdUsrModifica();
+		
+		// si la badera esta encendida y la fecha que se inicio la encuesta es diferente de null y el susuaio es diferente
+		// se procede a validar si puede o no contestar la encuesta
+		if(ordenEncuestaDTO.getEncEnProceso() && ordenEncuestaDTO.getFhEnIniEnc() != null 
+				&& !idUserSession.equals(idUserInprocessEnc)){
+			
+			Date currentDate= new Date();
+			ConfiguracionOSDTO configuracionOSDTO=configuracionOSDAO.getConfigByCdConfig("TMP_ENCUESTA_USR");
+			
+			Integer tiempoConfigurado=0;
+			
+			try{
+				tiempoConfigurado=Integer.parseInt(configuracionOSDTO.getCdValorConfig());
+			}catch(Exception e){
+				tiempoConfigurado=0;
+			}
+			
+			// se vaida si el tiempo en el que incio con respecto al tiempo actual supera el tiempo de bloqueo de la encuesta
+			Date dateInitEnc=ordenEncuestaDTO.getFhEnIniEnc();
+			dateInitEnc= rutinasTiempo.addMinutes(dateInitEnc, tiempoConfigurado);
+			// si la fecha acual es mayor a la fecha en la que se ingreso a la encuesta en tonces se deduce que la encuesta ya no est en prceso
+			if(currentDate.before(dateInitEnc)){
+				return true;
+			}else{
+				return false;
+			}
+		}
+		
+		return false;
+	}
+	
+	
+	@Transactional
+	@Override
+	public Boolean updateEncuestaEnProceso(Long idOrden,Long idEncuesta,boolean inProceso,Long idUser){
+		OrdenEncuestaDTO ordenEncuestaDTO = ordenEncuestaDAO.getOrdenEncuestaByIdOrdAndIdEnc(idOrden,idEncuesta);
+		
+		if(ordenEncuestaDTO == null)
+			return false;
+		
+		Date currentDate=new Date();
+		ordenEncuestaDTO.setEncEnProceso(inProceso);
+		ordenEncuestaDTO.setIdUsrModifica(idUser);
+		ordenEncuestaDTO.setFhModificacion(currentDate);
+		if(inProceso)
+			ordenEncuestaDTO.setFhEnIniEnc(currentDate);
+		else
+			ordenEncuestaDTO.setFhEnIniEnc(null);
+		
+		return true;
 	}
 	
 }

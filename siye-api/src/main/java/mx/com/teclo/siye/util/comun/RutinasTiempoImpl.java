@@ -623,5 +623,19 @@ public class RutinasTiempoImpl {
 		return devolver;
 
 	}
+	
+	/**
+	 * Descripcion: suma minutos a la hora especificada
+	 * @param date
+	 * @param amount
+	 * @return Date
+	 */
+	public Date addMinutes(Date date, int amount){
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(date);
+	    calendar.add(Calendar.MINUTE, amount);
+	
+	    return calendar.getTime();
+	}
 
 }

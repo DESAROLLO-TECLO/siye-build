@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.exception.NotFoundException;
+import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.siye.negocio.service.encuesta.EncuestaService;
 import mx.com.teclo.siye.negocio.service.encuesta.RespuestaService;
 import mx.com.teclo.siye.negocio.service.usuario.UsuarioService;
+import mx.com.teclo.siye.persistencia.vo.encuesta.RequestUpdateProcessEncVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UserRespuestaVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.encuesta.UsuarioEncuestaIntentosVO;
@@ -37,6 +39,9 @@ public class EncuestaRestController {
 	
 	@Autowired
 	private RespuestaService respuestaService;
+	
+	@Autowired
+	private UsuarioFirmadoService usuarioFirmadoService;
 	
 		
 	@RequestMapping(value="/detalle", method = RequestMethod.GET)
@@ -156,5 +161,18 @@ public class EncuestaRestController {
 		}
 		return new ResponseEntity<UsuarioEncuestaIntentosVO>(encuestaIntentosVO, HttpStatus.OK);
 	}
+	
+	@RequestMapping(value="/updateEncuestaEnProceso", method = RequestMethod.PUT)
+	public ResponseEntity<Boolean> updateEncuestaEnProceso(
+			@RequestBody RequestUpdateProcessEncVO ruVO) throws NotFoundException {
+		
+		Long idUser=usuarioFirmadoService.getUsuarioFirmadoVO().getId();
+		
+		Boolean inProcess=encuestaService.updateEncuestaEnProceso(ruVO.getIdOrdenServicio(), 
+																ruVO.getIdEncuesta(), ruVO.getEncInProcess(), idUser);
+		
+		return new ResponseEntity<Boolean>(inProcess, HttpStatus.OK);
+	}
+	
 }
 	
