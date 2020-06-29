@@ -251,10 +251,10 @@
 																			ng-class="{ 'has-error' : evaluacion.{{'valueOption'+$index}}.$invalid &&evaluacion.{{'customValue'+$index}}.$dirty}">
 
 																			<div class="row">
-																				<div class="col-md-5 col-sm-6 col-xs-12">
+																				<div class="col-md-5 col-sm-5 col-xs-12">
 																					<span class="text-15">{{respuesta.txPregunta}}</span>
 																				</div>
-																				<div class="col-md-6 col-sm-5 col-xs-6">
+																				<div class="col-md-5 col-sm-5 col-xs-6">
 																					<ul>
 																						<li
 																							style="list-style: none; margin-top: 1%; margin-bottom: 2%; display: inline-block;"
@@ -309,12 +309,16 @@
 																						</li>
 																					</ul>
 																				</div>
-																				<div class="col-md-1 col-sm-1 col-xs-6">
+																				<div class="col-md-2 col-sm-2 col-xs-6">
 																					<div class="media add-img">
+																					<span class="badge badge-secondary badge badge-light" style="font-size:12px !important;">
 																						<update-image id-element-up="Pregunta{{respuesta.idPregunta}}" show-in-modal="true"
 																							param-conf-sav="respuesta.paramPregImg" max-nu-image="{{respuesta.nuMaxImagenes}}"
+																							num-current-image="respuesta.nuImagenes"
 																							param-conf-component="paramConfigImgxPreg" list-images="{{respuesta.listImagesxPreg}}">
 																						</update-image>
+																						{{(respuesta.nuImagenes == undefined ? 0 : respuesta.nuImagenes)}}
+																					</span>
 																					</div>
 																				</div>
 																			</div>

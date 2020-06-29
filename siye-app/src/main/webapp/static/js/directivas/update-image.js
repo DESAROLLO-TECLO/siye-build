@@ -43,7 +43,8 @@ appt.directive('updateImage',
 	        nameParamFile:'=',
 	        maxNuImage:'@',
 	        isIncidencia:'=',
-	        filterViewImg:'=?'
+	        filterViewImg:'=?',
+	        numCurrentImage: '=?'
 	      },
 	       replace: true,
 	       terminal: true,
@@ -846,6 +847,8 @@ appt.directive('updateImage',
 						 break; 
 					 } 
 				 }
+				 
+				 scope.numCurrentImage = scope.listFiles == undefined ? 0 : scope.listFiles.length;
 				 
 				 if(!isPendient){// si no hay imagenes pendientes de guardar
 					 $('#'+scope.idElementUp+'modalUpdateImage').modal('hide');

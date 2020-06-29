@@ -58,8 +58,9 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
         maxSizeMb: 1,
         listTypeExtencion: ['jpg', 'png', 'jpeg'],
         title: "Agregar Evidencia por Pregunta",
-        templateButonModal: '<a href="#"> <img class="add-img-img"' +
-                            'src="static/dist/img/etapas/add.png">' +
+        templateButonModal: '<a href="#"> ' +
+        			'<img class="add-img-img"' +
+                            	'src="static/dist/img/etapas/add.png"/>' +
                             '</a>"'
     });
 
