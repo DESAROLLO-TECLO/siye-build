@@ -18,6 +18,7 @@ public class PreguntaVO implements Serializable {
 	private Integer stMarcado;
 	private Integer stActivo;
 	private Long nuMaxImagenes;
+	private Integer nuImagenes;
 
 	public Long getIdPregunta() {
 		return idPregunta;
@@ -105,6 +106,20 @@ public class PreguntaVO implements Serializable {
 
 	public void setNuMaxImagenes(Long nuMaxImagenes) {
 		this.nuMaxImagenes = nuMaxImagenes;
+	}
+
+	/**
+	 * @return the nuImagenes
+	 */
+	public Integer getNuImagenes() {
+		return nuImagenes;
+	}
+
+	/**
+	 * @param nuImagenes the nuImagenes to set
+	 */
+	public void setNuImagenes(Integer nuImagenes) {
+		this.nuImagenes = nuImagenes;
 	}
 	
 	

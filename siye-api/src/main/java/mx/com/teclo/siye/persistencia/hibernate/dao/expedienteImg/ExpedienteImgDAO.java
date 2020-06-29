@@ -83,4 +83,12 @@ public interface ExpedienteImgDAO extends BaseDao<ExpedientesImgDTO> {
      * Metodo para traer las imagenes que pertenescan a un nivel de proceso incidencia o evidencia 
      * */
 	public List<ImagenVO> getImagenPorNivel(StringBuilder consulta);
+	
+	
+	/**
+	 * @Descripcion: Regresa el numero de preguntas que tiene asociada la pregunta
+	 * @author DanielUnitis
+	 */
+	public Integer getNumeroImagenesByPregunta(Long idOrden,Long idProceso,Long idEncuesta,Long idPregunta);
+	
 }

@@ -1,9 +1,11 @@
 package mx.com.teclo.siye.persistencia.hibernate.dao.expedienteImg;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
@@ -281,6 +283,28 @@ public class ExpedienteImgDAOImpl extends BaseDaoHibernate<ExpedientesImgDTO> im
 				 .addScalar("lbExpedienteODS",StandardBasicTypes.BINARY)
 				 .addScalar("idTipoExpediente",LongType.INSTANCE)
 				 .setResultTransformer(Transformers.aliasToBean(ImagenVO.class)).list();
+		return respuesta;
+	}
+
+	@Override
+	public Integer getNumeroImagenesByPregunta(Long idOrden, Long idProceso, Long idEncuesta, Long idPregunta) {
+		StringBuilder consulta = new StringBuilder();
+		consulta.append("select COUNT(TIE050.ID_EXPEDIENTE_ODS) ");
+		consulta.append("from TIE050D_IE_EXPEDIENTES_IMG TIE050 ");
+		consulta.append("join TIE002D_EE_ODS_ENCUESTA TIE002 ");
+		consulta.append("on TIE002.ID_ORDEN_SERVICIO = TIE050.ID_ORDEN_SERVICIO ");
+		consulta.append("and TIE002.ID_ODS_ENCUESTA = TIE050.ID_ODS_ENCUESTA ");
+		consulta.append("WHERE TIE050.ID_ORDEN_SERVICIO=:idOrdenServicio AND TIE050.ID_PROCESO=:idProceso AND TIE002.ID_ENCUESTA=:idOsEncuesta ");
+		consulta.append("AND TIE050.ID_PREGUNTA = :idPregunta AND TIE050.ST_ACTIVO=1");
+		
+		SQLQuery query =getCurrentSession().createSQLQuery(consulta.toString());
+		query.setParameter("idOrdenServicio", idOrden);
+		query.setParameter("idProceso", idProceso);
+		query.setParameter("idOsEncuesta", idEncuesta);
+		query.setParameter("idPregunta", idPregunta);
+		BigDecimal bd=(BigDecimal)query.uniqueResult();
+		Integer respuesta  = bd.intValue();
+		
 		return respuesta;
 	}
 

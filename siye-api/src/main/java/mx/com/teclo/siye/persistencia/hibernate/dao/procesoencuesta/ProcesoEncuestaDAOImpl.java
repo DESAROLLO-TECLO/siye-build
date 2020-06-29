@@ -36,6 +36,16 @@ public class ProcesoEncuestaDAOImpl extends BaseDaoHibernate<ProcesoEncuestaDTO>
 		c.add(Restrictions.eq("stActivo", true));
 		return (List<ProcesoEncuestaDTO>) c.list();
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public ProcesoEncuestaDTO obtenerEncuestasProcesoByiDEnc(Long idEncuesta) {
+		Criteria c = getCurrentSession().createCriteria(ProcesoEncuestaDTO.class);
+		c.createAlias("idEncuesta", "encuesta");
+		c.add(Restrictions.eq("encuesta.idEncuesta", idEncuesta));
+		c.add(Restrictions.eq("stActivo", true));
+		return (ProcesoEncuestaDTO) c.uniqueResult();
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override

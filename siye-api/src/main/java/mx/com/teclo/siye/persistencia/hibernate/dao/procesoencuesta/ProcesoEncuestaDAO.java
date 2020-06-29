@@ -84,6 +84,13 @@ public interface ProcesoEncuestaDAO extends BaseDao<ProcesoEncuestaDTO>{
 	 *  metodo para consultar significado de cada color de estatus aplicado en las encuestas de proceso  
 	 * */
 	public List<EstiloNodosVO> getSignificadoColorNodos();
+	
+	/**
+	 * @Descripcion: regresa la unicon etre el proceso y la encuesta mediante la encuesta
+	 * @author DanielUnitis
+	 * 
+	 */
+	public ProcesoEncuestaDTO obtenerEncuestasProcesoByiDEnc(Long idEncuesta);
 
 
 }

@@ -34,7 +34,9 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.SeccionDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaIntentoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaRespuestaDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.expedienteImg.ExpedienteImgDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.IeStUsuEncuIntenDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.procesoencuesta.ProcesoEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.UsuarioDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.catalogo.StEncuestaDTO;
@@ -52,6 +54,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuaroEncuestaRespu
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuaroEncuestaRespuestaDTOPK;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.IeStUsuEncuIntenDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.procesoencuesta.ProcesoEncuestaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.usuario.GerenteSupervisorDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.usuario.UsuarioDTO;
 import mx.com.teclo.siye.persistencia.vo.catalogo.StEncuestaVO;
@@ -148,6 +151,12 @@ public class EncuestaServiceImpl implements EncuestaService {
 	@Autowired
 	private UsuarioFirmadoService usuarioFirmadoService;
 	
+	@Autowired
+	private ExpedienteImgDAO expedienteImgDAO;
+	
+	@Autowired
+	private ProcesoEncuestaDAO procesoEncuestaDAO;
+	
 	private static final Boolean ENC_EN_PROCESO=true;
 	private static final Boolean ENC_NO_EN_PROCESO=false;
 	
@@ -169,6 +178,17 @@ public class EncuestaServiceImpl implements EncuestaService {
 		Long idUserSession=usuarioFirmadoService.getUsuarioFirmadoVO().getId();
 		Boolean encInProcess = encEnProceso(idOrdenServicio,idEncuesta,idUserSession);
 		uedVO.setEncuestInprocess(encInProcess);
+		
+		//Se obtiene solo el numero de imagenes por pregunta
+		ProcesoEncuestaDTO procesoEncuestaDTO =procesoEncuestaDAO.obtenerEncuestasProcesoByiDEnc(idEncuesta);
+		for(SeccionVO secc: uedVO.getEncuesta().getSecciones()){
+			for(PreguntaVO preg: secc.getPreguntas()){
+				//a cada pregunta se le asigna el nuemero de preguntas
+				Integer numImg=expedienteImgDAO.getNumeroImagenesByPregunta(idOrdenServicio, procesoEncuestaDTO.getIdProceso().getIdProceso(), idEncuesta, preg.getIdPregunta());
+				preg.setNuImagenes(numImg == null ? 0 : numImg);
+					
+			}
+		}
 		
 		// Obtener el detalle del intento actual
 		UsuarioEncuestaIntentosDTO ueiDTO = usuarioEncuestaIntentoDAO.getEncuestaByUsuario(uedDTO.getEncuesta().getIdEncuesta(), idOrdenServicio);
