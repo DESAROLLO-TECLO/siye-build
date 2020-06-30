@@ -13,6 +13,7 @@ public class ProcesoDetalleVO {
 	private String fhInicio;
 	private String fhFin;
 	private String estatus;
+	private String cdColor;
 	private List<ImagenVO> imagenes;
 	private List<EncuestaDetalleVO> encuestas;
 	
@@ -125,5 +126,16 @@ public class ProcesoDetalleVO {
 	public void setIdOdsProceso(Long idOdsProceso) {
 		this.idOdsProceso = idOdsProceso;
 	}
-
+	/**
+	 * @return the cdColor
+	 */
+	public String getCdColor() {
+		return cdColor;
+	}
+	/**
+	 * @param cdColor the cdColor to set
+	 */
+	public void setCdColor(String cdColor) {
+		this.cdColor = cdColor;
+	}
 }

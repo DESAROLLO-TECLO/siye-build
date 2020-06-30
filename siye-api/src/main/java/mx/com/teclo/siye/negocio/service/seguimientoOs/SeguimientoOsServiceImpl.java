@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import mx.com.teclo.arquitectura.ortogonales.exception.BusinessException;
 import mx.com.teclo.arquitectura.ortogonales.util.ResponseConverter;
+import mx.com.teclo.siye.persistencia.hibernate.dao.configuracion.ConfiguracionOSDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.expedienteImg.ExpedienteImgDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.IncidenciaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.incidencia.OdsIncidenciaDAO;
@@ -22,6 +23,7 @@ import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.PlanProcesoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.StSeguimientoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.procesoencuesta.ProcesoEncuestaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.GerenteSupervisorDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.configuracion.ConfiguracionOSDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.incidencia.OdsIncidenciaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.OrdenServicioDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.StSeguimientoDTO;
@@ -30,6 +32,7 @@ import mx.com.teclo.siye.persistencia.vo.incidencia.IncidencVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleImagenesOS;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.DetalleIncidenciaVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EncuestaDetalleVO;
+import mx.com.teclo.siye.persistencia.vo.seguimientoOs.EstiloNodosVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.OrdenServcioDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.PreguntasDetalleVO;
 import mx.com.teclo.siye.persistencia.vo.seguimientoOs.ProcesoDetalleVO;
@@ -73,9 +76,12 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 	
 	@Autowired
 	private OdsIncidenciaDAO odsIncidenciaDAO;
+	
+	@Autowired
+	private ConfiguracionOSDAO configuracionOSDAO;
 
 	private final String ENCURSO = "EN_CURSO", COMPLETA = "COMPLETADAS", PROGRAMADA = "PROGRAMADA",
-			NOPROGRAMADA = "NO_PROGRAMADA", INCIDENCIA = "INCIDENCIAS";
+			NOPROGRAMADA = "NO_PROGRAMADA", INCIDENCIA = "INCIDENCIAS",CD_COLOR_PROCESO_NODO = "CD_COLOR_PROCESO_NODO";
 
 	RutinasTiempoImpl tiempo = new RutinasTiempoImpl();
 
@@ -220,7 +226,11 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 			List<ProcesoDetalleVO> etapas = planProcesoDAO.getEtapasParaSeguimiento(idOrdenServicio);
 			if (!etapas.isEmpty()) {
 				// Consultar avance de encuestas del proceso
+				// se consulta el codigo de color para el nodo de proceso para diagrama de seguimiento
+				ConfiguracionOSDTO configuracionOSDTO = configuracionOSDAO.getConfigByCdConfig(CD_COLOR_PROCESO_NODO);
+				String cdColorNodoPorceso=configuracionOSDTO == null ? "#3E5CDE" : configuracionOSDTO.getCdValorConfig();
 				for (ProcesoDetalleVO etapa : etapas) {
+					etapa.setCdColor(cdColorNodoPorceso);
 					etapa.setEncuestas(
 							procesoEncuestaDAO.getDetalleEncuestaParaNodos(idOrdenServicio, etapa.getIdProceso()));
 				}
@@ -228,6 +238,12 @@ public class SeguimientoOsServiceImpl implements SeguimientoOsService {
 				
 				// Consultar stilo de colores para nodos de encuestas dentro del proceso 
 				respuesta.setEstiloNodos(procesoEncuestaDAO.getSignificadoColorNodos());
+				// SE AGREGA EL NODO DE PROCESO
+				EstiloNodosVO estiloNodosVO= new EstiloNodosVO();
+				estiloNodosVO.setNbColor(cdColorNodoPorceso);
+				estiloNodosVO.setNuOrden(0L);
+				estiloNodosVO.setNbStatus("PROCESO");
+				respuesta.getEstiloNodos().add(0,estiloNodosVO);
 			}
 		}
 
