@@ -95,7 +95,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                 x: coordX,
                 y: 0,
                 label: proceso.nbProceso,
-                color: { border: proceso.cdRgb, highlight: { border: proceso.cdRgb } },
+                color: { border: proceso.cdColor, highlight: { border: proceso.cdColor } },
                 font: { vadjust: 10 }
             });
             coordY = 0;
@@ -172,7 +172,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             
             angular.forEach(valor, function (value, key) {
                 nodeInfo.add({ id: value.nbStatus, x: x, y: y, label: value.nbStatus, color: { border: value.nbColor } });
-                x += 200;
+                x += 150;
             });
             $scope.infoNet.fit({ animation: optionsAnimation });
         }
