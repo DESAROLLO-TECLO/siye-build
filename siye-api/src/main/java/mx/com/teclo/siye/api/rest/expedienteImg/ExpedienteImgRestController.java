@@ -222,8 +222,7 @@ public class ExpedienteImgRestController {
 				encuesta.setInfoEvidencia(infoEvidenciaEncuesta);
 				
 				
-				Long idIntento = ordenServicioMyBatisDAO.getIdOsEncuesta(respuesta.get(0).getIdOrdenServicio(), encuesta.getIdEncuesta());
-				
+				Long idIntento = ordenServicioMyBatisDAO.getIdOsEncuesta(respuesta.get(0).getIdOrdenServicio(), encuesta.getIdEncuesta());				
 				for(ExpedienteNivelPreguntaVO pregunta : encuesta.getListPreguntas()) {
 					
 					List<RespuestaVO> resp = ordenServicioMyBatisDAO.getRespuestas(idIntento, encuesta.getIdEncuesta(), pregunta.getIdSecccion(), pregunta.getIdPregunta());
