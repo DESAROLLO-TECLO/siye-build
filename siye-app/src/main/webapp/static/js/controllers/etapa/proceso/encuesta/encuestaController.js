@@ -311,6 +311,7 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
 	$scope.guardaFinalizaEncuesta=function(numPagina){
 		if($scope.transEInstalador.$invalid){
 			requiredFields()
+			growl.warning("Formulario incompleto, debe seleccionar el transportista e instalador");
 		}
 		else
 			{

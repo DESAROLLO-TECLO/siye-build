@@ -72,7 +72,7 @@
 										<div class="col-md-3 col-sm-4 col-xs-4">
 											<label
 												for="finicio">{{'MONITOREO.detalleOs.label.finicio' | translate}}</label>
-											<p>{{ordenServicioVO.detalle.finicio |date:"dd-MM-yyyy HH:mm"}}</p>
+											<p>{{(ordenServicioVO.detalle.finicio == undefined ? 'SIN INICIAR' : (ordenServicioVO.detalle.finicio | date:"dd-MM-yyyy HH:mm" ))}}</p>
 										</div>
 										<div class="col-md-3 col-sm-4 col-xs-4">
 											<label for="ffin">{{'MONITOREO.detalleOs.label.ffin' | translate}}</label>
