@@ -234,7 +234,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 		
 		//SE ACTUALIZA EL ESTATUS PARA INDICAR QUE ESTE USUARIO ES EL QUE ESTA CONTESTANDO LA ENCUESTA 
 		//Y NADIE MAS PUEDA CONTESTARLA HASTA QUE SE FINALIZE O EL TIEMPO DEFINIDO PARA EL APARTADO TERMINE
-		if(!encInProcess)
+		if(!encInProcess && uedVO.getStAplicaEncuesta())
 			updateEncuestaEnProceso(idOrdenServicio,idEncuesta,ENC_EN_PROCESO,idUser);
 		
 		return uedVO;
@@ -697,6 +697,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 			Long idEncuesta, Long idOrdenServicio
 		) throws Exception, BusinessException, NotFoundException {
 		Long idUsuario = idOrdenServicio;
+		Long idUserSession=usuarioFirmadoService.getUsuarioFirmadoVO().getId();
 		UsuarioEncuestaIntentosDTO usuarioEncuestaIntentosDTO = null;
 		usuarioEncuestaIntentosDTO = usuarioEncuestaIntentoDAO.getEncuestaByUsuario(idEncuesta, idUsuario);
 		StEncuestaDTO seDTO = stEncuestaDAO.encuesta("EC");
@@ -724,8 +725,8 @@ public class EncuestaServiceImpl implements EncuestaService {
 					respuesta.setNuIntentos(0);
 					respuesta.setStCorrecto(0);
 					respuesta.setStActivo(1);
-					respuesta.setIdUsrCreacion(idUsuario);
-					respuesta.setIdUsrModifica(idUsuario);
+					respuesta.setIdUsrCreacion(idUserSession);
+					respuesta.setIdUsrModifica(idUserSession);
 					respuesta.setFhCreacion(new Date());
 					respuesta.setFhModificacion(new Date());
 	 				respuestas.add(respuesta);
@@ -746,11 +747,11 @@ public class EncuestaServiceImpl implements EncuestaService {
 		
 		//SE ACTUALIZA EL ESTATUS PARA INDICAR QUE ESTE USUARIO ES EL QUE ESTA CONTESTANDO LA ENCUESTA 
 		//Y NADIE MAS PUEDA CONTESTARLA HASTA QUE SE FINALIZE O EL TIEMPO DEFINIDO PARA EL APARTADO TERMINE
-		Long idUserSession=usuarioFirmadoService.getUsuarioFirmadoVO().getId();
+		
 		Boolean encInProcess = encEnProceso(idOrdenServicio,idEncuesta,idUserSession);
 		
 		if(!encInProcess)
-			updateEncuestaEnProceso(idOrdenServicio,idEncuesta,ENC_EN_PROCESO,idUsuario);
+			updateEncuestaEnProceso(idOrdenServicio,idEncuesta,ENC_EN_PROCESO,idUserSession);
 		
 	}
 	
@@ -810,7 +811,7 @@ public class EncuestaServiceImpl implements EncuestaService {
 		
 		// si la badera esta encendida y la fecha que se inicio la encuesta es diferente de null y el susuaio es diferente
 		// se procede a validar si puede o no contestar la encuesta
-		if(ordenEncuestaDTO.getEncEnProceso() && ordenEncuestaDTO.getFhEnIniEnc() != null 
+		if(ordenEncuestaDTO.getEncEnProceso() != null && ordenEncuestaDTO.getEncEnProceso() && ordenEncuestaDTO.getFhEnIniEnc() != null 
 				&& !idUserSession.equals(idUserInprocessEnc)){
 			
 			Date currentDate= new Date();
@@ -855,6 +856,8 @@ public class EncuestaServiceImpl implements EncuestaService {
 			ordenEncuestaDTO.setFhEnIniEnc(currentDate);
 		else
 			ordenEncuestaDTO.setFhEnIniEnc(null);
+		
+		ordenEncuestaDAO.update(ordenEncuestaDTO);
 		
 		return true;
 	}
