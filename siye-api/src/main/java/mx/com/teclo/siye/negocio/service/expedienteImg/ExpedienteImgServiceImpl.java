@@ -216,6 +216,7 @@ public class ExpedienteImgServiceImpl implements ExpedienteImgService {
 										pregunta.setNbNivel("Pregunta");
 										pregunta.setName(pregunta.getCdPregunta());
 										pregunta.setCdNivel("PREG");
+										pregunta.setIdSecccion(pregunta.getIdSecccion());
 									}
 									encuesta.setListPreguntas(listPreguntas);
 								}

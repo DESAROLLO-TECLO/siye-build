@@ -4,6 +4,7 @@ public class ExpedienteNivelPreguntaVO {
 	
 	private Long idEncuesta;
 	private Long idPregunta;
+	private Long idSecccion;
 	private String cdPregunta;
 	private Long nuMaxImg;
 	private String cdNivel;
@@ -100,5 +101,11 @@ public class ExpedienteNivelPreguntaVO {
 	 */
 	public void setIdEncuesta(Long idEncuesta) {
 		this.idEncuesta = idEncuesta;
+	}
+	public Long getIdSecccion() {
+		return idSecccion;
+	}
+	public void setIdSecccion(Long idSecccion) {
+		this.idSecccion = idSecccion;
 	}
 }

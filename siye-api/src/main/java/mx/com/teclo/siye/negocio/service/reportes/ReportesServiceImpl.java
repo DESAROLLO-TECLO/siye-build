@@ -26,6 +26,9 @@ import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelProcesoVO
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
 import mx.com.tecloreporte.jar.utils.comun.RutinasTiempo;
+import mx.com.teclo.siye.persistencia.vo.reportes.EtapasEncuestaReporteVO;
+import mx.com.teclo.siye.persistencia.vo.reportes.EtapasPreguntasReporteVO;
+import mx.com.teclo.siye.persistencia.vo.reportes.EtapasProcesosReporteVO;
 import mx.com.teclo.siye.persistencia.vo.reportes.EvidenciaReporteVO;
 import mx.com.teclo.siye.persistencia.vo.reportes.ImagenesEvidenciaReporteVO;
 import net.sf.jasperreports.engine.JREmptyDataSource;
@@ -304,5 +307,117 @@ public class ReportesServiceImpl implements ReportesService {
 		
 		return lista;
 	}
+
+	@Transactional
+	@Override
+	public ByteArrayOutputStream getReporteDOSRespuestas(OrdenServicioVO os, CargaExpedienteImgVO detalle) {
+//		##Aqui esmpieza lo nuevo
+//		ConfigReporteDTO configReporteDTO 
+		Map<String, Object> param = new HashMap<>();
+		
+		InputStream img1 = null;
+		InputStream img2 = null;
+		
+		try {
+			img1 = configuracionReportesDAO.getConfigParametrosCdLlave("IMG_CDMX").getCdValorImg().getBinaryStream(); 
+			img2 = configuracionReportesDAO.getConfigParametrosCdLlave("IMG_SEMOVI").getCdValorImg().getBinaryStream();
+		}catch (Exception e) {
+			 System.out.println(e);
+		}
+		
+		String jasper = context.getRealPath("/WEB-INF/reportes/ods/reporteDetOSResp_v1.jasper");
+		
+		param.put("IMAGEN1", img1);
+		param.put("IMAGEN2", img2);
+		
+		param.put("NOMBRE_DOCUMENTO", "Orden de Servicio");
+		param.put("FOLIO", os.getCdOrdenServicio());
+		param.put("CTRO_INSTALA", os.getCentroInstalacion().getNbCentroInstalacion());
+		param.put("FECHA_CITA", rutinasTiempo.getStringDateFromFormta("dd/MM/yyyy HH:mm:ss", os.getFhCita()));
+		param.put("ORIGEN", os.getIdOrigenOds() != null ? (os.getIdOrigenOds() == 1 ? "LOTE" : "INCIDENCIA") : "");
+		param.put("ESTATUS", os.getStSeguimiento().getNbStSeguimiento());
+		param.put("FH_INI", os.getFhAtencionIni() != null ? 
+				rutinasTiempo.getStringDateFromFormta("dd/MM/yyyy HH:mm:ss", os.getFhAtencionIni()) : ""
+				);
+		param.put("FH_FIN", os.getFhAtencionFin() != null ?  
+				rutinasTiempo.getStringDateFromFormta("dd/MM/yyyy HH:mm:ss", os.getFhAtencionFin()) : "");
+		param.put("DURACION", getDuracion(detalle.getInfoEvidencia().getFechaIni(), detalle.getInfoEvidencia().getFechaFin()));
+		param.put("PLAN", os.getPlan().getNbPlan());
+		
+		String sup = listToString(detalle.getInfoEvidencia().getNbSupervisor(), "Sin Supervisor");
+		param.put("LIST_SUP", sup);
+		String trans = listToString(detalle.getInfoEvidencia().getNbTrasportista(), "Sin Trasportista");
+		param.put("LIST_TRASP", trans);
+		
+		param.put("PLACA", os.getVehiculo().getCdPlacaVehiculo());
+		param.put("VIM", os.getVehiculo().getCdVin());
+		param.put("TARJ_CIRC", os.getVehiculo().getCdTarjetaDeCirculacion());
+		param.put("TIPO", os.getVehiculo().getTipoVehiculo().getNbTipoVehiculo());
+		param.put("MARCA", os.getVehiculo().getNbMarca());
+		param.put("SUB_MARCA", os.getVehiculo().getNbSubMarca());
+		param.put("MODELO", os.getVehiculo().getCdModelo()+"");
+		param.put("CONCECIONARIO", os.getVehiculo().getConsecionario().getNbConsecion());
+		
+//		##Bloque de Evidencia
+		
+		JRBeanCollectionDataSource procesos = new JRBeanCollectionDataSource(getListEtapasReporte(detalle));
+		param.put("LIST_PROCESOS", procesos);
+		
+		ByteArrayOutputStream reporte =  new ByteArrayOutputStream();
+		try {
+			reporte.write(JasperRunManager.runReportToPdf(jasper, param, new JREmptyDataSource()));
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return reporte;
+	}
+	
+	
+	private List<EtapasProcesosReporteVO> getListEtapasReporte(CargaExpedienteImgVO detalle) {
+		
+		List<EtapasProcesosReporteVO> lista = new ArrayList<EtapasProcesosReporteVO>();
+		List<EtapasEncuestaReporteVO> litEncuestas = null;
+		List<EtapasPreguntasReporteVO> listpPreguntas = null;
+		
+		for(ExpedienteNivelProcesoVO p : detalle.getProcesos()) {
+			EtapasProcesosReporteVO proceso = new EtapasProcesosReporteVO();
+			proceso.setNombre(p.getCdProceso());
+			proceso.setFhInicio(p.getInfoEvidencia().getFechaIni());
+			proceso.setFhFin(p.getInfoEvidencia().getFechaFin());
+			proceso.setDuracion(getDuracion(p.getInfoEvidencia().getFechaIni(), p.getInfoEvidencia().getFechaFin()));
+			proceso.setSupervisores(listToString(p.getInfoEvidencia().getNbSupervisor(), "Sin Supervisor"));
+			proceso.setInstaladores(listToString(p.getInfoEvidencia().getNbInstalador(), "Sin Instalador"));
+			proceso.setTrasportistas(listToString(p.getInfoEvidencia().getNbTrasportista(), "Sin Transportista"));
+			litEncuestas = new ArrayList<EtapasEncuestaReporteVO>();
+			for(ExpedienteNivelEncuestaVO e : p.getListEncuestas()) {
+				EtapasEncuestaReporteVO encuesta = new EtapasEncuestaReporteVO();
+				encuesta.setNombre(e.getCdEncuesta());
+				encuesta.setFhInicio(e.getInfoEvidencia().getFechaIni());
+				encuesta.setFhFin(e.getInfoEvidencia().getFechaFin());
+				encuesta.setDuracion(getDuracion(e.getInfoEvidencia().getFechaIni(), e.getInfoEvidencia().getFechaFin()));
+				encuesta.setSupervisores(listToString(e.getInfoEvidencia().getNbSupervisor(), "Sin Supervisor"));
+				encuesta.setInstaladores(listToString(e.getInfoEvidencia().getNbInstalador(), "Sin Instalador"));
+				encuesta.setTrasportistas(listToString(e.getInfoEvidencia().getNbTrasportista(), "Sin Transportista"));
+				listpPreguntas = new ArrayList<EtapasPreguntasReporteVO>();
+				for(ExpedienteNivelPreguntaVO preg : e.getListPreguntas()) {
+					EtapasPreguntasReporteVO pregunta = new EtapasPreguntasReporteVO();
+					pregunta.setNombre(preg.getCdPregunta());
+					pregunta.setFhInicio(preg.getInfoEvidencia().getFechaIni());
+					pregunta.setFhFin(preg.getInfoEvidencia().getFechaFin());
+					pregunta.setDuracion(getDuracion(preg.getInfoEvidencia().getFechaIni(), preg.getInfoEvidencia().getFechaFin()));
+					pregunta.setSupervisores(listToString(preg.getInfoEvidencia().getNbSupervisor(), "Sin Supervisor"));
+					pregunta.setInstaladores(listToString(preg.getInfoEvidencia().getNbInstalador(), "Sin Instalador"));
+					pregunta.setTrasportistas(listToString(preg.getInfoEvidencia().getNbTrasportista(), "Sin Transportista"));
+					listpPreguntas.add(pregunta);
+				}
+				encuesta.setPreguntas(listpPreguntas);
+				litEncuestas.add(encuesta);
+			}
+			proceso.setEncuestas(litEncuestas);
+			lista.add(proceso);
+		}
+		
+		return lista;
+	}	
 
 }

@@ -24,15 +24,18 @@ import mx.com.teclo.arquitectura.ortogonales.seguridad.vo.UsuarioFirmadoVO;
 import mx.com.teclo.arquitectura.ortogonales.service.comun.UsuarioFirmadoService;
 import mx.com.teclo.siye.negocio.service.expedienteImg.ExpedienteImgService;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.EncuestaDetalleDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.IERespCausaDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.OrdenProcesoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.encuesta.UsuarioEncuestaIntentoDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.proceso.IeStUsuEncuIntenDAO;
 import mx.com.teclo.siye.persistencia.hibernate.dao.usuario.UsuarioDAO;
+import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.IERespCausaDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.OrdenProcesoDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaDetalleDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.encuesta.UsuarioEncuestaIntentosDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.proceso.IeStUsuEncuIntenDTO;
 import mx.com.teclo.siye.persistencia.hibernate.dto.usuario.UsuarioDTO;
+import mx.com.teclo.siye.persistencia.mybatis.dao.ordenservicio.OrdenServicioMyBatisDAO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.CargaExpedienteImgVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.CompresorImgConfigVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelEncuestaVO;
@@ -40,6 +43,7 @@ import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelPreguntaV
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ExpedienteNivelProcesoVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.ImagenVO;
 import mx.com.teclo.siye.persistencia.vo.expedientesImg.InfoEvidenciaNivelVO;
+import mx.com.teclo.siye.persistencia.vo.expedientesImg.RespuestaVO;
 import mx.com.teclo.siye.persistencia.vo.tipoExpediente.TipoExpedienteVO;
 
 @RestController
@@ -66,6 +70,12 @@ public class ExpedienteImgRestController {
 	
 	@Autowired
 	private UsuarioDAO usuarioDAO;
+	
+	@Autowired
+	private IERespCausaDAO iERespCausaDAO;
+	
+	@Autowired
+	private OrdenServicioMyBatisDAO ordenServicioMyBatisDAO;
 	
 	@GetMapping(value="/getInfoOS")
 	//@PreAuthorize("hasAnyAuthority('GET_STATUS_CARGA_EVIDENCIAS')")
@@ -211,7 +221,24 @@ public class ExpedienteImgRestController {
 				infoEvidenciaEncuesta.setTieneImagen(imgENC!=null && imgENC.size()>0 ? 1 : 0);
 				encuesta.setInfoEvidencia(infoEvidenciaEncuesta);
 				
+				
+				Long idIntento = ordenServicioMyBatisDAO.getIdOsEncuesta(respuesta.get(0).getIdOrdenServicio(), encuesta.getIdEncuesta());
+				
 				for(ExpedienteNivelPreguntaVO pregunta : encuesta.getListPreguntas()) {
+					
+					List<RespuestaVO> resp = ordenServicioMyBatisDAO.getRespuestas(idIntento, encuesta.getIdEncuesta(), pregunta.getIdSecccion(), pregunta.getIdPregunta());
+					RespuestaVO respuestaOK = new RespuestaVO();
+					respuestaOK.setRespuesta("Sin responder");
+					respuestaOK.setJustificacion("NA");
+					respuestaOK.setCausa("NA");
+					
+					if(resp.size()>0) {
+						respuestaOK = new RespuestaVO();
+						respuestaOK.setRespuesta(resp.get(0).getRespuesta());
+						respuestaOK.setJustificacion(resp.get(0).getJustificacion());
+						respuestaOK.setCausa(obtenerCausas(resp));
+					}
+					
 					InfoEvidenciaNivelVO infoEvidenciaPregunta = new InfoEvidenciaNivelVO();
 					List<ImagenVO> imgPREG = expedienteImg.getInfoExpedienteByNivel(
 							respuesta.get(0).getIdOrdenServicio(), pregunta.getIdPregunta(), "PREGUNTA");
@@ -220,6 +247,7 @@ public class ExpedienteImgRestController {
 					infoEvidenciaPregunta.setNbInstalador(encuesta.getInfoEvidencia().getNbInstalador()!=null?encuesta.getInfoEvidencia().getNbInstalador():new ArrayList<String>());
 					infoEvidenciaPregunta.setNbTrasportista(encuesta.getInfoEvidencia().getNbTrasportista()!=null?encuesta.getInfoEvidencia().getNbTrasportista():new ArrayList<String>());
 					infoEvidenciaPregunta.setTieneImagen(imgPREG!=null && imgPREG.size()>0 ? 1 : 0);
+					infoEvidenciaPregunta.setRespuesta(respuestaOK);
 					pregunta.setInfoEvidencia(infoEvidenciaPregunta);
 				}
 				if(encuesta.getInfoEvidencia().getNbTrasportista()!=null)
@@ -311,4 +339,17 @@ public class ExpedienteImgRestController {
 		
 		return new ResponseEntity<CargaExpedienteImgVO>(respuesta.get(0), HttpStatus.OK);
 	};
+	
+	private String obtenerCausas(List<RespuestaVO> resp) { 
+		String causas="";
+		
+		for (int x=0 ; x<resp.size() ; x++) {
+			if(resp.get(x).getCausa()!=null) {
+				causas = causas + resp.get(x).getCausa();
+				if((x+1)<resp.size())
+					causas = causas + ", ";
+			}
+		}
+		return causas;
+	}
 }

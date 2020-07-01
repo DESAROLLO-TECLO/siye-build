@@ -22,7 +22,7 @@ public class SeccionDAOImpl extends BaseDaoHibernate<SeccionDTO> implements Secc
 	@Override
 	public List<ExpedienteNivelPreguntaVO> getPreguntasByEncuestaVO(List<Long> idEncuesta) {
 		StringBuilder consulta = new StringBuilder("SELECT pregunta.ID_PREGUNTA  AS idPregunta, pregunta.TX_PREGUNTA  AS cdPregunta, pregunta.NU_MAX_IMAGENES  AS nuMaxImg," + 
-				" seccion.ID_ENCUESTA as idEncuesta"+
+				" seccion.ID_ENCUESTA as idEncuesta, seccion.id_seccion as idSecccion"+
 				" FROM TIE004D_EE_SECCION seccion" + 
 				"  INNER JOIN TIE005D_EE_PREGUNTAS pregunta ON (seccion.ID_SECCION = pregunta.ID_SECCION)" + 
 				"   WHERE seccion.ID_ENCUESTA IN (:idEncuesta) AND pregunta.ST_ACTIVO = 1 ORDER BY seccion.NU_ORDEN ASC,pregunta.NU_ORDEN ASC");
@@ -30,6 +30,7 @@ public class SeccionDAOImpl extends BaseDaoHibernate<SeccionDTO> implements Secc
 				 .addScalar("idPregunta",LongType.INSTANCE)
 					.addScalar("cdPregunta",StringType.INSTANCE)
 					.addScalar("nuMaxImg", LongType.INSTANCE)
+					.addScalar("idSecccion", LongType.INSTANCE)
 					.addScalar("idEncuesta", LongType.INSTANCE)
 					.setParameterList("idEncuesta", idEncuesta)
 					.setResultTransformer(Transformers.aliasToBean(ExpedienteNivelPreguntaVO.class)).list();

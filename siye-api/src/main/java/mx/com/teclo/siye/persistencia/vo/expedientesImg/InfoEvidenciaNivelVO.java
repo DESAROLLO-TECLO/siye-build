@@ -12,6 +12,7 @@ public class InfoEvidenciaNivelVO {
 	private List<String> nbTrasportista;
 	private Boolean activo;
 	private List<ImagenVO> imagenes;
+	private RespuestaVO respuesta;
 	
 	public Integer getTieneImagen() {
 		return tieneImagen;
@@ -60,5 +61,11 @@ public class InfoEvidenciaNivelVO {
 	}
 	public void setActivo(Boolean activo) {
 		this.activo = activo;
+	}
+	public RespuestaVO getRespuesta() {
+		return respuesta;
+	}
+	public void setRespuesta(RespuestaVO respuesta) {
+		this.respuesta = respuesta;
 	}
 }

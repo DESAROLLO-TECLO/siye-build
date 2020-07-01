@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="561e685e-83a4-4113-8990-d0b6b1ad1f42">
+	<property name="ireport.zoom" value="1.3636363636363635"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="344"/>
+	<subDataset name="dataset1_1" uuid="7356e04b-deb6-48ba-889d-e716b5f8c716">
+		<field name="_THIS" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="dataset1" uuid="d31659a1-df1a-4581-af74-50ad9e1ca7ec">
+		<field name="nombre" class="java.lang.String"/>
+		<field name="fh_inicio" class="java.lang.String"/>
+		<field name="fh_fin" class="java.io.InputStream"/>
+		<field name="duracion" class="java.lang.String"/>
+		<field name="sup" class="java.lang.String"/>
+		<field name="trasp" class="java.lang.String"/>
+		<field name="lisImg" class="java.lang.String"/>
+		<field name="field1" class="java.lang.String"/>
+	</subDataset>
+	<subDataset name="dataset2" uuid="9010a989-6c89-4177-8f3c-96104d22c47d"/>
+	<subDataset name="dataset3" uuid="ab02325b-c785-4740-bced-8b018a846099">
+		<field name="nombre" class="java.lang.String"/>
+		<field name="fhInicio" class="java.lang.String"/>
+		<field name="fhFin" class="java.lang.String"/>
+		<field name="duracion" class="java.lang.String"/>
+		<field name="supervisores" class="java.lang.String"/>
+		<field name="instaladores" class="java.lang.String"/>
+		<field name="trasportistas" class="java.lang.String"/>
+		<field name="listImagenes" class="java.util.List"/>
+	</subDataset>
+	<subDataset name="dataset4" uuid="3fd73273-2e42-45bd-b061-e6dc443eb9ce">
+		<field name="nombre" class="java.lang.String"/>
+		<field name="fhInicio" class="java.lang.String"/>
+		<field name="fhFin" class="java.lang.String"/>
+		<field name="duracion" class="java.lang.String"/>
+		<field name="supervisores" class="java.lang.String"/>
+		<field name="instaladores" class="java.lang.String"/>
+		<field name="trasportistas" class="java.lang.String"/>
+		<field name="listImagenes" class="java.util.Collection"/>
+	</subDataset>
+	<subDataset name="Table Dataset 1" uuid="6ad2bd9a-a4fb-4e96-8cdc-330d6f006352"/>
+	<parameter name="FOLIO" class="java.lang.String"/>
+	<parameter name="CTRO_INSTALA" class="java.lang.String"/>
+	<parameter name="FECHA_CITA" class="java.lang.String"/>
+	<parameter name="ORIGEN" class="java.lang.String"/>
+	<parameter name="ESTATUS" class="java.lang.String"/>
+	<parameter name="FH_INI" class="java.lang.String"/>
+	<parameter name="DURACION" class="java.lang.String"/>
+	<parameter name="IMAGEN1" class="java.io.InputStream"/>
+	<parameter name="IMAGEN2" class="java.io.InputStream"/>
+	<parameter name="PLAN" class="java.lang.String"/>
+	<parameter name="FH_FIN" class="java.lang.String"/>
+	<parameter name="LIST_SUP" class="java.lang.String"/>
+	<parameter name="LIST_TRASP" class="java.lang.String"/>
+	<parameter name="NOMBRE_DOCUMENTO" class="java.lang.String"/>
+	<parameter name="PLACA" class="java.lang.String"/>
+	<parameter name="VIM" class="java.lang.String"/>
+	<parameter name="TARJ_CIRC" class="java.lang.String"/>
+	<parameter name="TIPO" class="java.lang.String"/>
+	<parameter name="MARCA" class="java.lang.String"/>
+	<parameter name="SUB_MARCA" class="java.lang.String"/>
+	<parameter name="MODELO" class="java.lang.String"/>
+	<parameter name="CONCECIONARIO" class="java.lang.String"/>
+	<parameter name="LIST_PROCESOS" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<title>
+		<band height="60">
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" onErrorType="Blank">
+				<reportElement mode="Transparent" x="16" y="5" width="229" height="47" forecolor="#000000" backcolor="#FFFFFF" uuid="e2500edd-f7be-498d-9942-60e1b75890e8"/>
+				<graphicElement fill="Solid"/>
+				<imageExpression><![CDATA[$P{IMAGEN1}]]></imageExpression>
+			</image>
+			<image scaleImage="RetainShape" hAlign="Left" vAlign="Top" onErrorType="Blank">
+				<reportElement positionType="Float" mode="Transparent" x="324" y="5" width="214" height="47" forecolor="#000000" backcolor="#FFFFFF" uuid="7b348adc-7413-4947-9849-616c08167cc7"/>
+				<graphicElement fill="Solid"/>
+				<imageExpression><![CDATA[$P{IMAGEN2}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="90" splitType="Stretch">
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="207" y="48" width="117" height="35" uuid="21aa625e-c699-408f-927c-f4db7c21430f"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Centro de Instalación: \n"
++ $P{CTRO_INSTALA}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="15" y="48" width="181" height="35" uuid="4e0ed5ec-1df2-4b02-a96a-86e46001fc05"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Folio: \n" +
+$P{FOLIO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="337" y="48" width="120" height="35" uuid="c41a6bdb-7d6f-460a-8eb6-95af705f7a97"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha Cita: \n"
++ $P{FECHA_CITA}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="468" y="48" width="72" height="35" uuid="7e367092-bd6b-4c15-8c69-4e24072ee460"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Origen: \n"
++ $P{ORIGEN}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="18" y="87" width="516" height="1" uuid="21bfc27a-7161-4515-925a-0805bfe24dea"/>
+			</line>
+			<textField>
+				<reportElement x="149" y="19" width="281" height="20" uuid="95f89797-6235-49eb-89fd-21eef2f236b8"/>
+				<textElement textAlignment="Center">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{NOMBRE_DOCUMENTO}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="0" y="3" width="555" height="10" forecolor="#00CC00" backcolor="#00CC00" uuid="45f93184-dbbe-4025-bd49-3d6d5f709587"/>
+			</rectangle>
+		</band>
+		<band height="95">
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="15" y="4" width="88" height="34" uuid="28679571-3be6-4995-8df2-19bc558d6736"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Estatus: \n"
++ $P{ESTATUS}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="355" y="4" width="81" height="34" uuid="13a277af-88b4-44ea-8ad6-bd67f87d4da2"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Duración: \n"
++ $P{DURACION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="444" y="4" width="94" height="34" uuid="591e0589-bad1-4997-aa87-244a1083e044"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Plan: \n"
++ $P{PLAN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="4" width="115" height="34" uuid="e5692d4c-3a52-4f62-a5f8-72bda1a330aa"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha Inicio: \n"
++ $P{FH_INI}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="232" y="4" width="115" height="34" uuid="c16c799f-36a3-4206-96b7-f5fc013b2c75"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha Conclución: \n"
++ $P{FH_FIN}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="15" y="43" width="88" height="20" uuid="fa6c9f63-5a39-4055-9c16-337436562409"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Supervisores: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="245" y="43" width="88" height="20" uuid="02a44733-bbb4-400a-b3b1-1fa65d0e035c"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Transportistas: "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="15" y="63" width="219" height="20" uuid="9a1a5416-09bf-4c45-822b-3c37f5c69559"/>
+				<textFieldExpression><![CDATA[$P{LIST_SUP}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="245" y="63" width="289" height="20" uuid="7a3592be-747f-45e9-8b71-cce1fc974baf"/>
+				<textFieldExpression><![CDATA[$P{LIST_TRASP}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="0">
+				<reportElement mode="Opaque" x="0" y="83" width="555" height="10" forecolor="#00CC00" backcolor="#00CC00" uuid="0d40d58c-f84c-4b0f-ae1a-961f3d7dcd9b"/>
+				<graphicElement fill="Solid"/>
+			</rectangle>
+		</band>
+		<band height="111">
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="16" y="25" width="120" height="34" uuid="198349da-5efb-4335-8bc6-9d17250e426e"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Placa: \n"
++ $P{PLACA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="151" y="25" width="120" height="34" uuid="40cc7d74-0322-4e60-a3e8-fe46f8af8da0"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["VIM: \n"
++ $P{VIM}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="287" y="25" width="120" height="34" uuid="ce02f231-15e5-4464-b80e-2a4796244dd6"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tarjeta Circulación: \n"
++ $P{TARJ_CIRC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="421" y="25" width="120" height="34" uuid="5608d803-ef66-4632-856a-6d78fae21857"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Tipo: \n"
++ $P{TIPO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="149" y="0" width="281" height="23" uuid="48307d0c-bb77-4725-b8de-d27861924c6f"/>
+				<textElement textAlignment="Center">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Vehículo"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="16" y="62" width="120" height="34" uuid="d6d4ced3-0813-4315-a737-d2ce444a34fe"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Marca: \n"
++ $P{MARCA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="151" y="62" width="120" height="34" uuid="5271117d-5957-4d2d-b51e-7436fbab73e4"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Sub Marca: \n"
++ $P{SUB_MARCA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="287" y="62" width="120" height="34" uuid="959f4723-27f3-4e6a-873e-2c021ebfca45"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Modelo: \n"
++ $P{MODELO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToTallestObject" x="421" y="62" width="120" height="34" uuid="f8c080c5-d9ed-4371-ad2d-c6ca8463fa3c"/>
+				<textElement>
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Concecionario: \n"
++ $P{CONCECIONARIO}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="0">
+				<reportElement mode="Opaque" x="0" y="98" width="555" height="10" forecolor="#00CC00" backcolor="#00CC00" uuid="2826bb37-5cda-4dda-a56e-db9a29066c91"/>
+				<graphicElement fill="Solid"/>
+			</rectangle>
+		</band>
+		<band height="171">
+			<textField>
+				<reportElement x="150" y="0" width="281" height="23" uuid="ffaa6aa5-e063-4186-bf5f-d806b3463861"/>
+				<textElement textAlignment="Center">
+					<font size="13"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Etapas"]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="23" width="555" height="148" uuid="07a00751-3ac9-4b0c-a4c5-c11ec0504206"/>
+				<dataSourceExpression><![CDATA[$P{LIST_PROCESOS}]]></dataSourceExpression>
+				<subreportExpression><![CDATA[".\\subReporteProcesos_v1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="45" splitType="Stretch">
+			<textField>
+				<reportElement x="396" y="10" width="80" height="20" uuid="d506bb2d-47db-42bd-a9a9-9f82b88ceb9e"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de "]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="457" y="10" width="66" height="20" uuid="40591447-782a-4fcd-a443-f3e657904507"/>
+				<textElement textAlignment="Right">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

@@ -8,6 +8,8 @@ import mx.com.teclo.siye.persistencia.vo.proceso.OrdenServicioVO;
 public interface ReportesService {
 	
 	ByteArrayOutputStream getReporteDOS(OrdenServicioVO os, CargaExpedienteImgVO detalle, Boolean conImagenes);
+	
+	ByteArrayOutputStream getReporteDOSRespuestas(OrdenServicioVO os, CargaExpedienteImgVO detalle);
 
 	byte[] getPDF(ByteArrayOutputStream b);
 }
