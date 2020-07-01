@@ -96,7 +96,7 @@ angular.module(appTeclo).controller('expedienteController',
 	$scope.paramConfiguracion=new Object({
 		maxSizeMb: 1,			
         maxNuImage: 10,
-        listTypeExtencion: ['jpg','png','jpeg','pdf','doc','docx'],
+        listTypeExtencion: ['jpg','png','jpeg'],
         listTpDocuemnt: null
 	});
 	
