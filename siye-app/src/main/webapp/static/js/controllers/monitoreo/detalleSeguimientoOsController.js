@@ -164,7 +164,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
 
         /* funcion para crear nodos en el diagrama informativo */
         crearInfoNetwork = function (valor) {
-            var x = 0;
+            var x = 150;
             var y = 0;
             var optionsAnimation = {
                 duration: 100, easingFunction: 'linear'
@@ -225,6 +225,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                 //			        interaction:{dragNodes:false, dragView: false, hover:false, zoomView:false, tooltipDelay:100}
             };
             $scope.infoNet = new vis.Network(infoNetwork, dataInfo, optionsInfo);
+            $scope.infoNet.fit();
         };
 
         // Guardar imagen 

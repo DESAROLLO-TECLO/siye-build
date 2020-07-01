@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Proceso</title>
 <link rel="stylesheet" href="static/dist/css/custom/etapa/encuesta.css" />
+<style type="text/css">
+		.ligas {
+			text-decoration: none;
+			padding: 5px;
+			font-weight: 600;
+			border-radius: 6px;
+		}
+	</style>
 </head>
 <body>
 
@@ -101,8 +109,7 @@
 									<hr>
 									<div class="col-md-12">
 										<div class="col-md-2">
-											<div
-												ng-repeat="seccion in encuestaDetalle.encuesta.secciones">
+											<div ng-repeat="seccion in encuestaDetalle.encuesta.secciones">
 
 												<div class="btn-group-vertical w-100" role="group">
 
@@ -110,8 +117,8 @@
 														<div
 															ng-show="seccion.nuPreguntasContestadas==0 || seccion.nuPreguntasContestadas===null"
 															ng-style="seccion.cdSeccion === seccionSeleccion && {'border-style':'solid','border-width':'3px','border-color':444}">
-															<button type="button"
-																class="label label-danger center-block w-100"
+															<button type="button" style="height: 1.5rem !important; padding: inherit"
+																class="btn btn-danger center-block w-100"
 																ng-show="seccion.nuPreguntasContestadas==0 || seccion.nuPreguntasContestadas===null"
 																ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,seccion)">
 																{{seccion.cdSeccion}}</button>
@@ -122,8 +129,8 @@
 														<div
 															ng-show="seccion.nuPreguntasContestadas>0 && seccion.nuPreguntasContestadas<seccion.preguntas.length"
 															ng-style="seccion.cdSeccion === seccionSeleccion && {'border-style':'solid','border-width':'3px','border-color':'444'}">
-															<button type="button"
-																class="label label-warning center-block w-100"
+															<button type="button" style="height: 1.5rem !important; padding: inherit"
+																class="btn btn-warning center-block w-100"
 																ng-show="seccion.nuPreguntasContestadas>0 && seccion.nuPreguntasContestadas<seccion.preguntas.length"
 																ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,seccion)">
 																{{seccion.cdSeccion}}</button>
@@ -145,6 +152,7 @@
 
 											</div>
 										</div>
+										
 										<div class="col-md-10">
 									<form name="transEInstalador">
 								  <div class="col-md-4" ng-if="estatusEncuesta=='FIN'">
@@ -311,13 +319,15 @@
 																				</div>
 																				<div class="col-md-2 col-sm-2 col-xs-6">
 																					<div class="media add-img">
-																					<span class="badge badge-secondary badge badge-light" style="font-size:12px !important;">
+																					<span style="font-size:12px !important;">
 																						<update-image id-element-up="Pregunta{{respuesta.idPregunta}}" show-in-modal="true"
 																							param-conf-sav="respuesta.paramPregImg" max-nu-image="{{respuesta.nuMaxImagenes}}"
 																							num-current-image="respuesta.nuImagenes"
 																							param-conf-component="paramConfigImgxPreg" list-images="{{respuesta.listImagesxPreg}}">
 																						</update-image>
-																						{{(respuesta.nuImagenes == undefined ? 0 : respuesta.nuImagenes)}}
+																						<div class="ligas" style="padding:2px !important; border: 2px solid; color:'#FFBF00'">
+																							{{(respuesta.nuImagenes == undefined ? 0 : respuesta.nuImagenes)}} / {{respuesta.nuMaxImagenes}}
+																						</div>
 																					</span>
 																					</div>
 																				</div>

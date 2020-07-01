@@ -59,8 +59,10 @@ function($rootScope,$scope,$window,$translate,$timeout,ModalService,encuestaInfo
         listTypeExtencion: ['jpg', 'png', 'jpeg'],
         title: "Agregar Evidencia por Pregunta",
         templateButonModal: '<a href="#"> ' +
-        			'<img class="add-img-img"' +
-                            	'src="static/dist/img/etapas/add.png"/>' +
+        						'<img ng-if="(numCurrentImage != undefined && numCurrentImage > 0)" class="add-img-img"' +
+                            	'src="static/dist/img/etapas/camera_green.png"/>' +
+                            	'<img ng-if="(numCurrentImage == undefined || numCurrentImage == 0)" class="add-img-img"' +
+                            	'src="static/dist/img/etapas/camera.png"/>' +
                             '</a>"'
     });
 
