@@ -43,7 +43,7 @@ public class OrdenEncuestaDTO implements Serializable {
 	@Column(name = "ST_APLICA_ENCUESTA", nullable = false)
 	private Boolean stAplicaEncuesta;
 	
-	@Column(name = "ENC_EN_PROCESO", nullable = false)
+	@Column(name = "ST_ENC_EN_PROCESO", nullable = false)
 	private Boolean encEnProceso;
 	
 	@Column(name = "FH_EN_INI_ENC", nullable = false)
