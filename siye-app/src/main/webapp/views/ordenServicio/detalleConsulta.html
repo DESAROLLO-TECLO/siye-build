@@ -17,11 +17,23 @@
 				background-color: #428bca !important;
 				border-color: #428bca !important;
 			}
+			
+			@media screen and (max-width: 700px) {
+  				.separador1 {
+    				display: none;
+  				}
+			}
+			
+ 			@media screen and (min-width: 700px) {
+   				.separador2 {
+     				display: none;
+   				}
+ 			}
 		</style>
 	</header>
 
-	<section class="content">
-		<form role="form" name="formDetalleServicio" novalidate>
+	<form role="form" name="formDetalleServicio" novalidate>
+		<section class="content">
 			<div class="row">
 				<div class="col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-12">
 					<div class="box box-danger">
@@ -217,6 +229,12 @@
 										</div>
 									</div>
 								</div>
+								
+								<div class="col-md-offset-2 col-lg-2 col-md-4 col-sm-4">
+									<button ng-click="mostrarModalEtapas()" class="btn btn-danger">
+										<span class="fa fa-list"></span>&nbsp Ver Etapas
+						            </button>
+								</div>
 
 								<div class="col-lg-12 col-md-12 col-sm-12">
 									<hr style="margin-top: 1.429rem;margin-bottom: 1.429rem;border: 0;border-top-color: currentcolor;border-top-style: none;border-top-width: 0px;border-top: 1px solid #eeeeee;">
@@ -230,7 +248,8 @@
 										<div class="col-md-12 box collapsed-box"
 											style="border: 1px solid; border-radius: 5px 5px 5px 5px;">
 											<div class="box-header">
-												<h4 class="box-title">Vehículo</h4>
+												<span class="fa fa-car"></span>
+												<h4 class="box-title"> Vehículo</h4>
 												<div class="box-tools pull-right">
 													<button type="button" class="btn btn-box-tool"
 														data-widget="collapse">
@@ -317,15 +336,16 @@
 									</div>
 								</div>
 								<div class="col-md-12"></div>
-
 							</div>
+							
 							<div class="row" id="div4">
 								<div class="col-lg-12 col-md-12 col-sm-12" style="padding-left: 26px; padding-right: 26px;">
 									<div class="row">
 										<div class="col-lg-12 col-md-12 col-sm-12 box collapsed-box"
 											style="border: 1px solid; border-radius: 5px 5px 5px 5px;">
 											<div class="box-header">
-												<h4 class="box-title">Evidencia</h4>
+												<span class="fa fa-camera"></span>
+												<h4 class="box-title"> Evidencia</h4>
 												<div class="box-tools pull-right">
 													<button type="button" class="btn btn-box-tool"
 														data-widget="collapse">
@@ -359,6 +379,9 @@
 															</div>
 														</div>
 													</div>
+													
+													<div class="col-md-12 col-sm-12 separador2"></div>
+													
 													<div class="col-md-3 col-sm-4">
 														<div class="form-group">
 															<label for="tipoTramite">Duración:</label>
@@ -367,6 +390,8 @@
 															</div>
 														</div>
 													</div>
+													
+													<div class="col-md-12 col-sm-12 separador1"></div>
 
 													<div class="col-md-3 col-sm-4">
 														<div class="form-group">
@@ -428,7 +453,7 @@
 														</div>
 													</div>
 
-													<div class="col-md-3 col-sm-4">
+													<div class="col-md-3 col-sm-6">
 														<div class="form-group">
 															<a webuipopover data-placement="right" data-trigger="click"
 																	selector-content="transEv" data-toggle="popover">
@@ -457,6 +482,15 @@
 															</div>
 														</div>
 													</div>
+													
+													<div class="col-md-3 col-sm-4" ng-if="evidenciaMostrar.respuesta!=null">
+														<div class="form-group">
+															<label for="tipoTramite">Respuesta:</label>
+															<div class="input-group">
+																<p>{{evidenciaMostrar.respuesta}}</p>
+															</div>
+														</div>
+													</div>
 
 													<div class="col-md-12 col-sm-12 well" style="border: 1px solid; border-radius: 5px 5px 5px 5px;">
 														<div class="row">
@@ -473,28 +507,34 @@
 																 	<div ng-repeat="proc in evidencia.procesos">
 																	 	<a class="list-group-item list-group-item-warning" style="text-indent: 10px;"
 																	 		ng-class="{'nivelActivo': proc.infoEvidencia.activo}"
- 																			ng-click="mostrarInfoEvidencia(proc.name, proc)">
+ 																			ng-click="mostrarInfoEvidencia(proc.name, proc)"
+ 																			data-toggle="collapse" data-target="#{{'EV_' + proc.cdNivel + '_' + proc.idProceso}}">
 																	 		<p class="list-group-item-text">
 																	 			{{proc.name}} &nbsp &nbsp &nbsp<span class="fa fa-camera" ng-if="proc.infoEvidencia.imagenes != undefined && proc.infoEvidencia.imagenes.length > 0"></span></p>
 																	 	</a>
-
-																	 	<div ng-repeat="enc in proc.listEncuestas">
-																		 	<a class="list-group-item list-group-item-success" style="text-indent: 20px;"
-																		 		ng-class="{'nivelActivo': enc.infoEvidencia.activo}"
-																				ng-click="mostrarInfoEvidencia(enc.name, enc)">
-																		 		<p class="list-group-item-text">
-																		 			{{enc.name}} &nbsp &nbsp &nbsp<span class="fa fa-camera" ng-if="enc.infoEvidencia.imagenes != undefined && enc.infoEvidencia.imagenes.length > 0"></span></p>
-																		 	</a>
-
-																		 	<div ng-repeat="preg in enc.listPreguntas">
-																		 		<a class="list-group-item" style="text-indent: 30px;"
-																		 			ng-class="{'nivelActivo': preg.infoEvidencia.activo}"
-																		 			ng-click="mostrarInfoEvidencia(preg.name, preg)">
-																		 			<p class="list-group-item-text">
-																		 				{{preg.name}} &nbsp &nbsp &nbsp<span class="fa fa-camera" ng-if="preg.infoEvidencia.imagenes != undefined && preg.infoEvidencia.imagenes.length > 0"></span></p>
-																		 		</a>
-																 			</div>
-																 		</div>
+																	 	
+																	 	<div id="{{'EV_' + proc.cdNivel + '_' + proc.idProceso}}" class="collapse" style="padding: 0%;">
+																		 	<div ng-repeat="enc in proc.listEncuestas">
+																			 	<a class="list-group-item list-group-item-success" style="text-indent: 20px;"
+																			 		ng-class="{'nivelActivo': enc.infoEvidencia.activo}"
+																					ng-click="mostrarInfoEvidencia(enc.name, enc)"
+																					data-toggle="collapse" data-target="#{{'EV_' + proc.idProceso + '_' + enc.cdNivel + '_' + enc.idProceso}}">
+																			 		<p class="list-group-item-text">
+																			 			{{enc.name}} &nbsp &nbsp &nbsp<span class="fa fa-camera" ng-if="enc.infoEvidencia.imagenes != undefined && enc.infoEvidencia.imagenes.length > 0"></span></p>
+																			 	</a>
+																			 	
+																			 	<div id="{{'EV_' + proc.idProceso + '_' + enc.cdNivel + '_' + enc.idProceso}}" class="collapse" style="padding: 0%;">
+																				 	<div ng-repeat="preg in enc.listPreguntas">
+																				 		<a class="list-group-item" style="text-indent: 30px;"
+																				 			ng-class="{'nivelActivo': preg.infoEvidencia.activo}"
+																				 			ng-click="mostrarInfoEvidencia(preg.name, preg)">
+																				 			<p class="list-group-item-text">
+																				 				{{preg.name}} &nbsp &nbsp &nbsp<span class="fa fa-camera" ng-if="preg.infoEvidencia.imagenes != undefined && preg.infoEvidencia.imagenes.length > 0"></span></p>
+																				 		</a>
+																		 			</div>
+																		 		</div>
+																	 		</div>
+																	 	</div>
 																 	</div>
 																 </div>
 															</div>
@@ -534,6 +574,80 @@
 									</div>
 								</div>
 							</div>
+							
+<!-- 							<div class="row" id="div5"> -->
+<!-- 								<div class="col-lg-12 col-md-12 col-sm-12" style="padding-left: 26px; padding-right: 26px;"> -->
+<!-- 									<div class="row"> -->
+<!-- 										<div class="col-lg-12 col-md-12 col-sm-12 box collapsed-box" -->
+<!-- 											style="border: 1px solid; border-radius: 5px 5px 5px 5px;"> -->
+<!-- 											<div class="box-header"> -->
+<!-- 												<span class="fa fa-list"></span> -->
+<!-- 												<h4 class="box-title"> Etapas</h4> -->
+<!-- 												<div class="box-tools pull-right"> -->
+<!-- 													<button type="button" class="btn btn-box-tool" -->
+<!-- 														data-widget="collapse"> -->
+<!-- 														<i class="fa fa-plus"></i> -->
+<!-- 													</button> -->
+<!-- 												</div> -->
+<!-- 											</div> -->
+<!-- 											<div class="box-body"> -->
+<!-- 												<div class="row"> -->
+<!-- 													<div class="col-md-12 col-sm-12"> -->
+<!-- 														<div class="row"> -->
+<!-- 															<div class="col-md-12 col-sm-12 container" style="height: 200px; overflow-y: scroll;"> -->
+<!-- 																 <div class="list-group"> -->
+<!-- 																 	<a class="list-group-item list-group-item-danger"> -->
+<!-- 																 		<h5 class="list-group-item-text"> -->
+<!-- 																 			<strong>Orden de Servicio &nbsp &nbsp &nbsp</strong><span class="fa fa-camera" ng-if="evidencia.infoEvidencia.imagenes != undefined && evidencia.infoEvidencia.imagenes.length > 0"></span></h5> -->
+<!-- 																 	</a> -->
+<!-- 																 	<div ng-repeat="proc in evidencia.procesos"> -->
+<!-- 																	 	<a class="list-group-item list-group-item-warning" style="text-indent: 10px;" -->
+<!--  																			data-toggle="collapse" data-target="#{{'EN_' + proc.cdNivel + '_'+ proc.idProceso}}"> -->
+<!-- 																	 		<p class="list-group-item-text"> -->
+<!-- 																	 			{{proc.name}} &nbsp &nbsp &nbsp<span class="fa fa-camera" ng-if="proc.infoEvidencia.imagenes != undefined && proc.infoEvidencia.imagenes.length > 0"></span></p> -->
+<!-- 																	 	</a> -->
+																	 	
+<!-- 																	 	<div id="{{'EN_' + proc.cdNivel + '_'+ proc.idProceso}}" class="collapse" style="padding: 0%;"> -->
+<!-- 																		 	<div ng-repeat="enc in proc.listEncuestas"> -->
+<!-- 																			 	<a class="list-group-item list-group-item-success" style="text-indent: 20px;" -->
+<!-- 																			 		data-toggle="collapse" data-target="#{{'EN_' + proc.idProceso + '_'+ enc.cdNivel + '_' + enc.idEncuesta}}"> -->
+<!-- 																			 		<p class="list-group-item-text"> -->
+<!-- 																			 			{{enc.name}} &nbsp &nbsp &nbsp<span class="fa fa-camera" ng-if="enc.infoEvidencia.imagenes != undefined && enc.infoEvidencia.imagenes.length > 0"></span></p> -->
+<!-- 																			 	</a> -->
+																			 	
+<!-- 																			 	<div id="{{'EN_' + proc.idProceso + '_'+ enc.cdNivel + '_' + enc.idEncuesta}}" class="collapse" style="padding: 0%;"> -->
+<!-- 																				 	<div ng-repeat="preg in enc.listPreguntas"> -->
+<!-- 																				 		<a class="list-group-item list-group-item-info" style="text-indent: 30px;"> -->
+<!-- 																				 			<p class="list-group-item-text"> -->
+<!-- 																				 				{{preg.name}} &nbsp &nbsp &nbsp<span class="fa fa-camera" ng-if="preg.infoEvidencia.imagenes != undefined && preg.infoEvidencia.imagenes.length > 0"></span></p> -->
+<!-- 																				 		</a> -->
+<!-- 																				 		<a class="list-group-item" style="text-indent: 40px;"> -->
+<!-- 																			 				<p class="list-group-item-text"> -->
+<!-- 																			 					<strong>Respuesta:</strong> {{preg.infoEvidencia.respuesta.respuesta}}</p> -->
+<!-- 																			 			</a> -->
+<!-- 																			 			<a class="list-group-item" style="text-indent: 40px;"> -->
+<!-- 																			 				<p class="list-group-item-text"> -->
+<!-- 																			 					<strong>Causa:</strong> {{preg.infoEvidencia.respuesta.causa}}</p> -->
+<!-- 																			 			</a> -->
+<!-- 																			 			<a class="list-group-item" style="text-indent: 40px;"> -->
+<!-- 																			 				<p class="list-group-item-text"> -->
+<!-- 																			 					<strong>Justificaciónn:</strong> {{preg.infoEvidencia.respuesta.justificacion}}</p> -->
+<!-- 																			 			</a> -->
+<!-- 																		 			</div> -->
+<!-- 																		 		</div> -->
+<!-- 																	 		</div> -->
+<!-- 																 		</div> -->
+<!-- 																 	</div> -->
+<!-- 																 </div> -->
+<!-- 															</div> -->
+<!-- 														</div> -->
+<!-- 													</div> -->
+<!-- 												</div> -->
+<!-- 											</div> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
 							<div class="row" id="div5">
 							  <div class="col-md-6">
                                     <div style="float: right;">
@@ -545,8 +659,7 @@
 					</div>
 				</div>
 			</div>
-		</form>
-	</section>
+		</section>
 <!-- 	#### Modal de confirmación-->
 	<modal visible="mostraConfirmacion" size-modal="md" noescape modalstatic on-hide="mostraConfirmacion = false">
             <modal-header title="Confirmación"></modal-header>
@@ -574,6 +687,123 @@
 				</button>
             </modal-footer>
         </modal>
+        
+        <!-- 	#### Modal de etapas-->
+		<modal visible="mostraEtapas" size-modal="lg" noescape modalstatic on-hide="mostraEtapas = false">
+            <modal-header title="Etapas"></modal-header>
+            <modal-body>
+            	<form role="form" name="formPreguntas" novalidate>
+            	<div class="row">
+            		<div class="col-md-6">
+           				<label for="">Procesos</label>
+           				<div class="input-group">
+           					<div class="input-group-addon">
+           						<i class="fa fa-list-ul"></i>
+           					</div>
+           					<select class="form-control" name="nombreProcesos" id="nombreProceso" select2 
+           						ng-model="procesoSeleccionado" ng-options="proc as proc.name for proc in evidencia.procesos"
+           						ng-change="procesoElegido()">
+           						<option value="">Seleccione</option>
+           					</select>
+           				</div>
+           			</div>
+           			
+           			<div class="col-md-6">
+           				<label for="">Encuestas</label>
+           				<div class="input-group">
+           					<div class="input-group-addon">
+           						<i class="fa fa-list-ul"></i>
+           					</div>
+           					<select class="form-control" name="encuestaProcesos" id="encuestaProcesos" select2 
+           						ng-model="encuestaSeleccionada" ng-options="enc as enc.name for	enc in procesoSeleccionado.listEncuestas"
+           						ng-change="ecuestaElegida(encuestaSeleccionada)">
+           						<option value="">Seleccione</option>
+           					</select>
+           				</div>
+           			</div>
+            	</div>
+            </form>
+            	<br>
+            	<div class="row" ng-show="mostrarPreguntas">
+			        <div class="col-xs-12 col-md-12">
+			            <div class="box box-danger">
+			                <div class="box-header with-border">
+<!-- 			                    <div class="col-sm-6"> -->
+<!-- 			                        <h3 class="box-title">Registros Encontrados: {{(encuestaSeleccionada | filter:tabla.view.filterSearchVal).length}}</h3> -->
+<!-- 			                    </div> -->
+<!-- 			                    <div class="col-sm-6 form-group"> -->
+<!-- 									<div class="row"> -->
+<!-- 										<div class="col-md-offset-5 col-md-6 col-xs-8"> -->
+<!-- 											<div class="input-group pull-right"> -->
+<!-- 												<input type="text" class="form-control" placeholder="Buscar por filtro" ng-model="tabla.view.filterSearchVal"> -->
+<!-- 												<div class="input-group-addon"> -->
+<!-- 													<i class="fa fa-search"></i> -->
+<!-- 												</div> -->
+<!-- 											</div> -->
+<!-- 										</div> -->
+<!-- 										<div class="col-md-1"> -->
+<!-- 											<a ng-click="descargarExcel()">  -->
+<!-- 												<span class="pull-right"> <img src="static/dist/img/excel.png"> </span> -->
+<!-- 											</a> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+			                </div>
+			                <div class="box-body table-responsive">
+				                <table id="tabla_preguntas" class="table table-striped table-hover table-xs table-sm" style="overflow: auto; border-collapse: collapse; width: 100%;">
+				                    <thead>
+				                        <tr>
+				                            <th sort order="'estatus'" by="tabla.order" reverse="tabla.reverse" class="text-center">PREGUNTA</th>
+				                            <th sort order="'folio'" by="tabla.order" reverse="tabla.reverse" class="text-center">RESPUESTA</th>
+				                            <th sort order="'folio'" by="tabla.order" reverse="tabla.reverse" class="text-center">CAUSAS</th>
+				                            <th sort order="'placa'" by="tabla.order" reverse="tabla.reverse" class="text-center">JUSTIFICACIÓN</th>
+				                        </tr>
+				                    </thead>
+				                    <tbody>
+				                        <tr dir-paginate="preg in encuestaSeleccionada.listPreguntas | orderBy:tabla.order:tabla.reverse | filter:tabla.view.filterSearchVal | itemsPerPage:tabla.view.rowsPerPageVal">
+				                            
+				                             <td style="width: 30%">
+				                             	{{preg.name}}
+				                            </td>
+				                            <td style="width: 20%" align="center">
+				                                 {{preg.infoEvidencia.respuesta.respuesta}}
+				                            </td>
+				                            <td style="width: 20%" align="center">
+				                                 {{preg.infoEvidencia.respuesta.causa}}
+				                            </td>
+				                            <td style="width: 30%" align="center">
+				                            	{{preg.infoEvidencia.respuesta.justificacion}}
+				                            </td>
+				                        </tr>
+				                        <tr ng-if="encuestaSeleccionada.listPreguntas | filter:tabla.view.filterSearchVal).length < 1">
+											<td colspan="10" class="text-center">
+												<h4>No se encontraron coincidencias</h4></td>
+										</tr>
+				                    </tbody>
+				                </table>
+				                <div class="container-fluid">
+				                    <div class="fixed-table-pagination">
+				                        <rows-per-page rows="tabla.view.rowsPerPageVal" filtro="tabla.view.filterSearchVal" array="encuestaSeleccionada.listPreguntas"></rows-per-page>
+				                        <dir-pagination-controls class="pull-right pagination-detail"></dir-pagination-controls>
+				                    </div>
+				                </div>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+
+            </modal-body>
+            
+            <modal-footer class="center">
+				<button type="button" ng-click="descargarReporteRespOS()" class="btn btn-danger btn-flat">
+					<span class="fa fa-download"></span>&nbsp Descargar Reporte
+				</button>
+                <button type="button" ng-click="cerrarModalEtapas()" class="btn btn-danger btn-flat">
+					<span class="fa fa-window-close"></span>&nbsp Cerrar
+				</button>
+            </modal-footer>
+        </modal>
+      </form>
 </body>
 
 </html>

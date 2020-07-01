@@ -4,6 +4,20 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 	$scope.evidenciaMostrar = {};
 	$scope.supervisores=[];
 	$scope.mostraConfirmacion=false;
+	$scope.mostraEtapas = false;
+	$scope.mostrarPreguntas=false;
+	
+	$scope.tabla = new Object({
+        order: '',
+        reverse: false,
+        paginacion: [5, 10, 20, 50],
+        cantidadPaginacion: 5,
+        cantidadPaginacionVal: 5,
+        view: new Object({
+            filterSearchVal: '',
+            rowsPerPageVal: 0
+        })
+    });
 
 	calcularDuracion = function(fhIni, fhFin){
 		let fdiferencia ="";
@@ -155,6 +169,8 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
 		
 		$scope.evidenciaMostrar.listImg = obj.infoEvidencia.imagenes;
 		
+		$scope.evidenciaMostrar.respuesta = obj.infoEvidencia.respuesta != null ? obj.infoEvidencia.respuesta.respuesta : null;
+		
 		$scope.evidencia.infoEvidencia.activo = false;
 		for(proceso in $scope.evidencia.procesos){
 			$scope.evidencia.procesos[proceso].infoEvidencia.activo = false;
@@ -193,6 +209,48 @@ function($scope, showAlert, $location, growl, ordenInfo, consultaServicioService
     $scope.cerrarMostraConfirmacion = function(){
     	$scope.mostraConfirmacion = false;
     }
+    
+    
+    $scope.mostrarModalEtapas = function() {
+		$scope.mostraEtapas = true;
+    };
+    
+    $scope.cerrarModalEtapas = function(){
+    	$scope.mostrarPreguntas = false;
+    	
+    	$scope.formDetalleServicio.nombreProcesos.$pristine = true;
+    	$scope.formDetalleServicio.encuestaProcesos.$pristine = true;
+    	
+    	$scope.mostraEtapas = false;
+    }
+    
+    $scope.procesoElegido = function(){
+    	$scope.mostrarPreguntas = false;
+    	$scope.formDetalleServicio.encuestaProcesos.$pristine = true;
+    }
+    
+    $scope.ecuestaElegida = function(encuenta){
+    	if(encuenta!=undefined){
+    		$scope.mostrarPreguntas=true;
+    	}
+    }
+    
+    $scope.descargarReporteRespOS = function(){
+		consultaServicioService.descargarReporteRespuestas($scope.ordenInfo.idOrdenServicio)
+			.success(function(archivo) {
+				$scope.error = false;
+//				var filename = data.nombreArchivo;
+				var filename = "Detalle Orden de Servicio Folio: " + $scope.ordenInfo.cdOrdenServicio;
+//	    		let file = new Blob([data.bdPath], { type: 'application/pdf' });
+	    		let file = new Blob([archivo], { type: 'application/pdf' });
+//				var file = $scope.b64toBlob(data.bdPath, "application/pdf");
+				$scope.error = false;
+				consultaServicioService.downloadfile(file, filename);
+				$scope.cerrarMostraConfirmacion();
+			}).error(function(data) {
+				$scope.error=data;
+			});
+	};
 	
 	consultarTransportistas();
 	consultarSupervisores();
