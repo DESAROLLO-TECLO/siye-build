@@ -95,7 +95,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                 x: coordX,
                 y: 0,
                 label: proceso.nbProceso,
-                color: { border: proceso.cdRgb, highlight: { border: proceso.cdRgb } },
+                color: { border: proceso.cdColor, highlight: { border: proceso.cdColor } },
                 font: { vadjust: 10 }
             });
             coordY = 0;
@@ -164,7 +164,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
 
         /* funcion para crear nodos en el diagrama informativo */
         crearInfoNetwork = function (valor) {
-            var x = 0;
+            var x = 150;
             var y = 0;
             var optionsAnimation = {
                 duration: 100, easingFunction: 'linear'
@@ -172,7 +172,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
             
             angular.forEach(valor, function (value, key) {
                 nodeInfo.add({ id: value.nbStatus, x: x, y: y, label: value.nbStatus, color: { border: value.nbColor } });
-                x += 200;
+                x += 150;
             });
             $scope.infoNet.fit({ animation: optionsAnimation });
         }
@@ -225,6 +225,7 @@ angular.module(appTeclo).controller('detalleSeguimientoOsController',
                 //			        interaction:{dragNodes:false, dragView: false, hover:false, zoomView:false, tooltipDelay:100}
             };
             $scope.infoNet = new vis.Network(infoNetwork, dataInfo, optionsInfo);
+            $scope.infoNet.fit();
         };
 
         // Guardar imagen 

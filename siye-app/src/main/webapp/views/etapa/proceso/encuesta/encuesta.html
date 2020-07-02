@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Proceso</title>
 <link rel="stylesheet" href="static/dist/css/custom/etapa/encuesta.css" />
+<style type="text/css">
+		.ligas {
+			text-decoration: none;
+			padding: 5px;
+			font-weight: 600;
+			border-radius: 6px;
+		}
+	</style>
 </head>
 <body>
 
@@ -19,7 +27,7 @@
 	</section>
 
 	<!-- Incidencia -->
-	<boton-incidencia ng-click="guardaAvancePorPagina(paramConfigPage.bigCurrentPage)" id-orden="ordSer" id-proceso="idProc" id-encuesta="idEnc"
+	<boton-incidencia ng-click="changedView(paramConfigPage.bigCurrentPage)" id-orden="ordSer" id-proceso="idProc" id-encuesta="idEnc"
 	url-actual="'$etapas$proceso$encuesta$'+idEnc+'$'+ordSer+'$'+idProc+'$'+nombreProceso"></boton-incidencia>
 
 	<section class="content">
@@ -101,8 +109,7 @@
 									<hr>
 									<div class="col-md-12">
 										<div class="col-md-2">
-											<div
-												ng-repeat="seccion in encuestaDetalle.encuesta.secciones">
+											<div ng-repeat="seccion in encuestaDetalle.encuesta.secciones">
 
 												<div class="btn-group-vertical w-100" role="group">
 
@@ -110,8 +117,8 @@
 														<div
 															ng-show="seccion.nuPreguntasContestadas==0 || seccion.nuPreguntasContestadas===null"
 															ng-style="seccion.cdSeccion === seccionSeleccion && {'border-style':'solid','border-width':'3px','border-color':444}">
-															<button type="button"
-																class="label label-danger center-block w-100"
+															<button type="button" style="height: 1.5rem !important; padding: inherit"
+																class="btn btn-danger center-block w-100"
 																ng-show="seccion.nuPreguntasContestadas==0 || seccion.nuPreguntasContestadas===null"
 																ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,seccion)">
 																{{seccion.cdSeccion}}</button>
@@ -122,8 +129,8 @@
 														<div
 															ng-show="seccion.nuPreguntasContestadas>0 && seccion.nuPreguntasContestadas<seccion.preguntas.length"
 															ng-style="seccion.cdSeccion === seccionSeleccion && {'border-style':'solid','border-width':'3px','border-color':'444'}">
-															<button type="button"
-																class="label label-warning center-block w-100"
+															<button type="button" style="height: 1.5rem !important; padding: inherit"
+																class="btn btn-warning center-block w-100"
 																ng-show="seccion.nuPreguntasContestadas>0 && seccion.nuPreguntasContestadas<seccion.preguntas.length"
 																ng-click="cambiarPregunta(paramConfigPage.bigCurrentPage,seccion)">
 																{{seccion.cdSeccion}}</button>
@@ -145,6 +152,7 @@
 
 											</div>
 										</div>
+										
 										<div class="col-md-10">
 									<form name="transEInstalador">
 								  <div class="col-md-4" ng-if="estatusEncuesta=='FIN'">
@@ -191,7 +199,7 @@
 												<i class="fa fa-list-ul"></i>
 											</div>
 											<select class="form-control" select2
-											    ng-disabled="estatusEncuesta=='FIN'"
+											    ng-disabled="estatusEncuesta=='FIN' || encuestInprocess"
 												idioma-s2="{{currentLanguage}}"
 												ng-model="selectTransportista"
 												name="transp" id="transp"
@@ -216,7 +224,7 @@
 												<i class="fa fa-list-ul"></i>
 											</div>
 											<select class="form-control" select2
-											    ng-disabled="estatusEncuesta=='FIN'"
+											    ng-disabled="estatusEncuesta=='FIN' || encuestInprocess"
 												idioma-s2="{{currentLanguage}}"
 												ng-model="selectInstalador"
 												name="inst" id="inst"
@@ -251,10 +259,10 @@
 																			ng-class="{ 'has-error' : evaluacion.{{'valueOption'+$index}}.$invalid &&evaluacion.{{'customValue'+$index}}.$dirty}">
 
 																			<div class="row">
-																				<div class="col-md-5 col-sm-6 col-xs-12">
+																				<div class="col-md-5 col-sm-5 col-xs-12">
 																					<span class="text-15">{{respuesta.txPregunta}}</span>
 																				</div>
-																				<div class="col-md-6 col-sm-5 col-xs-6">
+																				<div class="col-md-5 col-sm-5 col-xs-6">
 																					<ul>
 																						<li
 																							style="list-style: none; margin-top: 1%; margin-bottom: 2%; display: inline-block;"
@@ -263,7 +271,7 @@
 																								ng-if="!opciones.cdMostrarCausas || (opciones.cdMostrarCausas && opciones.causas)"
 																								style="display: inline-block;">
 																								<label class="content-input"> <input
-																									ng-disabled="estatusEncuesta=='FIN'"
+																									ng-disabled="estatusEncuesta=='FIN' || encuestInprocess"
 																									type="radio" name="{{respuesta.txPregunta}}"
 																									id="{{opciones.idOpcion}}" ng-value=1
 																									ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
@@ -276,7 +284,7 @@
 																								ng-if="opciones.cdMostrarCausas && !opciones.causas"
 																								style="display: inline-block;">
 																								<label class="content-input"> <input
-																									ng-disabled="estatusEncuesta=='FIN'"
+																									ng-disabled="estatusEncuesta=='FIN' || encuestInprocess"
 																									type="radio" name="{{respuesta.txPregunta}}"
 																									id="{{opciones.idOpcion}}" ng-value=1
 																									ng-change="checkPregunta(opciones,respuesta,'{{respuesta.idPregunta}}')"
@@ -309,12 +317,18 @@
 																						</li>
 																					</ul>
 																				</div>
-																				<div class="col-md-1 col-sm-1 col-xs-6">
+																				<div class="col-md-2 col-sm-2 col-xs-6">
 																					<div class="media add-img">
+																					<span style="font-size:12px !important;">
 																						<update-image id-element-up="Pregunta{{respuesta.idPregunta}}" show-in-modal="true"
 																							param-conf-sav="respuesta.paramPregImg" max-nu-image="{{respuesta.nuMaxImagenes}}"
+																							num-current-image="respuesta.nuImagenes"
 																							param-conf-component="paramConfigImgxPreg" list-images="{{respuesta.listImagesxPreg}}">
 																						</update-image>
+																						<div class="ligas" style="padding:2px !important; border: 2px solid; color:'#FFBF00'">
+																							{{(respuesta.nuImagenes == undefined ? 0 : respuesta.nuImagenes)}} / {{respuesta.nuMaxImagenes}}
+																						</div>
+																					</span>
 																					</div>
 																				</div>
 																			</div>
@@ -443,7 +457,7 @@
 																					ng-model="causas" name="causa" id="causa"
 																					ng-change="changeComboCausa()"
 																					ng-options="sp.idCausa as sp.nbCausa for sp in comboCausasList"
-																					ng-disabled="estatusEncuesta=='FIN'">
+																					ng-disabled="estatusEncuesta=='FIN' || encuestInprocess">
 
 																				</select>
 																			</div>
@@ -461,7 +475,7 @@
 																	<div class="col-md-12">
 																		<label> Descripción: </label>
 																		<textarea ng-model="descripcionCausa"
-																			ng-disabled="estatusEncuesta=='FIN'"
+																			ng-disabled="estatusEncuesta=='FIN' || encuestInprocess"
 																			class="form-control" rows="4"></textarea>
 																	</div>
 																</div>
@@ -470,7 +484,7 @@
 																<!--  <button type="button" class="btn btn-default"
 																	data-dismiss="modal">Salir sin guardar</button>-->
 																<button type="button" class="btn btn-primary"
-																	ng-disabled="estatusEncuesta=='FIN'"
+																	ng-disabled="estatusEncuesta=='FIN' || encuestInprocess"
 																	ng-click="guardarCausa()">Guardar</button>
 															</div>
 														</div>
@@ -484,7 +498,7 @@
 
 													<div style="float: left;">
 														
-														<button class="btn btn-danger" ng-show="estatusEncuesta=='FIN'"
+														<button class="btn btn-danger" ng-show="estatusEncuesta=='FIN' || encuestInprocess"
 															ng-click="regresarEncuestas() ">
 															<div style="display: block;">Regresar</div>
 														</button>
@@ -506,13 +520,13 @@
 																</a>
 															</div>
 															<button class="btn btn-danger w-100 mb-2"
-																ng-disabled="estatusEncuesta=='FIN'"
+																ng-disabled="estatusEncuesta=='FIN' || encuestInprocess"
 																ng-click="guardaFinalizaEncuesta(paramConfigPage.bigCurrentPage) ">
 																<div style="display: block;">Finalizar</div>
 															</button>
 														</div>
-														<div
-															ng-if="preguntasContestadasEncuesta!=encuestaDetalle.encuesta.nuPreguntas && banderaPermiteGuardarAvance=='VERDADERO'"
+														<div ng-if="(preguntasContestadasEncuesta!=encuestaDetalle.encuesta.nuPreguntas 
+																		&& banderaPermiteGuardarAvance=='VERDADERO') && !encuestInprocess"
 															class="w-100">
 															<div style="display: block; margin: 0 auto;"
 																ng-if="myVar">

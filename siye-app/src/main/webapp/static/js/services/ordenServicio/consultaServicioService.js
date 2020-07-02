@@ -98,5 +98,20 @@ angular.module(appTeclo).service('consultaServicioService', function($http, conf
           },
           responseType: 'arraybuffer'
       });
-  }
+    };
+    
+    this.descargarReporteRespuestas =  function(id){
+        return $http({
+              method: 'GET',
+              url: config.baseUrl + "/reporte/reporteRespuestasOS",
+              params: { 
+                  "idOrdenservicio":id},
+              dataType: "json",
+              header: {
+                  "Content-type": "application/json",
+                  "Accept": "application/pdf"
+              },
+              responseType: 'arraybuffer'
+          });
+        };
 });
