@@ -408,6 +408,9 @@ public class ReportesServiceImpl implements ReportesService {
 					pregunta.setSupervisores(listToString(preg.getInfoEvidencia().getNbSupervisor(), "Sin Supervisor"));
 					pregunta.setInstaladores(listToString(preg.getInfoEvidencia().getNbInstalador(), "Sin Instalador"));
 					pregunta.setTrasportistas(listToString(preg.getInfoEvidencia().getNbTrasportista(), "Sin Transportista"));
+					pregunta.setRespuesta(preg.getInfoEvidencia().getRespuesta().getRespuesta());
+					pregunta.setCausa(preg.getInfoEvidencia().getRespuesta().getCausa());
+					pregunta.setJustificacion(preg.getInfoEvidencia().getRespuesta().getJustificacion());
 					listpPreguntas.add(pregunta);
 				}
 				encuesta.setPreguntas(listpPreguntas);

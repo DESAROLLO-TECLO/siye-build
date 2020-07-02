@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="561e685e-83a4-4113-8990-d0b6b1ad1f42">
 	<property name="ireport.zoom" value="1.3636363636363635"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="344"/>
+	<property name="ireport.y" value="328"/>
 	<subDataset name="dataset1_1" uuid="7356e04b-deb6-48ba-889d-e716b5f8c716">
 		<field name="_THIS" class="java.lang.String"/>
 	</subDataset>
@@ -277,7 +277,7 @@ $P{FOLIO}]]></textFieldExpression>
 				<textFieldExpression><![CDATA["Etapas"]]></textFieldExpression>
 			</textField>
 			<subreport>
-				<reportElement x="0" y="23" width="555" height="148" uuid="07a00751-3ac9-4b0c-a4c5-c11ec0504206"/>
+				<reportElement x="15" y="23" width="526" height="148" uuid="07a00751-3ac9-4b0c-a4c5-c11ec0504206"/>
 				<dataSourceExpression><![CDATA[$P{LIST_PROCESOS}]]></dataSourceExpression>
 				<subreportExpression><![CDATA[".\\subReporteProcesos_v1.jasper"]]></subreportExpression>
 			</subreport>
@@ -286,11 +286,11 @@ $P{FOLIO}]]></textFieldExpression>
 	<pageFooter>
 		<band height="45" splitType="Stretch">
 			<textField>
-				<reportElement x="396" y="10" width="80" height="20" uuid="d506bb2d-47db-42bd-a9a9-9f82b88ceb9e"/>
+				<reportElement x="410" y="10" width="80" height="20" uuid="d506bb2d-47db-42bd-a9a9-9f82b88ceb9e"/>
 				<textElement textAlignment="Right">
 					<font size="12"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+" de "]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Página "+$V{PAGE_NUMBER}+"  de "]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="457" y="10" width="66" height="20" uuid="40591447-782a-4fcd-a443-f3e657904507"/>

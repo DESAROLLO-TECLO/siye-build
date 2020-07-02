@@ -222,19 +222,20 @@ public class ExpedienteImgRestController {
 				encuesta.setInfoEvidencia(infoEvidenciaEncuesta);
 				
 				
-				Long idIntento = ordenServicioMyBatisDAO.getIdOsEncuesta(respuesta.get(0).getIdOrdenServicio(), encuesta.getIdEncuesta());				
+				Long idIntento = ordenServicioMyBatisDAO.getIdOsEncuesta(respuesta.get(0).getIdOrdenServicio(), encuesta.getIdEncuesta());
+				
 				for(ExpedienteNivelPreguntaVO pregunta : encuesta.getListPreguntas()) {
 					
 					List<RespuestaVO> resp = ordenServicioMyBatisDAO.getRespuestas(idIntento, encuesta.getIdEncuesta(), pregunta.getIdSecccion(), pregunta.getIdPregunta());
 					RespuestaVO respuestaOK = new RespuestaVO();
 					respuestaOK.setRespuesta("Sin responder");
-					respuestaOK.setJustificacion("NA");
-					respuestaOK.setCausa("NA");
+					respuestaOK.setJustificacion("Sin justificación");
+					respuestaOK.setCausa("Sin causa");
 					
 					if(resp.size()>0) {
-						respuestaOK = new RespuestaVO();
 						respuestaOK.setRespuesta(resp.get(0).getRespuesta());
-						respuestaOK.setJustificacion(resp.get(0).getJustificacion());
+						if(resp.get(0).getJustificacion()!=null)
+							respuestaOK.setJustificacion(resp.get(0).getJustificacion());
 						respuestaOK.setCausa(obtenerCausas(resp));
 					}
 					
@@ -349,6 +350,8 @@ public class ExpedienteImgRestController {
 					causas = causas + ", ";
 			}
 		}
+		if(causas.equals(""))
+			causas = "Sin causa";
 		return causas;
 	}
 }

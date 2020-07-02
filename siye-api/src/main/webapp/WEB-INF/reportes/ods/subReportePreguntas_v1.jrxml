@@ -45,30 +45,34 @@
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="93" splitType="Stretch">
+		<band height="88" splitType="Stretch">
 			<textField>
-				<reportElement x="8" y="5" width="537" height="18" uuid="6aaab1e2-2cdb-4701-82c9-3d6ac397dc3c"/>
+				<reportElement x="1" y="2" width="554" height="19" uuid="6aaab1e2-2cdb-4701-82c9-3d6ac397dc3c"/>
 				<textElement>
 					<font size="11"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Nombre: " + $F{nombre}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="8" y="26" width="537" height="18" uuid="f3e737b7-1b4a-4905-8ecf-2ccb080f4c66"/>
+				<reportElement x="1" y="23" width="554" height="19" uuid="f3e737b7-1b4a-4905-8ecf-2ccb080f4c66"/>
 				<textElement>
 					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Respuesta: " + $F{respuesta}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="8" y="48" width="537" height="18" uuid="db4ec2bf-efe0-488d-bcef-3e6e993fb82d"/>
+				<reportElement x="1" y="45" width="554" height="19" uuid="db4ec2bf-efe0-488d-bcef-3e6e993fb82d">
+					<printWhenExpression><![CDATA[new Boolean(!$F{causa}.equals( "NA" ))]]></printWhenExpression>
+				</reportElement>
 				<textElement>
 					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Causas: " + $F{causa}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="8" y="70" width="537" height="18" uuid="20f10ef1-173b-417c-99cc-8eb3b436f1e5"/>
+				<reportElement x="1" y="67" width="554" height="19" uuid="20f10ef1-173b-417c-99cc-8eb3b436f1e5">
+					<printWhenExpression><![CDATA[new Boolean(!$F{justificacion}.equals( "NA" ))]]></printWhenExpression>
+				</reportElement>
 				<textElement>
 					<font size="11"/>
 				</textElement>
@@ -77,7 +81,7 @@
 		</band>
 		<band height="6" splitType="Stretch">
 			<line>
-				<reportElement x="0" y="2" width="555" height="1" uuid="cc5d0f87-8967-4d77-ad30-bcb005174c63"/>
+				<reportElement x="100" y="2" width="350" height="1" uuid="cc5d0f87-8967-4d77-ad30-bcb005174c63"/>
 				<graphicElement>
 					<pen lineStyle="Dashed"/>
 				</graphicElement>

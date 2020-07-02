@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subReporteEvidencia" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="106df23d-4c6b-4318-9108-7230ebec0512">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="16"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -43,69 +43,71 @@
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="113" splitType="Stretch">
+		<band height="109" splitType="Stretch">
 			<textField>
-				<reportElement x="8" y="5" width="537" height="18" uuid="6aaab1e2-2cdb-4701-82c9-3d6ac397dc3c"/>
+				<reportElement x="1" y="1" width="554" height="19" uuid="6aaab1e2-2cdb-4701-82c9-3d6ac397dc3c"/>
 				<textElement>
-					<font size="11"/>
+					<font size="11" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Nombre: " + $F{nombre}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Encuesta: " + $F{nombre}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="8" y="26" width="190" height="18" uuid="6a112445-238d-4190-a12b-c01e87a96db1"/>
+				<reportElement x="1" y="22" width="190" height="19" uuid="6a112445-238d-4190-a12b-c01e87a96db1"/>
 				<textElement>
 					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Fecha Inicio: " + $F{fhInicio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="216" y="26" width="190" height="18" uuid="0e81782c-ca1e-4e08-9fc8-e2f9ef6356e6"/>
+				<reportElement x="209" y="22" width="190" height="19" uuid="0e81782c-ca1e-4e08-9fc8-e2f9ef6356e6"/>
 				<textElement>
 					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Fecha Fin: " + $F{fhFin}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="422" y="26" width="123" height="18" uuid="466f52b4-0551-4ab9-893d-807ea67ce8a9"/>
+				<reportElement x="415" y="22" width="140" height="19" uuid="466f52b4-0551-4ab9-893d-807ea67ce8a9"/>
 				<textElement>
 					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Duración: " + $F{duracion}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="8" y="48" width="537" height="18" uuid="f3e737b7-1b4a-4905-8ecf-2ccb080f4c66"/>
+				<reportElement x="1" y="44" width="554" height="19" uuid="f3e737b7-1b4a-4905-8ecf-2ccb080f4c66"/>
 				<textElement>
 					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Supervisores: " + $F{supervisores}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="8" y="70" width="537" height="18" uuid="db4ec2bf-efe0-488d-bcef-3e6e993fb82d"/>
+				<reportElement x="1" y="66" width="554" height="19" uuid="db4ec2bf-efe0-488d-bcef-3e6e993fb82d"/>
 				<textElement>
 					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Instaladores: " + $F{instaladores}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="8" y="93" width="537" height="18" uuid="20f10ef1-173b-417c-99cc-8eb3b436f1e5"/>
+				<reportElement x="1" y="89" width="554" height="19" uuid="20f10ef1-173b-417c-99cc-8eb3b436f1e5"/>
 				<textElement>
 					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Transportistas: " + $F{trasportistas}]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="119">
-			<subreport>
-				<reportElement x="8" y="8" width="537" height="107" uuid="20f85faa-cd29-4002-9bb3-e2c6a2b4de03"/>
-				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{preguntas})]]></dataSourceExpression>
-				<subreportExpression><![CDATA[".\\subReportePreguntas_v1.jasper"]]></subreportExpression>
-			</subreport>
+		<band height="9">
 			<line>
-				<reportElement x="0" y="2" width="555" height="1" uuid="cc5d0f87-8967-4d77-ad30-bcb005174c63"/>
+				<reportElement x="80" y="2" width="395" height="1" uuid="cc5d0f87-8967-4d77-ad30-bcb005174c63"/>
 				<graphicElement>
 					<pen lineWidth="3.0" lineStyle="Double"/>
 				</graphicElement>
 			</line>
+		</band>
+		<band height="108">
+			<subreport>
+				<reportElement mode="Opaque" x="0" y="0" width="540" height="107" uuid="20f85faa-cd29-4002-9bb3-e2c6a2b4de03"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{preguntas})]]></dataSourceExpression>
+				<subreportExpression><![CDATA[".\\subReportePreguntas_v1.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</detail>
 </jasperReport>

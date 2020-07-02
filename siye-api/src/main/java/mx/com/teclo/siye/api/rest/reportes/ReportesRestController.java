@@ -353,13 +353,13 @@ public class ReportesRestController {
 					List<RespuestaVO> resp = ordenServicioMyBatisDAO.getRespuestas(idIntento, encuesta.getIdEncuesta(), pregunta.getIdSecccion(), pregunta.getIdPregunta());
 					RespuestaVO respuestaOK = new RespuestaVO();
 					respuestaOK.setRespuesta("Sin responder");
-					respuestaOK.setJustificacion("NA");
-					respuestaOK.setCausa("NA");
+					respuestaOK.setJustificacion("Sin justificación");
+					respuestaOK.setCausa("Sin causa");
 					
 					if(resp.size()>0) {
-						respuestaOK = new RespuestaVO();
 						respuestaOK.setRespuesta(resp.get(0).getRespuesta());
-						respuestaOK.setJustificacion(resp.get(0).getJustificacion());
+						if(resp.get(0).getJustificacion()!=null)
+							respuestaOK.setJustificacion(resp.get(0).getJustificacion());
 						respuestaOK.setCausa(obtenerCausas(resp));
 					}
 					
@@ -487,6 +487,8 @@ public class ReportesRestController {
 					causas = causas + ", ";
 			}
 		}
+		if(causas.equals(""))
+			causas = "Sin causa";
 		return causas;
 	}
 }
